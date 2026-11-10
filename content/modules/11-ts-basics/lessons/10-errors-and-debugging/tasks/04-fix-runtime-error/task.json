@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Fix the runtime error: initials",
+  "statement": "Функція `getInitials` повертає ініціали з повного імені: першу літеру **першого** і **останнього** слова, великими. Для звичайних імен вона працює, але на деяких даних **падає** з `TypeError`.\n\nВимоги:\n\n```ts\ngetInitials('Ivan Petrenko');          // 'IP'\ngetInitials('ivan petrenko');          // 'IP'\ngetInitials('  Olena   Kovalenko  ');  // 'OK'   (зайві пробіли)\ngetInitials('Taras');                  // 'T'    (одне слово)\ngetInitials('Anna Maria Shevchenko');  // 'AS'   (перше + останнє)\ngetInitials('   ');                    // ''     (немає слів)\n```\n\nСпершу відтвори падіння: додай `console.log(getInitials('Taras'))` і натисни **Run**.",
+  "hints": [
+    "Виведи `console.log(fullName.split(' '))` для `'  Olena   Kovalenko  '`. Ти побачиш порожні рядки `''` між пробілами: у них немає символу `[0]`.",
+    "Збери тільки непорожні слова в новий масив (цикл + `if (part !== '') words.push(part)`), а потім окремо оброби випадки 0 і 1 слова."
+  ],
+  "explanation": "Падіння спричиняють два припущення: що слів завжди два (`parts[1]` для `'Taras'` дає `undefined`) і що між словами рівно один пробіл (`split(' ')` повертає порожні рядки). Рішення:\n\n```ts\nconst words: string[] = [];\nfor (const part of fullName.split(' ')) {\n  if (part !== '') words.push(part);\n}\nif (words.length === 0) return '';\nconst first = words[0][0].toUpperCase();\nif (words.length === 1) return first;\nreturn first + words[words.length - 1][0].toUpperCase();\n```\n\nЦе типовий приклад того, як тестувальник знаходить runtime-баг: **граничні дані** (одне слово, зайві пробіли, порожній ввід)."
+}

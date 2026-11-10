@@ -1,0 +1,61 @@
+{
+  "type": "quiz",
+  "title": "Quiz: loops",
+  "show": 5,
+  "hints": ["Прокрути цикл «на папері»: випиши значення i на кожній ітерації."],
+  "questions": [
+    {
+      "id": "count-iterations",
+      "kind": "text",
+      "text": "Скільки разів виконається тіло циклу?",
+      "code": "for (let i = 0; i < 5; i++) {\n  console.log(i);\n}",
+      "accept": ["5"],
+      "explanation": "i = 0, 1, 2, 3, 4 — п'ять ітерацій. Коли i стає 5, умова i < 5 хибна."
+    },
+    {
+      "id": "sum",
+      "kind": "text",
+      "text": "Що виведе код?",
+      "code": "let sum = 0;\nfor (let i = 1; i <= 4; i++) {\n  sum += i;\n}\nconsole.log(sum);",
+      "accept": ["10"],
+      "explanation": "1 + 2 + 3 + 4 = 10."
+    },
+    {
+      "id": "infinite",
+      "kind": "single",
+      "text": "Що не так з цим кодом?",
+      "code": "let attempts = 0;\nwhile (attempts < 3) {\n  console.log('retry');\n}",
+      "options": [
+        { "text": "Нескінченний цикл: attempts ніколи не збільшується", "correct": true },
+        { "text": "Цикл не виконається жодного разу", "explain": "0 < 3 — умова істинна, цикл стартує… і ніколи не закінчиться." },
+        { "text": "Все гаразд, виведе retry 3 рази" }
+      ]
+    },
+    {
+      "id": "continue",
+      "kind": "text",
+      "text": "Скільки рядків виведе код?",
+      "code": "for (const r of 'PSFSP') {\n  if (r === 'S') continue;\n  console.log(r);\n}",
+      "accept": ["3"],
+      "explanation": "continue пропускає 'S' (двічі), виводяться P, F, P — три рядки."
+    },
+    {
+      "id": "off-by-one",
+      "kind": "single",
+      "text": "Яка умова правильно перебирає **всі** символи рядка `text` за індексами, починаючи з `let i = 0`?",
+      "options": [
+        { "text": "`i < text.length`", "correct": true },
+        { "text": "`i <= text.length`", "explain": "Остання ітерація звернеться до text[text.length], а там undefined." },
+        { "text": "`i < text.length - 1`", "explain": "Останній символ буде пропущено." }
+      ]
+    },
+    {
+      "id": "nested",
+      "kind": "text",
+      "text": "Скільки рядків виведе вкладений цикл?",
+      "code": "for (const b of ['chromium', 'firefox', 'webkit']) {\n  for (const s of ['mobile', 'desktop']) {\n    console.log(b, s);\n  }\n}",
+      "accept": ["6"],
+      "explanation": "3 браузери × 2 розміри = 6 комбінацій."
+    }
+  ]
+}

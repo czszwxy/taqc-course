@@ -1,0 +1,9 @@
+{
+  "type": "code",
+  "variantOf": "03-is-even",
+  "title": "Is the number a multiple of…?",
+  "statement": "Напиши функцію `isMultipleOf(n, divisor)`, яка повертає `true`, якщо `n` ділиться на `divisor` без остачі.\n\n```ts\nisMultipleOf(15, 5); // true\nisMultipleOf(14, 5); // false\nisMultipleOf(0, 3);  // true\n```\n\n`divisor` ніколи не дорівнює 0.",
+  "hints": ["Остача від ділення: `n % divisor`.", "Порівняй остачу з нулем і поверни результат порівняння."],
+  "explanation": "`n % divisor === 0` повертає `true`, коли ділення без остачі. Цей вираз уже boolean, його можна повернути без `if`.",
+  "codeRules": [{ "kind": "require", "pattern": "%", "message": "Використай оператор остачі `%`." }]
+}

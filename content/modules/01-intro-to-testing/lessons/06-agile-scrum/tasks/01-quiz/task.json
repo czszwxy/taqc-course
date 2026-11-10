@@ -1,0 +1,87 @@
+{
+  "type": "quiz",
+  "title": "Quiz: Agile & Scrum",
+  "show": 6,
+  "hints": ["Таблиці «Відповідальності», «Події» й «Артефакти» — головне в цьому уроці."],
+  "questions": [
+    {
+      "id": "value",
+      "kind": "single",
+      "text": "Що Agile Manifesto цінує **більше**, ніж вичерпну документацію?",
+      "options": [
+        { "text": "Працюючий продукт", "correct": true },
+        { "text": "Дотримання плану" },
+        { "text": "Процеси та інструменти" }
+      ]
+    },
+    {
+      "id": "daily",
+      "kind": "single",
+      "text": "Яка максимальна тривалість Daily Scrum за Scrum Guide?",
+      "options": [
+        { "text": "15 хвилин", "correct": true },
+        { "text": "1 година" },
+        { "text": "Без обмежень" }
+      ]
+    },
+    {
+      "id": "qa-role",
+      "kind": "single",
+      "text": "До якої відповідальності Scrum належить тестувальник?",
+      "options": [
+        { "text": "Developers — усі, хто створює інкремент", "correct": true },
+        { "text": "Окрема роль «Tester»", "explain": "Scrum Guide не виділяє такої ролі." },
+        { "text": "Product Owner" }
+      ]
+    },
+    {
+      "id": "retro",
+      "kind": "single",
+      "text": "Команда обговорює, чому баги потрапили в продакшн і як змінити процес. Яка це подія?",
+      "options": [
+        { "text": "Sprint Retrospective", "correct": true },
+        { "text": "Sprint Review", "explain": "На Review показують результат продукту зацікавленим сторонам." },
+        { "text": "Daily Scrum" }
+      ]
+    },
+    {
+      "id": "story-format",
+      "kind": "single",
+      "text": "Який формат user story класичний?",
+      "options": [
+        { "text": "As a <role>, I want <action>, so that <value>", "correct": true },
+        { "text": "Given / When / Then", "explain": "Це формат acceptance criteria (сценаріїв)." },
+        { "text": "Steps / Expected / Actual" }
+      ]
+    },
+    {
+      "id": "dod",
+      "kind": "single",
+      "text": "Що таке Definition of Done?",
+      "options": [
+        { "text": "Спільна домовленість команди, коли робота вважається завершеною", "correct": true },
+        { "text": "Список задач на спринт" },
+        { "text": "Дата релізу" }
+      ]
+    },
+    {
+      "id": "mini-waterfall",
+      "kind": "single",
+      "text": "Розробники віддають усі задачі на тестування в останній день спринту. Як це назвати?",
+      "options": [
+        { "text": "Антипатерн «міні-водоспад»: тестування збивається в кінці", "correct": true },
+        { "text": "Нормальна практика Scrum" }
+      ]
+    },
+    {
+      "id": "artifact",
+      "kind": "single",
+      "text": "Що є артефактом Scrum?",
+      "options": [
+        { "text": "Sprint Backlog", "correct": true },
+        { "text": "Sprint Planning", "explain": "Це подія." },
+        { "text": "Scrum Master", "explain": "Це відповідальність (роль)." }
+      ]
+    }
+  ]
+}

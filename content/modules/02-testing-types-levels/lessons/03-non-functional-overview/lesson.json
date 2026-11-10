@@ -1,0 +1,42 @@
+{
+  "title": "Non-functional testing overview",
+  "minutes": 50,
+  "summary": "Продуктивність (load, stress, spike, endurance), безпека, зручність, сумісність, доступність, локалізація",
+  "resources": [
+    {
+      "title": "OWASP Top 10 — the most critical web security risks",
+      "url": "https://owasp.org/www-project-top-ten/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "W3C: WCAG — Web Content Accessibility Guidelines",
+      "url": "https://www.w3.org/WAI/standards-guidelines/wcag/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Accessibility",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: Software performance testing",
+      "url": "https://en.wikipedia.org/wiki/Software_performance_testing",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: types of non-functional testing (пошук)",
+      "url": "https://www.youtube.com/results?search_query=types+of+non+functional+testing",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

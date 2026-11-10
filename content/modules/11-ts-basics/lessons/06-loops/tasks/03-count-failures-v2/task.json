@@ -1,0 +1,12 @@
+{
+  "type": "code",
+  "variantOf": "03-count-failures",
+  "title": "Count digits in a string",
+  "statement": "Номери замовлень у логах перемішані з текстом. Напиши `countDigits(text)`, яка повертає кількість **цифр** (`0`–`9`) у рядку.\n\n```ts\ncountDigits('Order 123-45'); // 5\ncountDigits('no digits');    // 0\n```",
+  "hints": [
+    "Перебери символи `for (const ch of text)`.",
+    "Символ є цифрою, якщо `ch >= '0' && ch <= '9'`: рядки порівнюються за кодами символів, а цифри йдуть підряд."
+  ],
+  "explanation": "Лічильник + умова для кожного символу:\n\n```ts\nlet count = 0;\nfor (const ch of text) {\n  if (ch >= '0' && ch <= '9') count++;\n}\nreturn count;\n```",
+  "codeRules": [{ "kind": "require", "pattern": "\\b(for|while)\\b", "message": "Використай цикл." }]
+}

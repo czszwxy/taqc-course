@@ -1,0 +1,69 @@
+{
+  "type": "quiz",
+  "title": "Quiz: the test process",
+  "show": 5,
+  "hints": ["Таблиця активностей з колонкою «Головне питання» — найкраща шпаргалка."],
+  "questions": [
+    {
+      "id": "analysis",
+      "kind": "single",
+      "text": "На яке питання відповідає **test analysis**?",
+      "options": [
+        { "text": "Що тестувати?", "correct": true },
+        { "text": "Як тестувати?", "explain": "Це test design." },
+        { "text": "Що показали тести?", "explain": "Це test execution." }
+      ]
+    },
+    {
+      "id": "exit",
+      "kind": "single",
+      "text": "Що з цього — приклад **exit criteria**?",
+      "options": [
+        { "text": "Немає відкритих дефектів severity Critical і Blocker", "correct": true },
+        { "text": "Білд розгорнуто на тестовому середовищі", "explain": "Це типовий entry criterion для виконання тестів." },
+        { "text": "Тестувальника додано в Jira" }
+      ]
+    },
+    {
+      "id": "monitoring",
+      "kind": "single",
+      "text": "Коли відбувається test monitoring & control?",
+      "options": [
+        { "text": "Протягом усього процесу тестування", "correct": true },
+        { "text": "Тільки наприкінці проєкту" },
+        { "text": "Тільки перед плануванням" }
+      ]
+    },
+    {
+      "id": "testware",
+      "kind": "multiple",
+      "text": "Що належить до **testware**?",
+      "options": [
+        { "text": "Тест-кейси", "correct": true },
+        { "text": "Тестові дані", "correct": true },
+        { "text": "Скрипти автотестів", "correct": true },
+        { "text": "Звіт про тестування", "correct": true },
+        { "text": "Робочий ноутбук тестувальника", "explain": "Testware — це артефакти тестування, а не обладнання." }
+      ]
+    },
+    {
+      "id": "traceability",
+      "kind": "single",
+      "text": "Навіщо потрібна трасованість (traceability)?",
+      "options": [
+        { "text": "Щоб бачити, які вимоги покриті тестами і які тести зачіпає зміна вимоги", "correct": true },
+        { "text": "Щоб відстежувати робочий час тестувальників" }
+      ]
+    },
+    {
+      "id": "completion",
+      "kind": "single",
+      "text": "Що робиться на етапі **test completion**?",
+      "options": [
+        { "text": "Підсумковий звіт, архівування testware, аналіз уроків", "correct": true },
+        { "text": "Написання тест-кейсів" },
+        { "text": "Перше читання вимог" }
+      ]
+    }
+  ]
+}

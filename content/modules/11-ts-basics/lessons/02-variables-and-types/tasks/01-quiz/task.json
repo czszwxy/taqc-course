@@ -1,0 +1,76 @@
+{
+  "type": "quiz",
+  "title": "Quiz: variables & types",
+  "show": 5,
+  "hints": ["Згадай таблицю «Примітивні типи» і правило «const за замовчуванням»."],
+  "questions": [
+    {
+      "id": "const-reassign",
+      "kind": "single",
+      "text": "Що станеться з цим кодом?",
+      "code": "const maxRetries = 3;\nmaxRetries = 5;",
+      "options": [
+        { "text": "Помилка TypeScript: не можна перезаписати const", "correct": true },
+        { "text": "`maxRetries` стане 5", "explain": "Для перезапису потрібен `let`." },
+        { "text": "`maxRetries` стане 8", "explain": "`=` присвоює значення, а не додає його." }
+      ]
+    },
+    {
+      "id": "infer",
+      "kind": "single",
+      "text": "Який тип TypeScript виведе для `let timeout = 5000;`?",
+      "options": [
+        { "text": "`number`", "correct": true },
+        { "text": "`string`", "explain": "Значення без лапок — це число." },
+        { "text": "`any`", "explain": "TypeScript виводить конкретний тип зі значення." },
+        { "text": "`5000`", "explain": "Літеральний тип виводиться для `const`, а для `let` — загальний `number`." }
+      ]
+    },
+    {
+      "id": "string-vs-number",
+      "kind": "single",
+      "text": "Чи дорівнює `'25' === 25`?",
+      "options": [
+        { "text": "Ні: `false`, бо це рядок і число", "correct": true },
+        { "text": "Так: `true`", "explain": "`===` порівнює і значення, і тип." }
+      ]
+    },
+    {
+      "id": "typeof-bool",
+      "kind": "text",
+      "text": "Що поверне `typeof false`? (напиши без лапок)",
+      "accept": ["boolean"],
+      "explanation": "`typeof` повертає рядок з назвою типу: `'boolean'`."
+    },
+    {
+      "id": "names",
+      "kind": "multiple",
+      "text": "Які назви змінних валідні **і** відповідають стилю camelCase?",
+      "options": [
+        { "text": "`loginAttempts`", "correct": true },
+        { "text": "`isUserBlocked`", "correct": true },
+        { "text": "`max-retries`", "explain": "Дефіс у назві неможливий: це оператор віднімання." },
+        { "text": "`2faCode`", "explain": "Назва не може починатися з цифри." },
+        { "text": "`Total_Tests`", "explain": "Технічно валідна, але це не camelCase." }
+      ]
+    },
+    {
+      "id": "concat",
+      "kind": "text",
+      "text": "Що виведе цей код?",
+      "code": "const suite = 'Cart';\nconst count = 3;\nconsole.log(suite + ' ' + count);",
+      "accept": ["Cart 3"],
+      "explanation": "Рядок + число дає рядок: `'Cart' + ' ' + 3` → `'Cart 3'`."
+    },
+    {
+      "id": "when-let",
+      "kind": "single",
+      "text": "Коли правильно використати `let` замість `const`?",
+      "options": [
+        { "text": "Коли значення треба буде перезаписати, наприклад лічильник спроб", "correct": true },
+        { "text": "Завжди, бо так гнучкіше", "explain": "Зайві `let` дозволяють випадково змінити дані. За замовчуванням — `const`." },
+        { "text": "Для рядків, а `const` для чисел", "explain": "Вибір не залежить від типу, лише від того, чи змінюється значення." }
+      ]
+    }
+  ]
+}

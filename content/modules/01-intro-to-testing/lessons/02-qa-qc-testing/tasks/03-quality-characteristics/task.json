@@ -1,0 +1,32 @@
+{
+  "type": "classify",
+  "title": "Which quality characteristic?",
+  "statement": "До якої характеристики якості (ISO/IEC 25010) належить кожна вимога чи перевірка?",
+  "show": 7,
+  "categories": [
+    { "id": "functional", "label": "Functional suitability" },
+    { "id": "performance", "label": "Performance efficiency" },
+    { "id": "compatibility", "label": "Compatibility" },
+    { "id": "usability", "label": "Usability" },
+    { "id": "reliability", "label": "Reliability" },
+    { "id": "security", "label": "Security" }
+  ],
+  "items": [
+    { "id": "discount", "text": "Промокод SALE10 зменшує суму замовлення на 10%.", "category": "functional" },
+    { "id": "load-2s", "text": "Головна сторінка завантажується до 2 секунд при 1000 одночасних користувачів.", "category": "performance" },
+    { "id": "browsers", "text": "Сайт коректно працює в останніх версіях Chrome, Firefox, Safari та Edge.", "category": "compatibility" },
+    { "id": "new-user", "text": "Новий користувач оформлює замовлення без сторонньої допомоги менш ніж за 3 хвилини.", "category": "usability" },
+    { "id": "uptime", "text": "Сервіс доступний 99.9% часу протягом місяця.", "category": "reliability" },
+    { "id": "hash", "text": "Паролі зберігаються в базі тільки у вигляді хешу.", "category": "security" },
+    { "id": "recover", "text": "Після перезапуску сервера незавершені замовлення не губляться.", "category": "reliability", "explain": "Здатність відновлюватися після збоїв — надійність." },
+    { "id": "role-access", "text": "Звичайний користувач не може відкрити адмін-панель, навіть знаючи її адресу.", "category": "security" },
+    { "id": "memory", "text": "Мобільний застосунок використовує не більше 150 МБ оперативної пам'яті.", "category": "performance", "explain": "Використання ресурсів — частина performance efficiency." },
+    { "id": "calc-vat", "text": "Рахунок містить правильно розраховану суму ПДВ.", "category": "functional" },
+    { "id": "error-msg", "text": "Повідомлення про помилку пояснює користувачу, як її виправити.", "category": "usability" },
+    { "id": "api-v2", "text": "Новий модуль обмінюється даними зі старою системою обліку через її API без змін у ній.", "category": "compatibility", "explain": "Співіснування й взаємодія з іншими системами — сумісність." }
+  ],
+  "hints": [
+    "Functional — «що робить», performance — «як швидко і скільки ресурсів», compatibility — «з чим і де працює», usability — «чи зручно людині», reliability — «чи стабільно», security — «чи захищено»."
+  ],
+  "explanation": "Під кожну характеристику якості потрібні свої перевірки. Функціональне тестування не скаже, чи витримає сайт навантаження, а тест продуктивності не перевірить, чи правильно рахується знижка."
+}

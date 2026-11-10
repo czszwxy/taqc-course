@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "Build a URL with a default base",
+  "statement": "Тести відкривають сторінки на різних середовищах. Напиши `buildUrl(path, baseUrl)`:\n\n- `baseUrl` — **параметр за замовчуванням** `'https://staging.example.com'`;\n- між `baseUrl` і `path` має бути **рівно один** `/`, незалежно від того, чи є слеш у кінці `baseUrl` або на початку `path`.\n\n```ts\nbuildUrl('/login');                         // 'https://staging.example.com/login'\nbuildUrl('login');                          // 'https://staging.example.com/login'\nbuildUrl('cart', 'http://localhost:3000/'); // 'http://localhost:3000/cart'\nbuildUrl('/a/b', 'http://app.test');        // 'http://app.test/a/b'\n```",
+  "hints": [
+    "Параметр за замовчуванням: `baseUrl: string = 'https://staging.example.com'`.",
+    "Прибери слеш у кінці бази (`endsWith('/')` + `slice(0, -1)`) і на початку шляху (`startsWith('/')` + `slice(1)`), а потім склей їх через `'/'`."
+  ],
+  "explanation": "Нормалізуй обидві частини, а потім з'єднай:\n\n```ts\nconst base = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;\nconst p = path.startsWith('/') ? path.slice(1) : path;\nreturn `${base}/${p}`;\n```\n\nПодвійний слеш (`//login`) — справжній баг, на який часто натрапляють автотести.",
+  "codeRules": [{ "kind": "require", "pattern": "baseUrl\\s*:\\s*string\\s*=", "message": "Зроби `baseUrl` параметром за замовчуванням: `baseUrl: string = '...'`." }]
+}

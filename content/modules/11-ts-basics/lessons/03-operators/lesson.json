@@ -1,0 +1,42 @@
+{
+  "title": "Operators, comparisons, truthy & falsy",
+  "minutes": 55,
+  "summary": "Арифметика, порівняння ===, логічні оператори, truthy/falsy, Math і підводні камені з числами",
+  "resources": [
+    {
+      "title": "MDN: Expressions and operators",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_operators",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Equality comparisons and sameness",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN Glossary: Falsy",
+      "url": "https://developer.mozilla.org/en-US/docs/Glossary/Falsy",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Базові оператори, математика",
+      "url": "https://uk.javascript.info/operators",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Логічні оператори",
+      "url": "https://uk.javascript.info/logical-operators",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

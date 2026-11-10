@@ -1,0 +1,74 @@
+{
+  "type": "quiz",
+  "title": "Quiz: functions",
+  "show": 5,
+  "hints": ["Розрізняй параметр (в оголошенні) і аргумент (під час виклику)."],
+  "questions": [
+    {
+      "id": "param-vs-arg",
+      "kind": "single",
+      "text": "У коді `function f(x: number) {}` і виклику `f(5)`, що таке `x`, а що `5`?",
+      "options": [
+        { "text": "`x` — параметр, `5` — аргумент", "correct": true },
+        { "text": "`x` — аргумент, `5` — параметр" },
+        { "text": "Обидва — параметри" }
+      ]
+    },
+    {
+      "id": "return-stops",
+      "kind": "text",
+      "text": "Що поверне `check(5)`?",
+      "code": "function check(n: number): string {\n  if (n > 3) {\n    return 'big';\n  }\n  return 'small';\n}",
+      "accept": ["big"],
+      "explanation": "5 > 3, тому спрацьовує перший return і функція завершується."
+    },
+    {
+      "id": "default-param",
+      "kind": "text",
+      "text": "Що поверне `retry()`?",
+      "code": "const retry = (times: number = 3): string => `retry x${times}`;",
+      "accept": ["retry x3"],
+      "explanation": "Аргумент не передали, тому times = 3 (значення за замовчуванням)."
+    },
+    {
+      "id": "void",
+      "kind": "single",
+      "text": "Що означає тип результату `void`?",
+      "options": [
+        { "text": "Функція нічого не повертає", "correct": true },
+        { "text": "Функція повертає порожній рядок" },
+        { "text": "Функція може повертати що завгодно", "explain": "Це був би any." }
+      ]
+    },
+    {
+      "id": "pure",
+      "kind": "single",
+      "text": "Яка функція **чиста**?",
+      "options": [
+        { "text": "`const tax = (price: number): number => price * 0.2;`", "correct": true },
+        { "text": "`function log(msg: string): void { console.log(msg); }`", "explain": "Вивід у консоль — побічний ефект." },
+        { "text": "`let count = 0; const inc = (): void => { count++; };`", "explain": "Змінює зовнішню змінну." }
+      ]
+    },
+    {
+      "id": "optional-order",
+      "kind": "single",
+      "text": "Яке оголошення правильне?",
+      "options": [
+        { "text": "`function f(a: string, b?: string)`", "correct": true },
+        { "text": "`function f(a?: string, b: string)`", "explain": "Необов'язковий параметр не може стояти перед обов'язковим." }
+      ]
+    },
+    {
+      "id": "scope",
+      "kind": "single",
+      "text": "Що станеться?",
+      "code": "function setup(): void {\n  const token = 'abc';\n}\nsetup();\nconsole.log(token);",
+      "options": [
+        { "text": "Помилка: `token` не видно поза функцією", "correct": true },
+        { "text": "Виведе `abc`" },
+        { "text": "Виведе `undefined`" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "title": "Registration form: EP/BVA → test cases → bug hunt",
+  "minutes": 90,
+  "summary": "Повний цикл ручного тестування форми: вимоги → тест-дизайн → тест-кейс → пошук і оформлення багів",
+  "resources": [
+    {
+      "title": "ISTQB — official site (syllabi, Foundation Level)",
+      "url": "https://www.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Безкоштовні силабуси Foundation Level: розділ 4 «Test Analysis and Design» про EP і BVA.",
+      "needsVerification": true
+    },
+    {
+      "title": "ISTQB Glossary",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Офіційні визначення термінів: test case, defect, severity, priority…",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Boundary value analysis and equivalence partitioning (пошук)",
+      "url": "https://www.youtube.com/results?search_query=boundary+value+analysis+equivalence+partitioning",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: як написати баг-репорт (пошук українською)",
+      "url": "https://www.youtube.com/results?search_query=%D1%8F%D0%BA+%D0%BD%D0%B0%D0%BF%D0%B8%D1%81%D0%B0%D1%82%D0%B8+%D0%B1%D0%B0%D0%B3+%D1%80%D0%B5%D0%BF%D0%BE%D1%80%D1%82",
+      "kind": "video",
+      "lang": "uk",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: How to write a good bug report (пошук)",
+      "url": "https://www.youtube.com/results?search_query=how+to+write+a+good+bug+report",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

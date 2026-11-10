@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Inspect test data with typeof",
+  "statement": "У тестових даних можуть траплятися значення різних типів. Напиши функцію `describeValue`, яка повертає рядок у форматі:\n\n```text\n<тип>: <значення>\n```\n\n**Приклади:**\n\n```ts\ndescribeValue('hello'); // 'string: hello'\ndescribeValue(42);      // 'number: 42'\ndescribeValue(true);    // 'boolean: true'\n```\n\nЗапис `value: string | number | boolean` у параметрі означає, що `value` може бути **одним із трьох типів**. Детальніше це розберемо пізніше, а поки просто використовуй `value`.",
+  "hints": [
+    "`typeof value` дає назву типу рядком, наприклад `'number'`.",
+    "Склей рядки через `+`: `typeof value + ': ' + value`."
+  ],
+  "explanation": "Отримай назву типу через `typeof value`, а потім склей її з двокрапкою, пробілом і самим значенням. Число та boolean при склеюванні з рядком автоматично перетворюються на текст."
+}

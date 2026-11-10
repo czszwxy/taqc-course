@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Create a bug object",
+  "statement": "Тип `Bug` уже оголошено у файлі. Напиши `createBug(id, title, severity)`, яка повертає новий об'єкт `Bug`:\n\n- `id`, `title`, `severity` беруться з параметрів (`title` без пробілів по краях);\n- `status` нового бага завжди `'Open'`.\n\n```ts\ncreateBug(101, ' Login fails ', 'Critical');\n// { id: 101, title: 'Login fails', severity: 'Critical', status: 'Open' }\n```",
+  "hints": [
+    "Поверни об'єктний літерал: `return { id: id, title: ..., severity: ..., status: 'Open' };`",
+    "Коли ім'я змінної збігається з ім'ям властивості, можна писати скорочено: `{ id, severity }`. Не забудь `title.trim()`."
+  ],
+  "explanation": "```ts\nreturn { id, title: title.trim(), severity, status: 'Open' };\n```\n\nТип результату `Bug` гарантує, що ти не пропустиш жодної властивості: TypeScript підкреслить, якщо чогось бракує."
+}

@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "variantOf": "03-average-duration",
+  "title": "Slowest test duration",
+  "statement": "Напиши `getMaxDuration(durations)`, яка повертає **найбільшу** тривалість тесту. Для порожнього масиву поверни `0`.\n\n```ts\ngetMaxDuration([1200, 850, 3100, 40]); // 3100\ngetMaxDuration([5]);                   // 5\ngetMaxDuration([]);                    // 0\n```",
+  "hints": [
+    "Почни з `let max = durations[0];`, але тільки після перевірки, що масив не порожній.",
+    "У циклі порівнюй кожен елемент з `max` і онови `max`, якщо елемент більший."
+  ],
+  "explanation": "```ts\nif (durations.length === 0) return 0;\nlet max = durations[0];\nfor (const d of durations) {\n  if (d > max) max = d;\n}\nreturn max;\n```\n\nЧому не `let max = 0`? Для цієї задачі спрацювало б (тривалості додатні), але шаблон «почати з першого елемента» працює і для від'ємних чисел."
+}

@@ -1,0 +1,30 @@
+{
+  "type": "classify",
+  "title": "Which non-functional testing type?",
+  "statement": "Визнач вид нефункціонального тестування для кожної перевірки чи знайденої проблеми.",
+  "show": 8,
+  "categories": [
+    { "id": "performance", "label": "Performance" },
+    { "id": "security", "label": "Security" },
+    { "id": "usability", "label": "Usability" },
+    { "id": "compatibility", "label": "Compatibility" },
+    { "id": "accessibility", "label": "Accessibility" },
+    { "id": "localization", "label": "Localization" }
+  ],
+  "items": [
+    { "id": "1000-users", "text": "Сторінка каталогу відкривається до 2 секунд при 1000 одночасних користувачів.", "category": "performance" },
+    { "id": "other-order", "text": "Звичайний користувач може відкрити чуже замовлення, змінивши номер в URL.", "category": "security" },
+    { "id": "confusing-btn", "text": "5 з 8 користувачів не зрозуміли, що кнопка зі стрілкою означає «оформити замовлення».", "category": "usability" },
+    { "id": "safari", "text": "У Safari випадаючий список не відкривається, а в Chrome працює.", "category": "compatibility" },
+    { "id": "tab", "text": "До кнопки «Оплатити» неможливо дістатися клавішею Tab.", "category": "accessibility" },
+    { "id": "date-format", "text": "Для українських користувачів дата показується як `11/10/2026` замість `10.11.2026`.", "category": "localization" },
+    { "id": "token-url", "text": "Токен сесії видно в URL, і він потрапляє в історію браузера.", "category": "security" },
+    { "id": "memory", "text": "Після 8 годин роботи під навантаженням сервер використовує втричі більше пам'яті, ніж на старті.", "category": "performance", "explain": "Endurance (soak) testing — різновид тестування продуктивності." },
+    { "id": "contrast", "text": "Світло-сірий текст на білому фоні майже не читається.", "category": "accessibility" },
+    { "id": "german", "text": "Після перекладу на німецьку текст кнопки обрізається.", "category": "localization" },
+    { "id": "small-screen", "text": "На телефоні з екраном 360 px завширшки форма вилазить за межі екрана.", "category": "compatibility", "explain": "Різні пристрої й розміри екрана — сумісність (responsive)." },
+    { "id": "error-text", "text": "Повідомлення «Error 0x8004» нічого не пояснює користувачу.", "category": "usability" }
+  ],
+  "hints": ["Швидкість і ресурси → performance; доступ і дані → security; «людям незрозуміло / незручно» → usability; браузери, пристрої, ОС → compatibility; клавіатура, контраст, screen reader → accessibility; мова, формати, переклад → localization."],
+  "explanation": "Межі між видами іноді розмиті (поганий контраст — це і accessibility, і usability), але головне питання для класифікації: **яку властивість** системи порушено."
+}

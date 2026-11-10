@@ -1,0 +1,173 @@
+{
+  "type": "bug-report",
+  "title": "Bug hunt: find and report bugs on the Sign-up page",
+  "playground": "signup",
+  "minBugs": 3,
+  "statement": "На сторінці **Sign-up** сховано **7 багів**: місць, де поведінка не відповідає вимогам (жовтий блок Requirements на сторінці). Твоє завдання — знайти й оформити **щонайменше 3**.\n\n1. Відкрий сторінку в новій вкладці (кнопка нижче).\n2. Досліджуй: граничні значення, кожне правило окремо, незвичні дані.\n3. На кожен знайдений баг заповни окремий баг-репорт і натисни **Submit**.\n\nПрограма перевіряє якість репорту (обов'язкові поля, конкретика) і **впізнає баг** за ключовими деталями в summary, кроках, даних і результатах. Тому пиши конкретно: яке поле, яке значення, що саме сталося. Severity теж перевіряється.",
+  "hints": [
+    "Почни з меж з теорії: Age **17, 18, 65, 66**; довжина пароля **7, 8, 20, 21** символ.",
+    "Перевір кожне правило «на порушення»: різні паролі в Password і Confirm, не відмічений Terms, ім'я з самих пробілів, email без крапки в домені.",
+    "Уважно подивись на результат **успішної** реєстрації з ім'ям з двох слів: чи збігається текст з вимогою?"
+  ],
+  "explanation": "Як шукати баги у формі: (1) межі кожного діапазону; (2) кожне правило окремо, з усіма іншими полями валідними; (3) залежності між полями (password ↔ confirm); (4) «дивні» дані: пробіли, регістр, дуже довгі значення; (5) уважно перевір і позитивний результат: текст привітання теж є вимогою. У репорті назви поле, точне значення й точний фактичний результат: так розробник відтворить баг з першої спроби.",
+  "bugs": [
+    {
+      "id": "age-18-rejected",
+      "title": "Age 18 is rejected although it is the minimum valid age",
+      "match": ["(^|\\D)18(\\D|$)", "\\bage\\b|вік"],
+      "severity": ["Major", "Critical"],
+      "severityWhy": "Частина цільових користувачів (рівно 18 років) не може зареєструватися: важлива функція працює неправильно для валідних даних.",
+      "model": {
+        "title": "Sign-up: Age 18 is rejected with \"Age must be between 18 and 65\" although 18 is the minimum allowed age",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Sign-up page /playground/signup is open",
+        "steps": ["Fill in all fields with valid data", "Enter \"18\" in the Age field", "Click \"Create account\""],
+        "testData": "Full name: Ivan Petrenko; Email: ivan@example.com; Age: 18; Password: Secret123; Confirm: Secret123; Country: Ukraine; Terms: checked",
+        "actualResult": "Error \"Age must be between 18 and 65\" is shown under Age; the account is not created.",
+        "expectedResult": "Age 18 is accepted (requirement: 18 to 65 inclusive); the account is created and \"Welcome, Ivan Petrenko!\" is shown.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": "screenshot-age-18.png"
+      }
+    },
+    {
+      "id": "password-20-rejected",
+      "title": "Password of exactly 20 characters is rejected",
+      "match": ["(^|\\D)20(\\D|$)", "password|пароль"],
+      "severity": ["Major", "Minor"],
+      "severityWhy": "Валідний пароль максимальної довжини відхиляється. Є обхід (коротший пароль), тому це Major або Minor, але не Critical.",
+      "model": {
+        "title": "Sign-up: password of exactly 20 characters is rejected although the maximum allowed length is 20",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Sign-up page /playground/signup is open",
+        "steps": [
+          "Fill in all fields with valid data",
+          "Enter a password of exactly 20 characters in Password and Confirm password",
+          "Click \"Create account\""
+        ],
+        "testData": "Password: Abcdefghij123456789X (20 chars); other fields valid",
+        "actualResult": "Error \"Password must be 8–20 characters\" is shown under Password; the account is not created.",
+        "expectedResult": "A 20-character password is accepted (requirement: 8–20 characters) and the account is created.",
+        "severity": "Major",
+        "priority": "Medium",
+        "attachments": "screenshot-password-20.png"
+      }
+    },
+    {
+      "id": "email-without-dot",
+      "title": "Email without a dot in the domain is accepted",
+      "match": ["e-?mail|пошт|імейл|емейл", "domain|домен|\\bdot\\b|крапк|\\btld\\b|@[a-z0-9-]+([\\s\"'»,;)]|$)"],
+      "severity": ["Major", "Minor"],
+      "severityWhy": "У систему потрапляють некоректні адреси, і користувач не отримає листів. Реєстрація при цьому працює, тому не Critical.",
+      "model": {
+        "title": "Sign-up: email without a dot in the domain (\"test@mail\") is accepted as valid",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Sign-up page /playground/signup is open",
+        "steps": ["Fill in all fields with valid data", "Enter \"test@mail\" in the Email field", "Click \"Create account\""],
+        "testData": "Email: test@mail; other fields valid",
+        "actualResult": "No error is shown for Email; the account is created and the welcome message appears.",
+        "expectedResult": "Error \"Enter a valid email address\" is shown under Email (requirement: format name@domain.tld); the account is not created.",
+        "severity": "Major",
+        "priority": "Medium",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "confirm-not-checked",
+      "title": "Account is created when Confirm password does not match",
+      "match": ["confirm|підтвердж|повтор|repeat|re-?enter", "match|differ|mismatch|не збіга|не співпада|різн|інш|another"],
+      "severity": ["Major", "Critical"],
+      "severityWhy": "Користувач з одруківкою в паролі створить акаунт, у який не зможе увійти: зламано важливе правило безпеки/даних.",
+      "model": {
+        "title": "Sign-up: account is created when Confirm password does not match Password",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Sign-up page /playground/signup is open",
+        "steps": [
+          "Fill in all fields with valid data",
+          "Enter \"Secret123\" in Password",
+          "Enter \"Secret999\" in Confirm password",
+          "Click \"Create account\""
+        ],
+        "testData": "Password: Secret123; Confirm password: Secret999",
+        "actualResult": "No error is shown; the account is created and the welcome message appears.",
+        "expectedResult": "Error \"Passwords do not match\" is shown under Confirm password; the account is not created.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": "video-confirm-mismatch.mp4"
+      }
+    },
+    {
+      "id": "terms-not-required",
+      "title": "Account is created without accepting the Terms of Service",
+      "match": [
+        "terms|checkbox|чекбокс|чек-бокс|agree|згод|умов[иа]? (використання|сервісу)",
+        "without|unchecked|not (checked|accepted|selected|ticked)|не (відміч|познач|прийн|встановл|постав)|без |uncheck"
+      ],
+      "severity": ["Major", "Critical"],
+      "severityWhy": "Порушено обов'язкову бізнес- (і часто юридичну) вимогу. Залежно від ризиків це Major або Critical.",
+      "model": {
+        "title": "Sign-up: account is created without accepting the Terms of Service",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Sign-up page /playground/signup is open",
+        "steps": ["Fill in all fields with valid data", "Leave the Terms of Service checkbox unchecked", "Click \"Create account\""],
+        "testData": "All fields valid; Terms: unchecked",
+        "actualResult": "No error is shown; the account is created and the welcome message appears.",
+        "expectedResult": "Error \"You must accept the Terms of Service\" is shown; the account is not created.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "name-only-spaces",
+      "title": "Full name made of spaces only is accepted",
+      "match": ["name|ім.?я|піб", "space|пробіл|blank|whitespace"],
+      "severity": ["Minor", "Major"],
+      "severityWhy": "Створюється акаунт без імені: проблема якості даних, яка нікого не блокує.",
+      "model": {
+        "title": "Sign-up: Full name consisting only of spaces is accepted",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Sign-up page /playground/signup is open",
+        "steps": [
+          "Fill in all fields except Full name with valid data",
+          "Enter 3 spaces in the Full name field",
+          "Click \"Create account\""
+        ],
+        "testData": "Full name: \"   \" (3 spaces); other fields valid",
+        "actualResult": "No error is shown for Full name; the account is created and \"Welcome, !\" is shown with an empty name.",
+        "expectedResult": "Error \"Full name is required\" is shown under Full name (requirement: cannot consist of spaces only); the account is not created.",
+        "severity": "Minor",
+        "priority": "Medium",
+        "attachments": "screenshot-empty-name.png"
+      }
+    },
+    {
+      "id": "greeting-first-name-only",
+      "title": "Welcome message shows only the first name",
+      "match": ["welcome|вітаємо|вітан|привіт|greet", "first name|surname|last name|прізвищ|truncat|обріза|cut off"],
+      "severity": ["Minor", "Trivial"],
+      "severityWhy": "Реєстрація працює, неправильний лише текст привітання: це Minor/Trivial.",
+      "model": {
+        "title": "Sign-up: welcome message shows only the first name instead of the full name",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Sign-up page /playground/signup is open",
+        "steps": ["Fill in all fields with valid data, Full name \"Ivan Petrenko\"", "Click \"Create account\""],
+        "testData": "Full name: Ivan Petrenko; other fields valid",
+        "actualResult": "The message \"Welcome, Ivan!\" is shown — the surname is missing.",
+        "expectedResult": "The message \"Welcome, Ivan Petrenko!\" is shown (requirement: Welcome, <Full name>!).",
+        "severity": "Minor",
+        "priority": "Low",
+        "attachments": ""
+      }
+    }
+  ],
+  "checklist": [
+    "Summary answers: what is wrong, where, under which condition",
+    "Steps start from a clear state, are numbered and contain one action each",
+    "Test data is concrete (exact values)",
+    "Actual result quotes what you saw (message text, state)",
+    "Expected result refers to the requirement",
+    "Severity reflects impact; priority reflects urgency",
+    "A developer can reproduce the bug without asking you anything"
+  ]
+}

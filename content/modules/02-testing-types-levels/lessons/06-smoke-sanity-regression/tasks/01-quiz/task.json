@@ -1,0 +1,68 @@
+{
+  "type": "quiz",
+  "title": "Quiz: smoke, sanity, regression, re-testing",
+  "show": 5,
+  "hints": ["Порівняльна таблиця з рядком «Питання» — найкоротша шпаргалка."],
+  "questions": [
+    {
+      "id": "smoke",
+      "kind": "single",
+      "text": "Новий білд розгорнуто на staging. Яку перевірку робимо першою?",
+      "options": [
+        { "text": "Smoke testing", "correct": true },
+        { "text": "Повну регресію" },
+        { "text": "Тестування продуктивності" }
+      ]
+    },
+    {
+      "id": "retest-vs-regression",
+      "kind": "single",
+      "text": "Чим re-testing відрізняється від regression testing?",
+      "options": [
+        { "text": "Re-testing перевіряє, що виправлений баг більше не відтворюється; regression — що виправлення не зламало інше", "correct": true },
+        { "text": "Це синоніми" },
+        { "text": "Re-testing завжди автоматизований, regression — ні" }
+      ]
+    },
+    {
+      "id": "smoke-fail",
+      "kind": "single",
+      "text": "Smoke-тести впали: на новому білді неможливо залогінитися. Що робимо?",
+      "options": [
+        { "text": "Повертаємо білд розробникам: тестувати далі немає сенсу", "correct": true },
+        { "text": "Продовжуємо повну регресію" }
+      ]
+    },
+    {
+      "id": "regression-when",
+      "kind": "multiple",
+      "text": "Після чого варто проводити регресійне тестування?",
+      "options": [
+        { "text": "Після виправлення бага", "correct": true },
+        { "text": "Після додавання нової фічі", "correct": true },
+        { "text": "Після оновлення бібліотеки чи фреймворку", "correct": true },
+        { "text": "Після зміни конфігурації сервера", "correct": true }
+      ]
+    },
+    {
+      "id": "automate",
+      "kind": "single",
+      "text": "Які набори тестів найчастіше автоматизують?",
+      "options": [
+        { "text": "Smoke і regression", "correct": true },
+        { "text": "Тільки re-testing" },
+        { "text": "Жодні: їх завжди виконують вручну" }
+      ]
+    },
+    {
+      "id": "sanity",
+      "kind": "single",
+      "text": "Розробник змінив формулу розрахунку доставки. QA побіжно перевіряє кілька сценаріїв доставки, щоб вирішити, чи варто запускати повну регресію. Це…",
+      "options": [
+        { "text": "Sanity testing", "correct": true },
+        { "text": "Smoke testing", "explain": "Smoke — широко по всьому продукту, а тут вузько по одній зміні." },
+        { "text": "Beta testing" }
+      ]
+    }
+  ]
+}

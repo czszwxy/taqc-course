@@ -1,0 +1,18 @@
+{
+  "type": "code",
+  "title": "Describe a test run with variables",
+  "statement": "Опиши результати тестового прогону змінними. Кожна змінна має бути `export const` з **явною анотацією типу**:\n\n| Змінна | Тип | Значення |\n|---|---|---|\n| `projectName` | `string` | `'QA Academy'` |\n| `totalTests` | `number` | `120` |\n| `passedTests` | `number` | `117` |\n| `failedTests` | `number` | **обчисли** з двох попередніх |\n| `isReleaseBlocked` | `boolean` | `false` |\n\n`failedTests` не пиши числом вручну: обчисли через `totalTests` і `passedTests`.",
+  "hints": [
+    "Шаблон: `export const назва: тип = значення;`",
+    "Для `failedTests` використай віднімання: `totalTests - passedTests`."
+  ],
+  "explanation": "Явна анотація пишеться через двокрапку після назви: `export const totalTests: number = 120;`. Значення, яке можна обчислити, краще обчислити: `export const failedTests: number = totalTests - passedTests;`. Тоді дані не розійдуться, якщо хтось змінить кількість тестів.",
+  "codeRules": [
+    { "kind": "require", "pattern": "projectName\\s*:\\s*string", "message": "Додай явний тип: `projectName: string`." },
+    { "kind": "require", "pattern": "totalTests\\s*:\\s*number", "message": "Додай явний тип: `totalTests: number`." },
+    { "kind": "require", "pattern": "passedTests\\s*:\\s*number", "message": "Додай явний тип: `passedTests: number`." },
+    { "kind": "require", "pattern": "failedTests\\s*:\\s*number", "message": "Додай явний тип: `failedTests: number`." },
+    { "kind": "require", "pattern": "isReleaseBlocked\\s*:\\s*boolean", "message": "Додай явний тип: `isReleaseBlocked: boolean`." },
+    { "kind": "require", "pattern": "failedTests\\s*:\\s*number\\s*=\\s*totalTests\\s*-\\s*passedTests", "message": "`failedTests` треба обчислити: `totalTests - passedTests`, а не писати число вручну." }
+  ]
+}

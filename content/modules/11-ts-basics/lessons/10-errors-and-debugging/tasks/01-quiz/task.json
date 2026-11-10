@@ -1,0 +1,70 @@
+{
+  "type": "quiz",
+  "title": "Quiz: errors & debugging",
+  "show": 5,
+  "hints": ["Повтори таблицю «Чотири види помилок»."],
+  "questions": [
+    {
+      "id": "kind-logic",
+      "kind": "single",
+      "text": "Функція компілюється й не падає, але для 18 повертає «Too young», хоча 18 — валідний вік. Що це за помилка?",
+      "options": [
+        { "text": "Логічна", "correct": true, "explain": "Код виконується, але результат неправильний. Таку помилку ловлять тести." },
+        { "text": "Синтаксична" },
+        { "text": "Помилка типів" },
+        { "text": "Runtime" }
+      ]
+    },
+    {
+      "id": "undefined-read",
+      "kind": "single",
+      "text": "Що найімовірніше спричинило `TypeError: Cannot read properties of undefined (reading 'length')`?",
+      "options": [
+        { "text": "Звернення до `.length` у значення, якого немає, наприклад `arr[5].length` у масиві з 2 елементів", "correct": true },
+        { "text": "Забута крапка з комою", "explain": "Це синтаксична помилка, вона з'явилася б до запуску." },
+        { "text": "Неправильний тип параметра", "explain": "Це помилка TypeScript (до запуску), а не runtime." }
+      ]
+    },
+    {
+      "id": "ts2552",
+      "kind": "single",
+      "text": "TypeScript пише: `Cannot find name 'totl'. Did you mean 'total'?`. Що робити?",
+      "options": [
+        { "text": "Виправити опечатку: `totl` → `total`", "correct": true },
+        { "text": "Оголосити нову змінну `totl`", "explain": "Це прибере помилку, але логіка стане неправильною." },
+        { "text": "Ігнорувати, код однаково запуститься", "explain": "Задача не зарахується з помилками компіляції. До того ж totl під час виконання буде ReferenceError." }
+      ]
+    },
+    {
+      "id": "first-error",
+      "kind": "single",
+      "text": "Компілятор показав 6 помилок. З чого почати?",
+      "options": [
+        { "text": "З першої: решта часто є її наслідками", "correct": true },
+        { "text": "З останньої" },
+        { "text": "Переписати файл з нуля" }
+      ]
+    },
+    {
+      "id": "who-catches",
+      "kind": "multiple",
+      "text": "Які помилки TypeScript знаходить **до запуску** коду?",
+      "options": [
+        { "text": "Синтаксичні", "correct": true },
+        { "text": "Помилки типів", "correct": true },
+        { "text": "Логічні", "explain": "Логічні помилки ловлять тести." },
+        { "text": "Усі runtime-помилки", "explain": "Деякі TS попереджає (наприклад, можливий undefined), але не всі." }
+      ]
+    },
+    {
+      "id": "stack",
+      "kind": "single",
+      "text": "Який рядок stack trace вказує на місце, де помилка виникла?",
+      "options": [
+        { "text": "Верхній (перший після повідомлення)", "correct": true },
+        { "text": "Нижній" },
+        { "text": "Будь-який, вони рівнозначні" }
+      ]
+    }
+  ]
+}

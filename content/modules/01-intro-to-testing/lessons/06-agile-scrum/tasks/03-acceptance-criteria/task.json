@@ -1,0 +1,38 @@
+{
+  "type": "written",
+  "title": "Write acceptance criteria (Given / When / Then)",
+  "statement": "User story:\n\n> **As a** registered user, **I want** to log in with my email and password, **so that** I can see my orders.\n\nНапиши **acceptance criteria** у форматі **Given / When / Then** (англійською або українською: Дано / Коли / Тоді). Мінімум:\n\n1. один **позитивний** сценарій (успішний вхід);\n2. один **негативний** сценарій (неправильний пароль);\n3. ще один сценарій на твій вибір (наприклад, незареєстрований email або блокування після кількох спроб).",
+  "fields": [
+    {
+      "id": "criteria",
+      "label": "Acceptance criteria",
+      "kind": "textarea",
+      "placeholder": "Scenario: Successful login\n  Given …\n  When …\n  Then …",
+      "hint": "Кожен сценарій — окремий блок Given / When / Then. Then має бути перевірюваним."
+    }
+  ],
+  "rules": [
+    { "field": "criteria", "check": "mentionsAll", "value": ["given|дано|припустимо", "when|коли", "then|тоді"], "message": "Використай формат **Given / When / Then** (або Дано / Коли / Тоді) для сценаріїв." },
+    { "field": "criteria", "check": "minLength", "value": 250, "message": "Замало тексту для трьох сценаріїв. Опиши кожен сценарій окремим блоком." },
+    { "field": "criteria", "check": "mentionsAny", "value": ["wrong|incorrect|invalid|неправильн|невірн|хибн|помилков"], "message": "Додай **негативний** сценарій: неправильний пароль." },
+    { "field": "criteria", "check": "mentionsAny", "value": ["order|замовлен|dashboard|account page|особист|кабінет|home page|головн"], "message": "Позитивний сценарій має закінчуватися перевірюваним результатом з user story: користувач бачить свої **замовлення** (або сторінку акаунта)." },
+    { "field": "criteria", "check": "mentionsAny", "value": ["error|message|помилк|повідомлен"], "message": "У негативному сценарії вкажи, яке **повідомлення** бачить користувач." },
+    { "field": "criteria", "check": "notMentions", "value": ["(should|має|повинн[аоі]?) (work|працювати) (correctly|properly|коректно|правильно|нормально)"], "message": "Уникай розмитих результатів на кшталт «має працювати коректно». Then має описувати, що саме видно." }
+  ],
+  "model": {
+    "criteria": "Scenario 1: Successful login\n  Given a registered user with email olena@example.com and password Secret123\n  When she enters olena@example.com and Secret123 on the login page and clicks \"Log in\"\n  Then she is redirected to the \"My orders\" page and sees her list of orders\n\nScenario 2: Wrong password\n  Given a registered user with email olena@example.com\n  When she enters a wrong password and clicks \"Log in\"\n  Then the error message \"Email or password is incorrect\" is shown\n  And she stays on the login page\n\nScenario 3: Unregistered email\n  Given no account exists for ghost@example.com\n  When someone tries to log in with ghost@example.com and any password\n  Then the same message \"Email or password is incorrect\" is shown (the page does not reveal whether the email exists)\n\nScenario 4: Account lock after 5 failed attempts\n  Given a registered user has entered a wrong password 4 times in a row\n  When she enters a wrong password for the 5th time\n  Then the message \"Too many attempts. Try again in 15 minutes\" is shown\n  And login is blocked for this account for 15 minutes"
+  },
+  "hints": [
+    "Given — стан **до** дії (хто користувач, які дані є). When — **одна дія** користувача. Then — **видимий результат**, який можна перевірити.",
+    "Хороший Then звучить як очікуваний результат тест-кейсу: «показується повідомлення X», «відкривається сторінка Y»."
+  ],
+  "explanation": "Acceptance criteria — це майбутні тести. Кожен сценарій описує один випадок: передумову (Given), дію (When) і перевірюваний результат (Then). Негативні сценарії так само важливі, як позитивні: саме там зазвичай ховаються баги й питання до вимог (наприклад, чи можна розкривати, що email не зареєстровано).",
+  "checklist": [
+    "Кожен сценарій має назву і структуру Given / When / Then",
+    "When описує одну дію користувача",
+    "Then — конкретний видимий результат (сторінка, повідомлення, стан)",
+    "Є позитивний і щонайменше два інших сценарії",
+    "Тексти повідомлень названо точно, а не «показується помилка»",
+    "Сценарії можна виконати як тест-кейси без додаткових питань"
+  ]
+}

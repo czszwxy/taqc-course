@@ -1,0 +1,9 @@
+{
+  "type": "code",
+  "variantOf": "03-fix-deadline",
+  "title": "Priority weight (switch)",
+  "statement": "Для сортування беклогу кожному **priority** дається вага. Напиши `getPriorityWeight(priority)` через `switch`:\n\n| priority | вага |\n|---|---|\n| `high` | 3 |\n| `medium` | 2 |\n| `low` | 1 |\n| будь-що інше | 0 |\n\nРегістр і пробіли по краях не мають значення: `' HIGH'` теж повертає `3`.",
+  "hints": ["Нормалізуй: `priority.trim().toLowerCase()`.", "Не забудь `default: return 0;`"],
+  "explanation": "Нормалізований рядок передай у `switch` і в кожному `case` поверни вагу. Для невідомих значень `default` повертає 0.",
+  "codeRules": [{ "kind": "require", "pattern": "switch\\s*\\(", "message": "Розв'яжи задачу через `switch`." }]
+}

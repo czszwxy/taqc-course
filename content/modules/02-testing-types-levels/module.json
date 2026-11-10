@@ -1,0 +1,14 @@
+{
+  "title": "Testing Types & Levels",
+  "description": "Рівні тестування (unit, integration, system, acceptance), функціональне й нефункціональне тестування, black/white/grey box, статичне тестування, smoke/sanity/regression/re-testing, дослідницьке тестування і піраміда тестів.",
+  "goals": [
+    "Choose the right test level for a check and explain who usually does it",
+    "Tell functional from non-functional requirements and make vague ones measurable",
+    "Name the main non-functional testing types and what each one finds",
+    "Explain black-box, white-box and grey-box approaches",
+    "Review a requirement and find ambiguities (static testing)",
+    "Decide between smoke, sanity, regression and re-testing in real situations",
+    "Write a charter for an exploratory testing session",
+    "Use the test pyramid to decide what to automate and at which level"
+  ]
+}

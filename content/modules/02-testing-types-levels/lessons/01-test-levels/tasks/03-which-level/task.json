@@ -1,0 +1,26 @@
+{
+  "type": "classify",
+  "title": "Which test level is it?",
+  "statement": "Визнач рівень тестування для кожної перевірки.",
+  "show": 7,
+  "categories": [
+    { "id": "unit", "label": "Unit" },
+    { "id": "integration", "label": "Integration" },
+    { "id": "system", "label": "System" },
+    { "id": "acceptance", "label": "Acceptance" }
+  ],
+  "items": [
+    { "id": "is-valid-email", "text": "Тест перевіряє, що функція `isValidEmail('a@b')` повертає `false`.", "category": "unit" },
+    { "id": "payment-api", "text": "Після оформлення замовлення наш сервіс надсилає в платіжну систему правильну суму й валюту.", "category": "integration" },
+    { "id": "e2e-order", "text": "QA проходить повний сценарій на staging: реєстрація → пошук товару → кошик → оплата → лист-підтвердження.", "category": "system" },
+    { "id": "accountants", "text": "Бухгалтери замовника тиждень працюють у новій системі на своїх реальних задачах перед підписанням акта.", "category": "acceptance" },
+    { "id": "component-mock", "text": "Компонент кнопки рендериться з правильним текстом; дані підмінено заглушкою.", "category": "unit" },
+    { "id": "db-save", "text": "Сервіс користувачів правильно записує нового користувача в базу даних, і сервіс листів його бачить.", "category": "integration" },
+    { "id": "perf-staging", "text": "Перевірка, що вся система на staging відповідає вимозі «сторінка каталогу — до 2 секунд».", "category": "system", "explain": "Нефункціональні вимоги до системи в цілому теж перевіряються на рівні system testing." },
+    { "id": "beta", "text": "1000 користувачів отримали бета-версію застосунку й надсилають відгуки.", "category": "acceptance" },
+    { "id": "regulator", "text": "Перевірка відповідності вимогам закону про захист персональних даних перед запуском.", "category": "acceptance", "explain": "Regulatory acceptance testing." },
+    { "id": "delivery-partner", "text": "Адреса з нашого замовлення правильно передається в API служби доставки.", "category": "integration" }
+  ],
+  "hints": ["Одна функція → unit. «Хтось передає комусь дані» → integration. «Вся система за вимогами» → system. «Бізнес / користувачі / регулятор приймають» → acceptance."],
+  "explanation": "Рівень визначає не інструмент, а **об'єкт** перевірки і **мета**: частинка коду (unit), стик між частинами (integration), продукт цілком за специфікацією (system), готовність до реального використання (acceptance)."
+}

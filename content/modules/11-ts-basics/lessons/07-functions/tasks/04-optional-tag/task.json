@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "Optional parameter: test name with a tag",
+  "statement": "У Playwright тести можна позначати тегами, наприклад `@smoke`. Напиши `formatTestName(name, tag?)`:\n\n- `tag` — **необов'язковий** параметр;\n- якщо тег передано й він не порожній, поверни `'<name> @<tag>'`;\n- інакше поверни просто `name`.\n\n```ts\nformatTestName('login works');            // 'login works'\nformatTestName('login works', 'smoke');   // 'login works @smoke'\nformatTestName('login works', '');        // 'login works'\n```",
+  "hints": [
+    "Необов'язковий параметр оголошується зі знаком питання: `tag?: string`.",
+    "`if (tag)` відсікає і `undefined`, і порожній рядок `''`, бо обидва falsy."
+  ],
+  "explanation": "```ts\nexport function formatTestName(name: string, tag?: string): string {\n  if (tag) {\n    return `${name} @${tag}`;\n  }\n  return name;\n}\n```\n\nУсередині функції `tag` має тип `string | undefined`. Перевірка `if (tag)` гарантує, що в шаблон потрапить справжній рядок.",
+  "codeRules": [{ "kind": "require", "pattern": "tag\\?\\s*:\\s*string", "message": "Зроби `tag` необов'язковим параметром: `tag?: string`." }]
+}

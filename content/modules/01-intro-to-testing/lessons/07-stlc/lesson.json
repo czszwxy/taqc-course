@@ -1,0 +1,28 @@
+{
+  "title": "STLC: the software testing life cycle",
+  "minutes": 45,
+  "summary": "Активності процесу тестування за ISTQB, entry/exit criteria, testware і як це виглядає в реальній команді",
+  "resources": [
+    {
+      "title": "ISTQB — Foundation Level syllabus (section 1.4: Test activities, testware and test roles)",
+      "url": "https://www.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "ISTQB Glossary: test process, entry criteria, exit criteria",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: STLC software testing life cycle (пошук)",
+      "url": "https://www.youtube.com/results?search_query=STLC+software+testing+life+cycle",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

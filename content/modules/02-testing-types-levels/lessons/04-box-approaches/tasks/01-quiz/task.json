@@ -1,0 +1,72 @@
+{
+  "type": "quiz",
+  "title": "Quiz: black, white and grey box",
+  "show": 6,
+  "hints": ["Для питань про покриття порахуй гілки: у кожного `if` їх дві (true і false)."],
+  "questions": [
+    {
+      "id": "black-basis",
+      "kind": "single",
+      "text": "На чому базуються black-box тести?",
+      "options": [
+        { "text": "На специфікації й очікуваній поведінці", "correct": true },
+        { "text": "На структурі коду", "explain": "Це white box." },
+        { "text": "На логах сервера", "explain": "Використання логів — ознака grey box." }
+      ]
+    },
+    {
+      "id": "branches-count",
+      "kind": "text",
+      "text": "Скільки **гілок** у цій функції (рахуй обидва результати кожного `if`)?",
+      "code": "function check(a: number, b: boolean): string {\n  let result = 'basic';\n  if (a > 10) {\n    result = 'big';\n  }\n  if (b) {\n    result += '+';\n  }\n  return result;\n}",
+      "accept": ["4"],
+      "explanation": "Два `if`, у кожного гілки true і false: 2 × 2 = 4."
+    },
+    {
+      "id": "statement-one",
+      "kind": "text",
+      "text": "Скільки тестів **мінімум** потрібно для 100% **statement** coverage цієї функції?",
+      "code": "function check(a: number, b: boolean): string {\n  let result = 'basic';\n  if (a > 10) {\n    result = 'big';\n  }\n  if (b) {\n    result += '+';\n  }\n  return result;\n}",
+      "accept": ["1"],
+      "explanation": "Один тест, наприклад `check(20, true)`, виконує всі рядки: обидва `if` спрацьовують."
+    },
+    {
+      "id": "branch-two",
+      "kind": "text",
+      "text": "Скільки тестів **мінімум** потрібно для 100% **branch** coverage цієї функції?",
+      "code": "function check(a: number, b: boolean): string {\n  let result = 'basic';\n  if (a > 10) {\n    result = 'big';\n  }\n  if (b) {\n    result += '+';\n  }\n  return result;\n}",
+      "accept": ["2"],
+      "explanation": "`check(20, true)` покриває обидві гілки true, `check(5, false)` — обидві гілки false. Разом 4 з 4."
+    },
+    {
+      "id": "grey",
+      "kind": "single",
+      "text": "Після реєстрації через UI тестувальник перевіряє запис у таблиці `users` бази даних. Це…",
+      "options": [
+        { "text": "Grey box", "correct": true },
+        { "text": "Black box", "explain": "Black box не використовує знання про внутрішню базу даних." },
+        { "text": "White box", "explain": "White box будує тести за структурою коду." }
+      ]
+    },
+    {
+      "id": "coverage-guarantee",
+      "kind": "single",
+      "text": "Чи гарантує 100% branch coverage відсутність дефектів?",
+      "options": [
+        { "text": "Ні: тест може виконати код, але не перевірити результат чи не врахувати пропущену вимогу", "correct": true },
+        { "text": "Так" }
+      ]
+    },
+    {
+      "id": "techniques",
+      "kind": "multiple",
+      "text": "Які техніки належать до **black box**?",
+      "options": [
+        { "text": "Класи еквівалентності", "correct": true },
+        { "text": "Граничні значення", "correct": true },
+        { "text": "Таблиці рішень", "correct": true },
+        { "text": "Branch coverage", "explain": "Покриття гілок — техніка white box." }
+      ]
+    }
+  ]
+}

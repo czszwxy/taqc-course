@@ -1,0 +1,61 @@
+{
+  "type": "quiz",
+  "title": "Quiz: objects",
+  "show": 5,
+  "hints": ["Об'єкти, як і масиви, передаються за посиланням."],
+  "questions": [
+    {
+      "id": "access",
+      "kind": "text",
+      "text": "Що виведе код?",
+      "code": "const order = { id: 'A-1', items: [{ price: 100 }, { price: 250 }] };\nconsole.log(order.items[1].price);",
+      "accept": ["250"]
+    },
+    {
+      "id": "reference",
+      "kind": "text",
+      "text": "Що виведе код?",
+      "code": "const a = { status: 'Open' };\nconst b = a;\nb.status = 'Closed';\nconsole.log(a.status);",
+      "accept": ["Closed"],
+      "explanation": "a і b вказують на один і той самий об'єкт."
+    },
+    {
+      "id": "spread",
+      "kind": "text",
+      "text": "Що виведе код?",
+      "code": "const bug = { id: 1, status: 'Open' };\nconst copy = { ...bug, status: 'Closed' };\nconsole.log(bug.status);",
+      "accept": ["Open"],
+      "explanation": "Spread створює новий об'єкт, а оригінал не змінюється."
+    },
+    {
+      "id": "optional",
+      "kind": "single",
+      "text": "Що означає `nickname?: string` у типі об'єкта?",
+      "options": [
+        { "text": "Властивість може бути відсутньою (тип string | undefined)", "correct": true },
+        { "text": "Властивість може бути будь-якого типу" },
+        { "text": "Властивість обов'язкова, але може бути порожнім рядком" }
+      ]
+    },
+    {
+      "id": "keys",
+      "kind": "single",
+      "text": "Що поверне `Object.keys({ open: 3, closed: 5 })`?",
+      "options": [
+        { "text": "`['open', 'closed']`", "correct": true },
+        { "text": "`[3, 5]`", "explain": "Це Object.values." },
+        { "text": "`[['open', 3], ['closed', 5]]`", "explain": "Це Object.entries." }
+      ]
+    },
+    {
+      "id": "bracket",
+      "kind": "single",
+      "text": "Коли потрібен доступ через дужки `obj[key]` замість `obj.key`?",
+      "options": [
+        { "text": "Коли ім'я властивості зберігається у змінній", "correct": true },
+        { "text": "Завжди: крапку використовувати не можна" },
+        { "text": "Тільки для чисел" }
+      ]
+    }
+  ]
+}

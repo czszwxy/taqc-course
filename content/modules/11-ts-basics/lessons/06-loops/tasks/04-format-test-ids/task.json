@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "Generate test case IDs",
+  "statement": "Згенеруй ID тест-кейсів для таблиці. Напиши `formatTestIds(count)`, яка повертає рядок з `count` ID через кому **без пробілів**. Номер завжди має мінімум дві цифри:\n\n```ts\nformatTestIds(3);  // 'TC-01,TC-02,TC-03'\nformatTestIds(1);  // 'TC-01'\nformatTestIds(0);  // ''\nformatTestIds(12); // 'TC-01,TC-02,…,TC-11,TC-12'\n```\n\n> [!TIP]\n> Кома ставиться **між** елементами: перед першим і після останнього її немає.",
+  "hints": [
+    "Доповнити номер нулем зліва допоможе `String(i).padStart(2, '0')`.",
+    "Будуй рядок у циклі. Кому додавай перед кожним елементом, **крім першого**: `if (i > 1) result += ',';`"
+  ],
+  "explanation": "Цикл від 1 до `count`, рядок-накопичувач і окрема обробка коми:\n\n```ts\nlet result = '';\nfor (let i = 1; i <= count; i++) {\n  if (i > 1) result += ',';\n  result += `TC-${String(i).padStart(2, '0')}`;\n}\nreturn result;\n```\n\nТипова помилка — кома в кінці рядка (`'TC-01,TC-02,'`). Тести перевіряють це окремо.",
+  "codeRules": [{ "kind": "require", "pattern": "\\b(for|while)\\b", "message": "Використай цикл." }]
+}

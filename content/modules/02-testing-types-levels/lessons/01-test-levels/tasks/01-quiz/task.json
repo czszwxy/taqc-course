@@ -1,0 +1,67 @@
+{
+  "type": "quiz",
+  "title": "Quiz: test levels",
+  "show": 5,
+  "hints": ["Таблиця «Огляд» на початку уроку — головна шпаргалка."],
+  "questions": [
+    {
+      "id": "unit-who",
+      "kind": "single",
+      "text": "Хто зазвичай пише unit-тести?",
+      "options": [
+        { "text": "Розробники", "correct": true },
+        { "text": "Замовник" },
+        { "text": "Тільки QA-інженери" }
+      ]
+    },
+    {
+      "id": "integration-bugs",
+      "kind": "single",
+      "text": "Які дефекти найтиповіші для integration testing?",
+      "options": [
+        { "text": "Неузгоджені формати даних і поля між сервісами", "correct": true },
+        { "text": "Друкарська помилка в тексті кнопки" },
+        { "text": "Незручне розташування меню" }
+      ]
+    },
+    {
+      "id": "beta",
+      "kind": "single",
+      "text": "Реальні користувачі тестують ранню версію застосунку у своїх умовах перед повним релізом. Це…",
+      "options": [
+        { "text": "Beta testing", "correct": true },
+        { "text": "Alpha testing", "explain": "Alpha проводиться в компанії-розробнику." },
+        { "text": "Unit testing" }
+      ]
+    },
+    {
+      "id": "operational",
+      "kind": "single",
+      "text": "Перевірка резервного копіювання й відновлення системи належить до…",
+      "options": [
+        { "text": "Operational acceptance testing", "correct": true },
+        { "text": "Unit testing" },
+        { "text": "Component integration testing" }
+      ]
+    },
+    {
+      "id": "system-env",
+      "kind": "single",
+      "text": "Де найкраще проводити system testing?",
+      "options": [
+        { "text": "У середовищі, максимально схожому на продакшн (staging)", "correct": true },
+        { "text": "Лише на комп'ютері розробника" }
+      ]
+    },
+    {
+      "id": "cost",
+      "kind": "single",
+      "text": "На якому рівні виправлення дефекту зазвичай найдешевше?",
+      "options": [
+        { "text": "Unit", "correct": true },
+        { "text": "Acceptance" },
+        { "text": "Однаково на всіх рівнях" }
+      ]
+    }
+  ]
+}

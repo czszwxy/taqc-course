@@ -1,0 +1,28 @@
+{
+  "title": "Functional vs non-functional testing",
+  "minutes": 40,
+  "summary": "«Що робить» проти «наскільки добре», як відрізнити вимоги і як зробити розмиту вимогу вимірюваною",
+  "resources": [
+    {
+      "title": "Wikipedia: Non-functional requirement",
+      "url": "https://en.wikipedia.org/wiki/Non-functional_requirement",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "ISTQB — Foundation Level syllabus (section 2.2.2: Test types)",
+      "url": "https://www.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: functional vs non-functional testing (пошук)",
+      "url": "https://www.youtube.com/results?search_query=functional+vs+non+functional+testing",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

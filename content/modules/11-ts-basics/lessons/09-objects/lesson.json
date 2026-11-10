@@ -1,0 +1,35 @@
+{
+  "title": "Objects",
+  "minutes": 60,
+  "summary": "Об'єкти, типи об'єктів і type, необов'язкові властивості, масиви об'єктів, Object.keys/entries і незмінні оновлення через spread",
+  "resources": [
+    {
+      "title": "TypeScript Handbook: Object Types",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/objects.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Working with objects",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_objects",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Об'єкти",
+      "url": "https://uk.javascript.info/object",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: TypeScript object types (пошук)",
+      "url": "https://www.youtube.com/results?search_query=TypeScript+object+types+tutorial",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

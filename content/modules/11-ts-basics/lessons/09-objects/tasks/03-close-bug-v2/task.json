@@ -1,0 +1,9 @@
+{
+  "type": "code",
+  "variantOf": "03-close-bug",
+  "title": "Assign a bug without mutating it",
+  "statement": "Напиши `assignBug(bug, assignee)`, яка повертає **новий** об'єкт:\n\n- `assignee` дорівнює переданому імені;\n- `status` стає `'In Progress'`;\n- усі інші поля без змін.\n\nВхідний об'єкт не змінюй.\n\n```ts\nassignBug({ id: 9, title: 'Slow search', status: 'Open' }, 'Andrii');\n// { id: 9, title: 'Slow search', status: 'In Progress', assignee: 'Andrii' }\n```",
+  "hints": ["Spread + дві перезаписані властивості: `{ ...bug, status: ..., assignee: ... }`.", "Скорочений запис: якщо змінна називається `assignee`, можна писати просто `assignee`."],
+  "explanation": "```ts\nreturn { ...bug, status: 'In Progress', assignee };\n```",
+  "codeRules": [{ "kind": "forbid", "pattern": "bug\\.(status|assignee)\\s*=[^=]", "message": "Не змінюй вхідний об'єкт. Поверни копію через spread." }]
+}

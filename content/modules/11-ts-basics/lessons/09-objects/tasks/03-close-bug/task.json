@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "Close a bug without mutating it",
+  "statement": "Напиши `closeBug(bug)`, яка повертає **новий** об'єкт з тими самими даними, але зі `status: 'Closed'`.\n\nВхідний об'єкт **не повинен змінитися**: тести це перевіряють.\n\n```ts\nconst bug = { id: 5, title: 'Crash on save', severity: 'Major', status: 'Open' };\nconst closed = closeBug(bug);\nclosed.status; // 'Closed'\nbug.status;    // 'Open'\n```",
+  "hints": [
+    "`bug.status = 'Closed'` змінить оригінал. Потрібна копія.",
+    "Копія з оновленою властивістю: `{ ...bug, status: 'Closed' }`."
+  ],
+  "explanation": "```ts\nreturn { ...bug, status: 'Closed' };\n```\n\nSpread копіює всі властивості, а `status`, записаний після нього, перезаписує скопійоване значення. Порядок важливий: `{ status: 'Closed', ...bug }` залишить старий статус.",
+  "codeRules": [{ "kind": "forbid", "pattern": "bug\\.status\\s*=[^=]", "message": "Не змінюй вхідний об'єкт (`bug.status = ...`). Поверни копію через spread." }]
+}

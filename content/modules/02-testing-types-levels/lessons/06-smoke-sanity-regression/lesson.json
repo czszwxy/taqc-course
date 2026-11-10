@@ -1,0 +1,35 @@
+{
+  "title": "Smoke, sanity, regression, re-testing",
+  "minutes": 40,
+  "summary": "Чим відрізняються smoke, sanity, regression і re-testing і що з цього запускати в яких ситуаціях",
+  "resources": [
+    {
+      "title": "Wikipedia: Smoke testing (software)",
+      "url": "https://en.wikipedia.org/wiki/Smoke_testing_(software)",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: Regression testing",
+      "url": "https://en.wikipedia.org/wiki/Regression_testing",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "ISTQB Glossary: confirmation testing, regression testing",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: smoke vs sanity vs regression testing (пошук)",
+      "url": "https://www.youtube.com/results?search_query=smoke+vs+sanity+vs+regression+testing",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

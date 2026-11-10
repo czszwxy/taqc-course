@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Format a bug title",
+  "statement": "У трекері заголовок бага має формат `[КОМПОНЕНТ] опис`. Напиши `formatBugTitle(component, summary)`:\n\n- назва компонента **великими літерами** у квадратних дужках;\n- далі пробіл і опис;\n- пробіли на початку й у кінці обох частин треба **прибрати**.\n\n```ts\nformatBugTitle('login', 'Error on empty password');\n// '[LOGIN] Error on empty password'\n\nformatBugTitle('  cart ', '  Total is not updated ');\n// '[CART] Total is not updated'\n```",
+  "hints": [
+    "Шаблонний рядок: `` `[${...}] ${...}` ``.",
+    "Для компонента: `component.trim().toUpperCase()`, для опису: `summary.trim()`."
+  ],
+  "explanation": "Нормалізуй кожну частину окремо і збери результат шаблонним рядком:\n\n```ts\nreturn `[${component.trim().toUpperCase()}] ${summary.trim()}`;\n```\n\nРегістр опису не змінюй: у тестах очікується саме той текст, що передали (лише без пробілів по краях)."
+}

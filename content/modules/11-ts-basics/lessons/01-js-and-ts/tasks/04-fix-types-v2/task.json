@@ -1,0 +1,16 @@
+{
+  "type": "code",
+  "variantOf": "04-fix-types",
+  "title": "Fix the type errors: environment config",
+  "statement": "Ще один конфіг з помилками типів. Виправ **значення** так, щоб:\n\n| Змінна | Тип | Значення |\n|---|---|---|\n| `baseUrl` | `string` | `'http://localhost:3000'` |\n| `retries` | `number` | `2` |\n| `headless` | `boolean` | `false` |\n\nТипи після двокрапки не змінюй.",
+  "hints": [
+    "Подивись на кожен рядок: який тип зліва і яке значення справа?",
+    "`'two'` — це текст, а потрібне число `2`. `1` — це число, а потрібне логічне `false`."
+  ],
+  "explanation": "Для кожної змінної значення має належати до оголошеного типу: адреса — рядок у лапках, кількість повторів — число без лапок, `headless` — логічне `false`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "baseUrl\\s*:\\s*string", "message": "Не прибирай `: string` у `baseUrl`." },
+    { "kind": "require", "pattern": "retries\\s*:\\s*number", "message": "Не прибирай `: number` у `retries`." },
+    { "kind": "require", "pattern": "headless\\s*:\\s*boolean", "message": "Не прибирай `: boolean` у `headless`." }
+  ]
+}

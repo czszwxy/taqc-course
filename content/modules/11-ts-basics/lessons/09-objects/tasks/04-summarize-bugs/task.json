@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Summarize bugs for a test report",
+  "statement": "Для звіту про тестування потрібна статистика багів. Напиши `summarizeBugs(bugs)`, яка повертає об'єкт:\n\n```ts\n{ total: number; open: number; closed: number }\n```\n\n- `total` — кількість усіх багів;\n- `closed` — баги зі статусом `'Closed'`;\n- `open` — **усі інші** (`'Open'`, `'In Progress'`, `'Reopened'`…).\n\n```ts\nsummarizeBugs([\n  { id: 1, status: 'Open' },\n  { id: 2, status: 'Closed' },\n  { id: 3, status: 'In Progress' },\n]);\n// { total: 3, open: 2, closed: 1 }\n```",
+  "hints": [
+    "Почни з об'єкта-лічильника `const summary = { total: 0, open: 0, closed: 0 };` або з двох змінних-лічильників.",
+    "У циклі `for (const bug of bugs)` збільшуй `closed`, якщо `bug.status === 'Closed'`, інакше `open`. `total` — це `bugs.length`."
+  ],
+  "explanation": "```ts\nlet closed = 0;\nfor (const bug of bugs) {\n  if (bug.status === 'Closed') closed++;\n}\nreturn { total: bugs.length, open: bugs.length - closed, closed };\n```\n\nПеревір граничний випадок: порожній список має давати `{ total: 0, open: 0, closed: 0 }`."
+}

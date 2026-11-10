@@ -1,0 +1,81 @@
+{
+  "type": "quiz",
+  "title": "Quiz: JavaScript & TypeScript basics",
+  "show": 5,
+  "passScore": 0.8,
+  "hints": ["Перечитай розділ «TypeScript = JavaScript + типи» і таблицю про те, де виконується JS."],
+  "questions": [
+    {
+      "id": "ts-vs-js",
+      "kind": "single",
+      "text": "Що найточніше описує TypeScript?",
+      "options": [
+        { "text": "JavaScript з доданими типами, який компілюється в JavaScript", "correct": true },
+        { "text": "Окрема мова, яку браузер виконує напряму замість JavaScript", "explain": "Браузери не виконують TS напряму — його спочатку компілюють у JS." },
+        { "text": "Бібліотека для тестування вебсайтів", "explain": "Це про Playwright, Cypress тощо. TypeScript — мова програмування." },
+        { "text": "Новіша версія HTML", "explain": "HTML описує структуру сторінки, це не мова програмування." }
+      ],
+      "explanation": "TypeScript — надбудова над JavaScript: будь-який JS-код є валідним TS, а TS додає типи і перевірку на етапі компіляції."
+    },
+    {
+      "id": "when-errors",
+      "kind": "single",
+      "text": "Коли TypeScript повідомляє про помилку `const total: number = 'ten';`?",
+      "options": [
+        { "text": "Під час компіляції, ще до запуску коду", "correct": true },
+        { "text": "Тільки коли код виконується в браузері", "explain": "Помилки типів TS знаходить до виконання — у цьому його головна цінність." },
+        { "text": "Ніколи, бо це валідний JavaScript", "explain": "У JS це запрацювало б, але в TS тип `number` не приймає рядок." }
+      ]
+    },
+    {
+      "id": "where-js-runs",
+      "kind": "multiple",
+      "text": "Де може виконуватися JavaScript-код?",
+      "options": [
+        { "text": "У браузері", "correct": true },
+        { "text": "У Node.js на комп'ютері або сервері", "correct": true, "explain": "Саме в Node.js запускаються Playwright-тести." },
+        { "text": "Тільки на сервері розробника", "explain": "JS працює і в браузері, і в Node.js." }
+      ]
+    },
+    {
+      "id": "console-log",
+      "kind": "text",
+      "text": "Що виведе цей код?",
+      "code": "console.log(10 + 5);",
+      "accept": ["15"],
+      "placeholder": "Напиши результат",
+      "explanation": "`10 + 5` — це вираз з числами, результат `15`. `console.log` виводить його в консоль."
+    },
+    {
+      "id": "export",
+      "kind": "single",
+      "text": "Навіщо в задачах слово `export` перед функцією?",
+      "options": [
+        { "text": "Щоб функцію могли імпортувати й викликати приховані тести", "correct": true },
+        { "text": "Щоб функція працювала швидше", "explain": "`export` не впливає на швидкість, він робить функцію видимою для інших файлів." },
+        { "text": "Щоб функція виводила результат у консоль", "explain": "Для виводу потрібен `console.log`." }
+      ]
+    },
+    {
+      "id": "comments",
+      "kind": "multiple",
+      "text": "Які рядки є коментарями в TypeScript?",
+      "options": [
+        { "text": "`// перевірити логін`", "correct": true },
+        { "text": "`/* крок 2 */`", "correct": true },
+        { "text": "`# крок 3`", "explain": "`#` — коментар у Python та bash, але не в JS/TS." },
+        { "text": "`<!-- крок 4 -->`", "explain": "Це коментар HTML." }
+      ]
+    },
+    {
+      "id": "check-vs-run",
+      "kind": "single",
+      "text": "Чим кнопка **Check** відрізняється від **Run** у цьому застосунку?",
+      "options": [
+        { "text": "Check компілює код у strict-режимі й запускає приховані тести; Run лише виконує файл", "correct": true },
+        { "text": "Нічим, це синоніми", "explain": "Run показує тільки вивід console.log, а Check зараховує задачу." },
+        { "text": "Run перевіряє типи, а Check ні", "explain": "Навпаки: саме Check повністю перевіряє рішення." }
+      ]
+    }
+  ]
+}

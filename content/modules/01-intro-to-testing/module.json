@@ -1,0 +1,13 @@
+{
+  "title": "Introduction to Testing",
+  "description": "Що таке тестування і навіщо воно потрібне, чим QA відрізняється від QC, 7 принципів тестування, роль QA-інженера, моделі розробки (Waterfall, V-model, Agile/Scrum) і процес тестування (STLC).",
+  "goals": [
+    "Explain what testing is and why software needs it",
+    "Tell an error from a defect and a failure",
+    "Explain the difference between QA, QC and testing",
+    "Apply the 7 testing principles to real situations",
+    "Describe the QA role, the team around it and a career path",
+    "Explain where testing fits in Waterfall, V-model and Scrum",
+    "Name the phases of the test process and what happens in each"
+  ]
+}

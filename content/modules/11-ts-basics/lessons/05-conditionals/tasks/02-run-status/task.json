@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Test run status",
+  "statement": "Напиши `getRunStatus(passed, failed)`, яка повертає статус прогону:\n\n| Умова | Результат |\n|---|---|\n| є хоча б один упалий тест | `'FAILED'` |\n| упалих немає, але є успішні | `'PASSED'` |\n| немає жодного тесту | `'NO TESTS'` |\n\n```ts\ngetRunStatus(10, 0); // 'PASSED'\ngetRunStatus(9, 1);  // 'FAILED'\ngetRunStatus(0, 0);  // 'NO TESTS'\n```",
+  "hints": [
+    "Почни з найважливішої умови: якщо `failed > 0`, одразу поверни `'FAILED'`.",
+    "Далі перевір `passed > 0`, а для всіх інших випадків поверни `'NO TESTS'`."
+  ],
+  "explanation": "Використай ранні return у порядку пріоритету:\n\n```ts\nif (failed > 0) return 'FAILED';\nif (passed > 0) return 'PASSED';\nreturn 'NO TESTS';\n```\n\nЗверни увагу: прогін з упалими тестами — FAILED, навіть якщо успішних більше."
+}

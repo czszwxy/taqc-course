@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Validate age (boundary values!)",
+  "statement": "Реалізуй валідацію поля **Age** з форми реєстрації. Вимоги:\n\n| Вхід | Результат |\n|---|---|\n| не ціле число (наприклад `18.5`) | `'Age must be a whole number'` |\n| менше 18 | `'Too young'` |\n| більше 65 | `'Too old'` |\n| від 18 до 65 **включно** | `'OK'` |\n\n```ts\nvalidateAge(30);   // 'OK'\nvalidateAge(17);   // 'Too young'\nvalidateAge(18.5); // 'Age must be a whole number'\n```\n\n> [!QA]\n> Приховані тести обов'язково перевіряють межі: 17, 18, 65 і 66. Це та сама техніка boundary value analysis, якою тестувальники ловлять баги у формах.",
+  "hints": [
+    "Ціле число перевіряє `Number.isInteger(age)`. Цю перевірку зроби першою.",
+    "«Від 18 включно» → `age < 18` означає «замалий». «До 65 включно» → `age > 65` означає «завеликий»."
+  ],
+  "explanation": "Перевіряй від найзагальнішої умови до найконкретнішої і повертай результат одразу:\n\n```ts\nif (!Number.isInteger(age)) return 'Age must be a whole number';\nif (age < 18) return 'Too young';\nif (age > 65) return 'Too old';\nreturn 'OK';\n```\n\nНайчастіша помилка — `age <= 18` або `age >= 65`: тоді самі межі 18 і 65 відхиляються, хоча за вимогою вони валідні."
+}

@@ -1,0 +1,15 @@
+{
+  "type": "code",
+  "title": "Fix the type errors",
+  "statement": "Колега налаштовував тестовий набір і помилився: у файлі **3 помилки типів**. Наведи мишку на червоні підкреслення й прочитай повідомлення TypeScript.\n\nВиправ **значення** (праву частину після `=`) так, щоб:\n\n| Змінна | Тип | Значення |\n|---|---|---|\n| `suiteName` | `string` | `'Login suite'` |\n| `totalTests` | `number` | `25` |\n| `isSmoke` | `boolean` | `true` |\n\n> [!WARNING]\n> Типи після двокрапки не змінюй — їх задав тімлід. Виправляти треба дані.",
+  "hints": [
+    "Рядки пишуться в лапках: `'Login suite'`. Числа — без лапок: `25`. Логічні значення — без лапок: `true` або `false`.",
+    "`'25'` у лапках — це рядок, а не число. `'true'` у лапках — теж рядок."
+  ],
+  "explanation": "Повідомлення `Type 'number' is not assignable to type 'string'` означає: зліва оголошено тип `string`, а справа число. Прибери або додай лапки так, щоб значення відповідало типу:\n\n- `string` → текст у лапках\n- `number` → цифри без лапок\n- `boolean` → `true` / `false` без лапок",
+  "codeRules": [
+    { "kind": "require", "pattern": "suiteName\\s*:\\s*string", "message": "Не прибирай анотацію типу `: string` у `suiteName` — виправ значення." },
+    { "kind": "require", "pattern": "totalTests\\s*:\\s*number", "message": "Не прибирай анотацію типу `: number` у `totalTests` — виправ значення." },
+    { "kind": "require", "pattern": "isSmoke\\s*:\\s*boolean", "message": "Не прибирай анотацію типу `: boolean` у `isSmoke` — виправ значення." }
+  ]
+}

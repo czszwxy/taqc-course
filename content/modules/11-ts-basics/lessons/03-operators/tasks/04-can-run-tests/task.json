@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Can the regression suite run?",
+  "statement": "Нічний регрес можна запускати, якщо **білд зелений і тестове середовище піднято**. Є виняток: якщо тімлід увімкнув **ручний override**, тести запускаються за будь-яких умов.\n\nНапиши `canRunTests(isBuildGreen, isEnvUp, hasOverride)`, яка повертає `true` або `false` за цим правилом.\n\n| isBuildGreen | isEnvUp | hasOverride | результат |\n|---|---|---|---|\n| true | true | false | true |\n| true | false | false | false |\n| false | false | true | true |\n\nПриховані тести перевірять **усі 8 комбінацій**, як у таблиці рішень.",
+  "hints": [
+    "«білд зелений **і** середовище піднято» → `isBuildGreen && isEnvUp`.",
+    "«…**або** override» → додай `|| hasOverride`. Дужки роблять намір очевидним."
+  ],
+  "explanation": "Переклади речення на оператори: «A і B, або C» → `(isBuildGreen && isEnvUp) || hasOverride`. Перевірити рішення допомагає таблиця істинності: 3 логічні змінні дають 2³ = 8 комбінацій."
+}

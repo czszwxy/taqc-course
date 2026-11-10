@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "Add a test case without mutating the suite",
+  "statement": "Напиши `addTestCase(suite, testCase)`, яка повертає **новий** масив, де `testCase` додано в кінець.\n\nВимоги:\n\n1. вхідний масив `suite` **не змінюється** (тести це перевіряють);\n2. якщо такий тест-кейс уже є, дубль не додається: поверни копію без змін.\n\n```ts\nconst suite = ['login', 'logout'];\naddTestCase(suite, 'signup'); // ['login', 'logout', 'signup']\naddTestCase(suite, 'login');  // ['login', 'logout']\nconsole.log(suite);           // ['login', 'logout'] — без змін\n```",
+  "hints": [
+    "Копія з новим елементом: `[...suite, testCase]`. `push` змінив би оригінал.",
+    "Перевір дубль через `suite.includes(testCase)`. У цьому випадку поверни `[...suite]`."
+  ],
+  "explanation": "```ts\nif (suite.includes(testCase)) {\n  return [...suite];\n}\nreturn [...suite, testCase];\n```\n\nЧому не `suite.push(testCase); return suite;`? Бо тоді зміниться масив, який передав інший код (наприклад, спільні тестові дані), і наступні тести отримають несподівані дані.",
+  "codeRules": [{ "kind": "forbid", "pattern": "suite\\.(push|unshift|splice|pop|shift)\\s*\\(", "message": "Не змінюй вхідний масив `suite` (push/splice/…). Створи новий масив." }]
+}

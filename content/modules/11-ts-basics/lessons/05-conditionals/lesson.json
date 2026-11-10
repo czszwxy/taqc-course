@@ -1,0 +1,36 @@
+{
+  "title": "Conditionals: if, switch, ternary",
+  "minutes": 55,
+  "summary": "if / else if / else, ранній return, switch, тернарний оператор і як кожна гілка стає тест-кейсом",
+  "resources": [
+    {
+      "title": "MDN: Control flow and error handling",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "TypeScript Handbook: Narrowing",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/narrowing.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Як TypeScript «розуміє» типи всередині if. Прочитай вступ, решту — у модулі 12.",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Умовне розгалуження: if, '?'",
+      "url": "https://uk.javascript.info/ifelse",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Конструкція \"switch\"",
+      "url": "https://uk.javascript.info/switch",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

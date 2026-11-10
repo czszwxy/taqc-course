@@ -1,0 +1,31 @@
+{
+  "type": "classify",
+  "title": "Which test activity is it?",
+  "statement": "До якої активності процесу тестування належить кожна дія?",
+  "show": 7,
+  "categories": [
+    { "id": "planning", "label": "Planning" },
+    { "id": "monitoring", "label": "Monitoring & control" },
+    { "id": "analysis", "label": "Analysis" },
+    { "id": "design", "label": "Design" },
+    { "id": "implementation", "label": "Implementation" },
+    { "id": "execution", "label": "Execution" },
+    { "id": "completion", "label": "Completion" }
+  ],
+  "items": [
+    { "id": "scope", "text": "Визначити, які модулі тестуємо в цьому релізі, а які ні, і скільки часу на це є.", "category": "planning" },
+    { "id": "progress", "text": "На середині спринту порівняти кількість виконаних тестів із планом і перерозподілити задачі.", "category": "monitoring" },
+    { "id": "conditions", "text": "Прочитати вимоги до кошика й виписати, що саме треба перевірити: знижки, ліміти кількості, порожній кошик.", "category": "analysis" },
+    { "id": "write-tc", "text": "Застосувати граничні значення й написати тест-кейси для поля «кількість».", "category": "design" },
+    { "id": "test-data", "text": "Створити на staging тестові акаунти й наповнити базу товарами для тестів.", "category": "implementation" },
+    { "id": "run", "text": "Пройти тест-кейси на новому білді й завести знайдені баги в Jira.", "category": "execution" },
+    { "id": "report", "text": "Написати підсумковий звіт про тестування релізу й записати уроки на майбутнє.", "category": "completion" },
+    { "id": "ambiguity", "text": "Знайти у вимогах суперечність і поставити питання аналітику.", "category": "analysis", "explain": "Пошук дефектів у вимогах — частина test analysis." },
+    { "id": "automate-suite", "text": "Написати автотести й зібрати їх у регресійний набір для запуску.", "category": "implementation" },
+    { "id": "retest", "text": "Перевірити виправлені баги і перезапустити впалі тести.", "category": "execution" }
+  ],
+  "hints": [
+    "Analysis — «що тестувати», design — «як (тест-кейси)», implementation — «підготувати середовище, дані, набори», execution — «запустити і зареєструвати»."
+  ],
+  "explanation": "Межа між analysis і design: analysis визначає **умови тестування** (що перевіряти), design перетворює їх на **тест-кейси** з конкретними даними. Implementation робить усе готовим до запуску, execution — запускає."
+}

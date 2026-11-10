@@ -1,0 +1,11 @@
+{
+  "title": "QA Practice Lab",
+  "description": "Практика ручного тестування на навмисно забагованих сторінках Bug Playground: аналіз вимог, тест-дизайн, тест-кейси, пошук і оформлення багів. Зараз доступний демо-урок «Registration form», решта уроків з'явиться пізніше.",
+  "goals": [
+    "Break a feature into fields and rules and find test conditions",
+    "Apply equivalence partitioning and boundary value analysis to real form fields",
+    "Write clear, reproducible test cases",
+    "Hunt for bugs and write bug reports a developer can act on",
+    "Choose severity and priority with a reason"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "title": "Variables & primitive types",
+  "minutes": 50,
+  "summary": "let і const, примітивні типи, анотації та виведення типів, typeof",
+  "resources": [
+    {
+      "title": "TypeScript Handbook: Everyday Types",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Розділи про string, number, boolean, анотації та type inference.",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Grammar and types",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Змінні",
+      "url": "https://uk.javascript.info/variables",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Типи даних",
+      "url": "https://uk.javascript.info/types",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: TypeScript types for beginners (пошук)",
+      "url": "https://www.youtube.com/results?search_query=TypeScript+basic+types+for+beginners",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "type": "written",
+  "title": "Write a charter and run an exploratory session",
+  "playground": "signup",
+  "statement": "Сплануй і проведи **дослідницьку сесію** на сторінці Sign-up з Bug Playground.\n\n1. Склади **charter** за шаблоном *Explore … with … to discover …*.\n2. Вкажи **timebox** у хвилинах.\n3. Проведи сесію (відкрий сторінку кнопкою нижче) і запиши **нотатки**: що перевірив, що знайшов, які виникли питання. Мінімум 4 рядки.",
+  "fields": [
+    { "id": "target", "label": "Explore… (what area?)", "kind": "text", "placeholder": "the Sign-up form validation" },
+    { "id": "resources", "label": "with… (resources, data, techniques)", "kind": "text", "placeholder": "boundary values, very long strings, keyboard only" },
+    { "id": "information", "label": "to discover… (what information?)", "kind": "text", "placeholder": "validation bugs and unclear error messages" },
+    { "id": "timebox", "label": "Timebox (minutes)", "kind": "text", "placeholder": "45" },
+    { "id": "notes", "label": "Session notes", "kind": "list", "placeholder": "Age 18 → error shown ❗ BUG?", "hint": "Короткі рядки: що перевірив → що побачив. Позначай баги й питання." }
+  ],
+  "rules": [
+    { "field": "target", "check": "mentionsAny", "value": ["sign.?up|реєстрац|registration|форм|form"], "message": "Charter: вкажи **ціль** сесії — форму реєстрації (Sign-up) або її конкретну частину." },
+    { "field": "resources", "check": "minLength", "value": 10, "message": "Charter: опиши **ресурси й техніки**: які дані, інструменти чи підходи використаєш." },
+    { "field": "information", "check": "minLength", "value": 10, "message": "Charter: опиши, **яку інформацію** шукаєш (наприклад, баги валідації, проблеми доступності)." },
+    { "field": "timebox", "check": "mentionsAny", "value": ["^\\s*\\d{1,3}\\s*(хв|min|minutes|хвилин)?\\.?\\s*$"], "message": "Timebox: вкажи тривалість числом у хвилинах, наприклад «45»." },
+    { "field": "notes", "check": "minItems", "value": 4, "message": "Нотатки: запиши щонайменше 4 спостереження з сесії." },
+    { "field": "notes", "check": "mentionsAny", "value": ["\\d"], "message": "Нотатки: додавай **конкретні дані**, які вводив (числа, довжини, значення), а не лише загальні фрази." }
+  ],
+  "model": {
+    "target": "the Sign-up form validation rules",
+    "resources": "boundary values for Age and Password length, strings of spaces, emails without a domain dot, keyboard-only navigation",
+    "information": "validation bugs, misleading error messages and accessibility problems",
+    "timebox": "45",
+    "notes": [
+      "Age 17 → error \"Age must be between 18 and 65\" ✅",
+      "Age 65 → accepted ✅, Age 66 → error ✅",
+      "Age 18.5 → \"Age must be a whole number\" ✅, Age \"abc\" → same message ✅",
+      "Password 7 chars → error ✅, 8 chars with a digit → accepted ✅",
+      "Password \"abcdefgh\" (no digit) → \"must contain at least one digit\" ✅",
+      "❗ 2 suspicious results on boundaries — written down with exact data for bug reports (no spoilers here: hunt them in module 06!)",
+      "Keyboard only: Tab order is logical, Space toggles Terms ✅",
+      "❓ Question: should email be case-insensitive? Requirements don't say"
+    ]
+  },
+  "hints": [
+    "Не намагайся перевірити все: вузький charter (наприклад, тільки валідація полів) дає кращі результати за 45 хвилин.",
+    "Використай евристики з теорії: межі, дивні дані, повтори, клавіатура. Записуй кожне спостереження одним рядком."
+  ],
+  "explanation": "Добрий charter вузький і конкретний: що досліджуємо, чим, і що хочемо дізнатися. Timebox тримає фокус. Нотатки з конкретними даними («Age 18 → помилка») — це сировина для баг-репортів і звіту: з них видно, що перевірено, що знайдено і які питання лишилися.",
+  "checklist": [
+    "Charter вузький: одна область і зрозуміла мета",
+    "Ресурси містять конкретні техніки чи дані (межі, довгі рядки, клавіатура…)",
+    "Timebox реалістичний (30–90 хвилин)",
+    "Нотатки містять конкретні введені дані й результат",
+    "Баги й питання помічені окремо (❗, ❓)",
+    "З нотаток можна написати баг-репорти без повторного дослідження"
+  ]
+}

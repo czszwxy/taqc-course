@@ -1,0 +1,18 @@
+{
+  "type": "code",
+  "variantOf": "02-test-run-info",
+  "title": "Describe bug statistics with variables",
+  "statement": "Опиши статистику багів компонента змінними `export const` з **явними анотаціями типів**:\n\n| Змінна | Тип | Значення |\n|---|---|---|\n| `component` | `string` | `'Checkout'` |\n| `openBugs` | `number` | `14` |\n| `fixedBugs` | `number` | `9` |\n| `remainingBugs` | `number` | **обчисли** з двох попередніх |\n| `hasBlockers` | `boolean` | `true` |",
+  "hints": [
+    "Формат: `export const назва: тип = значення;`",
+    "`remainingBugs` = `openBugs - fixedBugs`."
+  ],
+  "explanation": "Анотація типу пишеться після назви через двокрапку. Залишок обчислюємо: `export const remainingBugs: number = openBugs - fixedBugs;`",
+  "codeRules": [
+    { "kind": "require", "pattern": "component\\s*:\\s*string", "message": "Додай явний тип: `component: string`." },
+    { "kind": "require", "pattern": "openBugs\\s*:\\s*number", "message": "Додай явний тип: `openBugs: number`." },
+    { "kind": "require", "pattern": "fixedBugs\\s*:\\s*number", "message": "Додай явний тип: `fixedBugs: number`." },
+    { "kind": "require", "pattern": "hasBlockers\\s*:\\s*boolean", "message": "Додай явний тип: `hasBlockers: boolean`." },
+    { "kind": "require", "pattern": "remainingBugs\\s*:\\s*number\\s*=\\s*openBugs\\s*-\\s*fixedBugs", "message": "`remainingBugs` треба обчислити: `openBugs - fixedBugs`." }
+  ]
+}

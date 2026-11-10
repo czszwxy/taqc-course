@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Mask a secret token in logs",
+  "statement": "Токени й паролі **не можна** писати в логи тестів повністю. Напиши `maskSecret(secret)`, яка замінює всі символи на `*`, **крім останніх 4**.\n\n```ts\nmaskSecret('mySecretToken1234'); // '*************1234'\nmaskSecret('abcde');             // '*bcde'\n```\n\nДовжина `secret` завжди не менша за 5 символів.",
+  "hints": [
+    "Останні 4 символи: `secret.slice(-4)`.",
+    "Скільки зірочок? `secret.length - 4`. Рядок з n зірочок дає `'*'.repeat(n)`."
+  ],
+  "explanation": "Розбий задачу на дві частини: зірочки та «хвіст».\n\n```ts\nconst stars = '*'.repeat(secret.length - 4);\nconst tail = secret.slice(-4);\nreturn stars + tail;\n```\n\nПеревір себе: довжина результату має дорівнювати довжині вхідного рядка."
+}

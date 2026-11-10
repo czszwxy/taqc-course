@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Fix the compile errors",
+  "statement": "Функція `getReportLine` формує рядок для звіту, але в ній кілька помилок компіляції. Прочитай повідомлення (наведи мишку на підкреслення або натисни **Check**) і виправ їх.\n\nОчікувана поведінка:\n\n```ts\ngetReportLine('Login', 9, 10); // 'Login: 90% NEEDS ATTENTION'\ngetReportLine('Cart', 5, 5);   // 'Cart: 100% OK'\n```\n\n> [!TIP]\n> TypeScript сам підказує правильні назви: `Did you mean 'total'?`",
+  "hints": [
+    "Дві помилки — опечатки в назвах змінних. TypeScript пропонує правильні варіанти.",
+    "Третя помилка — тип змінної `line`: у неї записується рядок (склеєний текст), а не число."
+  ],
+  "explanation": "Помилки за порядком:\n\n1. `totl` → `total` (TS2552)\n2. `staus` → `status` (TS2552)\n3. `const line: number` → `const line: string`, бо результат склеювання — рядок (TS2322). Це заодно виправляє помилку на `return line`.\n\nПісля виправлень логіку можна не чіпати."
+}

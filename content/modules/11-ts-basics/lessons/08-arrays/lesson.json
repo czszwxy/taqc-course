@@ -1,0 +1,35 @@
+{
+  "title": "Arrays",
+  "minutes": 60,
+  "summary": "Створення й типізація масивів, індекси, push/pop, includes, slice, join, spread і чому не можна мутувати спільні дані",
+  "resources": [
+    {
+      "title": "MDN: Indexed collections (arrays)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Indexed_collections",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Array (reference)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "TypeScript Handbook: Everyday Types — Arrays",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#arrays",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Масиви",
+      "url": "https://uk.javascript.info/array",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

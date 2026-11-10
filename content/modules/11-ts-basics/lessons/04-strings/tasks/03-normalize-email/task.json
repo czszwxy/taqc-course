@@ -1,0 +1,7 @@
+{
+  "type": "code",
+  "title": "Normalize an email",
+  "statement": "Перед порівнянням email з бази та з форми їх треба **нормалізувати**. Напиши `normalizeEmail(email)`, яка:\n\n1. прибирає пробіли на початку й у кінці;\n2. переводить усе в нижній регістр.\n\n```ts\nnormalizeEmail('  QA.Engineer@Example.COM ');\n// 'qa.engineer@example.com'\n```",
+  "hints": ["Потрібні два методи: `trim()` і `toLowerCase()`.", "Їх можна з'єднати ланцюжком: `email.trim().toLowerCase()`."],
+  "explanation": "Методи рядків повертають новий рядок, тому їх можна викликати один за одним: `return email.trim().toLowerCase();`. Пробіли всередині (якщо раптом є) не чіпаємо, бо вимога про це нічого не каже."
+}

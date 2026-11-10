@@ -1,0 +1,76 @@
+{
+  "type": "quiz",
+  "title": "Quiz: strings",
+  "show": 6,
+  "hints": ["Перевір таблицю методів, особливо slice, indexOf і replace."],
+  "questions": [
+    {
+      "id": "template",
+      "kind": "text",
+      "text": "Що виведе код?",
+      "code": "const failed = 2;\nconsole.log(`Failed: ${failed + 1}`);",
+      "accept": ["Failed: 3"],
+      "explanation": "Усередині `${}` обчислюється вираз: 2 + 1 = 3."
+    },
+    {
+      "id": "index",
+      "kind": "text",
+      "text": "Що поверне `'Playwright'[4]`?",
+      "accept": ["w"],
+      "explanation": "Індекси з нуля: P=0, l=1, a=2, y=3, w=4."
+    },
+    {
+      "id": "immutable",
+      "kind": "single",
+      "text": "Що виведе код?",
+      "code": "const name = 'qa';\nname.toUpperCase();\nconsole.log(name);",
+      "options": [
+        { "text": "`qa`", "correct": true, "explain": "Рядки незмінні: результат toUpperCase() ніде не збережено." },
+        { "text": "`QA`", "explain": "toUpperCase() повертає новий рядок, а змінна name не змінилась." },
+        { "text": "Помилка" }
+      ]
+    },
+    {
+      "id": "slice",
+      "kind": "text",
+      "text": "Що поверне `'TC-0042'.slice(3)`?",
+      "accept": ["0042"],
+      "explanation": "slice(3) бере символи від індексу 3 до кінця."
+    },
+    {
+      "id": "indexof",
+      "kind": "single",
+      "text": "Що повертає `indexOf`, якщо підрядок не знайдено?",
+      "options": [
+        { "text": "`-1`", "correct": true },
+        { "text": "`0`", "explain": "0 означає «знайдено на самому початку»." },
+        { "text": "`undefined`" },
+        { "text": "`false`", "explain": "Для перевірки «так/ні» є includes()." }
+      ]
+    },
+    {
+      "id": "replace",
+      "kind": "text",
+      "text": "Що поверне `'a.b.c'.replace('.', '/')`?",
+      "accept": ["a/b.c"],
+      "explanation": "replace змінює тільки перше входження. Для всіх є replaceAll."
+    },
+    {
+      "id": "case-compare",
+      "kind": "single",
+      "text": "Як правильно порівняти email без урахування регістру і пробілів по краях?",
+      "options": [
+        { "text": "`a.trim().toLowerCase() === b.trim().toLowerCase()`", "correct": true },
+        { "text": "`a === b`", "explain": "`===` враховує і регістр, і пробіли." },
+        { "text": "`a.toLowerCase() === b`", "explain": "Нормалізувати треба обидва рядки." }
+      ]
+    },
+    {
+      "id": "string-plus-number",
+      "kind": "text",
+      "text": "Що виведе `console.log('10' + 5)`?",
+      "accept": ["105"],
+      "explanation": "Якщо один з операндів рядок, `+` склеює рядки: '10' + '5' = '105'."
+    }
+  ]
+}

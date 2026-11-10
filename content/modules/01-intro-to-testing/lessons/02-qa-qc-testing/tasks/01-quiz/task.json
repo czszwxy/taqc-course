@@ -1,0 +1,67 @@
+{
+  "type": "quiz",
+  "title": "Quiz: QA vs QC vs testing",
+  "show": 5,
+  "hints": ["Пригадай пару: QA prevents, QC detects."],
+  "questions": [
+    {
+      "id": "qa-focus",
+      "kind": "single",
+      "text": "На чому зосереджене **Quality Assurance**?",
+      "options": [
+        { "text": "На процесі: як працювати, щоб дефекти не виникали", "correct": true },
+        { "text": "На пошуку дефектів у готовому продукті", "explain": "Це QC." },
+        { "text": "Лише на автоматизації тестів" }
+      ]
+    },
+    {
+      "id": "relation",
+      "kind": "single",
+      "text": "Як співвідносяться QA, QC і testing?",
+      "options": [
+        { "text": "Testing — частина QC, QC — частина QA", "correct": true },
+        { "text": "Це три синоніми" },
+        { "text": "QA — частина тестування" }
+      ]
+    },
+    {
+      "id": "retro",
+      "kind": "single",
+      "text": "На ретроспективі команда вирішила додати обов'язковий рев'ю вимог перед стартом розробки. Це…",
+      "options": [
+        { "text": "QA: зміна процесу для запобігання дефектам", "correct": true },
+        { "text": "QC: перевірка продукту" },
+        { "text": "Тестування" }
+      ]
+    },
+    {
+      "id": "characteristic-perf",
+      "kind": "single",
+      "text": "Вимога: «Пошук повертає результати за 1 секунду при 500 одночасних користувачах». Яка це характеристика якості?",
+      "options": [
+        { "text": "Performance efficiency", "correct": true },
+        { "text": "Usability" },
+        { "text": "Compatibility" }
+      ]
+    },
+    {
+      "id": "characteristic-security",
+      "kind": "single",
+      "text": "«Після 5 невдалих спроб входу акаунт блокується на 15 хвилин». Яка це характеристика?",
+      "options": [
+        { "text": "Security", "correct": true },
+        { "text": "Reliability" },
+        { "text": "Portability" }
+      ]
+    },
+    {
+      "id": "who-qa",
+      "kind": "single",
+      "text": "Хто відповідає за забезпечення якості (QA) у команді?",
+      "options": [
+        { "text": "Уся команда: аналітики, розробники, тестувальники, менеджмент", "correct": true },
+        { "text": "Лише тестувальники", "explain": "Тестувальники допомагають, але якість процесу — відповідальність усіх." }
+      ]
+    }
+  ]
+}

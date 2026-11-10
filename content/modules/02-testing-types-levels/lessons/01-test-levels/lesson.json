@@ -1,0 +1,42 @@
+{
+  "title": "Test levels: unit, integration, system, acceptance",
+  "minutes": 45,
+  "summary": "Що перевіряє кожен рівень тестування, хто його виконує і в якому середовищі",
+  "resources": [
+    {
+      "title": "ISTQB — Foundation Level syllabus (section 2.2: Test levels and test types)",
+      "url": "https://www.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: Unit testing",
+      "url": "https://en.wikipedia.org/wiki/Unit_testing",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: Integration testing",
+      "url": "https://en.wikipedia.org/wiki/Integration_testing",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: Acceptance testing",
+      "url": "https://en.wikipedia.org/wiki/Acceptance_testing",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: levels of software testing (пошук)",
+      "url": "https://www.youtube.com/results?search_query=levels+of+software+testing+unit+integration+system+acceptance",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

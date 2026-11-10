@@ -1,0 +1,29 @@
+{
+  "title": "Exploratory & session-based testing",
+  "minutes": 45,
+  "summary": "Дослідницьке тестування, ad-hoc, сесії з чартером і таймбоксом, евристики для пошуку ідей",
+  "resources": [
+    {
+      "title": "Wikipedia: Exploratory testing",
+      "url": "https://en.wikipedia.org/wiki/Exploratory_testing",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Ministry of Testing — articles on exploratory testing",
+      "url": "https://www.ministryoftesting.com/",
+      "kind": "article",
+      "lang": "en",
+      "note": "Знайди на сайті матеріали за запитом «exploratory testing» чи «test charter».",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: exploratory testing session (пошук)",
+      "url": "https://www.youtube.com/results?search_query=exploratory+testing+session+based+test+management+charter",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

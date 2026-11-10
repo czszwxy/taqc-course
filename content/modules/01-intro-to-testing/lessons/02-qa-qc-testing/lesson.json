@@ -1,0 +1,30 @@
+{
+  "title": "QA vs QC vs testing",
+  "minutes": 35,
+  "summary": "Процес проти продукту, запобігання проти виявлення, характеристики якості ПЗ",
+  "resources": [
+    {
+      "title": "ISTQB Glossary: quality assurance, quality control",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Знайди терміни «quality assurance» та «quality control».",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: Software quality",
+      "url": "https://en.wikipedia.org/wiki/Software_quality",
+      "kind": "article",
+      "lang": "en",
+      "note": "Огляд моделей якості, зокрема ISO/IEC 25010.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: QA vs QC (пошук)",
+      "url": "https://www.youtube.com/results?search_query=QA+vs+QC+vs+testing",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

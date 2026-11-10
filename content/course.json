@@ -1,0 +1,315 @@
+{
+  "title": "QA Automation Academy",
+  "tracks": [
+    {
+      "id": "qa-fundamentals",
+      "title": "QA Fundamentals",
+      "description": "How testing works: principles, process, test design, documentation and bugs.",
+      "modules": [
+        {
+          "slug": "01-intro-to-testing",
+          "title": "Introduction to Testing",
+          "lessons": [
+            "What is software testing",
+            "QA vs QC vs testing",
+            "The 7 testing principles",
+            "The QA engineer role & career path",
+            "SDLC models: Waterfall, V-model, iterative",
+            "Agile & Scrum for testers",
+            "STLC: the software testing life cycle"
+          ]
+        },
+        {
+          "slug": "02-testing-types-levels",
+          "title": "Testing Types & Levels",
+          "lessons": [
+            "Test levels: unit, integration, system, acceptance",
+            "Functional vs non-functional testing",
+            "Non-functional overview: performance, security, usability, compatibility, accessibility",
+            "Black, white and grey box",
+            "Static testing & reviews; verification vs validation",
+            "Smoke, sanity, regression, re-testing",
+            "Exploratory & session-based testing",
+            "Test pyramid & what to automate"
+          ]
+        },
+        {
+          "slug": "03-test-design",
+          "title": "Test Design Techniques",
+          "lessons": [
+            "Why test design matters",
+            "Equivalence partitioning",
+            "Boundary value analysis",
+            "Decision tables",
+            "State transition testing",
+            "Pairwise testing",
+            "Use case & scenario testing",
+            "Error guessing & experience-based techniques"
+          ]
+        },
+        {
+          "slug": "04-test-documentation",
+          "title": "Test Documentation",
+          "lessons": [
+            "Requirements & testability review",
+            "Checklists",
+            "Test cases: anatomy & best practices",
+            "Test suites & traceability matrix",
+            "Test plan & test strategy",
+            "Test execution & statuses",
+            "Test summary reports & metrics"
+          ]
+        },
+        {
+          "slug": "05-bugs-tracking",
+          "title": "Bugs & Bug Tracking",
+          "lessons": [
+            "What is a bug",
+            "Bug report anatomy",
+            "Severity vs priority",
+            "Bug lifecycle",
+            "Evidence: screenshots, video, logs, environment",
+            "Jira-style workflow & JQL basics",
+            "Working with developers"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "practical-qa",
+      "title": "Practical QA",
+      "description": "Real scenarios on intentionally buggy pages built into this app.",
+      "modules": [
+        {
+          "slug": "06-qa-practice-lab",
+          "title": "QA Practice Lab",
+          "lessons": [
+            "How to approach a new feature",
+            "Requirements review: find the gaps",
+            "Login page: checklist & test cases",
+            "Registration form: EP/BVA → test cases → bug hunt",
+            "Shopping cart: decision table & bug reports",
+            "Search & filters: exploratory session",
+            "Order status flow: state transitions",
+            "Regression run & test report",
+            "Mini-project: full test documentation for a Todo app"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tech-basics",
+      "title": "Tech Basics for Testers",
+      "description": "The web, HTTP & APIs, Git and SQL — what every automation engineer uses daily.",
+      "modules": [
+        {
+          "slug": "07-how-the-web-works",
+          "title": "How the Web Works",
+          "lessons": [
+            "Client–server, URL, DNS",
+            "HTML basics",
+            "CSS basics & selectors",
+            "The DOM",
+            "DevTools: Elements & Console",
+            "DevTools: Network",
+            "Cookies, localStorage, sessions, cache",
+            "Responsive & cross-browser testing"
+          ]
+        },
+        {
+          "slug": "08-http-apis-json",
+          "title": "HTTP, REST APIs & JSON",
+          "lessons": [
+            "HTTP requests & methods",
+            "Status codes",
+            "Headers, query params, body",
+            "JSON",
+            "REST & CRUD",
+            "Authentication: basic, tokens, JWT, cookies",
+            "Manual API testing with Postman",
+            "API test design"
+          ]
+        },
+        {
+          "slug": "09-cli-git-github",
+          "title": "Command Line, Git & GitHub",
+          "lessons": [
+            "Terminal basics (PowerShell & bash)",
+            "Node.js & npm",
+            "Git: repository, commits, history",
+            "Branches & merging",
+            "GitHub: remote, push/pull, pull requests",
+            "Merge conflicts & .gitignore",
+            "Code review etiquette"
+          ]
+        },
+        {
+          "slug": "10-sql-for-testers",
+          "title": "SQL for Testers",
+          "lessons": [
+            "Relational databases & keys",
+            "SELECT, WHERE, ORDER BY",
+            "Aggregates & GROUP BY",
+            "JOINs",
+            "INSERT, UPDATE, DELETE",
+            "Verifying test results with SQL"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "typescript",
+      "title": "TypeScript from Zero",
+      "description": "Programming from scratch with TypeScript — the language of modern test automation.",
+      "modules": [
+        {
+          "slug": "11-ts-basics",
+          "title": "Programming Basics with TypeScript",
+          "lessons": [
+            "JavaScript & TypeScript: how code runs",
+            "Variables & primitive types",
+            "Operators, comparisons, truthy & falsy",
+            "Strings & template literals",
+            "Conditionals: if, switch, ternary",
+            "Loops",
+            "Functions",
+            "Arrays",
+            "Objects",
+            "Reading errors & debugging"
+          ]
+        },
+        {
+          "slug": "12-ts-types-data",
+          "title": "Types & Data",
+          "lessons": [
+            "Array methods: map, filter, find, reduce, sort",
+            "Type aliases & interfaces",
+            "Optional, readonly, index signatures",
+            "Union & literal types, narrowing",
+            "Enums & as const",
+            "Destructuring, spread & rest",
+            "Generics",
+            "Utility types",
+            "unknown vs any, type guards"
+          ]
+        },
+        {
+          "slug": "13-ts-oop-async",
+          "title": "OOP, Async & Modules",
+          "lessons": [
+            "Classes",
+            "Access modifiers, getters & setters",
+            "Inheritance & abstract classes",
+            "Modules: import & export",
+            "Error handling & custom errors",
+            "Event loop, callbacks & Promises",
+            "async/await & Promise.all",
+            "fetch & typing API responses",
+            "tsconfig, strict mode, ESLint & Prettier"
+          ]
+        },
+        {
+          "slug": "14-first-automated-tests",
+          "title": "Your First Automated Tests",
+          "lessons": [
+            "What is an automated test; the AAA pattern",
+            "describe / it / expect & matchers",
+            "Testing functions with test design techniques",
+            "Hooks, test data & test independence",
+            "Mini-project: tests for a validator library"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "automation",
+      "title": "Test Automation with Playwright",
+      "description": "UI and API automation with Playwright + TypeScript, frameworks and CI.",
+      "modules": [
+        {
+          "slug": "15-playwright-basics",
+          "title": "Playwright Basics",
+          "lessons": [
+            "Why automate: costs, benefits, flakiness",
+            "Selenium vs Cypress vs Playwright",
+            "Installing Playwright, project structure & config",
+            "First test; CLI, UI mode, headed, codegen",
+            "Locators: getByRole, getByLabel, getByText, getByTestId",
+            "CSS & XPath, chaining & filtering",
+            "Actions: click, fill, check, select, keyboard, upload",
+            "Web-first & soft assertions",
+            "Auto-waiting, timeouts & flaky tests"
+          ]
+        },
+        {
+          "slug": "16-playwright-practice",
+          "title": "Playwright in Practice",
+          "lessons": [
+            "Organizing tests: describe, hooks, tags",
+            "Debugging: Inspector, trace viewer, screenshots, video",
+            "Dialogs, frames & new tabs",
+            "Page Object Model",
+            "Fixtures: built-in & custom",
+            "Test data & parameterized tests",
+            "Authentication & storageState",
+            "Network interception & mocking",
+            "Visual comparisons basics"
+          ]
+        },
+        {
+          "slug": "17-api-testing-framework",
+          "title": "API Testing & Framework Design",
+          "lessons": [
+            "API tests with the request fixture",
+            "Validating status, headers & schema",
+            "CRUD flows & test data cleanup",
+            "API + UI combined",
+            "Config: projects, browsers, environments, retries, parallelism",
+            "Reporters: HTML report & reading results",
+            "Framework structure & best practices"
+          ]
+        },
+        {
+          "slug": "18-ci-cd",
+          "title": "CI/CD for Test Automation",
+          "lessons": [
+            "CI/CD concepts",
+            "GitHub Actions for Playwright",
+            "Artifacts, reports & sharding",
+            "Flaky tests & test maintenance"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "job-prep",
+      "title": "Job Preparation",
+      "description": "Interviews, a test assignment simulation and a portfolio project.",
+      "modules": [
+        {
+          "slug": "19-getting-hired",
+          "title": "Getting Hired",
+          "lessons": [
+            "QA theory interview questions",
+            "TypeScript questions & live coding",
+            "Playwright & automation questions",
+            "Take-home test assignment simulation",
+            "CV, LinkedIn & GitHub profile",
+            "Behavioral questions (STAR)"
+          ]
+        },
+        {
+          "slug": "20-final-project",
+          "title": "Final Portfolio Project",
+          "lessons": [
+            "Project brief & test plan",
+            "Checklist, test cases & bug reports",
+            "UI framework: Page Object Model + fixtures",
+            "API tests & combined flows",
+            "CI pipeline, README & publishing on GitHub"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "code",
+  "variantOf": "03-build-url",
+  "title": "Build an API path with a default version",
+  "statement": "Напиши `buildApiPath(endpoint, version)`:\n\n- `version` — параметр за замовчуванням `'v1'`;\n- результат має вигляд `/api/<version>/<endpoint>`;\n- якщо `endpoint` починається зі `/`, не дублюй слеш.\n\n```ts\nbuildApiPath('users');        // '/api/v1/users'\nbuildApiPath('/orders');      // '/api/v1/orders'\nbuildApiPath('users', 'v2');  // '/api/v2/users'\n```",
+  "hints": [
+    "Параметр за замовчуванням: `version: string = 'v1'`.",
+    "Слеш на початку прибери так: `endpoint.startsWith('/') ? endpoint.slice(1) : endpoint`."
+  ],
+  "explanation": "```ts\nconst e = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;\nreturn `/api/${version}/${e}`;\n```",
+  "codeRules": [{ "kind": "require", "pattern": "version\\s*:\\s*string\\s*=", "message": "Зроби `version` параметром за замовчуванням: `version: string = 'v1'`." }]
+}

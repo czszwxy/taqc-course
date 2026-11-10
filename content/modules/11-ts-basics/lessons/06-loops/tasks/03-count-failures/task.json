@@ -1,0 +1,8 @@
+{
+  "type": "code",
+  "title": "Count failed tests",
+  "statement": "Результати прогону записані рядком: кожен символ — один тест.\n\n- `P` — passed\n- `F` — failed\n- `S` — skipped\n\nНапиши `countFailures(results)`, яка повертає кількість **упалих** тестів.\n\n```ts\ncountFailures('PPFPF'); // 2\ncountFailures('PPP');   // 0\ncountFailures('');      // 0\n```",
+  "hints": ["Перебери символи циклом `for (const r of results)`.", "Заведи лічильник `let count = 0;` і збільшуй його, коли `r === 'F'`."],
+  "explanation": "Шаблон «лічильник»:\n\n```ts\nlet count = 0;\nfor (const r of results) {\n  if (r === 'F') count++;\n}\nreturn count;\n```\n\nПорожній рядок дає 0 автоматично: цикл не виконається жодного разу.",
+  "codeRules": [{ "kind": "require", "pattern": "\\b(for|while)\\b", "message": "Використай цикл: це тренування саме циклів." }]
+}

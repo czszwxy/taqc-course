@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "variantOf": "03-normalize-email",
+  "title": "Normalize a username",
+  "statement": "Логін у системі зберігається в нормалізованому вигляді. Напиши `normalizeUsername(name)`, яка:\n\n1. прибирає пробіли на початку й у кінці;\n2. переводить у нижній регістр;\n3. замінює **кожен** пробіл усередині на `_`.\n\n```ts\nnormalizeUsername('  John Smith ');   // 'john_smith'\nnormalizeUsername('QA Team Lead');   // 'qa_team_lead'\n```",
+  "hints": [
+    "Для пунктів 1 і 2 потрібні `trim()` і `toLowerCase()`.",
+    "`replace` замінює тільки перше входження. Для всіх є `replaceAll(' ', '_')`."
+  ],
+  "explanation": "Ланцюжок методів: `name.trim().toLowerCase().replaceAll(' ', '_')`. Порядок важливий: спершу `trim()`, інакше пробіли по краях теж перетворяться на `_`."
+}

@@ -1,0 +1,28 @@
+{
+  "title": "Loops",
+  "minutes": 60,
+  "summary": "for, while, for...of, break і continue, лічильники й накопичувачі, помилка «на одиницю»",
+  "resources": [
+    {
+      "title": "MDN: Loops and iteration",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Цикли: while і for",
+      "url": "https://uk.javascript.info/while-for",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: JavaScript loops for beginners (пошук)",
+      "url": "https://www.youtube.com/results?search_query=JavaScript+loops+for+beginners",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

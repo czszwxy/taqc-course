@@ -1,0 +1,35 @@
+{
+  "title": "SDLC models: Waterfall, V-model, iterative",
+  "minutes": 45,
+  "summary": "Етапи життєвого циклу розробки, каскадна модель, V-модель з рівнями тестування, ітеративний підхід",
+  "resources": [
+    {
+      "title": "Wikipedia: Software development process",
+      "url": "https://en.wikipedia.org/wiki/Software_development_process",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: Waterfall model",
+      "url": "https://en.wikipedia.org/wiki/Waterfall_model",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: V-model",
+      "url": "https://en.wikipedia.org/wiki/V-model",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: SDLC models explained (пошук)",
+      "url": "https://www.youtube.com/results?search_query=SDLC+models+waterfall+v-model+agile+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "title": "Black, white and grey box",
+  "minutes": 40,
+  "summary": "Тестування за специфікацією, за структурою коду і з частковим знанням внутрішньої будови; покриття операторів і гілок",
+  "resources": [
+    {
+      "title": "Wikipedia: Black-box testing",
+      "url": "https://en.wikipedia.org/wiki/Black-box_testing",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: White-box testing",
+      "url": "https://en.wikipedia.org/wiki/White-box_testing",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: Gray-box testing",
+      "url": "https://en.wikipedia.org/wiki/Gray-box_testing",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: black box vs white box testing (пошук)",
+      "url": "https://www.youtube.com/results?search_query=black+box+vs+white+box+vs+grey+box+testing",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

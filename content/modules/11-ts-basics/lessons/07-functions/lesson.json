@@ -1,0 +1,35 @@
+{
+  "title": "Functions",
+  "minutes": 60,
+  "summary": "Параметри й типи, return, void, параметри за замовчуванням і необов'язкові, стрілкові функції, область видимості, чисті функції",
+  "resources": [
+    {
+      "title": "TypeScript Handbook: More on Functions",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/functions.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Functions (guide)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Функції",
+      "url": "https://uk.javascript.info/function-basics",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Стрілкові функції, основи",
+      "url": "https://uk.javascript.info/arrow-functions-basics",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

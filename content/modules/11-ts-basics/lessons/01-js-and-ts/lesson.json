@@ -1,0 +1,62 @@
+{
+  "title": "JavaScript & TypeScript: how code runs",
+  "minutes": 40,
+  "summary": "Що таке JS і TS, навіщо вони тестувальнику і як працюють задачі в цьому застосунку",
+  "resources": [
+    {
+      "title": "TypeScript for the New Programmer",
+      "url": "https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Офіційний вступ для тих, хто вперше програмує.",
+      "needsVerification": true
+    },
+    {
+      "title": "The TypeScript Handbook",
+      "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Головна документація. Повертайся до неї протягом усього треку.",
+      "needsVerification": true
+    },
+    {
+      "title": "TypeScript Playground",
+      "url": "https://www.typescriptlang.org/play",
+      "kind": "tool",
+      "lang": "en",
+      "note": "Онлайн-пісочниця: пиши TS і одразу бач JS та помилки.",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: JavaScript Guide — Introduction",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Introduction",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Сучасний підручник JavaScript (javascript.info українською)",
+      "url": "https://uk.javascript.info/",
+      "kind": "course",
+      "lang": "uk",
+      "note": "Безкоштовний підручник JS українською. Розділ «Основи JavaScript» доповнює цей модуль.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: TypeScript tutorial for beginners (пошук)",
+      "url": "https://www.youtube.com/results?search_query=TypeScript+tutorial+for+beginners",
+      "kind": "video",
+      "lang": "en",
+      "note": "Пошуковий запит, а не конкретне відео: обирай свіжі ролики від відомих каналів з великою кількістю переглядів.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: TypeScript українською (пошук)",
+      "url": "https://www.youtube.com/results?search_query=TypeScript+%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D1%8E",
+      "kind": "video",
+      "lang": "uk",
+      "note": "Пошуковий запит українською.",
+      "needsVerification": true
+    }
+  ]
+}

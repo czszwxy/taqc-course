@@ -1,0 +1,55 @@
+{
+  "type": "test-case",
+  "variantOf": "03-test-case-age",
+  "title": "Write a negative test case: Password above the maximum length",
+  "playground": "signup",
+  "statement": "Напиши **негативний** тест-кейс: перевір, що реєстрація відхиляється, коли **пароль має 21 символ** (одразу над верхньою межею 20).\n\nВимога: *Password — 8–20 символів, мінімум одна цифра. Невалідні поля показують помилку під полем, акаунт не створюється.*",
+  "hints": [
+    "Придумай конкретний пароль рівно з 21 символу й з цифрою, наприклад 10 літер + 10 цифр + 1 літера. Порахуй символи!",
+    "Не забудь: Confirm password має збігатися з паролем, інакше тест перевірятиме вже інше правило.",
+    "Очікуваний результат: текст помилки під Password + акаунт не створюється."
+  ],
+  "explanation": "Граничне значення для довжини рядка — це конкретний рядок потрібної довжини. Наведи сам пароль у тестових даних, щоб будь-хто міг його скопіювати. Confirm password = той самий пароль: інакше спрацює інше правило, і тест стане неоднозначним.",
+  "rules": [
+    { "field": "title", "check": "mentionsAny", "value": ["password|пароль"], "message": "У назві має бути, **що** перевіряється: поле Password." },
+    { "field": "any", "check": "mentionsAny", "value": ["(^|\\D)21(\\D|$)"], "message": "Вкажи довжину **21** символ (max + 1) у назві або тестових даних." },
+    {
+      "field": "testData",
+      "check": "mentionsAny",
+      "value": ["(^|[\\s:\"'«])[^\\s\"'»]{21}($|[\\s\"'».,;)])"],
+      "message": "У тестових даних наведи **конкретний** пароль рівно з 21 символу (без пробілів), щоб тест можна було виконати один в один."
+    },
+    { "field": "steps", "check": "minItems", "value": 3, "message": "Потрібно щонайменше 3 кроки." },
+    { "field": "preconditions", "check": "minLength", "value": 5, "message": "Опиши передумову: з якого стану починається тест." },
+    { "field": "expectedResult", "check": "mentionsAny", "value": ["error|помилк|повідомлен|message|alert"], "message": "Очікуваний результат має називати повідомлення про помилку під полем Password." },
+    {
+      "field": "expectedResult",
+      "check": "mentionsAny",
+      "value": ["not (be )?(created|registered|submitted)|isn.?t (created|registered)|no (account|welcome)|не (буде )?(створ|зареєстр|відправ|надіс)|залишається|remains"],
+      "message": "Вкажи, що акаунт **не** створюється."
+    },
+    { "field": "type", "check": "equals", "value": "Negative", "message": "Це **негативний** тест." },
+    { "field": "priority", "check": "oneOf", "value": ["High", "Medium"], "message": "Перевірка межі обов'язкового правила зазвичай має priority High або Medium." }
+  ],
+  "model": {
+    "title": "Sign-up: registration is rejected when Password has 21 characters (above the maximum of 20)",
+    "type": "Negative",
+    "priority": "High",
+    "preconditions": "Sign-up page (/playground/signup) is open; the form is empty.",
+    "testData": "Full name: Olena Kovalenko\nEmail: olena@example.com\nAge: 30\nPassword (21 chars): Abcdefghij1234567890X\nConfirm password: Abcdefghij1234567890X\nCountry: Poland\nTerms of Service: checked",
+    "steps": [
+      "Fill in Full name, Email, Age and Country with the valid test data",
+      "Enter the 21-character password in Password and Confirm password",
+      "Check the Terms of Service checkbox",
+      "Click \"Create account\""
+    ],
+    "expectedResult": "The error \"Password must be 8–20 characters\" is shown under the Password field; the account is not created."
+  },
+  "checklist": [
+    "Title says what is checked and under which condition",
+    "The password in test data really has 21 characters (count them!) and contains a digit",
+    "Confirm password equals the password, so only one rule is violated",
+    "Steps contain one action each",
+    "Expected result names the exact error and says the account is not created"
+  ]
+}

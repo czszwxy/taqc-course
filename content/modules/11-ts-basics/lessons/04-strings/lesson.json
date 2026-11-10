@@ -1,0 +1,35 @@
+{
+  "title": "Strings & template literals",
+  "minutes": 55,
+  "summary": "Шаблонні рядки, довжина й індекси, методи trim, toLowerCase, includes, slice, replace, split, padStart",
+  "resources": [
+    {
+      "title": "MDN: String (reference with all methods)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Template literals",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Рядки",
+      "url": "https://uk.javascript.info/string",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: JavaScript string methods (пошук)",
+      "url": "https://www.youtube.com/results?search_query=JavaScript+string+methods+tutorial",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "code",
+  "title": "Arrow function: apply a discount",
+  "statement": "Напиши **стрілкову** функцію `applyDiscount(price, percent)`, яка повертає ціну зі знижкою, **округлену до 2 знаків після коми** (копійки).\n\n```ts\napplyDiscount(100, 20);   // 80\napplyDiscount(19.99, 10); // 17.99\napplyDiscount(50, 0);     // 50\napplyDiscount(80, 100);   // 0\n```\n\nОголоси її так: `export const applyDiscount = (...): number => ...`",
+  "hints": [
+    "Ціна зі знижкою: `price - (price * percent) / 100`.",
+    "Округлення до 2 знаків: `Math.round(value * 100) / 100`. `toFixed` не підходить: він повертає рядок, а потрібне число."
+  ],
+  "explanation": "```ts\nexport const applyDiscount = (price: number, percent: number): number => {\n  const discounted = price - (price * percent) / 100;\n  return Math.round(discounted * 100) / 100;\n};\n```\n\nЧерез неточність дробових чисел 19.99 − 1.999 = 17.991…, тому без округлення тест на 17.99 не пройде.",
+  "codeRules": [
+    { "kind": "require", "pattern": "applyDiscount\\s*=\\s*\\(", "message": "Оголоси `applyDiscount` як стрілкову функцію: `export const applyDiscount = (...) => ...`." },
+    { "kind": "require", "pattern": "=>", "message": "Використай стрілкову функцію (`=>`)." }
+  ]
+}

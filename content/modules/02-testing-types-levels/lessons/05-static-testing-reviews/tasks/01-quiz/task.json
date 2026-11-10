@@ -1,0 +1,67 @@
+{
+  "type": "quiz",
+  "title": "Quiz: static testing & reviews",
+  "show": 5,
+  "hints": ["Static — без запуску. Verification — «правильно робимо», validation — «те робимо»."],
+  "questions": [
+    {
+      "id": "static-def",
+      "kind": "single",
+      "text": "Що таке статичне тестування?",
+      "options": [
+        { "text": "Перевірка артефактів без запуску програми", "correct": true },
+        { "text": "Тестування, коли програма довго працює без змін" },
+        { "text": "Тестування на одному й тому самому середовищі" }
+      ]
+    },
+    {
+      "id": "contradiction",
+      "kind": "single",
+      "text": "У специфікації: п. 2 — «пароль від 8 символів», п. 9 — «пароль 6–20 символів». Який це тип дефекту вимог?",
+      "options": [
+        { "text": "Суперечність", "correct": true },
+        { "text": "Неоднозначність" },
+        { "text": "Пропущений сценарій" }
+      ]
+    },
+    {
+      "id": "inspection",
+      "kind": "single",
+      "text": "Який вид рев'ю **найформальніший**: ролі, чеклісти, метрики?",
+      "options": [
+        { "text": "Inspection", "correct": true },
+        { "text": "Informal review" },
+        { "text": "Walkthrough" }
+      ]
+    },
+    {
+      "id": "validation",
+      "kind": "single",
+      "text": "Реальні користувачі пробують прототип, і команда з'ясовує, чи вирішує він їхню задачу. Це…",
+      "options": [
+        { "text": "Validation", "correct": true },
+        { "text": "Verification", "explain": "Верифікація перевіряє відповідність специфікації, а не реальним потребам." }
+      ]
+    },
+    {
+      "id": "ts-compiler",
+      "kind": "single",
+      "text": "TypeScript підкреслив помилку типу ще до запуску коду. Що це?",
+      "options": [
+        { "text": "Статичний аналіз (статичне тестування)", "correct": true },
+        { "text": "Динамічне тестування" },
+        { "text": "Acceptance testing" }
+      ]
+    },
+    {
+      "id": "what-static-cannot",
+      "kind": "single",
+      "text": "Що статичне тестування **не** знайде?",
+      "options": [
+        { "text": "Що сторінка завантажується 10 секунд під навантаженням", "correct": true },
+        { "text": "Суперечність між двома пунктами вимог" },
+        { "text": "Нетестоване формулювання «має бути зручно»" }
+      ]
+    }
+  ]
+}

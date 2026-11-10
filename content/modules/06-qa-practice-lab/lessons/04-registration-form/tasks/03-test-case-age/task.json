@@ -1,0 +1,51 @@
+{
+  "type": "test-case",
+  "title": "Write a negative test case: Age below the minimum",
+  "playground": "signup",
+  "statement": "Напиши **негативний** тест-кейс для форми Sign-up: перевір, що реєстрація відхиляється, коли **Age = 17** (значення одразу під нижньою межею 18).\n\nВимога: *Age — обов'язкове, ціле число від 18 до 65 включно. Невалідні поля показують помилку під полем, акаунт не створюється.*\n\nЗаповни форму нижче. Програма перевірить структуру й ключові деталі, а після успішної перевірки покаже еталонну відповідь і чекліст для самоперевірки.",
+  "hints": [
+    "Невалідним має бути **лише** Age. Решта полів у тестових даних — конкретні валідні значення (ім'я, email з @, пароль з цифрою…).",
+    "Очікуваний результат має дві частини: (1) яка помилка і де з'являється; (2) що акаунт **не** створюється.",
+    "Кроки: заповнити валідні поля → ввести 17 у Age → поставити галочку Terms → натиснути «Create account»."
+  ],
+  "explanation": "Хороший негативний тест-кейс перевіряє **одне** правило. Тому всі поля, крім Age, мають валідні конкретні значення, а Age = 17. Title каже, що і за якої умови перевіряється. Expected result описує спостережувану реакцію (текст помилки під полем) і відсутність побічного ефекту (акаунт не створено).",
+  "rules": [
+    { "field": "title", "check": "mentionsAny", "value": ["\\bage\\b|вік"], "message": "У назві має бути, **що** перевіряється: поле Age (вік)." },
+    { "field": "any", "check": "mentionsAny", "value": ["(^|\\D)17(\\D|$)"], "message": "Тестові дані мають містити точне граничне значення **17** (min − 1)." },
+    { "field": "steps", "check": "minItems", "value": 3, "message": "Потрібно щонайменше 3 кроки: заповнити поля → ввести вік → натиснути «Create account»." },
+    { "field": "preconditions", "check": "minLength", "value": 5, "message": "Опиши передумову: з якого стану починається тест (наприклад, «Сторінка Sign-up відкрита»)." },
+    { "field": "testData", "check": "mentionsAny", "value": ["@"], "message": "У тестових даних мають бути й **валідні** значення інших полів (наприклад, email з @), щоб невалідним був лише вік." },
+    { "field": "expectedResult", "check": "mentionsAny", "value": ["error|помилк|повідомлен|message|alert"], "message": "Очікуваний результат має називати спостережувану реакцію: повідомлення про помилку під полем Age." },
+    {
+      "field": "expectedResult",
+      "check": "mentionsAny",
+      "value": ["not (be )?(created|registered|submitted)|isn.?t (created|registered)|no (account|welcome)|не (буде )?(створ|зареєстр|відправ|надіс)|залишається|remains"],
+      "message": "Вкажи й другу частину результату: акаунт **не** створюється (форма залишається, привітання немає)."
+    },
+    { "field": "type", "check": "equals", "value": "Negative", "message": "Це **негативний** тест: ми перевіряємо реакцію системи на невалідні дані." },
+    { "field": "priority", "check": "oneOf", "value": ["High", "Medium"], "message": "Перевірка обов'язкового бізнес-правила на межі зазвичай має priority High або Medium." }
+  ],
+  "model": {
+    "title": "Sign-up: registration is rejected when Age is 17 (below the minimum of 18)",
+    "type": "Negative",
+    "priority": "High",
+    "preconditions": "Sign-up page (/playground/signup) is open in the browser; the form is empty.",
+    "testData": "Full name: Ivan Petrenko\nEmail: ivan.petrenko@example.com\nAge: 17\nPassword: Secret123\nConfirm password: Secret123\nCountry: Ukraine\nTerms of Service: checked",
+    "steps": [
+      "Fill in Full name, Email, Password, Confirm password and Country with the valid test data",
+      "Enter \"17\" in the Age field",
+      "Check the Terms of Service checkbox",
+      "Click \"Create account\""
+    ],
+    "expectedResult": "The error \"Age must be between 18 and 65\" is shown under the Age field; the account is not created and no welcome message appears."
+  },
+  "checklist": [
+    "Title says what is checked and under which condition",
+    "Only one field is invalid — all other test data are valid and concrete",
+    "Test data contains exact values (17, a real-looking email…), not \"some invalid age\"",
+    "Steps start from the precondition and contain one action each",
+    "Expected result is observable: exact error text and where it appears",
+    "Expected result also states that the account is NOT created",
+    "Anyone in the team could run this test case without asking you questions"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Find flaky tests",
+  "statement": "Тест вважається **flaky** (нестабільним), якщо на тому самому коді він то проходить, то падає. Ти двічі запустив набір і отримав списки упалих тестів.\n\nНапиши `findFlakyTests(run1Failed, run2Failed)`, яка повертає тести, що впали **лише в одному** з двох прогонів:\n\n1. спершу ті, що впали тільки в першому прогоні (у порядку `run1Failed`);\n2. потім ті, що впали тільки в другому (у порядку `run2Failed`).\n\n```ts\nfindFlakyTests(['login', 'cart', 'search'], ['cart', 'profile']);\n// ['login', 'search', 'profile']\n// 'cart' впав обидва рази, тож це стабільний баг, а не flaky\n```\n\nВхідні масиви не змінюй.",
+  "hints": [
+    "Створи порожній результат `const result: string[] = [];`.",
+    "Перший цикл по `run1Failed`: додавай елемент, якщо `!run2Failed.includes(name)`. Другий цикл — навпаки."
+  ],
+  "explanation": "Два проходи з перевіркою `includes`:\n\n```ts\nconst result: string[] = [];\nfor (const name of run1Failed) {\n  if (!run2Failed.includes(name)) result.push(name);\n}\nfor (const name of run2Failed) {\n  if (!run1Failed.includes(name)) result.push(name);\n}\nreturn result;\n```\n\n`push` у новий масив `result` нормальний: ми змінюємо власний масив, а не вхідні дані."
+}

@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "Bug fix deadline by severity (switch)",
+  "statement": "У команді є SLA: скільки днів дається на виправлення бага залежно від **severity**. Напиши `getFixDeadlineDays(severity)` за допомогою `switch`:\n\n| severity | днів |\n|---|---|\n| `blocker` | 1 |\n| `critical` | 2 |\n| `major` | 7 |\n| `minor` | 30 |\n| `trivial` | 90 |\n| будь-що інше | `-1` |\n\nРегістр і пробіли по краях не мають значення: `' Critical '` теж повертає `2`.",
+  "hints": [
+    "Спершу нормалізуй вхід: `const s = severity.trim().toLowerCase();`, потім `switch (s)`.",
+    "Для невідомих значень потрібна гілка `default: return -1;`"
+  ],
+  "explanation": "Нормалізуй рядок, щоб `'Critical'` і `'critical'` вважалися однаковими, а далі в кожному `case` одразу повертай число. Через `return` `break` не потрібен. `default` обробляє всі інші значення.",
+  "codeRules": [{ "kind": "require", "pattern": "switch\\s*\\(", "message": "Розв'яжи задачу через `switch`." }]
+}

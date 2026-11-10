@@ -1,0 +1,77 @@
+{
+  "type": "quiz",
+  "title": "Quiz: non-functional testing types",
+  "show": 6,
+  "hints": ["Таблиця видів performance testing — найчастіше джерело питань."],
+  "questions": [
+    {
+      "id": "stress",
+      "kind": "single",
+      "text": "Навантаження поступово збільшують, доки система не почне відмовляти, щоб знайти межу і перевірити відновлення. Це…",
+      "options": [
+        { "text": "Stress testing", "correct": true },
+        { "text": "Load testing", "explain": "Load перевіряє очікуване, а не граничне навантаження." },
+        { "text": "Endurance testing" }
+      ]
+    },
+    {
+      "id": "spike",
+      "kind": "single",
+      "text": "Після розсилки з промокодом за хвилину приходить у 20 разів більше відвідувачів. Який вид тестування це імітує?",
+      "options": [
+        { "text": "Spike testing", "correct": true },
+        { "text": "Usability testing" },
+        { "text": "Localization testing" }
+      ]
+    },
+    {
+      "id": "soak",
+      "kind": "single",
+      "text": "Система 12 годин працює під середнім навантаженням, а QA стежить, чи не росте використання пам'яті. Це…",
+      "options": [
+        { "text": "Endurance (soak) testing", "correct": true },
+        { "text": "Spike testing" }
+      ]
+    },
+    {
+      "id": "idor",
+      "kind": "single",
+      "text": "Змінивши `/orders/1001` на `/orders/1002`, користувач бачить чуже замовлення. Який вид проблеми?",
+      "options": [
+        { "text": "Безпека: порушення контролю доступу", "correct": true },
+        { "text": "Продуктивність" },
+        { "text": "Локалізація" }
+      ]
+    },
+    {
+      "id": "a11y",
+      "kind": "multiple",
+      "text": "Що належить до базових перевірок доступності?",
+      "options": [
+        { "text": "Усі елементи доступні з клавіатури", "correct": true },
+        { "text": "Поля форми мають підписи (labels)", "correct": true },
+        { "text": "Достатній контраст тексту", "correct": true },
+        { "text": "Сторінка завантажується до 2 секунд", "explain": "Це продуктивність." }
+      ]
+    },
+    {
+      "id": "l10n",
+      "kind": "single",
+      "text": "Після перекладу на німецьку текст «Zur Kasse gehen» не вміщається в кнопку. Який вид тестування знайшов баг?",
+      "options": [
+        { "text": "Localization testing", "correct": true },
+        { "text": "Security testing" },
+        { "text": "Load testing" }
+      ]
+    },
+    {
+      "id": "permission",
+      "kind": "single",
+      "text": "Чи можна перевіряти безпеку будь-якого сайту, який ти знайшов в інтернеті?",
+      "options": [
+        { "text": "Ні, лише системи, на які є дозвіл (свій проєкт, навчальні стенди)", "correct": true },
+        { "text": "Так, якщо не завдаєш шкоди" }
+      ]
+    }
+  ]
+}

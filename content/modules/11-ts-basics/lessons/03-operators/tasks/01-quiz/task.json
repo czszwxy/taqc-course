@@ -1,0 +1,80 @@
+{
+  "type": "quiz",
+  "title": "Quiz: operators",
+  "show": 6,
+  "hints": ["Повтори таблицю істинності та список falsy-значень."],
+  "questions": [
+    {
+      "id": "modulo",
+      "kind": "text",
+      "text": "Чому дорівнює `17 % 5`?",
+      "accept": ["2"],
+      "explanation": "17 = 5·3 + 2, остача 2."
+    },
+    {
+      "id": "strict-eq",
+      "kind": "single",
+      "text": "Чому `'404' === 404` дає `false`?",
+      "options": [
+        { "text": "`===` порівнює і значення, і тип: рядок і число — різні типи", "correct": true },
+        { "text": "Бо числа не можна порівнювати", "explain": "Можна, просто тут різні типи." },
+        { "text": "Це помилка: результат буде `true`", "explain": "`true` дало б нестроге `==`, яке ми не використовуємо." }
+      ]
+    },
+    {
+      "id": "and-or",
+      "kind": "text",
+      "text": "Що поверне вираз?",
+      "code": "const a = true;\nconst b = false;\nconsole.log((a && b) || !b);",
+      "accept": ["true"],
+      "explanation": "`a && b` → false; `!b` → true; `false || true` → true."
+    },
+    {
+      "id": "falsy",
+      "kind": "multiple",
+      "text": "Які значення **falsy**?",
+      "options": [
+        { "text": "`0`", "correct": true },
+        { "text": "`''` (порожній рядок)", "correct": true },
+        { "text": "`null`", "correct": true },
+        { "text": "`'0'`", "explain": "Непорожній рядок — truthy, навіть якщо в ньому нуль." },
+        { "text": "`'false'`", "explain": "Рядок з текстом — truthy." },
+        { "text": "`-1`", "explain": "Будь-яке число, крім 0 і NaN, — truthy." }
+      ]
+    },
+    {
+      "id": "boundary",
+      "kind": "single",
+      "text": "Вимога: «знижка діє для замовлень **від 1000 грн**». Яка умова правильна?",
+      "options": [
+        { "text": "`total >= 1000`", "correct": true },
+        { "text": "`total > 1000`", "explain": "Тоді замовлення рівно на 1000 грн знижки не отримає — класичний граничний баг." },
+        { "text": "`total === 1000`", "explain": "Знижка була б тільки для рівно 1000." }
+      ]
+    },
+    {
+      "id": "nullish",
+      "kind": "text",
+      "text": "Що виведе код?",
+      "code": "const retries = 0;\nconsole.log(retries ?? 3);",
+      "accept": ["0"],
+      "explanation": "`??` підставляє значення лише для null/undefined. 0 — не null, тому результат 0. З `||` вийшло б 3."
+    },
+    {
+      "id": "round",
+      "kind": "text",
+      "text": "Чому дорівнює `Math.round((2 / 3) * 100)`?",
+      "accept": ["67"],
+      "explanation": "2/3·100 ≈ 66.67, округлення до найближчого цілого дає 67."
+    },
+    {
+      "id": "float",
+      "kind": "single",
+      "text": "Що поверне `0.1 + 0.2 === 0.3`?",
+      "options": [
+        { "text": "`false`", "correct": true, "explain": "0.1 + 0.2 = 0.30000000000000004 через неточність дробових чисел." },
+        { "text": "`true`" }
+      ]
+    }
+  ]
+}

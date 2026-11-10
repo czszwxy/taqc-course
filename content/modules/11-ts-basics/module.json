@@ -1,0 +1,12 @@
+{
+  "title": "Programming Basics with TypeScript",
+  "description": "Програмування з нуля на TypeScript: змінні, типи, умови, цикли, функції, масиви та об'єкти. Кожна тема — з задачами, які перевіряє справжній компілятор TypeScript і приховані тести.",
+  "goals": [
+    "Read and write simple TypeScript programs",
+    "Declare variables with correct types and understand type inference",
+    "Use operators, conditions and loops to express test logic",
+    "Write small functions with typed parameters and return values",
+    "Work with strings, arrays and objects — the data you meet in every test",
+    "Read TypeScript and runtime error messages and debug your own code"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "type": "classify",
+  "title": "Scrum: role, event or artifact?",
+  "statement": "Розподіли елементи Scrum: **роль (відповідальність)**, **подія** чи **артефакт**?",
+  "show": 8,
+  "categories": [
+    { "id": "role", "label": "Role" },
+    { "id": "event", "label": "Event" },
+    { "id": "artifact", "label": "Artifact" }
+  ],
+  "items": [
+    { "id": "po", "text": "Product Owner", "category": "role" },
+    { "id": "sm", "text": "Scrum Master", "category": "role" },
+    { "id": "devs", "text": "Developers", "category": "role" },
+    { "id": "planning", "text": "Sprint Planning", "category": "event" },
+    { "id": "daily", "text": "Daily Scrum", "category": "event" },
+    { "id": "review", "text": "Sprint Review", "category": "event" },
+    { "id": "retro", "text": "Sprint Retrospective", "category": "event" },
+    { "id": "pb", "text": "Product Backlog", "category": "artifact" },
+    { "id": "sb", "text": "Sprint Backlog", "category": "artifact" },
+    { "id": "increment", "text": "Increment", "category": "artifact" },
+    { "id": "sprint", "text": "Sprint", "category": "event", "explain": "Спринт — подія-контейнер для всіх інших подій." }
+  ],
+  "hints": ["Роль — це «хто», подія — «зустріч / проміжок часу», артефакт — «що створюється або ведеться» (список, результат)."],
+  "explanation": "Scrum складається з 3 відповідальностей (Product Owner, Scrum Master, Developers), 5 подій (Sprint, Sprint Planning, Daily Scrum, Sprint Review, Sprint Retrospective) і 3 артефактів (Product Backlog, Sprint Backlog, Increment)."
+}

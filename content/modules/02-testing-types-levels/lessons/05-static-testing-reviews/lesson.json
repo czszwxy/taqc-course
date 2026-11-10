@@ -1,0 +1,35 @@
+{
+  "title": "Static testing & reviews; verification vs validation",
+  "minutes": 45,
+  "summary": "Тестування без запуску коду: рев'ю вимог і коду, статичний аналіз, види рев'ю, верифікація і валідація",
+  "resources": [
+    {
+      "title": "ISTQB — Foundation Level syllabus (chapter 3: Static testing)",
+      "url": "https://www.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: Static program analysis",
+      "url": "https://en.wikipedia.org/wiki/Static_program_analysis",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: Code review",
+      "url": "https://en.wikipedia.org/wiki/Code_review",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: static vs dynamic testing (пошук)",
+      "url": "https://www.youtube.com/results?search_query=static+testing+vs+dynamic+testing",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

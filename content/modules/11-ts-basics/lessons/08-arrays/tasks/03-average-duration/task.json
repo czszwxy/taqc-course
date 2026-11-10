@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Average test duration",
+  "statement": "Зі звіту прогону ти отримав масив тривалостей тестів у мілісекундах. Напиши `getAverageDuration(durations)`, яка повертає середню тривалість, **округлену до цілого**.\n\nДля порожнього масиву поверни `0` (ділити на нуль не можна).\n\n```ts\ngetAverageDuration([1000, 2000, 3000]); // 2000\ngetAverageDuration([100, 101]);         // 101   (100.5 → 101)\ngetAverageDuration([]);                 // 0\n```",
+  "hints": [
+    "Спершу обробити граничний випадок: `if (durations.length === 0) return 0;`",
+    "Порахуй суму в циклі `for (const d of durations)`, поділи на `durations.length` і округли через `Math.round`."
+  ],
+  "explanation": "```ts\nif (durations.length === 0) return 0;\nlet sum = 0;\nfor (const d of durations) sum += d;\nreturn Math.round(sum / durations.length);\n```\n\nБез перевірки на порожній масив вийде `0 / 0 = NaN`. Порожній вхід — граничний випадок, який варто перевіряти завжди."
+}

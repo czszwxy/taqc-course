@@ -1,0 +1,65 @@
+{
+  "type": "quiz",
+  "title": "Quiz: conditionals",
+  "show": 5,
+  "hints": ["Пам'ятай: умови перевіряються зверху вниз, а case без break «провалюється» далі."],
+  "questions": [
+    {
+      "id": "order",
+      "kind": "text",
+      "text": "Що поверне `grade(95)`?",
+      "code": "function grade(score: number): string {\n  if (score >= 60) return 'C';\n  if (score >= 75) return 'B';\n  if (score >= 90) return 'A';\n  return 'F';\n}",
+      "accept": ["C"],
+      "explanation": "Перша умова `95 >= 60` істинна, функція одразу повертає 'C'. Умови треба впорядкувати від найсуворішої до найм'якшої."
+    },
+    {
+      "id": "ternary",
+      "kind": "text",
+      "text": "Чому дорівнює `label`?",
+      "code": "const code = 404;\nconst label = code < 400 ? 'ok' : 'error';",
+      "accept": ["error"],
+      "explanation": "404 < 400 — false, тому береться значення після двокрапки."
+    },
+    {
+      "id": "fallthrough",
+      "kind": "single",
+      "text": "Що виведе код?",
+      "code": "const env = 'dev';\nswitch (env) {\n  case 'dev':\n    console.log('dev');\n  case 'staging':\n    console.log('staging');\n    break;\n  default:\n    console.log('prod');\n}",
+      "options": [
+        { "text": "`dev` і `staging`", "correct": true, "explain": "Після case 'dev' немає break, тому виконання «провалилось» у case 'staging'." },
+        { "text": "Лише `dev`" },
+        { "text": "`dev`, `staging` і `prod`", "explain": "break у case 'staging' зупинив виконання." }
+      ]
+    },
+    {
+      "id": "branches",
+      "kind": "single",
+      "text": "Функція має `if`, два `else if` і `else`. Яка **мінімальна** кількість тестів, щоб пройти кожну гілку хоча б раз?",
+      "options": [
+        { "text": "4", "correct": true },
+        { "text": "1", "explain": "Один тест проходить лише одну гілку." },
+        { "text": "2" },
+        { "text": "8", "explain": "8 — це всі комбінації трьох boolean, але гілок тут 4." }
+      ]
+    },
+    {
+      "id": "isinteger",
+      "kind": "single",
+      "text": "Що поверне `Number.isInteger(18.0)`?",
+      "options": [
+        { "text": "`true`", "correct": true, "explain": "18.0 — це те саме число, що й 18." },
+        { "text": "`false`" }
+      ]
+    },
+    {
+      "id": "case-compare",
+      "kind": "single",
+      "text": "Яким оператором `case` порівнює значення?",
+      "options": [
+        { "text": "`===` (строге порівняння)", "correct": true },
+        { "text": "`==`" },
+        { "text": "`>=`" }
+      ]
+    }
+  ]
+}

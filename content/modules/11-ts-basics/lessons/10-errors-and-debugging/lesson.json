@@ -1,0 +1,37 @@
+{
+  "title": "Reading errors & debugging",
+  "minutes": 55,
+  "summary": "Синтаксичні, типові, runtime і логічні помилки, як читати повідомлення TypeScript і stack trace, техніки налагодження",
+  "resources": [
+    {
+      "title": "MDN: JavaScript error reference",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Пояснення до кожного типового runtime-повідомлення.",
+      "needsVerification": true
+    },
+    {
+      "title": "VS Code: Debugging",
+      "url": "https://code.visualstudio.com/docs/editor/debugging",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Точки зупину й покрокове виконання. Знадобиться в треку Playwright.",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Налагодження в браузері",
+      "url": "https://uk.javascript.info/debugging-chrome",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: How to read TypeScript errors (пошук)",
+      "url": "https://www.youtube.com/results?search_query=how+to+read+TypeScript+errors",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

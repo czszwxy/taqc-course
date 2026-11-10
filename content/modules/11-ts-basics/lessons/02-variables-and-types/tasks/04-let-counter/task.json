@@ -1,0 +1,14 @@
+{
+  "type": "code",
+  "title": "Fix the retry counter",
+  "statement": "Функція `countRetries` рахує повтори тесту і має повертати `3`. Але TypeScript підкреслює код червоним.\n\nПрочитай повідомлення помилки (наведи мишку на підкреслення) і виправ оголошення змінної так, щоб код працював.",
+  "hints": [
+    "Повідомлення каже: `Cannot assign to 'attempts' because it is a constant.`",
+    "Значення `attempts` змінюється, тому `const` тут не підходить. Яке слово дозволяє перезапис?"
+  ],
+  "explanation": "`const` забороняє перезаписувати змінну. Лічильник змінюється, тому його треба оголосити через `let`: `let attempts = 0;`. Решта коду вже правильна.",
+  "codeRules": [
+    { "kind": "require", "pattern": "let\\s+attempts", "message": "Оголоси лічильник через `let attempts = 0;`." },
+    { "kind": "require", "pattern": "attempts\\s*=\\s*attempts\\s*\\+\\s*1", "message": "Не видаляй рядки, що збільшують лічильник: виправ тільки оголошення." }
+  ]
+}

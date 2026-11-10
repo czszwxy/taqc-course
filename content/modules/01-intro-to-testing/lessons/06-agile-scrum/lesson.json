@@ -1,0 +1,43 @@
+{
+  "title": "Agile & Scrum for testers",
+  "minutes": 55,
+  "summary": "Цінності Agile, ролі, події й артефакти Scrum, user stories, acceptance criteria, Definition of Done і місце QA у спринті",
+  "resources": [
+    {
+      "title": "The Scrum Guide (official)",
+      "url": "https://scrumguides.org/scrum-guide.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Офіційний короткий опис Scrum. Є переклади іншими мовами на тому ж сайті.",
+      "needsVerification": true
+    },
+    {
+      "title": "Manifesto for Agile Software Development",
+      "url": "https://agilemanifesto.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Atlassian: Scrum guide for teams",
+      "url": "https://www.atlassian.com/agile/scrum",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Atlassian: User stories with examples",
+      "url": "https://www.atlassian.com/agile/project-management/user-stories",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Scrum українською (пошук)",
+      "url": "https://www.youtube.com/results?search_query=Scrum+%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D1%8E",
+      "kind": "video",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

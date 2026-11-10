@@ -1,0 +1,36 @@
+{
+  "title": "Test pyramid & what to automate",
+  "minutes": 45,
+  "summary": "Піраміда тестів, антипатерн «ріжок морозива», що варто автоматизувати, а що краще лишити ручним",
+  "resources": [
+    {
+      "title": "Martin Fowler: Test Pyramid",
+      "url": "https://martinfowler.com/bliki/TestPyramid.html",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Martin Fowler's site: The Practical Test Pyramid",
+      "url": "https://martinfowler.com/articles/practical-test-pyramid.html",
+      "kind": "article",
+      "lang": "en",
+      "note": "Довга, але дуже практична стаття. Повернися до неї в треку автоматизації.",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Best Practices",
+      "url": "https://playwright.dev/docs/best-practices",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: test automation pyramid explained (пошук)",
+      "url": "https://www.youtube.com/results?search_query=test+automation+pyramid+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}
