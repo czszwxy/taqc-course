@@ -1,0 +1,71 @@
+{
+  "type": "quiz",
+  "title": "Quiz: assertions",
+  "show": 5,
+  "hints": ["Web-first = await expect(locator) — повторює до таймауту. soft — не зупиняє тест."],
+  "questions": [
+    {
+      "id": "web-first",
+      "kind": "single",
+      "text": "Чим `await expect(locator).toHaveText('2,350 UAH')` кращий за `expect(await locator.textContent()).toBe('2,350 UAH')`?",
+      "options": [
+        { "text": "Він повторює перевірку, доки текст не стане очікуваним (до таймауту), а ручне читання бере текст один раз", "correct": true },
+        { "text": "Нічим, це однакові перевірки" },
+        { "text": "Він швидший, бо не чекає" }
+      ]
+    },
+    {
+      "id": "contain",
+      "kind": "single",
+      "text": "Знижка показується як `− 250 UAH` (спеціальний мінус). Яка перевірка надійна і точна?",
+      "options": [
+        { "text": "`toContainText('250 UAH')`", "correct": true },
+        { "text": "`toHaveText('-250 UAH')`", "explain": "Звичайний дефіс ≠ знак мінус (−), і пробіл інший — перевірка впаде." },
+        { "text": "`toBeVisible()`", "explain": "Перевіряє лише наявність, не суму." }
+      ]
+    },
+    {
+      "id": "soft",
+      "kind": "single",
+      "text": "Що робить `expect.soft(...)` при розбіжності?",
+      "options": [
+        { "text": "Записує помилку й продовжує тест; наприкінці тест буде червоним з усіма розбіжностями", "correct": true },
+        { "text": "Ігнорує помилку, тест буде зеленим" },
+        { "text": "Одразу зупиняє тест" }
+      ]
+    },
+    {
+      "id": "count",
+      "kind": "text",
+      "text": "Яка web-first перевірка порівнює кількість знайдених елементів? (назва методу)",
+      "accept": ["toHaveCount", "tohavecount", "toHaveCount()"]
+    },
+    {
+      "id": "value",
+      "kind": "single",
+      "text": "Як перевірити, що поле пошуку порожнє після «Clear filters»?",
+      "options": [
+        { "text": "`await expect(page.getByLabel('Search')).toHaveValue('')`", "correct": true },
+        { "text": "`await expect(page.getByLabel('Search')).toHaveText('')`", "explain": "Значення поля вводу — це value, а не текст." }
+      ]
+    },
+    {
+      "id": "url",
+      "kind": "single",
+      "text": "Як перевірити, що після логіну відкрилась сторінка `/dashboard`?",
+      "options": [
+        { "text": "`await expect(page).toHaveURL(/dashboard/)`", "correct": true },
+        { "text": "`expect(page.url()).toContain('dashboard')` одразу після кліку", "explain": "Читає адресу один раз, можливо ще до переходу." }
+      ]
+    },
+    {
+      "id": "exact",
+      "kind": "single",
+      "text": "Яка перевірка суми в кошику ловить більше багів?",
+      "options": [
+        { "text": "`await expect(total).toHaveText('2,350 UAH')`", "correct": true },
+        { "text": "`await expect(total).toBeVisible()`", "explain": "Сума є, але чи правильна? Ця перевірка не скаже." }
+      ]
+    }
+  ]
+}

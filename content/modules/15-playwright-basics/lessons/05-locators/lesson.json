@@ -1,0 +1,29 @@
+{
+  "title": "Locators: getByRole, getByLabel, getByText, getByTestId",
+  "minutes": 60,
+  "summary": "Що таке локатор, рекомендовані вбудовані локатори (getByRole, getByLabel, getByPlaceholder, getByText, getByTestId), точний і частковий збіг, strict mode і чому тести мають шукати елементи так, як користувач",
+  "resources": [
+    {
+      "title": "Playwright: Locators",
+      "url": "https://playwright.dev/docs/locators",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Best Practices — use locators",
+      "url": "https://playwright.dev/docs/best-practices",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: ARIA roles",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Які ролі мають елементи: button, link, heading, checkbox, textbox…",
+      "needsVerification": true
+    }
+  ]
+}

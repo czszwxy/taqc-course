@@ -1,0 +1,24 @@
+{
+  "type": "playwright",
+  "title": "Test the sign-up form with user-facing locators",
+  "playground": "signup",
+  "statement": "Протестуй форму реєстрації (`/playground/signup`) **лише вбудованими локаторами**: `getByLabel`, `getByRole`, `getByText` (без `page.locator(...)`).\n\nУ стартовому файлі вже є хелпер `fillForm` і перший тест. Допиши тести на вимоги:\n\n1. Валідні дані → заголовок `Welcome, Olena Kovalenko!` (**повне** ім'я). *Уже є.*\n2. Без галочки **Terms of Service** акаунт не створюється: з'являється `You must accept the Terms of Service`.\n3. Паролі не збігаються (`Secret123` / `Secret124`) → `Passwords do not match`.\n4. Вік **18** — нижня межа, його приймають (акаунт створюється).\n\n**✓ Check** запустить тести на правильній формі та на 4 її версіях з різними багами. Кожен баг має «вбити» хоча б один тест.",
+  "mutants": [
+    { "id": "greeting", "description": "the welcome message showed only the first name (\"Welcome, Olena!\").", "hint": "Check the WHOLE greeting text after a valid registration — the full name must be there." },
+    { "id": "terms", "description": "the account was created without accepting the Terms of Service.", "hint": "Submit a valid form WITHOUT checking the Terms checkbox: an error must appear and no account must be created." },
+    { "id": "confirm", "description": "\"Confirm password\" was never compared with the password.", "hint": "Try two different passwords (Secret123 / Secret124) — the form must say they do not match." },
+    { "id": "age18", "description": "age 18 was rejected (the check used > instead of >=).", "hint": "Test the lower age boundary from the requirements: 18 must be accepted." }
+  ],
+  "minTests": 3,
+  "codeRules": [
+    { "kind": "require", "pattern": "getByLabel\\(", "message": "Поля форми шукай через `getByLabel(...)`." },
+    { "kind": "require", "pattern": "getByRole\\(", "message": "Кнопки й заголовки шукай через `getByRole(...)`." },
+    { "kind": "forbid", "pattern": "\\.locator\\(", "message": "У цьому завданні тренуємо вбудовані локатори: замість `page.locator(...)` використай `getByLabel` / `getByRole` / `getByText`." }
+  ],
+  "hints": [
+    "Помилку шукай за текстом: `await expect(page.getByText('You must accept the Terms of Service')).toBeVisible();`",
+    "Щоб змінити одне поле, передай у хелпер копію з іншим значенням: `await fillForm(page, { ...VALID, confirm: 'Secret124' });`",
+    "Негативний тест перевіряє ще й, що успіху НЕ було: `await expect(page.getByRole('heading', { name: /Welcome/ })).toBeHidden();`"
+  ],
+  "explanation": "Вбудовані локатори описують сторінку так, як її бачить користувач: «поле з підписом Age», «кнопка Create account». Такі тести не ламаються, коли змінюються класи чи вкладеність елементів. Кожен баг ловиться тестом на конкретну вимогу: повне ім'я в привітанні, обов'язкова галочка, порівняння паролів, межа віку. Часта помилка — `getByLabel('Password')` без `exact: true`: він знайде ще й «Confirm password»."
+}

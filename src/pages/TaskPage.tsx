@@ -19,6 +19,7 @@ import { NotFound } from './NotFound';
 
 const CodeTaskView = lazy(() => import('../features/tasks/CodeTaskView'));
 const SqlTaskView = lazy(() => import('../features/sql/SqlTaskView'));
+const PlaywrightTaskView = lazy(() => import('../features/playwright/PlaywrightTaskView'));
 
 const TASK_VIEWS: Record<Task['type'], ComponentType<TaskViewProps>> = {
   code: CodeTaskView,
@@ -32,6 +33,7 @@ const TASK_VIEWS: Record<Task['type'], ComponentType<TaskViewProps>> = {
   table: TableTaskView,
   selector: SelectorTaskView,
   sql: SqlTaskView,
+  playwright: PlaywrightTaskView,
 };
 
 /** Task types whose "similar task" is generated from a new seed (re-sampled / re-shuffled) instead of a variant folder. */

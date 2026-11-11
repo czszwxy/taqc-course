@@ -1,0 +1,21 @@
+{
+  "type": "playwright",
+  "title": "Check card buttons and Clear filters",
+  "variantOf": "02-search-filtering",
+  "playground": "search",
+  "statement": "Ще дві вимоги каталогу (`/playground/search`), знову з ланцюжками й фільтрами локаторів:\n\n1. Товари з позначкою **Out of stock** мають **неактивну** кнопку `Add to cart` (таких товарів 4), а товари в наявності — активну.\n2. **Clear filters** скидає все, **включно з текстом пошуку**: після пошуку `Phone` + категорії `Phones` і натискання Clear filters поле пошуку порожнє, і знову видно всі 14 товарів.\n\nКнопку всередині картки шукай від самої картки: `card.getByRole('button', { name: 'Add to cart' })`.",
+  "mutants": [
+    { "id": "addOutOfStock", "description": "\"Add to cart\" was enabled for out-of-stock products.", "hint": "Take a card that says \"Out of stock\" and check its Add to cart button state." },
+    { "id": "clearKeepsSearch", "description": "\"Clear filters\" did not clear the search box.", "hint": "Type a search text, click Clear filters, then check the search field value and the number of cards." }
+  ],
+  "minTests": 2,
+  "codeRules": [
+    { "kind": "require", "pattern": "\\.filter\\(", "message": "Знайди картки «Out of stock» через `cards.filter({ hasText: 'Out of stock' })`." },
+    { "kind": "require", "pattern": "toBeDisabled\\(", "message": "Стан кнопки перевіряй через `toBeDisabled()` / `toBeEnabled()`." }
+  ],
+  "hints": [
+    "`const outOfStock = cards.filter({ hasText: 'Out of stock' }); await expect(outOfStock).toHaveCount(4);`",
+    "Значення поля: `await expect(page.getByLabel('Search')).toHaveValue('');`"
+  ],
+  "explanation": "Фільтр `.filter({ hasText: 'Out of stock' })` вибирає саме ті картки, про які йдеться у вимозі, а локатор від картки (`card.getByRole('button', …)`) знаходить кнопку саме в ній, а не першу на сторінці. Для «Clear filters» перевіряй результат з двох боків: стан полів (`toHaveValue('')`) і те, що бачить користувач (кількість карток)."
+}

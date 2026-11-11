@@ -4,5 +4,6 @@ dist
 .DS_Store
 lab/test-results
 lab/playwright-report
+lab/.runs
 
 .playwright-mcp

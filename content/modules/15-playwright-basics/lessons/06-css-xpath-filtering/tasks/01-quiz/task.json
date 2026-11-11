@@ -1,0 +1,70 @@
+{
+  "type": "quiz",
+  "title": "Quiz: CSS, XPath, chaining & filtering",
+  "show": 5,
+  "hints": ["filter залишає потрібні елементи, nth рахує з 0, toHaveCount чекає, count() — ні."],
+  "questions": [
+    {
+      "id": "nth",
+      "kind": "single",
+      "text": "Яку картку поверне `cards.nth(1)`?",
+      "options": [
+        { "text": "Другу (нумерація з 0)", "correct": true },
+        { "text": "Першу" },
+        { "text": "Останню" }
+      ]
+    },
+    {
+      "id": "filter",
+      "kind": "single",
+      "text": "Як вибрати картки товарів, які є в наявності (без тексту «Out of stock»)?",
+      "options": [
+        { "text": "`cards.filter({ hasNotText: 'Out of stock' })`", "correct": true },
+        { "text": "`cards.filter({ hasText: 'Out of stock' })`", "explain": "Це навпаки: картки, яких немає в наявності." },
+        { "text": "`cards.nth(0)`" }
+      ]
+    },
+    {
+      "id": "chain",
+      "kind": "single",
+      "text": "Як натиснути кнопку Remove саме в рядку з мишкою?",
+      "options": [
+        { "text": "`rows.filter({ hasText: 'Wireless mouse M2' }).getByRole('button', { name: 'Remove' }).click()`", "correct": true },
+        { "text": "`page.getByRole('button', { name: 'Remove' }).click()`", "explain": "Кнопок Remove кілька: strict mode violation (або клік по іншій)." }
+      ]
+    },
+    {
+      "id": "count",
+      "kind": "single",
+      "text": "Після введення пошуку список оновлюється за мить. Яка перевірка надійніша?",
+      "options": [
+        { "text": "`await expect(cards).toHaveCount(2)`", "correct": true },
+        { "text": "`expect(await cards.count()).toBe(2)`", "explain": "`count()` бере число ЗАРАЗ і не чекає оновлення: класичний flaky-тест." }
+      ]
+    },
+    {
+      "id": "xpath",
+      "kind": "single",
+      "text": "Коли доречно використати CSS чи XPath у `page.locator()`?",
+      "options": [
+        { "text": "Коли вбудовані локатори не підходять, і то з коротким селектором за атрибутом", "correct": true },
+        { "text": "Завжди, бо це найшвидше" }
+      ]
+    },
+    {
+      "id": "select",
+      "kind": "text",
+      "text": "Який метод вибирає варіант у списку `<select>`? (лише назва методу)",
+      "accept": ["selectOption", "selectoption", "selectOption()"]
+    },
+    {
+      "id": "order",
+      "kind": "single",
+      "text": "Коли варто брати елемент за позицією (`first()`, `nth()`)?",
+      "options": [
+        { "text": "Коли порядок — це вимога (сортування, «найновіше зверху»)", "correct": true },
+        { "text": "Завжди: так коротше" }
+      ]
+    }
+  ]
+}

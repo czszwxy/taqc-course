@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { PlaygroundShell, FieldError, formatUah, inputClass, isFixedMode } from './PlaygroundShell';
+import { PlaygroundShell, FieldError, formatUah, inputClass, isFixedMode, withLabMode } from './PlaygroundShell';
 import cartData from './data/cart.json';
 
 /**
@@ -81,7 +81,7 @@ function freshQtyInputs(items: CartItem[]): Record<string, string> {
 
 export function CartPage() {
   const fixed = isFixedMode();
-  const bug = getBugs(fixed);
+  const bug = withLabMode(getBugs(fixed));
 
   const [items, setItems] = useState<CartItem[]>(INITIAL_ITEMS);
   const [qtyInputs, setQtyInputs] = useState<Record<string, string>>(() => freshQtyInputs(INITIAL_ITEMS));

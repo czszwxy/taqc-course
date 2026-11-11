@@ -1,0 +1,36 @@
+{
+  "type": "table",
+  "title": "What does each config option do?",
+  "statement": "Ось фрагменти `playwright.config.ts`. Що робить кожен?",
+  "givenColumns": ["Config"],
+  "answerColumns": [
+    {
+      "id": "effect",
+      "label": "Effect",
+      "options": [
+        "Where test files are",
+        "Time limit for one test",
+        "How long web-first assertions wait",
+        "Re-run failed tests",
+        "How many tests run at the same time",
+        "Prefix for relative page.goto URLs",
+        "Record a trace when a test is retried",
+        "Run the same tests in another browser",
+        "Start the app before the tests"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`testDir: './tests'`"], "answers": { "effect": "Where test files are" } },
+    { "given": ["`timeout: 30_000`"], "answers": { "effect": "Time limit for one test" } },
+    { "given": ["`expect: { timeout: 5_000 }`"], "answers": { "effect": "How long web-first assertions wait" } },
+    { "given": ["`retries: 2`"], "answers": { "effect": "Re-run failed tests" } },
+    { "given": ["`workers: 4`"], "answers": { "effect": "How many tests run at the same time" } },
+    { "given": ["`use: { baseURL: 'http://localhost:5173' }`"], "answers": { "effect": "Prefix for relative page.goto URLs" } },
+    { "given": ["`use: { trace: 'on-first-retry' }`"], "answers": { "effect": "Record a trace when a test is retried" } },
+    { "given": ["`projects: [{ name: 'webkit', use: { ...devices['Desktop Safari'] } }]`"], "answers": { "effect": "Run the same tests in another browser" } },
+    { "given": ["`webServer: { command: 'npm run dev', url: 'http://localhost:5173' }`"], "answers": { "effect": "Start the app before the tests" } }
+  ],
+  "hints": ["Верхній `timeout` — для тесту, `expect.timeout` — для перевірки. `workers` — паралельність, `retries` — повтори."],
+  "explanation": "Конфіг відповідає на питання «де тести» (`testDir`), «скільки чекати» (`timeout`, `expect.timeout`), «як запускати» (`workers`, `retries`, `projects`), «куди йти» (`baseURL`, `webServer`) і «що записати для розбору» (`trace`). Ці налаштування ти бачитимеш у кожному реальному проєкті."
+}

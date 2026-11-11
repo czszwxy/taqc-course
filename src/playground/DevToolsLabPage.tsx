@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { PlaygroundShell, formatUah, inputClass, isFixedMode } from './PlaygroundShell';
+import { PlaygroundShell, formatUah, inputClass, isFixedMode, withLabMode } from './PlaygroundShell';
 import lab from './data/devtools-lab.json';
 
 /**
@@ -72,7 +72,7 @@ declare global {
 
 export function DevToolsLabPage() {
   const fixed = isFixedMode();
-  const bug = getBugs(fixed);
+  const bug = withLabMode(getBugs(fixed));
   const base = fixed ? '/api-fixed' : '/api';
 
   const [totalMessage, setTotalMessage] = useState<string | null>(null);

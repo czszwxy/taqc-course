@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PlaygroundShell, formatUah, isFixedMode } from './PlaygroundShell';
+import { PlaygroundShell, formatUah, isFixedMode, withLabMode } from './PlaygroundShell';
 
 /**
  * Bug Playground: Gadgetly product page for responsive testing, with 4 INTENTIONAL layout bugs that
@@ -45,7 +45,7 @@ function pick(classes: readonly [string, string], buggy: boolean): string {
 
 export function ResponsivePage() {
   const fixed = isFixedMode();
-  const bug = getBugs(fixed);
+  const bug = withLabMode(getBugs(fixed));
   const [menuOpen, setMenuOpen] = useState(false);
   const [added, setAdded] = useState(false);
 

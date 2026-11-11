@@ -1,0 +1,15 @@
+{
+  "title": "Playwright Basics",
+  "description": "Перший модуль справжньої автоматизації UI: навіщо й що автоматизувати, Selenium vs Cypress vs Playwright, встановлення й конфіг, перший тест і CLI, локатори, ланцюжки й фільтри, дії користувача, web-first і soft assertions, автоочікування та flaky-тести. Практичні завдання — це справжні Playwright-тести, які застосунок запускає в Chromium на сторінках Bug Playground: тест має бути зеленим на правильній сторінці і червоним на кожній версії з багом.",
+  "goals": [
+    "Decide what is worth automating and recognise flaky tests",
+    "Compare Selenium, Cypress and Playwright and explain the choice",
+    "Install Playwright, read its project structure and config",
+    "Write and run tests from the CLI, in UI mode, headed and with codegen",
+    "Choose resilient locators: getByRole, getByLabel, getByText, getByTestId, CSS/XPath as a fallback",
+    "Chain and filter locators to target the right element",
+    "Automate user actions: click, fill, press, check, selectOption, reload",
+    "Write web-first and soft assertions",
+    "Rely on auto-waiting, set sensible timeouts and fix flaky tests"
+  ]
+}

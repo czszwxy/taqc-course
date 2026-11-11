@@ -1,5 +1,6 @@
 import { useState, type FormEvent, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
+import { withLabMode } from './PlaygroundShell';
 
 /**
  * Bug Playground: sign-up form with 7 INTENTIONAL bugs (catalogued in
@@ -71,7 +72,7 @@ function validate(v: Values, bug: ReturnType<typeof getBugs>): Errors {
 
 export function SignupPage() {
   const fixed = new URLSearchParams(window.location.search).has('fixed');
-  const bug = getBugs(fixed);
+  const bug = withLabMode(getBugs(fixed));
   const [values, setValues] = useState<Values>(EMPTY);
   const [errors, setErrors] = useState<Errors>({});
   const [welcome, setWelcome] = useState<string | null>(null);

@@ -1,0 +1,18 @@
+{
+  "type": "playwright",
+  "title": "Your first Playwright tests: the login page",
+  "playground": "login",
+  "statement": "Напиши два перші тести для сторінки логіну Taskly (`/playground/login`). Відкрий сторінку кнопкою нижче й подивись на неї.\n\n1. **shows the sign-in form**: є заголовок `Sign in to Taskly`, поля **Email** і **Password** та кнопка **Log in**.\n2. **demo user can sign in**: увійди як `demo@taskly.test` / `Demo1234` і перевір, що з'явився заголовок `Welcome back!` та текст `Signed in as demo@taskly.test`.\n\nКорисні локатори:\n\n```ts\npage.getByRole('heading', { name: 'Sign in to Taskly' })\npage.getByLabel('Email')\npage.getByLabel('Password', { exact: true }) // без exact знайде ще й чекбокс \"Show password\"\npage.getByRole('button', { name: 'Log in' })\npage.getByTestId('signed-in-as')\n```\n\nНатисни **▶ Run**, щоб запустити тести в справжньому Chromium, і **✓ Check**, щоб здати.",
+  "minTests": 2,
+  "codeRules": [
+    { "kind": "require", "pattern": "expect\\(", "message": "Тест без `expect(...)` нічого не перевіряє: додай перевірки." },
+    { "kind": "require", "pattern": "getByRole\\(", "message": "Використай `page.getByRole(...)` для заголовка або кнопки." },
+    { "kind": "require", "pattern": "getByLabel\\(", "message": "Знайди поля через `page.getByLabel(...)`: так їх шукає користувач." }
+  ],
+  "hints": [
+    "Перевірка видимості: `await expect(page.getByRole('heading', { name: 'Sign in to Taskly' })).toBeVisible();`",
+    "Заповнення поля: `await page.getByLabel('Email').fill('demo@taskly.test');` Натискання: `await page.getByRole('button', { name: 'Log in' }).click();`",
+    "Текст елемента: `await expect(page.getByTestId('signed-in-as')).toHaveText('Signed in as demo@taskly.test');`"
+  ],
+  "explanation": "Кожен тест має три частини: **Arrange** (`page.goto`), **Act** (fill, click) і **Assert** (`expect`). Перед кожною дією Playwright сам чекає, поки елемент з'явиться і стане доступним, тому `waitForTimeout` не потрібен. Найчастіша помилка тут — `getByLabel('Password')` без `{ exact: true }`: він знаходить два елементи (поле і чекбокс «Show password»), і Playwright зупиняється з помилкою strict mode violation."
+}

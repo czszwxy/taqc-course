@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent, type KeyboardEvent } from 'react';
-import { PlaygroundShell, FieldError, inputClass, isFixedMode } from './PlaygroundShell';
+import { PlaygroundShell, FieldError, inputClass, isFixedMode, withLabMode } from './PlaygroundShell';
 
 /**
  * Bug Playground: Taskly to-do list with 6 INTENTIONAL bugs (catalogued in
@@ -85,7 +85,7 @@ function counterText(count: number, bug: Bugs): string {
 
 export function TodoPage() {
   const fixed = isFixedMode();
-  const bug = getBugs(fixed);
+  const bug = withLabMode(getBugs(fixed));
 
   const [items, setItems] = useState<Todo[]>(() => load(fixed));
   const [draft, setDraft] = useState('');

@@ -1,0 +1,21 @@
+{
+  "title": "Web-first & soft assertions",
+  "minutes": 55,
+  "summary": "Web-first перевірки, що самі чекають потрібного стану (toBeVisible, toHaveText, toContainText, toHaveValue, toHaveCount, toBeChecked, toBeEnabled, toHaveURL…), чим вони кращі за ручне читання тексту, .not, soft assertions і власні повідомлення",
+  "resources": [
+    {
+      "title": "Playwright: Assertions",
+      "url": "https://playwright.dev/docs/test-assertions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Best Practices — web-first assertions",
+      "url": "https://playwright.dev/docs/best-practices",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

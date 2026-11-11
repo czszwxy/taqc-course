@@ -1,0 +1,70 @@
+{
+  "type": "quiz",
+  "title": "Quiz: Selenium, Cypress, Playwright",
+  "show": 5,
+  "hints": ["Selenium — WebDriver і багато мов; Cypress — JS/TS всередині браузера; Playwright — Microsoft, три рушії браузерів, вбудований раннер."],
+  "questions": [
+    {
+      "id": "webdriver",
+      "kind": "single",
+      "text": "Який інструмент керує браузером через стандарт W3C WebDriver?",
+      "options": [{ "text": "Selenium", "correct": true }, { "text": "Cypress" }, { "text": "Playwright" }]
+    },
+    {
+      "id": "engines",
+      "kind": "single",
+      "text": "Які рушії браузерів підтримує Playwright?",
+      "options": [
+        { "text": "Chromium, Firefox і WebKit", "correct": true },
+        { "text": "Лише Chromium" },
+        { "text": "Лише Chrome та Edge" }
+      ]
+    },
+    {
+      "id": "cypress-lang",
+      "kind": "single",
+      "text": "На яких мовах пишуть тести в Cypress?",
+      "options": [
+        { "text": "JavaScript / TypeScript", "correct": true },
+        { "text": "Java, Python, C#", "explain": "Це про Selenium (і частково Playwright)." },
+        { "text": "Будь-якою" }
+      ]
+    },
+    {
+      "id": "tabs",
+      "kind": "single",
+      "text": "Тест має відкрити посилання в новій вкладці і перевірити обидві вкладки. Який інструмент НЕ підтримує кілька вкладок в одному тесті?",
+      "options": [{ "text": "Cypress", "correct": true }, { "text": "Playwright" }, { "text": "Selenium" }]
+    },
+    {
+      "id": "pw-tools",
+      "kind": "multiple",
+      "text": "Що входить у Playwright «з коробки»? (обери всі правильні)",
+      "options": [
+        { "text": "Тест-раннер з паралельним запуском", "correct": true },
+        { "text": "Trace Viewer", "correct": true },
+        { "text": "Codegen (запис дій у код)", "correct": true },
+        { "text": "Selenium Grid", "explain": "Grid — частина Selenium." }
+      ]
+    },
+    {
+      "id": "interview",
+      "kind": "single",
+      "text": "На співбесіді питають: «Чому Playwright, а не Selenium?» Яка відповідь найсильніша?",
+      "options": [
+        { "text": "Пояснити переваги під конкретний проєкт: TypeScript у команді, кілька браузерів, автоочікування, вбудовані раннер і trace", "correct": true },
+        { "text": "«Бо Selenium застарів»" },
+        { "text": "«Бо так вирішив мій ментор»" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "kind": "single",
+      "text": "Чи знадобляться знання Playwright, якщо на роботі використовують Selenium?",
+      "options": [
+        { "text": "Так: локатори, очікування, Page Object, тест-дизайн однакові за ідеєю, змінюється синтаксис", "correct": true },
+        { "text": "Ні, доведеться вчити все з нуля" }
+      ]
+    }
+  ]
+}

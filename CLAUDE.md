@@ -11,13 +11,17 @@ Self-study web app that takes a learner from zero to **Trainee QA Automation Eng
 npm install
 npm run dev        # http://localhost:5173 (also serves the Gadgetly mock API at /api)
 npm run validate   # validates ALL content + proves every code task is solvable — run after every content change
+npm run validate:lab  # runs every Playwright task (reference must pass + catch all bugs, starter must not pass) in real Chromium — run after changing Playwright tasks or playground pages
+npm run lab        # the learner's own Playwright practice tests in lab/tests (npm run lab:report, npm run lab:setup = install Chromium)
 npm run typecheck  # tsc on src/ and scripts/
 npm run build      # typecheck + production build
 ```
 
 Windows note: Node is installed at `C:\Program Files\nodejs` — if `node` is not on PATH in a shell, prefix with `$env:Path = "C:\Program Files\nodejs;" + $env:Path`.
 
-Launcher: `Start QA Academy.cmd` (CRLF line endings, ASCII only) + desktop shortcut `QA Academy.lnk` with icon `launcher/qa-academy.ico`. It opens http://localhost:5173 if a server is already listening, otherwise runs `npm install` (first time) and `npm run dev -- --open`. The dev port is pinned (`strictPort`, `DEV_PORT` in vite.config.ts) because localStorage progress is tied to that origin — never change the port.
+Launcher: `Start QA Academy.cmd` (CRLF line endings, ASCII only) + desktop shortcut `QA Academy.lnk` with icon `launcher/qa-academy.ico`. It opens http://localhost:5173 if a server is already listening, otherwise runs `npm install` (first time), `npx playwright install chromium` (no-op when present) and `npm run dev -- --open`.
+
+**Playwright browsers and the Claude app:** Claude's shell runs inside the Claude desktop app package, so `npx playwright install` run by Claude lands in a *virtualized* `%LOCALAPPDATA%` (`…\Packages\Claude_*\LocalCache\Local\ms-playwright`) that the owner's own processes (the dev server started by the launcher) cannot see. Claude's own Playwright runs (`npm run validate:lab`, `npm run lab`) work; the owner installs Chromium from their own terminal or via the launcher. The dev port is pinned (`strictPort`, `DEV_PORT` in vite.config.ts) because localStorage progress is tied to that origin — never change the port.
 
 ## Code style (enforced by a TS-patterns hook on edits)
 No nested ternaries (use a small function or a Record lookup), no magic numbers (named consts, e.g. `formatModuleNumber` in `src/lib/format.ts`), prefer `map/filter/reduce` over raw loops in app code. Content task files (`content/**`) are learner exercises and intentionally use loops.
@@ -50,13 +54,18 @@ src/
   runner/client.ts           ← main-thread API: checkCode / runCode (compile worker reused; exec worker per run, 5 s timeout)
   runner/*.worker.ts         ← Web Workers
   features/progress/         ← Zustand stores (progress + settings) and selectors (task/lesson/module stats)
+  features/playwright/       ← playwright task view (lazy), client.ts (lab endpoints), grade.ts (pure grading), monaco-types.ts (real @playwright/test .d.ts for the editor)
   features/sql/              ← sql task engine (engine.ts: pure run/compare/check on a fresh DB per run; load.ts: lazy sql.js; SqlTaskView.tsx, lazy-loaded)
   features/tasks/            ← one view per task type + forms.ts (rules, bug matching) + generators.ts (value-set) + selectors.ts (CSS/XPath checking, pure)
   playground/                ← intentionally buggy demo pages (Bug Playground) + registry.ts
   pages/                     ← Dashboard, ModulePage, LessonPage (Theory/Resources/Practice tabs), TaskPage, Settings, Playground
 server/mock-api.ts           ← Gadgetly REST API mounted into the Vite dev/preview server (/api buggy, /api-fixed correct); data in server/mock-data.json
+lab/playwright.config.ts     ← Playwright config: `npm run lab` runs lab/tests; with QA_LAB_RUN_DIR (set by the runner) it runs one graded spec as several projects (correct page + one per bug)
+server/lab-runner.ts         ← real Playwright runs for playwright tasks: POST /__lab/run, GET /__lab/status (mounted by vite.config.ts); runLab() also used by scripts/validate-lab.ts
+server/lab-types.ts          ← shared lab constants/types (LAB_BASE_URL, LAB_BUGS_KEY, results)
+scripts/validate-lab.ts      ← runs every playwright task's solution/starter through runLab()
 scripts/validate-content.ts  ← Node; reuses compiler/harness/mutation/forms/generators/selectors (jsdom) to verify content; runs tasks one at a time (real timers)
-lab/                         ← (future) real Playwright project + local mock API for hands-on labs
+lab/                         ← real Playwright: playwright.config.ts, tests/ (learner practice, example.spec.ts), .runs/ (temporary graded runs, gitignored)
 ```
 
 IDs come from folder names: lesson id `11-ts-basics/02-variables-and-types`, task id `<lessonId>/<task-folder>`. **Never rename content folders after release** — progress in localStorage is keyed by these ids. Numeric prefixes (`01-`, `02-`) define order; lesson number N maps to `course.json` planned lesson N.
@@ -88,6 +97,7 @@ Markdown + GFM tables. Callouts: a blockquote starting with `[!TIP]`, `[!NOTE]`,
 | `written` | `statement`, `playground?`, `fields[]` (`id`, `label`, `kind`: `text`/`textarea`/`list`, `placeholder?`, `hint?`), `rules[]`, `model` (field id → string or string[]), `checklist[]` | all fields required + rules → model answer + self-review checklist + Copy for review. Use for acceptance criteria, requirement reviews, charters, plans |
 | `table` | `statement`, `playground?`, `givenColumns[]` (header labels), `answerColumns[]` (`id`, `label`, `options[]`), `rows[]` (`given[]` same length as givenColumns, `answers` {colId → option}, `explain?`) | every answer cell must match; green/red per cell; row `explain` shown for wrong rows; answers revealed after 2 fails. Use for decision tables, state transition tables, partition tables, traceability matrices |
 | `sql` | `statement`, `database` (name or array of names from `content/databases/*.sql`, run in order), `challenges[]` (`id`, `prompt`, `model`, `verify?`, `orderMatters?`, `rules[]` require/forbid regex on the query, `explain?`) | each run uses a fresh in-memory copy. SELECT challenge: learner result vs model result (set comparison unless `orderMatters`; column names ignored, column count/order matter). Change challenge (`verify` set): run the statement, then `verify`, compare with the same after the model (order matters → put ORDER BY in `verify`). Validator: model runs, SELECT models return ≥1 row, change models really change the verify result, rule regexes compile and pass on the model. References revealed after 2 fails |
+| `playwright` | `statement`, `playground` (page id), `mutants[]` (`id` = a bug flag from that page's `bugIds` in registry.ts, `description`, `hint`), `minTests?`, `codeRules[]` + files `starter.ts`, `solution.ts` (full spec files importing `@playwright/test`) | real Playwright in Chromium via the dev-server runner: the spec must be green on the correct page and red on every page variant with one mutant bug turned on; `codeRules` on the spec. `validate` checks files/ids/rules statically; `validate:lab` runs reference + starter |
 | `selector` | `statement`, `syntax` (`css` or `xpath`), `html` (snippet; targets marked `data-expect="<challengeId> …"`, marker stripped before display), `challenges[]` (`id`, `prompt`, `model`, `rules[]` require/forbid regex on the selector text, `explain?`) | live match count + highlighting in a sandboxed iframe; a selector is correct when it matches exactly the marked elements (+ rules); reference selectors revealed after 2 fails. Validator runs every `model` through jsdom. Use for CSS/XPath/locator practice |
 
 Value-set generators (`src/features/tasks/generators.ts`, presets in `range-presets.json`): `bva-range` (params `field`, `min`, `max`, `unit?`, `approach`: `two-value` | `three-value`) and `ep-range` (one representative per integer partition: below / inside / above). Seed 0 uses the task params; other seeds pick a random preset.
@@ -112,6 +122,13 @@ Field rules (`rules[]`): `{ field, check, value?, message }` where `check` ∈ `
 - sql.js returns no result set for a 0-row SELECT, so "no rows" and "not a SELECT" compare equal — fine for verify queries that should become empty.
 - Use `rules` to stop hard-coded answers where the technique matters (e.g. require `left\s+join|not\s+(in|exists)` for "rows without a match", `<=\s*0` for "0 or less").
 - Writing task JSON through a bash heredoc strips backslashes in regexes — write content with the Write tool (bundles) instead.
+
+### Playwright task conventions
+- Specs use relative URLs (`page.goto('/playground/login')`); baseURL is the app (port 5173). Lab timeouts: test 15 s, expect 3 s, action 5 s.
+- Bug variants: the runner puts `qa-lab:bugs` (= `none` or one bug id) into each project's storageState; pages read it through `withLabMode(getBugs(fixed))` (PlaygroundShell). It wins over `?fixed`. Every new playground page must wrap its flags the same way and list them in `bugIds` (registry.ts) in the same order.
+- Starters: imports + one complete example test + `// твій код тут`; they must pass on the correct page but miss some bugs (or break a code rule) — `validate:lab` enforces that the starter does not pass.
+- Prefer user-facing locators in references (getByRole/getByLabel/getByText, getByTestId when needed). Watch for partial label matches (`getByLabel('Password', { exact: true })`) and for requirement-panel text when using getByText.
+- A Check runs ~5–20 s; keep 2–6 mutants per task.
 
 ### Bug Playground
 Pages in `src/playground/`, registered in `registry.ts`, routed standalone (no app chrome) in `App.tsx`. Each page has intentional bugs behind flags (`getBugs(fixed)`) and a `?fixed` query param that disables them (for future Playwright "must pass on fixed / fail on buggy" grading; never advertise `?fixed` to the learner). Keep the page's bug flags and the task's `bugs[]` catalog in sync. Use semantic HTML, labels and `data-testid` for future automation.
@@ -144,10 +161,11 @@ Pages in `src/playground/`, registered in `registry.ts`, routed standalone (no a
 - ✅ Module 14 "Your First Automated Tests" — 5 lessons, 17 tasks; 8 tests-mode tasks with 37 mutants.
 - ✅ Module 09 "Command Line, Git & GitHub" — 7 lessons, 21 tasks + 1 variant (command tables, order flows, commit-message and .gitignore classification, PR description, merge-conflict code task with conflict markers in starter.ts, test-code review).
 - ✅ Module 10 "SQL for Testers" — 6 lessons, 18 tasks + 3 variants; new `sql` task engine (sql.js) on the Gadgetly training database; lesson 6 uses `gadgetly-anomalies.sql` for integrity checks.
+- ✅ Module 15 "Playwright Basics" — 9 lessons, 25 tasks + 4 variants; new `playwright` task engine (real @playwright/test in Chromium via the dev server, mutation grading against playground bug variants); 10 Playwright tasks on login, signup, search, todo, cart and the API console.
 - ✅ Module 08 "HTTP, REST APIs & JSON" — 8 lessons, 24 tasks (hands-on with the API console: status-code run, params hunt, CRUD flow, token hunt, API bug hunt).
 - Theory-module pattern (modules 01–05, 09): each lesson = quiz (6–8 questions, show 5) + 2 practical tasks (classify / order / written), easy → harder. Never put Bug Playground bug answers in model answers of other modules (spoilers for the module 06 bug hunt).
-- Next suggested batch: module 15 "Playwright Basics" (needs a way to run real Playwright: `lab/` with `@playwright/test` + `npm run lab:check <id>` against the Bug Playground pages and their `?fixed` builds, or an in-browser locator/assertion simulator).
-- ⏳ Remaining modules in batches (owner reviews each batch). Planned engines to add when needed: Playwright-API simulator over playground pages with mutation grading (use the `?fixed` builds and `/api-fixed`), `lab/` with real `@playwright/test` + `npm run lab:check <id>`.
+- Next suggested batch: module 16 "Playwright in Practice" (describe/hooks/tags, debugging & trace, dialogs/frames/tabs, Page Object Model, fixtures, parameterized tests, storageState auth, network mocking with page.route, visual comparisons) — reuse the playwright engine; new playground pages may be needed for dialogs/frames/new tabs.
+- ⏳ Remaining modules in batches (owner reviews each batch). Engines all exist now; for API testing (module 17) the playwright engine can grade `request`-based specs against `/api` vs `/api-fixed` (would need a mutant mechanism for the mock API).
 - Full outline lives in `content/course.json`.
 
 ## Git

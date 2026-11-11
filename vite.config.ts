@@ -4,8 +4,11 @@ import tailwindcss from '@tailwindcss/vite';
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
 import { isNeededLibFile } from './src/runner/lib-files';
 import { API_BASE, API_FIXED_BASE, mockApiMiddleware } from './server/mock-api';
+import { labMiddleware } from './server/lab-runner';
+import { LAB_ROUTE } from './server/lab-types';
 
 const require = createRequire(import.meta.url);
 
@@ -41,6 +44,20 @@ function tsLibs(): Plugin {
   };
 }
 
+/** Real Playwright runs for the automation modules (POST /__lab/run, GET /__lab/status) — see server/lab-runner.ts. */
+function playwrightLab(): Plugin {
+  const root = path.dirname(fileURLToPath(import.meta.url));
+  return {
+    name: 'qa-academy:playwright-lab',
+    configureServer(server) {
+      server.middlewares.use(LAB_ROUTE, labMiddleware(root));
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(LAB_ROUTE, labMiddleware(root));
+    },
+  };
+}
+
 /** Local Gadgetly REST API (/api = with intentional bugs, /api-fixed = correct) for the HTTP & API modules. */
 function mockApi(): Plugin {
   return {
@@ -57,7 +74,7 @@ function mockApi(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), tsLibs(), mockApi()],
+  plugins: [react(), tailwindcss(), tsLibs(), mockApi(), playwrightLab()],
   worker: {
     format: 'es',
     plugins: () => [tsLibs()],
@@ -65,5 +82,7 @@ export default defineConfig({
   server: {
     port: DEV_PORT,
     strictPort: true,
+    // Playwright lab runs write temporary specs and reports here — not app sources.
+    watch: { ignored: ['**/lab/**'] },
   },
 });

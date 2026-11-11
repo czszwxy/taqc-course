@@ -1,0 +1,19 @@
+{
+  "type": "playwright",
+  "title": "Fix a flaky test",
+  "playground": "api",
+  "statement": "Колега написав тест для API console (`/playground/api`): він надсилає запит на повільний endpoint `/api/slow?ms=1500` (сервер відповідає через 1,5 с) і перевіряє тіло відповіді. «На моєму комп'ютері проходило», а на CI тест **то проходить, то падає**.\n\nНатисни **▶ Run** і подивись, як саме він падає. Потім виправ тест:\n\n- прибери `waitForTimeout`;\n- заміни ручне читання тексту (`textContent()` + `expect(body).toContain`) на **web-first** перевірку, яка сама дочекається відповіді;\n- додай другий тест: під час запиту кнопка Send **неактивна**, а після відповіді знову **активна**.\n\nПеревірка завдання: тести мають бути зеленими на сторінці й не містити `waitForTimeout` / `textContent()`.",
+  "minTests": 2,
+  "codeRules": [
+    { "kind": "forbid", "pattern": "waitForTimeout\\(", "message": "Прибери `waitForTimeout`: фіксована пауза або занадто коротка (тест падає), або занадто довга (тести повільні)." },
+    { "kind": "forbid", "pattern": "textContent\\(|innerText\\(", "message": "`textContent()` читає текст один раз і не чекає. Використай `await expect(locator).toContainText(...)`." },
+    { "kind": "require", "pattern": "toContainText\\(|toHaveText\\(", "message": "Перевір тіло відповіді web-first перевіркою: `toContainText(...)`." },
+    { "kind": "require", "pattern": "toBeDisabled\\(", "message": "Другий тест: кнопка Send неактивна під час запиту (`toBeDisabled()`)." }
+  ],
+  "hints": [
+    "`await expect(page.getByTestId('api-response-body')).toContainText('\"waitedMs\": 1500');` — Playwright сам повторює перевірку до 3 секунд.",
+    "Кнопку під час запиту зручно шукати за test id (`api-send`), бо її текст змінюється на «…»: `await expect(page.getByTestId('api-send')).toBeDisabled();`",
+    "Після відповіді: `await expect(page.getByTestId('api-send')).toBeEnabled();`"
+  ],
+  "explanation": "Тест «падає то так, то ні» через гонку (race condition): пауза 500 мс коротша за відповідь сервера (1 500 мс), і `textContent()` читає **старе** тіло попереднього запиту. На швидкому комп'ютері чи з іншою затримкою результат буде іншим. Web-first перевірка чекає саме на подію, яка потрібна тесту, а не на «якийсь час». Тому вона і стабільна, і швидка: закінчується, щойно з'являється відповідь."
+}

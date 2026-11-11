@@ -1,0 +1,25 @@
+{
+  "type": "classify",
+  "title": "Resilient or fragile locator?",
+  "statement": "Розробники Taskly планують редизайн: змінюються класи, вкладеність `div`-ів і порядок блоків, але тексти кнопок, підписи полів і `data-testid` лишаються. Які локатори переживуть редизайн?",
+  "categories": [
+    { "id": "resilient", "label": "Resilient", "description": "Based on what the user sees (role, label, text) or on a dedicated test id" },
+    { "id": "fragile", "label": "Fragile", "description": "Based on styling classes, DOM structure or position" }
+  ],
+  "items": [
+    { "id": "role-btn", "text": "`page.getByRole('button', { name: 'Log in' })`", "category": "resilient" },
+    { "id": "label", "text": "`page.getByLabel('Email')`", "category": "resilient" },
+    { "id": "testid", "text": "`page.getByTestId('signed-in-as')`", "category": "resilient" },
+    { "id": "heading", "text": "`page.getByRole('heading', { name: 'Create your account' })`", "category": "resilient" },
+    { "id": "placeholder", "text": "`page.getByPlaceholder('What needs to be done?')`", "category": "resilient" },
+    { "id": "css-chain", "text": "`page.locator('#root > div > div:nth-child(2) > form > button')`", "category": "fragile", "explain": "Ланцюжок вкладеності ламається від будь-якого нового `div`." },
+    { "id": "tailwind", "text": "`page.locator('.bg-teal-600.px-4')`", "category": "fragile", "explain": "Класи стилів змінюються з дизайном." },
+    { "id": "abs-xpath", "text": "`page.locator('xpath=/html/body/div[1]/main/form/div[3]/button')`", "category": "fragile" },
+    { "id": "nth", "text": "`page.getByRole('button').nth(4)`", "category": "fragile", "explain": "«П'ята кнопка на сторінці» — залежить від порядку і кількості кнопок." },
+    { "id": "generated", "text": "`page.locator('.css-1x2y3z')` (an auto-generated class)", "category": "fragile" }
+  ],
+  "show": 8,
+  "hints": ["Чи зміниться цей локатор, якщо дизайнер поміняє класи й обгортки, а тексти лишаться?"],
+  "explanation": "Стійкі локатори описують **сенс** елемента: роль і доступне ім'я, підпис поля, placeholder, спеціальний `data-testid`. Крихкі описують **реалізацію**: класи стилів (особливо згенеровані), шлях у DOM, позицію. Тест, що спирається на реалізацію, падає після рефакторингу, хоча для користувача нічого не змінилося. Такі хибні тривоги руйнують довіру до тестів.",
+  "passScore": 0.85
+}

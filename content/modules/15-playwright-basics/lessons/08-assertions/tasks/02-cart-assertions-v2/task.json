@@ -1,0 +1,21 @@
+{
+  "type": "playwright",
+  "title": "Cart: Remove and Plus membership",
+  "variantOf": "02-cart-assertions",
+  "playground": "cart",
+  "statement": "Ще дві вимоги до кошика (`/playground/cart`, стартові суми: Subtotal `2,500 UAH`, Shipping `100 UAH`):\n\n1. **Remove** видаляє **саме той** товар, у рядку якого натиснули кнопку. Після Remove у `Wireless mouse M2` мишки немає, клавіатура й кабель на місці, Subtotal `2,000 UAH`.\n2. Учасник **Gadgetly Plus** має безкоштовну доставку **і разом із промокодом** `SAVE10`: Shipping `Free`, Total `2,250 UAH`.\n\nРядки кошика: `page.getByTestId('cart-items').getByRole('listitem')`, а потрібний рядок береться через `.filter({ hasText: 'Wireless mouse M2' })`.",
+  "mutants": [
+    { "id": "removeLast", "description": "\"Remove\" deleted the last item instead of the clicked one.", "hint": "Remove the FIRST item and check which items are left." },
+    { "id": "memberWithPromo", "description": "a Plus member lost free shipping when SAVE10 was applied.", "hint": "Combine the Plus membership checkbox with the SAVE10 code and check Shipping." }
+  ],
+  "minTests": 2,
+  "codeRules": [
+    { "kind": "require", "pattern": "toHaveText\\(", "message": "Суми перевіряй через `toHaveText(...)`." },
+    { "kind": "require", "pattern": "toHaveCount\\(|toBeHidden\\(", "message": "Що рядок зник, перевіряй через `toHaveCount(0)` або `toBeHidden()`." }
+  ],
+  "hints": [
+    "Кнопка в рядку: `rows.filter({ hasText: 'Wireless mouse M2' }).getByRole('button', { name: 'Remove' })`.",
+    "Чекбокс Plus: `page.getByLabel(/Gadgetly Plus/)` — підпис довгий, регулярний вираз зручніший."
+  ],
+  "explanation": "«Видалився саме той рядок» перевіряється з двох боків: потрібного рядка немає (`toHaveCount(0)`), а сусідні на місці. Перевірка лише кількості рядків пропустить баг, коли видаляється не той товар. Комбінації умов (членство + промокод) — місце, де ламається логіка «кожна умова працює окремо і разом»."
+}

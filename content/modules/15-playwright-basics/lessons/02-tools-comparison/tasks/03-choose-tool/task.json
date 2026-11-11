@@ -1,0 +1,37 @@
+{
+  "type": "written",
+  "title": "Recommend a tool for a project",
+  "statement": "Gadgetly починає UI-автоматизацію. Що відомо:\n\n- фронтенд і бекенд написані на **TypeScript**, команда знає його;\n- третина клієнтів купує з **iPhone (Safari)**, решта — Chrome та Edge;\n- потрібні також **API-тести** (замовлення, логін);\n- тести мають запускатися в **GitHub Actions** на кожен pull request, паралельно;\n- у сценарії оплати відкривається **нова вкладка** платіжної сторінки.\n\nПорекомендуй інструмент і обґрунтуй вибір для тех-ліда.",
+  "fields": [
+    { "id": "tool", "label": "Recommended tool", "kind": "text", "placeholder": "Playwright / Cypress / Selenium" },
+    { "id": "reasons", "label": "Reasons (one per line, tied to the facts above)", "kind": "list", "placeholder": "Team already writes TypeScript…" },
+    { "id": "risks", "label": "Risks or limitations to keep in mind", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "tool", "check": "mentionsAny", "value": ["playwright"], "message": "Tool: з цими вимогами (WebKit/Safari, нова вкладка, API, TS) найкраще підходить Playwright." },
+    { "field": "reasons", "check": "minItems", "value": 3, "message": "Reasons: наведи щонайменше 3 аргументи, кожен прив'язаний до факту з умови." },
+    { "field": "reasons", "check": "mentionsAny", "value": ["safari|webkit"], "message": "Reasons: згадай Safari/WebKit — третина клієнтів на iPhone." },
+    { "field": "reasons", "check": "mentionsAny", "value": ["typescript|\\bts\\b"], "message": "Reasons: згадай TypeScript — мова команди." },
+    { "field": "reasons", "check": "mentionsAny", "value": ["tab|вкладк|api|request|parallel|паралел|ci|github"], "message": "Reasons: додай аргумент про нову вкладку, API-тести або паралельний запуск у CI." },
+    { "field": "risks", "check": "minLength", "value": 30, "message": "Risks: чесно назви хоча б одне обмеження чи ризик (навчання команди, WebKit ≠ справжній Safari на iPhone, підтримка тестів…)." }
+  ],
+  "model": {
+    "tool": "Playwright",
+    "reasons": [
+      "The team already writes TypeScript, and Playwright's first-class language is TypeScript.",
+      "One API for Chromium and WebKit, so we can cover Chrome/Edge and the Safari engine used by our iPhone customers.",
+      "The payment flow opens a new tab — Playwright supports several pages and contexts in one test.",
+      "API tests (orders, login) can be written with the same runner using the request fixture.",
+      "Built-in parallel workers, retries, HTML report and trace on failure work well in GitHub Actions on every pull request."
+    ],
+    "risks": "WebKit in Playwright is close to Safari but not identical to Safari on a real iPhone, so we still need some manual checks on real devices. The team needs time to learn Playwright and agree on conventions (locators, Page Objects); flaky tests must be fixed quickly to keep trust in the CI results."
+  },
+  "hints": ["Пройдися по кожному факту з умови й подумай, який інструмент його закриває: Safari → WebKit, нова вкладка, API, TypeScript, паралельний CI."],
+  "explanation": "Добра рекомендація прив'язує кожен аргумент до вимоги проєкту, а не до «модності». Тут Playwright закриває всі пункти: TypeScript, WebKit для Safari, кілька вкладок, API-тести і паралельний запуск у CI. Чесно названі ризики (WebKit ≠ реальний iPhone, навчання команди) роблять рекомендацію переконливішою.",
+  "checklist": [
+    "Кожен аргумент прив'язаний до факту з умови",
+    "Згадано Safari/WebKit, TypeScript, нову вкладку, API-тести і CI",
+    "Названо реальні обмеження, а не лише переваги",
+    "Текст зрозумілий тех-ліду без додаткових пояснень"
+  ]
+}

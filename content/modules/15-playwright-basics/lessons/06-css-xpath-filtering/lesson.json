@@ -1,0 +1,28 @@
+{
+  "title": "CSS & XPath, chaining & filtering",
+  "minutes": 55,
+  "summary": "CSS і XPath у page.locator() як запасний варіант, ланцюжки локаторів (пошук усередині контейнера), filter({ hasText, hasNotText, has }), first/last/nth, all() і count",
+  "resources": [
+    {
+      "title": "Playwright: Locators — filtering and chaining",
+      "url": "https://playwright.dev/docs/locators",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Other locators (CSS, XPath)",
+      "url": "https://playwright.dev/docs/other-locators",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: CSS selectors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "type": "playwright",
+  "title": "Check the cart totals with web-first and soft assertions",
+  "playground": "cart",
+  "statement": "Кошик Gadgetly (`/playground/cart`) стартує так: `Wireless mouse M2` 500 × 1, `Mechanical keyboard K8` 1 500 × 1, `USB-C cable 1 m` 250 × 2. Тобто Subtotal `2,500 UAH`, Shipping `100 UAH`, Total `2,600 UAH`.\n\nСуми мають `data-testid`: `subtotal`, `discount`, `shipping`, `total`. Напиши тести з **web-first** перевірками (`toHaveText`, `toContainText`, `toBeVisible`). Для групи сум використай **soft assertions** (`expect.soft`), щоб побачити всі розбіжності за один прогін.\n\n1. Початкові суми (soft). *Уже є.*\n2. Subtotal **рівно 3,000** → доставка `Free` (кабель × 4).\n3. Промокод **нечутливий до регістру**: ` save10 ` → знижка 250, Total `2,350 UAH`.\n4. Повторне застосування `SAVE10` **не подвоює** знижку.\n5. Кількість `0` відхиляється: `Quantity must be from 1 to 10`, суми не змінюються.\n\nПоле кількості має прихований підпис: `page.getByLabel('Quantity of USB-C cable 1 m')`.",
+  "mutants": [
+    { "id": "shippingBoundary", "description": "a subtotal of exactly 3,000 UAH still paid for shipping (> instead of >=).", "hint": "Make the subtotal exactly 3,000 UAH (cable quantity 4) and check Shipping." },
+    { "id": "promoCase", "description": "promo codes were case-sensitive.", "hint": "Apply the promo code in lowercase (with spaces around it)." },
+    { "id": "promoTwice", "description": "applying SAVE10 again doubled the discount.", "hint": "Click Apply twice with SAVE10 and check the Discount." },
+    { "id": "qtyZero", "description": "quantity 0 was accepted.", "hint": "Type 0 into a quantity field: an error must appear and the totals must not change." }
+  ],
+  "minTests": 4,
+  "codeRules": [
+    { "kind": "require", "pattern": "expect\\.soft\\(", "message": "Для групи сум використай soft assertions: `expect.soft(...)`." },
+    { "kind": "require", "pattern": "toHaveText\\(", "message": "Суми перевіряй web-first перевіркою `toHaveText(...)`." },
+    { "kind": "forbid", "pattern": "textContent\\(|innerText\\(", "message": "Не читай текст вручну (`textContent()` не чекає змін). Використай `await expect(locator).toHaveText(...)`." }
+  ],
+  "hints": [
+    "Знижка показується як `− 250 UAH` зі спеціальним знаком мінус, тож зручно `await expect(page.getByTestId('discount')).toContainText('250 UAH');`",
+    "Промокод: `await page.getByLabel('Promo code').fill(' save10 '); await page.getByRole('button', { name: 'Apply' }).click();`",
+    "Помилка кількості — під полем, з `role=\"alert\"`: `await expect(page.getByRole('alert')).toHaveText('Quantity must be from 1 to 10');`"
+  ],
+  "explanation": "Web-first перевірка (`await expect(locator).toHaveText(...)`) повторює перевірку, доки текст не стане очікуваним або не мине таймаут. Тому вона не залежить від того, як швидко React оновив суми. `expect.soft` не зупиняє тест на першій розбіжності: у звіті одразу видно, що зламалися, наприклад, і Shipping, і Total. Кожен баг тут — порушена вимога: межа безкоштовної доставки, регістр промокоду, повторне застосування, межа кількості."
+}

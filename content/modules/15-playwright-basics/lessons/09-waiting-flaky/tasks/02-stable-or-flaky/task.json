@@ -1,0 +1,25 @@
+{
+  "type": "classify",
+  "title": "Stable or flaky-prone?",
+  "statement": "Ось фрагменти тестів з різних проєктів. Які написані стабільно, а які рано чи пізно стануть flaky?",
+  "categories": [
+    { "id": "stable", "label": "Stable", "description": "Waits for the right event, independent, resilient" },
+    { "id": "flaky", "label": "Flaky-prone", "description": "Timing guesses, read-once checks, shared state, fragile targeting" }
+  ],
+  "items": [
+    { "id": "web-first", "text": "`await expect(page.getByTestId('total')).toHaveText('2,350 UAH');`", "category": "stable" },
+    { "id": "enabled", "text": "`await expect(sendButton).toBeEnabled();` after a request", "category": "stable" },
+    { "id": "url", "text": "`await expect(page).toHaveURL(/\\/orders\\/\\d+/);` after checkout", "category": "stable" },
+    { "id": "own-data", "text": "Each test creates its own user with a unique email in `beforeEach`", "category": "stable" },
+    { "id": "local-timeout", "text": "`await expect(report).toBeVisible({ timeout: 30_000 });` for a slow report only", "category": "stable" },
+    { "id": "sleep", "text": "`await page.waitForTimeout(1500);` before checking the result", "category": "flaky" },
+    { "id": "read-once", "text": "`expect(await page.getByTestId('total').textContent()).toBe('2,350 UAH');`", "category": "flaky", "explain": "Текст читається один раз, без очікування оновлення." },
+    { "id": "count-now", "text": "`expect(await cards.count()).toBe(2);` right after typing in the search box", "category": "flaky" },
+    { "id": "order", "text": "Test B edits the order that test A created earlier in the same file", "category": "flaky", "explain": "Залежність від порядку й від успіху іншого тесту." },
+    { "id": "force", "text": "`await page.getByRole('button', { name: 'Pay' }).click({ force: true });` to \"fix\" a covered button", "category": "flaky", "explain": "Приховує проблему (перекриття) замість того, щоб дочекатися стану, в якому користувач може клікнути." }
+  ],
+  "show": 8,
+  "hints": ["Чи чекає код на конкретну подію? Чи залежить від інших тестів або від «вгаданого» часу?"],
+  "explanation": "Стабільний тест чекає **подію** (web-first перевірка, стан кнопки, URL) і не залежить від інших тестів. Flaky-код вгадує час (`waitForTimeout`), читає стан один раз (`textContent()`, `count()`), покладається на порядок тестів або силою обходить перевірки Playwright (`force: true`).",
+  "passScore": 0.85
+}

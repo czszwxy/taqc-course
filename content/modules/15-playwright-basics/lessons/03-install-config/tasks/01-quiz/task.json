@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Quiz: installation & config",
+  "show": 5,
+  "hints": ["`npm init playwright@latest` — новий проєкт; `npx playwright install` — браузери; baseURL робить адреси відносними."],
+  "questions": [
+    {
+      "id": "init",
+      "kind": "text",
+      "text": "Яка команда створює новий Playwright-проєкт (з конфігом і прикладом тесту)?",
+      "accept": ["npm init playwright@latest", "npm init playwright", "npx create-playwright", "npm init playwright@latest ."]
+    },
+    {
+      "id": "browsers",
+      "kind": "single",
+      "text": "Тест падає з `Executable doesn't exist … Please run npx playwright install`. Що зробити?",
+      "options": [
+        { "text": "Виконати `npx playwright install` (або `npx playwright install chromium`)", "correct": true },
+        { "text": "Встановити Google Chrome вручну", "explain": "Playwright використовує власні збірки браузерів." },
+        { "text": "Збільшити timeout" }
+      ]
+    },
+    {
+      "id": "baseurl",
+      "kind": "single",
+      "text": "У конфігу `use: { baseURL: 'https://staging.gadgetly.test' }`. Куди перейде `await page.goto('/cart')`?",
+      "options": [
+        { "text": "`https://staging.gadgetly.test/cart`", "correct": true },
+        { "text": "`/cart` на локальному диску" },
+        { "text": "Буде помилка: потрібна повна адреса" }
+      ]
+    },
+    {
+      "id": "retries",
+      "kind": "single",
+      "text": "Що робить `retries: 2`?",
+      "options": [
+        { "text": "Тест, що впав, повторюється до 2 разів; якщо пройде з повтору, у звіті він буде позначений як flaky", "correct": true },
+        { "text": "Кожен тест завжди запускається 2 рази" },
+        { "text": "Виправляє flaky-тести" }
+      ]
+    },
+    {
+      "id": "expect-timeout",
+      "kind": "single",
+      "text": "Що задає `expect: { timeout: 5_000 }`?",
+      "options": [
+        { "text": "Скільки web-first перевірка (наприклад, `toHaveText`) чекає потрібного стану", "correct": true },
+        { "text": "Максимальний час усього тесту", "explain": "Це `timeout` верхнього рівня." },
+        { "text": "Паузу після кожної дії" }
+      ]
+    },
+    {
+      "id": "projects",
+      "kind": "single",
+      "text": "Навіщо `projects` у конфігу?",
+      "options": [
+        { "text": "Щоб запускати ті самі тести з різними налаштуваннями: у Chromium, WebKit, на мобільному пристрої, на різних середовищах", "correct": true },
+        { "text": "Щоб зберігати кілька Git-репозиторіїв" }
+      ]
+    },
+    {
+      "id": "report",
+      "kind": "text",
+      "text": "Яка команда відкриває HTML-звіт останнього прогону?",
+      "accept": ["npx playwright show-report"]
+    },
+    {
+      "id": "webserver",
+      "kind": "single",
+      "text": "Що робить секція `webServer` з `reuseExistingServer: true`?",
+      "options": [
+        { "text": "Запускає застосунок перед тестами, а якщо він уже працює — використовує запущений", "correct": true },
+        { "text": "Розгортає тести на сервері" }
+      ]
+    }
+  ]
+}

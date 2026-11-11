@@ -1,0 +1,36 @@
+{
+  "type": "table",
+  "title": "Match Playwright CLI commands to what they do",
+  "statement": "Що робить кожна команда?",
+  "givenColumns": ["Command"],
+  "answerColumns": [
+    {
+      "id": "effect",
+      "label": "What it does",
+      "options": [
+        "Runs all tests headless",
+        "Runs one test file",
+        "Runs tests whose title matches a text",
+        "Shows the browser window while running",
+        "Opens UI mode",
+        "Runs step by step in the Inspector",
+        "Runs every test several times",
+        "Records your clicks into test code",
+        "Opens the HTML report"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`npx playwright test`"], "answers": { "effect": "Runs all tests headless" } },
+    { "given": ["`npx playwright test tests/cart.spec.ts`"], "answers": { "effect": "Runs one test file" } },
+    { "given": ["`npx playwright test -g \"promo code\"`"], "answers": { "effect": "Runs tests whose title matches a text" } },
+    { "given": ["`npx playwright test --headed`"], "answers": { "effect": "Shows the browser window while running" } },
+    { "given": ["`npx playwright test --ui`"], "answers": { "effect": "Opens UI mode" } },
+    { "given": ["`npx playwright test --debug`"], "answers": { "effect": "Runs step by step in the Inspector" } },
+    { "given": ["`npx playwright test --repeat-each=10`"], "answers": { "effect": "Runs every test several times" } },
+    { "given": ["`npx playwright codegen http://localhost:5173`"], "answers": { "effect": "Records your clicks into test code" } },
+    { "given": ["`npx playwright show-report`"], "answers": { "effect": "Opens the HTML report" } }
+  ],
+  "hints": ["`-g` = `--grep` (пошук за назвою). `--debug` відкриває Inspector, `--ui` — UI mode."],
+  "explanation": "Щоденний набір: `npx playwright test` (+ файл або `-g`, щоб звузити), `--headed`, щоб побачити браузер, `--ui` і `--debug` для налагодження, `--repeat-each` для пошуку flaky-тестів, `show-report` для розбору результатів, `codegen` для чернетки й локаторів."
+}

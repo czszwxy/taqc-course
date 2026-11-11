@@ -1,0 +1,20 @@
+{
+  "type": "table",
+  "title": "Which tool is it about?",
+  "statement": "Визнач, про який інструмент кожне твердження.",
+  "givenColumns": ["Statement"],
+  "answerColumns": [{ "id": "tool", "label": "Tool", "options": ["Selenium", "Cypress", "Playwright"] }],
+  "rows": [
+    { "given": ["Controls browsers through the W3C WebDriver protocol"], "answers": { "tool": "Selenium" } },
+    { "given": ["The oldest of the three, first released in 2004"], "answers": { "tool": "Selenium" } },
+    { "given": ["Official bindings for Java, Python, C#, Ruby and JavaScript"], "answers": { "tool": "Selenium" } },
+    { "given": ["A Grid that distributes tests across many machines"], "answers": { "tool": "Selenium" } },
+    { "given": ["Tests run inside the browser, next to the application"], "answers": { "tool": "Cypress" } },
+    { "given": ["Commands are chained like `cy.get('.btn').click()`"], "answers": { "tool": "Cypress" } },
+    { "given": ["Created by Microsoft; one API for Chromium, Firefox and WebKit"], "answers": { "tool": "Playwright" } },
+    { "given": ["Ships Trace Viewer and a recorder started with `npx … codegen`"], "answers": { "tool": "Playwright" } },
+    { "given": ["Several tabs and isolated browser contexts in one test, plus `request` for API tests"], "answers": { "tool": "Playwright" } }
+  ],
+  "hints": ["WebDriver, Grid і багато мов — Selenium; `cy.` і «всередині браузера» — Cypress; Microsoft, WebKit, trace, codegen — Playwright."],
+  "explanation": "Головна відмінність — архітектура. Selenium керує браузером ззовні через стандартний WebDriver і має бібліотеки для багатьох мов. Cypress живе всередині браузера поруч із застосунком (звідси і зручність, і обмеження з вкладками). Playwright керує браузерами через їхні протоколи напряму й дає повний набір інструментів в одному пакеті."
+}

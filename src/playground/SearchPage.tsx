@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PlaygroundShell, formatUah, inputClass, isFixedMode } from './PlaygroundShell';
+import { PlaygroundShell, formatUah, inputClass, isFixedMode, withLabMode } from './PlaygroundShell';
 import products from './data/products.json';
 
 /**
@@ -90,7 +90,7 @@ function search(f: Filters, bug: Bugs): { shown: Product[]; count: number; range
 
 export function SearchPage() {
   const fixed = isFixedMode();
-  const bug = getBugs(fixed);
+  const bug = withLabMode(getBugs(fixed));
   const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
   const [toast, setToast] = useState<string | null>(null);
 

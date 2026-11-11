@@ -1,0 +1,68 @@
+{
+  "type": "quiz",
+  "title": "Quiz: waiting & flaky tests",
+  "show": 5,
+  "hints": ["Замість паузи чекай подію: web-first перевірка, toBeEnabled, toHaveURL, waitForResponse."],
+  "questions": [
+    {
+      "id": "timeout",
+      "kind": "single",
+      "text": "Чому `await page.waitForTimeout(2000)` — погана ідея?",
+      "options": [
+        { "text": "На повільному CI 2 с може не вистачити (flaky), а на швидкому — це марна затримка", "correct": true },
+        { "text": "Це заборонений метод, тест не запуститься" },
+        { "text": "Немає проблем, якщо поставити 10 секунд", "explain": "Тоді кожен тест марно чекає 10 с." }
+      ]
+    },
+    {
+      "id": "default-expect",
+      "kind": "single",
+      "text": "Скільки за замовчуванням чекає web-first перевірка `expect(locator).toHaveText(...)`?",
+      "options": [{ "text": "5 секунд", "correct": true }, { "text": "30 секунд", "explain": "30 с — таймаут усього тесту." }, { "text": "Не чекає взагалі" }]
+    },
+    {
+      "id": "event",
+      "kind": "single",
+      "text": "Після натискання Send сторінка показує відповідь сервера через 1–3 с. Як правильно чекати?",
+      "options": [
+        { "text": "`await expect(page.getByTestId('api-status')).toHaveText('200 OK')`", "correct": true },
+        { "text": "`await page.waitForTimeout(3000)`" },
+        { "text": "Нічого не чекати й одразу читати `textContent()`" }
+      ]
+    },
+    {
+      "id": "retries",
+      "kind": "single",
+      "text": "Тест у звіті позначено як *flaky*: впав, але пройшов з повтору. Що робити?",
+      "options": [
+        { "text": "Відкрити trace, знайти причину (гонка, дані, залежність) і виправити тест або завести баг продукту", "correct": true },
+        { "text": "Нічого: він же зрештою пройшов" },
+        { "text": "Збільшити retries до 5" }
+      ]
+    },
+    {
+      "id": "dependency",
+      "kind": "single",
+      "text": "Тест «редагувати профіль» проходить лише після тесту «створити профіль». Як виправити?",
+      "options": [
+        { "text": "Кожен тест має сам готувати потрібні дані (наприклад, у beforeEach або через API)", "correct": true },
+        { "text": "Запускати тести завжди в одному порядку з `--workers=1`", "explain": "Це маскує проблему і забирає паралельність." }
+      ]
+    },
+    {
+      "id": "local-timeout",
+      "kind": "single",
+      "text": "Звіт генерується 20 с. Як дочекатися лише цієї перевірки?",
+      "options": [
+        { "text": "`await expect(report).toBeVisible({ timeout: 30_000 })`", "correct": true },
+        { "text": "Поставити `expect: { timeout: 60_000 }` для всіх тестів", "explain": "Тоді кожне справжнє падіння чекатиме хвилину." }
+      ]
+    },
+    {
+      "id": "find-flaky",
+      "kind": "text",
+      "text": "Який прапорець CLI запускає кожен тест кілька разів поспіль, щоб виявити нестабільність? (з двома дефісами)",
+      "accept": ["--repeat-each", "--repeat-each=10", "--repeat-each=20", "repeat-each"]
+    }
+  ]
+}

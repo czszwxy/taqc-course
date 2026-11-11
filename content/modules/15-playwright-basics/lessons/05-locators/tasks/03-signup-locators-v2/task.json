@@ -1,0 +1,23 @@
+{
+  "type": "playwright",
+  "title": "Test login error cases with user-facing locators",
+  "variantOf": "03-signup-locators",
+  "playground": "login",
+  "statement": "Ще раз потренуй вбудовані локатори, тепер на сторінці логіну (`/playground/login`). Вимоги (є на сторінці в жовтій панелі):\n\n1. Неправильний пароль → `Invalid email or password`. *Уже є.*\n2. Заблокований акаунт `locked@taskly.test` / `Locked123` → `Your account is locked. Contact support.`, входу немає.\n3. **Forgot password?** з порожнім Email → `Enter your email first`.\n4. Email **нечутливий до регістру**, пробіли навколо ігноруються: `  DEMO@Taskly.test  ` / `Demo1234` → вхід успішний.\n\nПовідомлення про помилки мають `role=\"alert\"`, тому знайти їх можна через `page.getByRole('alert')`.",
+  "mutants": [
+    { "id": "lockedLogin", "description": "a blocked account could still sign in.", "hint": "Sign in with the locked account (locked@taskly.test / Locked123): it must be refused with a message." },
+    { "id": "forgotEmpty", "description": "\"Forgot password?\" with an empty email showed the success message.", "hint": "Click \"Forgot password?\" without typing an email." },
+    { "id": "emailCase", "description": "the email was compared case-sensitively.", "hint": "Sign in with the demo email written in capital letters." },
+    { "id": "emailSpaces", "description": "spaces around the email were not trimmed.", "hint": "Put spaces before and after the demo email when you sign in." }
+  ],
+  "minTests": 3,
+  "codeRules": [
+    { "kind": "require", "pattern": "getByRole\\(", "message": "Кнопки й повідомлення шукай через `getByRole(...)`." },
+    { "kind": "forbid", "pattern": "\\.locator\\(", "message": "У цьому завданні тренуємо вбудовані локатори: замість `page.locator(...)` використай `getByLabel` / `getByRole` / `getByText`." }
+  ],
+  "hints": [
+    "Кнопка «Forgot password?» — це `page.getByRole('button', { name: 'Forgot password?' })`.",
+    "Успішний вхід перевір заголовком: `await expect(page.getByRole('heading', { name: 'Welcome back!' })).toBeVisible();`"
+  ],
+  "explanation": "Негативні сценарії логіну (неправильний пароль, заблокований акаунт, порожній email) і нормалізація введення (регістр, пробіли) — класичний набір автотестів для форми входу. Кожен рядок вимог стає окремим тестом з чіткою назвою. `getByRole('alert')` знаходить повідомлення про помилку незалежно від того, як воно оформлене."
+}

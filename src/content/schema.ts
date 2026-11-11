@@ -321,6 +321,21 @@ export const sqlTaskSchema = z.object({
   challenges: z.array(sqlChallengeSchema).min(1),
 });
 
+/**
+ * A real Playwright test (module 15+), run by the dev-server lab runner in Chromium against a Bug Playground page.
+ * Files: starter.ts (starting spec), solution.ts (reference spec). The learner's tests must pass on the correct page
+ * and fail on every page variant listed in `mutants` (ids = the page's bug flags, see registry.ts bugIds).
+ */
+export const playwrightTaskSchema = z.object({
+  type: z.literal('playwright'),
+  ...baseTask,
+  statement: z.string(),
+  playground: z.string(),
+  mutants: z.array(mutantSchema).default([]),
+  minTests: z.number().int().positive().optional(),
+  codeRules: z.array(codeRuleSchema).default([]),
+});
+
 export const taskSchema = z.discriminatedUnion('type', [
   quizTaskSchema,
   codeTaskSchema,
@@ -333,6 +348,7 @@ export const taskSchema = z.discriminatedUnion('type', [
   tableTaskSchema,
   selectorTaskSchema,
   sqlTaskSchema,
+  playwrightTaskSchema,
 ]);
 
 export type Resource = z.infer<typeof resourceSchema>;
@@ -357,6 +373,7 @@ export type SelectorTask = z.infer<typeof selectorTaskSchema>;
 export type SelectorChallenge = z.infer<typeof selectorChallengeSchema>;
 export type SqlTask = z.infer<typeof sqlTaskSchema>;
 export type SqlChallenge = z.infer<typeof sqlChallengeSchema>;
+export type PlaywrightTask = z.infer<typeof playwrightTaskSchema>;
 
 export const TASK_TYPE_LABEL: Record<Task['type'], string> = {
   quiz: 'Quiz',
@@ -370,6 +387,7 @@ export const TASK_TYPE_LABEL: Record<Task['type'], string> = {
   table: 'Table',
   selector: 'Selectors',
   sql: 'SQL',
+  playwright: 'Playwright',
 };
 
 export function formatZodError(err: z.ZodError): string {

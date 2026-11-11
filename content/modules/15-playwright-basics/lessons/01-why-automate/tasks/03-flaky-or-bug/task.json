@@ -1,0 +1,45 @@
+{
+  "type": "table",
+  "title": "Flaky test, product bug or broken test?",
+  "statement": "Нічний прогін Gadgetly дав кілька червоних тестів. Для кожного визнач, що це найімовірніше:\n\n- **Flaky test** — тест нестабільний, код продукту не винен;\n- **Product bug** — тест правильно знайшов дефект;\n- **Broken test** — тест стабільно падає, бо неправильний сам тест (застаріла перевірка, помилка в кроках).",
+  "givenColumns": ["What happened"],
+  "answerColumns": [{ "id": "kind", "label": "Most likely", "options": ["Flaky test", "Product bug", "Broken test"] }],
+  "rows": [
+    {
+      "given": ["The checkout test failed once out of 10 runs on the same build; the trace shows it checked the total before the API answered"],
+      "answers": { "kind": "Flaky test" },
+      "explain": "Гонка: перевірка відбулася раніше, ніж з'явився результат. На тому самому коді тест іноді проходить."
+    },
+    {
+      "given": ["The login test fails every time since yesterday: a locked account can now sign in; requirements say it must be refused"],
+      "answers": { "kind": "Product bug" }
+    },
+    {
+      "given": ["The search test fails every time: it expects the button text \"Find\", but the team renamed it to \"Search\" on purpose (approved story)"],
+      "answers": { "kind": "Broken test" },
+      "explain": "Продукт змінили свідомо, тож треба оновити тест."
+    },
+    {
+      "given": ["The cart test passes alone but fails when run after the \"clear cart\" test that uses the same user"],
+      "answers": { "kind": "Flaky test" },
+      "explain": "Залежність між тестами через спільні дані: результат залежить від порядку запуску."
+    },
+    {
+      "given": ["The order test fails every run: total shows 3,100 UAH for a 3,000 UAH subtotal, but shipping must be free from 3,000"],
+      "answers": { "kind": "Product bug" }
+    },
+    {
+      "given": ["A test uses waitForTimeout(2000) and fails on the slow CI machine about twice a week"],
+      "answers": { "kind": "Flaky test" }
+    },
+    {
+      "given": ["A new test always fails because it types the password into the Email field (copy-paste mistake)"],
+      "answers": { "kind": "Broken test" }
+    }
+  ],
+  "hints": [
+    "Іноді падає на тому самому коді → flaky. Стабільно падає → дивись, хто правий: вимога чи тест.",
+    "Якщо поведінка продукту відповідає вимогам, а тест чекає іншого, неправильний тест."
+  ],
+  "explanation": "Перше питання при падінні: «стабільно чи іноді?» Іноді — flaky (час, порядок, спільні дані). Стабільно — порівняй фактичну поведінку з **вимогою**: продукт порушує вимогу → баг продукту; продукт відповідає вимозі, а тест чекає старого або помиляється в кроках → зламаний тест, його треба виправити. Trace і повторні прогони (`--repeat-each`) допомагають швидко це розрізнити."
+}

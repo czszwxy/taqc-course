@@ -1,0 +1,26 @@
+{
+  "type": "table",
+  "title": "Pick the right assertion",
+  "statement": "Для кожної вимоги вибери найточнішу web-first перевірку.",
+  "givenColumns": ["Requirement"],
+  "answerColumns": [
+    {
+      "id": "assertion",
+      "label": "Assertion",
+      "options": ["toBeVisible", "toBeHidden", "toHaveText", "toContainText", "toHaveValue", "toHaveCount", "toBeChecked", "toBeDisabled", "toHaveURL"]
+    }
+  ],
+  "rows": [
+    { "given": ["After a successful login the \"Welcome back!\" heading appears"], "answers": { "assertion": "toBeVisible" } },
+    { "given": ["The total shows exactly \"2,600 UAH\""], "answers": { "assertion": "toHaveText" } },
+    { "given": ["The toast message mentions the product name \"Phone Mini\" somewhere in a longer sentence"], "answers": { "assertion": "toContainText" } },
+    { "given": ["After \"Clear filters\" the search field is empty"], "answers": { "assertion": "toHaveValue" }, "explain": "Значення поля вводу перевіряє `toHaveValue('')`." },
+    { "given": ["Searching \"mouse\" shows exactly 2 product cards"], "answers": { "assertion": "toHaveCount" } },
+    { "given": ["After reload the task \"Buy coffee\" is still marked as completed"], "answers": { "assertion": "toBeChecked" } },
+    { "given": ["\"Add to cart\" cannot be pressed for an out-of-stock product"], "answers": { "assertion": "toBeDisabled" } },
+    { "given": ["After a successful login the browser is on /dashboard"], "answers": { "assertion": "toHaveURL" } },
+    { "given": ["After a successful registration the form is no longer shown"], "answers": { "assertion": "toBeHidden" } }
+  ],
+  "hints": ["Текст цілком — toHaveText, частина — toContainText; значення поля — toHaveValue; кількість — toHaveCount."],
+  "explanation": "Кожна вимога має свою точну перевірку: видимість (`toBeVisible` / `toBeHidden`), текст цілком або частково (`toHaveText` / `toContainText`), значення поля (`toHaveValue`), кількість (`toHaveCount`), стан (`toBeChecked`, `toBeDisabled`) і адресу (`toHaveURL`). Точна перевірка ловить більше багів і зрозуміліше пояснює падіння у звіті."
+}

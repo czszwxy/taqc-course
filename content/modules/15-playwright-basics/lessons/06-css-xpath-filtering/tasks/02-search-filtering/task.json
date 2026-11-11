@@ -1,0 +1,24 @@
+{
+  "type": "playwright",
+  "title": "Filter and count product cards",
+  "playground": "search",
+  "statement": "Каталог Gadgetly (`/playground/search`). Кожна картка товару — це елемент списку всередині `data-testid=\"results\"`:\n\n```ts\nconst cards = page.getByTestId('results').getByRole('listitem');\n```\n\nНапиши тести на вимоги каталогу, використовуючи **ланцюжки й фільтри** локаторів (`.filter({ hasText })`, `.first()`, `.nth()`, `toHaveCount`):\n\n1. Пошук **нечутливий до регістру**: `mouse` знаходить 2 товари. *Уже є.*\n2. **Laptops** + **In stock only** → лічильник `2 products found` і рівно 2 картки.\n3. Сортування **Price: high to low** → перша картка `Laptop Pro 15`, друга `Phone Ultra`.\n4. Ціновий діапазон **включний**: **Accessories** з Max price `2199` показує `Mechanical Keyboard K8` (він коштує рівно 2 199).\n\nСписок, що випадає: `page.getByLabel('Sort by').selectOption({ label: 'Price: high to low' })`.",
+  "mutants": [
+    { "id": "searchCase", "description": "the search was case-sensitive.", "hint": "Search for a product name in lowercase letters." },
+    { "id": "countIgnoresStock", "description": "the result counter ignored the \"In stock only\" filter.", "hint": "Compare the counter text with the real number of cards when \"In stock only\" is checked (Laptops has one out-of-stock product)." },
+    { "id": "sortAsText", "description": "\"Price: high to low\" compared prices as text (\"9999\" > \"54999\").", "hint": "Sort by price high to low and check which card is FIRST (and second)." },
+    { "id": "maxExclusive", "description": "the max price was exclusive (price < max).", "hint": "Set Max price to exactly the price of a product and check that this product is still shown." }
+  ],
+  "minTests": 3,
+  "codeRules": [
+    { "kind": "require", "pattern": "\\.filter\\(", "message": "Використай фільтрацію: `cards.filter({ hasText: '…' })`." },
+    { "kind": "require", "pattern": "\\.(first|nth|last)\\(", "message": "Для перевірки порядку візьми конкретну картку: `cards.first()` або `cards.nth(1)`." },
+    { "kind": "require", "pattern": "toHaveCount\\(", "message": "Кількість карток перевіряй через `await expect(cards).toHaveCount(n)`." }
+  ],
+  "hints": [
+    "Галочка: `await page.getByLabel('In stock only').check();` Категорія: `await page.getByLabel('Category').selectOption('Laptops');`",
+    "Лічильник: `await expect(page.getByTestId('result-count')).toHaveText('2 products found');`",
+    "Порядок: `await expect(cards.first()).toContainText('Laptop Pro 15');` і `await expect(cards.nth(1)).toContainText('Phone Ultra');`"
+  ],
+  "explanation": "Ланцюжок `page.getByTestId('results').getByRole('listitem')` спершу обмежує пошук контейнером, а потім бере його картки. `.filter({ hasText })` залишає лише картки з потрібним текстом, `.first()` / `.nth(i)` беруть картку за позицією. Лічильник у тексті й кількість карток — дві незалежні перевірки, і баг ховається саме в розбіжності між ними. Для сортування недостатньо перевірити, що товар «є»: треба перевірити, що він **на своєму місці**."
+}

@@ -1,0 +1,37 @@
+{
+  "title": "Why automate: costs, benefits, flakiness",
+  "minutes": 40,
+  "summary": "Що дає автоматизація і скільки вона коштує, які тести варто автоматизувати першими, піраміда тестів, ROI і flaky-тести — тести, яким перестають довіряти",
+  "resources": [
+    {
+      "title": "Martin Fowler: The Practical Test Pyramid",
+      "url": "https://martinfowler.com/articles/practical-test-pyramid.html",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Best Practices",
+      "url": "https://playwright.dev/docs/best-practices",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Розділ «Testing philosophy».",
+      "needsVerification": true
+    },
+    {
+      "title": "ISTQB Glossary",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Пошукай: test automation, flaky test, regression testing.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: що таке автоматизація тестування",
+      "url": "https://www.youtube.com/results?search_query=автоматизація+тестування+для+початківців",
+      "kind": "video",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

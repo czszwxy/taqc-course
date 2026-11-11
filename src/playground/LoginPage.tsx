@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { PlaygroundShell, PgField, inputClass, isFixedMode } from './PlaygroundShell';
+import { PlaygroundShell, PgField, inputClass, isFixedMode, withLabMode } from './PlaygroundShell';
 
 /**
  * Bug Playground: Taskly login with 6 INTENTIONAL bugs (catalogued in
@@ -75,7 +75,7 @@ interface FieldErrors {
 
 export function LoginPage() {
   const fixed = isFixedMode();
-  const bug = getBugs(fixed);
+  const bug = withLabMode(getBugs(fixed));
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

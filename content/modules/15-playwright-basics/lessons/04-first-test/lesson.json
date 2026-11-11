@@ -1,0 +1,35 @@
+{
+  "title": "First test; CLI, UI mode, headed, codegen",
+  "minutes": 55,
+  "summary": "Анатомія тесту (test, page, await, expect), Arrange–Act–Assert, запуск з CLI (файл, grep, headed, project, debug), UI mode, codegen і HTML-звіт",
+  "resources": [
+    {
+      "title": "Playwright: Writing tests",
+      "url": "https://playwright.dev/docs/writing-tests",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Running and debugging tests",
+      "url": "https://playwright.dev/docs/running-tests",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: UI Mode",
+      "url": "https://playwright.dev/docs/test-ui-mode",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Test generator (codegen)",
+      "url": "https://playwright.dev/docs/codegen",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

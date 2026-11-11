@@ -1,0 +1,35 @@
+{
+  "title": "Selenium vs Cypress vs Playwright",
+  "minutes": 35,
+  "summary": "Три найпопулярніші інструменти UI-автоматизації: як вони керують браузером, які мови й браузери підтримують, сильні й слабкі сторони, і чому в курсі — Playwright",
+  "resources": [
+    {
+      "title": "Playwright — official docs",
+      "url": "https://playwright.dev/docs/intro",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Selenium — official documentation",
+      "url": "https://www.selenium.dev/documentation/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Cypress — official documentation",
+      "url": "https://docs.cypress.io/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Selenium vs Cypress vs Playwright",
+      "url": "https://www.youtube.com/results?search_query=Selenium+vs+Cypress+vs+Playwright",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

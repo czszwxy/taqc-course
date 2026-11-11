@@ -1,0 +1,71 @@
+{
+  "type": "quiz",
+  "title": "Quiz: actions",
+  "show": 5,
+  "hints": ["fill очищає й вводить, press натискає клавішу, check ставить галочку, selectOption — для select."],
+  "questions": [
+    {
+      "id": "fill",
+      "kind": "single",
+      "text": "У полі вже є текст «old». Що буде після `await input.fill('new')`?",
+      "options": [
+        { "text": "У полі буде «new»: fill спершу очищає поле", "correct": true },
+        { "text": "«oldnew»" },
+        { "text": "Помилка: поле не порожнє" }
+      ]
+    },
+    {
+      "id": "enter",
+      "kind": "text",
+      "text": "Допиши: щоб натиснути Enter у полі, пиши `await input.______('Enter')`",
+      "accept": ["press"]
+    },
+    {
+      "id": "check",
+      "kind": "single",
+      "text": "Як поставити галочку «Remember me»?",
+      "options": [
+        { "text": "`await page.getByLabel('Remember me').check()`", "correct": true },
+        { "text": "`await page.getByLabel('Remember me').fill('true')`" },
+        { "text": "`await page.getByLabel('Remember me').selectOption('on')`" }
+      ]
+    },
+    {
+      "id": "disabled",
+      "kind": "single",
+      "text": "Кнопка Checkout неактивна (disabled). Що зробить `await checkout.click()`?",
+      "options": [
+        { "text": "Чекатиме, поки кнопка стане активною, і впаде з таймаутом, пояснивши «element is not enabled»", "correct": true },
+        { "text": "Клікне попри все" },
+        { "text": "Тихо пропустить клік" }
+      ]
+    },
+    {
+      "id": "force",
+      "kind": "single",
+      "text": "Чому `click({ force: true })` небезпечний у тестах?",
+      "options": [
+        { "text": "Він клікає навіть перекритий чи неактивний елемент: тест «пройде» там, де користувач не зміг би, і пропустить баг", "correct": true },
+        { "text": "Він повільніший за звичайний клік" }
+      ]
+    },
+    {
+      "id": "reload",
+      "kind": "single",
+      "text": "Як перевірити, що галочка «виконано» зберігається?",
+      "options": [
+        { "text": "Поставити галочку, виконати `await page.reload()` і перевірити `toBeChecked()`", "correct": true },
+        { "text": "Поставити галочку і перевірити `toBeChecked()` без перезавантаження", "explain": "Так перевіряється лише UI, а не збереження." }
+      ]
+    },
+    {
+      "id": "upload",
+      "kind": "single",
+      "text": "Як вибрати файл у полі `<input type=\"file\">`?",
+      "options": [
+        { "text": "`await page.getByLabel('Avatar').setInputFiles('tests/data/avatar.png')`", "correct": true },
+        { "text": "`await page.getByLabel('Avatar').fill('avatar.png')`" }
+      ]
+    }
+  ]
+}

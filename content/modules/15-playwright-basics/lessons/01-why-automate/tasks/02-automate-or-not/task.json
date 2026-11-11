@@ -1,0 +1,25 @@
+{
+  "type": "classify",
+  "title": "Automate it or keep it manual?",
+  "statement": "Ти плануєш автоматизацію для магазину Gadgetly. Що варто автоматизувати (UI чи API), а що лишити ручним?",
+  "categories": [
+    { "id": "automate", "label": "Automate", "description": "Runs often, stable, clear expected result" },
+    { "id": "manual", "label": "Keep manual", "description": "One-off, subjective, changing daily or impossible to automate reliably" }
+  ],
+  "items": [
+    { "id": "smoke", "text": "Smoke: log in, add a product to the cart, check out — before every release", "category": "automate" },
+    { "id": "promo", "text": "Discount calculation for 40 combinations of promo code, member status and subtotal", "category": "automate", "explain": "Багато комбінацій, точний очікуваний результат. Ідеально для автотестів, краще на рівні API." },
+    { "id": "api-status", "text": "All order API endpoints return correct status codes for valid and invalid tokens", "category": "automate" },
+    { "id": "regress-login", "text": "Regression of login rules (lockout after 3 attempts, case-insensitive email) every sprint", "category": "automate" },
+    { "id": "search-filters", "text": "Search filters and sorting of the catalog after every deploy", "category": "automate" },
+    { "id": "ux", "text": "Is the new checkout page convenient and clear for first-time buyers?", "category": "manual", "explain": "Зручність і зрозумілість оцінює людина." },
+    { "id": "redesign", "text": "A page that the designers redesign every day this sprint", "category": "manual", "explain": "Тест довелося б переписувати щодня. Автоматизуй, коли сторінка стабілізується." },
+    { "id": "migration", "text": "A one-time check of data after a single database migration", "category": "manual" },
+    { "id": "captcha", "text": "A real card payment with an SMS code from the bank", "category": "manual", "explain": "Справжні платежі й SMS автоматизувати ненадійно й небезпечно. Для тестів використовують тестові режими платіжних систем." },
+    { "id": "explore", "text": "Exploratory session: \"what can go wrong with gift cards?\"", "category": "manual" }
+  ],
+  "show": 8,
+  "hints": ["Запитай себе: як часто це запускатимуть? чи стабільна функція? чи є однозначний очікуваний результат?"],
+  "explanation": "Автоматизують те, що запускається часто, змінюється рідко й має однозначний очікуваний результат: smoke, регрес, розрахунки, API-контракти. Лишають ручним суб'єктивне (зручність), одноразове, нестабільне (щоденний редизайн), дослідницьке і те, що неможливо надійно відтворити (реальні SMS і платежі).",
+  "passScore": 0.85
+}

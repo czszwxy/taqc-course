@@ -1,0 +1,21 @@
+{
+  "type": "playwright",
+  "title": "To-do list: limits, counter wording and filters",
+  "variantOf": "02-todo-actions",
+  "playground": "todo",
+  "statement": "Ще кілька вимог до списку справ (`/playground/todo`, стартує з 3 задачами: 1 виконана, 2 активні):\n\n1. Задача з **100** символів (межа!) додається, а з **101** — ні: `Task is too long (max 100 characters)`.\n2. Коли лишається одна активна задача, лічильник каже `1 item left` (однина!).\n3. Вкладка **Completed** показує лише виконані задачі. *Уже є.*\n\nДовгий текст зручно зробити так: `'a'.repeat(100)`.",
+  "mutants": [
+    { "id": "maxLength", "description": "a task of exactly 100 characters was rejected (the limit was 99).", "hint": "Add a task of exactly 100 characters — the upper boundary must be accepted." },
+    { "id": "plural", "description": "the counter said \"1 items left\".", "hint": "Leave exactly one active task and check the counter wording." }
+  ],
+  "minTests": 3,
+  "codeRules": [
+    { "kind": "require", "pattern": "repeat\\(", "message": "Згенеруй рядок потрібної довжини: `'a'.repeat(100)`." },
+    { "kind": "require", "pattern": "\\.check\\(|\\.press\\(", "message": "Використай дії користувача: `.check()` або `.press('Enter')`." }
+  ],
+  "hints": [
+    "Межі перевіряй парою: 100 приймається, 101 — ні (повідомлення під полем має `role=\"alert\"`).",
+    "Щоб лишилася одна активна задача, познач `Report the cart bug` виконаною: `item.getByRole('checkbox').check()`."
+  ],
+  "explanation": "Межові значення з модуля 03 добре лягають в автотести: один тест на «рівно 100», один на «101». Лічильник з однини й множини — дрібниця, яку вручну легко пропустити, а автотест перевіряє щоразу. Вкладки фільтрів мають роль `tab`, тож шукаються як `getByRole('tab', { name: 'Completed' })`."
+}

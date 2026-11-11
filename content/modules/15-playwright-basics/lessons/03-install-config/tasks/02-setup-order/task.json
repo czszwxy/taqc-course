@@ -1,0 +1,17 @@
+{
+  "type": "order",
+  "title": "Set up and run a new Playwright project",
+  "statement": "Ти починаєш Playwright-проєкт для Gadgetly з нуля на комп'ютері, де вже є Node.js. Розстав кроки в правильному порядку.",
+  "items": [
+    "Create a folder and open it in the terminal: `mkdir gadgetly-e2e`, `cd gadgetly-e2e`",
+    "Run `npm init playwright@latest` and answer: TypeScript, `tests` folder, GitHub Actions workflow",
+    "Make sure the browsers are downloaded: `npx playwright install`",
+    "Set `use.baseURL` in `playwright.config.ts` to the staging address",
+    "Write the first test in `tests/login.spec.ts`",
+    "Run the tests: `npx playwright test`",
+    "Open the HTML report: `npx playwright show-report`",
+    "Commit the project (without `node_modules`, `test-results`, `playwright-report`) and push it"
+  ],
+  "hints": ["Конфіг з'являється після `npm init playwright`, а звіт — лише після прогону."],
+  "explanation": "Спершу проєкт (`npm init playwright@latest` створює package.json, конфіг і приклад), потім браузери, потім налаштування (`baseURL`), тест, запуск і звіт. Комітять код і конфіг, а згенероване (node_modules, результати, звіти) — у .gitignore (модуль 09)."
+}

@@ -1,0 +1,24 @@
+{
+  "type": "playwright",
+  "title": "Drive the to-do list with real user actions",
+  "playground": "todo",
+  "statement": "Список справ Taskly (`/playground/todo`) відкривається з трьома задачами: `Write test cases for the login page` (виконана), `Report the cart bug` і `Buy coffee` (активні). Лічильник показує `2 items left`.\n\nНапиши тести, що працюють **як користувач**: друкують, натискають клавіші, ставлять галочки, перезавантажують сторінку.\n\n1. **Enter** додає задачу, лічильник стає `3 items left`. *Уже є.*\n2. **Esc** під час редагування скасовує зміни: Edit у `Buy coffee` → новий текст `Buy tea` → Esc → лишається `Buy coffee`.\n3. **Clear completed** видаляє лише виконані задачі: лишаються 2.\n4. Видалення активної задачі `Buy coffee` оновлює лічильник: `1 item left`.\n5. Позначка «виконано» **зберігається** після перезавантаження сторінки (`page.reload()`).\n\nОдна задача: `const item = page.getByTestId('todo-item').filter({ hasText: 'Buy coffee' });`",
+  "mutants": [
+    { "id": "escSaves", "description": "Esc while editing saved the new text instead of cancelling.", "hint": "Edit a task, type new text and press Escape — the old text must stay." },
+    { "id": "clearAll", "description": "\"Clear completed\" deleted ALL tasks.", "hint": "Click \"Clear completed\" and check that the active tasks are still there." },
+    { "id": "counterAfterDelete", "description": "the counter did not decrease when an active task was deleted.", "hint": "Delete an active task and check the \"items left\" counter." },
+    { "id": "doneNotSaved", "description": "the completed state was lost after a page reload.", "hint": "Mark a task as completed, reload the page and check the checkbox again." }
+  ],
+  "minTests": 4,
+  "codeRules": [
+    { "kind": "require", "pattern": "\\.press\\(", "message": "Натисни клавішу як користувач: `.press('Enter')` / `.press('Escape')`." },
+    { "kind": "require", "pattern": "\\.check\\(", "message": "Галочку став через `.check()`." },
+    { "kind": "require", "pattern": "reload\\(", "message": "Для вимоги 5 потрібен `await page.reload()`." }
+  ],
+  "hints": [
+    "Кнопки всередині задачі: `item.getByRole('button', { name: 'Edit' })`, `item.getByRole('button', { name: /Delete/ })`, чекбокс: `item.getByRole('checkbox')`.",
+    "Поле редагування має підпис `Edit task`: `page.getByLabel('Edit task')`.",
+    "Після `await page.reload();` знайди задачу заново і перевір `await expect(item.getByRole('checkbox')).toBeChecked();`"
+  ],
+  "explanation": "Дії Playwright повторюють поведінку користувача: `fill` друкує текст, `press` натискає клавішу, `check` ставить галочку, `click` клікає, `reload` перезавантажує сторінку. Перед кожною дією Playwright сам чекає, поки елемент стане видимим і доступним. Локатор `page.getByTestId('todo-item').filter({ hasText: … })` — це «рядок списку з цим текстом», а `item.getByRole('button', …)` шукає кнопку лише всередині нього. Стан після reload — класичне місце для бага: UI показує правильно, а збережено не все."
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Actions: click, fill, check, select, keyboard, upload",
+  "minutes": 50,
+  "summary": "Дії користувача в Playwright: click і dblclick, fill і pressSequentially, press і клавіатурні комбінації, check / uncheck, selectOption, hover, setInputFiles, reload — і що Playwright перевіряє перед кожною дією",
+  "resources": [
+    {
+      "title": "Playwright: Actions",
+      "url": "https://playwright.dev/docs/input",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Auto-waiting (actionability)",
+      "url": "https://playwright.dev/docs/actionability",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

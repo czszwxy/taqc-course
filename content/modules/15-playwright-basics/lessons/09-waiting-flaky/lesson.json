@@ -1,0 +1,35 @@
+{
+  "title": "Auto-waiting, timeouts & flaky tests",
+  "minutes": 55,
+  "summary": "Як Playwright чекає сам (дії й web-first перевірки), які є таймаути, чому waitForTimeout — антипатерн, як чекати подію (відповідь, URL, елемент), причини flaky-тестів і як їх знаходити й виправляти",
+  "resources": [
+    {
+      "title": "Playwright: Auto-waiting",
+      "url": "https://playwright.dev/docs/actionability",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Timeouts",
+      "url": "https://playwright.dev/docs/test-timeouts",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Retries",
+      "url": "https://playwright.dev/docs/test-retries",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Trace viewer",
+      "url": "https://playwright.dev/docs/trace-viewer",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

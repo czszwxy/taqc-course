@@ -1,0 +1,76 @@
+{
+  "type": "quiz",
+  "title": "Quiz: first test & CLI",
+  "show": 5,
+  "hints": ["Кожна дія — з await. Тест без expect нічого не перевіряє. `--headed` показує браузер, `--ui` — UI mode."],
+  "questions": [
+    {
+      "id": "await",
+      "kind": "single",
+      "text": "Що станеться, якщо забути `await` перед `page.getByRole('button', { name: 'Log in' }).click()`?",
+      "options": [
+        { "text": "Тест піде далі, не дочекавшись кліку, і перевірка може виконатися до дії (або тест упаде з дивною помилкою)", "correct": true },
+        { "text": "Нічого, Playwright сам дочекається" }
+      ]
+    },
+    {
+      "id": "no-expect",
+      "kind": "single",
+      "text": "Тест заповнює форму логіну, натискає кнопку і закінчується. Що з ним не так?",
+      "options": [
+        { "text": "Немає перевірки результату: тест пройде, навіть якщо логін зламаний", "correct": true },
+        { "text": "Усе гаразд: якщо кнопка натиснулась, логін працює" }
+      ]
+    },
+    {
+      "id": "headed",
+      "kind": "text",
+      "text": "Який прапорець показує вікно браузера під час прогону `npx playwright test`?",
+      "accept": ["--headed", "headed"]
+    },
+    {
+      "id": "grep",
+      "kind": "single",
+      "text": "Як запустити лише тести, у назві яких є «checkout»?",
+      "options": [
+        { "text": "`npx playwright test -g \"checkout\"`", "correct": true },
+        { "text": "`npx playwright test --project=checkout`", "explain": "`--project` вибирає project з конфігу (браузер / середовище)." },
+        { "text": "`npx playwright checkout`" }
+      ]
+    },
+    {
+      "id": "codegen",
+      "kind": "single",
+      "text": "Для чого найкраще використовувати codegen?",
+      "options": [
+        { "text": "Щоб швидко отримати чернетку кроків і підказку локаторів, а потім доробити тест перевірками", "correct": true },
+        { "text": "Щоб генерувати готові тести, які не треба редагувати", "explain": "У записаному коді немає перевірок з вимог." }
+      ]
+    },
+    {
+      "id": "fixture",
+      "kind": "single",
+      "text": "Що таке `{ page }` у `test('…', async ({ page }) => …)`?",
+      "options": [
+        { "text": "Фікстура: нова вкладка в чистому браузерному контексті, яку Playwright створює для кожного тесту", "correct": true },
+        { "text": "Глобальна змінна, спільна для всіх тестів", "explain": "Кожен тест отримує власну ізольовану сторінку." }
+      ]
+    },
+    {
+      "id": "ui",
+      "kind": "text",
+      "text": "Який прапорець відкриває UI mode?",
+      "accept": ["--ui", "ui"]
+    },
+    {
+      "id": "name",
+      "kind": "single",
+      "text": "Яка назва тесту найкраща?",
+      "options": [
+        { "text": "`locked account cannot sign in`", "correct": true },
+        { "text": "`test1`" },
+        { "text": "`login test`", "explain": "Незрозуміло, яку саме поведінку перевіряє тест." }
+      ]
+    }
+  ]
+}

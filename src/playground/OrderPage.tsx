@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PlaygroundShell, formatUah, isFixedMode } from './PlaygroundShell';
+import { PlaygroundShell, formatUah, isFixedMode, withLabMode } from './PlaygroundShell';
 
 /**
  * Bug Playground: Gadgetly order status flow with 5 INTENTIONAL bugs (catalogued in
@@ -62,7 +62,7 @@ const INITIAL_HISTORY: HistoryEntry[] = [{ status: 'Created' }];
 
 export function OrderPage() {
   const fixed = isFixedMode();
-  const bug = getBugs(fixed);
+  const bug = withLabMode(getBugs(fixed));
   const [history, setHistory] = useState<HistoryEntry[]>(INITIAL_HISTORY);
   const [error, setError] = useState<string | null>(null);
 

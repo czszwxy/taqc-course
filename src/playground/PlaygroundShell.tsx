@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
+import { LAB_BUGS_KEY } from '../../server/lab-types';
 
 /**
  * Shared chrome for Bug Playground pages: a fake product header, the page body and a yellow
@@ -9,6 +10,27 @@ import { Link } from 'react-router-dom';
 
 export function isFixedMode(): boolean {
   return new URLSearchParams(window.location.search).has('fixed');
+}
+
+/*
+ * Automation labs (module 15+): the Playwright lab runner puts LAB_BUGS_KEY into the localStorage of each
+ * test's browser context — "none" turns every bug off, "<bugId>" (or a comma list) turns on only those.
+ * It wins over `?fixed`. Never shown to the learner.
+ */
+function readLabBugs(): string | null {
+  try {
+    return window.localStorage.getItem(LAB_BUGS_KEY);
+  } catch {
+    return null;
+  }
+}
+
+/** Applies the lab runner's bug selection (if any) on top of a page's bug flags. */
+export function withLabMode<T extends Record<string, boolean>>(bugs: T): T {
+  const lab = readLabBugs();
+  if (lab === null) return bugs;
+  const enabled = new Set(lab.split(','));
+  return Object.fromEntries(Object.keys(bugs).map((id) => [id, enabled.has(id)])) as T;
 }
 
 export type Brand = 'taskly' | 'gadgetly';

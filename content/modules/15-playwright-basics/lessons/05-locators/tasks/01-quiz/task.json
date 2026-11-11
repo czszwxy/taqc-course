@@ -1,0 +1,72 @@
+{
+  "type": "quiz",
+  "title": "Quiz: locators",
+  "show": 5,
+  "hints": ["Порядок вибору: роль → підпис/текст → test id → CSS/XPath. Збіг за замовчуванням частковий."],
+  "questions": [
+    {
+      "id": "first-choice",
+      "kind": "single",
+      "text": "Який локатор Playwright рекомендує як перший вибір для кнопки «Log in»?",
+      "options": [
+        { "text": "`page.getByRole('button', { name: 'Log in' })`", "correct": true },
+        { "text": "`page.locator('.bg-teal-600')`", "explain": "Клас стилю зміниться з першим редизайном." },
+        { "text": "`page.locator('xpath=/html/body/div/main/form/button')`", "explain": "Абсолютний XPath ламається від будь-якої зміни верстки." }
+      ]
+    },
+    {
+      "id": "partial",
+      "kind": "single",
+      "text": "На формі є поля «Password» і «Confirm password». Що знайде `page.getByLabel('Password')`?",
+      "options": [
+        { "text": "Обидва поля — пошук частковий; для одного потрібно `{ exact: true }`", "correct": true },
+        { "text": "Лише поле «Password»" },
+        { "text": "Нічого" }
+      ]
+    },
+    {
+      "id": "strict",
+      "kind": "single",
+      "text": "Що означає помилка `strict mode violation: … resolved to 2 elements`?",
+      "options": [
+        { "text": "Локатор знайшов кілька елементів, а дія потребує рівно одного: треба уточнити локатор", "correct": true },
+        { "text": "Сторінка завантажилася двічі" },
+        { "text": "Тест запущено у двох браузерах" }
+      ]
+    },
+    {
+      "id": "role-checkbox",
+      "kind": "text",
+      "text": "Яка роль у `<input type=\"checkbox\">`? (одне слово)",
+      "accept": ["checkbox"]
+    },
+    {
+      "id": "testid",
+      "kind": "single",
+      "text": "Коли доречний `getByTestId`?",
+      "options": [
+        { "text": "Коли елемент не має зручної ролі, підпису чи тексту, а розробники додали `data-testid` для тестів", "correct": true },
+        { "text": "Завжди: це найкращий локатор у будь-якій ситуації", "explain": "Користувач не бачить test id. Ролі й підписи перевіряють ще й те, що бачить людина." }
+      ]
+    },
+    {
+      "id": "alert",
+      "kind": "single",
+      "text": "Як знайти повідомлення про помилку з атрибутом `role=\"alert\"`?",
+      "options": [
+        { "text": "`page.getByRole('alert')`", "correct": true },
+        { "text": "`page.getByText('alert')`", "explain": "Це шукатиме слово «alert» у тексті." },
+        { "text": "`page.getByTestId('alert')`" }
+      ]
+    },
+    {
+      "id": "lazy",
+      "kind": "single",
+      "text": "`const btn = page.getByRole('button', { name: 'Save' });` — коли Playwright шукає кнопку?",
+      "options": [
+        { "text": "У момент дії чи перевірки (`await btn.click()`), з повторами, поки кнопка не з'явиться", "correct": true },
+        { "text": "Одразу в рядку з `const`, один раз" }
+      ]
+    }
+  ]
+}

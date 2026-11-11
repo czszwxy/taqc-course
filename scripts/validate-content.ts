@@ -323,6 +323,29 @@ const checkSqlTask: Checker<'sql'> = async (dir, task) => {
   });
 };
 
+/**
+ * Static checks only — the reference spec is run in real Playwright by `npm run validate:lab`
+ * (scripts/validate-lab.ts), which needs Chromium and the dev server.
+ */
+const checkPlaywrightTask: Checker<'playwright'> = (dir, task) => {
+  const read = (file: string): string | null => (fs.existsSync(path.join(dir, file)) ? fs.readFileSync(path.join(dir, file), 'utf8') : null);
+  const starter = read('starter.ts');
+  const solution = read('solution.ts');
+  if (starter === null || solution === null) {
+    fail(dir, 'playwright tasks need starter.ts and solution.ts');
+    return;
+  }
+  if (!solution.includes("from '@playwright/test'")) fail(dir, "solution.ts must import test/expect from '@playwright/test'");
+  if (starter.trim() === solution.trim()) fail(dir, 'starter.ts is identical to solution.ts');
+  const page = PLAYGROUND_PAGES.find((p) => p.id === task.playground);
+  const bugIds = page?.bugIds ?? [];
+  duplicates(task.mutants.map((m) => m.id)).forEach((id) => fail(dir, `duplicate mutant id "${id}"`));
+  task.mutants.filter((m) => !bugIds.includes(m.id)).forEach((m) => fail(dir, `mutant "${m.id}" is not a bug id of playground page "${task.playground}"`));
+  const badRules = task.codeRules.filter((r) => !isValidPattern(r.pattern, r.flags ?? 'm'));
+  badRules.forEach((r) => fail(dir, `invalid code rule regex /${r.pattern}/`));
+  if (badRules.length === 0) evaluateCodeRules(solution, task.codeRules).forEach((m) => fail(dir, `solution.ts breaks its own code rule: ${m}`));
+};
+
 const CHECKS: { [K in Task['type']]: Checker<K> } = {
   code: checkCode,
   quiz: checkQuiz,
@@ -335,6 +358,7 @@ const CHECKS: { [K in Task['type']]: Checker<K> } = {
   table: checkTable,
   selector: checkSelectorTask,
   sql: checkSqlTask,
+  playwright: checkPlaywrightTask,
 };
 
 /* ---------- structure ---------- */

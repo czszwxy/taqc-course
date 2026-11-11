@@ -1,0 +1,35 @@
+{
+  "title": "Installing Playwright, project structure & config",
+  "minutes": 50,
+  "summary": "Як створити Playwright-проєкт (npm init playwright), що в ньому лежить, як встановити браузери, головні налаштування playwright.config.ts (testDir, timeout, retries, workers, baseURL, projects, webServer) і лабораторія цього курсу",
+  "resources": [
+    {
+      "title": "Playwright: Installation",
+      "url": "https://playwright.dev/docs/intro",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Test configuration",
+      "url": "https://playwright.dev/docs/test-configuration",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Test timeouts",
+      "url": "https://playwright.dev/docs/test-timeouts",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Playwright installation and first project",
+      "url": "https://www.youtube.com/results?search_query=Playwright+TypeScript+installation+tutorial",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}
