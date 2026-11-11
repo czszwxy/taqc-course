@@ -1,0 +1,14 @@
+{
+  "type": "code",
+  "title": "Number the test titles with map",
+  "statement": "Для звіту потрібен нумерований список назв тестів. Напиши `numberTitles(titles)`, яка повертає **новий** масив рядків у форматі `\"<номер>. <назва>\"` (нумерація з 1).\n\n```ts\nnumberTitles(['login works', 'cart total']);\n// ['1. login works', '2. cart total']\n\nnumberTitles([]);\n// []\n```\n\nВикористай метод `map` — без циклів `for`.",
+  "hints": [
+    "Друга змінна в `map` — індекс елемента: `titles.map((title, index) => ...)`.",
+    "Індекс починається з 0, а нумерація — з 1: `index + 1`. Рядок зручно зібрати template literal."
+  ],
+  "explanation": "```ts\nreturn titles.map((title, index) => `${index + 1}. ${title}`);\n```\n\nЧаста помилка — забути `+ 1` і отримати `0. login works`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\.map\\(", "message": "Використай метод `map`." },
+    { "kind": "forbid", "pattern": "\\bfor\\s*\\(", "message": "Спробуй без циклу `for` — лише `map`." }
+  ]
+}

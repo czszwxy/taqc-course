@@ -1,0 +1,8 @@
+{
+  "type": "code",
+  "variantOf": "03-is-product",
+  "title": "A type guard for a user object",
+  "statement": "Напиши guard `isUser(value): value is User` для:\n\n```ts\nexport interface User {\n  id: number;\n  email: string;\n  role: 'admin' | 'customer';\n}\n```\n\n`role` має бути **саме** `'admin'` або `'customer'` (не будь-який рядок).\n\n```ts\nisUser({ id: 42, email: 'qa@gadgetly.test', role: 'customer' }); // true\nisUser({ id: 42, email: 'qa@gadgetly.test', role: 'manager' });  // false\n```",
+  "hints": ["Спочатку перевір, що це не-null об'єкт.", "Для role: `v.role === 'admin' || v.role === 'customer'`."],
+  "explanation": "```ts\nexport function isUser(value: unknown): value is User {\n  if (typeof value !== 'object' || value === null) return false;\n  const v = value as Record<string, unknown>;\n  return typeof v.id === 'number' && typeof v.email === 'string' && (v.role === 'admin' || v.role === 'customer');\n}\n```"
+}

@@ -1,8 +1,10 @@
 import type { CompileDiagnostic, CompileResult } from './compiler';
 import type { ExecOutput, TestResult, LogEntry } from './harness';
 import { HARNESS_DTS } from './harness-dts';
+import { evaluateTestSuite, type MutantInfo, type SuiteResult } from './mutation';
 
 export type { CompileDiagnostic, TestResult, LogEntry };
+export type { SuiteResult, MutantResult } from './mutation';
 
 type CompileReply = CompileResult & { id: number; fatal?: string };
 
@@ -100,8 +102,17 @@ export function evaluateCodeRules(code: string, rules: CodeRule[]): string[] {
   return failures;
 }
 
-export async function checkCode(solution: string, tests: string, rules: CodeRule[] = []): Promise<CheckResult> {
-  const c = await compile({ '/solution.ts': solution, '/tests.ts': tests, '/harness.d.ts': HARNESS_DTS });
+/** Support files ("subject.ts" → code) as compiler paths ("/subject.ts" → code). */
+function supportPaths(support: Record<string, string>): Record<string, string> {
+  return Object.fromEntries(Object.entries(support).map(([name, code]) => [`/${name}`, code]));
+}
+
+function jsModules(outputs: Record<string, string>): Record<string, string> {
+  return Object.fromEntries(Object.entries(outputs).filter(([p]) => p.endsWith('.js')));
+}
+
+export async function checkCode(solution: string, tests: string, rules: CodeRule[] = [], support: Record<string, string> = {}): Promise<CheckResult> {
+  const c = await compile({ ...supportPaths(support), '/solution.ts': solution, '/tests.ts': tests, '/harness.d.ts': HARNESS_DTS });
   const base = { ruleFailures: evaluateCodeRules(solution, rules), results: [], logs: [] };
   if (c.fatal) return { ...base, passed: false, codeErrors: [], interfaceErrors: [], fatal: c.fatal };
 
@@ -114,7 +125,7 @@ export async function checkCode(solution: string, tests: string, rules: CodeRule
   if (solutionJs === undefined || testsJs === undefined) {
     return { ...base, passed: false, codeErrors, interfaceErrors };
   }
-  const run = await execute({ '/solution.js': solutionJs, '/tests.js': testsJs }, '/tests.js', true);
+  const run = await execute(jsModules(c.outputs), '/tests.js', true);
   const allTestsPass = run.results.length > 0 && run.results.every((r) => r.passed);
   const passed =
     allTestsPass && codeErrors.length === 0 && interfaceErrors.length === 0 && base.ruleFailures.length === 0 && !run.timedOut;
@@ -130,12 +141,35 @@ export interface RunResult {
 }
 
 /** Runs the learner's file on its own (no tests) and returns console output. */
-export async function runCode(solution: string): Promise<RunResult> {
-  const c = await compile({ '/solution.ts': solution, '/harness.d.ts': HARNESS_DTS });
+export async function runCode(solution: string, support: Record<string, string> = {}): Promise<RunResult> {
+  const c = await compile({ ...supportPaths(support), '/solution.ts': solution, '/harness.d.ts': HARNESS_DTS });
   if (c.fatal) return { codeErrors: [], logs: [], fatal: c.fatal };
   const codeErrors = c.diagnostics.filter((d) => d.category === 'error' && d.file === '/solution.ts');
   const js = c.outputs['/solution.js'];
   if (js === undefined) return { codeErrors, logs: [] };
-  const run = await execute({ '/solution.js': js }, '/solution.js', false);
+  const run = await execute(jsModules(c.outputs), '/solution.js', false);
   return { codeErrors, logs: run.logs, runtimeError: run.runtimeError, timedOut: run.timedOut };
+}
+
+/** "Write the tests" tasks: run the learner's tests on subject.ts and on every mutant. */
+export async function checkTests(
+  tests: string,
+  support: Record<string, string>,
+  mutantCode: Record<string, string>,
+  mutants: MutantInfo[],
+  minTests?: number,
+): Promise<SuiteResult & { fatal?: string }> {
+  const deps = {
+    compile: async (files: Record<string, string>) => {
+      const r = await compile(files);
+      if (r.fatal) throw new Error(r.fatal);
+      return r;
+    },
+    execute: (req: { modules: Record<string, string>; entry: string; collectTests: boolean }) => execute(req.modules, req.entry, req.collectTests),
+  };
+  try {
+    return await evaluateTestSuite(deps, { tests, support, mutantCode, mutants, minTests });
+  } catch (e) {
+    return { passed: false, codeErrors: [], results: [], logs: [], tooFewTests: false, mutants: [], fatal: e instanceof Error ? e.message : String(e) };
+  }
 }

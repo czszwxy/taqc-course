@@ -1,0 +1,28 @@
+{
+  "title": "Optional, readonly, index signatures",
+  "minutes": 55,
+  "summary": "Необов'язкові поля (?) і значення за замовчуванням (??), readonly для даних, які не можна змінювати, і index signatures / Record для словників на кшталт «статус → кількість»",
+  "resources": [
+    {
+      "title": "TypeScript Handbook: Object Types (optional, readonly, index signatures)",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/objects.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Nullish coalescing operator (??)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: TypeScript optional and readonly properties (пошук)",
+      "url": "https://www.youtube.com/results?search_query=typescript+optional+readonly+properties+index+signature",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

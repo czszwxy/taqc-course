@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "Function types: a list of named validators",
+  "statement": "Опиши валідатори полів форми через типи функцій.\n\n1. `export type Validator = (value: string) => boolean;`\n2. `export interface NamedValidator { name: string; check: Validator }`\n3. Два валідатори типу `Validator`:\n   - `isNotEmpty` — `true`, якщо рядок не порожній **після обрізання пробілів**;\n   - `hasAt` — `true`, якщо рядок містить `@`.\n4. `firstFailing(value, validators)` — повертає `name` **першого** валідатора, який повернув `false`, або `null`, якщо всі пройшли.\n\n```ts\nconst rules: NamedValidator[] = [\n  { name: 'required', check: isNotEmpty },\n  { name: 'email', check: hasAt },\n];\nfirstFailing('   ', rules);          // 'required'\nfirstFailing('olena', rules);        // 'email'\nfirstFailing('olena@test.com', rules); // null\n```",
+  "hints": [
+    "`export const isNotEmpty: Validator = (value) => value.trim().length > 0;`",
+    "Для `firstFailing`: знайди перший валідатор, у якого `check(value)` дає `false` — метод `find`. Потім поверни його `name` або `null`.",
+    "`found ? found.name : null` або `found?.name ?? null`."
+  ],
+  "explanation": "```ts\nexport function firstFailing(value: string, validators: NamedValidator[]): string | null {\n  const failed = validators.find((v) => !v.check(value));\n  return failed ? failed.name : null;\n}\n```\n\nФункція в полі об'єкта викликається як звичайна: `v.check(value)`."
+}

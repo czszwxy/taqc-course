@@ -1,0 +1,60 @@
+{
+  "type": "quiz",
+  "title": "Quiz: utility types",
+  "show": 5,
+  "hints": ["Pick — залишити вказані поля, Omit — прибрати вказані. Partial — усі необов'язкові."],
+  "questions": [
+    {
+      "id": "partial",
+      "kind": "single",
+      "text": "Який тип найкраще описує тіло PATCH-запиту, де можна змінити будь-які поля `User`?",
+      "options": [{ "text": "`Partial<User>`", "correct": true }, { "text": "`Required<User>`" }, { "text": "`Readonly<User>`" }]
+    },
+    {
+      "id": "omit",
+      "kind": "single",
+      "text": "Як описати користувача **без** поля `password`?",
+      "options": [
+        { "text": "`Omit<User, 'password'>`", "correct": true },
+        { "text": "`Pick<User, 'password'>`", "explain": "Pick залишає **лише** password." },
+        { "text": "`Partial<User>`" }
+      ]
+    },
+    {
+      "id": "pick",
+      "kind": "single",
+      "text": "Які поля має `Pick<User, 'id' | 'name'>`?",
+      "options": [{ "text": "Лише `id` і `name`", "correct": true }, { "text": "Усі, крім `id` і `name`" }]
+    },
+    {
+      "id": "record",
+      "kind": "single",
+      "text": "`type Status = 'passed' | 'failed'`. Що буде з `const t: Record<Status, number> = { passed: 1 }`?",
+      "options": [
+        { "text": "Помилка: бракує ключа `failed`", "correct": true },
+        { "text": "Усе гаразд: `failed` буде undefined" }
+      ]
+    },
+    {
+      "id": "combo",
+      "kind": "single",
+      "text": "Що означає `Partial<Omit<User, 'id'>>`?",
+      "options": [
+        { "text": "Усі поля User, крім id, і кожне — необов'язкове", "correct": true },
+        { "text": "Лише поле id, необов'язкове" }
+      ]
+    },
+    {
+      "id": "return-type",
+      "kind": "single",
+      "text": "Що дає `ReturnType<typeof createUser>`?",
+      "options": [{ "text": "Тип значення, яке повертає функція createUser", "correct": true }, { "text": "Тип параметрів createUser" }]
+    },
+    {
+      "id": "nonnullable",
+      "kind": "single",
+      "text": "Що таке `NonNullable<string | null | undefined>`?",
+      "options": [{ "text": "`string`", "correct": true }, { "text": "`null | undefined`" }]
+    }
+  ]
+}

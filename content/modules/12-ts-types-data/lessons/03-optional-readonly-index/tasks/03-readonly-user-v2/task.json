@@ -1,0 +1,8 @@
+{
+  "type": "code",
+  "variantOf": "03-readonly-user",
+  "title": "Readonly arrays: add a tag without push",
+  "statement": "Теги тесту передаються як масив, який не можна змінювати.\n\nНапиши `addTag(tags, tag)`:\n\n- тип параметра `tags` і результату — `readonly string[]`;\n- повертає **новий** масив з доданим `tag` у кінці;\n- якщо такий тег уже є — повертає масив без змін (новий або той самий — не важливо).\n\n```ts\naddTag(['@smoke'], '@regression'); // ['@smoke', '@regression']\naddTag(['@smoke'], '@smoke');      // ['@smoke']\n```",
+  "hints": ["Сигнатура: `export function addTag(tags: readonly string[], tag: string): readonly string[]`.", "Новий масив — `[...tags, tag]`. Перевірка — `tags.includes(tag)`."],
+  "explanation": "```ts\nexport function addTag(tags: readonly string[], tag: string): readonly string[] {\n  return tags.includes(tag) ? tags : [...tags, tag];\n}\n```\n\n`push` на `readonly string[]` навіть не скомпілюється — і це добре."
+}

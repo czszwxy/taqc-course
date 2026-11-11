@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Pick and Omit: public user and preview",
+  "statement": "Є повний `UserRecord` (з паролем). Створи типи і функції:\n\n1. `export type PublicUser = Omit<UserRecord, 'password'>`;\n2. `export type UserPreview = Pick<UserRecord, 'id' | 'name'>`;\n3. `toPublic(user)` → `PublicUser` — копія **без** `password`;\n4. `toPreview(user)` → `UserPreview` — лише `id` і `name`.\n\n```ts\ntoPublic(user);   // { id: 42, name: 'Olena', email: 'qa@gadgetly.test' }\ntoPreview(user);  // { id: 42, name: 'Olena' }\n```\n\n> Типи не прибирають поля під час виконання! `return user` для `PublicUser` скомпілюється, але пароль залишиться в об'єкті. Тести це перевіряють.",
+  "hints": [
+    "Для `toPublic` використай rest: `const { password, ...rest } = user; return rest;`",
+    "Для `toPreview`: `return { id: user.id, name: user.name };`"
+  ],
+  "explanation": "```ts\nexport type PublicUser = Omit<UserRecord, 'password'>;\nexport type UserPreview = Pick<UserRecord, 'id' | 'name'>;\n\nexport function toPublic(user: UserRecord): PublicUser {\n  const { password, ...rest } = user;\n  return rest;\n}\nexport function toPreview(user: UserRecord): UserPreview {\n  return { id: user.id, name: user.name };\n}\n```\n\nГоловний урок: тип — це обіцянка компілятору, а не фільтр даних. Зайві поля треба прибрати в коді."
+}

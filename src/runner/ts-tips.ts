@@ -26,5 +26,10 @@ export const TS_TIPS: Record<number, string> = {
   2614: 'The tests import a name your file does not export. Check the exact name and the `export` keyword.',
   7006: 'Add a type to this parameter, e.g. `(name: string)`. In strict mode parameters can not be implicitly `any`.',
   7030: 'Not all code paths return a value. Add a `return` for every branch.',
+  2578: 'A test expects TypeScript to REJECT some code (for example changing a readonly field or passing a value outside a union), but your types allow it. Make the type stricter.',
+  2540: 'This property is readonly — you can not assign to it. Create a new object instead.',
+  2741: 'A required property is missing in the object. Add it or make it optional with ?.',
+  2353: 'Object literal may only specify known properties — this property is not in the type.',
+  18046: 'The value is of type unknown — check its type first (typeof, in, a type guard) before using it.',
   18048: 'The value may be `undefined` here. Check it first (e.g. with `if`) or provide a default.',
 };

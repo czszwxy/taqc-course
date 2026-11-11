@@ -1,0 +1,63 @@
+{
+  "type": "quiz",
+  "title": "Quiz: enums & as const",
+  "show": 5,
+  "hints": ["`typeof X` — тип значення X; `keyof` — його ключі; `[number]` — тип елемента масиву."],
+  "questions": [
+    {
+      "id": "numeric",
+      "kind": "text",
+      "text": "Що виведе код?",
+      "code": "enum Priority { Low, Medium, High }\nconsole.log(Priority.High);",
+      "accept": ["2"],
+      "explanation": "Числові enum нумеруються з 0: Low = 0, Medium = 1, High = 2."
+    },
+    {
+      "id": "string-enum",
+      "kind": "single",
+      "text": "`enum Severity { Major = 'Major' }`, `function f(s: Severity)`. Чи скомпілюється `f('Major')`?",
+      "options": [
+        { "text": "Ні: потрібно передати `Severity.Major`", "correct": true },
+        { "text": "Так: значення ж однакові" }
+      ]
+    },
+    {
+      "id": "as-const-array",
+      "kind": "single",
+      "text": "`const ROLES = ['admin', 'guest'] as const; type Role = (typeof ROLES)[number];`. Що таке `Role`?",
+      "options": [
+        { "text": "`'admin' | 'guest'`", "correct": true },
+        { "text": "`string`" },
+        { "text": "`string[]`" }
+      ]
+    },
+    {
+      "id": "keyof",
+      "kind": "single",
+      "text": "`const S = { ok: 200, notFound: 404 } as const;` Що таке `keyof typeof S`?",
+      "options": [
+        { "text": "`'ok' | 'notFound'`", "correct": true },
+        { "text": "`200 | 404`", "explain": "Це тип значень: `(typeof S)[keyof typeof S]`." },
+        { "text": "`string`" }
+      ]
+    },
+    {
+      "id": "readonly",
+      "kind": "single",
+      "text": "Що станеться при `S.ok = 500` для об'єкта з `as const`?",
+      "options": [{ "text": "Помилка компіляції: властивості readonly", "correct": true }, { "text": "Значення зміниться" }]
+    },
+    {
+      "id": "without-const",
+      "kind": "single",
+      "text": "Який тип у `const roles = ['admin', 'guest'];` (без `as const`)?",
+      "options": [{ "text": "`string[]`", "correct": true }, { "text": "`('admin' | 'guest')[]`" }]
+    },
+    {
+      "id": "values",
+      "kind": "single",
+      "text": "Як отримати масив усіх значень рядкового enum `Severity` під час виконання?",
+      "options": [{ "text": "`Object.values(Severity)`", "correct": true }, { "text": "`keyof Severity`", "explain": "`keyof` існує лише на рівні типів." }]
+    }
+  ]
+}

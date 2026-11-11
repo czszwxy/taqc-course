@@ -111,11 +111,30 @@ export const codeRuleSchema = z.object({
   message: z.string(),
 });
 
+/** A deliberately broken version of subject.ts (file mutants/<id>.ts) that good tests must catch. */
+export const mutantSchema = z.object({
+  id: z.string(),
+  /** What is broken — shown after the learner's tests catch it. */
+  description: z.string(),
+  /** Nudge shown while this mutant survives (which case is not tested yet). */
+  hint: z.string(),
+});
+
+/**
+ * mode "solution" (default): the learner writes solution.ts, hidden tests.ts checks it.
+ * mode "tests": the learner writes the TESTS for subject.ts. They must pass on subject.ts and fail on
+ * every mutants/<id>.ts (mutation testing). solution.ts = reference tests, starter.ts = starting tests file.
+ * Any other .ts file in the task folder (e.g. subject.ts, models.ts) is a read-only support file the code can import.
+ */
 export const codeTaskSchema = z.object({
   type: z.literal('code'),
   ...baseTask,
   statement: z.string(),
   codeRules: z.array(codeRuleSchema).default([]),
+  mode: z.enum(['solution', 'tests']).default('solution'),
+  mutants: z.array(mutantSchema).default([]),
+  /** tests mode: minimum number of it()/test() blocks. */
+  minTests: z.number().int().positive().optional(),
 });
 
 export const valueSetTaskSchema = z.object({
@@ -296,6 +315,7 @@ export type Task = z.infer<typeof taskSchema>;
 export type QuizTask = z.infer<typeof quizTaskSchema>;
 export type QuizQuestion = z.infer<typeof questionSchema>;
 export type CodeTask = z.infer<typeof codeTaskSchema>;
+export type MutantSpec = z.infer<typeof mutantSchema>;
 export type ValueSetTask = z.infer<typeof valueSetTaskSchema>;
 export type TestCaseTask = z.infer<typeof testCaseTaskSchema>;
 export type BugReportTask = z.infer<typeof bugReportTaskSchema>;

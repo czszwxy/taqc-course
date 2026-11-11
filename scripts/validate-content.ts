@@ -25,6 +25,7 @@ import { GENERATORS } from '../src/features/tasks/generators';
 import { PLAYGROUND_PAGES } from '../src/playground/registry';
 import { JSDOM } from 'jsdom';
 import { checkChallenge, prepareSnippet } from '../src/features/tasks/selectors';
+import { evaluateTestSuite, SUBJECT_FILE } from '../src/runner/mutation';
 
 /** Theory files shorter than this are treated as "not written yet". */
 const MIN_THEORY_LENGTH = 200;
@@ -62,7 +63,63 @@ type Checker<T extends Task['type']> = (dir: string, task: TaskOf<T>) => void | 
 
 /* ---------- per-type checks ---------- */
 
+const RESERVED_CODE_FILES = new Set(['starter.ts', 'solution.ts', 'tests.ts']);
+
+const readSupport = (dir: string): Record<string, string> =>
+  Object.fromEntries(
+    fs
+      .readdirSync(dir)
+      .filter((f) => f.endsWith('.ts') && !RESERVED_CODE_FILES.has(f))
+      .map((f) => [f, fs.readFileSync(path.join(dir, f), 'utf8')]),
+  );
+
+const supportPaths = (support: Record<string, string>) => Object.fromEntries(Object.entries(support).map(([n, c]) => [`/${n}`, c]));
+const jsOnly = (outputs: Record<string, string>) => Object.fromEntries(Object.entries(outputs).filter(([p]) => p.endsWith('.js')));
+
+const checkTestsTask = async (dir: string, task: TaskOf<'code'>, support: Record<string, string>) => {
+  const needed = ['starter.ts', 'solution.ts', SUBJECT_FILE].map((f) => path.join(dir, f));
+  const missing = needed.filter((f) => !fs.existsSync(f));
+  missing.forEach((f) => fail(f, 'missing (tests mode needs starter.ts, solution.ts and subject.ts)'));
+  if (missing.length) return;
+  const mutantDir = path.join(dir, 'mutants');
+  const files = fs.existsSync(mutantDir) ? fs.readdirSync(mutantDir).filter((f) => f.endsWith('.ts')) : [];
+  const mutantCode = Object.fromEntries(files.map((f) => [f.replace(/\.ts$/, ''), fs.readFileSync(path.join(mutantDir, f), 'utf8')]));
+  const ids = task.mutants.map((m) => m.id);
+  if (ids.length === 0) fail(dir, 'tests mode needs at least one mutant');
+  duplicates(ids).forEach((id) => fail(dir, `duplicate mutant id "${id}"`));
+  ids.filter((id) => mutantCode[id] === undefined).forEach((id) => fail(dir, `mutants/${id}.ts is missing`));
+  Object.keys(mutantCode).filter((id) => !ids.includes(id)).forEach((id) => fail(dir, `mutants/${id}.ts is not listed in task.json`));
+  Object.entries(mutantCode).forEach(([id, code]) => {
+    if (code.trim() === (support[SUBJECT_FILE] ?? '').trim()) fail(dir, `mutant "${id}" is identical to subject.ts`);
+    const c = compile({ ...supportPaths(support), [`/${SUBJECT_FILE}`]: code, '/harness.d.ts': HARNESS_DTS });
+    c.diagnostics
+      .filter((d) => d.category === 'error')
+      .forEach((d) => fail(dir, `mutant "${id}" does not compile: ${d.file}:${d.line} TS${d.code} ${d.message}`));
+  });
+
+  const deps = { compile: async (f: Record<string, string>) => compile(f), execute: executeModules };
+  const run = (tests: string) => evaluateTestSuite(deps, { tests, support, mutantCode, mutants: task.mutants, minTests: task.minTests });
+  const sol = await run(fs.readFileSync(path.join(dir, 'solution.ts'), 'utf8'));
+  if (!sol.passed) {
+    const details = [
+      ...sol.codeErrors.map((d) => `${d.file}:${d.line} TS${d.code} ${d.message}`),
+      ...sol.results.filter((r) => !r.passed).map((r) => `test "${r.name}" fails on subject.ts: ${r.error}`),
+      ...sol.mutants.filter((m) => !m.killed).map((m) => `mutant "${m.id}" survives the reference tests`),
+      ...(sol.tooFewTests ? [`fewer than minTests (${task.minTests}) tests`] : []),
+      ...(sol.runtimeError ? [`runtime: ${sol.runtimeError}`] : []),
+    ];
+    fail(dir, `reference tests (solution.ts) do not pass:\n      ${details.join('\n      ')}`);
+  }
+  const st = await run(fs.readFileSync(path.join(dir, 'starter.ts'), 'utf8'));
+  if (st.passed) fail(dir, 'starter tests already catch every mutant (the task is trivial)');
+};
+
 const checkCode: Checker<'code'> = async (dir, task) => {
+  const support = readSupport(dir);
+  if (task.mode === 'tests') {
+    await checkTestsTask(dir, task, support);
+    return;
+  }
   const files = ['starter.ts', 'solution.ts', 'tests.ts'].map((f) => path.join(dir, f));
   const missing = files.filter((f) => !fs.existsSync(f));
   missing.forEach((f) => fail(f, 'missing'));
@@ -70,10 +127,10 @@ const checkCode: Checker<'code'> = async (dir, task) => {
   const [starter, solution, tests] = files.map((f) => fs.readFileSync(f, 'utf8'));
 
   const evaluate = async (code: string) => {
-    const c = compile({ '/solution.ts': code, '/tests.ts': tests, '/harness.d.ts': HARNESS_DTS });
+    const c = compile({ ...supportPaths(support), '/solution.ts': code, '/tests.ts': tests, '/harness.d.ts': HARNESS_DTS });
     const errs = c.diagnostics.filter((d) => d.category === 'error');
     const run = await executeModules({
-      modules: { '/solution.js': c.outputs['/solution.js'] ?? '', '/tests.js': c.outputs['/tests.js'] ?? '' },
+      modules: jsOnly(c.outputs),
       entry: '/tests.js',
       collectTests: true,
     });

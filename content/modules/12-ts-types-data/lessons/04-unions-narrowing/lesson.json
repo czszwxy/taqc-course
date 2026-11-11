@@ -1,0 +1,28 @@
+{
+  "title": "Union & literal types, narrowing",
+  "minutes": 65,
+  "summary": "Union-типи (A | B), literal types ('passed' | 'failed'), звуження типу через typeof, in, === і discriminated unions, а також перевірка, що оброблено всі варіанти (never)",
+  "resources": [
+    {
+      "title": "TypeScript Handbook: Narrowing",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/narrowing.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "TypeScript Handbook: Everyday Types (union & literal types)",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: TypeScript discriminated unions (пошук)",
+      "url": "https://www.youtube.com/results?search_query=typescript+discriminated+unions+narrowing",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

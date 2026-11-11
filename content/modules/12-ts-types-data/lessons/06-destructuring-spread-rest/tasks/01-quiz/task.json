@@ -1,0 +1,66 @@
+{
+  "type": "quiz",
+  "title": "Quiz: destructuring, spread and rest",
+  "show": 5,
+  "hints": ["`...` справа від `=` або в аргументах — spread (розгорнути). Зліва або в параметрах — rest (зібрати)."],
+  "questions": [
+    {
+      "id": "rename",
+      "kind": "text",
+      "text": "Що виведе код?",
+      "code": "const { role: r = 'guest' } = { role: 'admin' };\nconsole.log(r);",
+      "accept": ["admin"]
+    },
+    {
+      "id": "default",
+      "kind": "text",
+      "text": "А цей?",
+      "code": "const { retries = 3 } = { retries: undefined };\nconsole.log(retries);",
+      "accept": ["3"],
+      "explanation": "Значення за замовчуванням спрацьовує для `undefined`."
+    },
+    {
+      "id": "order",
+      "kind": "text",
+      "text": "Що виведе код?",
+      "code": "const base = { retries: 0 };\nconst cfg = { retries: 2, ...base };\nconsole.log(cfg.retries);",
+      "accept": ["0"],
+      "explanation": "`...base` іде пізніше і перезаписує `retries: 2`."
+    },
+    {
+      "id": "rest-object",
+      "kind": "single",
+      "text": "Що буде в `safe` після `const { password, ...safe } = { email: 'a@b.c', password: 'x', role: 'admin' }`?",
+      "options": [
+        { "text": "`{ email: 'a@b.c', role: 'admin' }`", "correct": true },
+        { "text": "`{ password: 'x' }`" },
+        { "text": "`['a@b.c', 'admin']`" }
+      ]
+    },
+    {
+      "id": "array",
+      "kind": "text",
+      "text": "Що виведе код?",
+      "code": "const [, second, ...others] = ['a', 'b', 'c', 'd'];\nconsole.log(second + others.length);",
+      "accept": ["b2"]
+    },
+    {
+      "id": "shallow",
+      "kind": "single",
+      "text": "`const copy = { ...user }`; потім `copy.address.city = 'Kyiv'`. Що з `user.address.city`?",
+      "options": [
+        { "text": "Теж стане 'Kyiv' — spread робить поверхневу копію", "correct": true },
+        { "text": "Не зміниться — це повна копія" }
+      ]
+    },
+    {
+      "id": "playwright",
+      "kind": "single",
+      "text": "Що відбувається в `test('x', async ({ page }) => { … })`?",
+      "options": [
+        { "text": "Деструктуризація: з об'єкта фікстур береться поле `page`", "correct": true },
+        { "text": "Створюється новий об'єкт `{ page }`" }
+      ]
+    }
+  ]
+}

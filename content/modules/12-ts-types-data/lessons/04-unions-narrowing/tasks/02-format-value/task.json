@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "Narrow a union with typeof",
+  "statement": "Комірка таблиці звіту може містити рядок, число або boolean. Напиши `formatCell(value)`:\n\n| Тип | Результат |\n|---|---|\n| `string` | рядок без пробілів по краях |\n| `number` | число з **двома** знаками після коми |\n| `boolean` | `'yes'` або `'no'` |\n\n```ts\nformatCell('  Paid ');  // 'Paid'\nformatCell(3.14159);    // '3.14'\nformatCell(7);          // '7.00'\nformatCell(false);      // 'no'\n```",
+  "hints": [
+    "Тип параметра: `string | number | boolean`.",
+    "Перевіряй по черзі: `if (typeof value === 'string') return value.trim();` …",
+    "Для числа — `value.toFixed(2)`."
+  ],
+  "explanation": "```ts\nexport function formatCell(value: string | number | boolean): string {\n  if (typeof value === 'string') return value.trim();\n  if (typeof value === 'number') return value.toFixed(2);\n  return value ? 'yes' : 'no';\n}\n```\n\nУ кожній гілці TypeScript знає точний тип — тому дозволяє `trim()` і `toFixed()`."
+}

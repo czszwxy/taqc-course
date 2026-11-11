@@ -1,0 +1,28 @@
+{
+  "title": "Enums & as const",
+  "minutes": 50,
+  "summary": "Фіксовані набори значень: enum (числові й рядкові), об'єкти й масиви as const, як отримати з них union-тип (keyof typeof, typeof X[number]) і що обрати в проєкті",
+  "resources": [
+    {
+      "title": "TypeScript Handbook: Enums",
+      "url": "https://www.typescriptlang.org/docs/handbook/enums.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "TypeScript Handbook: Keyof Type Operator",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/keyof-types.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: TypeScript enum vs as const (пошук)",
+      "url": "https://www.youtube.com/results?search_query=typescript+enum+vs+as+const",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

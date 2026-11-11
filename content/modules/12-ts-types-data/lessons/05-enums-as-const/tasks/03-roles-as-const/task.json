@@ -1,0 +1,12 @@
+{
+  "type": "code",
+  "title": "Derive a union type from an as const array",
+  "statement": "1. Створи `export const ROLES = ['admin', 'customer', 'guest'] as const;`\n2. Виведи з нього тип `export type Role` (= `'admin' | 'customer' | 'guest'`) — **не** переписуй значення вручну.\n3. Напиши `parseRole(value: string): Role | null` — повертає роль, якщо рядок (без урахування регістру й пробілів по краях) є однією з ролей, інакше `null`.\n\n```ts\nparseRole('Admin ');   // 'admin'\nparseRole('manager');  // null\n```",
+  "hints": [
+    "`export type Role = (typeof ROLES)[number];`",
+    "Нормалізуй рядок: `value.trim().toLowerCase()`, потім `ROLES.find((r) => r === normalized)`.",
+    "`find` поверне `Role | undefined` — заміни `undefined` на `null` через `?? null`."
+  ],
+  "explanation": "```ts\nexport const ROLES = ['admin', 'customer', 'guest'] as const;\nexport type Role = (typeof ROLES)[number];\n\nexport function parseRole(value: string): Role | null {\n  const normalized = value.trim().toLowerCase();\n  return ROLES.find((r) => r === normalized) ?? null;\n}\n```\n\nДодай роль у масив — і тип `Role` оновиться сам.",
+  "codeRules": [{ "kind": "require", "pattern": "typeof\\s+ROLES", "message": "Виведи тип Role з масиву: `(typeof ROLES)[number]`, не перелічуй ролі вдруге." }]
+}

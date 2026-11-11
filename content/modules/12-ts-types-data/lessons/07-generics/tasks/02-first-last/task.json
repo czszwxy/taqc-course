@@ -1,0 +1,7 @@
+{
+  "type": "code",
+  "title": "Generic first and last",
+  "statement": "Напиши дві **generic**-функції:\n\n- `first<T>(items: T[]): T | undefined` — перший елемент;\n- `last<T>(items: T[]): T | undefined` — останній елемент.\n\nДля порожнього масиву обидві повертають `undefined`. Приховані тести перевіряють і **типи**: `first([1, 2])` має бути `number | undefined`, а не `any`.\n\n```ts\nfirst(['login', 'cart']);  // 'login'\nlast([10, 20, 30]);        // 30\nlast([]);                  // undefined\n```",
+  "hints": ["Сигнатура: `export function first<T>(items: T[]): T | undefined`.", "Останній елемент — `items[items.length - 1]` (для порожнього масиву це `items[-1]` = `undefined`)."],
+  "explanation": "```ts\nexport function first<T>(items: T[]): T | undefined {\n  return items[0];\n}\nexport function last<T>(items: T[]): T | undefined {\n  return items[items.length - 1];\n}\n```\n\nЯкщо в тестах `Unused '@ts-expect-error' directive` — функція повертає `any`, і компілятор не помітив, що число присвоюють у рядок."
+}

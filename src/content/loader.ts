@@ -21,6 +21,10 @@ const taskCodeFiles = import.meta.glob<string>('/content/modules/*/lessons/*/tas
   query: '?raw',
   import: 'default',
 });
+const mutantFiles = import.meta.glob<string>('/content/modules/*/lessons/*/tasks/*/mutants/*.ts', {
+  query: '?raw',
+  import: 'default',
+});
 
 export interface CourseTask {
   id: string;
@@ -229,7 +233,13 @@ export interface TaskCode {
   starter: string;
   solution: string;
   tests: string;
+  /** Read-only support files the code can import, keyed by file name (e.g. "subject.ts"). */
+  support: Record<string, string>;
+  /** tests mode: broken versions of subject.ts keyed by mutant id. */
+  mutants: Record<string, string>;
 }
+
+const RESERVED_CODE_FILES = new Set(['starter.ts', 'solution.ts', 'tests.ts']);
 
 export async function loadTaskCode(taskId: string): Promise<TaskCode> {
   const [m, l, t] = taskId.split('/');
@@ -239,7 +249,18 @@ export async function loadTaskCode(taskId: string): Promise<TaskCode> {
     return load ? load() : '';
   };
   const [starter, solution, tests] = await Promise.all([get('starter.ts'), get('solution.ts'), get('tests.ts')]);
-  return { starter, solution, tests };
+  const supportNames = Object.keys(taskCodeFiles)
+    .filter((p) => p.startsWith(base))
+    .map((p) => p.slice(base.length))
+    .filter((name) => !RESERVED_CODE_FILES.has(name));
+  const mutantPaths = Object.keys(mutantFiles).filter((p) => p.startsWith(base + 'mutants/'));
+  const [supportCode, mutantCode] = await Promise.all([
+    Promise.all(supportNames.map((name) => get(name))),
+    Promise.all(mutantPaths.map((p) => mutantFiles[p]?.() ?? Promise.resolve(''))),
+  ]);
+  const support = Object.fromEntries(supportNames.map((name, i) => [name, supportCode[i] ?? '']));
+  const mutants = Object.fromEntries(mutantPaths.map((p, i) => [p.slice(base.length + 'mutants/'.length).replace(/\.ts$/, ''), mutantCode[i] ?? '']));
+  return { starter, solution, tests, support, mutants };
 }
 
 /* ---------- Navigation helpers ---------- */

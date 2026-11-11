@@ -1,0 +1,28 @@
+{
+  "title": "Type aliases & interfaces",
+  "minutes": 60,
+  "summary": "Власні типи для даних тестів: type і interface, extends, перетин типів (&), типи функцій і методів — і як компілятор ловить помилки у формі об'єктів",
+  "resources": [
+    {
+      "title": "TypeScript Handbook: Object Types",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/objects.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "TypeScript Handbook: Everyday Types (type aliases & interfaces)",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: TypeScript type vs interface (пошук)",
+      "url": "https://www.youtube.com/results?search_query=typescript+type+vs+interface",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

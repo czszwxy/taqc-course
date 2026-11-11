@@ -1,0 +1,8 @@
+{
+  "type": "code",
+  "variantOf": "03-status-icon",
+  "title": "Literal types: which HTTP methods have a body",
+  "statement": "1. Опиши `export type HttpMethod` — лише `'GET'`, `'POST'`, `'PUT'`, `'PATCH'`, `'DELETE'`.\n2. Напиши `hasBody(method: HttpMethod): boolean` — `true` для `POST`, `PUT`, `PATCH`, інакше `false`.\n\n```ts\nhasBody('POST');   // true\nhasBody('GET');    // false\nhasBody('get');    // ❌ compile error\n```",
+  "hints": ["`export type HttpMethod = 'GET' | 'POST' | …;`", "`return method === 'POST' || method === 'PUT' || method === 'PATCH';`"],
+  "explanation": "```ts\nexport type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';\nexport const hasBody = (method: HttpMethod) => method === 'POST' || method === 'PUT' || method === 'PATCH';\n```"
+}

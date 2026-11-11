@@ -1,0 +1,28 @@
+{
+  "title": "unknown vs any, type guards",
+  "minutes": 60,
+  "summary": "Чому any вимикає перевірку типів, а unknown змушує перевірити дані; власні type guards (value is T), перевірка форми об'єкта і безпечний розбір JSON з API",
+  "resources": [
+    {
+      "title": "TypeScript Handbook: Narrowing (type predicates)",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/narrowing.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: JSON.parse()",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: TypeScript unknown vs any, type guards (пошук)",
+      "url": "https://www.youtube.com/results?search_query=typescript+unknown+vs+any+type+guards",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

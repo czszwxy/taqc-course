@@ -1,0 +1,74 @@
+{
+  "type": "quiz",
+  "title": "Quiz: optional, readonly, index signatures",
+  "show": 5,
+  "hints": ["`?` — може не бути. `??` — значення за замовчуванням лише для undefined/null. readonly — не можна присвоювати."],
+  "questions": [
+    {
+      "id": "nullish",
+      "kind": "text",
+      "text": "Що виведе код?",
+      "code": "const retries: number | undefined = 0;\nconsole.log(retries ?? 3);",
+      "accept": ["0"],
+      "explanation": "`??` замінює лише `undefined` і `null`. `0` залишається."
+    },
+    {
+      "id": "or",
+      "kind": "text",
+      "text": "А що виведе цей код?",
+      "code": "const retries: number | undefined = 0;\nconsole.log(retries || 3);",
+      "accept": ["3"],
+      "explanation": "`||` замінює будь-яке falsy-значення, і `0` теж. Тому для чисел потрібен `??`."
+    },
+    {
+      "id": "optional-type",
+      "kind": "single",
+      "text": "`interface C { retries?: number }`. Який тип має `c.retries`?",
+      "options": [
+        { "text": "`number | undefined`", "correct": true },
+        { "text": "`number`" },
+        { "text": "`any`" }
+      ]
+    },
+    {
+      "id": "readonly",
+      "kind": "single",
+      "text": "`interface U { readonly id: number }`. Що буде при `u.id = 5`?",
+      "options": [
+        { "text": "Помилка компіляції: властивість лише для читання", "correct": true },
+        { "text": "Помилка під час виконання" },
+        { "text": "Нічого, значення зміниться" }
+      ]
+    },
+    {
+      "id": "readonly-array",
+      "kind": "single",
+      "text": "Що з цього **не можна** викликати на `readonly string[]`?",
+      "options": [
+        { "text": "`push`", "correct": true },
+        { "text": "`map`", "explain": "`map` не змінює масив — він дозволений." },
+        { "text": "`includes`" }
+      ]
+    },
+    {
+      "id": "index",
+      "kind": "single",
+      "text": "Який тип підходить для об'єкта `{ passed: 12, failed: 3, skipped: 1 }`, де ключі можуть бути будь-якими статусами?",
+      "options": [
+        { "text": "`Record<string, number>`", "correct": true },
+        { "text": "`string[]`" },
+        { "text": "`number`" }
+      ]
+    },
+    {
+      "id": "optional-chaining",
+      "kind": "single",
+      "text": "Що поверне `user.address?.city`, якщо `address` відсутня?",
+      "options": [
+        { "text": "`undefined`", "correct": true },
+        { "text": "Помилку «Cannot read properties of undefined»" },
+        { "text": "Порожній рядок" }
+      ]
+    }
+  ]
+}

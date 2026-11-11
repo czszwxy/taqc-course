@@ -1,0 +1,8 @@
+{
+  "type": "code",
+  "title": "Optional settings with defaults",
+  "statement": "Налаштування прогону тестів мають обов'язкову адресу і три необов'язкові поля.\n\n```ts\nexport interface RunConfig {\n  baseUrl: string;\n  retries?: number;\n  headless?: boolean;\n  timeoutMs?: number;\n}\n```\n\nНапиши `resolveConfig(config)`, яка повертає `ResolvedConfig` (усі поля обов'язкові) зі значеннями за замовчуванням:\n\n| Поле | За замовчуванням |\n|---|---|\n| `retries` | `0` |\n| `headless` | `true` |\n| `timeoutMs` | `30000` |\n\n**Явно задані** значення не змінюй — навіть `0` і `false`.\n\n```ts\nresolveConfig({ baseUrl: 'http://localhost:5173' });\n// { baseUrl: 'http://localhost:5173', retries: 0, headless: true, timeoutMs: 30000 }\nresolveConfig({ baseUrl: 'x', headless: false, timeoutMs: 0 });\n// { baseUrl: 'x', retries: 0, headless: false, timeoutMs: 0 }\n```",
+  "hints": ["Для кожного необов'язкового поля: `config.retries ?? 0`.", "Чому не `||`? Бо `false || true` дасть `true`, а `0 || 30000` — `30000`."],
+  "explanation": "```ts\nreturn {\n  baseUrl: config.baseUrl,\n  retries: config.retries ?? 0,\n  headless: config.headless ?? true,\n  timeoutMs: config.timeoutMs ?? DEFAULT_TIMEOUT_MS,\n};\n```\n\nТести навмисно перевіряють `headless: false` і `timeoutMs: 0` — з `||` вони б зламалися.",
+  "codeRules": [{ "kind": "forbid", "pattern": "\\|\\|", "message": "Не використовуй `||` для значень за замовчуванням — він замінює і `0`, і `false`. Потрібен `??`." }]
+}

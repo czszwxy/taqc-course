@@ -1,0 +1,67 @@
+{
+  "type": "quiz",
+  "title": "Quiz: unions, literals and narrowing",
+  "show": 5,
+  "hints": ["Після перевірки `typeof x === 'number'` усередині if тип x — number."],
+  "questions": [
+    {
+      "id": "literal",
+      "kind": "single",
+      "text": "`type Status = 'passed' | 'failed'`. Що з цього скомпілюється?",
+      "options": [
+        { "text": "`const s: Status = 'failed';`", "correct": true },
+        { "text": "`const s: Status = 'Failed';`", "explain": "Регістр має значення: `'Failed'` — інший літерал." },
+        { "text": "`const s: Status = 'skipped';`" }
+      ]
+    },
+    {
+      "id": "narrow",
+      "kind": "single",
+      "text": "Який тип має `value` всередині `if`?",
+      "code": "function f(value: string | number) {\n  if (typeof value === 'string') {\n    // here\n  }\n}",
+      "options": [{ "text": "`string`", "correct": true }, { "text": "`string | number`" }, { "text": "`number`" }]
+    },
+    {
+      "id": "in",
+      "kind": "single",
+      "text": "Як звузити `{ data: string } | { error: string }` до варіанта з помилкою?",
+      "options": [
+        { "text": "`if ('error' in result)`", "correct": true },
+        { "text": "`if (typeof result === 'error')`" }
+      ]
+    },
+    {
+      "id": "discriminant",
+      "kind": "single",
+      "text": "У `{ ok: true; token: string } | { ok: false; message: string }` яке поле є дискримінантом?",
+      "options": [{ "text": "`ok`", "correct": true }, { "text": "`token`" }, { "text": "`message`" }]
+    },
+    {
+      "id": "never",
+      "kind": "single",
+      "text": "Навіщо `const unreachable: never = status;` у `default` гілці `switch`?",
+      "options": [
+        { "text": "Компілятор видасть помилку, якщо якийсь варіант union не оброблено", "correct": true },
+        { "text": "Щоб програма не падала під час виконання" }
+      ]
+    },
+    {
+      "id": "common-members",
+      "kind": "single",
+      "text": "Чому без перевірки не можна викликати `value.toFixed()` для `value: string | number`?",
+      "options": [
+        { "text": "`toFixed` є лише в number, а value може бути рядком", "correct": true },
+        { "text": "Бо `toFixed` не існує в TypeScript" }
+      ]
+    },
+    {
+      "id": "union-array",
+      "kind": "single",
+      "text": "Що означає тип `(string | number)[]`?",
+      "options": [
+        { "text": "Масив, у якому кожен елемент — рядок або число", "correct": true },
+        { "text": "Або рядок, або масив чисел" }
+      ]
+    }
+  ]
+}

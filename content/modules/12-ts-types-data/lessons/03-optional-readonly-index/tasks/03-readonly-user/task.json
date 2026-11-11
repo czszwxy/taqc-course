@@ -1,0 +1,7 @@
+{
+  "type": "code",
+  "title": "Protect test data with readonly",
+  "statement": "Спільний тестовий користувач не повинен випадково змінюватися.\n\n1. Опиши `export interface TestUser`:\n   - `id: number` — **readonly**,\n   - `email: string` — **readonly**,\n   - `name: string` — звичайне поле.\n2. Напиши `withName(user, name)` — повертає **новий** об'єкт з іншим `name`, вихідний не змінює.\n\n```ts\nconst u: TestUser = { id: 1, email: 'qa@gadgetly.test', name: 'Olena' };\nwithName(u, 'Olena T.'); // { id: 1, email: 'qa@gadgetly.test', name: 'Olena T.' }\nu.id = 2;                // ❌ має бути помилка компіляції\n```\n\nПриховані тести перевіряють, що компілятор **забороняє** змінювати `id` та `email`.",
+  "hints": ["`readonly id: number;` — модифікатор пишеться перед назвою поля.", "Новий об'єкт: `{ ...user, name }`."],
+  "explanation": "```ts\nexport interface TestUser {\n  readonly id: number;\n  readonly email: string;\n  name: string;\n}\n\nexport function withName(user: TestUser, name: string): TestUser {\n  return { ...user, name };\n}\n```\n\nПомилка `Unused '@ts-expect-error' directive` у тестах означає: тест очікував, що TypeScript **заборонить** присвоєння, а він дозволив — бракує `readonly`."
+}

@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "Count results by status with an index signature",
+  "statement": "Напиши `countByStatus(statuses)` — словник «статус → кількість».\n\n- Тип результату — `Record<string, number>` (або `{ [status: string]: number }`).\n- Статуси можуть бути будь-якими рядками.\n- Для порожнього масиву — `{}`.\n\n```ts\ncountByStatus(['passed', 'failed', 'passed', 'skipped']);\n// { passed: 2, failed: 1, skipped: 1 }\n```",
+  "hints": [
+    "Почни з порожнього об'єкта `const counts: Record<string, number> = {};`",
+    "Для кожного статусу: `counts[s] = (counts[s] ?? 0) + 1;` — уперше значення ще `undefined`.",
+    "Можна циклом `for…of` або через `reduce` з початковим `{}`."
+  ],
+  "explanation": "```ts\nexport function countByStatus(statuses: string[]): Record<string, number> {\n  return statuses.reduce<Record<string, number>>((counts, s) => {\n    counts[s] = (counts[s] ?? 0) + 1;\n    return counts;\n  }, {});\n}\n```\n\nБез `?? 0` перше додавання дасть `undefined + 1 = NaN`."
+}

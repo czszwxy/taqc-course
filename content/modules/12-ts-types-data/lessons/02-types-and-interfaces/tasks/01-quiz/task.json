@@ -1,0 +1,76 @@
+{
+  "type": "quiz",
+  "title": "Quiz: type aliases & interfaces",
+  "show": 5,
+  "hints": ["interface — форма об'єкта, type — ім'я будь-якого типу. extends і & додають поля."],
+  "questions": [
+    {
+      "id": "missing",
+      "kind": "single",
+      "text": "Що скаже TypeScript?",
+      "code": "interface User { name: string; age: number }\nconst u: User = { name: 'Olena' };",
+      "options": [
+        { "text": "Помилка: бракує властивості `age`", "correct": true },
+        { "text": "Нічого, `age` стане `undefined`" },
+        { "text": "Помилку лише під час запуску" }
+      ]
+    },
+    {
+      "id": "union-alias",
+      "kind": "single",
+      "text": "Що можна описати **лише** через `type`, а не через `interface`?",
+      "options": [
+        { "text": "`'passed' | 'failed'` — union рядків", "correct": true },
+        { "text": "Об'єкт з полями `id` і `title`" }
+      ]
+    },
+    {
+      "id": "extends",
+      "kind": "multiple",
+      "text": "`interface Bug extends Issue { severity: string }`, де `Issue` має `id` і `title`. Які поля має `Bug`?",
+      "options": [
+        { "text": "`id`", "correct": true },
+        { "text": "`title`", "correct": true },
+        { "text": "`severity`", "correct": true },
+        { "text": "`status`" }
+      ]
+    },
+    {
+      "id": "extra-field",
+      "kind": "single",
+      "text": "Що буде, якщо в об'єктному літералі з типом `TestCase` написати поле `titel` (з помилкою)?",
+      "options": [
+        { "text": "Помилка: такого поля немає в типі (а `title` бракує)", "correct": true },
+        { "text": "Нічого: зайві поля дозволені" }
+      ]
+    },
+    {
+      "id": "fn-type",
+      "kind": "single",
+      "text": "Який запис описує тип функції, що приймає рядок і повертає `boolean`?",
+      "options": [
+        { "text": "`type Validator = (value: string) => boolean;`", "correct": true },
+        { "text": "`type Validator = string => boolean;`" },
+        { "text": "`type Validator = function(string): boolean;`" }
+      ]
+    },
+    {
+      "id": "intersection",
+      "kind": "single",
+      "text": "Що означає `type StoredBug = Bug & WithTimestamps`?",
+      "options": [
+        { "text": "Об'єкт, що має **всі** поля і `Bug`, і `WithTimestamps`", "correct": true },
+        { "text": "Або `Bug`, або `WithTimestamps`", "explain": "«Або» — це union `|`." }
+      ]
+    },
+    {
+      "id": "runtime",
+      "kind": "single",
+      "text": "Чи існують інтерфейси під час виконання програми (у JavaScript)?",
+      "options": [
+        { "text": "Ні: типи зникають після компіляції, вони лише для перевірки", "correct": true },
+        { "text": "Так, їх можна перевірити через `instanceof`" }
+      ]
+    }
+  ]
+}

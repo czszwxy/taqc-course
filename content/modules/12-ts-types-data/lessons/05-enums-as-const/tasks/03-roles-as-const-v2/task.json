@@ -1,0 +1,9 @@
+{
+  "type": "code",
+  "variantOf": "03-roles-as-const",
+  "title": "Derive key names from an as const object",
+  "statement": "1. Створи `export const STATUS = { ok: 200, created: 201, badRequest: 400, notFound: 404 } as const;`\n2. Виведи `export type StatusName = keyof typeof STATUS;`\n3. Напиши `statusName(code: number): StatusName | null` — назва для коду або `null`.\n\n```ts\nstatusName(404);  // 'notFound'\nstatusName(500);  // null\n```",
+  "hints": ["`(Object.keys(STATUS) as StatusName[]).find((name) => STATUS[name] === code)`", "Не забудь `?? null`."],
+  "explanation": "```ts\nexport function statusName(code: number): StatusName | null {\n  const names = Object.keys(STATUS) as StatusName[];\n  return names.find((n) => STATUS[n] === code) ?? null;\n}\n```\n\n`Object.keys` завжди повертає `string[]`, тому тут потрібне приведення `as StatusName[]`.",
+  "codeRules": [{ "kind": "require", "pattern": "keyof\\s+typeof\\s+STATUS", "message": "Виведи тип через `keyof typeof STATUS`." }]
+}

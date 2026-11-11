@@ -1,0 +1,12 @@
+{
+  "type": "code",
+  "title": "Parse a JSON order safely",
+  "statement": "Тест читає замовлення з JSON-рядка (наприклад, з файлу тестових даних). Напиши `parseOrder(json: string): Order | null`:\n\n```ts\nexport interface OrderItem { productId: number; quantity: number }\nexport interface Order { id: number; items: OrderItem[] }\n```\n\n- невалідний JSON → `null` (без падіння);\n- валідний JSON, але не тієї форми → `null`;\n- інакше — об'єкт `Order` (лише поля `id` і `items`, без зайвих).\n\nФорма правильна, якщо `id` — число, `items` — масив, у кожному елементі `productId` і `quantity` — числа.\n\n```ts\nparseOrder('{\"id\": 1003, \"items\": [{\"productId\": 1, \"quantity\": 2}]}');\n// { id: 1003, items: [{ productId: 1, quantity: 2 }] }\nparseOrder('{bad json');                 // null\nparseOrder('{\"id\": \"1003\", \"items\": []}'); // null — id is a string\n```",
+  "hints": [
+    "Обгорни `JSON.parse` у `try { … } catch { return null; }`; результат збережи як `unknown`.",
+    "Напиши допоміжні guards `isOrderItem(v: unknown): v is OrderItem` і перевір `Array.isArray(v.items) && v.items.every(isOrderItem)`.",
+    "Щоб прибрати зайві поля, збери новий об'єкт: `{ id: v.id, items: v.items.map(({ productId, quantity }) => ({ productId, quantity })) }`."
+  ],
+  "explanation": "```ts\nfunction isOrderItem(v: unknown): v is OrderItem {\n  if (typeof v !== 'object' || v === null) return false;\n  const r = v as Record<string, unknown>;\n  return typeof r.productId === 'number' && typeof r.quantity === 'number';\n}\n\nexport function parseOrder(json: string): Order | null {\n  let data: unknown;\n  try {\n    data = JSON.parse(json);\n  } catch {\n    return null;\n  }\n  if (typeof data !== 'object' || data === null) return null;\n  const r = data as Record<string, unknown>;\n  if (typeof r.id !== 'number' || !Array.isArray(r.items) || !r.items.every(isOrderItem)) return null;\n  return { id: r.id, items: r.items.map(({ productId, quantity }) => ({ productId, quantity })) };\n}\n```",
+  "codeRules": [{ "kind": "forbid", "pattern": ":\\s*any\\b|as\\s+any\\b", "message": "Не використовуй any — працюй з unknown і перевіряй форму." }]
+}

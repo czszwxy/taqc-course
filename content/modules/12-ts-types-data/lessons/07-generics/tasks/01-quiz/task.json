@@ -1,0 +1,68 @@
+{
+  "type": "quiz",
+  "title": "Quiz: generics",
+  "show": 5,
+  "hints": ["T виводиться з аргументів. `K extends keyof T` — K може бути лише ключем T."],
+  "questions": [
+    {
+      "id": "infer",
+      "kind": "single",
+      "text": "`function first<T>(items: T[]): T | undefined`. Який тип у `first(['a', 'b'])`?",
+      "options": [{ "text": "`string | undefined`", "correct": true }, { "text": "`any`" }, { "text": "`T`" }]
+    },
+    {
+      "id": "vs-any",
+      "kind": "single",
+      "text": "Чим generic кращий за `any`?",
+      "options": [
+        { "text": "Зберігає точний тип, тож компілятор далі ловить помилки", "correct": true },
+        { "text": "Код працює швидше" }
+      ]
+    },
+    {
+      "id": "constraint",
+      "kind": "single",
+      "text": "`function longest<T extends { length: number }>(a: T, b: T)`. Який виклик **не** скомпілюється?",
+      "options": [
+        { "text": "`longest(10, 20)`", "correct": true },
+        { "text": "`longest('abc', 'de')`" },
+        { "text": "`longest([1], [2, 3])`" }
+      ]
+    },
+    {
+      "id": "keyof",
+      "kind": "single",
+      "text": "`pluck<T, K extends keyof T>(items: T[], key: K)` для `User { id: number; email: string }`. Що з цього скомпілюється?",
+      "options": [
+        { "text": "`pluck(users, 'email')`", "correct": true },
+        { "text": "`pluck(users, 'name')`" }
+      ]
+    },
+    {
+      "id": "indexed",
+      "kind": "single",
+      "text": "Що таке `T[K]`, якщо `T = { id: number; email: string }` і `K = 'email'`?",
+      "options": [{ "text": "`string`", "correct": true }, { "text": "`'email'`" }, { "text": "`number`" }]
+    },
+    {
+      "id": "builtin",
+      "kind": "multiple",
+      "text": "Які з цих типів — generic?",
+      "options": [
+        { "text": "`Array<string>`", "correct": true },
+        { "text": "`Record<string, number>`", "correct": true },
+        { "text": "`Promise<Response>`", "correct": true },
+        { "text": "`boolean`" }
+      ]
+    },
+    {
+      "id": "explicit",
+      "kind": "single",
+      "text": "Коли варто вказати параметр типу явно, як `first<string>([])`?",
+      "options": [
+        { "text": "Коли TypeScript не може вивести тип з аргументів (наприклад, порожній масив)", "correct": true },
+        { "text": "Завжди — інакше generic не працює" }
+      ]
+    }
+  ]
+}

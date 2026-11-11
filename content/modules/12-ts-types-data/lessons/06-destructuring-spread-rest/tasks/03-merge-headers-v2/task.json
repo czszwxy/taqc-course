@@ -1,0 +1,8 @@
+{
+  "type": "code",
+  "variantOf": "03-merge-headers",
+  "title": "Rest parameters: average of any number of durations",
+  "statement": "Напиши `average(...durations)`:\n\n- приймає будь-яку кількість чисел;\n- повертає їхнє середнє;\n- без аргументів — `0`.\n\n```ts\naverage(100, 200, 600);  // 300\naverage();               // 0\n```",
+  "hints": ["`export function average(...durations: number[]): number`", "Якщо `durations.length === 0` — поверни 0, інакше сума / кількість."],
+  "explanation": "```ts\nexport function average(...durations: number[]): number {\n  if (durations.length === 0) return 0;\n  return durations.reduce((s, d) => s + d, 0) / durations.length;\n}\n```"
+}

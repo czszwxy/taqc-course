@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "A type guard for an API object",
+  "statement": "Відповідь API приходить як `unknown`. Напиши guard `isProduct(value): value is Product` для:\n\n```ts\nexport interface Product {\n  id: number;\n  name: string;\n  price: number;\n  inStock: boolean;\n}\n```\n\n`true` лише якщо `value` — об'єкт (не `null`, не масив) і **всі чотири** поля мають правильні типи. Додаткові поля дозволені.\n\nТакож напиши `isProductList(value): value is Product[]` — масив, у якому **кожен** елемент — `Product`.\n\n```ts\nisProduct({ id: 1, name: 'Mouse', price: 499, inStock: true });   // true\nisProduct({ id: '1', name: 'Mouse', price: 499, inStock: true }); // false — id is a string\nisProductList([]);                                                // true\n```",
+  "hints": [
+    "Спочатку: `if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;`",
+    "Далі `const v = value as Record<string, unknown>;` і перевір `typeof v.id === 'number'` тощо.",
+    "`isProductList`: `Array.isArray(value) && value.every(isProduct)`."
+  ],
+  "explanation": "```ts\nexport function isProduct(value: unknown): value is Product {\n  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;\n  const v = value as Record<string, unknown>;\n  return typeof v.id === 'number' && typeof v.name === 'string' && typeof v.price === 'number' && typeof v.inStock === 'boolean';\n}\n\nexport function isProductList(value: unknown): value is Product[] {\n  return Array.isArray(value) && value.every(isProduct);\n}\n```\n\nЦе ручна «перевірка схеми» — саме те, що API-тести роблять з кожною відповіддю."
+}

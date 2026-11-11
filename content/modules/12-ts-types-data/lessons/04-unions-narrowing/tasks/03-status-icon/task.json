@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Literal types: test status icons",
+  "statement": "1. Опиши `export type TestStatus` — лише `'passed'`, `'failed'` або `'skipped'`.\n2. Напиши `statusIcon(status: TestStatus)`:\n   - `'passed'` → `'✅'`\n   - `'failed'` → `'❌'`\n   - `'skipped'` → `'⏭'`\n\nПриховані тести перевіряють, що `statusIcon('broken')` **не компілюється**.\n\n```ts\nstatusIcon('failed');  // '❌'\nstatusIcon('pased');   // ❌ compile error — typo caught!\n```",
+  "hints": [
+    "`export type TestStatus = 'passed' | 'failed' | 'skipped';`",
+    "Можна `switch`, а можна словник: `const ICONS: Record<TestStatus, string> = { … }; return ICONS[status];`"
+  ],
+  "explanation": "```ts\nexport type TestStatus = 'passed' | 'failed' | 'skipped';\n\nconst ICONS: Record<TestStatus, string> = { passed: '✅', failed: '❌', skipped: '⏭' };\n\nexport function statusIcon(status: TestStatus): string {\n  return ICONS[status];\n}\n```\n\nЯкщо тип буде просто `string`, тест «'broken' не має компілюватися» впаде з `Unused '@ts-expect-error' directive`."
+}

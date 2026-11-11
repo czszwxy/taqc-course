@@ -1,0 +1,15 @@
+{
+  "title": "TypeScript: Types & Working with Data",
+  "description": "Наступний крок після основ: методи масивів, власні типи й інтерфейси, union і literal types, enum, деструктуризація, generics, утилітні типи та безпечна робота з unknown. Саме ці інструменти щодня використовують в автотестах на Playwright.",
+  "goals": [
+    "Transform test data with map, filter, find, some, every, reduce and sort",
+    "Describe data with type aliases and interfaces",
+    "Use optional and readonly properties and index signatures",
+    "Model states with union and literal types and narrow them safely",
+    "Use enums and as const objects for fixed sets of values",
+    "Destructure, spread and collect values with rest",
+    "Write reusable generic functions and types",
+    "Use utility types (Partial, Pick, Omit, Record…)",
+    "Handle unknown data from APIs with type guards"
+  ]
+}

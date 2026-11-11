@@ -1,0 +1,28 @@
+{
+  "title": "Array methods: map, filter, find, reduce, sort",
+  "minutes": 70,
+  "summary": "Методи масивів, які замінюють більшість циклів: map, filter, find, findIndex, some, every, reduce, sort і join — на прикладах тестових даних",
+  "resources": [
+    {
+      "title": "MDN: Array (methods reference)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Методи масивів",
+      "url": "https://uk.javascript.info/array-methods",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: JavaScript array methods map filter reduce (пошук)",
+      "url": "https://www.youtube.com/results?search_query=javascript+array+methods+map+filter+reduce",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

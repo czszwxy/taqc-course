@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "A generic groupBy helper",
+  "statement": "Напиши generic `groupBy<T>(items, getKey)`:\n\n- `items: T[]`, `getKey: (item: T) => string`;\n- повертає `Record<string, T[]>` — масиви елементів, згруповані за ключем;\n- порядок елементів у групі — як у вхідному масиві.\n\n```ts\ngroupBy(runs, (r) => r.status);\n// { passed: [run1, run3], failed: [run2] }\n\ngroupBy(['apple', 'avocado', 'banana'], (w) => w[0] ?? '');\n// { a: ['apple', 'avocado'], b: ['banana'] }\n```",
+  "hints": [
+    "Почни з `const groups: Record<string, T[]> = {};`",
+    "Для кожного елемента: `const key = getKey(item); (groups[key] ??= []).push(item);` або з перевіркою `if (!groups[key]) groups[key] = [];`."
+  ],
+  "explanation": "```ts\nexport function groupBy<T>(items: T[], getKey: (item: T) => string): Record<string, T[]> {\n  const groups: Record<string, T[]> = {};\n  for (const item of items) {\n    const key = getKey(item);\n    (groups[key] ??= []).push(item);\n  }\n  return groups;\n}\n```\n\nЗавдяки `<T>` результат зберігає тип: `groupBy(runs, …)` дає `Record<string, TestRun[]>`."
+}

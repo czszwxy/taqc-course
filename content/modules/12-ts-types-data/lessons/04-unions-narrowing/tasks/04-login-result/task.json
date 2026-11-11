@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "Discriminated union: handle a login result",
+  "statement": "Результат логіну — або успіх, або помилка:\n\n```ts\nexport type LoginResult =\n  | { ok: true; token: string }\n  | { ok: false; status: number; message: string };\n```\n\nНапиши дві функції:\n\n1. `describeLogin(result)`:\n   - успіх → `'Token: <token>'`;\n   - помилка → `'Error <status>: <message>'`.\n2. `isAuthError(result)` — `true`, лише якщо це помилка зі статусом `401` або `403`.\n\n```ts\ndescribeLogin({ ok: true, token: 'abc' });                            // 'Token: abc'\ndescribeLogin({ ok: false, status: 401, message: 'Invalid password' }); // 'Error 401: Invalid password'\nisAuthError({ ok: false, status: 500, message: 'Oops' });              // false\n```",
+  "hints": [
+    "Перевір дискримінант: `if (result.ok) { … result.token … }`.",
+    "Після `if (result.ok) return …;` нижче TypeScript знає, що це помилка — `result.status` доступний.",
+    "`isAuthError`: спершу `!result.ok`, потім статус."
+  ],
+  "explanation": "```ts\nexport function describeLogin(result: LoginResult): string {\n  if (result.ok) return `Token: ${result.token}`;\n  return `Error ${result.status}: ${result.message}`;\n}\n\nexport function isAuthError(result: LoginResult): boolean {\n  return !result.ok && (result.status === UNAUTHORIZED || result.status === FORBIDDEN);\n}\n```\n\nСпроба прочитати `result.token` без перевірки `ok` — помилка компіляції: у варіанта-помилки немає `token`."
+}

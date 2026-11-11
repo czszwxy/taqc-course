@@ -1,0 +1,8 @@
+{
+  "type": "code",
+  "title": "Destructure parameters with a default value",
+  "statement": "Напиши `formatUser(user)`, яка **деструктуризує параметр** і повертає рядок:\n\n```text\n<name> <<email>> (<role>)\n```\n\n`role` — необов'язкове поле, за замовчуванням `'customer'`.\n\n```ts\nformatUser({ name: 'Olena', email: 'qa@gadgetly.test', role: 'admin' });\n// 'Olena <qa@gadgetly.test> (admin)'\nformatUser({ name: 'Taras', email: 'taras@gadgetly.test' });\n// 'Taras <taras@gadgetly.test> (customer)'\n```",
+  "hints": ["Сигнатура: `export function formatUser({ name, email, role = 'customer' }: UserInput): string`.", "Рядок — template literal: `` `${name} <${email}> (${role})` ``."],
+  "explanation": "```ts\nexport function formatUser({ name, email, role = 'customer' }: UserInput): string {\n  return `${name} <${email}> (${role})`;\n}\n```",
+  "codeRules": [{ "kind": "require", "pattern": "formatUser\\s*\\(\\s*\\{", "message": "Деструктуризуй параметр прямо в сигнатурі: `formatUser({ name, email, role = 'customer' }: UserInput)`." }]
+}

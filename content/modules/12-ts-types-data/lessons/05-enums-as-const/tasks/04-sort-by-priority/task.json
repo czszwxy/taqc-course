@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Sort test cases by priority",
+  "statement": "Є enum пріоритетів і тест-кейси:\n\n```ts\nexport enum Priority { High = 'High', Medium = 'Medium', Low = 'Low' }\nexport interface PrioritizedCase { title: string; priority: Priority }\n```\n\nНапиши `sortByPriority(cases)` — **новий** масив, де спочатку `High`, потім `Medium`, потім `Low`. Усередині одного пріоритету порядок залишається як був.\n\n```ts\nsortByPriority([\n  { title: 'Search', priority: Priority.Low },\n  { title: 'Login', priority: Priority.High },\n  { title: 'Cart', priority: Priority.Medium },\n  { title: 'Logout', priority: Priority.High },\n]).map((c) => c.title);\n// ['Login', 'Logout', 'Cart', 'Search']\n```",
+  "hints": [
+    "Рядки 'High', 'Medium', 'Low' за алфавітом сортуються неправильно. Дай кожному пріоритету число-ранг: `const RANK: Record<Priority, number> = { [Priority.High]: 0, … }`.",
+    "`[...cases].sort((a, b) => RANK[a.priority] - RANK[b.priority])` — сортування в JavaScript стабільне, порядок рівних зберігається."
+  ],
+  "explanation": "```ts\nconst RANK: Record<Priority, number> = { [Priority.High]: 0, [Priority.Medium]: 1, [Priority.Low]: 2 };\n\nexport function sortByPriority(cases: PrioritizedCase[]): PrioritizedCase[] {\n  return [...cases].sort((a, b) => RANK[a.priority] - RANK[b.priority]);\n}\n```\n\nТипова помилка — `localeCompare` за назвою пріоритету: вийде High, Low, Medium."
+}

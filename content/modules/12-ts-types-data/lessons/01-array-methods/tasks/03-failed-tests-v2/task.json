@@ -1,0 +1,9 @@
+{
+  "type": "code",
+  "variantOf": "03-failed-tests",
+  "title": "Find expensive products with filter and find",
+  "statement": "Є список товарів:\n\n```ts\ntype Product = { name: string; price: number; inStock: boolean };\n```\n\nНапиши:\n\n1. `namesInStock(products)` — назви товарів, що є в наявності (`inStock: true`).\n2. `findByName(products, name)` — перший товар з такою назвою або `undefined`.\n\n```ts\nnamesInStock(products);            // ['Mouse', 'Cable']\nfindByName(products, 'Keyboard');  // { name: 'Keyboard', price: 2199, inStock: false }\nfindByName(products, 'Laptop');    // undefined\n```",
+  "hints": ["`filter` за `inStock`, потім `map` за `name`.", "Другу функцію розв'язує один виклик `find`."],
+  "explanation": "```ts\nreturn products.filter((p) => p.inStock).map((p) => p.name);\n// …\nreturn products.find((p) => p.name === name);\n```",
+  "codeRules": [{ "kind": "forbid", "pattern": "\\bfor\\s*\\(", "message": "Спробуй без циклу `for` — методами масивів." }]
+}

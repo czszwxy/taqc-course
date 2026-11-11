@@ -2,6 +2,7 @@ import * as monaco from 'monaco-editor';
 import { loader } from '@monaco-editor/react';
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 import TsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
+import { TEST_GLOBALS_DTS } from '../runner/harness-dts';
 
 // Use the locally bundled Monaco (no CDN) so the editor works offline.
 (self as unknown as { MonacoEnvironment: monaco.Environment }).MonacoEnvironment = {
@@ -22,6 +23,8 @@ ts.typescriptDefaults.setCompilerOptions({
   noEmit: true,
 });
 ts.typescriptDefaults.setEagerModelSync(true);
+// describe / it / expect for tasks where the learner writes tests.
+ts.typescriptDefaults.addExtraLib(TEST_GLOBALS_DTS, 'file:///qa-academy/test-globals.d.ts');
 
 monaco.editor.defineTheme('qa-dark', {
   base: 'vs-dark',

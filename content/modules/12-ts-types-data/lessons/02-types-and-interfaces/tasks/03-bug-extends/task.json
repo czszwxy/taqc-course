@@ -1,0 +1,8 @@
+{
+  "type": "code",
+  "title": "Extend an interface: Bug extends Issue",
+  "statement": "У файлі вже є базовий інтерфейс `Issue` (`id: number`, `title: string`).\n\n1. Створи `export interface Bug`, який **розширює** `Issue` полями `severity: string` і `stepsToReproduce: string[]`.\n2. Напиши `bugSummary(bug)` — рядок у форматі:\n\n```text\n#<id> [<severity>] <title> (<кількість кроків> steps)\n```\n\n```ts\nbugSummary({ id: 12, title: 'Total is wrong', severity: 'Major', stepsToReproduce: ['Open cart', 'Add item', 'Check total'] });\n// '#12 [Major] Total is wrong (3 steps)'\n```",
+  "hints": ["`export interface Bug extends Issue { … }` — поля `id` і `title` вже успадковані.", "Кількість кроків — `bug.stepsToReproduce.length`. Рядок збери template literal."],
+  "explanation": "```ts\nexport interface Bug extends Issue {\n  severity: string;\n  stepsToReproduce: string[];\n}\n\nexport function bugSummary(bug: Bug): string {\n  return `#${bug.id} [${bug.severity}] ${bug.title} (${bug.stepsToReproduce.length} steps)`;\n}\n```",
+  "codeRules": [{ "kind": "require", "pattern": "interface\\s+Bug\\s+extends\\s+Issue", "message": "Опиши `Bug` через `extends Issue`, а не копіюванням полів." }]
+}

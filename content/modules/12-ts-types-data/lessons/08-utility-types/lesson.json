@@ -1,0 +1,21 @@
+{
+  "title": "Utility types",
+  "minutes": 50,
+  "summary": "Вбудовані «типи з типів»: Partial, Required, Readonly, Pick, Omit, Record, ReturnType, NonNullable — щоб не переписувати схожі інтерфейси для створення, оновлення й публічного представлення даних",
+  "resources": [
+    {
+      "title": "TypeScript Handbook: Utility Types",
+      "url": "https://www.typescriptlang.org/docs/handbook/utility-types.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: TypeScript utility types Partial Pick Omit (пошук)",
+      "url": "https://www.youtube.com/results?search_query=typescript+utility+types+partial+pick+omit+record",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

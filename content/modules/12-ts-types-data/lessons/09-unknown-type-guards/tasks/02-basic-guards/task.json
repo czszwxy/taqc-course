@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Basic type guards",
+  "statement": "Напиши два type guards для значень типу `unknown`:\n\n1. `isNonEmptyString(value): value is string` — рядок, що після `trim()` не порожній.\n2. `isPositiveInteger(value): value is number` — ціле число більше за 0.\n\n```ts\nisNonEmptyString('  qa ');  // true\nisNonEmptyString('   ');    // false\nisNonEmptyString(42);       // false\nisPositiveInteger(3);       // true\nisPositiveInteger(2.5);     // false\nisPositiveInteger('3');     // false — a string is not a number\n```",
+  "hints": [
+    "`typeof value === 'string' && value.trim().length > 0` — після першої перевірки TypeScript дозволяє `trim()`.",
+    "`Number.isInteger(value)` повертає `false` для нечисел, але не звужує тип — перевір ще `typeof value === 'number'`."
+  ],
+  "explanation": "```ts\nexport function isNonEmptyString(value: unknown): value is string {\n  return typeof value === 'string' && value.trim().length > 0;\n}\nexport function isPositiveInteger(value: unknown): value is number {\n  return typeof value === 'number' && Number.isInteger(value) && value > 0;\n}\n```"
+}

@@ -1,0 +1,9 @@
+{
+  "type": "code",
+  "variantOf": "03-bug-extends",
+  "title": "Extend an interface: Story extends Issue",
+  "statement": "Є базовий `Issue` (`id: number`, `title: string`).\n\n1. Створи `export interface Story extends Issue` з полями `points: number` і `acceptanceCriteria: string[]`.\n2. Напиши `storyLine(story)`:\n\n```text\nUS-<id>: <title> — <points> pts, <кількість критеріїв> AC\n```\n\n```ts\nstoryLine({ id: 5, title: 'Pay with PayPal', points: 8, acceptanceCriteria: ['Button shown', 'Redirect works'] });\n// 'US-5: Pay with PayPal — 8 pts, 2 AC'\n```",
+  "hints": ["`interface Story extends Issue { … }`", "Довжина масиву критеріїв — `story.acceptanceCriteria.length`."],
+  "explanation": "```ts\nexport interface Story extends Issue {\n  points: number;\n  acceptanceCriteria: string[];\n}\nexport const storyLine = (s: Story) => `US-${s.id}: ${s.title} — ${s.points} pts, ${s.acceptanceCriteria.length} AC`;\n```",
+  "codeRules": [{ "kind": "require", "pattern": "interface\\s+Story\\s+extends\\s+Issue", "message": "Опиши `Story` через `extends Issue`." }]
+}

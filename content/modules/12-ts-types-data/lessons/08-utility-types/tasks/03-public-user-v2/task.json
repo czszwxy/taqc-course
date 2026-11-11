@@ -1,0 +1,8 @@
+{
+  "type": "code",
+  "variantOf": "03-public-user",
+  "title": "Omit for a POST body: create a product",
+  "statement": "Є повний `Product` з `id`. Тіло запиту на створення не містить `id`.\n\n1. `export type NewProduct = Omit<Product, 'id'>`.\n2. `createProduct(data: NewProduct, id: number): Product` — повертає товар з даними і переданим `id`.\n\n```ts\ncreateProduct({ name: 'Mouse', price: 499 }, 15);  // { id: 15, name: 'Mouse', price: 499 }\ncreateProduct({ id: 1, name: 'X', price: 1 }, 2); // ❌ compile error: id is not allowed in NewProduct\n```",
+  "hints": ["`export type NewProduct = Omit<Product, 'id'>;`", "`return { id, ...data };`"],
+  "explanation": "```ts\nexport type NewProduct = Omit<Product, 'id'>;\nexport const createProduct = (data: NewProduct, id: number): Product => ({ id, ...data });\n```"
+}

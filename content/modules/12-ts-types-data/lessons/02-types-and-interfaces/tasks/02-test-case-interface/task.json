@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "Describe a test case with an interface",
+  "statement": "Опиши тест-кейс інтерфейсом і напиши фабрику.\n\n1. `export interface TestCase` з полями:\n   - `id` — рядок,\n   - `title` — рядок,\n   - `steps` — масив рядків,\n   - `automated` — boolean.\n2. `createTestCase(id, title)` повертає новий `TestCase` з порожнім списком кроків і `automated: false`.\n\n```ts\ncreateTestCase('TC-1', 'Login works');\n// { id: 'TC-1', title: 'Login works', steps: [], automated: false }\n```\n\nПриховані тести перевіряють і **типи**: вони створюють об'єкти типу `TestCase`, тож назви й типи полів мають точно збігатися.",
+  "hints": [
+    "Синтаксис: `export interface TestCase {\\n  id: string;\\n  …\\n}`.",
+    "Тип масиву рядків — `string[]`.",
+    "Функція просто повертає об'єкт-літерал: `return { id, title, steps: [], automated: false };`."
+  ],
+  "explanation": "```ts\nexport interface TestCase {\n  id: string;\n  title: string;\n  steps: string[];\n  automated: boolean;\n}\n\nexport function createTestCase(id: string, title: string): TestCase {\n  return { id, title, steps: [], automated: false };\n}\n```\n\nЯкщо тести показують помилку «Property 'steps' is missing» або «Type 'string' is not assignable…» — перевір назви і типи полів інтерфейсу."
+}

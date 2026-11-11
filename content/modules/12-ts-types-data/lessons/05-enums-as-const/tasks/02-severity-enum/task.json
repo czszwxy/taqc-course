@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "A string enum for severity",
+  "statement": "1. Опиши **рядковий** `export enum Severity` зі значеннями `Blocker`, `Critical`, `Major`, `Minor`, `Trivial` (значення = назва: `Major = 'Major'`).\n2. Напиши `isUrgent(sev: Severity)` — `true` для `Blocker` і `Critical`.\n3. Напиши `allSeverities()` — масив усіх значень enum у порядку оголошення.\n\n```ts\nisUrgent(Severity.Critical);  // true\nisUrgent(Severity.Minor);     // false\nallSeverities();              // ['Blocker', 'Critical', 'Major', 'Minor', 'Trivial']\n```",
+  "hints": [
+    "```ts\nexport enum Severity {\n  Blocker = 'Blocker',\n  …\n}\n```",
+    "`Object.values(Severity)` повертає значення рядкового enum."
+  ],
+  "explanation": "```ts\nexport function isUrgent(sev: Severity): boolean {\n  return sev === Severity.Blocker || sev === Severity.Critical;\n}\nexport function allSeverities(): Severity[] {\n  return Object.values(Severity);\n}\n```\n\nЗверни увагу: для **числових** enum `Object.values` повертає ще й назви — ще одна причина обирати рядкові."
+}

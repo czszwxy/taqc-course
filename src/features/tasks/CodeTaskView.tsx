@@ -4,12 +4,21 @@ import { monaco } from '../../monaco/setup';
 import type { CodeTask } from '../../content/schema';
 import { loadTaskCode } from '../../content/loader';
 import { useProgress, useSettings } from '../progress/store';
-import { checkCode, runCode, warmUpCompiler, type CheckResult, type CompileDiagnostic, type LogEntry } from '../../runner/client';
+import {
+  checkCode,
+  checkTests,
+  runCode,
+  warmUpCompiler,
+  type CheckResult,
+  type CompileDiagnostic,
+  type LogEntry,
+  type SuiteResult,
+} from '../../runner/client';
 import { TS_TIPS } from '../../runner/ts-tips';
 import { CodeBlock, Markdown } from '../../components/Markdown';
 import { Callout } from '../../components/ui';
 import { useAsync } from '../../lib/useAsync';
-import { ExplanationPanel, HintsPanel, NextActions } from './shared';
+import { Collapsible, ExplanationPanel, HintsPanel, NextActions } from './shared';
 import type { TaskViewProps } from './types';
 
 type EditorInstance = Parameters<OnMount>[0];
@@ -36,11 +45,24 @@ export default function CodeTaskView({ ct, header, onSimilar, next }: TaskViewPr
   const saveTimer = useRef<number | undefined>(undefined);
   const [busy, setBusy] = useState<null | 'check' | 'run'>(null);
   const [result, setResult] = useState<CheckResult | null>(null);
+  const [suite, setSuite] = useState<(SuiteResult & { fatal?: string }) | null>(null);
+  const testsMode = task.mode === 'tests';
+  const fileName = testsMode ? 'tests.ts' : 'solution.ts';
   const [consoleOut, setConsoleOut] = useState<ConsoleOutput | null>(null);
   const [panel, setPanel] = useState<'results' | 'console'>('results');
   const [showSolution, setShowSolution] = useState(false);
 
   useEffect(() => warmUpCompiler(), []);
+
+  // Support files become Monaco models next to the editor file, so `import … from './subject'` resolves in the editor.
+  useEffect(() => {
+    if (!files.data) return undefined;
+    const models = Object.entries(files.data.support).map(([name, code]) => {
+      const uri = monaco.Uri.parse(`file:///${ct.id}/${name}`);
+      return monaco.editor.getModel(uri) ?? monaco.editor.createModel(code, 'typescript', uri);
+    });
+    return () => models.forEach((m) => m.dispose());
+  }, [files.data, ct.id]);
 
   const initialCode = useMemo(() => {
     if (!files.data) return '';
@@ -63,7 +85,15 @@ export default function CodeTaskView({ ct, header, onSimilar, next }: TaskViewPr
     setBusy('check');
     setPanel('results');
     saveDraft(ct.id, codeRef.current);
-    const r = await checkCode(codeRef.current, files.data.tests, task.codeRules);
+    if (testsMode) {
+      const r = await checkTests(codeRef.current, files.data.support, files.data.mutants, task.mutants, task.minTests);
+      setSuite(r);
+      setConsoleOut({ source: 'check', logs: r.logs, codeErrors: [], runtimeError: r.runtimeError, timedOut: r.timedOut });
+      setBusy(null);
+      recordAttempt(ct.id, r.passed);
+      return;
+    }
+    const r = await checkCode(codeRef.current, files.data.tests, task.codeRules, files.data.support);
     setResult(r);
     setConsoleOut({ source: 'check', logs: r.logs, codeErrors: [], runtimeError: r.runtimeError, timedOut: r.timedOut });
     setBusy(null);
@@ -74,7 +104,7 @@ export default function CodeTaskView({ ct, header, onSimilar, next }: TaskViewPr
     if (busy) return;
     setBusy('run');
     setPanel('console');
-    const r = await runCode(codeRef.current);
+    const r = await runCode(codeRef.current, files.data?.support ?? {});
     setConsoleOut({ source: 'run', logs: r.logs, codeErrors: r.codeErrors, runtimeError: r.runtimeError ?? r.fatal, timedOut: r.timedOut });
     setBusy(null);
   };
@@ -92,6 +122,7 @@ export default function CodeTaskView({ ct, header, onSimilar, next }: TaskViewPr
     if (!confirm('Reset the editor to the starting code? Your current code will be lost.')) return;
     editorRef.current?.setValue(files.data.starter);
     setResult(null);
+    setSuite(null);
   };
 
   const failed = progress?.failedAttempts ?? 0;
@@ -110,12 +141,13 @@ export default function CodeTaskView({ ct, header, onSimilar, next }: TaskViewPr
       <section className="scroll-thin min-h-0 overflow-y-auto border-line p-5 lg:border-r lg:p-6">
         {header}
         <Markdown compact>{task.statement}</Markdown>
+        {files.data && <SupportFiles files={files.data.support} testsMode={testsMode} />}
         <div className="mt-5 space-y-3">
           <HintsPanel taskId={ct.id} hints={task.hints} />
           {task.explanation && (failed > 0 || solved) && <ExplanationPanel text={task.explanation} />}
           {showSolution && files.data ? (
             <div className="card p-4">
-              <div className="mb-2 text-sm font-semibold">📗 Author&apos;s solution</div>
+              <div className="mb-2 text-sm font-semibold">📗 {testsMode ? 'Reference tests' : <>Author&apos;s solution</>}</div>
               <CodeBlock code={files.data.solution} />
               <p className="mt-2 text-xs text-muted">Your solution can be different and still correct — what matters is that the checks pass.</p>
             </div>
@@ -129,14 +161,16 @@ export default function CodeTaskView({ ct, header, onSimilar, next }: TaskViewPr
 
       <section className="flex min-h-[640px] flex-col lg:min-h-0">
         <div className="flex items-center gap-2 border-b border-line bg-surface px-3 py-2">
-          <span className="font-mono text-xs text-muted">solution.ts</span>
+          <span className="font-mono text-xs text-muted">{fileName}</span>
           <div className="flex-1" />
           <button className="btn btn-ghost btn-sm" onClick={reset} disabled={!files.data}>
             ↺ Reset
           </button>
-          <button className="btn btn-secondary btn-sm" onClick={doRun} disabled={!files.data || busy !== null} title="Run your file and see console.log output">
-            ▶ Run
-          </button>
+          {!testsMode && (
+            <button className="btn btn-secondary btn-sm" onClick={doRun} disabled={!files.data || busy !== null} title="Run your file and see console.log output">
+              ▶ Run
+            </button>
+          )}
           <button className="btn btn-primary btn-sm" onClick={doCheck} disabled={!files.data || busy !== null} title="Ctrl+Enter">
             {busy === 'check' ? 'Checking…' : '✓ Check'}
           </button>
@@ -145,7 +179,7 @@ export default function CodeTaskView({ ct, header, onSimilar, next }: TaskViewPr
           {files.data ? (
             <Editor
               key={ct.id}
-              path={`file:///${ct.id}/solution.ts`}
+              path={`file:///${ct.id}/${fileName}`}
               defaultLanguage="typescript"
               defaultValue={initialCode}
               theme={theme === 'dark' ? 'qa-dark' : 'qa-light'}
@@ -182,7 +216,11 @@ export default function CodeTaskView({ ct, header, onSimilar, next }: TaskViewPr
           </div>
           <div className="scroll-thin flex-1 overflow-y-auto p-3">
             {panel === 'results' ? (
-              <ResultsView result={result} busy={busy === 'check'} onSimilar={onSimilar} next={next} />
+              testsMode ? (
+                <SuiteView result={suite} busy={busy === 'check'} minTests={task.minTests} total={task.mutants.length} onSimilar={onSimilar} next={next} />
+              ) : (
+                <ResultsView result={result} busy={busy === 'check'} onSimilar={onSimilar} next={next} />
+              )
             ) : (
               <ConsoleView out={consoleOut} busy={busy === 'run'} />
             )}
@@ -322,6 +360,132 @@ function ConsoleView({ out, busy }: { out: ConsoleOutput | null; busy: boolean }
       ))}
       {out.runtimeError && <div className="text-bad">💥 {out.runtimeError}</div>}
       {out.timedOut && <div className="text-bad">⏱ Stopped after 5 seconds (infinite loop?)</div>}
+    </div>
+  );
+}
+
+function SupportFiles({ files, testsMode }: { files: Record<string, string>; testsMode: boolean }) {
+  const entries = Object.entries(files);
+  if (entries.length === 0) return null;
+  return (
+    <div className="mt-4 space-y-2">
+      {entries.map(([name, code]) => (
+        <Collapsible
+          key={name}
+          defaultOpen={testsMode && name === 'subject.ts'}
+          title={
+            <span>
+              📄 <span className="font-mono">{name}</span>{' '}
+              <span className="font-normal text-muted">{testsMode && name === 'subject.ts' ? '— the code you are testing (read-only)' : '— project file (read-only)'}</span>
+            </span>
+          }
+        >
+          <CodeBlock code={code} />
+        </Collapsible>
+      ))}
+    </div>
+  );
+}
+
+function SuiteView({
+  result,
+  busy,
+  minTests,
+  total,
+  onSimilar,
+  next,
+}: {
+  result: (SuiteResult & { fatal?: string }) | null;
+  busy: boolean;
+  minTests?: number;
+  total: number;
+  onSimilar?: () => void;
+  next?: { to: string; label: string };
+}) {
+  if (busy) return <div className="text-sm text-muted">⏳ Running your tests on the real code and on {total} broken versions of it…</div>;
+  if (!result) {
+    return (
+      <div className="text-sm text-muted">
+        Here <b className="text-fg">you</b> write the tests. <b className="text-fg">Check</b> runs them on the real code (they must all pass) and then on{' '}
+        {total} deliberately broken versions — <i>mutants</i>. Good tests fail on every mutant: that means they would catch the bug.
+      </div>
+    );
+  }
+  const killed = result.mutants.filter((m) => m.killed).length;
+  const greenOnSubject = result.results.length > 0 && result.results.every((r) => r.passed) && !result.runtimeError && !result.timedOut;
+  return (
+    <div className="space-y-3">
+      {result.passed ? (
+        <Callout tone="ok" title="Great tests! 🎉">
+          All {result.results.length} tests pass on the real code and catch all {total} bugs.
+        </Callout>
+      ) : (
+        <Callout tone="bad" title="Not passed yet">
+          {greenOnSubject
+            ? `Your tests pass on the real code and catch ${killed} of ${total} bugs. Add tests for the cases that are still missing.`
+            : 'First make every test pass on the real code: a test that fails on correct code has a wrong expectation.'}
+        </Callout>
+      )}
+      {result.fatal && <Callout tone="bad" title="Compiler crashed">{result.fatal}</Callout>}
+      {result.timedOut && <Callout tone="bad" title="⏱ Time limit exceeded">The tests ran for more than 5 seconds.</Callout>}
+      {result.runtimeError && (
+        <Callout tone="bad" title="💥 Your test file crashed while loading">
+          <code className="font-mono">{result.runtimeError}</code>
+        </Callout>
+      )}
+      {result.codeErrors.length > 0 && (
+        <div>
+          <div className="text-sm font-semibold text-bad">TypeScript errors in your tests ({result.codeErrors.length})</div>
+          <DiagnosticList items={result.codeErrors} />
+        </div>
+      )}
+      {result.tooFewTests && minTests !== undefined && (
+        <Callout tone="bad" title={`Write at least ${minTests} tests`}>
+          One it() per behaviour: valid values, boundaries, invalid input…
+        </Callout>
+      )}
+
+      {result.results.length > 0 && (
+        <div>
+          <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-faint">Your tests on the real code</div>
+          <ul className="space-y-1.5">
+            {result.results.map((r, i) => (
+              <li key={i} className={`rounded-lg px-3 py-2 text-sm ${r.passed ? 'bg-ok-soft' : 'bg-bad-soft'}`}>
+                <div className="flex gap-2">
+                  <span className={r.passed ? 'text-ok' : 'text-bad'}>{r.passed ? '✓' : '✗'}</span>
+                  <span className="min-w-0 flex-1">{r.name}</span>
+                </div>
+                {!r.passed && r.error && <pre className="mt-1.5 overflow-x-auto whitespace-pre-wrap pl-5 font-mono text-[13.5px] text-fg/90">{r.error}</pre>}
+                {!r.passed && <div className="mt-1 pl-5 text-xs text-muted">💡 This test fails on the CORRECT code, so its expectation is wrong. Re-read the code under test.</div>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {result.mutants.length > 0 && (
+        <div>
+          <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-faint">
+            🐛 Bugs caught: {killed} of {total}
+          </div>
+          <ul className="space-y-1.5">
+            {result.mutants.map((m) => (
+              <li key={m.id} className={`rounded-lg px-3 py-2 text-sm ${m.killed ? 'bg-ok-soft' : 'bg-bad-soft'}`}>
+                {m.killed ? (
+                  <span>
+                    <span className="text-ok">✓ Caught:</span> {m.description}
+                  </span>
+                ) : (
+                  <span>
+                    <span className="text-bad">✗ A broken version survived.</span> 💡 {m.hint}
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <NextActions passed={result.passed} onSimilar={onSimilar} next={next} />
     </div>
   );
 }

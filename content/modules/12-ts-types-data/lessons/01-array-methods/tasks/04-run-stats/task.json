@@ -1,0 +1,15 @@
+{
+  "type": "code",
+  "title": "Run statistics with reduce, some and sort",
+  "statement": "Напиши три функції для статистики прогону (тип `TestRun` той самий):\n\n1. `totalDuration(runs)` — сума `durationMs` усіх тестів (`0` для порожнього масиву). Використай `reduce`.\n2. `hasFailures(runs)` — `true`, якщо є хоча б один `'failed'`.\n3. `slowest(runs, count)` — масив **назв** `count` найповільніших тестів, від найповільнішого. Вихідний масив **не змінюй**.\n\n```ts\ntotalDuration(runs);   // 10500\nhasFailures(runs);     // true\nslowest(runs, 2);      // ['checkout', 'cart total']\n```",
+  "hints": [
+    "`runs.reduce((sum, r) => sum + r.durationMs, 0)` — не забудь початкове значення `0`.",
+    "Для `slowest`: зроби копію `[...runs]`, відсортуй за спаданням `(a, b) => b.durationMs - a.durationMs`, візьми перші `count` через `slice(0, count)` і перетвори на назви.",
+    "`hasFailures` — це одне слово-метод: «хоча б один»."
+  ],
+  "explanation": "```ts\nexport const totalDuration = (runs: TestRun[]) => runs.reduce((sum, r) => sum + r.durationMs, 0);\nexport const hasFailures = (runs: TestRun[]) => runs.some((r) => r.status === 'failed');\nexport function slowest(runs: TestRun[], count: number): string[] {\n  return [...runs]\n    .sort((a, b) => b.durationMs - a.durationMs)\n    .slice(0, count)\n    .map((r) => r.title);\n}\n```\n\nНайчастіша помилка — `runs.sort(...)` без копії: тест перевіряє, що вихідний масив не змінився.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\.reduce\\(", "message": "Для суми використай `reduce`." },
+    { "kind": "forbid", "pattern": "\\bfor\\s*\\(", "message": "Спробуй без циклу `for`." }
+  ]
+}

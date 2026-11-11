@@ -1,0 +1,12 @@
+{
+  "type": "code",
+  "title": "Remove secrets with object rest",
+  "statement": "Перед записом у лог тестових даних треба прибрати секрети.\n\n1. `toSafeUser(user)` — повертає копію **без** полів `password` і `token`. Використай деструктуризацію з rest.\n2. `splitFirst(items)` — повертає `{ first, rest }`: перший елемент (або `undefined`) і масив решти. Використай деструктуризацію масиву.\n\n```ts\ntoSafeUser({ id: 42, email: 'qa@gadgetly.test', password: 'Test1234', token: 'abc' });\n// { id: 42, email: 'qa@gadgetly.test' }\n\nsplitFirst(['login', 'cart', 'search']);\n// { first: 'login', rest: ['cart', 'search'] }\nsplitFirst([]);\n// { first: undefined, rest: [] }\n```",
+  "hints": [
+    "`const { password, token, ...safe } = user; return safe;`",
+    "`const [first, ...rest] = items; return { first, rest };`",
+    "TypeScript може попередити, що `password` і `token` не використовуються — це нормально; тут вони потрібні лише щоб «вийняти» їх з об'єкта."
+  ],
+  "explanation": "```ts\nexport function toSafeUser(user: UserWithSecrets): SafeUser {\n  const { password, token, ...safe } = user;\n  return safe;\n}\n\nexport function splitFirst(items: string[]): { first: string | undefined; rest: string[] } {\n  const [first, ...rest] = items;\n  return { first, rest };\n}\n```",
+  "codeRules": [{ "kind": "forbid", "pattern": "delete\\s", "message": "Не використовуй `delete` — він змінює вхідний об'єкт. Прибери поля через rest-деструктуризацію." }]
+}

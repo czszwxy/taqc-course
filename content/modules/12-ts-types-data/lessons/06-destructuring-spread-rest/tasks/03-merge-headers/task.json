@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Rest parameters: merge any number of header objects",
+  "statement": "Заголовки запиту збираються з кількох джерел: базові, авторизація, специфічні для тесту. Напиши `mergeHeaders(...sources)`:\n\n- приймає **будь-яку кількість** об'єктів `Record<string, string>`;\n- повертає **новий** об'єкт з усіма полями;\n- якщо ключ повторюється, перемагає значення з **пізнішого** аргументу;\n- без аргументів — `{}`.\n\n```ts\nmergeHeaders({ Accept: 'application/json' }, { Authorization: 'Bearer abc' }, { Accept: 'text/plain' });\n// { Accept: 'text/plain', Authorization: 'Bearer abc' }\n```",
+  "hints": [
+    "Rest-параметр: `export function mergeHeaders(...sources: Record<string, string>[]): Record<string, string>`.",
+    "`sources` — звичайний масив. Згорни його: `sources.reduce((acc, s) => ({ ...acc, ...s }), {})`."
+  ],
+  "explanation": "```ts\nexport function mergeHeaders(...sources: Record<string, string>[]): Record<string, string> {\n  return sources.reduce<Record<string, string>>((acc, s) => ({ ...acc, ...s }), {});\n}\n```\n\nПізніший spread перезаписує попередні поля — саме те, що потрібно."
+}

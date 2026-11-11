@@ -2,6 +2,7 @@
  * Tiny Jest/Vitest-like test harness + CommonJS module loader.
  * Pure: used inside the exec Web Worker (browser) and by scripts/validate-content.ts (Node).
  */
+import { createFakeFetch } from './fake-fetch';
 
 export interface LogEntry {
   level: 'log' | 'info' | 'warn' | 'error';
@@ -79,23 +80,53 @@ export async function executeModules(req: ExecRequest): Promise<ExecOutput> {
     return lines;
   };
 
+  const captureConsoleAsync = async (fn: () => unknown): Promise<string[]> => {
+    const prev = sink;
+    const lines: string[] = [];
+    sink = lines;
+    try {
+      await fn();
+    } finally {
+      sink = prev;
+    }
+    return lines;
+  };
+
+  const fakeFetch = createFakeFetch();
+
+  type HookFn = () => unknown;
+  type HookKind = 'beforeEach' | 'afterEach' | 'beforeAll' | 'afterAll';
+  interface Scope extends Record<HookKind, HookFn[]> {
+    parent: Scope | null;
+  }
+  const newScope = (parent: Scope | null): Scope => ({ parent, beforeEach: [], afterEach: [], beforeAll: [], afterAll: [] });
+  const rootScope = newScope(null);
+  let currentScope = rootScope;
+
   interface RegisteredTest {
     name: string;
     fn: () => unknown;
     hint?: string;
+    scope: Scope;
   }
   const tests: RegisteredTest[] = [];
   const prefix: string[] = [];
   const describe = (name: string, fn: () => void) => {
     prefix.push(name);
+    const parent = currentScope;
+    currentScope = newScope(parent);
     try {
       fn();
     } finally {
       prefix.pop();
+      currentScope = parent;
     }
   };
   const it = (name: string, fn: () => unknown, hint?: string) => {
-    tests.push({ name: [...prefix, name].join(' › '), fn, hint });
+    tests.push({ name: [...prefix, name].join(' › '), fn, hint, scope: currentScope });
+  };
+  const hook = (kind: HookKind) => (fn: HookFn) => {
+    currentScope[kind].push(fn);
   };
 
   const resolve = (name: string) =>
@@ -121,9 +152,31 @@ export async function executeModules(req: ExecRequest): Promise<ExecOutput> {
       'test',
       'expect',
       'captureConsole',
+      'captureConsoleAsync',
+      'beforeEach',
+      'afterEach',
+      'beforeAll',
+      'afterAll',
+      'fetch',
       code,
     );
-    fn(module.exports, (name: string) => load(resolve(name)), module, fakeConsole, describe, it, it, expect, captureConsole);
+    fn(
+      module.exports,
+      (name: string) => load(resolve(name)),
+      module,
+      fakeConsole,
+      describe,
+      it,
+      it,
+      expect,
+      captureConsole,
+      captureConsoleAsync,
+      hook('beforeEach'),
+      hook('afterEach'),
+      hook('beforeAll'),
+      hook('afterAll'),
+      fakeFetch,
+    );
     return module.exports;
   };
 
@@ -135,16 +188,62 @@ export async function executeModules(req: ExecRequest): Promise<ExecOutput> {
 
   const results: TestResult[] = [];
   if (req.collectTests) {
-    for (const t of tests) {
-      try {
-        const r = t.fn();
-        if (r && typeof (r as Promise<unknown>).then === 'function') {
-          await withTimeout(r as Promise<unknown>, req.testTimeoutMs ?? 2000);
-        }
-        results.push({ name: t.name, passed: true });
-      } catch (e) {
-        results.push({ name: t.name, passed: false, error: describeError(e), hint: t.hint });
+    const runFn = async (fn: () => unknown) => {
+      const r = fn();
+      if (r && typeof (r as Promise<unknown>).then === 'function') {
+        await withTimeout(r as Promise<unknown>, req.testTimeoutMs ?? 2000);
       }
+    };
+    const chain = (scope: Scope): Scope[] => (scope.parent ? [...chain(scope.parent), scope] : [scope]);
+    const lastTestOf = new Map<Scope, number>();
+    tests.forEach((t, i) => chain(t.scope).forEach((sc) => lastTestOf.set(sc, i)));
+    const started = new Set<Scope>();
+
+    for (const [i, t] of tests.entries()) {
+      const scopes = chain(t.scope);
+      let error: unknown = undefined;
+      let failed = false;
+      const note = (e: unknown, where: string) => {
+        if (failed) return;
+        failed = true;
+        error = where ? new AssertionError(where + ' failed: ' + describeError(e)) : e;
+      };
+      try {
+        for (const sc of scopes) {
+          if (started.has(sc)) continue;
+          started.add(sc);
+          for (const h of sc.beforeAll) await runFn(h);
+        }
+      } catch (e) {
+        note(e, 'beforeAll hook');
+      }
+      if (!failed) {
+        try {
+          for (const sc of scopes) for (const h of sc.beforeEach) await runFn(h);
+        } catch (e) {
+          note(e, 'beforeEach hook');
+        }
+      }
+      if (!failed) {
+        try {
+          await runFn(t.fn);
+        } catch (e) {
+          note(e, '');
+        }
+      }
+      try {
+        for (const sc of [...scopes].reverse()) for (const h of sc.afterEach) await runFn(h);
+      } catch (e) {
+        note(e, 'afterEach hook');
+      }
+      try {
+        for (const sc of [...scopes].reverse()) {
+          if (lastTestOf.get(sc) === i) for (const h of sc.afterAll) await runFn(h);
+        }
+      } catch (e) {
+        note(e, 'afterAll hook');
+      }
+      results.push(failed ? { name: t.name, passed: false, error: describeError(error), hint: t.hint } : { name: t.name, passed: true });
     }
   }
   return { results, logs };
@@ -229,13 +328,16 @@ export function expect(actual: unknown, message?: string) {
         const msg = thrown instanceof Error ? thrown.message : String(thrown);
         let ok = didThrow;
         if (ok && expected !== undefined) {
-          ok = expected instanceof RegExp ? expected.test(msg) : msg.includes(String(expected));
+          if (typeof expected === 'function') ok = thrown instanceof (expected as new (...a: never[]) => unknown);
+          else ok = expected instanceof RegExp ? expected.test(msg) : msg.includes(String(expected));
         }
         check(ok, () =>
           negate
             ? `Expected function not to throw, but it threw: ${msg}`
             : didThrow
-              ? `Expected error message to match ${format(expected)}, received ${format(msg)}`
+              ? typeof expected === 'function'
+                ? `Expected an error of type ${(expected as { name?: string }).name ?? 'the given class'}, received ${format(thrown)}`
+                : `Expected error message to match ${format(expected)}, received ${format(msg)}`
               : 'Expected function to throw an error, but it did not',
         );
       },

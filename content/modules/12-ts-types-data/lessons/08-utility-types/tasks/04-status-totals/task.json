@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Record with union keys: totals for every status",
+  "statement": "```ts\nexport type Status = 'passed' | 'failed' | 'skipped';\n```\n\n1. `emptyTotals(): Record<Status, number>` — об'єкт з усіма трьома статусами і значенням `0`.\n2. `totals(statuses: Status[]): Record<Status, number>` — кількість кожного статусу. Статуси, яких немає у вхідному масиві, мають бути `0` (на відміну від `countByStatus` з уроку 3).\n3. `export type Totals = ReturnType<typeof totals>;` — тип, виведений з функції.\n\n```ts\ntotals(['passed', 'passed', 'failed']);  // { passed: 2, failed: 1, skipped: 0 }\ntotals([]);                               // { passed: 0, failed: 0, skipped: 0 }\n```",
+  "hints": [
+    "`emptyTotals` — об'єкт-літерал: `{ passed: 0, failed: 0, skipped: 0 }`. Тип `Record<Status, number>` змусить перелічити всі ключі.",
+    "`totals`: почни з `const result = emptyTotals();` і збільшуй `result[s] += 1` для кожного статусу."
+  ],
+  "explanation": "```ts\nexport function emptyTotals(): Record<Status, number> {\n  return { passed: 0, failed: 0, skipped: 0 };\n}\n\nexport function totals(statuses: Status[]): Record<Status, number> {\n  const result = emptyTotals();\n  for (const s of statuses) result[s] += 1;\n  return result;\n}\n\nexport type Totals = ReturnType<typeof totals>;\n```"
+}

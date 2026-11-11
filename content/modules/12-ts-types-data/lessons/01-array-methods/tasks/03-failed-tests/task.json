@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "Find failed tests with filter and find",
+  "statement": "Є результати прогону:\n\n```ts\ntype TestRun = { title: string; status: 'passed' | 'failed' | 'skipped'; durationMs: number };\n```\n\nНапиши дві функції:\n\n1. `failedTitles(runs)` — масив **назв** тестів зі статусом `'failed'` (у тому ж порядку).\n2. `findTest(runs, title)` — перший тест із такою назвою або `undefined`, якщо його немає.\n\n```ts\nfailedTitles(runs);            // ['cart total', 'checkout']\nfindTest(runs, 'search');      // { title: 'search', status: 'passed', durationMs: 800 }\nfindTest(runs, 'unknown');     // undefined\n```",
+  "hints": [
+    "Спочатку відфільтруй `filter((r) => r.status === 'failed')`, потім перетвори `map((r) => r.title)`.",
+    "Для другої функції є метод, який повертає перший знайдений елемент або `undefined`."
+  ],
+  "explanation": "```ts\nexport function failedTitles(runs: TestRun[]): string[] {\n  return runs.filter((r) => r.status === 'failed').map((r) => r.title);\n}\n\nexport function findTest(runs: TestRun[], title: string): TestRun | undefined {\n  return runs.find((r) => r.title === title);\n}\n```\n\nЗверни увагу на тип результату `TestRun | undefined` — `find` може нічого не знайти.",
+  "codeRules": [{ "kind": "forbid", "pattern": "\\bfor\\s*\\(", "message": "Спробуй без циклу `for` — методами `filter`, `map`, `find`." }]
+}

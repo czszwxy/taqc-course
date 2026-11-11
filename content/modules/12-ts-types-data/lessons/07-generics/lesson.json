@@ -1,0 +1,28 @@
+{
+  "title": "Generics",
+  "minutes": 65,
+  "summary": "Узагальнені функції й типи: <T>, обмеження extends, keyof у generics, generic-інтерфейси на кшталт ApiResponse<T> — і чому Playwright і тестові хелпери тримаються саме на них",
+  "resources": [
+    {
+      "title": "TypeScript Handbook: Generics",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/generics.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "TypeScript Handbook: Keyof Type Operator",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/keyof-types.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: TypeScript generics explained (пошук)",
+      "url": "https://www.youtube.com/results?search_query=typescript+generics+explained+for+beginners",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

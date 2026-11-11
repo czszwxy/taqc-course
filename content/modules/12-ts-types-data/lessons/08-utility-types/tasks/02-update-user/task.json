@@ -1,0 +1,8 @@
+{
+  "type": "code",
+  "title": "Partial + Omit: update a user safely",
+  "statement": "У файлі є інтерфейс `User`.\n\n1. Опиши `export type UserChanges` — будь-які поля `User`, **крім** `id`, і всі необов'язкові. Використай utility types, не переписуй поля.\n2. Напиши `updateUser(user, changes)` — повертає **новий** об'єкт з застосованими змінами.\n\nПриховані тести перевіряють, що `updateUser(u, { id: 2 })` **не компілюється**.\n\n```ts\nupdateUser(u, { name: 'Olena T.' });               // name changed, the rest unchanged\nupdateUser(u, { role: 'admin', email: 'x@y.z' });  // two fields changed\n```",
+  "hints": ["`export type UserChanges = Partial<Omit<User, 'id'>>;`", "`return { ...user, ...changes };`"],
+  "explanation": "```ts\nexport type UserChanges = Partial<Omit<User, 'id'>>;\n\nexport function updateUser(user: User, changes: UserChanges): User {\n  return { ...user, ...changes };\n}\n```",
+  "codeRules": [{ "kind": "require", "pattern": "Partial\\s*<\\s*Omit\\s*<|Omit\\s*<\\s*Partial\\s*<", "message": "Збери UserChanges з utility types: Partial і Omit." }]
+}

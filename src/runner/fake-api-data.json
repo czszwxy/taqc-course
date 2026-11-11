@@ -1,0 +1,42 @@
+{
+  "baseUrl": "https://api.gadgetly.test",
+  "token": "test-token-42",
+  "users": [
+    {
+      "id": 42,
+      "name": "Olena Tester",
+      "email": "qa@gadgetly.test",
+      "password": "Test1234",
+      "role": "customer"
+    },
+    {
+      "id": 17,
+      "name": "Taras Buyer",
+      "email": "taras@gadgetly.test",
+      "password": "Taras1234",
+      "role": "customer"
+    }
+  ],
+  "orders": [
+    {
+      "id": 1002,
+      "userId": 42,
+      "productId": 1,
+      "quantity": 2,
+      "status": "created"
+    }
+  ],
+  "nextOrderId": 1003,
+  "maxSlowMs": 1000,
+  "minQuantity": 1,
+  "maxQuantity": 10,
+  "status": {
+    "ok": 200,
+    "created": 201,
+    "badRequest": 400,
+    "unauthorized": 401,
+    "notFound": 404,
+    "serverError": 500
+  },
+  "okLimit": 300
+}

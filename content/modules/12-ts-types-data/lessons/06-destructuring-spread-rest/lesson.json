@@ -1,0 +1,28 @@
+{
+  "title": "Destructuring, spread & rest",
+  "minutes": 50,
+  "summary": "Деструктуризація об'єктів і масивів (зі значеннями за замовчуванням і перейменуванням), spread для копій і об'єднання, rest для «решти» полів і довільної кількості аргументів",
+  "resources": [
+    {
+      "title": "MDN: Destructuring assignment",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Spread syntax (...)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Деструктуризуюче присвоєння",
+      "url": "https://uk.javascript.info/destructuring-assignment",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

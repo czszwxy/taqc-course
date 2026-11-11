@@ -1,0 +1,79 @@
+{
+  "type": "quiz",
+  "title": "Quiz: array methods",
+  "show": 5,
+  "hints": ["map — той самий розмір, filter — менше або стільки ж, find — один елемент або undefined, reduce — одне значення."],
+  "questions": [
+    {
+      "id": "map-length",
+      "kind": "text",
+      "text": "Що виведе код?",
+      "code": "const ids = [3, 7, 9].map((n) => n * 2);\nconsole.log(ids.length);",
+      "accept": ["3"],
+      "explanation": "`map` повертає масив **тієї самої довжини**: `[6, 14, 18]`."
+    },
+    {
+      "id": "find-missing",
+      "kind": "single",
+      "text": "Що поверне `[1, 2, 3].find((n) => n > 5)`?",
+      "options": [
+        { "text": "`undefined`", "correct": true },
+        { "text": "`-1`", "explain": "`-1` повертає `findIndex`, а не `find`." },
+        { "text": "`[]`", "explain": "Порожній масив повертає `filter`." }
+      ]
+    },
+    {
+      "id": "reduce",
+      "kind": "text",
+      "text": "Що виведе код?",
+      "code": "const total = [5, 10, 20].reduce((sum, n) => sum + n, 0);\nconsole.log(total);",
+      "accept": ["35"]
+    },
+    {
+      "id": "sort-numbers",
+      "kind": "single",
+      "text": "Що поверне `[10, 9, 100].sort()` без функції порівняння?",
+      "options": [
+        { "text": "`[10, 100, 9]`", "correct": true, "explain": "Без функції порівняння елементи порівнюються як **рядки**: «10» < «100» < «9»." },
+        { "text": "`[9, 10, 100]`" },
+        { "text": "`[100, 10, 9]`" }
+      ]
+    },
+    {
+      "id": "sort-mutates",
+      "kind": "single",
+      "text": "Чому пишуть `[...runs].sort(...)`, а не `runs.sort(...)`?",
+      "options": [
+        { "text": "`sort` змінює вихідний масив, а копія залишає `runs` недоторканим", "correct": true },
+        { "text": "Інакше `sort` не працює з об'єктами" }
+      ]
+    },
+    {
+      "id": "every-empty",
+      "kind": "single",
+      "text": "Що поверне `[].every((x) => x > 0)`?",
+      "options": [
+        { "text": "`true`", "correct": true, "explain": "Для порожнього масиву «всі елементи підходять» — немає жодного, що не підходить. Пам'ятай про це в перевірках!" },
+        { "text": "`false`" },
+        { "text": "Помилку" }
+      ]
+    },
+    {
+      "id": "some",
+      "kind": "single",
+      "text": "Який метод відповість на питання «чи є серед результатів **хоча б один** failed»?",
+      "options": [
+        { "text": "`some`", "correct": true },
+        { "text": "`every`" },
+        { "text": "`map`" }
+      ]
+    },
+    {
+      "id": "chain",
+      "kind": "text",
+      "text": "Що виведе код?",
+      "code": "const r = [1, 2, 3, 4, 5].filter((n) => n % 2 === 1).map((n) => n * 10);\nconsole.log(r.join(','));",
+      "accept": ["10,30,50"]
+    }
+  ]
+}
