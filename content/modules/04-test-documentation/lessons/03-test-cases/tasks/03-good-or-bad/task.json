@@ -1,0 +1,24 @@
+{
+  "type": "classify",
+  "title": "Good or bad test case fragment?",
+  "statement": "Оціни фрагменти тест-кейсів: **добре** написано чи **потребує виправлення**?",
+  "show": 8,
+  "categories": [
+    { "id": "good", "label": "Good" },
+    { "id": "bad", "label": "Needs fixing" }
+  ],
+  "items": [
+    { "id": "t-good", "text": "**Title:** Checkout: order is created when paying with a saved card", "category": "good" },
+    { "id": "t-bad", "text": "**Title:** Test 17", "category": "bad", "explain": "Назва нічого не каже про перевірку." },
+    { "id": "e-bad", "text": "**Expected:** Everything works correctly", "category": "bad", "explain": "Неперевірюваний результат: що саме має статися?" },
+    { "id": "e-good", "text": "**Expected:** Page \"Order #12345 confirmed\" is shown and a confirmation email arrives within 5 minutes", "category": "good" },
+    { "id": "s-bad", "text": "**Step:** Fill in the registration form, submit it and check the profile", "category": "bad", "explain": "Кілька дій в одному кроці. Розбий на окремі кроки." },
+    { "id": "s-good", "text": "**Step 3:** Click \"Create account\"", "category": "good" },
+    { "id": "d-bad", "text": "**Test data:** some valid email and some password", "category": "bad", "explain": "Дані мають бути конкретними: наприклад, olena@example.com / Secret123." },
+    { "id": "d-good", "text": "**Test data:** email olena@example.com, password Secret123", "category": "good" },
+    { "id": "p-bad", "text": "**Preconditions:** Run TC-41 first, then use the user it created", "category": "bad", "explain": "Тест залежить від іншого тесту. Опиши стан у передумовах (або створи дані окремо)." },
+    { "id": "p-good", "text": "**Preconditions:** A registered user olena@example.com exists; the user is logged out; the login page is open", "category": "good" }
+  ],
+  "hints": ["Шукай: розмиті слова («правильно», «якісь»), кілька дій в одному кроці, залежність від інших тестів, назви без змісту."],
+  "explanation": "Типові вади тест-кейсів: беззмістовна назва, неперевірюваний очікуваний результат, кілька дій в одному кроці, неконкретні дані, залежність від інших тестів. Виправлення завжди однакове: конкретика й атомарність."
+}

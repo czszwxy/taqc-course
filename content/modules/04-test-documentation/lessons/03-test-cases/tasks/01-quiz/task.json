@@ -1,0 +1,66 @@
+{
+  "type": "quiz",
+  "title": "Quiz: test case anatomy",
+  "show": 5,
+  "hints": ["Перечитай таблиці «Погано / Добре» для назви й очікуваного результату."],
+  "questions": [
+    {
+      "id": "title",
+      "kind": "single",
+      "text": "Яка назва тест-кейсу найкраща?",
+      "options": [
+        { "text": "Login: error is shown when the password is wrong", "correct": true },
+        { "text": "Login test 3" },
+        { "text": "Перевірка логіну" }
+      ]
+    },
+    {
+      "id": "expected",
+      "kind": "single",
+      "text": "Який очікуваний результат найкращий?",
+      "options": [
+        { "text": "Під полем Email з'являється «Enter a valid email», форма не відправляється", "correct": true },
+        { "text": "Показується помилка" },
+        { "text": "Все працює правильно" }
+      ]
+    },
+    {
+      "id": "independent",
+      "kind": "single",
+      "text": "Тест-кейс TC-12 починається з «Використати замовлення, створене в TC-11». Який принцип порушено?",
+      "options": [
+        { "text": "Незалежність", "correct": true },
+        { "text": "Атомарність" },
+        { "text": "Простежуваність" }
+      ]
+    },
+    {
+      "id": "preconditions",
+      "kind": "single",
+      "text": "Що пишуть у **preconditions**?",
+      "options": [
+        { "text": "Стан системи до першого кроку (користувач залогінений, у кошику 1 товар)", "correct": true },
+        { "text": "Очікуваний результат" },
+        { "text": "Список знайдених багів" }
+      ]
+    },
+    {
+      "id": "step",
+      "kind": "single",
+      "text": "Який крок написано правильно?",
+      "options": [
+        { "text": "Click the «Apply» button", "correct": true },
+        { "text": "Fill in the form, apply the promo code and check that everything is fine" }
+      ]
+    },
+    {
+      "id": "newbie-test",
+      "kind": "single",
+      "text": "Як найпростіше перевірити якість тест-кейсу?",
+      "options": [
+        { "text": "Чи виконає його новий колега без жодного питання до автора", "correct": true },
+        { "text": "Чи вистачає в ньому слів" }
+      ]
+    }
+  ]
+}

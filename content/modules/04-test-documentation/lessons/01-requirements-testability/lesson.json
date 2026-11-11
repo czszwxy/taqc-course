@@ -1,0 +1,28 @@
+{
+  "title": "Requirements & testability review",
+  "minutes": 40,
+  "summary": "Які бувають вимоги, що робить вимогу тестованою і як переписати розмиту вимогу так, щоб її можна було перевірити",
+  "resources": [
+    {
+      "title": "Wikipedia: Requirement (characteristics of good requirements)",
+      "url": "https://en.wikipedia.org/wiki/Requirement",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: INVEST (mnemonic) for user stories",
+      "url": "https://en.wikipedia.org/wiki/INVEST_(mnemonic)",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: testable requirements (пошук)",
+      "url": "https://www.youtube.com/results?search_query=how+to+write+testable+requirements",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

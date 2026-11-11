@@ -1,0 +1,29 @@
+{
+  "title": "Test plan & test strategy",
+  "minutes": 40,
+  "summary": "Що таке тест-план і стратегія, з яких розділів складається план, entry/exit criteria і ризики",
+  "resources": [
+    {
+      "title": "Wikipedia: Test plan",
+      "url": "https://en.wikipedia.org/wiki/Test_plan",
+      "kind": "article",
+      "lang": "en",
+      "note": "Згадує стандарт IEEE 829 / ISO/IEC/IEEE 29119 — основу структури тест-плану.",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: Test strategy",
+      "url": "https://en.wikipedia.org/wiki/Test_strategy",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "ISTQB — Foundation Level syllabus (chapter 5: Managing the test activities)",
+      "url": "https://www.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

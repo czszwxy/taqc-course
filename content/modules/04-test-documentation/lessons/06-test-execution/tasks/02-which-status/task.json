@@ -1,0 +1,27 @@
+{
+  "type": "classify",
+  "title": "Which status should the test case get?",
+  "statement": "Ти виконуєш тестовий прогін. Обери правильний статус для кожного тест-кейсу.",
+  "show": 8,
+  "categories": [
+    { "id": "passed", "label": "Passed" },
+    { "id": "failed", "label": "Failed" },
+    { "id": "blocked", "label": "Blocked" },
+    { "id": "skipped", "label": "Skipped / N/A" },
+    { "id": "notrun", "label": "Not run" }
+  ],
+  "items": [
+    { "id": "ok", "text": "Лист-підтвердження прийшов за 1 хвилину, як і очікувалось.", "category": "passed" },
+    { "id": "wrong-total", "text": "Очікувалась знижка 10%, а застосувалась 1%.", "category": "failed" },
+    { "id": "env-down", "text": "Staging повертає 503 на всі сторінки; тест неможливо почати.", "category": "blocked" },
+    { "id": "ios-only", "text": "Тест для iOS-застосунку в прогоні для веб-версії.", "category": "skipped" },
+    { "id": "not-yet", "text": "До цього тест-кейсу ще не дійшли — прогін триває.", "category": "notrun" },
+    { "id": "login-bug", "text": "Через відкритий баг логіну (BUG-88) неможливо дійти до сторінки профілю, яку перевіряє тест.", "category": "blocked" },
+    { "id": "typo", "text": "Текст кнопки «Chekout» замість «Checkout», а тест перевіряє саме текст.", "category": "failed" },
+    { "id": "feature-off", "text": "Фічу «Подарункові картки» вимкнено feature flag'ом у цьому релізі.", "category": "skipped" },
+    { "id": "fixed", "text": "Раніше впалий тест після виправлення BUG-91 дав очікуваний результат.", "category": "passed" },
+    { "id": "no-test-data", "text": "Немає тестової картки потрібного типу, бо провайдер ще не надав її — виконати неможливо.", "category": "blocked" }
+  ],
+  "hints": ["Дійшов до перевірки → Passed або Failed. Не зміг дійти через перешкоду → Blocked. Свідомо не виконуємо → Skipped. Ще не дійшли → Not run."],
+  "explanation": "Статус відображає, **що сталося з перевіркою**: виконана успішно (Passed), виконана і впала (Failed), неможливо виконати через зовнішню перешкоду (Blocked), свідомо не потрібна в цьому прогоні (Skipped), ще не виконувалась (Not run)."
+}

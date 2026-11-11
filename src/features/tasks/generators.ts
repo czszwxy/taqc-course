@@ -119,7 +119,7 @@ const epRange: Generator = (params, seed) => {
     const duplicates = partitions
       .map((p) => ({ p, values: answer.filter(p.contains) }))
       .filter(({ values }) => values.length > 1)
-      .map(({ p, values }) => `**${values.join(', ')}** — з одного класу (${p.name}). Для EP досить **одного** представника: решта перевіряє те саме.`);
+      .map(({ p, values }) => `**${values.join(', ')}** — з одного класу «${p.name}». Для EP досить **одного** представника: решта перевіряє те саме.`);
     const fractional = answer
       .filter((v) => !Number.isInteger(v))
       .map((v) => `**${v}** — не ціле число. Це окремий невалідний клас, але в цій задачі рахуємо лише цілі значення.`);

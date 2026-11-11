@@ -1,0 +1,28 @@
+{
+  "title": "Checklists",
+  "minutes": 35,
+  "summary": "Що таке чекліст, чим він відрізняється від тест-кейсу, як його структурувати і коли його досить",
+  "resources": [
+    {
+      "title": "ISTQB Glossary: checklist-based testing",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: QA checklist vs test case (пошук)",
+      "url": "https://www.youtube.com/results?search_query=QA+checklist+vs+test+case",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: чекліст тестувальника (пошук українською)",
+      "url": "https://www.youtube.com/results?search_query=%D1%87%D0%B5%D0%BA%D0%BB%D1%96%D1%81%D1%82+%D1%82%D0%B5%D1%81%D1%82%D1%83%D0%B2%D0%B0%D0%BB%D1%8C%D0%BD%D0%B8%D0%BA%D0%B0",
+      "kind": "video",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

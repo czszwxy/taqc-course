@@ -1,0 +1,45 @@
+{
+  "type": "written",
+  "title": "Define entry and exit criteria for a release",
+  "statement": "Команда готує реліз **2.4** з новою сторінкою оформлення замовлення та оплатою карткою. Тестування — на staging, 2 тижні.\n\nНапиши **entry criteria** (мінімум 3) і **exit criteria** (мінімум 4) для тестування цього релізу. Критерії мають бути **вимірюваними**.",
+  "fields": [
+    { "id": "entry", "label": "Entry criteria", "kind": "list", "placeholder": "Білд 2.4 розгорнуто на staging, smoke-тести зелені" },
+    { "id": "exit", "label": "Exit criteria", "kind": "list", "placeholder": "0 відкритих дефектів Critical і Blocker" }
+  ],
+  "rules": [
+    { "field": "entry", "check": "minItems", "value": 3, "message": "Потрібно щонайменше 3 entry criteria." },
+    { "field": "exit", "check": "minItems", "value": 4, "message": "Потрібно щонайменше 4 exit criteria." },
+    { "field": "entry", "check": "mentionsAny", "value": ["staging|білд|build|розгорн|deploy|середовищ|environment"], "message": "Entry: вкажи, що **білд розгорнуто** на тестовому середовищі." },
+    { "field": "entry", "check": "mentionsAny", "value": ["smoke"], "message": "Entry: додай умову про успішні **smoke**-тести." },
+    { "field": "exit", "check": "mentionsAny", "value": ["critical|blocker|критичн|блокер"], "message": "Exit: додай умову про відкриті дефекти **Critical/Blocker**." },
+    { "field": "exit", "check": "mentionsAny", "value": ["\\d+\\s*%"], "message": "Exit: додай **вимірюваний** показник у відсотках (виконано тестів, pass rate)." },
+    { "field": "exit", "check": "notMentions", "value": ["якість (продукту )?(достатня|хороша)|quality is (good|sufficient)|все працює|everything works"], "message": "Exit: «якість достатня» чи «все працює» — не вимірювані критерії. Заміни їх числами." }
+  ],
+  "model": {
+    "entry": [
+      "Білд 2.4 розгорнуто на staging, smoke-тести зелені",
+      "Усі user stories релізу мають acceptance criteria",
+      "Тестові акаунти й тестові картки платіжного провайдера підготовлено",
+      "Тест-кейси для checkout і оплати пройшли рев'ю"
+    ],
+    "exit": [
+      "Виконано 100% запланованих тест-кейсів",
+      "Pass rate ≥ 95%",
+      "0 відкритих дефектів Critical і Blocker",
+      "Усі High-дефекти виправлено або погоджено з PO як відомі обмеження",
+      "Регресійний набір автотестів зелений на останньому білді",
+      "Підсумковий звіт про тестування надіслано команді"
+    ]
+  },
+  "hints": [
+    "Entry: що має бути готово, щоб тестування мало сенс? Білд, smoke, вимоги, дані.",
+    "Exit: скільки тестів виконано, який pass rate, які дефекти можуть лишатися відкритими?"
+  ],
+  "explanation": "Entry criteria захищають від марної роботи (немає сенсу тестувати непрацюючий білд). Exit criteria захищають від суперечок «чи можна релізити»: замість думок — числа (виконано %, pass rate, 0 Critical/Blocker) і домовленості щодо High.",
+  "checklist": [
+    "Кожен критерій можна однозначно перевірити (так / ні або число)",
+    "Entry охоплює білд, smoke, вимоги, тестові дані",
+    "Exit містить відсотки й обмеження за severity дефектів",
+    "Немає розмитих формулювань на кшталт «якість достатня»"
+  ]
+}

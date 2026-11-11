@@ -81,6 +81,9 @@ Markdown + GFM tables. Callouts: a blockquote starting with `[!TIP]`, `[!NOTE]`,
 | `classify` | `statement`, `categories[]` (`id`, `label`, `description?`), `items[]` (`id`, `text`, `category`, `explain?`), `show?`, `passScore` | each item assigned to one category; retry = new random sample (seed). Ideal for theory modules: "error/defect/failure", "smoke/sanity/regression" |
 | `order` | `statement`, `items[]` **in the correct order** (≥ 3) | UI shuffles; exact order required; green/red per row; correct order revealed after 2 fails |
 | `written` | `statement`, `playground?`, `fields[]` (`id`, `label`, `kind`: `text`/`textarea`/`list`, `placeholder?`, `hint?`), `rules[]`, `model` (field id → string or string[]), `checklist[]` | all fields required + rules → model answer + self-review checklist + Copy for review. Use for acceptance criteria, requirement reviews, charters, plans |
+| `table` | `statement`, `givenColumns[]` (header labels), `answerColumns[]` (`id`, `label`, `options[]`), `rows[]` (`given[]` same length as givenColumns, `answers` {colId → option}, `explain?`) | every answer cell must match; green/red per cell; row `explain` shown for wrong rows; answers revealed after 2 fails. Use for decision tables, state transition tables, partition tables, traceability matrices |
+
+Value-set generators (`src/features/tasks/generators.ts`, presets in `range-presets.json`): `bva-range` (params `field`, `min`, `max`, `unit?`, `approach`: `two-value` | `three-value`) and `ep-range` (one representative per integer partition: below / inside / above). Seed 0 uses the task params; other seeds pick a random preset.
 
 Field rules (`rules[]`): `{ field, check, value?, message }` where `check` ∈ `required | minLength | minItems | mentionsAny | mentionsAll | notMentions | equals | oneOf`; `field: "any"` = all fields joined. Regexes are case-insensitive with the `u` flag — don't use `\b` next to Cyrillic, avoid unnecessary escapes (u-mode is strict), cover EN + UK wording.
 
@@ -102,13 +105,15 @@ Pages in `src/playground/`, registered in `registry.ts`, routed standalone (no a
 - "Copy for review" button builds a Markdown bundle the learner can paste to Claude for detailed feedback (no API calls from the app).
 
 ## Status / roadmap
-- ✅ App skeleton, 8 task engines (quiz, code, value-set, test-case, bug-report, classify, order, written), Bug Playground "Sign-up form" (7 bugs).
+- ✅ App skeleton, 9 task engines (quiz, code, value-set, test-case, bug-report, classify, order, written, table), Bug Playground "Sign-up form" (7 bugs).
 - ✅ Module 01 "Introduction to Testing" — 7 lessons, 21 tasks (quiz + classify/order/written per lesson).
 - ✅ Module 02 "Testing Types & Levels" — 8 lessons, 23 tasks.
+- ✅ Module 03 "Test Design Techniques" — 8 lessons, 23 main tasks + 1 variant (EP/BVA generators, decision & state tables).
+- ✅ Module 04 "Test Documentation" — 7 lessons, 21 tasks (testability, checklists, test case, traceability table, plan, statuses, metrics & summary report).
 - ✅ Module 11 "Programming Basics with TypeScript" — 10 lessons, 40 main tasks + 10 variants.
 - ✅ Module 06 demo lesson 04 "Registration form" (quiz, BVA generator, test case + variant, bug hunt).
 - Theory-module pattern (modules 01–05): each lesson = quiz (6–8 questions, show 5) + 2 practical tasks (classify / order / written), easy → harder. Never put Bug Playground bug answers in model answers of other modules (spoilers for the module 06 bug hunt).
-- Next suggested batch: modules 03 "Test Design Techniques" + 04 "Test Documentation" (will need more `value-set` generators: equivalence partitions, decision tables, state transitions).
+- Next suggested batch: module 05 "Bugs & Bug Tracking" (7 lessons; bug-report tasks need new Bug Playground pages or text-described bugs — never reuse Sign-up bug answers) + the remaining lessons of module 06 "QA Practice Lab" (needs new playground pages: login, cart, search & filters, order status, todo).
 - ⏳ Remaining modules in batches (owner reviews each batch). Planned engines to add when needed: CSS/XPath selector tasks (sandboxed iframe), DevTools hunts, SQL (sql.js), Playwright-API simulator over playground pages with mutation grading, `lab/` with real `@playwright/test` + `npm run lab:check <id>`, local mock REST API (Node, zero deps).
 - Full outline lives in `content/course.json`.
 

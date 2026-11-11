@@ -1,0 +1,28 @@
+{
+  "type": "classify",
+  "title": "Which test plan section?",
+  "statement": "До якого розділу тест-плану належить кожен фрагмент?",
+  "show": 8,
+  "categories": [
+    { "id": "scope", "label": "Scope" },
+    { "id": "approach", "label": "Approach" },
+    { "id": "environment", "label": "Environment" },
+    { "id": "criteria", "label": "Entry / Exit criteria" },
+    { "id": "schedule", "label": "Schedule & resources" },
+    { "id": "risks", "label": "Risks" }
+  ],
+  "items": [
+    { "id": "in-scope", "text": "Тестуємо новий checkout і оплату карткою; мобільний застосунок не входить у цей реліз.", "category": "scope" },
+    { "id": "techniques", "text": "Для форм — EP і BVA; критичні сценарії автоматизуємо; регресія — автотестами.", "category": "approach" },
+    { "id": "staging", "text": "Staging-середовище, браузери Chrome, Firefox, Safari, тестові картки провайдера.", "category": "environment" },
+    { "id": "exit", "text": "Завершуємо, коли 0 відкритих Critical і pass rate ≥ 95%.", "category": "criteria" },
+    { "id": "dates", "text": "3–14 листопада; 2 manual QA і 1 automation QA.", "category": "schedule" },
+    { "id": "bank-delay", "text": "Інтеграція з банком може запізнитися — тоді тестуємо на моках.", "category": "risks" },
+    { "id": "entry", "text": "Починаємо, коли білд на staging і smoke-тести зелені.", "category": "criteria" },
+    { "id": "api", "text": "Окрім UI, перевіряємо API оплати через Postman і автотести.", "category": "approach" },
+    { "id": "people-sick", "text": "Якщо один QA захворіє, регресію скорочуємо до критичних сценаріїв.", "category": "risks" },
+    { "id": "out", "text": "Підтримка Internet Explorer у цьому релізі не перевіряється.", "category": "scope" }
+  ],
+  "hints": ["Scope — «що», approach — «як», environment — «де», criteria — «коли почати / закінчити», schedule — «коли і хто», risks — «що може піти не так»."],
+  "explanation": "Кожен розділ плану відповідає на своє питання. Найчастіше плутають scope (що тестуємо) і approach (як тестуємо), а також risks (що може піти не так) і criteria (коли починаємо й зупиняємось)."
+}

@@ -1,0 +1,13 @@
+{
+  "title": "Test Documentation",
+  "description": "Тестова документація, яку пишуть щодня: рев'ю й тестованість вимог, чеклісти, тест-кейси, тестові набори й матриця трасованості, тест-план і стратегія, виконання тестів і статуси, звіти та метрики.",
+  "goals": [
+    "Check if a requirement is testable and rewrite it so it is",
+    "Write checklists for typical features",
+    "Write clear, reproducible test cases",
+    "Group test cases into suites and build a traceability matrix",
+    "Explain what goes into a test plan and define entry/exit criteria",
+    "Execute tests and set correct statuses (passed, failed, blocked…)",
+    "Calculate basic QA metrics and write a test summary report with a recommendation"
+  ]
+}

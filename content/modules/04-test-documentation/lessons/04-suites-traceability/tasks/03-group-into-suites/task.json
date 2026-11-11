@@ -1,0 +1,26 @@
+{
+  "type": "classify",
+  "title": "Group test cases into functional suites",
+  "statement": "Розподіли тест-кейси інтернет-магазину за **функціональними наборами**.",
+  "show": 8,
+  "categories": [
+    { "id": "auth", "label": "Authentication" },
+    { "id": "cart", "label": "Cart" },
+    { "id": "checkout", "label": "Checkout" },
+    { "id": "profile", "label": "Profile" }
+  ],
+  "items": [
+    { "id": "login-ok", "text": "Login with correct credentials opens the home page as a logged-in user", "category": "auth" },
+    { "id": "add-item", "text": "Adding a product increases the cart counter in the header", "category": "cart" },
+    { "id": "pay-card", "text": "Payment with a valid card creates an order with status Paid", "category": "checkout" },
+    { "id": "edit-name", "text": "Changing the first name in settings is shown in the header after saving", "category": "profile" },
+    { "id": "logout", "text": "Logout ends the session and hides the profile menu", "category": "auth" },
+    { "id": "qty", "text": "Changing quantity from 1 to 3 recalculates the cart total", "category": "cart" },
+    { "id": "address", "text": "Delivery address is required to continue to payment", "category": "checkout" },
+    { "id": "orders", "text": "Order history lists past orders with their statuses", "category": "profile" },
+    { "id": "promo", "text": "Valid promo code reduces the cart subtotal", "category": "cart" },
+    { "id": "reset", "text": "Password reset link opens the form for a new password", "category": "auth" }
+  ],
+  "hints": ["Запитай: на якій сторінці чи в якому розділі продукту відбувається головна дія тесту?"],
+  "explanation": "Групування за функціональністю допомагає знаходити тести й запускати їх частинами: змінили кошик — запускаємо набір Cart. Набори за метою (Smoke, Regression) збирають тести з різних функціональних наборів."
+}

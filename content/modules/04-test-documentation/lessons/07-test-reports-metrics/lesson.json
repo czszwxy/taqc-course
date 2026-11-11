@@ -1,0 +1,28 @@
+{
+  "title": "Test summary reports & metrics",
+  "minutes": 45,
+  "summary": "Основні QA-метрики (прогрес виконання, pass rate, дефекти), структура підсумкового звіту і рекомендація щодо релізу",
+  "resources": [
+    {
+      "title": "ISTQB — Foundation Level syllabus (5.3 Test monitoring, test control and test completion)",
+      "url": "https://www.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "ISTQB Glossary: test completion report, test progress report",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: test summary report (пошук)",
+      "url": "https://www.youtube.com/results?search_query=test+summary+report+software+testing",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

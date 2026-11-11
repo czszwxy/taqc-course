@@ -1,0 +1,37 @@
+{
+  "type": "test-case",
+  "title": "Write a positive test case: promo code in the cart",
+  "statement": "Вимога: *«Промокод **SALE10** зменшує суму товарів у кошику на 10%. Поле промокоду — на сторінці кошика, кнопка **Apply**. Після застосування під сумою показується рядок «Discount −N грн»».*\n\nНапиши **позитивний** тест-кейс: у кошику один товар за **1500 грн**, користувач застосовує SALE10.\n\n> [!TIP]\n> Порахуй очікувану суму сам і впиши конкретне число в очікуваний результат.",
+  "hints": [
+    "Передумови: користувач залогінений (або гість), у кошику один товар за 1500 грн, сторінка кошика відкрита.",
+    "10% від 1500 = 150. Отже, нова сума — 1350 грн, а рядок знижки — «Discount −150 грн»."
+  ],
+  "explanation": "Позитивний тест-кейс на розрахунок має містити конкретні вхідні дані (ціна товару, промокод) і **обчислений** очікуваний результат (1350 грн, знижка 150 грн). «Сума зменшилась» — неперевірювано: на скільки саме?",
+  "rules": [
+    { "field": "title", "check": "mentionsAny", "value": ["promo|промокод|sale10|discount|знижк"], "message": "У назві має бути, що перевіряється: **промокод / знижка**." },
+    { "field": "testData", "check": "mentionsAny", "value": ["sale10"], "message": "У тестових даних вкажи сам промокод **SALE10**." },
+    { "field": "any", "check": "mentionsAny", "value": ["1500"], "message": "Вкажи вихідну ціну товару **1500 грн** (у передумовах або даних)." },
+    { "field": "steps", "check": "minItems", "value": 3, "message": "Потрібно щонайменше 3 кроки: відкрити кошик → ввести код → натиснути Apply." },
+    { "field": "expectedResult", "check": "mentionsAny", "value": ["1\\s?350"], "message": "Очікуваний результат має містити **нову суму**: 1350 грн." },
+    { "field": "expectedResult", "check": "mentionsAny", "value": ["150"], "message": "Вкажи й **рядок знижки**: «Discount −150 грн»." },
+    { "field": "type", "check": "equals", "value": "Positive", "message": "Це **позитивний** тест: валідний промокод має спрацювати." },
+    { "field": "preconditions", "check": "minLength", "value": 10, "message": "Опиши передумови: який товар у кошику і на якій сторінці починається тест." }
+  ],
+  "model": {
+    "title": "Cart: promo code SALE10 reduces the total by 10%",
+    "type": "Positive",
+    "priority": "High",
+    "preconditions": "User is logged in; the cart contains exactly 1 product priced 1500 грн; no promo code is applied; the cart page is open.",
+    "testData": "Promo code: SALE10\nProduct price: 1500 грн, quantity: 1",
+    "steps": ["Check that the cart total is 1500 грн", "Enter \"SALE10\" in the \"Promo code\" field", "Click \"Apply\""],
+    "expectedResult": "The line \"Discount −150 грн\" appears under the subtotal; the cart total changes from 1500 грн to 1350 грн; the promo code field shows SALE10 as applied."
+  },
+  "checklist": [
+    "Назва каже, що і за якої умови перевіряється",
+    "Передумови описують точний стан кошика (товар, ціна, без інших знижок)",
+    "Тестові дані конкретні: код і ціна",
+    "Кроки атомарні й починаються з передумови",
+    "Очікуваний результат містить обчислені числа (1350, −150), а не «сума зменшилась»",
+    "Тест незалежний: не спирається на інші тест-кейси"
+  ]
+}

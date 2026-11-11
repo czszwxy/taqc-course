@@ -1,0 +1,65 @@
+{
+  "type": "quiz",
+  "title": "Quiz: suites & traceability",
+  "show": 5,
+  "hints": ["Suite — що запускати разом. Run — конкретний запуск. RTM — зв'язок вимог і тестів."],
+  "questions": [
+    {
+      "id": "suite-vs-run",
+      "kind": "single",
+      "text": "Чим test suite відрізняється від test run?",
+      "options": [
+        { "text": "Suite — група тест-кейсів; run — конкретне виконання цієї групи на конкретному білді", "correct": true },
+        { "text": "Це синоніми" },
+        { "text": "Run — це один тест-кейс" }
+      ]
+    },
+    {
+      "id": "multiple-suites",
+      "kind": "single",
+      "text": "Чи може один тест-кейс входити в кілька наборів?",
+      "options": [
+        { "text": "Так, наприклад, і в Authentication, і в Smoke", "correct": true },
+        { "text": "Ні, лише в один" }
+      ]
+    },
+    {
+      "id": "gap",
+      "kind": "single",
+      "text": "Що означає порожній рядок вимоги в матриці трасованості?",
+      "code": "| Requirement | TC-01 | TC-02 | TC-03 |\n|---|---|---|---|\n| REQ-1 Login     | ✅ | ✅ |    |\n| REQ-2 Logout    |    |    | ✅ |\n| REQ-3 2FA       |    |    |    |",
+      "options": [
+        { "text": "REQ-3 не покрита жодним тестом — треба написати тести", "correct": true },
+        { "text": "REQ-3 уже реалізована" },
+        { "text": "REQ-3 не потрібна" }
+      ]
+    },
+    {
+      "id": "impact",
+      "kind": "single",
+      "text": "Змінилась вимога до логіну. Як матриця трасованості допоможе?",
+      "options": [
+        { "text": "Покаже всі тест-кейси, які треба оновити й перезапустити", "correct": true },
+        { "text": "Автоматично виправить код" }
+      ]
+    },
+    {
+      "id": "orphan",
+      "kind": "single",
+      "text": "Тест-кейс не пов'язаний з жодною вимогою. Що це може означати?",
+      "options": [
+        { "text": "Вимогу забули записати або тест зайвий — варто з'ясувати", "correct": true },
+        { "text": "Тест обов'язково треба видалити" }
+      ]
+    },
+    {
+      "id": "agile",
+      "kind": "single",
+      "text": "До чого зазвичай трасують тести в Agile-команді?",
+      "options": [
+        { "text": "До user stories та їхніх acceptance criteria", "correct": true },
+        { "text": "До імен розробників" }
+      ]
+    }
+  ]
+}

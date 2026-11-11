@@ -1,0 +1,21 @@
+{
+  "type": "table",
+  "title": "Build a traceability matrix",
+  "statement": "Вимоги до модуля акаунта:\n\n- **REQ-1** — реєстрація з email і паролем\n- **REQ-2** — вхід з email і паролем\n- **REQ-3** — відновлення пароля через лист\n- **REQ-4** — історія замовлень у профілі\n- **REQ-5** — підписка на розсилку новин\n\nДля кожного тест-кейсу визнач, яку вимогу він покриває. Якщо жодну з перелічених — обери **No requirement**.",
+  "givenColumns": ["Test case"],
+  "answerColumns": [
+    { "id": "req", "label": "Covers", "options": ["REQ-1", "REQ-2", "REQ-3", "REQ-4", "REQ-5", "No requirement"] }
+  ],
+  "rows": [
+    { "given": ["TC-01 Sign-up with a valid email and password creates an account"], "answers": { "req": "REQ-1" } },
+    { "given": ["TC-02 Sign-up rejects an already registered email"], "answers": { "req": "REQ-1" } },
+    { "given": ["TC-03 Login with correct credentials opens the profile"], "answers": { "req": "REQ-2" } },
+    { "given": ["TC-04 Login shows an error for a wrong password"], "answers": { "req": "REQ-2" } },
+    { "given": ["TC-05 Reset link arrives by email for a registered address"], "answers": { "req": "REQ-3" } },
+    { "given": ["TC-06 Reset link stops working after 1 hour"], "answers": { "req": "REQ-3" } },
+    { "given": ["TC-07 Profile shows the last 10 orders, newest first"], "answers": { "req": "REQ-4" } },
+    { "given": ["TC-08 Dark mode toggle switches the site theme"], "answers": { "req": "No requirement" }, "explain": "Про темну тему у списку вимог нічого немає: або вимогу забули записати, або тест зайвий. Це варто з'ясувати." }
+  ],
+  "hints": ["Шукай ключову дію в назві тест-кейсу: sign-up, login, reset, orders.", "Подивись, чи кожна вимога отримала хоча б один тест. Одна з них залишиться непокритою."],
+  "explanation": "Після заповнення матриці видно дві проблеми: **REQ-5 (розсилка) не має жодного тесту** — прогалина в покритті, а **TC-08 не прив'язаний до вимоги** — або бракує вимоги, або тест зайвий. Саме для таких знахідок і ведуть трасованість."
+}

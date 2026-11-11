@@ -1,0 +1,28 @@
+{
+  "title": "Test suites & traceability matrix",
+  "minutes": 40,
+  "summary": "Як групувати тест-кейси в набори, навіщо матриця трасованості і як знаходити непокриті вимоги",
+  "resources": [
+    {
+      "title": "Wikipedia: Traceability matrix",
+      "url": "https://en.wikipedia.org/wiki/Traceability_matrix",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: Test suite",
+      "url": "https://en.wikipedia.org/wiki/Test_suite",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: requirements traceability matrix (пошук)",
+      "url": "https://www.youtube.com/results?search_query=requirements+traceability+matrix+testing",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

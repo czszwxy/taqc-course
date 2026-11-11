@@ -1,0 +1,66 @@
+{
+  "type": "quiz",
+  "title": "Quiz: test plan & strategy",
+  "show": 5,
+  "hints": ["Стратегія — загальна і довготривала, план — конкретний для релізу чи проєкту."],
+  "questions": [
+    {
+      "id": "strategy",
+      "kind": "single",
+      "text": "«Критичні сценарії автоматизуємо на Playwright, регресія запускається щоночі в CI». Де найдоречніше це записати?",
+      "options": [
+        { "text": "У тестовій стратегії", "correct": true },
+        { "text": "У тест-кейсі" },
+        { "text": "У баг-репорті" }
+      ]
+    },
+    {
+      "id": "out-of-scope",
+      "kind": "single",
+      "text": "Навіщо в плані розділ «out of scope»?",
+      "options": [
+        { "text": "Щоб усі явно знали, що в цьому релізі не тестується, і не мали хибних очікувань", "correct": true },
+        { "text": "Щоб записати баги, які не будуть виправлені" }
+      ]
+    },
+    {
+      "id": "entry",
+      "kind": "single",
+      "text": "Що з цього — **entry** criterion?",
+      "options": [
+        { "text": "Білд розгорнуто на staging, smoke-тести пройшли", "correct": true },
+        { "text": "Немає відкритих Critical-дефектів", "explain": "Це типовий exit criterion." },
+        { "text": "Підсумковий звіт затверджено" }
+      ]
+    },
+    {
+      "id": "measurable",
+      "kind": "single",
+      "text": "Який exit criterion найкращий?",
+      "options": [
+        { "text": "0 відкритих Critical/Blocker, pass rate ≥ 95%", "correct": true },
+        { "text": "Якість продукту достатня" },
+        { "text": "Тестувальники задоволені" }
+      ]
+    },
+    {
+      "id": "risk-based",
+      "kind": "single",
+      "text": "Що означає risk-based testing?",
+      "options": [
+        { "text": "Більше уваги тому, що найімовірніше зламається і найдорожче коштуватиме", "correct": true },
+        { "text": "Тестування лише безпеки" },
+        { "text": "Тестування без плану" }
+      ]
+    },
+    {
+      "id": "junior",
+      "kind": "single",
+      "text": "Яка типова роль Junior QA щодо тест-плану?",
+      "options": [
+        { "text": "Читати план, розуміти обсяг і критерії, допомагати в його складанні", "correct": true },
+        { "text": "Самостійно писати стратегію тестування компанії" }
+      ]
+    }
+  ]
+}

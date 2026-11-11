@@ -1,0 +1,21 @@
+{
+  "title": "Test execution & statuses",
+  "minutes": 35,
+  "summary": "Як проходить тестовий прогін, статуси тест-кейсів (Passed, Failed, Blocked, Skipped, Not run) і зв'язок з дефектами",
+  "resources": [
+    {
+      "title": "ISTQB Glossary: test execution, test run, blocked test case",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: test execution process (пошук)",
+      "url": "https://www.youtube.com/results?search_query=test+execution+process+test+case+status",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}
