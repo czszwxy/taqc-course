@@ -1,0 +1,11 @@
+{
+  "title": "Your First Automated Tests",
+  "description": "Тепер ти пишеш тести сама. Шаблон AAA, describe / it / expect і матчери, техніки тест-дизайну в коді (EP, BVA, таблиці рішень), хуки й незалежність тестів — і міні-проєкт: набір тестів для бібліотеки валідаторів. Кожне завдання перевіряє, чи твої тести ловлять навмисно зламані версії коду (mutation testing).",
+  "goals": [
+    "Explain what an automated test is and structure it with Arrange–Act–Assert",
+    "Group tests with describe, write it blocks and choose the right matcher",
+    "Turn EP, BVA and decision tables into concrete unit tests",
+    "Keep tests independent with beforeEach and fresh test data",
+    "Write a test suite strong enough to catch real bugs (mutants)"
+  ]
+}

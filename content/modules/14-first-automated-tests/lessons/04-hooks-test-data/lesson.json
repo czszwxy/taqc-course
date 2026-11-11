@@ -1,0 +1,28 @@
+{
+  "title": "Hooks, test data & test independence",
+  "minutes": 60,
+  "summary": "beforeEach / afterEach / beforeAll / afterAll, чому тести мають бути незалежними, свіжий стан для кожного тесту, фабрики тестових даних з унікальними значеннями",
+  "resources": [
+    {
+      "title": "Vitest API: beforeEach / afterEach",
+      "url": "https://vitest.dev/api/#beforeeach",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright docs: Test hooks (Writing tests)",
+      "url": "https://playwright.dev/docs/writing-tests",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright docs: Best practices (make tests as isolated as possible)",
+      "url": "https://playwright.dev/docs/best-practices",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

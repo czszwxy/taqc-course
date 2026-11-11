@@ -1,0 +1,21 @@
+{
+  "type": "code",
+  "mode": "tests",
+  "title": "Test a TodoList class with beforeEach",
+  "statement": "У `subject.ts` клас `TodoList`:\n\n| Метод | Поведінка |\n|---|---|\n| `add(text)` | обрізає пробіли; порожній текст → `Error('Task text is required')`; повертає нову задачу `{ id, text, done: false }` |\n| `complete(id)` | позначає **саме цю** задачу виконаною; невідомий id → помилка |\n| `remove(id)` | видаляє **саме цю** задачу |\n| `activeCount()` | кількість **невиконаних** задач |\n\nНапиши щонайменше **5** тестів. Обов'язково використай `beforeEach`, щоб кожен тест отримував **новий** список. Check перевірить тести на **5** зламаних версіях.",
+  "minTests": 5,
+  "hints": [
+    "```ts\nlet list: TodoList;\nbeforeEach(() => {\n  list = new TodoList();\n});\n```",
+    "Щоб зловити помилки «не та задача», в тесті має бути **кілька** задач: додай дві-три і виконай / видали не першу й не останню.",
+    "Перевір обрізання пробілів (`add('  Buy milk ')`) і порожній текст (`expect(() => list.add('   ')).toThrow()`)."
+  ],
+  "explanation": "```ts\nlet list: TodoList;\nbeforeEach(() => {\n  list = new TodoList();\n});\n\nit('trims the text', () => expect(list.add('  Buy milk ').text).toBe('Buy milk'));\nit('rejects empty text', () => expect(() => list.add('   ')).toThrow('required'));\nit('completes the right task', () => {\n  list.add('A');\n  const b = list.add('B');\n  list.complete(b.id);\n  expect(list.items.map((t) => t.done)).toEqual([false, true]);\n});\nit('removes the right task', () => {\n  const a = list.add('A');\n  list.add('B');\n  list.remove(a.id);\n  expect(list.items.map((t) => t.text)).toEqual(['B']);\n});\nit('counts only active tasks', () => {\n  const a = list.add('A');\n  list.add('B');\n  list.complete(a.id);\n  expect(list.activeCount()).toBe(1);\n});\n```",
+  "codeRules": [{ "kind": "require", "pattern": "beforeEach\\s*\\(", "message": "Використай beforeEach, щоб кожен тест отримував новий TodoList." }],
+  "mutants": [
+    { "id": "no-trim", "description": "add() kept the spaces around the text", "hint": "Є версія, що не обрізає пробіли. Додай задачу з пробілами по краях і перевір text." },
+    { "id": "empty-allowed", "description": "add() accepted an empty / spaces-only text", "hint": "Є версія, що приймає порожню задачу. Перевір, що add('   ') кидає помилку." },
+    { "id": "complete-first", "description": "complete() always marked the first task", "hint": "Є версія, що позначає не ту задачу. Додай кілька задач і виконай НЕ першу." },
+    { "id": "count-all", "description": "activeCount() also counted completed tasks", "hint": "Є версія, що рахує всі задачі. Виконай одну задачу й перевір activeCount." },
+    { "id": "remove-last", "description": "remove() deleted the last task instead of the given one", "hint": "Є версія, що видаляє не ту задачу. Додай кілька задач і видали НЕ останню." }
+  ]
+}

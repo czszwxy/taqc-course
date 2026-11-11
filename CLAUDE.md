@@ -43,7 +43,9 @@ src/
   content/loader.ts          ← import.meta.glob discovery; builds Course tree; lazy-loads lesson.md and task .ts files
   runner/compiler.ts         ← pure: real TS compiler over in-memory FS (strict, ES2022 libs, CommonJS emit)
   runner/harness.ts          ← pure: Jest-like describe/it/expect + CommonJS loader + console capture
-  runner/harness-dts.ts      ← globals the compiler sees (console, describe/it/test/expect, captureConsole)
+  runner/harness-dts.ts      ← globals the compiler sees (console, timers, fake fetch, describe/it/expect, hooks, captureConsole); TEST_GLOBALS_DTS is also added to Monaco
+  runner/fake-fetch.ts       ← pure: offline fake fetch (Gadgetly API at https://api.gadgetly.test) for async/fetch lessons
+  runner/mutation.ts         ← pure: tests-mode checking (learner tests vs subject.ts and mutants)
   runner/client.ts           ← main-thread API: checkCode / runCode (compile worker reused; exec worker per run, 5 s timeout)
   runner/*.worker.ts         ← Web Workers
   features/progress/         ← Zustand stores (progress + settings) and selectors (task/lesson/module stats)
@@ -51,7 +53,7 @@ src/
   playground/                ← intentionally buggy demo pages (Bug Playground) + registry.ts
   pages/                     ← Dashboard, ModulePage, LessonPage (Theory/Resources/Practice tabs), TaskPage, Settings, Playground
 server/mock-api.ts           ← Gadgetly REST API mounted into the Vite dev/preview server (/api buggy, /api-fixed correct); data in server/mock-data.json
-scripts/validate-content.ts  ← Node; reuses compiler/harness/forms/generators/selectors (jsdom) to verify content
+scripts/validate-content.ts  ← Node; reuses compiler/harness/mutation/forms/generators/selectors (jsdom) to verify content; runs tasks one at a time (real timers)
 lab/                         ← (future) real Playwright project + local mock API for hands-on labs
 ```
 
@@ -75,7 +77,7 @@ Markdown + GFM tables. Callouts: a blockquote starting with `[!TIP]`, `[!NOTE]`,
 | type | extra fields | how it's checked |
 |---|---|---|
 | `quiz` | `questions[]` (`kind`: `single` / `multiple` / `text`), `show?` (sample size per attempt), `passScore` (default 0.8), `intro?`, `playground?` | auto; per-option `explain`, per-question `explanation`; retry = new random sample (seed) |
-| `code` | `statement`, `codeRules[]` (`require`/`forbid` regex on comment-stripped code, use sparingly) + files `starter.ts`, `solution.ts`, `tests.ts` | real TS compile (strict) of solution + tests, then hidden tests in a worker |
+| `code` | `statement`, `codeRules[]` (`require`/`forbid` regex on comment-stripped code, use sparingly), `mode?` (`solution` default / `tests`), `mutants[]` + `minTests?` (tests mode) + files `starter.ts`, `solution.ts`, `tests.ts`; any other `*.ts` in the task folder is a read-only **support file** the code can import (`./money`) | solution mode: real TS compile (strict) of solution + tests, then hidden tests in a worker. Tests mode: the learner writes tests for `subject.ts`; they must pass on it and fail on every `mutants/<id>.ts` (mutation testing, `src/runner/mutation.ts`) |
 | `value-set` | `generator: { name, params }` (see `features/tasks/generators.ts`, e.g. `bva-range`) | set comparison with targeted feedback; "similar task" = new seed → new generated problem |
 | `test-case` | `statement`, `playground?`, `rules[]`, `model` (title, type, priority, preconditions, testData, steps[], expectedResult), `checklist[]` | built-in structure rules + task `rules` → then model answer + self-review checklist |
 | `bug-report` | `statement`, `playground`, `minBugs`, `bugs[]` (`id`, `title`, `match[]` regexes — ALL must match, `severity[]` accepted, `severityWhy`, `model` report), `checklist[]` | quality rules → match report to a known bug (prefers bugs whose patterns appear in title/actual) → severity check |
@@ -90,6 +92,10 @@ Value-set generators (`src/features/tasks/generators.ts`, presets in `range-pres
 Field rules (`rules[]`): `{ field, check, value?, message }` where `check` ∈ `required | minLength | minItems | mentionsAny | mentionsAll | notMentions | equals | oneOf`; `field: "any"` = all fields joined. Regexes are case-insensitive with the `u` flag — don't use `\b` next to Cyrillic, avoid unnecessary escapes (u-mode is strict), cover EN + UK wording.
 
 ### Code task conventions
+- Runtime available to task code: `console`, timers (`setTimeout`…), `fetch` — an **offline fake** of the Gadgetly API at `https://api.gadgetly.test` (`src/runner/fake-fetch.ts`, seed in `src/runner/fake-api-data.json`: token `test-token-42`, user 42, order 1002, next order id 1003), test hooks `beforeEach/afterEach/beforeAll/afterAll`, `captureConsole` / `captureConsoleAsync`, `toThrow(ErrorClass)`. Per-test timeout 2 s, whole run 5 s.
+- Type-level checks: put `// @ts-expect-error` lines inside an exported, never-called `compileTimeChecks()` in tests.ts (e.g. assigning to a readonly field). If the learner's types are too loose, TS2578 "Unused '@ts-expect-error'" appears (it has a tip in `ts-tips.ts`).
+- Tests mode (module 14+): files `subject.ts` (correct code, shown read-only), `mutants/<id>.ts` (full copies of subject.ts with ONE bug each), `starter.ts` (starting tests file), `solution.ts` (reference tests that must kill every mutant); task.json lists `mutants[{ id, description, hint }]` — `hint` is shown while the mutant survives, `description` after it is caught. `codeRules` apply to the learner's tests (e.g. require `beforeEach`).
+- Markdown in task JSON: inline code that contains a template literal needs a double-backtick span, e.g. ``` `` return `${a}`; `` ``` — single backticks around it break the rendering.
 - `starter.ts` must export the same names/signatures as `solution.ts` (functions with empty body + `// твій код тут`). The starter must NOT pass (validator enforces).
 - `tests.ts`: `import { fn } from './solution';` then `describe/it/expect`. Third argument of `it(name, fn, hint)` is a Ukrainian hint shown when that test fails — write one for every non-trivial test explaining the likely mistake. Cover boundaries/empty input. `captureConsole(() => fn())` returns printed lines.
 - Matchers: toBe, toEqual/toStrictEqual (deep, ignores undefined props), toBeTruthy/Falsy, toBeNull/Undefined/Defined/NaN, toBeGreaterThan(OrEqual)/LessThan(OrEqual), toBeCloseTo, toContain, toHaveLength, toHaveProperty, toMatch, toBeInstanceOf, toBeTypeOf, toThrow, `.not`, `.resolves`/`.rejects`.
@@ -123,9 +129,12 @@ Pages in `src/playground/`, registered in `registry.ts`, routed standalone (no a
 - ✅ Module 05 "Bugs & Bug Tracking" — 7 lessons, 19 tasks (text-described bugs only, no playground answers).
 - ✅ Module 06 "QA Practice Lab" — 9 lessons, 30 main tasks + 1 variant: approach & requirements review (text features), then hands-on pages: login (checklist, test case, bug hunt), registration, cart (decision table, bug hunt), search (charter, bug hunt), order (transition run table, bug reports), regression run on login (table + summary report), Todo mini-project (checklist, test case, bug hunt, summary report).
 - ✅ Module 07 "How the Web Works" — 8 lessons, 24 tasks (selector tasks for CSS and XPath, DevTools hunts on the DevTools Lab, responsive bug hunt).
+- ✅ Module 12 "TypeScript: Types & Working with Data" — 9 lessons, 36 main tasks + 9 variants.
+- ✅ Module 13 "TypeScript: OOP, Modules & Async" — 9 lessons, 36 main tasks + 8 variants (support files, Promises with real timers, fetch against the offline fake API).
+- ✅ Module 14 "Your First Automated Tests" — 5 lessons, 17 tasks; 8 tests-mode tasks with 37 mutants.
 - ✅ Module 08 "HTTP, REST APIs & JSON" — 8 lessons, 24 tasks (hands-on with the API console: status-code run, params hunt, CRUD flow, token hunt, API bug hunt).
 - Theory-module pattern (modules 01–05): each lesson = quiz (6–8 questions, show 5) + 2 practical tasks (classify / order / written), easy → harder. Never put Bug Playground bug answers in model answers of other modules (spoilers for the module 06 bug hunt).
-- Next suggested batch: module 09 "Command Line, Git & GitHub" (7 lessons; terminal/Git practice can be quiz + order + written tasks with real commands the learner runs locally) + module 10 "SQL for Testers" (6 lessons; needs a new `sql` task engine on sql.js with a seeded Gadgetly database — reuse the products/orders data of the mock API).
+- Next suggested batch: module 15 "Playwright Basics" (needs a way to run real Playwright: `lab/` with `@playwright/test` + `npm run lab:check <id>` against the Bug Playground pages and their `?fixed` builds, or an in-browser locator/assertion simulator). Modules 09 "Command Line, Git & GitHub" and 10 "SQL for Testers" were postponed by the owner (SQL needs a `sql` engine on sql.js).
 - ⏳ Remaining modules in batches (owner reviews each batch). Planned engines to add when needed: SQL (sql.js), Playwright-API simulator over playground pages with mutation grading (use the `?fixed` builds and `/api-fixed`), `lab/` with real `@playwright/test` + `npm run lab:check <id>`.
 - Full outline lives in `content/course.json`.
 

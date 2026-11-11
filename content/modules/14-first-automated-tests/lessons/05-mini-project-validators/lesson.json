@@ -1,0 +1,23 @@
+{
+  "title": "Mini-project: tests for a validator library",
+  "minutes": 120,
+  "summary": "Фінальний проєкт модуля: план тестування і повний набір unit-тестів для бібліотеки валідаторів форми оформлення замовлення — від тест-умов до тестів, що ловлять кожен з 12 мутантів",
+  "resources": [
+    {
+      "title": "Vitest — Getting Started",
+      "url": "https://vitest.dev/guide/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Якщо захочеш повторити проєкт у справжньому редакторі: npm init, npm i -D vitest, і ті самі тести запрацюють.",
+      "needsVerification": true
+    },
+    {
+      "title": "Stryker Mutator — mutation testing for JavaScript/TypeScript",
+      "url": "https://stryker-mutator.io/",
+      "kind": "tool",
+      "lang": "en",
+      "note": "Справжній інструмент mutation testing — те, що в цьому модулі робить Check.",
+      "needsVerification": true
+    }
+  ]
+}

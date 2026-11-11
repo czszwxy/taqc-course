@@ -1,0 +1,20 @@
+{
+  "type": "code",
+  "mode": "tests",
+  "title": "Boundary value analysis: test canRegister",
+  "statement": "У `subject.ts` функція `canRegister(age)` — `true` лише для **цілих** чисел від **18** до **65** включно.\n\nНапиши тести за BVA (і не забудь про нецілі значення). Щонайменше **4** тести. Check перевірить їх на **5** зламаних версіях — кожна помиляється на якійсь межі чи класі.",
+  "minTests": 4,
+  "hints": [
+    "Two-value BVA для діапазону 18–65: 17, 18, 65, 66.",
+    "Окремий невалідний клас — дробові числа, наприклад 20.5.",
+    "Таблиця прикладів `[age, expected]` + цикл `for…of` з `it(...)` усередині."
+  ],
+  "explanation": "```ts\nconst cases: [number, boolean][] = [\n  [17, false], [18, true], [65, true], [66, false], [20.5, false],\n];\nfor (const [age, expected] of cases) {\n  it(`age ${age} → ${expected}`, () => expect(canRegister(age)).toBe(expected));\n}\n```\n\nП'ять значень ловлять п'ять різних помилок: `>` замість `>=` з обох боків, «плюс один» з обох боків і пропущену перевірку на ціле число.",
+  "mutants": [
+    { "id": "lower-exclusive", "description": "18 was rejected (age > 18 instead of >= 18)", "hint": "Є версія, яка помиляється на нижній межі. Перевір рівно 18." },
+    { "id": "upper-exclusive", "description": "65 was rejected (age < 65 instead of <= 65)", "hint": "Є версія, яка помиляється на верхній межі. Перевір рівно 65." },
+    { "id": "lower-off-by-one", "description": "17 was accepted", "hint": "Є версія, що пропускає значення одразу під нижньою межею. Перевір 17." },
+    { "id": "upper-off-by-one", "description": "66 was accepted", "hint": "Є версія, що пропускає значення одразу над верхньою межею. Перевір 66." },
+    { "id": "decimals-allowed", "description": "a decimal age like 20.5 was accepted", "hint": "Є версія без перевірки на ціле число. Перевір дробовий вік." }
+  ]
+}

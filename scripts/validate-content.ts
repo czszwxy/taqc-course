@@ -99,7 +99,9 @@ const checkTestsTask = async (dir: string, task: TaskOf<'code'>, support: Record
 
   const deps = { compile: async (f: Record<string, string>) => compile(f), execute: executeModules };
   const run = (tests: string) => evaluateTestSuite(deps, { tests, support, mutantCode, mutants: task.mutants, minTests: task.minTests });
-  const sol = await run(fs.readFileSync(path.join(dir, 'solution.ts'), 'utf8'));
+  const solutionCode = fs.readFileSync(path.join(dir, 'solution.ts'), 'utf8');
+  const sol = await run(solutionCode);
+  evaluateCodeRules(solutionCode, task.codeRules).forEach((r) => fail(dir, `reference tests break a code rule: ${r}`));
   if (!sol.passed) {
     const details = [
       ...sol.codeErrors.map((d) => `${d.file}:${d.line} TS${d.code} ${d.message}`),
@@ -340,12 +342,13 @@ async function main(): Promise<void> {
     .filter(({ id }) => id !== undefined && !playgroundIds.has(id))
     .forEach(({ dir, id }) => fail(dir, `unknown playground page "${id}"`));
 
-  await Promise.all(
-    tasks.map(({ dir, task }) => {
-      const check = CHECKS[task.type] as (d: string, t: Task) => void | Promise<void>;
-      return check(dir, task);
-    }),
-  );
+  // One task at a time: code tasks use real timers (async lessons), and compiling other tasks
+  // in parallel would block the event loop long enough to make timing-based tests flaky.
+  await tasks.reduce<Promise<void>>(async (previous, { dir, task }) => {
+    await previous;
+    const check = CHECKS[task.type] as (d: string, t: Task) => void | Promise<void>;
+    await check(dir, task);
+  }, Promise.resolve());
 
   warnings.forEach((w) => console.log(`⚠  ${w}`));
   if (errors.length) {

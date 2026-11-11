@@ -1,0 +1,29 @@
+{
+  "title": "describe / it / expect & matchers",
+  "minutes": 60,
+  "summary": "Організація тестів через describe і it, хороші назви тестів, матчери toBe, toEqual, toContain, toHaveLength, toBeUndefined, toBeCloseTo, toThrow, .not — і як обрати правильний",
+  "resources": [
+    {
+      "title": "Vitest API: expect",
+      "url": "https://vitest.dev/api/expect.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Jest docs: Using Matchers",
+      "url": "https://jestjs.io/docs/using-matchers",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright docs: Assertions",
+      "url": "https://playwright.dev/docs/test-assertions",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Ті самі ідеї плюс «web-first» перевірки сторінки (модуль 15).",
+      "needsVerification": true
+    }
+  ]
+}

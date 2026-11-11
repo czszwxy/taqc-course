@@ -1,0 +1,30 @@
+{
+  "type": "code",
+  "mode": "tests",
+  "title": "Equivalence partitioning: test passwordStrength",
+  "statement": "У `subject.ts` функція `passwordStrength(password)`:\n\n- коротший за **8** символів → `'weak'`;\n- від 8 символів **і** є цифра **і** є велика латинська літера → `'strong'`;\n- від 8 символів, але бракує цифри або великої літери → `'medium'`.\n\nВизнач класи еквівалентності (і межу довжини!) та напиши щонайменше **4** тести. Check перевірить їх на 3 зламаних версіях.",
+  "minTests": 4,
+  "hints": [
+    "Класи: короткий; довгий з цифрою і великою; довгий лише з цифрою; довгий лише з великою; довгий без обох.",
+    "Межа довжини: рядок рівно з 8 символів уже не `weak`, а з 7 — ще `weak`.",
+    "Цикл з таблицею прикладів зробить тести короткими: `` for (const [pw, expected] of cases) it(`${pw} → ${expected}`, …) ``."
+  ],
+  "explanation": "```ts\nconst cases: [string, Strength][] = [\n  ['Ab1defg', 'weak'],      // 7 chars — boundary\n  ['Ab1defgh', 'strong'],   // 8 chars — boundary\n  ['secret123', 'medium'],  // no uppercase\n  ['SecretPass', 'medium'], // no digit\n  ['password', 'medium'],   // neither\n];\nfor (const [pw, expected] of cases) {\n  it(`${pw} → ${expected}`, () => expect(passwordStrength(pw)).toBe(expected));\n}\n```",
+  "mutants": [
+    {
+      "id": "length-7",
+      "description": "a 7-character password was already treated as long enough",
+      "hint": "Є версія з помилкою на межі довжини. Перевір пароль рівно з 7 символів (і з 8)."
+    },
+    {
+      "id": "digit-enough",
+      "description": "a digit alone was enough for 'strong' (uppercase was ignored)",
+      "hint": "Є версія, якій для 'strong' достатньо цифри. Перевір довгий пароль з цифрою, але без великої літери."
+    },
+    {
+      "id": "upper-enough",
+      "description": "an uppercase letter alone was enough for 'strong' (digit was ignored)",
+      "hint": "Є версія, якій для 'strong' достатньо великої літери. Перевір довгий пароль з великою літерою, але без цифри."
+    }
+  ]
+}

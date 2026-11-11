@@ -158,7 +158,9 @@ export async function checkTests(
   mutantCode: Record<string, string>,
   mutants: MutantInfo[],
   minTests?: number,
-): Promise<SuiteResult & { fatal?: string }> {
+  rules: CodeRule[] = [],
+): Promise<SuiteResult & { fatal?: string; ruleFailures: string[] }> {
+  const ruleFailures = evaluateCodeRules(tests, rules);
   const deps = {
     compile: async (files: Record<string, string>) => {
       const r = await compile(files);
@@ -168,8 +170,9 @@ export async function checkTests(
     execute: (req: { modules: Record<string, string>; entry: string; collectTests: boolean }) => execute(req.modules, req.entry, req.collectTests),
   };
   try {
-    return await evaluateTestSuite(deps, { tests, support, mutantCode, mutants, minTests });
+    const r = await evaluateTestSuite(deps, { tests, support, mutantCode, mutants, minTests });
+    return { ...r, passed: r.passed && ruleFailures.length === 0, ruleFailures };
   } catch (e) {
-    return { passed: false, codeErrors: [], results: [], logs: [], tooFewTests: false, mutants: [], fatal: e instanceof Error ? e.message : String(e) };
+    return { passed: false, codeErrors: [], results: [], logs: [], tooFewTests: false, mutants: [], ruleFailures, fatal: e instanceof Error ? e.message : String(e) };
   }
 }

@@ -1,0 +1,18 @@
+{
+  "type": "code",
+  "mode": "tests",
+  "title": "Write your first tests: discountedPrice",
+  "statement": "Над редактором є файл `subject.ts` з функцією `discountedPrice(price, percent)`. **Твоє завдання — написати тести** для неї.\n\nЩо робить функція:\n\n- повертає ціну після знижки у відсотках: `discountedPrice(500, 10)` → `450`;\n- округлює до копійок;\n- для `percent` поза межами `0…100` кидає `RangeError`.\n\nНапиши щонайменше **3** тести (`it`) за шаблоном AAA. Кнопка **Check** запустить їх на справжній функції (усі мають пройти), а потім на **3 зламаних версіях** — хороші тести мають падати на кожній.",
+  "minTests": 3,
+  "hints": [
+    "Перший тест уже почато в редакторі: допиши Arrange (ціна), Act (виклик функції) і Assert (`expect(result).toBe(450)`).",
+    "Перевір і крайні значення відсотка: `0` (ціна не змінюється) і `100` (безкоштовно).",
+    "Помилку перевіряють так: `expect(() => discountedPrice(100, 101)).toThrow(RangeError);` — зверни увагу на стрілку `() =>`."
+  ],
+  "explanation": "```ts\nimport { discountedPrice } from './subject';\n\ndescribe('discountedPrice', () => {\n  it('applies a 10% discount', () => {\n    const price = 500;\n    const result = discountedPrice(price, 10);\n    expect(result).toBe(450);\n  });\n  it('0% keeps the price', () => {\n    expect(discountedPrice(499, 0)).toBe(499);\n  });\n  it('rejects a percent above 100', () => {\n    expect(() => discountedPrice(100, 101)).toThrow(RangeError);\n  });\n});\n```\n\nКожен тест ловить свій тип помилки: перший — неправильну формулу, другий — «знижку завжди», третій — відсутню перевірку меж.",
+  "mutants": [
+    { "id": "no-discount", "description": "the function ignored the discount and returned the original price", "hint": "Є версія, яка взагалі не застосовує знижку. Перевір результат для відсотка більшого за 0." },
+    { "id": "discount-amount", "description": "the function returned the discount amount (50) instead of the new price (450)", "hint": "Є версія, яка плутає «суму знижки» і «ціну після знижки». Перевір точне значення результату." },
+    { "id": "no-range-check", "description": "the function accepted percent > 100 and < 0 without an error", "hint": "Є версія без перевірки меж. Напиши тест, що відсоток 101 (або -1) кидає RangeError." }
+  ]
+}

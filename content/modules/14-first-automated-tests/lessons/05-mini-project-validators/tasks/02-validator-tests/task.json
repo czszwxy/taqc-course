@@ -1,0 +1,22 @@
+{
+  "type": "code",
+  "mode": "tests",
+  "title": "Step 2: tests for the four validators",
+  "statement": "У `subject.ts` — чотири валідатори з вимог уроку: `validateCardHolder`, `validateZip`, `validateQuantity`, `validatePromo`. Кожен повертає текст помилки (константи в `MESSAGES`) або `null`.\n\nПеретвори свій план із кроку 1 на тести: щонайменше **10** тестів. Check перевірить їх на **7** зламаних версіях бібліотеки.\n\n> Порада: імпортуй `MESSAGES` і порівнюй з ними — так тест не зламається через зміну розділового знака в тексті.",
+  "minTests": 10,
+  "hints": [
+    "Таблиця прикладів для кожного валідатора + цикл: `for (const [value, expected] of cases) it(…, () => expect(validateZip(value)).toBe(expected));`",
+    "Межі: holder 40/41 символ (`'A'.repeat(41)`), ZIP 4 цифри, quantity 2.5.",
+    "Особливі значення: holder з одних пробілів, holder з цифрою, порожній promo, promo малими літерами."
+  ],
+  "explanation": "Кожен із 7 мутантів зламаний у своєму «куточку»: пробіли в імені, межа 41 символ, цифри в імені, ZIP з 4 цифр, дробова кількість, порожній promo як помилка, регістр promo. Набір, що ловить усіх, перевіряє кожну межу й кожен особливий випадок з плану.",
+  "mutants": [
+    { "id": "holder-no-trim", "description": "a card holder made of spaces only was accepted", "hint": "Є версія, яка не обрізає пробіли в імені власника. Перевір значення з одних пробілів." },
+    { "id": "holder-max-41", "description": "a 41-character card holder was accepted", "hint": "Є версія з помилкою на верхній межі довжини імені. Перевір 40 і 41 символ ('A'.repeat(41))." },
+    { "id": "holder-digits", "description": "digits were allowed in the card holder", "hint": "Є версія, що дозволяє цифри в імені. Перевір ім'я з цифрою." },
+    { "id": "zip-four-digits", "description": "a 4-digit ZIP code was accepted", "hint": "Є версія, яка приймає ZIP неправильної довжини. Перевір 4 цифри." },
+    { "id": "quantity-decimal", "description": "a decimal quantity like 2.5 was accepted", "hint": "Є версія без перевірки на ціле число. Перевір дробову кількість." },
+    { "id": "promo-empty-error", "description": "an empty promo code was reported as an error (the field is optional)", "hint": "Є версія, яка вважає порожній промокод помилкою. Перевір promo = ''." },
+    { "id": "promo-case-sensitive", "description": "a lowercase promo code was rejected", "hint": "Є версія, чутлива до регістру промокоду. Перевір промокод малими літерами." }
+  ]
+}

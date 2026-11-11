@@ -1,0 +1,20 @@
+{
+  "type": "code",
+  "mode": "tests",
+  "title": "Step 3: tests for the whole checkout form",
+  "statement": "Валідатори готові й протестовані (файл `validators.ts`). У `subject.ts` — функції форми:\n\n- `validateCheckout(form)` перевіряє **всі** поля і повертає об'єкт **лише** з полями, що мають помилки: наприклад `{ zip: '…', quantity: '…' }`; для валідної форми — `{}`;\n- `canSubmit(form)` — `true`, якщо помилок немає.\n\nНапиши щонайменше **5** тестів. Використай прийом «валідна форма + одна зміна». Check перевірить тести на **5** зламаних версіях `subject.ts`.",
+  "minTests": 5,
+  "hints": [
+    "`const validForm: CheckoutForm = { cardHolder: 'Olena Petrenko', zip: '79000', quantity: 1, promo: '' };` і для кожного тесту `{ ...validForm, zip: '7900' }`.",
+    "Для валідної форми перевір **увесь** результат: `expect(validateCheckout(validForm)).toEqual({})`.",
+    "Зламай **два** поля одночасно і перевір, що повідомлено про обидва. І перевір `canSubmit` для форми з помилкою в будь-якому полі, а не лише в першому."
+  ],
+  "explanation": "```ts\nit('valid form → no errors', () => expect(validateCheckout(validForm)).toEqual({}));\nit('reports every invalid field', () =>\n  expect(validateCheckout({ ...validForm, zip: '7900', quantity: 11 })).toEqual({ zip: MESSAGES.zip, quantity: MESSAGES.quantity }));\nit('checks the quantity', () => expect(validateCheckout({ ...validForm, quantity: 0 })).toEqual({ quantity: MESSAGES.quantity }));\nit('empty promo is fine', () => expect(validateCheckout({ ...validForm, promo: '' })).toEqual({}));\nit('cannot submit with a bad ZIP', () => expect(canSubmit({ ...validForm, zip: '' })).toBe(false));\n```",
+  "mutants": [
+    { "id": "first-error-only", "description": "only the first error was reported when several fields were invalid", "hint": "Є версія, що повідомляє лише першу помилку. Зламай два поля одночасно." },
+    { "id": "quantity-not-checked", "description": "the quantity field was not validated at all", "hint": "Є версія, яка забуває перевірити одне з полів. Перевір форму з неправильною кількістю." },
+    { "id": "submit-checks-holder-only", "description": "canSubmit looked only at the card holder", "hint": "Є версія canSubmit, яка дивиться не на всі поля. Перевір canSubmit для форми з помилкою НЕ в імені." },
+    { "id": "promo-required", "description": "an empty (optional) promo code produced an error", "hint": "Є версія, що вимагає промокод. Перевір валідну форму з порожнім promo." },
+    { "id": "keys-for-valid-fields", "description": "the result had keys (with null) for valid fields too", "hint": "Є версія, яка повертає зайві ключі для валідних полів. Перевір увесь об'єкт результату через toEqual({})." }
+  ]
+}

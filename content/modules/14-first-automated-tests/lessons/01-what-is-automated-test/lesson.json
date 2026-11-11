@@ -1,0 +1,29 @@
+{
+  "title": "What is an automated test; the AAA pattern",
+  "minutes": 50,
+  "summary": "Автотест — це код, який перевіряє інший код: структура Arrange–Act–Assert, що таке pass і fail, unit vs UI тести, і чому хороший тест має падати, коли код зламаний",
+  "resources": [
+    {
+      "title": "Playwright docs: Writing tests",
+      "url": "https://playwright.dev/docs/writing-tests",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Vitest — Getting Started",
+      "url": "https://vitest.dev/guide/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Популярний test runner для unit-тестів; синтаксис describe/it/expect той самий, що в цьому модулі.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Arrange Act Assert pattern (пошук)",
+      "url": "https://www.youtube.com/results?search_query=arrange+act+assert+unit+testing",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

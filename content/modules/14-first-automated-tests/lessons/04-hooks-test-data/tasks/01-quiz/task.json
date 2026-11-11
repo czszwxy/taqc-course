@@ -1,0 +1,62 @@
+{
+  "type": "quiz",
+  "title": "Quiz: hooks and test independence",
+  "show": 5,
+  "hints": ["beforeEach — перед кожним тестом. Тести не мають залежати від порядку."],
+  "questions": [
+    {
+      "id": "before-each",
+      "kind": "text",
+      "text": "У `describe` 3 тести і один `beforeEach`. Скільки разів виконається `beforeEach`?",
+      "accept": ["3"]
+    },
+    {
+      "id": "before-all",
+      "kind": "text",
+      "text": "А `beforeAll` у тому самому блоці?",
+      "accept": ["1"]
+    },
+    {
+      "id": "dependent",
+      "kind": "single",
+      "text": "Тест B проходить лише якщо перед ним запустився тест A. Що не так?",
+      "options": [
+        { "text": "Тести залежні: B впаде при окремому чи паралельному запуску", "correct": true },
+        { "text": "Усе гаразд, порядок тестів завжди однаковий" }
+      ]
+    },
+    {
+      "id": "cleanup",
+      "kind": "single",
+      "text": "Тест створює замовлення через API. Де його видалити?",
+      "options": [{ "text": "У `afterEach`", "correct": true }, { "text": "У `beforeAll`" }, { "text": "Ніде — нехай накопичуються" }]
+    },
+    {
+      "id": "unique",
+      "kind": "single",
+      "text": "Навіщо тестовим користувачам унікальні email?",
+      "options": [
+        { "text": "Щоб тести, які створюють користувачів, не конфліктували (особливо паралельно)", "correct": true },
+        { "text": "Щоб тести працювали швидше" }
+      ]
+    },
+    {
+      "id": "factory",
+      "kind": "single",
+      "text": "Що дає фабрика `createTestUser({ role: 'admin' })`?",
+      "options": [
+        { "text": "Валідного користувача за замовчуванням, у якого змінено лише role", "correct": true },
+        { "text": "Користувача лише з полем role" }
+      ]
+    },
+    {
+      "id": "before-all-mutation",
+      "kind": "single",
+      "text": "Список створено в `beforeAll`, і кожен тест додає в нього задачі. Чим це погано?",
+      "options": [
+        { "text": "Тести бачать задачі один одного — результат залежить від порядку", "correct": true },
+        { "text": "Нічим, так навіть швидше" }
+      ]
+    }
+  ]
+}

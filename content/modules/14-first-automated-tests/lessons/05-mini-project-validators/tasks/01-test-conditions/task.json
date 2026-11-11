@@ -1,0 +1,146 @@
+{
+  "type": "written",
+  "title": "Step 1: test conditions for the checkout validators",
+  "statement": "Прочитай вимоги до полів у теорії уроку і склади **тест-умови** — чекліст того, що перевірятимеш (щонайменше **15** пунктів, по одному в рядку). Для кожного поля: валідні значення, межі, невалідні формати, особливі випадки.\n\nПриклад формату: `ZIP: '79000' → valid` або `Quantity: 11 → error (upper boundary + 1)`.",
+  "fields": [
+    {
+      "id": "conditions",
+      "label": "Test conditions (one per line)",
+      "kind": "list",
+      "placeholder": "Card holder: 'Olena Petrenko' → valid"
+    }
+  ],
+  "rules": [
+    {
+      "field": "conditions",
+      "check": "minItems",
+      "value": 15,
+      "message": "Потрібно щонайменше **15** тест-умов."
+    },
+    {
+      "field": "conditions",
+      "check": "mentionsAny",
+      "value": [
+        "(^|\\D)(1|2|40|41)(\\D|$).*(holder|ім|name|card)|(holder|ім|name|card).*(^|\\D)(1|2|40|41)(\\D|$)|holder.*(length|довжин|символ|char)"
+      ],
+      "message": "Card holder: додай межі довжини (1, 2, 40, 41 символ)."
+    },
+    {
+      "field": "conditions",
+      "check": "mentionsAny",
+      "value": [
+        "space|пробіл|blank|порожн|empty"
+      ],
+      "message": "Додай особливі значення: порожньо або лише пробіли."
+    },
+    {
+      "field": "conditions",
+      "check": "mentionsAny",
+      "value": [
+        "digit|цифр|[0-9].*holder|holder.*[0-9]|'|apostroph|апостроф|hyphen|дефіс"
+      ],
+      "message": "Card holder: перевір дозволені/заборонені символи (цифри, апостроф, дефіс)."
+    },
+    {
+      "field": "conditions",
+      "check": "mentionsAny",
+      "value": [
+        "zip"
+      ],
+      "message": "Додай умови для поля ZIP."
+    },
+    {
+      "field": "conditions",
+      "check": "mentionsAny",
+      "value": [
+        "(^|\\D)(4|6)(\\D|$).*(zip|digit|цифр)|(zip|digit|цифр).*(^|\\D)(4|6)(\\D|$)"
+      ],
+      "message": "ZIP: межі довжини — 4 і 6 цифр."
+    },
+    {
+      "field": "conditions",
+      "check": "mentionsAny",
+      "value": [
+        "quantity|кількіст|qty"
+      ],
+      "message": "Додай умови для Quantity."
+    },
+    {
+      "field": "conditions",
+      "check": "mentionsAny",
+      "value": [
+        "(^|\\D)(0|11)(\\D|$)"
+      ],
+      "message": "Quantity: межі 0 і 11 (і 1, 10)."
+    },
+    {
+      "field": "conditions",
+      "check": "mentionsAny",
+      "value": [
+        "decimal|дроб|1\\.5|2\\.5|whole|ціл"
+      ],
+      "message": "Quantity: дробове число — окремий невалідний клас."
+    },
+    {
+      "field": "conditions",
+      "check": "mentionsAny",
+      "value": [
+        "promo"
+      ],
+      "message": "Додай умови для Promo code."
+    },
+    {
+      "field": "conditions",
+      "check": "mentionsAny",
+      "value": [
+        "optional|необов|empty promo|порожн\\S* промо|promo.*(empty|порожн|'')|(empty|порожн|'').*promo"
+      ],
+      "message": "Promo — необов'язкове поле: порожнє значення має бути валідним."
+    },
+    {
+      "field": "conditions",
+      "check": "mentionsAny",
+      "value": [
+        "lower|регістр|малими|case|save10"
+      ],
+      "message": "Promo: регістр не важливий — перевір малі літери."
+    }
+  ],
+  "model": {
+    "conditions": [
+      "Card holder: 'Olena Petrenko' → valid",
+      "Card holder: \"O'Neil\" and 'Anna-Maria' → valid (apostrophe, hyphen)",
+      "Card holder: 'Олена' → valid (Cyrillic letters)",
+      "Card holder: '' (empty) and '   ' (spaces only) → Card holder is required",
+      "Card holder: 'A' (1 char) → length error; 'Al' (2) → valid",
+      "Card holder: 40 chars → valid; 41 chars → length error",
+      "Card holder: 'Olena 2' → only letters error (digits)",
+      "Card holder: '  Olena  ' → valid (trimmed)",
+      "ZIP: '79000' and ' 79000 ' → valid",
+      "ZIP: '7900' (4 digits) and '790001' (6 digits) → error",
+      "ZIP: '79A00' → error (not digits); '' → error",
+      "Quantity: 1 and 10 → valid",
+      "Quantity: 0 and 11 → error",
+      "Quantity: 2.5 → error (not a whole number)",
+      "Promo: '' → valid (optional)",
+      "Promo: 'SAVE10' and 'save10' → valid (case-insensitive)",
+      "Promo: 'ABC' (3) → error; 'ABCD' (4) → valid; 10 chars → valid; 11 chars → error",
+      "Promo: 'SAVE-10' → error (only letters and digits)",
+      "Form: all fields valid → {} and canSubmit true",
+      "Form: several invalid fields → every error is reported at once"
+    ]
+  },
+  "hints": [
+    "Для кожного поля: типове валідне значення, кожна межа і значення одразу за нею, неправильний формат, порожньо / пробіли.",
+    "Не забудь «особливих» людей: O'Neil, Anna-Maria, кирилиця.",
+    "Promo — необов'язкове поле: порожнє значення валідне; і регістр не важливий."
+  ],
+  "explanation": "Хороший план покриває для кожного поля: **EP** (валідні / невалідні класи), **BVA** (2/40 символів, 4/5/6 цифр, 0/1/10/11), **особливі** значення (порожньо, пробіли, апостроф, кирилиця, регістр, дроби) і **форму в цілому** (усі помилки одразу, порожній об'єкт для валідної форми). Кожен рядок плану стане одним рядком таблиці прикладів у тестах.",
+  "checklist": [
+    "Every field has valid, invalid and special-value conditions",
+    "All boundaries have both sides (inside and just outside)",
+    "Optional promo: the empty value is listed as valid",
+    "Case-insensitivity and trimming are covered",
+    "The whole form is covered (all errors at once, valid form → no errors)"
+  ]
+}

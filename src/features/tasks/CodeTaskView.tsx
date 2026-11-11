@@ -45,7 +45,7 @@ export default function CodeTaskView({ ct, header, onSimilar, next }: TaskViewPr
   const saveTimer = useRef<number | undefined>(undefined);
   const [busy, setBusy] = useState<null | 'check' | 'run'>(null);
   const [result, setResult] = useState<CheckResult | null>(null);
-  const [suite, setSuite] = useState<(SuiteResult & { fatal?: string }) | null>(null);
+  const [suite, setSuite] = useState<(SuiteResult & { fatal?: string; ruleFailures: string[] }) | null>(null);
   const testsMode = task.mode === 'tests';
   const fileName = testsMode ? 'tests.ts' : 'solution.ts';
   const [consoleOut, setConsoleOut] = useState<ConsoleOutput | null>(null);
@@ -86,7 +86,7 @@ export default function CodeTaskView({ ct, header, onSimilar, next }: TaskViewPr
     setPanel('results');
     saveDraft(ct.id, codeRef.current);
     if (testsMode) {
-      const r = await checkTests(codeRef.current, files.data.support, files.data.mutants, task.mutants, task.minTests);
+      const r = await checkTests(codeRef.current, files.data.support, files.data.mutants, task.mutants, task.minTests, task.codeRules);
       setSuite(r);
       setConsoleOut({ source: 'check', logs: r.logs, codeErrors: [], runtimeError: r.runtimeError, timedOut: r.timedOut });
       setBusy(null);
@@ -395,7 +395,7 @@ function SuiteView({
   onSimilar,
   next,
 }: {
-  result: (SuiteResult & { fatal?: string }) | null;
+  result: (SuiteResult & { fatal?: string; ruleFailures: string[] }) | null;
   busy: boolean;
   minTests?: number;
   total: number;
@@ -437,6 +437,18 @@ function SuiteView({
         <div>
           <div className="text-sm font-semibold text-bad">TypeScript errors in your tests ({result.codeErrors.length})</div>
           <DiagnosticList items={result.codeErrors} />
+        </div>
+      )}
+      {result.ruleFailures.length > 0 && (
+        <div>
+          <div className="text-sm font-semibold text-bad">Task requirements</div>
+          <ul className="mt-1 space-y-1">
+            {result.ruleFailures.map((m) => (
+              <li key={m} className="rounded-lg bg-sunken px-3 py-2 text-sm">
+                ✗ {m}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
       {result.tooFewTests && minTests !== undefined && (

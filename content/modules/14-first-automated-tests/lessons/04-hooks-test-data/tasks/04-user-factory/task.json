@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Build a test data factory",
+  "statement": "Напиши фабрику тестових користувачів:\n\n1. `createTestUser(overrides?)` повертає валідного `TestUser`:\n   - за замовчуванням: `name: 'Test User'`, `email: 'user<N>@gadgetly.test'`, `password: 'Test1234'`, `role: 'customer'`;\n   - `N` — лічильник, що починається з **1** і зростає з кожним викликом (email унікальні);\n   - будь-яке поле можна перевизначити через `overrides` (тип `Partial<TestUser>`).\n2. `resetUserFactory()` — скидає лічильник, наступний email знову `user1@…`.\n\n```ts\nresetUserFactory();\ncreateTestUser();                   // { name: 'Test User', email: 'user1@gadgetly.test', password: 'Test1234', role: 'customer' }\ncreateTestUser({ role: 'admin' });  // email 'user2@gadgetly.test', role 'admin'\n```",
+  "hints": [
+    "Лічильник — змінна модуля: `let counter = 0;`. У фабриці спершу `counter += 1`.",
+    "Перевизначення — spread у кінці: `{ name: …, email: …, password: …, role: …, ...overrides }`."
+  ],
+  "explanation": "```ts\nlet counter = 0;\n\nexport function createTestUser(overrides: Partial<TestUser> = {}): TestUser {\n  counter += 1;\n  return {\n    name: 'Test User',\n    email: `user${counter}@gadgetly.test`,\n    password: 'Test1234',\n    role: 'customer',\n    ...overrides,\n  };\n}\n\nexport function resetUserFactory(): void {\n  counter = 0;\n}\n```\n\nУ тестах фабрику викликають так: `createTestUser({ password: '' })` — і одразу видно, що саме цей тест перевіряє (порожній пароль)."
+}

@@ -1,0 +1,25 @@
+{
+  "type": "classify",
+  "title": "Arrange, Act or Assert?",
+  "statement": "Ось рядки з різних тестів. До якого кроку AAA належить кожен?",
+  "show": 9,
+  "categories": [
+    { "id": "arrange", "label": "Arrange" },
+    { "id": "act", "label": "Act" },
+    { "id": "assert", "label": "Assert" }
+  ],
+  "items": [
+    { "id": "a1", "text": "`const user = { email: 'qa@gadgetly.test', password: 'Test1234' };`", "category": "arrange" },
+    { "id": "a2", "text": "`const cart = new Cart();`", "category": "arrange" },
+    { "id": "a3", "text": "`await page.goto('/login');`", "category": "arrange", "explain": "Відкрити сторінку — підготовка стану перед дією, яку тестуємо (логін)." },
+    { "id": "c1", "text": "`const result = discountedPrice(500, 10);`", "category": "act" },
+    { "id": "c2", "text": "`cart.add('Mouse', 499);`", "category": "act" },
+    { "id": "c3", "text": "`await page.getByRole('button', { name: 'Log in' }).click();`", "category": "act" },
+    { "id": "s1", "text": "`expect(result).toBe(450);`", "category": "assert" },
+    { "id": "s2", "text": "`expect(cart.total()).toBe(499);`", "category": "assert" },
+    { "id": "s3", "text": "`await expect(page.getByText('Welcome back!')).toBeVisible();`", "category": "assert" },
+    { "id": "a4", "text": "`const token = await login('qa@gadgetly.test', 'Test1234');` (у тесті, що перевіряє список замовлень)", "category": "arrange", "explain": "Логін тут — лише підготовка: тест перевіряє не логін, а замовлення." }
+  ],
+  "hints": ["Питання до рядка: це підготовка, сама дія, яку ми перевіряємо, чи перевірка (expect)?"],
+  "explanation": "**Arrange** готує дані й стан (об'єкти, відкрита сторінка, логін, якщо тест не про логін). **Act** — одна дія, заради якої тест існує. **Assert** — `expect`. Та сама дія (логін) може бути Act в одному тесті й Arrange в іншому — залежить від того, **що** тест перевіряє."
+}

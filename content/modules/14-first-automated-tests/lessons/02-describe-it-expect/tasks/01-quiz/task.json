@@ -1,0 +1,63 @@
+{
+  "type": "quiz",
+  "title": "Quiz: describe, it, expect",
+  "show": 5,
+  "hints": ["toBe — той самий / примітив, toEqual — однаковий вміст. Дроби — toBeCloseTo. Помилки — () =>."],
+  "questions": [
+    {
+      "id": "tobe-object",
+      "kind": "single",
+      "text": "Чи пройде `expect({ id: 1 }).toBe({ id: 1 })`?",
+      "options": [
+        { "text": "Ні: це два різні об'єкти — потрібен toEqual", "correct": true },
+        { "text": "Так: вміст однаковий" }
+      ]
+    },
+    {
+      "id": "float",
+      "kind": "single",
+      "text": "Як перевірити, що середнє дорівнює приблизно `33.33`?",
+      "options": [
+        { "text": "`expect(avg).toBeCloseTo(33.33, 2)`", "correct": true },
+        { "text": "`expect(avg).toBe(33.33)`", "explain": "Для 100/3 точне порівняння не пройде." }
+      ]
+    },
+    {
+      "id": "throw",
+      "kind": "single",
+      "text": "Який запис правильно перевіряє, що `parseQuantity('0')` кидає помилку?",
+      "options": [
+        { "text": "`expect(() => parseQuantity('0')).toThrow()`", "correct": true },
+        { "text": "`expect(parseQuantity('0')).toThrow()`" }
+      ]
+    },
+    {
+      "id": "undefined",
+      "kind": "single",
+      "text": "Функція пошуку нічого не знайшла і повернула `undefined`. Який матчер?",
+      "options": [{ "text": "`toBeUndefined()`", "correct": true }, { "text": "`toBeFalsy()` — теж пройде, але менш точно", "explain": "toBeFalsy пройде і для 0, '' чи false — менш точна перевірка." }]
+    },
+    {
+      "id": "name",
+      "kind": "single",
+      "text": "Яка назва тесту найкраща?",
+      "options": [
+        { "text": "`it('rejects quantity 0')`", "correct": true },
+        { "text": "`it('test 2')`" },
+        { "text": "`it('works')`" }
+      ]
+    },
+    {
+      "id": "not",
+      "kind": "single",
+      "text": "Як перевірити, що в масиві `names` **немає** `'Cable'`?",
+      "options": [{ "text": "`expect(names).not.toContain('Cable')`", "correct": true }, { "text": "`expect(!names).toContain('Cable')`" }]
+    },
+    {
+      "id": "describe",
+      "kind": "single",
+      "text": "Для чого `describe`?",
+      "options": [{ "text": "Щоб згрупувати пов'язані тести під спільною назвою", "correct": true }, { "text": "Щоб запустити тест двічі" }]
+    }
+  ]
+}

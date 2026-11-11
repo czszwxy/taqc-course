@@ -1,0 +1,22 @@
+{
+  "type": "classify",
+  "title": "Independent test or a time bomb?",
+  "statement": "Оціни кожен опис тесту: він **незалежний** чи **залежить** від інших тестів / спільного стану?",
+  "show": 7,
+  "categories": [
+    { "id": "independent", "label": "Independent" },
+    { "id": "dependent", "label": "Depends on other tests or shared state" }
+  ],
+  "items": [
+    { "id": "fresh-list", "text": "Створює новий TodoList у `beforeEach` і додає свої задачі", "category": "independent" },
+    { "id": "previous-test", "text": "Перевіряє, що в кошику 2 товари, які додав попередній тест", "category": "dependent" },
+    { "id": "unique-user", "text": "Реєструє користувача з email `user${Date.now()}@gadgetly.test`", "category": "independent" },
+    { "id": "same-email", "text": "Кожен тест реєструє `qa@gadgetly.test`; другий тест падає з «email already exists»", "category": "dependent" },
+    { "id": "before-all-mutate", "text": "Спільний кошик із `beforeAll`, і кожен тест додає в нього товари", "category": "dependent" },
+    { "id": "login-each", "text": "Кожен тест сам логіниться (через фікстуру) перед перевіркою", "category": "independent" },
+    { "id": "order-id", "text": "Тест скасовує замовлення з id, збереженим у змінній іншим тестом", "category": "dependent" },
+    { "id": "factory", "text": "Отримує дані з `createTestUser({ role: 'admin' })` і після тесту видаляє користувача в `afterEach`", "category": "independent" }
+  ],
+  "hints": ["Спитай: чи пройде тест, якщо запустити лише його? А якщо всі тести — паралельно?"],
+  "explanation": "Незалежний тест сам готує свій стан (`beforeEach`, фікстура, фабрика з унікальними даними) і прибирає після себе. Залежний — спирається на дані чи порядок інших тестів, на спільний змінний об'єкт або на «зайняті» дані (той самий email). Такі тести падають випадково й забирають години на налагодження."
+}

@@ -1,0 +1,19 @@
+{
+  "type": "code",
+  "mode": "tests",
+  "title": "Decision table: test shippingFee",
+  "statement": "У `subject.ts` функція `shippingFee(subtotal, isMember, promo)`:\n\n- доставка коштує **100**;\n- вона **безкоштовна** (`0`), якщо виконується **хоча б одна** умова: `subtotal >= 3000`, **або** клієнт — Plus-member, **або** промокод `FREESHIP` (без урахування регістру й пробілів);\n- кожна умова працює **сама по собі й разом з будь-яким промокодом**.\n\nСклади таблицю рішень і напиши щонайменше **5** тестів. Check перевірить їх на **4** зламаних версіях.",
+  "minTests": 5,
+  "hints": [
+    "Почни з правила «нічого не виконується» → 100. Потім кожна умова окремо → 0.",
+    "Не забудь межу суми: 2999 і 3000.",
+    "Комбінації: Plus-member **разом із іншим** промокодом (наприклад, SAVE10); промокод `freeship` малими літерами."
+  ],
+  "explanation": "```ts\nconst rules: [number, boolean, string, number][] = [\n  [2999, false, '', 100],\n  [3000, false, '', 0],\n  [2999, true, '', 0],\n  [2999, true, 'SAVE10', 0],\n  [2999, false, 'FREESHIP', 0],\n  [2999, false, ' freeship ', 0],\n];\nfor (const [subtotal, member, promo, fee] of rules) {\n  it(`${subtotal} / member ${member} / \"${promo}\" → ${fee}`, () => expect(shippingFee(subtotal, member, promo)).toBe(fee));\n}\n```",
+  "mutants": [
+    { "id": "threshold-exclusive", "description": "a subtotal of exactly 3000 still paid shipping", "hint": "Є версія з помилкою на межі суми. Перевір subtotal рівно 3000." },
+    { "id": "member-ignored", "description": "Plus members always paid shipping", "hint": "Є версія, яка ігнорує членство Plus. Перевір member без промокоду і з малою сумою." },
+    { "id": "member-lost-with-promo", "description": "a Plus member lost free shipping when another promo code was entered", "hint": "Є версія, яка зламана лише в комбінації. Перевір Plus-member разом з іншим промокодом (наприклад, SAVE10)." },
+    { "id": "promo-case-sensitive", "description": "\"freeship\" in lowercase was not accepted", "hint": "Є версія, чутлива до регістру промокоду. Перевір 'freeship' малими літерами (або з пробілами)." }
+  ]
+}

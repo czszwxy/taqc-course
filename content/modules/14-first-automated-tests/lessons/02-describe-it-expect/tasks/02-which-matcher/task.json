@@ -1,0 +1,29 @@
+{
+  "type": "classify",
+  "title": "Pick the right matcher",
+  "statement": "Який матчер найкраще підходить для кожної перевірки?",
+  "show": 8,
+  "categories": [
+    { "id": "toBe", "label": "toBe" },
+    { "id": "toEqual", "label": "toEqual" },
+    { "id": "toContain", "label": "toContain" },
+    { "id": "toHaveLength", "label": "toHaveLength" },
+    { "id": "toBeUndefined", "label": "toBeUndefined" },
+    { "id": "toBeCloseTo", "label": "toBeCloseTo" },
+    { "id": "toThrow", "label": "toThrow" }
+  ],
+  "items": [
+    { "id": "total", "text": "Сума кошика дорівнює `1500`", "category": "toBe" },
+    { "id": "summary", "text": "Функція повертає об'єкт `{ count: 3, total: 1500 }`", "category": "toEqual" },
+    { "id": "names", "text": "Серед назв товарів є `'Mouse'`", "category": "toContain" },
+    { "id": "two", "text": "У списку рівно 2 рядки", "category": "toHaveLength" },
+    { "id": "missing", "text": "Пошук товару `'Laptop'` нічого не знайшов", "category": "toBeUndefined" },
+    { "id": "avg", "text": "Середня ціна ≈ `33.33`", "category": "toBeCloseTo" },
+    { "id": "qty", "text": "`parseQuantity('11')` кидає помилку", "category": "toThrow" },
+    { "id": "array", "text": "Відсортовані назви: `['Cable', 'Mouse']`", "category": "toEqual" },
+    { "id": "message", "text": "Текст помилки містить підрядок `'required'`", "category": "toContain", "explain": "toContain працює і з рядками: expect(message).toContain('required'). Також підійде toMatch." },
+    { "id": "status", "text": "Статус відповіді — `201`", "category": "toBe" }
+  ],
+  "hints": ["Число/рядок/boolean — toBe. Об'єкт чи масив цілком — toEqual. Частина — toContain."],
+  "explanation": "Примітиви — `toBe`; вміст об'єктів і масивів — `toEqual`; «містить» — `toContain` (і для масивів, і для рядків); кількість — `toHaveLength`; «нічого не знайдено» — `toBeUndefined`; дроби — `toBeCloseTo`; помилки — `toThrow`. Точний матчер дає і точнішу перевірку, і зрозуміліше повідомлення при падінні."
+}

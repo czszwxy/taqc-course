@@ -1,0 +1,30 @@
+{
+  "title": "Testing functions with test design techniques",
+  "minutes": 75,
+  "summary": "Як перетворити EP, BVA і таблиці рішень з модуля 03 на конкретні unit-тести: один тест на клас, тести на межах, тест на правило таблиці, таблиці прикладів у циклі",
+  "resources": [
+    {
+      "title": "ISTQB — official site (syllabi, Foundation Level)",
+      "url": "https://www.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Розділ 4 — техніки тест-дизайну, які тут перетворюємо на код.",
+      "needsVerification": true
+    },
+    {
+      "title": "Vitest API: test.each",
+      "url": "https://vitest.dev/api/#test-each",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Параметризовані тести у справжніх фреймворках; у курсі те саме робимо циклом.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: boundary value analysis unit tests (пошук)",
+      "url": "https://www.youtube.com/results?search_query=boundary+value+analysis+unit+testing+example",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

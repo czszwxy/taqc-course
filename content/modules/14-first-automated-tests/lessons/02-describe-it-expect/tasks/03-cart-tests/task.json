@@ -1,0 +1,20 @@
+{
+  "type": "code",
+  "mode": "tests",
+  "title": "Test the cart helpers with the right matchers",
+  "statement": "У `subject.ts` чотири функції кошика (дивись над редактором):\n\n| Функція | Поведінка |\n|---|---|\n| `cartSummary(lines)` | `{ count, total, names }`: кількість **штук**, сума `price × qty`, назви в **тому ж порядку** |\n| `findLine(lines, name)` | рядок з такою назвою або `undefined` |\n| `averagePrice(lines)` | середня ціна рядка (без округлення), `0` для порожнього кошика |\n| `parseQuantity(text)` | ціле число 1–10; інакше `Error` з текстом `Invalid quantity` |\n\nНапиши щонайменше **5** тестів, згрупованих у `describe`. Добирай матчери: `toEqual`, `toBeUndefined`, `toBeCloseTo`, `toThrow`… Check перевірить їх на **5 зламаних версіях**.",
+  "minTests": 5,
+  "hints": [
+    "Склади кошик з кількох рядків, де `qty` різні (наприклад, 2 і 1) — так видно різницю між «рядків» і «штук». Перевір увесь об'єкт через `toEqual`.",
+    "Назви мають іти в тому порядку, як у кошику — подбай, щоб твій порядок не був алфавітним.",
+    "Для `averagePrice` візьми ціни, середнє яких дробове (наприклад, 10, 20, 70 → 33.33…), і `toBeCloseTo`. Для `parseQuantity` перевір межі 10 і 11."
+  ],
+  "explanation": "Приклад набору:\n\n```ts\nconst lines = [\n  { name: 'Mouse', price: 500, qty: 2 },\n  { name: 'Cable', price: 250, qty: 1 },\n];\nit('summarizes', () => expect(cartSummary(lines)).toEqual({ count: 3, total: 1250, names: ['Mouse', 'Cable'] }));\nit('unknown name', () => expect(findLine(lines, 'Laptop')).toBeUndefined());\nit('average', () => expect(averagePrice([{ name: 'a', price: 10, qty: 1 }, { name: 'b', price: 20, qty: 1 }, { name: 'c', price: 70, qty: 1 }])).toBeCloseTo(33.33, 2));\nit('accepts 10', () => expect(parseQuantity('10')).toBe(10));\nit('rejects 11', () => expect(() => parseQuantity('11')).toThrow('Invalid quantity'));\n```\n\nКожен мутант «ховається» там, де дані тесту не розрізняють правильну й неправильну поведінку: однакові qty, назви вже за алфавітом, середнє ціле.",
+  "mutants": [
+    { "id": "count-lines", "description": "count returned the number of lines instead of the number of pieces", "hint": "Є версія, що рахує рядки замість штук. Візьми рядок з qty більше за 1 і перевір count." },
+    { "id": "names-sorted", "description": "names were sorted alphabetically instead of keeping the cart order", "hint": "Є версія, що сортує назви. Перевір порядок names для кошика, де товари не йдуть за алфавітом." },
+    { "id": "find-fallback", "description": "findLine returned the first line when nothing matched", "hint": "Є версія, що для невідомої назви повертає не undefined. Перевір пошук відсутнього товару." },
+    { "id": "average-rounded", "description": "averagePrice rounded the result to a whole number", "hint": "Є версія, що округлює середнє. Візьми ціни з дробовим середнім і використай toBeCloseTo." },
+    { "id": "quantity-max-11", "description": "parseQuantity accepted 11 (off-by-one at the upper boundary)", "hint": "Є версія з помилкою на верхній межі. Перевір, що 11 відхиляється (а 10 — ні)." }
+  ]
+}
