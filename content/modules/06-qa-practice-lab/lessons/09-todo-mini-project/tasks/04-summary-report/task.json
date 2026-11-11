@@ -1,0 +1,66 @@
+{
+  "type": "written",
+  "title": "Step 4: test summary report and release recommendation",
+  "playground": "todo",
+  "statement": "Заверши проєкт **test summary report** для команди Taskly To-do v1.0:\n\n- **Scope** — що тестувала, на якому середовищі, якими методами (чекліст, тест-кейс, exploratory).\n- **Results** — скільки пунктів чекліста перевірено і скільки знайдено багів.\n- **Bugs** — по одному рядку: короткий summary і severity.\n- **Risks** — що найнебезпечніше для користувачів.\n- **Recommendation** — go чи no-go і чому.",
+  "fields": [
+    { "id": "scope", "label": "Scope", "kind": "textarea" },
+    { "id": "results", "label": "Results", "kind": "textarea" },
+    { "id": "bugs", "label": "Bugs found (one per line)", "kind": "list", "placeholder": "Clear completed deletes all tasks — Critical" },
+    { "id": "risks", "label": "Risks", "kind": "textarea" },
+    { "id": "recommendation", "label": "Recommendation", "kind": "text", "placeholder": "Go / No-go because …" }
+  ],
+  "rules": [
+    { "field": "scope", "check": "minLength", "value": 30, "message": "Опиши обсяг детальніше: функція, середовище, методи." },
+    { "field": "scope", "check": "mentionsAny", "value": ["chrome|firefox|edge|safari|windows|macos|browser|браузер"], "message": "Вкажи **середовище**: браузер і ОС." },
+    { "field": "results", "check": "mentionsAny", "value": ["\\d"], "message": "У Results мають бути **цифри**: скільки перевірено, скільки багів." },
+    { "field": "bugs", "check": "minItems", "value": 4, "message": "Перелічи щонайменше **4** знайдені баги." },
+    {
+      "field": "bugs",
+      "check": "mentionsAny",
+      "value": ["blocker|critical|major|minor|trivial|критичн"],
+      "message": "Додай до багів **severity**, щоб команда бачила, що найважливіше."
+    },
+    { "field": "risks", "check": "minLength", "value": 30, "message": "Опиши ризики: що станеться з користувачами, якщо випустити як є?" },
+    {
+      "field": "recommendation",
+      "check": "mentionsAny",
+      "value": ["go|випуска|реліз|release|готов|ready|відклас|postpone|delay"],
+      "message": "Дай однозначну рекомендацію: **go** чи **no-go**."
+    },
+    {
+      "field": "recommendation",
+      "check": "mentionsAny",
+      "value": ["because|бо |через|оскільки|since|until|поки|після|after|due to"],
+      "message": "Поясни **причину** рекомендації."
+    }
+  ],
+  "model": {
+    "scope": "Taskly To-do v1.0 (/playground/todo), Chrome 131 on Windows 11. Methods: checklist of 16 items based on the requirements, boundary test case (100 characters), 45-minute exploratory session.",
+    "results": "16 of 16 checklist items executed: 10 passed, 6 failed. 6 bugs reported: 1 Critical, 2 Major, 2 Minor, 1 Trivial.",
+    "bugs": [
+      "Clear completed deletes all tasks, including active ones — Critical",
+      "Completed state is lost after page reload — Major",
+      "Esc while editing saves the changes instead of cancelling — Major",
+      "A task of exactly 100 characters is rejected as too long — Minor",
+      "Counter does not decrease after deleting an active task — Minor",
+      "Counter says \"1 items left\" instead of \"1 item left\" — Trivial"
+    ],
+    "risks": "Data loss: users can lose all their active tasks with one click (Clear completed) and lose progress after every reload. Unexpected edits on Esc damage task texts. The counter can't be trusted, so users may think they have work left when they don't.",
+    "recommendation": "No-go: release after the Critical and Major bugs (Clear completed, reload, Esc) are fixed and retested, followed by a regression run of the checklist."
+  },
+  "hints": [
+    "Scope — це відповідь на «що, де і як я тестувала».",
+    "Відсортуй баги за severity: зверху ті, через які користувач **втрачає дані**.",
+    "Рекомендація: no-go / go + причина + умова (що має бути виправлено, щоб змінити рішення)."
+  ],
+  "explanation": "Підсумковий звіт перетворює твою роботу на **рішення для команди**: обсяг (що, де, як), цифри, баги за severity, ризики простими словами і чітка рекомендація з умовою («no-go, поки не виправлено Critical і Major»). Якщо ти знайшла менше багів — це нормально: напиши звіт за своїми результатами і познач, що ще варто дослідити.",
+  "checklist": [
+    "Scope names the feature, environment and methods",
+    "Results contain numbers",
+    "Bugs are sorted by severity (data loss first)",
+    "Risks are written in terms of user impact",
+    "Recommendation is clear, has a reason and a condition",
+    "The report is short enough to read in one minute"
+  ]
+}

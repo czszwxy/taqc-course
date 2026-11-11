@@ -1,0 +1,71 @@
+{
+  "type": "quiz",
+  "title": "Quiz: testing a shopping cart",
+  "show": 5,
+  "hints": ["Спочатку порахуй сам. Безкоштовна доставка — від 3,000 UAH включно. SAVE10 — 10% від subtotal."],
+  "questions": [
+    {
+      "id": "count-first",
+      "kind": "single",
+      "text": "Коли рахувати очікувану суму замовлення?",
+      "options": [
+        { "text": "До перевірки — і потім порівняти з екраном", "correct": true },
+        { "text": "Після того, як подивився на суму на екрані", "explain": "Так легко «підігнати» очікування під фактичний результат і пропустити баг." }
+      ]
+    },
+    {
+      "id": "boundary-subtotal",
+      "kind": "single",
+      "text": "Доставка безкоштовна від **3,000 UAH** включно. Яке значення subtotal найважливіше перевірити?",
+      "options": [
+        { "text": "Рівно 3,000 UAH", "correct": true },
+        { "text": "10,000 UAH", "explain": "Це значення з середини класу «безкоштовна доставка» — воно рідко ловить помилку `>` замість `>=`." },
+        { "text": "1,000 UAH" }
+      ]
+    },
+    {
+      "id": "calc",
+      "kind": "text",
+      "text": "Subtotal = 2,500 UAH, застосовано **SAVE10** (10% від subtotal), доставка 100 UAH. Яким має бути total (лише число)?",
+      "accept": ["2350", "2,350", "2 350", "2350 uah", "2,350 uah"],
+      "explanation": "2,500 − 250 (10%) + 100 = **2,350 UAH**."
+    },
+    {
+      "id": "rules-count",
+      "kind": "single",
+      "text": "Умови доставки: «subtotal ≥ 3,000?» (так/ні), «Plus member?» (так/ні), промокод (немає / SAVE10 / FREESHIP). Скільки правил у повній таблиці рішень?",
+      "options": [
+        { "text": "12", "correct": true },
+        { "text": "8", "explain": "8 було б для трьох умов «так/ні». Тут промокод має 3 варіанти: 2 × 2 × 3 = 12." },
+        { "text": "7" }
+      ]
+    },
+    {
+      "id": "promo-twice",
+      "kind": "single",
+      "text": "Ти застосувала SAVE10 і натиснула Apply ще раз. Що очікується?",
+      "options": [
+        { "text": "Знижка залишається 10% — код не можна застосувати двічі", "correct": true },
+        { "text": "Знижка стає 20%" }
+      ]
+    },
+    {
+      "id": "report-money",
+      "kind": "single",
+      "text": "Що найкорисніше додати в баг-репорт про неправильну суму?",
+      "options": [
+        { "text": "Розрахунок actual і expected: з чого складається сума", "correct": true },
+        { "text": "Фразу «сума неправильна»" }
+      ]
+    },
+    {
+      "id": "combo-signal",
+      "kind": "single",
+      "text": "Яка фраза у вимогах — найсильніший сигнал перевірити **комбінації** умов?",
+      "options": [
+        { "text": "«Each condition works on its own and together with any promo code»", "correct": true },
+        { "text": "«Total = subtotal − discount + shipping»" }
+      ]
+    }
+  ]
+}

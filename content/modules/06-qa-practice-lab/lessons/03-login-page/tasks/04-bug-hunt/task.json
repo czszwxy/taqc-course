@@ -1,0 +1,152 @@
+{
+  "type": "bug-report",
+  "title": "Bug hunt: find and report bugs on the Login page",
+  "playground": "login",
+  "minBugs": 3,
+  "statement": "На сторінці **Login page** сховано **6 багів**. Пройди свій чекліст із попереднього завдання і оформи щонайменше **3** баг-репорти.\n\n1. Відкрий сторінку в новій вкладці (кнопка нижче).\n2. Перевіряй кожну вимогу окремо. Якщо акаунт заблокувався — натисни **Reset demo data**.\n3. На кожен баг — окремий репорт і **Submit**.\n\nПрограма впізнає баг за конкретними деталями: яке поле, які дані, що саме сталося.",
+  "hints": [
+    "Спробуй email не так, як він записаний у тестовому акаунті: інший регістр, пробіл на початку.",
+    "Порахуй невдалі спроби: що відбувається після 3-ї? А після 4-ї з правильним паролем?",
+    "Не забудь другий тестовий акаунт — `locked@taskly.test`. І перевір кожну галочку та посилання в обидва боки: з даними і без."
+  ],
+  "explanation": "Баги логіну ховаються в «краях» вимог: регістр і пробіли в email, межа лічильника спроб, спеціальні акаунти (заблокований), а також опції, які легко перевірити лише «в один бік» (Remember me без галочки, Forgot password без email). Хороший репорт називає точні дані (`Demo@Taskly.test`, 3 спроби) і точний текст повідомлення.",
+  "bugs": [
+    {
+      "id": "email-case-sensitive",
+      "title": "Email with capital letters is rejected",
+      "match": ["e-?mail|пошт|логін|login", "case-?(in)?sensitiv|upper|lower|регістр|велик\\S* літер|capital|капс|caps"],
+      "severity": ["Major", "Minor"],
+      "severityWhy": "Користувачі, які вводять email з великої літери (часто це робить автозаповнення на телефоні), не можуть увійти. Обхід є — ввести малими, тому Major або Minor.",
+      "model": {
+        "title": "Login: email with capital letters (Demo@Taskly.test) is rejected although email must be case-insensitive",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Login page /playground/login is open",
+        "steps": ["Enter \"Demo@Taskly.test\" in Email", "Enter \"Demo1234\" in Password", "Click \"Log in\""],
+        "testData": "Email: Demo@Taskly.test; Password: Demo1234",
+        "actualResult": "Error \"Invalid email or password\" is shown; the user is not signed in.",
+        "expectedResult": "The user is signed in and \"Signed in as demo@taskly.test\" is shown (requirement: email is case-insensitive).",
+        "severity": "Major",
+        "priority": "Medium",
+        "attachments": "screenshot-email-uppercase.png"
+      }
+    },
+    {
+      "id": "email-spaces-not-trimmed",
+      "title": "Email with a space before/after it is rejected",
+      "match": ["e-?mail|пошт|логін|login", "space|пробіл|trim|whitespace"],
+      "severity": ["Minor", "Major"],
+      "severityWhy": "Email часто копіюють разом із пробілом. Вхід неможливий, поки користувач не помітить пробіл, але обхід простий: Minor (або Major).",
+      "model": {
+        "title": "Login: email with a leading space (\" demo@taskly.test\") is rejected instead of being trimmed",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Login page /playground/login is open",
+        "steps": ["Enter \" demo@taskly.test\" (with a space at the start) in Email", "Enter \"Demo1234\" in Password", "Click \"Log in\""],
+        "testData": "Email: \" demo@taskly.test\" (leading space); Password: Demo1234",
+        "actualResult": "Error \"Invalid email or password\" is shown; the user is not signed in.",
+        "expectedResult": "Spaces around the email are ignored: the user is signed in as demo@taskly.test.",
+        "severity": "Minor",
+        "priority": "Medium",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "lockout-after-5",
+      "title": "Account is not locked after 3 failed attempts",
+      "match": [
+        "attempt|спроб|tries|times",
+        "lock|блок|too many|забагато",
+        "(^|\\D)[345](\\D|$)|three|four|five|трьох|третьої|третя|третій|чотир|п.ят(ь|ої|а|ій)"
+      ],
+      "severity": ["Major", "Critical"],
+      "severityWhy": "Не працює захист від перебору паролів — це вимога безпеки. Major або Critical залежно від ризиків продукту.",
+      "model": {
+        "title": "Login: account is not locked after 3 failed attempts — the 4th attempt with the correct password signs in",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Login page /playground/login is open; no failed attempts before",
+        "steps": [
+          "Enter demo@taskly.test with password Wrong111 and click \"Log in\"",
+          "Repeat with passwords Wrong222 and Wrong333 (3 failed attempts in a row)",
+          "Enter the correct password Demo1234 and click \"Log in\""
+        ],
+        "testData": "Email: demo@taskly.test; wrong passwords: Wrong111, Wrong222, Wrong333; correct password: Demo1234",
+        "actualResult": "The 3rd failed attempt shows only \"Invalid email or password\"; the 4th attempt with the correct password signs the user in.",
+        "expectedResult": "After the 3rd failed attempt \"Too many failed attempts. Try again in 15 minutes.\" is shown and the correct password is rejected (requirement: lock after 3 failed attempts in a row).",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": "video-lockout.mp4"
+      }
+    },
+    {
+      "id": "locked-account-can-sign-in",
+      "title": "Blocked account can sign in",
+      "match": [
+        "locked@|blocked|admin|адмін|locked (account|user)|заблокован\\S* (акаунт|користувач|обліков)|(акаунт|користувач)\\S* заблокован",
+        "sign|log|увій|вхід|вход|залогін|авториз|success|успішн"
+      ],
+      "severity": ["Critical", "Major"],
+      "severityWhy": "Користувач, якого заблокував адміністратор (наприклад, за шахрайство), отримує повний доступ. Це серйозна діра безпеки: Critical.",
+      "model": {
+        "title": "Login: blocked account locked@taskly.test can sign in with correct credentials",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Login page /playground/login is open",
+        "steps": ["Enter \"locked@taskly.test\" in Email", "Enter \"Locked123\" in Password", "Click \"Log in\""],
+        "testData": "Email: locked@taskly.test; Password: Locked123 (account blocked by an admin)",
+        "actualResult": "The user is signed in: \"Welcome back!\" and \"Signed in as locked@taskly.test\" are shown.",
+        "expectedResult": "\"Your account is locked. Contact support.\" is shown; the user is not signed in.",
+        "severity": "Critical",
+        "priority": "High",
+        "attachments": "screenshot-locked-account.png"
+      }
+    },
+    {
+      "id": "remember-me-ignored",
+      "title": "Email is remembered after Log out without \"Remember me\"",
+      "match": ["remember|запам.ят", "log ?out|logout|sign ?out|вийт|вихід|виход"],
+      "severity": ["Minor", "Major"],
+      "severityWhy": "На спільному комп'ютері наступна людина побачить чужий email. Функціонально все працює, тому Minor (або Major через приватність).",
+      "model": {
+        "title": "Login: email is remembered after Log out although \"Remember me\" was not checked",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Login page /playground/login is open",
+        "steps": [
+          "Enter demo@taskly.test / Demo1234 and leave \"Remember me\" unchecked",
+          "Click \"Log in\"",
+          "Click \"Log out\""
+        ],
+        "testData": "Email: demo@taskly.test; Password: Demo1234; Remember me: unchecked",
+        "actualResult": "The Email field is prefilled with demo@taskly.test after Log out.",
+        "expectedResult": "The login form is empty after Log out (requirement: without Remember me the email is not kept).",
+        "severity": "Minor",
+        "priority": "Medium",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "forgot-password-empty-email",
+      "title": "\"Forgot password?\" works with an empty email",
+      "match": ["forgot|reset|скид|відновл|забул|забув", "empty|порожн|blank|without|без |no email|не (введ|вказ|заповн)"],
+      "severity": ["Minor", "Trivial"],
+      "severityWhy": "Користувач бачить, що лист «надіслано», хоча email не вказано, і марно чекає. Нікого не блокує: Minor.",
+      "model": {
+        "title": "Login: \"Forgot password?\" with an empty Email shows that a reset link was sent",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Login page /playground/login is open; the Email field is empty",
+        "steps": ["Leave the Email field empty", "Click \"Forgot password?\""],
+        "testData": "Email: (empty)",
+        "actualResult": "The message \"If an account exists for this email, we have sent a password reset link.\" is shown; there is no error under Email.",
+        "expectedResult": "Error \"Enter your email first\" is shown under Email; no reset message appears.",
+        "severity": "Minor",
+        "priority": "Low",
+        "attachments": ""
+      }
+    }
+  ],
+  "checklist": [
+    "Summary answers: what is wrong, where, under which condition",
+    "Steps start from a clear state (no earlier failed attempts) and contain one action each",
+    "Test data is concrete: exact email, password, number of attempts",
+    "Actual result quotes the exact message you saw",
+    "Expected result refers to the requirement",
+    "Security bugs (lockout, blocked account) get a higher severity than cosmetic ones"
+  ]
+}

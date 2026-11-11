@@ -242,6 +242,7 @@ export const tableTaskSchema = z.object({
   type: z.literal('table'),
   ...baseTask,
   statement: z.string(),
+  playground: z.string().optional(),
   givenColumns: z.array(z.string()).min(1),
   answerColumns: z
     .array(z.object({ id: z.string(), label: z.string(), options: z.array(z.string()).min(MIN_CHOICES) }))

@@ -1,0 +1,22 @@
+{
+  "title": "Order status flow: state transitions",
+  "minutes": 65,
+  "summary": "State transition testing на реальній сторінці: валідні й невалідні переходи, фінальні стани, побічні ефекти (повернення коштів, історія) — тестовий прогін і баг-репорти",
+  "resources": [
+    {
+      "title": "ISTQB — official site (syllabi, Foundation Level)",
+      "url": "https://www.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Розділ 4 Foundation Level: state transition testing.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: state transition testing (пошук)",
+      "url": "https://www.youtube.com/results?search_query=state+transition+testing+example",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

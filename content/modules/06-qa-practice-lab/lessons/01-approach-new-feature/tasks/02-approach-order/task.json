@@ -1,0 +1,20 @@
+{
+  "type": "order",
+  "title": "Put the steps of approaching a feature in order",
+  "statement": "Розстав кроки роботи з новою функцією в правильному порядку: від першого до останнього.",
+  "items": [
+    "Understand the purpose and the users of the feature",
+    "Read the requirements and acceptance criteria",
+    "Take a short tour of the feature",
+    "Ask questions about unclear or missing requirements",
+    "List test conditions: inputs, rules, states, outputs",
+    "Design tests with techniques (EP, BVA, decision tables…)",
+    "Prioritize the tests by risk",
+    "Execute the tests, report bugs and summarize the results"
+  ],
+  "hints": [
+    "Спочатку **навіщо** (мета), потім **що** (вимоги), потім **як це виглядає** (тур).",
+    "Тестові умови («що перевіряти») йдуть перед технікою («як саме перевіряти»), а пріоритети — перед виконанням."
+  ],
+  "explanation": "Логіка послідовності: зрозумій **навіщо** функція і **що** вона має робити → подивись, **як** вона працює → з'ясуй незрозуміле → розклади на **тестові умови** → підбери **техніки й дані** → **розстав пріоритети** → **виконай** і звітуй. Пропуск перших кроків — найчастіша причина «тестую, але не знаю, що шукаю»."
+}

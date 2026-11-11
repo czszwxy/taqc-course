@@ -81,7 +81,7 @@ Markdown + GFM tables. Callouts: a blockquote starting with `[!TIP]`, `[!NOTE]`,
 | `classify` | `statement`, `categories[]` (`id`, `label`, `description?`), `items[]` (`id`, `text`, `category`, `explain?`), `show?`, `passScore` | each item assigned to one category; retry = new random sample (seed). Ideal for theory modules: "error/defect/failure", "smoke/sanity/regression" |
 | `order` | `statement`, `items[]` **in the correct order** (≥ 3) | UI shuffles; exact order required; green/red per row; correct order revealed after 2 fails |
 | `written` | `statement`, `playground?`, `fields[]` (`id`, `label`, `kind`: `text`/`textarea`/`list`, `placeholder?`, `hint?`), `rules[]`, `model` (field id → string or string[]), `checklist[]` | all fields required + rules → model answer + self-review checklist + Copy for review. Use for acceptance criteria, requirement reviews, charters, plans |
-| `table` | `statement`, `givenColumns[]` (header labels), `answerColumns[]` (`id`, `label`, `options[]`), `rows[]` (`given[]` same length as givenColumns, `answers` {colId → option}, `explain?`) | every answer cell must match; green/red per cell; row `explain` shown for wrong rows; answers revealed after 2 fails. Use for decision tables, state transition tables, partition tables, traceability matrices |
+| `table` | `statement`, `playground?`, `givenColumns[]` (header labels), `answerColumns[]` (`id`, `label`, `options[]`), `rows[]` (`given[]` same length as givenColumns, `answers` {colId → option}, `explain?`) | every answer cell must match; green/red per cell; row `explain` shown for wrong rows; answers revealed after 2 fails. Use for decision tables, state transition tables, partition tables, traceability matrices |
 
 Value-set generators (`src/features/tasks/generators.ts`, presets in `range-presets.json`): `bva-range` (params `field`, `min`, `max`, `unit?`, `approach`: `two-value` | `three-value`) and `ep-range` (one representative per integer partition: below / inside / above). Seed 0 uses the task params; other seeds pick a random preset.
 
@@ -96,7 +96,13 @@ Field rules (`rules[]`): `{ field, check, value?, message }` where `check` ∈ `
 - Give ~1 task per lesson a `-v2` similar variant (`variantOf`).
 
 ### Bug Playground
-Pages in `src/playground/`, registered in `registry.ts`, routed standalone (no app chrome) in `App.tsx`. Each page has intentional bugs behind flags and a `?fixed` query param that disables them (for future Playwright "must pass on fixed / fail on buggy" grading). Keep the page's bug flags and the task's `bugs[]` catalog in sync. Use semantic HTML, labels and `data-testid` for future automation.
+Pages in `src/playground/`, registered in `registry.ts`, routed standalone (no app chrome) in `App.tsx`. Each page has intentional bugs behind flags (`getBugs(fixed)`) and a `?fixed` query param that disables them (for future Playwright "must pass on fixed / fail on buggy" grading; never advertise `?fixed` to the learner). Keep the page's bug flags and the task's `bugs[]` catalog in sync. Use semantic HTML, labels and `data-testid` for future automation.
+
+- Shared chrome: `PlaygroundShell.tsx` (brand header, yellow "Requirements (for testers)" panel, optional **Reset demo data** button, `isFixedMode()`, `PgField`, `inputClass`, `formatUah`). Data lives in `src/playground/data/*.json`.
+- Pages and bug counts: signup 7, login 6, cart 6, search 6, order 5, todo 6 (todo persists to localStorage keys `qa-playground:todo` / `qa-playground:todo-fixed`).
+- Tasks reference a page with `playground: "<id>"` (test-case, bug-report, written, table) → "Open page" button (`PlaygroundLink` in `features/tasks/shared.tsx`). The validator rejects unknown ids.
+- Bug catalog regexes: every `match` pattern must hit the report; ties are broken by hits in title + actual result, then by catalog order. Make patterns specific enough that one bug's model never matches another bug better (the validator checks self-matching). Avoid bare `case` (matches "test case"), `esc` (matches "description"), `три` (matches "отримати").
+- Table/given cells and other Markdown fields: wrap emails in backticks, otherwise they render as mailto links.
 
 ## Progress & UX rules
 - Progress in localStorage (`qa-academy:progress`, `qa-academy:settings`); export/import JSON on Settings page.
@@ -105,20 +111,21 @@ Pages in `src/playground/`, registered in `registry.ts`, routed standalone (no a
 - "Copy for review" button builds a Markdown bundle the learner can paste to Claude for detailed feedback (no API calls from the app).
 
 ## Status / roadmap
-- ✅ App skeleton, 9 task engines (quiz, code, value-set, test-case, bug-report, classify, order, written, table), Bug Playground "Sign-up form" (7 bugs).
+- ✅ App skeleton, 9 task engines (quiz, code, value-set, test-case, bug-report, classify, order, written, table), Bug Playground: Sign-up, Login, Shopping cart, Search & filters, Order status flow, To-do (36 bugs in total).
 - ✅ Module 01 "Introduction to Testing" — 7 lessons, 21 tasks (quiz + classify/order/written per lesson).
 - ✅ Module 02 "Testing Types & Levels" — 8 lessons, 23 tasks.
 - ✅ Module 03 "Test Design Techniques" — 8 lessons, 23 main tasks + 1 variant (EP/BVA generators, decision & state tables).
 - ✅ Module 04 "Test Documentation" — 7 lessons, 21 tasks (testability, checklists, test case, traceability table, plan, statuses, metrics & summary report).
 - ✅ Module 11 "Programming Basics with TypeScript" — 10 lessons, 40 main tasks + 10 variants.
-- ✅ Module 06 demo lesson 04 "Registration form" (quiz, BVA generator, test case + variant, bug hunt).
+- ✅ Module 05 "Bugs & Bug Tracking" — 7 lessons, 19 tasks (text-described bugs only, no playground answers).
+- ✅ Module 06 "QA Practice Lab" — 9 lessons, 30 main tasks + 1 variant: approach & requirements review (text features), then hands-on pages: login (checklist, test case, bug hunt), registration, cart (decision table, bug hunt), search (charter, bug hunt), order (transition run table, bug reports), regression run on login (table + summary report), Todo mini-project (checklist, test case, bug hunt, summary report).
 - Theory-module pattern (modules 01–05): each lesson = quiz (6–8 questions, show 5) + 2 practical tasks (classify / order / written), easy → harder. Never put Bug Playground bug answers in model answers of other modules (spoilers for the module 06 bug hunt).
-- Next suggested batch: module 05 "Bugs & Bug Tracking" (7 lessons; bug-report tasks need new Bug Playground pages or text-described bugs — never reuse Sign-up bug answers) + the remaining lessons of module 06 "QA Practice Lab" (needs new playground pages: login, cart, search & filters, order status, todo).
+- Next suggested batch: module 07 "How the Web Works" (8 lessons) + module 08 "HTTP, REST APIs & JSON" (8 lessons). They will likely need new engines: CSS/XPath selector tasks (sandboxed iframe over a small HTML snippet) and DevTools hunts (find a value in Console/Network of a playground page). Reuse the playground pages for DevTools practice instead of creating new ones where possible.
 - ⏳ Remaining modules in batches (owner reviews each batch). Planned engines to add when needed: CSS/XPath selector tasks (sandboxed iframe), DevTools hunts, SQL (sql.js), Playwright-API simulator over playground pages with mutation grading, `lab/` with real `@playwright/test` + `npm run lab:check <id>`, local mock REST API (Node, zero deps).
 - Full outline lives in `content/course.json`.
 
 ## Git
-Repository on branch `main` (local only, no remote). Commit after every validated batch (`npm run validate` green) with a message like `Add module 03 Test Design Techniques`, so the owner can always roll back. Never rewrite history (no reset --hard / force) without the owner's explicit request. `.gitattributes` keeps `*.cmd` in CRLF.
+Repository on branch `main`, remote `origin` = https://github.com/czszwxy/taqc-course.git (push after each committed batch). Commit after every validated batch (`npm run validate` green) with a message like `Add module 03 Test Design Techniques`, so the owner can always roll back. Never rewrite history (no reset --hard / force) without the owner's explicit request. `.gitattributes` keeps `*.cmd` in CRLF.
 
 ## Workflow for a new content batch
 1. Read this file and `src/content/schema.ts`; look at one existing lesson as a template.

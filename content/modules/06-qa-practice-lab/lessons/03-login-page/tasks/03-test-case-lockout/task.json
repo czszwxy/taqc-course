@@ -1,0 +1,50 @@
+{
+  "type": "test-case",
+  "title": "Write a test case: lockout after 3 failed attempts",
+  "playground": "login",
+  "statement": "Напиши **негативний** тест-кейс для вимоги:\n\n> *After 3 failed attempts in a row the account is temporarily locked: \"Too many failed attempts. Try again in 15 minutes.\" is shown, and even the correct password is rejected.*\n\nВикористай акаунт `demo@taskly.test` / `Demo1234`. Тест має довести **обидві** частини вимоги: повідомлення після 3-ї спроби і відмову для правильного пароля після блокування.",
+  "hints": [
+    "Кроки: три спроби з **різними** неправильними паролями, потім спроба з правильним паролем `Demo1234`.",
+    "Очікуваний результат має дві частини: повідомлення «Too many failed attempts…» після 3-ї спроби і те, що правильний пароль теж відхилено (вхід не відбувається).",
+    "Передумова: сторінка відкрита і **немає** попередніх невдалих спроб (наприклад, після Reset demo data)."
+  ],
+  "explanation": "Тут перевіряється межа правила (3 спроби) і його наслідок (блокування навіть для правильного пароля). Тому в кроках мають бути рівно три невдалі спроби, а потім спроба з правильними даними. Передумова важлива: якщо до тесту вже були невдалі спроби, лічильник зіб'ється. Expected result описує спостережуване: точний текст і відсутність входу.",
+  "rules": [
+    { "field": "title", "check": "mentionsAny", "value": ["lock|блок|attempt|спроб"], "message": "У назві має бути, **що** перевіряється: блокування після невдалих спроб." },
+    { "field": "any", "check": "mentionsAny", "value": ["(^|\\D)3(\\D|$)|three|трьох|третьої|третя|третій"], "message": "Тест-кейс має містити межу правила — **3** невдалі спроби." },
+    { "field": "steps", "check": "minItems", "value": 4, "message": "Потрібно щонайменше 4 кроки: три невдалі спроби і спроба з правильним паролем." },
+    { "field": "testData", "check": "mentionsAll", "value": ["demo@taskly\\.test", "Demo1234"], "message": "У тестових даних вкажи акаунт `demo@taskly.test` і правильний пароль `Demo1234`." },
+    { "field": "preconditions", "check": "minLength", "value": 10, "message": "Опиши передумову: сторінка відкрита, попередніх невдалих спроб немає." },
+    { "field": "expectedResult", "check": "mentionsAny", "value": ["too many|забагато|lock|блок"], "message": "Очікуваний результат має містити повідомлення про **блокування** («Too many failed attempts…»)." },
+    {
+      "field": "expectedResult",
+      "check": "mentionsAny",
+      "value": ["correct|правильн|valid|вірн"],
+      "message": "Вкажи другу частину: навіть **правильний** пароль після блокування відхиляється."
+    },
+    { "field": "type", "check": "equals", "value": "Negative", "message": "Це **негативний** тест: перевіряємо реакцію на неправильні паролі." },
+    { "field": "priority", "check": "equals", "value": "High", "message": "Захист від перебору паролів — вимога безпеки, тому priority **High**." }
+  ],
+  "model": {
+    "title": "Login: account is locked after 3 failed attempts in a row and the correct password is rejected",
+    "type": "Negative",
+    "priority": "High",
+    "preconditions": "Login page (/playground/login) is open; there were no failed attempts before (demo data reset).",
+    "testData": "Email: demo@taskly.test\nWrong passwords: Wrong111, Wrong222, Wrong333\nCorrect password: Demo1234",
+    "steps": [
+      "Enter demo@taskly.test and password Wrong111, click \"Log in\"",
+      "Enter password Wrong222, click \"Log in\"",
+      "Enter password Wrong333, click \"Log in\"",
+      "Enter the correct password Demo1234, click \"Log in\""
+    ],
+    "expectedResult": "Steps 1–2: \"Invalid email or password\". Step 3: \"Too many failed attempts. Try again in 15 minutes.\" Step 4: the same lock message is shown, the correct password is rejected and the user is not signed in."
+  },
+  "checklist": [
+    "Title says what is checked and under which condition",
+    "Precondition guarantees a clean counter (no earlier failed attempts)",
+    "Exactly 3 failed attempts, then one attempt with the correct password",
+    "Test data contains exact values for every step",
+    "Expected result is given per step or clearly says what happens after attempt 3 and 4",
+    "Expected result says the user is NOT signed in"
+  ]
+}

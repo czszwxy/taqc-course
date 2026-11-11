@@ -1,0 +1,29 @@
+{
+  "title": "Shopping cart: decision table & bug reports",
+  "minutes": 75,
+  "summary": "Як тестувати кошик: рахувати очікувані суми самостійно, межі кількості, промокоди, комбінації правил доставки через таблицю рішень — і баг-репорти на знайдене",
+  "resources": [
+    {
+      "title": "ISTQB — official site (syllabi, Foundation Level)",
+      "url": "https://www.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Розділ 4 Foundation Level: decision table testing.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: decision table testing (пошук)",
+      "url": "https://www.youtube.com/results?search_query=decision+table+testing+example",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: how to test a shopping cart (пошук)",
+      "url": "https://www.youtube.com/results?search_query=how+to+test+shopping+cart+ecommerce+testing",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

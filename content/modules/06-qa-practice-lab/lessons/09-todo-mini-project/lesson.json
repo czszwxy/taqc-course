@@ -1,0 +1,30 @@
+{
+  "title": "Mini-project: full test documentation for a Todo app",
+  "minutes": 120,
+  "summary": "Фінальний проєкт модуля: ти єдиний QA застосунку Taskly To-do — чекліст, тест-кейс на межу, пошук і оформлення багів, підсумковий звіт з рекомендацією",
+  "resources": [
+    {
+      "title": "ISTQB — official site (syllabi, Foundation Level)",
+      "url": "https://www.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Повтори розділи 4 (test design) і 5 (test management, reporting).",
+      "needsVerification": true
+    },
+    {
+      "title": "ISTQB Glossary",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: QA portfolio project ideas (пошук)",
+      "url": "https://www.youtube.com/results?search_query=QA+tester+portfolio+project+test+documentation",
+      "kind": "video",
+      "lang": "en",
+      "note": "Ідеї, як оформити такий проєкт у портфоліо для співбесіди.",
+      "needsVerification": true
+    }
+  ]
+}

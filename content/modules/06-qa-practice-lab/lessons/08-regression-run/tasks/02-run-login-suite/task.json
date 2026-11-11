@@ -1,0 +1,166 @@
+{
+  "type": "table",
+  "title": "Regression run: execute the Login suite",
+  "playground": "login",
+  "statement": "Виконай регресійний набір із 12 тест-кейсів на сторінці **Login page** і постав кожному статус **Passed** або **Failed**.\n\nПравила прогону:\n\n- Перед **кожним** тестом натискай **Reset demo data**.\n- Статус — лише за фактом: якщо фактичний результат хоч трохи відрізняється від Expected — Failed.\n- Тестові акаунти: `demo@taskly.test` / `Demo1234`, `locked@taskly.test` / `Locked123`.",
+  "givenColumns": [
+    "ID",
+    "Test case",
+    "Test data",
+    "Expected result"
+  ],
+  "answerColumns": [
+    {
+      "id": "status",
+      "label": "Status",
+      "options": [
+        "Passed",
+        "Failed"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "given": [
+        "TC-01",
+        "Valid login",
+        "`demo@taskly.test` / Demo1234",
+        "\"Welcome back!\" and \"Signed in as `demo@taskly.test`\""
+      ],
+      "answers": {
+        "status": "Passed"
+      }
+    },
+    {
+      "given": [
+        "TC-02",
+        "Wrong password",
+        "`demo@taskly.test` / Demo9999",
+        "\"Invalid email or password\", not signed in"
+      ],
+      "answers": {
+        "status": "Passed"
+      }
+    },
+    {
+      "given": [
+        "TC-03",
+        "Empty fields",
+        "Email and Password empty",
+        "\"Email is required\" and \"Password is required\""
+      ],
+      "answers": {
+        "status": "Passed"
+      }
+    },
+    {
+      "given": [
+        "TC-04",
+        "Unknown email",
+        "`nobody@taskly.test` / Demo1234",
+        "The same \"Invalid email or password\" message"
+      ],
+      "answers": {
+        "status": "Passed"
+      }
+    },
+    {
+      "given": [
+        "TC-05",
+        "Email is case-insensitive",
+        "`DEMO@TASKLY.TEST` / Demo1234",
+        "Signed in as `demo@taskly.test`"
+      ],
+      "answers": {
+        "status": "Failed"
+      },
+      "explain": "Email у верхньому регістрі відхиляється з «Invalid email or password»."
+    },
+    {
+      "given": [
+        "TC-06",
+        "Password is case-sensitive",
+        "`demo@taskly.test` / DEMO1234",
+        "\"Invalid email or password\", not signed in"
+      ],
+      "answers": {
+        "status": "Passed"
+      }
+    },
+    {
+      "given": [
+        "TC-07",
+        "Show password",
+        "Type any password, check and uncheck Show password",
+        "Password becomes visible, then hidden again"
+      ],
+      "answers": {
+        "status": "Passed"
+      }
+    },
+    {
+      "given": [
+        "TC-08",
+        "Lockout after 3 failed attempts",
+        "3 wrong passwords, then Demo1234",
+        "After attempt 3: \"Too many failed attempts…\"; the correct password is rejected"
+      ],
+      "answers": {
+        "status": "Failed"
+      },
+      "explain": "Після 3-ї спроби блокування немає, а 4-та спроба з правильним паролем впускає користувача."
+    },
+    {
+      "given": [
+        "TC-09",
+        "Blocked account",
+        "`locked@taskly.test` / Locked123",
+        "\"Your account is locked. Contact support.\", not signed in"
+      ],
+      "answers": {
+        "status": "Failed"
+      },
+      "explain": "Заблокований акаунт успішно входить."
+    },
+    {
+      "given": [
+        "TC-10",
+        "Remember me (checked)",
+        "`demo@taskly.test` / Demo1234, Remember me checked → Log in → Log out",
+        "Email field is prefilled with `demo@taskly.test`"
+      ],
+      "answers": {
+        "status": "Passed"
+      }
+    },
+    {
+      "given": [
+        "TC-11",
+        "Forgot password with email",
+        "Email: `demo@taskly.test` → Forgot password?",
+        "\"If an account exists for this email, we have sent a password reset link.\""
+      ],
+      "answers": {
+        "status": "Passed"
+      }
+    },
+    {
+      "given": [
+        "TC-12",
+        "Forgot password without email",
+        "Email empty → Forgot password?",
+        "\"Enter your email first\" under Email"
+      ],
+      "answers": {
+        "status": "Failed"
+      },
+      "explain": "З порожнім email показується повідомлення про надісланий лист."
+    }
+  ],
+  "hints": [
+    "Не довіряй пам'яті: виконай кожен тест, навіть якщо «точно знаєш» результат з попереднього уроку.",
+    "TC-08: Reset → три різні неправильні паролі → правильний пароль. Що сталося на 3-й і 4-й спробі?",
+    "TC-10 перевіряє лише варіант **з** галочкою. Статус ставиться за тим, що написано в тесті, а не за всім, що ти знаєш про сторінку."
+  ],
+  "explanation": "Результат прогону: **12 виконано, 8 Passed, 4 Failed** (TC-05, TC-08, TC-09, TC-12). Зверни увагу: на сторінці є ще два баги (пробіли в email і Remember me **без** галочки), але цей набір їх не ловить, бо для цих правил немає тестів. Це і є прогалина в покритті, про яку треба написати у звіті."
+}

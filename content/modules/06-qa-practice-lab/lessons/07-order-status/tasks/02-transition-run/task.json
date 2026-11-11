@@ -1,0 +1,45 @@
+{
+  "type": "table",
+  "title": "Test run: execute the transition tests and record the results",
+  "playground": "order",
+  "statement": "Виконай кожен тест на сторінці **Order status flow** і запиши, що сталося **насправді**, і вердикт.\n\nДля кожного рядка: **Reset demo data** → дійди до стартового стану валідними діями → натисни дію з таблиці → подивись на статус і повідомлення.\n\n- **Actual result** — новий статус або «Error, status unchanged».\n- **Verdict** — Passed, якщо actual = expected, інакше Failed.",
+  "givenColumns": ["ID", "Start state", "Action", "Expected result"],
+  "answerColumns": [
+    { "id": "actual", "label": "Actual result", "options": ["Paid", "Shipped", "Delivered", "Cancelled", "Returned", "Error, status unchanged"] },
+    { "id": "verdict", "label": "Verdict", "options": ["Passed", "Failed"] }
+  ],
+  "rows": [
+    { "given": ["T1", "Created", "Pay", "Paid"], "answers": { "actual": "Paid", "verdict": "Passed" } },
+    {
+      "given": ["T2", "Created", "Ship", "Error, status unchanged"],
+      "answers": { "actual": "Shipped", "verdict": "Failed" },
+      "explain": "Неоплачене замовлення переходить у Shipped — сторінка дозволяє невалідний перехід."
+    },
+    { "given": ["T3", "Paid", "Ship", "Shipped"], "answers": { "actual": "Shipped", "verdict": "Passed" } },
+    { "given": ["T4", "Paid", "Pay", "Error, status unchanged"], "answers": { "actual": "Error, status unchanged", "verdict": "Passed" } },
+    {
+      "given": ["T5", "Shipped", "Cancel", "Error, status unchanged"],
+      "answers": { "actual": "Cancelled", "verdict": "Failed" },
+      "explain": "Відправлене замовлення вдається скасувати, хоча з Shipped є лише Deliver."
+    },
+    { "given": ["T6", "Shipped", "Deliver", "Delivered"], "answers": { "actual": "Delivered", "verdict": "Passed" } },
+    {
+      "given": ["T7", "Delivered", "Return", "Returned"],
+      "answers": { "actual": "Error, status unchanged", "verdict": "Failed" },
+      "explain": "Валідний перехід Delivered → Return відхиляється з помилкою."
+    },
+    { "given": ["T8", "Delivered", "Cancel", "Error, status unchanged"], "answers": { "actual": "Error, status unchanged", "verdict": "Passed" } },
+    {
+      "given": ["T9", "Cancelled (from Created)", "Pay", "Error, status unchanged"],
+      "answers": { "actual": "Paid", "verdict": "Failed" },
+      "explain": "З фінального стану Cancelled вдається перейти в Paid."
+    },
+    { "given": ["T10", "Created", "Deliver", "Error, status unchanged"], "answers": { "actual": "Error, status unchanged", "verdict": "Passed" } }
+  ],
+  "hints": [
+    "Перед кожним рядком натискай **Reset demo data**: інакше стартовий стан буде неправильним.",
+    "Стартовий стан будуй лише валідними діями: Paid = Pay; Shipped = Pay → Ship; Delivered = Pay → Ship → Deliver; Cancelled = Cancel.",
+    "Verdict не залежить від твоєї думки про те, як «краще»: порівнюй лише actual з expected."
+  ],
+  "explanation": "Прогін — це виконання готових тестів і чесна фіксація фактичного результату. Тут 4 з 10 тестів не пройшли: невалідні переходи Created → Ship, Shipped → Cancel і Cancelled → Pay дозволені, а валідний Delivered → Return заборонений. Кожен Failed-тест — кандидат на баг-репорт у наступному завданні."
+}

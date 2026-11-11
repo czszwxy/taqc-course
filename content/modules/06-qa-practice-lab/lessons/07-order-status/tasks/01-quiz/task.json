@@ -1,0 +1,65 @@
+{
+  "type": "quiz",
+  "title": "Quiz: testing order status transitions",
+  "show": 5,
+  "hints": ["Перечитай таблицю «Що тестувати» і пораду про три перевірки невалідного переходу."],
+  "questions": [
+    {
+      "id": "where-bugs",
+      "kind": "single",
+      "text": "Де найчастіше ховаються баги в логіці статусів?",
+      "options": [
+        { "text": "У невалідних переходах, які забули заборонити", "correct": true },
+        { "text": "У валідних переходах основного сценарію", "explain": "Основний сценарій розробник перевіряє сам. Заборони «зайвих» переходів часто пропускають." }
+      ]
+    },
+    {
+      "id": "invalid-three",
+      "kind": "multiple",
+      "text": "Ти натискаєш **Ship** для замовлення в статусі Created. Що має перевірити тест?",
+      "options": [
+        { "text": "Показано повідомлення про помилку", "correct": true },
+        { "text": "Статус залишився Created", "correct": true },
+        { "text": "В історії не з'явився новий запис", "correct": true },
+        { "text": "Статус став Shipped", "explain": "Неоплачене замовлення не можна відправити — це невалідний перехід." }
+      ]
+    },
+    {
+      "id": "final",
+      "kind": "single",
+      "text": "Які стани в моделі Gadgetly **фінальні**?",
+      "options": [
+        { "text": "Cancelled і Returned", "correct": true },
+        { "text": "Delivered і Cancelled", "explain": "З Delivered є перехід Return → Returned." },
+        { "text": "Лише Returned" }
+      ]
+    },
+    {
+      "id": "side-effect",
+      "kind": "single",
+      "text": "Paid → Cancel → статус Cancelled. Що ще обов'язково перевірити?",
+      "options": [
+        { "text": "Побічний ефект: в історії записано повернення коштів", "correct": true },
+        { "text": "Нічого: статус правильний, отже тест пройдено" }
+      ]
+    },
+    {
+      "id": "precondition",
+      "kind": "single",
+      "text": "Як дійти до стартового стану **Shipped** перед тестом?",
+      "options": [
+        { "text": "Reset → Pay → Ship (лише валідні дії)", "correct": true },
+        { "text": "Reset → Ship", "explain": "Created → Ship — невалідний перехід. Передумову будуємо лише валідними діями." }
+      ]
+    },
+    {
+      "id": "double-pay",
+      "kind": "single",
+      "text": "Чому важливо перевірити дію **Pay** для замовлення, яке вже Paid?",
+      "options": [
+        { "text": "Подвійна оплата — реальний фінансовий ризик", "correct": true },
+        { "text": "Це не важливо, кнопку ніхто не натисне двічі" }
+      ]
+    }
+  ]
+}

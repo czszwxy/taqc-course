@@ -1,0 +1,35 @@
+{
+  "type": "table",
+  "title": "Decision table: shipping and discount in the cart",
+  "playground": "cart",
+  "statement": "Склади **очікувані** результати для кошика Gadgetly за вимогами (жовтий блок на сторінці **Shopping cart**):\n\n> **Shipping** 100 UAH. **Free** if the subtotal is **3,000 UAH or more**, OR the customer is a **Gadgetly Plus** member, OR `FREESHIP` is applied. Each condition works on its own and together with any promo code.\n>\n> `SAVE10` — 10% off the subtotal. Only one code per order.\n\nЗаповни дії для всіх 12 правил. Це **специфікація**, тобто те, що має бути, а не те, що зараз показує сторінка. Потім можеш перевірити кожне правило на сторінці: розбіжності — кандидати в баги для наступного завдання.",
+  "givenColumns": ["Subtotal ≥ 3,000?", "Plus member?", "Promo code"],
+  "answerColumns": [
+    { "id": "shipping", "label": "Shipping", "options": ["Free", "100 UAH"] },
+    { "id": "discount", "label": "Discount", "options": ["10%", "None"] }
+  ],
+  "rows": [
+    { "given": ["No", "No", "—"], "answers": { "shipping": "100 UAH", "discount": "None" }, "explain": "Жодна умова безкоштовної доставки не виконана." },
+    { "given": ["No", "No", "SAVE10"], "answers": { "shipping": "100 UAH", "discount": "10%" }, "explain": "SAVE10 дає знижку, але не безкоштовну доставку." },
+    { "given": ["No", "No", "FREESHIP"], "answers": { "shipping": "Free", "discount": "None" } },
+    { "given": ["No", "Yes", "—"], "answers": { "shipping": "Free", "discount": "None" } },
+    {
+      "given": ["No", "Yes", "SAVE10"],
+      "answers": { "shipping": "Free", "discount": "10%" },
+      "explain": "Членство Plus дає безкоштовну доставку **разом з будь-яким промокодом**: доставка Free, і знижка 10% теж є."
+    },
+    { "given": ["No", "Yes", "FREESHIP"], "answers": { "shipping": "Free", "discount": "None" } },
+    { "given": ["Yes", "No", "—"], "answers": { "shipping": "Free", "discount": "None" } },
+    { "given": ["Yes", "No", "SAVE10"], "answers": { "shipping": "Free", "discount": "10%" }, "explain": "Сума ≥ 3,000 сама по собі дає Free, а SAVE10 додає знижку." },
+    { "given": ["Yes", "No", "FREESHIP"], "answers": { "shipping": "Free", "discount": "None" } },
+    { "given": ["Yes", "Yes", "—"], "answers": { "shipping": "Free", "discount": "None" } },
+    { "given": ["Yes", "Yes", "SAVE10"], "answers": { "shipping": "Free", "discount": "10%" } },
+    { "given": ["Yes", "Yes", "FREESHIP"], "answers": { "shipping": "Free", "discount": "None" } }
+  ],
+  "hints": [
+    "Доставка безкоштовна, якщо виконана **хоча б одна** з трьох умов (OR).",
+    "Знижка 10% залежить **лише** від промокоду SAVE10 — сума і членство на неї не впливають.",
+    "Подумай окремо про правило «No / Yes / SAVE10»: що кажуть вимоги про комбінацію з промокодом?"
+  ],
+  "explanation": "Доставка = Free, якщо **subtotal ≥ 3,000 OR Plus member OR FREESHIP**; інакше 100 UAH. Знижка = 10% лише для SAVE10. Таблиця з 12 правил змушує перевірити кожну комбінацію, зокрема ту, де розробники часто помиляються: членство Plus **разом із** промокодом SAVE10."
+}

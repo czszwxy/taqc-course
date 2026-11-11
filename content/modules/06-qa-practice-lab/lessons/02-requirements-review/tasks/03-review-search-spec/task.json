@@ -1,0 +1,49 @@
+{
+  "type": "written",
+  "title": "Review a draft spec: catalog search & filters",
+  "statement": "Product Owner надіслав **чернетку** вимог до пошуку в каталозі Gadgetly і просить рев'ю до початку розробки:\n\n> **Catalog search (draft v0.1)**\n> 1. The user can search products by name.\n> 2. Filters: category, price, in stock.\n> 3. Results can be sorted by price and rating.\n> 4. The page shows how many products were found.\n> 5. The search should be fast.\n> 6. There is a button to clear the filters.\n\nЗнайди прогалини і напиши щонайменше **6** питань до PO — по одному на рядок, бажано з посиланням на номер пункту і запропонованою відповіддю.",
+  "fields": [{ "id": "questions", "label": "Questions to the PO (one per line)", "kind": "list", "placeholder": "#1: Is search case-insensitive? Proposed: yes" }],
+  "rules": [
+    { "field": "questions", "check": "minItems", "value": 6, "message": "Потрібно щонайменше **6** питань." },
+    { "field": "questions", "check": "mentionsAny", "value": ["case|регістр|upper|lower|велик|мал|partial|частков|space|пробіл"], "message": "Пункт 1: як саме працює пошук — **регістр**, частковий збіг, пробіли?" },
+    {
+      "field": "questions",
+      "check": "mentionsAny",
+      "value": ["inclusive|включ|межі|межа|boundar|exact|min.*max|мін.*макс|range|діапазон"],
+      "message": "Пункт 2: що з **діапазоном цін** — межі включно? Min > Max? Порожні поля?"
+    },
+    { "field": "questions", "check": "mentionsAny", "value": ["combin|комбін|поєдн|разом|одночасн|together|and\\s*/\\s*or|and or or|all conditions|усі умови|всі умови|any condition|будь-як\\S* (з )?умов"], "message": "Пункт 2: як фільтри **комбінуються** між собою (AND чи OR)?" },
+    { "field": "questions", "check": "mentionsAny", "value": ["default|за замовчуванням|direction|напрям|ascending|descending|зростан|спадан|order|порядок"], "message": "Пункт 3: **напрямок** сортування і порядок за замовчуванням?" },
+    { "field": "questions", "check": "mentionsAny", "value": ["(^|\\D)0(\\D|$)|zero|no results|нічого|порожн|empty|немає результ|нуль"], "message": "Пункт 4: що показується, коли знайдено **0** товарів?" },
+    { "field": "questions", "check": "mentionsAny", "value": ["fast|швидк|second|секунд|ms|мс|performance|продуктивн|time|час"], "message": "Пункт 5: «fast» — це **скільки**? Потрібна вимірювана метрика." },
+    { "field": "questions", "check": "mentionsAny", "value": ["clear|очист|скид|reset"], "message": "Пункт 6: що саме **скидає** кнопка (і пошук, і сортування)?" }
+  ],
+  "model": {
+    "questions": [
+      "#1: Is search case-insensitive and does it match part of the name (\"mou\" → Mouse)? Are spaces around the query ignored? Proposed: yes to all",
+      "#1: Does search look only in the name or also in the category / description?",
+      "#2: Is the price range inclusive (Max = 1,000 shows a product costing 1,000)? Proposed: inclusive",
+      "#2: What happens if Min > Max, or one field is empty? Proposed: error for Min > Max, empty = no limit",
+      "#2: Do filters combine with AND (all conditions) or OR? Proposed: AND",
+      "#2: Are out-of-stock products shown when \"in stock\" is off, and can they be added to the cart? Proposed: shown, Add to cart disabled",
+      "#3: Which sort directions exist (price low → high and high → low)? What is the default order? Proposed: Relevance by default",
+      "#4: Does the counter always equal the number of shown products? What is shown when 0 products are found? Proposed: \"No products match your filters\"",
+      "#5: What does \"fast\" mean? Proposed: results in under 1 second for 95% of queries",
+      "#6: Does \"Clear filters\" also clear the search text and the sort? Proposed: resets everything"
+    ]
+  },
+  "hints": [
+    "Пройди кожен пункт окремо і спитай: «Що тут не сказано?»",
+    "Пункт 2 найбагатший на питання: межі цін, Min > Max, порожні поля, AND / OR, що з товарами не в наявності.",
+    "Пункт 5 — класичне розмите слово. Пункт 4 — що при нулі результатів?"
+  ],
+  "explanation": "Кожен пункт чернетки щось замовчує: **#1** — регістр, частковий збіг, пробіли, де шукати; **#2** — межі цін, Min > Max, порожні поля, AND/OR, товари не в наявності; **#3** — напрямок і порядок за замовчуванням; **#4** — узгодженість лічильника і стан «0 результатів»; **#5** — вимірювана метрика замість «fast»; **#6** — що саме скидається. Ці питання стали вимогами сторінки Search & filters, яку ти тестуватимеш в уроці 6.",
+  "checklist": [
+    "Every draft point has at least one question",
+    "Questions are specific and can be answered briefly",
+    "Many questions include a proposed answer",
+    "Numbers and ranges get boundary questions",
+    "Empty / zero states are asked about",
+    "No question is answered by the draft already"
+  ]
+}

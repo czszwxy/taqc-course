@@ -1,0 +1,136 @@
+{
+  "type": "bug-report",
+  "title": "Bug hunt: run your session on Search & filters",
+  "playground": "search",
+  "minBugs": 3,
+  "statement": "Проведи exploratory-сесію за своїм charter'ом (time-box — 45 хвилин). На сторінці **Search & filters** сховано **6 багів**. Оформи щонайменше **3**.\n\nПеред репортом звузь умову: баг з'являється лише з певним фільтром? лише на межі? лише в одному напрямку сортування? Чим точніша умова, тим швидше виправлення.",
+  "hints": [
+    "Пройди свої ідеї з плану сесії: регістр у пошуку, Max = точна ціна товару (є товари рівно по 1,299 UAH).",
+    "Перевір **весь** список після кожного сортування і порівняй лічильник з кількістю карток, коли ввімкнено «In stock only».",
+    "Натисни Clear filters після того, як заповнила **всі** поля, включно з пошуком. Подивись уважно на товари з міткою Out of stock."
+  ],
+  "explanation": "Баги пошуку й фільтрів: чутливість до регістру, виключна межа діапазону (`<` замість `<=`), сортування чисел як тексту, лічильник, що ігнорує один із фільтрів, неповне скидання і дія, доступна для недоступного товару. Усі вони знаходяться евристиками з теорії. Хороший репорт називає точний запит або фільтр, точний результат (які товари / яке число) і що має бути за вимогами.",
+  "bugs": [
+    {
+      "id": "search-case-sensitive",
+      "title": "Search is case-sensitive",
+      "match": ["search|пошук|шука", "case-?(in)?sensitiv|upper|lower|регістр|малими|маленьк|small letter|capital|велик\\S* літер"],
+      "severity": ["Major", "Minor"],
+      "severityWhy": "Більшість людей пишуть у пошуку малими літерами — вони не знаходять товари, які є в наявності. Це втрачені продажі: Major.",
+      "model": {
+        "title": "Search: lowercase query \"mouse\" finds nothing although 2 mice are in the catalog",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Search page /playground/search is open, no filters set",
+        "steps": ["Type \"mouse\" in the Search field", "Look at the results"],
+        "testData": "Search: mouse (catalog has \"Wireless Mouse M2\" and \"Gaming Mouse X7\")",
+        "actualResult": "\"0 products found\" and \"No products match your filters\" are shown.",
+        "expectedResult": "Search is case-insensitive: Wireless Mouse M2 and Gaming Mouse X7 are shown, \"2 products found\".",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": "screenshot-search-lowercase.png"
+      }
+    },
+    {
+      "id": "max-price-exclusive",
+      "title": "Products priced exactly at Max price are excluded",
+      "match": ["max|максим|верхн", "price|цін"],
+      "severity": ["Minor", "Major"],
+      "severityWhy": "Частина відповідних товарів не показується, але користувач може збільшити Max. Minor або Major.",
+      "model": {
+        "title": "Search: products priced exactly at Max price (1,299 UAH) are not shown",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Search page /playground/search is open, no filters set",
+        "steps": ["Enter \"1299\" in Max price", "Look at the results"],
+        "testData": "Max price: 1299 (Gaming Mouse X7 and Sport Earbuds cost exactly 1,299 UAH)",
+        "actualResult": "Gaming Mouse X7 and Sport Earbuds are missing; only 3 cheaper products are shown.",
+        "expectedResult": "The price range is inclusive: products costing exactly 1,299 UAH are shown too (5 products).",
+        "severity": "Minor",
+        "priority": "Medium",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "sort-desc-as-text",
+      "title": "\"Price: high to low\" sorts prices in the wrong order",
+      "match": ["sort|сорт|впорядк", "high|desc|спадан|дорожч|дорог|від більш"],
+      "severity": ["Major", "Minor"],
+      "severityWhy": "Сортування повністю неправильне — користувач, що шукає найдорожчі товари, бачить хаотичний список. Функція не працює: Major.",
+      "model": {
+        "title": "Search: sorting \"Price: high to low\" shows prices in the wrong order (9,999 before 54,999)",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Search page /playground/search is open, no filters set",
+        "steps": ["Select \"Price: high to low\" in Sort by", "Read the prices of the whole list"],
+        "testData": "All 14 products, sort: Price: high to low",
+        "actualResult": "Order starts with 9,999, 8,999, 54,999, 499, 41,999 … — prices look compared as text.",
+        "expectedResult": "Products go from the most expensive to the cheapest: 54,999, 41,999, 32,999 … 249.",
+        "severity": "Major",
+        "priority": "Medium",
+        "attachments": "screenshot-sort-desc.png"
+      }
+    },
+    {
+      "id": "counter-ignores-in-stock",
+      "title": "Result counter ignores \"In stock only\"",
+      "match": ["count|counter|лічильник|кількіст|found|знайден|number of", "stock|наявн"],
+      "severity": ["Minor", "Trivial"],
+      "severityWhy": "Число не збігається зі списком і збиває з пантелику, але товари показані правильно: Minor.",
+      "model": {
+        "title": "Search: result counter ignores \"In stock only\" — shows 14 products found while 10 cards are displayed",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Search page /playground/search is open, no filters set",
+        "steps": ["Check \"In stock only\"", "Compare the counter with the number of product cards"],
+        "testData": "In stock only: checked; no other filters",
+        "actualResult": "\"14 products found\" is shown, but only 10 product cards are displayed.",
+        "expectedResult": "The counter equals the number of cards: \"10 products found\".",
+        "severity": "Minor",
+        "priority": "Low",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "clear-keeps-search-text",
+      "title": "\"Clear filters\" does not clear the search text",
+      "match": ["clear|очист|скину|reset", "search|пошук"],
+      "severity": ["Minor", "Trivial"],
+      "severityWhy": "Користувач думає, що бачить увесь каталог, а пошук досі обмежує результати. Обхід — стерти текст вручну: Minor.",
+      "model": {
+        "title": "Search: \"Clear filters\" does not clear the search text",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Search page /playground/search is open, no filters set",
+        "steps": ["Type \"Phone\" in Search", "Select category \"Phones\"", "Click \"Clear filters\""],
+        "testData": "Search: Phone; Category: Phones",
+        "actualResult": "Category resets to All, but \"Phone\" stays in the search box; 4 products are shown instead of 14.",
+        "expectedResult": "Clear filters resets everything including the search text: the search box is empty and all 14 products are shown.",
+        "severity": "Minor",
+        "priority": "Medium",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "add-to-cart-out-of-stock",
+      "title": "\"Add to cart\" is enabled for out-of-stock products",
+      "match": ["add to cart|в кошик|до кошика|додати|button|кнопк", "out.of.stock|not in stock|немає в наявності|відсутн|unavailable|нема в наявн"],
+      "severity": ["Major", "Minor"],
+      "severityWhy": "Клієнт «купує» товар, якого немає: замовлення потім скасовують, клієнт незадоволений. Major.",
+      "model": {
+        "title": "Search: \"Add to cart\" is enabled for out-of-stock products",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Search page /playground/search is open, no filters set",
+        "steps": ["Find \"Gaming Mouse X7\" (label \"Out of stock\")", "Click \"Add to cart\" on its card"],
+        "testData": "Product: Gaming Mouse X7 (out of stock)",
+        "actualResult": "The button is active; clicking it shows \"Added to cart: Gaming Mouse X7\".",
+        "expectedResult": "For out-of-stock products the Add to cart button is disabled and nothing is added.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    }
+  ],
+  "checklist": [
+    "Summary names the control (search, Max price, sort, counter…) and the condition",
+    "Test data has the exact query / filter values",
+    "Actual result lists what you saw: product names, the counter value, the order",
+    "Expected result refers to the requirement (inclusive range, case-insensitive…)",
+    "The condition is narrowed down (only with In stock only, only high → low…)"
+  ]
+}

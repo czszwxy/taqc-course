@@ -22,6 +22,7 @@ import { evaluateCodeRules } from '../src/runner/client';
 import { courseSchema, formatZodError, lessonSchema, moduleSchema, taskSchema, type Task } from '../src/content/schema';
 import { checkBugReportQuality, checkTestCase, evaluateRules, matchBug, type FormValues } from '../src/features/tasks/forms';
 import { GENERATORS } from '../src/features/tasks/generators';
+import { PLAYGROUND_PAGES } from '../src/playground/registry';
 
 /** Theory files shorter than this are treated as "not written yet". */
 const MIN_THEORY_LENGTH = 200;
@@ -255,6 +256,12 @@ async function main(): Promise<void> {
   moduleSlugs.forEach((m) => checkModuleFolder(m, listed));
   const lessonDirs = moduleSlugs.flatMap((m) => dirs(path.join(modulesDir, m, 'lessons')).map((l) => path.join(modulesDir, m, 'lessons', l)));
   const tasks = lessonDirs.flatMap(checkLessonFolder);
+
+  const playgroundIds = new Set(PLAYGROUND_PAGES.map((p) => p.id));
+  tasks
+    .map(({ dir, task }) => ({ dir, id: 'playground' in task ? task.playground : undefined }))
+    .filter(({ id }) => id !== undefined && !playgroundIds.has(id))
+    .forEach(({ dir, id }) => fail(dir, `unknown playground page "${id}"`));
 
   await Promise.all(
     tasks.map(({ dir, task }) => {

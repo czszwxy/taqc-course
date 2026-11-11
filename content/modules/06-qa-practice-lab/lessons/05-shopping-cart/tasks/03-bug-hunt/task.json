@@ -1,0 +1,136 @@
+{
+  "type": "bug-report",
+  "title": "Bug hunt: find and report bugs in the Shopping cart",
+  "playground": "cart",
+  "minBugs": 3,
+  "statement": "У кошику **Gadgetly** сховано **6 багів**. Знайди й оформи щонайменше **3**.\n\n- Перед кожною перевіркою **порахуй** очікувані суми самостійно.\n- Використай свою таблицю рішень з попереднього завдання: кожне правило — окремий тест.\n- Після експериментів натискай **Reset demo data**, щоб повернути початковий кошик.\n\nУ репорті про гроші пиши розрахунок: що показано і скільки має бути.",
+  "hints": [
+    "Межі: кількість **0**, **1**, **10**, **11**; subtotal рівно **3,000 UAH** (наприклад, Mouse × 2).",
+    "Промокоди: інший регістр (`save10`), повторне натискання Apply, комбінація з галочкою Plus member.",
+    "Видали **перший** товар у списку і подивись, що саме зникло."
+  ],
+  "explanation": "Баги кошика ховаються в межах (кількість 0, сума рівно 3,000), у промокодах (регістр, повторне застосування), у комбінаціях умов (Plus member + SAVE10) і в діях зі списком (Remove видаляє не той рядок). Систематичний підхід: таблиця рішень для доставки + граничні значення для кількості й суми + перевірка кожної дії «на правильному об'єкті».",
+  "bugs": [
+    {
+      "id": "quantity-zero-accepted",
+      "title": "Quantity 0 is accepted",
+      "match": ["quantity|qty|кількіст|к-сть", "(^|\\D)0(\\D|$)|zero|нуль|нульов"],
+      "severity": ["Minor", "Major"],
+      "severityWhy": "У кошику залишається товар з кількістю 0 — на checkout потрапляє некоректне замовлення. Обхід — кнопка Remove, тому Minor або Major.",
+      "model": {
+        "title": "Cart: quantity 0 is accepted — no error, the item stays in the cart with line total 0 UAH",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Shopping cart /playground/cart is open with the default items",
+        "steps": ["Enter \"0\" in the Quantity field of \"Wireless mouse M2\"", "Look at the item row and the cart summary"],
+        "testData": "Wireless mouse M2: Quantity 0",
+        "actualResult": "No error is shown; the line total becomes 0 UAH and the subtotal drops to 2,000 UAH.",
+        "expectedResult": "Error \"Quantity must be from 1 to 10\" is shown under the item; totals do not change (subtotal 2,500 UAH).",
+        "severity": "Minor",
+        "priority": "Medium",
+        "attachments": "screenshot-qty-zero.png"
+      }
+    },
+    {
+      "id": "promo-case-sensitive",
+      "title": "Promo code in lowercase is rejected",
+      "match": ["promo|промо|код|code|купон|coupon", "case-?(in)?sensitiv|upper|lower|регістр|малими|маленьк|small letter|capital|велик\\S* літер"],
+      "severity": ["Minor", "Major"],
+      "severityWhy": "Клієнт не отримує знижку, якщо ввів код малими літерами, і може відмовитися від покупки. Обхід — ввести великими: Minor або Major.",
+      "model": {
+        "title": "Cart: promo code in lowercase (\"save10\") is rejected as not valid",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Shopping cart /playground/cart is open with the default items (subtotal 2,500 UAH)",
+        "steps": ["Enter \"save10\" in the Promo code field", "Click \"Apply\""],
+        "testData": "Promo code: save10",
+        "actualResult": "Error \"Promo code is not valid\" is shown; no discount is applied.",
+        "expectedResult": "\"save10\" is accepted like SAVE10 (codes are case-insensitive): discount − 250 UAH, total 2,350 UAH.",
+        "severity": "Minor",
+        "priority": "Medium",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "shipping-boundary-3000",
+      "title": "Shipping is charged for a subtotal of exactly 3,000 UAH",
+      "match": ["ship|доставк", "3[ ,.]?000"],
+      "severity": ["Major", "Minor"],
+      "severityWhy": "Клієнти з сумою рівно на межі переплачують 100 UAH — неправильне списання грошей: Major (або Minor).",
+      "model": {
+        "title": "Cart: shipping 100 UAH is charged when the subtotal is exactly 3,000 UAH",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Shopping cart /playground/cart is open with the default items",
+        "steps": ["Change the quantity of \"Wireless mouse M2\" to 2", "Look at the cart summary"],
+        "testData": "Mouse 500 × 2 + Keyboard 1,500 × 1 + Cable 250 × 2 = subtotal 3,000 UAH; no promo code; not a Plus member",
+        "actualResult": "Shipping shows 100 UAH; total is 3,100 UAH.",
+        "expectedResult": "Shipping is Free (requirement: free shipping from 3,000 UAH), total 3,000 UAH.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": "screenshot-shipping-3000.png"
+      }
+    },
+    {
+      "id": "remove-deletes-last-item",
+      "title": "Remove deletes the last item instead of the clicked one",
+      "match": ["remov|delet|видал|прибра", "wrong|another|other|last|інш|останн|не той|не те|instead|замість"],
+      "severity": ["Major", "Critical"],
+      "severityWhy": "Клієнт видаляє один товар, а зникає інший: він може оплатити не те, що хотів. Основна функція кошика працює неправильно: Major.",
+      "model": {
+        "title": "Cart: clicking Remove on \"Wireless mouse M2\" deletes the last item (USB-C cable) instead",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Shopping cart /playground/cart is open with the default items",
+        "steps": ["Click \"Remove\" in the row of \"Wireless mouse M2\" (the first item)", "Look at the list of items"],
+        "testData": "Items: Wireless mouse M2, Mechanical keyboard K8, USB-C cable 1 m",
+        "actualResult": "\"USB-C cable 1 m\" disappears from the cart; \"Wireless mouse M2\" stays.",
+        "expectedResult": "Only \"Wireless mouse M2\" is removed; the keyboard and the cable stay in the cart.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": "video-remove.mp4"
+      }
+    },
+    {
+      "id": "promo-applied-twice",
+      "title": "Applying SAVE10 twice doubles the discount",
+      "match": ["save10|promo|промо|знижк|discount|код|code", "twice|again|двічі|ще раз|повторн|second time|2 times|two times|20 ?%|подво|double"],
+      "severity": ["Major", "Critical"],
+      "severityWhy": "Будь-хто може отримати 20%, 30%… знижки — пряма втрата грошей компанії: Major або Critical.",
+      "model": {
+        "title": "Cart: applying SAVE10 a second time doubles the discount to 20%",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Shopping cart /playground/cart is open with the default items (subtotal 2,500 UAH)",
+        "steps": ["Enter \"SAVE10\" in the Promo code field and click \"Apply\"", "Click \"Apply\" again"],
+        "testData": "Promo code: SAVE10; subtotal 2,500 UAH",
+        "actualResult": "Discount becomes − 500 UAH (20%), total 2,100 UAH.",
+        "expectedResult": "The discount stays − 250 UAH (10% of 2,500); one code can't be applied twice; total 2,350 UAH.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "member-loses-free-shipping-with-promo",
+      "title": "Plus member pays shipping when SAVE10 is applied",
+      "match": ["member|plus|учасник|підписк|членств", "save10|promo|промо|код|code|знижк|discount"],
+      "severity": ["Major", "Minor"],
+      "severityWhy": "Найлояльніші клієнти (Plus) переплачують за доставку, щойно використовують знижку: неправильні гроші для цілої групи користувачів — Major.",
+      "model": {
+        "title": "Cart: Gadgetly Plus member pays 100 UAH shipping when SAVE10 is applied",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Shopping cart /playground/cart is open with the default items (subtotal 2,500 UAH)",
+        "steps": ["Check \"I'm a Gadgetly Plus member\" (shipping becomes Free)", "Enter \"SAVE10\" in the Promo code field and click \"Apply\""],
+        "testData": "Plus member: yes; Promo code: SAVE10; subtotal 2,500 UAH",
+        "actualResult": "Shipping changes from Free to 100 UAH; total 2,350 UAH.",
+        "expectedResult": "Shipping stays Free for a Plus member together with any promo code; total 2,250 UAH (2,500 − 250).",
+        "severity": "Major",
+        "priority": "Medium",
+        "attachments": ""
+      }
+    }
+  ],
+  "checklist": [
+    "Summary names the cart action and the condition (value, code, combination)",
+    "Test data shows the cart state: items, quantities, subtotal",
+    "Actual and expected contain concrete amounts, not just \"wrong total\"",
+    "Expected amounts are calculated from the requirements",
+    "Money bugs get a severity that reflects who loses money and how much"
+  ]
+}

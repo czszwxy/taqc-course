@@ -1,0 +1,29 @@
+{
+  "title": "Requirements review: find the gaps",
+  "minutes": 45,
+  "summary": "Статичне тестування вимог: неоднозначність, неповнота, суперечності, нетестовані формулювання — і як писати питання, що закривають прогалини ще до розробки",
+  "resources": [
+    {
+      "title": "ISTQB — official site (syllabi, Foundation Level)",
+      "url": "https://www.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Розділ 3 Foundation Level: static testing, reviews.",
+      "needsVerification": true
+    },
+    {
+      "title": "ISTQB Glossary: static testing, review",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: requirements review for testers (пошук)",
+      "url": "https://www.youtube.com/results?search_query=requirements+review+for+software+testers",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

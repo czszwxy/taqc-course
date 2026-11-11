@@ -1,0 +1,30 @@
+{
+  "title": "Search & filters: exploratory session",
+  "minutes": 70,
+  "summary": "Exploratory testing на практиці: charter, time-box, евристики для пошуку і фільтрів (регістр, межі цін, комбінації, сортування, лічильник, скидання) — і баг-репорти за результатами сесії",
+  "resources": [
+    {
+      "title": "ISTQB Glossary: exploratory testing",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Знайди терміни exploratory testing, session-based testing, test charter.",
+      "needsVerification": true
+    },
+    {
+      "title": "Ministry of Testing — community articles",
+      "url": "https://www.ministryoftesting.com/",
+      "kind": "article",
+      "lang": "en",
+      "note": "Пошукай матеріали про exploratory testing і test charters.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: exploratory testing session example (пошук)",
+      "url": "https://www.youtube.com/results?search_query=exploratory+testing+session+charter+example",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

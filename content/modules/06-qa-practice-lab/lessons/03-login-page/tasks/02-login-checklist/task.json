@@ -1,0 +1,61 @@
+{
+  "type": "written",
+  "title": "Write a checklist for the Login page",
+  "playground": "login",
+  "statement": "Відкрий сторінку **Login page** і прочитай вимоги (жовтий блок). Напиши **чекліст** щонайменше з **10** пунктів, по одному на рядок.\n\nПокрий усі групи: позитивні перевірки, негативні, безпеку (повідомлення, блокування, заблокований акаунт) і зручність (Show password, Remember me, Forgot password).\n\nПоки що **не** шукай баги — лише сплануй, що перевірятимеш.",
+  "fields": [
+    {
+      "id": "checklist",
+      "label": "Login checklist",
+      "kind": "list",
+      "placeholder": "Вхід з валідними даними demo@taskly.test / Demo1234 → Welcome back"
+    }
+  ],
+  "rules": [
+    { "field": "checklist", "check": "minItems", "value": 10, "message": "Потрібно щонайменше **10** пунктів." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["valid|успішн|correct|правильн|вірн"], "message": "Додай позитивну перевірку: вхід з **валідними** даними." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["wrong|невір|неправильн|incorrect|invalid|хибн"], "message": "Додай негативну перевірку: **неправильний пароль**." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["empty|порожн|blank|без email|без пароля|required|обов"], "message": "Додай перевірку **порожніх** полів." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["case|регістр|upper|lower|велик|малими"], "message": "Перевір **регістр**: email має бути case-insensitive, пароль — case-sensitive." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["(^|\\D)3(\\D|$)|attempt|спроб|lockout"], "message": "Додай перевірку **блокування після 3 невдалих спроб**." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["locked@|заблокован|blocked|locked account"], "message": "Перевір **заблокований акаунт** `locked@taskly.test`." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["remember|запам.ят"], "message": "Додай перевірку **Remember me** (з галочкою і без)." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["forgot|reset|забул|відновл|скид"], "message": "Додай перевірку **Forgot password?**." }
+  ],
+  "model": {
+    "checklist": [
+      "Valid login demo@taskly.test / Demo1234 → \"Welcome back!\" and \"Signed in as demo@taskly.test\"",
+      "Login with Enter key instead of clicking \"Log in\"",
+      "Email in another case (DEMO@Taskly.test) → signed in (email is case-insensitive)",
+      "Email with spaces before/after → signed in (spaces are ignored)",
+      "Wrong password → \"Invalid email or password\"",
+      "Password in another case (demo1234) → rejected (password is case-sensitive)",
+      "Unknown email → the same \"Invalid email or password\" (no \"user not found\")",
+      "Empty Email and Password → \"Email is required\" and \"Password is required\"",
+      "Only one field empty → only that field shows an error",
+      "2 failed attempts → the correct password still works",
+      "3 failed attempts in a row → \"Too many failed attempts…\", even the correct password is rejected",
+      "Successful login resets the failed attempts counter",
+      "Blocked account locked@taskly.test / Locked123 → \"Your account is locked. Contact support.\"",
+      "Password is hidden by default; Show password shows it and hides it again",
+      "Remember me checked → email is prefilled after Log out",
+      "Remember me not checked → the form is empty after Log out",
+      "Forgot password? with an empty email → \"Enter your email first\"",
+      "Forgot password? with a filled email → \"If an account exists…\" message"
+    ]
+  },
+  "hints": [
+    "Пройдися по вимогах пункт за пунктом: кожне речення — щонайменше одна перевірка (часто дві: «працює» і «не працює»).",
+    "Для кожного правила подумай про протилежний випадок: Remember me **з** галочкою і **без**, Forgot password з email і **без** нього.",
+    "Блокування — це межа: 2 спроби (ще можна) і 3 спроби (блок)."
+  ],
+  "explanation": "Хороший чекліст логіну покриває чотири групи: **позитивні** (валідний вхід, регістр і пробіли в email), **негативні** (неправильний пароль, неіснуючий email, порожні поля), **безпеку** (однакове повідомлення, блокування після 3 спроб, заблокований акаунт, прихований пароль) і **зручність** (Show password, Remember me, Forgot password, Enter). Для кожного правила додавай і протилежний випадок.",
+  "checklist": [
+    "Є щонайменше один позитивний вхід із точними тестовими даними",
+    "Для кожної вимоги є хоча б одна перевірка",
+    "Перевірено обидва боки правил (з галочкою / без, з email / без)",
+    "Блокування перевірено біля межі: 2 і 3 спроби",
+    "Пункти короткі, по одній перевірці в рядку",
+    "Чекліст може пройти будь-хто з команди"
+  ]
+}

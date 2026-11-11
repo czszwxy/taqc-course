@@ -1,0 +1,121 @@
+{
+  "type": "bug-report",
+  "title": "Bug reports: order status flow",
+  "playground": "order",
+  "minBugs": 3,
+  "statement": "На сторінці **Order status flow** сховано **5 багів**. Чотири з них ти, ймовірно, вже бачила в прогоні з попереднього завдання. П'ятий — це **побічний ефект** переходу, якого немає в таблиці.\n\nОформи щонайменше **3** баг-репорти. У кроках завжди вказуй, як дійти до стартового стану.",
+  "hints": [
+    "Кожен Failed-рядок з попереднього прогону — окремий баг.",
+    "П'ятий баг: перечитай вимоги про те, що має відбуватися при скасуванні **оплаченого** замовлення, і подивись на історію.",
+    "У summary пиши стан і дію: «a Shipped order can be cancelled», «Return is rejected for a Delivered order»."
+  ],
+  "explanation": "Баги статусів — це або **дозволені невалідні переходи** (Created → Ship, Shipped → Cancel, Cancelled → Pay), або **заборонений валідний** (Delivered → Return), або **пропущений побічний ефект** (немає запису про повернення коштів). Хороший репорт містить стартовий стан, дію, фактичний статус і те, що має бути за моделлю.",
+  "bugs": [
+    {
+      "id": "ship-before-pay",
+      "title": "Unpaid order can be shipped",
+      "match": ["ship|відправ|відвантаж", "without pay|before pay|без оплат|не оплач|неоплач|unpaid|not paid|до оплат|created|створен"],
+      "severity": ["Critical", "Blocker", "Major"],
+      "severityWhy": "Товар можна відправити без оплати — пряма фінансова втрата: Critical.",
+      "model": {
+        "title": "Order: an unpaid order in status Created can be shipped",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Order page /playground/order is open; demo data reset (status Created)",
+        "steps": ["Check that the status is Created", "Click \"Ship\""],
+        "testData": "Order #1042, status Created",
+        "actualResult": "Status changes to Shipped; no error is shown.",
+        "expectedResult": "Error \"Ship is not allowed for an order in status Created\"; the status stays Created (payment is required before shipping).",
+        "severity": "Critical",
+        "priority": "High",
+        "attachments": "screenshot-ship-unpaid.png"
+      }
+    },
+    {
+      "id": "cancel-after-shipped",
+      "title": "Shipped order can be cancelled",
+      "match": ["cancel|скасов|скасув", "ship|відправ"],
+      "severity": ["Major", "Critical"],
+      "severityWhy": "Замовлення вже їде до клієнта, а система вважає його скасованим: розсинхрон складу, доставки і грошей. Major.",
+      "model": {
+        "title": "Order: a Shipped order can be cancelled",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Order page /playground/order is open; demo data reset (status Created)",
+        "steps": ["Click \"Pay\"", "Click \"Ship\" (status Shipped)", "Click \"Cancel\""],
+        "testData": "Order #1042",
+        "actualResult": "Status changes from Shipped to Cancelled; no error is shown.",
+        "expectedResult": "Error \"Cancel is not allowed for an order in status Shipped\"; the status stays Shipped.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "pay-after-cancelled",
+      "title": "Cancelled order can be paid again",
+      "match": [
+        "cancel|скасов|скасув",
+        "pay|оплат|paid",
+        "again|знову|повторн|back|назад|final|фінальн|після скас|after (being )?cancel|ще раз"
+      ],
+      "severity": ["Major", "Critical"],
+      "severityWhy": "Фінальний стан перестає бути фінальним: гроші можуть бути списані за скасоване замовлення. Major.",
+      "model": {
+        "title": "Order: a Cancelled order can be paid again (status goes back to Paid)",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Order page /playground/order is open; demo data reset (status Created)",
+        "steps": ["Click \"Cancel\" (status Cancelled)", "Click \"Pay\""],
+        "testData": "Order #1042",
+        "actualResult": "Status changes from Cancelled to Paid; no error is shown.",
+        "expectedResult": "Error \"Pay is not allowed for an order in status Cancelled\"; Cancelled is a final status.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "return-rejected",
+      "title": "Return is rejected for a Delivered order",
+      "match": ["return|повернен|повернут", "deliver|доставлен|отриман"],
+      "severity": ["Major", "Critical"],
+      "severityWhy": "Клієнти не можуть повернути товар, хоча мають на це право — порушення бізнес-правила (і часто закону): Major.",
+      "model": {
+        "title": "Order: Return is rejected for a Delivered order",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Order page /playground/order is open; demo data reset (status Created)",
+        "steps": ["Click \"Pay\"", "Click \"Ship\"", "Click \"Deliver\" (status Delivered)", "Click \"Return\""],
+        "testData": "Order #1042",
+        "actualResult": "Error \"Return is not allowed for an order in status Delivered\" is shown; the status stays Delivered.",
+        "expectedResult": "The status changes to Returned and a new line is added to the history.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "refund-not-recorded",
+      "title": "Cancelling a Paid order does not record the refund",
+      "match": ["refund|кошт|гроші|money", "cancel|скасов|скасув"],
+      "severity": ["Major", "Minor"],
+      "severityWhy": "Незрозуміло, чи клієнт отримав гроші назад: це скарги в підтримку і ризик неповернених коштів. Major.",
+      "model": {
+        "title": "Order: cancelling a Paid order does not record the refund in the history",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "Order page /playground/order is open; demo data reset (status Created)",
+        "steps": ["Click \"Pay\" (status Paid)", "Click \"Cancel\"", "Look at the History"],
+        "testData": "Order #1042, total 2,749 UAH",
+        "actualResult": "The history shows \"Cancelled\" without any refund line.",
+        "expectedResult": "The Cancelled entry says \"Refund of 2,749 UAH issued\".",
+        "severity": "Major",
+        "priority": "Medium",
+        "attachments": "screenshot-history.png"
+      }
+    }
+  ],
+  "checklist": [
+    "Steps show how to reach the start state with valid actions",
+    "Summary names the start state and the action",
+    "Actual result says the resulting status and whether an error appeared",
+    "Expected result follows the state model from the requirements",
+    "Side effects (history, refund) are checked, not only the status"
+  ]
+}

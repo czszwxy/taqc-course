@@ -1,0 +1,30 @@
+{
+  "title": "How to approach a new feature",
+  "minutes": 45,
+  "summary": "Покроковий підхід до нової функції: мета і користувачі → вимоги → тур → питання → тестові умови → техніки → пріоритети → виконання й звіт",
+  "resources": [
+    {
+      "title": "ISTQB — official site (syllabi, Foundation Level)",
+      "url": "https://www.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Розділ 1.4 «Test activities»: test analysis і test design.",
+      "needsVerification": true
+    },
+    {
+      "title": "ISTQB Glossary: test condition",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Знайди терміни test condition, test basis, test analysis.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: how to test any feature (пошук)",
+      "url": "https://www.youtube.com/results?search_query=how+to+approach+testing+a+new+feature+QA",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

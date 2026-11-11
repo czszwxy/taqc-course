@@ -1,0 +1,137 @@
+{
+  "type": "bug-report",
+  "title": "Step 3: find and report bugs in the To-do app",
+  "playground": "todo",
+  "minBugs": 4,
+  "statement": "Проведи exploratory-сесію за своїм чеклістом. У застосунку **To-do** сховано **6 багів**. Це фінальний проєкт, тому оформи щонайменше **4** баг-репорти.\n\nПісля експериментів натискай **Reset demo data**, щоб повернути три демо-задачі.",
+  "hints": [
+    "Виконай свій тест-кейс на межу 100 символів. А потім стеж за лічильником після **кожної** дії: відмітити, видалити, очистити.",
+    "Перевір обидва шляхи редагування: збереження (Enter) і скасування (**Esc**).",
+    "Відміть задачу виконаною і онови сторінку (F5). Натисни Clear completed, коли є і активні, і виконані задачі."
+  ],
+  "explanation": "Баги To-do покривають усі евристики уроку: **межа** довжини (100 символів відхиляється), **тексти** («1 items left»), **облік** (лічильник не зменшується після видалення активної задачі), **CRUD** (Clear completed видаляє все), **скасування** (Esc зберігає зміни) і **збереження** (стан completed губиться після перезавантаження). Найнебезпечніші — ті, де користувач **втрачає дані**: Clear completed і перезавантаження.",
+  "bugs": [
+    {
+      "id": "max-length-100-rejected",
+      "title": "A task of exactly 100 characters is rejected",
+      "match": ["(^|\\D)100(\\D|$)|length|довжин|символ|character|char", "reject|too long|задовг|не дода|not added|can.?t|cannot|не можна|не вдається|помилк|error"],
+      "severity": ["Minor", "Major"],
+      "severityWhy": "Валідна задача максимальної довжини не додається, але її можна скоротити: Minor.",
+      "model": {
+        "title": "To-do: a task of exactly 100 characters is rejected as \"too long\"",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "To-do page /playground/todo is open",
+        "steps": ["Type a 100-character text into \"What needs to be done?\" (the length counter shows 100/100)", "Press Enter"],
+        "testData": "Task text: \"abcdefghij\" × 10 = 100 characters",
+        "actualResult": "Error \"Task is too long (max 100 characters)\" is shown; the task is not added.",
+        "expectedResult": "A 100-character task is added to the bottom of the list (requirement: 1–100 characters).",
+        "severity": "Minor",
+        "priority": "Medium",
+        "attachments": "screenshot-100-chars.png"
+      }
+    },
+    {
+      "id": "counter-plural",
+      "title": "Counter says \"1 items left\"",
+      "match": ["1 items|plural|множин|однин|singular|grammar|граматик"],
+      "severity": ["Trivial", "Minor"],
+      "severityWhy": "Лише граматика тексту, функціональність не порушена: Trivial.",
+      "model": {
+        "title": "To-do: counter says \"1 items left\" instead of \"1 item left\"",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "To-do page /playground/todo is open with the demo tasks (2 active)",
+        "steps": ["Mark \"Report the cart bug\" as completed", "Look at the counter under the list"],
+        "testData": "Demo tasks; one active task remains",
+        "actualResult": "The counter shows \"1 items left\".",
+        "expectedResult": "The counter shows \"1 item left\" (singular, as in the requirements).",
+        "severity": "Trivial",
+        "priority": "Low",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "counter-after-delete",
+      "title": "Counter does not decrease after deleting an active task",
+      "match": ["counter|лічильник|items? left|залиш|left", "delet|remov|видал|×"],
+      "severity": ["Minor", "Major"],
+      "severityWhy": "Число активних задач неправильне — користувач не може довіряти лічильнику. Дані не втрачаються: Minor.",
+      "model": {
+        "title": "To-do: counter does not decrease after deleting an active task",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "To-do page /playground/todo is open with the demo tasks (counter: 2 items left)",
+        "steps": ["Click × next to \"Buy coffee\" (an active task)", "Look at the counter"],
+        "testData": "Demo tasks; deleted task: Buy coffee (active)",
+        "actualResult": "The task disappears, but the counter still shows \"2 items left\".",
+        "expectedResult": "The counter shows \"1 item left\" — it counts only the remaining active tasks.",
+        "severity": "Minor",
+        "priority": "Medium",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "clear-completed-deletes-all",
+      "title": "\"Clear completed\" deletes all tasks",
+      "match": ["clear|очист", "all|усі|всі|active|активн|everything|все"],
+      "severity": ["Critical", "Major"],
+      "severityWhy": "Користувач безповоротно втрачає всі активні задачі одним кліком — втрата даних: Critical.",
+      "model": {
+        "title": "To-do: \"Clear completed\" deletes all tasks, including active ones",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "To-do page /playground/todo is open with the demo tasks (1 completed, 2 active)",
+        "steps": ["Click \"Clear completed\"", "Look at the list"],
+        "testData": "Completed: \"Write test cases for the login page\"; active: \"Report the cart bug\", \"Buy coffee\"",
+        "actualResult": "The list becomes empty: the active tasks \"Report the cart bug\" and \"Buy coffee\" are deleted too.",
+        "expectedResult": "Only the completed task is removed; the 2 active tasks stay in the list.",
+        "severity": "Critical",
+        "priority": "High",
+        "attachments": "video-clear-completed.mp4"
+      }
+    },
+    {
+      "id": "esc-saves-edit",
+      "title": "Esc while editing saves the changes",
+      "match": ["(^|[^a-z])esc(ape)?([^a-z]|$)", "edit|редаг|save|збер|cancel|скас|chang|змін"],
+      "severity": ["Major", "Minor"],
+      "severityWhy": "Користувач думає, що скасував зміни, а текст задачі зіпсовано: неочікувана зміна даних — Major.",
+      "model": {
+        "title": "To-do: pressing Esc while editing saves the changes instead of cancelling",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "To-do page /playground/todo is open with the demo tasks",
+        "steps": ["Click \"Edit\" next to \"Buy coffee\"", "Change the text to \"Buy tea\"", "Press Esc"],
+        "testData": "Task: Buy coffee → edited text: Buy tea",
+        "actualResult": "The edit field closes and the task is saved as \"Buy tea\".",
+        "expectedResult": "Esc discards the changes: the task text stays \"Buy coffee\".",
+        "severity": "Major",
+        "priority": "Medium",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "completed-lost-after-reload",
+      "title": "Completed state is lost after page reload",
+      "match": ["reload|refresh|оновл|перезавантаж|f5", "complet|done|виконан|галоч|check|відміч|познач|стан|status"],
+      "severity": ["Major", "Critical"],
+      "severityWhy": "Після кожного перезавантаження користувач втрачає інформацію, що вже зроблено. Дані зберігаються неповністю: Major.",
+      "model": {
+        "title": "To-do: completed state is lost after page reload — all tasks become active",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "To-do page /playground/todo is open with the demo tasks (demo data reset)",
+        "steps": ["Mark \"Buy coffee\" as completed", "Reload the page (F5)"],
+        "testData": "Demo tasks; completed before reload: \"Write test cases for the login page\", \"Buy coffee\"",
+        "actualResult": "All tasks are shown as active (unchecked); the counter shows \"3 items left\".",
+        "expectedResult": "Completed tasks stay completed after reload (requirement: tasks and their completed state are kept).",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    }
+  ],
+  "checklist": [
+    "Every report describes one bug",
+    "Steps start from a known state (demo data reset)",
+    "Test data names the exact tasks and texts",
+    "Actual result quotes what you saw (counter text, list content)",
+    "Data-loss bugs get the highest severity",
+    "A developer can reproduce each bug without asking you"
+  ]
+}

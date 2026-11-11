@@ -3,11 +3,13 @@ import type { TableTask } from '../../content/schema';
 import { useProgress } from '../progress/store';
 import { Markdown } from '../../components/Markdown';
 import { Callout } from '../../components/ui';
-import { ExplanationPanel, HintsPanel, NextActions } from './shared';
+import { ExplanationPanel, HintsPanel, NextActions, PlaygroundLink } from './shared';
 import type { TaskViewProps } from './types';
 
 /** Correct answers can be revealed after this many failed checks (or earlier with a confirmation). */
 const REVEAL_AFTER_FAILS = 2;
+/** Given cells up to this length (IDs like "TC-01", "Yes") never wrap. */
+const SHORT_CELL_LENGTH = 12;
 
 type Answers = Record<number, Record<string, string>>;
 
@@ -53,12 +55,13 @@ export function TableTaskView({ ct, header, onSimilar, next }: TaskViewProps) {
   };
 
   return (
-    <div className="mx-auto max-w-4xl px-5 py-7 lg:px-8">
+    <div className="mx-auto max-w-5xl px-5 py-7 lg:px-8">
       {header}
       <Markdown>{task.statement}</Markdown>
+      <PlaygroundLink id={task.playground} />
 
       <div className="card mt-5 overflow-x-auto">
-        <table className="w-full min-w-max border-collapse text-sm">
+        <table className="w-full min-w-[44rem] border-collapse text-sm">
           <thead>
             <tr className="bg-hover text-left">
               <th className="border-b border-line px-3 py-2 font-semibold text-faint">#</th>
@@ -77,9 +80,9 @@ export function TableTaskView({ ct, header, onSimilar, next }: TaskViewProps) {
           <tbody>
             {task.rows.map((row, r) => (
               <tr key={r} className="border-b border-line last:border-b-0">
-                <td className="px-3 py-2 tabular-nums text-faint">{r + 1}</td>
+                <td className="px-3 py-2 align-top tabular-nums text-faint">{r + 1}</td>
                 {row.given.map((g, i) => (
-                  <td key={i} className="px-3 py-2">
+                  <td key={i} className={`max-w-[18rem] px-3 py-2 align-top ${g.length <= SHORT_CELL_LENGTH ? 'whitespace-nowrap' : ''}`}>
                     <Markdown compact className="[&_p]:my-0">
                       {g}
                     </Markdown>
@@ -88,7 +91,7 @@ export function TableTaskView({ ct, header, onSimilar, next }: TaskViewProps) {
                 {task.answerColumns.map((col) => {
                   const value = answers[r]?.[col.id];
                   return (
-                    <td key={col.id} className="border-l-2 border-l-accent/30 px-2 py-1.5">
+                    <td key={col.id} className="min-w-[9.5rem] border-l-2 border-l-accent/30 px-2 py-1.5 align-top">
                       <select
                         className={`select py-1.5 ${cellTone(checked, value, row.answers[col.id])}`}
                         value={value ?? ''}

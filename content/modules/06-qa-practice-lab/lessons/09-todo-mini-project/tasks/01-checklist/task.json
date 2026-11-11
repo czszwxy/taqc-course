@@ -1,0 +1,53 @@
+{
+  "type": "written",
+  "title": "Step 1: checklist for the To-do app",
+  "playground": "todo",
+  "statement": "Відкрий **To-do list**, прочитай вимоги і зроби короткий тур по функції. Потім напиши **чекліст** щонайменше з **12** пунктів, по одному на рядок.\n\nПокрий CRUD (add / show / edit / complete / delete), межі довжини тексту, скасування редагування, лічильник, фільтри, Clear completed і збереження після перезавантаження.",
+  "fields": [{ "id": "checklist", "label": "To-do checklist", "kind": "list", "placeholder": "Add a task with Enter → it appears at the bottom of the list" }],
+  "rules": [
+    { "field": "checklist", "check": "minItems", "value": 12, "message": "Потрібно щонайменше **12** пунктів." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["(^|\\D)100(\\D|$)|(^|\\D)101(\\D|$)|length|довжин|символ|character"], "message": "Додай перевірки **меж довжини** тексту (100 / 101 символ)." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["empty|порожн|blank|space|пробіл"], "message": "Додай перевірку **порожньої** задачі або задачі з самих пробілів." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["edit|редаг"], "message": "Додай перевірки **редагування**." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["(^|[^a-z])esc(ape)?([^a-z]|$)|cancel|скасув"], "message": "Перевір **скасування** редагування (Esc / Cancel)." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["delet|remov|видал|×"], "message": "Додай перевірку **видалення** задачі." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["counter|лічильник|items? left|залиш"], "message": "Додай перевірки **лічильника** «N items left»." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["filter|фільтр|active|completed|активн|виконан"], "message": "Додай перевірки **фільтрів** All / Active / Completed." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["clear completed|очист"], "message": "Додай перевірку **Clear completed**." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["reload|refresh|оновл|перезавантаж|f5"], "message": "Перевір, що дані **зберігаються після перезавантаження** сторінки." }
+  ],
+  "model": {
+    "checklist": [
+      "Add a task with Enter and with the Add button → it appears at the bottom of the list",
+      "Add a task of 1 character → added",
+      "Add a task of exactly 100 characters → added",
+      "Add a task of 101 characters → \"Task is too long (max 100 characters)\"",
+      "Add an empty task and a task of spaces only → \"Task can't be empty\"",
+      "Spaces at the start/end are removed from the saved text",
+      "Mark a task completed → crossed out; click again → active",
+      "Edit a task, press Enter / Save → new text is saved",
+      "Edit a task to an empty text → error, the old text is kept",
+      "Edit a task and press Esc / Cancel → the text does not change",
+      "Delete an active and a completed task with × → only that task disappears",
+      "Counter shows the number of active tasks after add / complete / delete / clear",
+      "Counter with exactly one active task says \"1 item left\"",
+      "Filters All / Active / Completed show the right tasks",
+      "Clear completed removes only completed tasks; hidden when there are none",
+      "Reload the page (F5) → tasks and their completed state are kept"
+    ]
+  },
+  "hints": [
+    "Пройдися по CRUD: як додати, побачити, змінити, видалити — і що має статися з лічильником після кожної дії.",
+    "Межі довжини: 0 (порожньо), 1, 100, 101 символ.",
+    "Після кожної зміни онови сторінку — чи все збереглося?"
+  ],
+  "explanation": "Повний чекліст To-do: **створення** з межами довжини (1, 100, 101, порожньо, пробіли), **відмітка** виконання, **редагування** зі збереженням і скасуванням, **видалення**, **лічильник** після кожної дії (і однина «1 item left»), **фільтри**, **Clear completed** і **збереження** після перезавантаження. Кожне правило з вимог має щонайменше одну перевірку.",
+  "checklist": [
+    "Every requirement has at least one check",
+    "Boundaries 100 / 101 and empty input are included",
+    "Both Save and Cancel / Esc paths of editing are covered",
+    "The counter is checked after different actions",
+    "Persistence after reload is checked",
+    "Items are short and concrete"
+  ]
+}

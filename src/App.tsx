@@ -9,6 +9,11 @@ import { SettingsPage } from './pages/SettingsPage';
 import { PlaygroundIndex } from './pages/PlaygroundIndex';
 import { NotFound } from './pages/NotFound';
 import { SignupPage } from './playground/SignupPage';
+import { LoginPage } from './playground/LoginPage';
+import { CartPage } from './playground/CartPage';
+import { SearchPage } from './playground/SearchPage';
+import { OrderPage } from './playground/OrderPage';
+import { TodoPage } from './playground/TodoPage';
 import { useSettings } from './features/progress/store';
 
 export default function App() {
@@ -21,6 +26,11 @@ export default function App() {
     <Routes>
       {/* Bug Playground pages are standalone (no app chrome) so they can be tested like a real site. */}
       <Route path="/playground/signup" element={<SignupPage />} />
+      <Route path="/playground/login" element={<LoginPage />} />
+      <Route path="/playground/cart" element={<CartPage />} />
+      <Route path="/playground/search" element={<SearchPage />} />
+      <Route path="/playground/order" element={<OrderPage />} />
+      <Route path="/playground/todo" element={<TodoPage />} />
       <Route element={<Layout />}>
         <Route index element={<Dashboard />} />
         <Route path="module/:moduleSlug" element={<ModulePage />} />

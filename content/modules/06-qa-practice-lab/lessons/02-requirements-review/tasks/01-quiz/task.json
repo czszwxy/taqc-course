@@ -1,0 +1,75 @@
+{
+  "type": "quiz",
+  "title": "Quiz: requirements review",
+  "show": 5,
+  "hints": ["Перечитай таблицю «Типи проблем у вимогах» і пораду про формат питань."],
+  "questions": [
+    {
+      "id": "static",
+      "kind": "single",
+      "text": "Ти читаєш специфікацію і знаходиш суперечність до початку розробки. Як називається такий вид тестування?",
+      "options": [
+        { "text": "Static testing (рев'ю)", "correct": true },
+        { "text": "Regression testing" },
+        { "text": "Performance testing" }
+      ]
+    },
+    {
+      "id": "cheapest",
+      "kind": "single",
+      "text": "Чому дефект у вимогах вигідно знайти якомога раніше?",
+      "options": [
+        { "text": "Виправити речення в документі дешевше, ніж переробляти код після релізу", "correct": true },
+        { "text": "Бо тоді не потрібно тестувати програму" }
+      ]
+    },
+    {
+      "id": "ambiguous",
+      "kind": "single",
+      "text": "«The checkout should be **easy** to use». Яка це проблема?",
+      "options": [
+        { "text": "Неоднозначність / нетестованість: «easy» не має об'єктивного критерію", "correct": true },
+        { "text": "Суперечність" },
+        { "text": "Жодної проблеми" }
+      ]
+    },
+    {
+      "id": "incomplete",
+      "kind": "single",
+      "text": "«Users can upload an avatar up to 5 MB». Чого **бракує** найбільше?",
+      "options": [
+        { "text": "Дозволених форматів і поведінки при перевищенні розміру (яке повідомлення?)", "correct": true },
+        { "text": "Кольору кнопки «Upload»" }
+      ]
+    },
+    {
+      "id": "good-question",
+      "kind": "single",
+      "text": "Яке питання до вимоги «filter by price» найкраще?",
+      "options": [
+        { "text": "«Межі включно? Тобто товар за 1,000 показується при Max = 1,000?»", "correct": true },
+        { "text": "«Що з ціною?»", "explain": "Занадто загально: незрозуміло, що саме треба уточнити." }
+      ]
+    },
+    {
+      "id": "contradiction",
+      "kind": "single",
+      "text": "У пункті 3: «Cart holds max 20 items», у пункті 7: «Customers can add unlimited items». Що робити?",
+      "options": [
+        { "text": "Позначити суперечність і запитати PO, який пункт правильний", "correct": true },
+        { "text": "Обрати той, що здається логічнішим, і тестувати за ним" }
+      ]
+    },
+    {
+      "id": "trigger-words",
+      "kind": "multiple",
+      "text": "Які слова у вимогах — «тригери», що часто означають неоднозначність?",
+      "options": [
+        { "text": "fast", "correct": true },
+        { "text": "etc.", "correct": true },
+        { "text": "if needed", "correct": true },
+        { "text": "100 characters", "explain": "Конкретне число — це добре. Але про нього варто спитати межі (100, 101)." }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+[
+  { "id": "p01", "name": "Wireless Mouse M2", "category": "Accessories", "price": 499, "rating": 4.3, "inStock": true },
+  { "id": "p02", "name": "Gaming Mouse X7", "category": "Accessories", "price": 1299, "rating": 4.7, "inStock": false },
+  { "id": "p03", "name": "Mechanical Keyboard K8", "category": "Accessories", "price": 2199, "rating": 4.6, "inStock": true },
+  { "id": "p04", "name": "USB-C Cable 1 m", "category": "Accessories", "price": 249, "rating": 4.1, "inStock": true },
+  { "id": "p05", "name": "Laptop Air 13", "category": "Laptops", "price": 32999, "rating": 4.8, "inStock": true },
+  { "id": "p06", "name": "Laptop Pro 15", "category": "Laptops", "price": 54999, "rating": 4.9, "inStock": false },
+  { "id": "p07", "name": "Budget Laptop 14", "category": "Laptops", "price": 15999, "rating": 3.9, "inStock": true },
+  { "id": "p08", "name": "Phone S10", "category": "Phones", "price": 18999, "rating": 4.5, "inStock": true },
+  { "id": "p09", "name": "Phone Mini", "category": "Phones", "price": 9999, "rating": 4.0, "inStock": true },
+  { "id": "p10", "name": "Phone Ultra", "category": "Phones", "price": 41999, "rating": 4.7, "inStock": false },
+  { "id": "p11", "name": "Wireless Headphones H1", "category": "Headphones", "price": 2999, "rating": 4.4, "inStock": true },
+  { "id": "p12", "name": "Noise Cancelling Headphones", "category": "Headphones", "price": 8999, "rating": 4.8, "inStock": true },
+  { "id": "p13", "name": "Sport Earbuds", "category": "Headphones", "price": 1299, "rating": 4.2, "inStock": false },
+  { "id": "p14", "name": "Phone Case S10", "category": "Accessories", "price": 399, "rating": 3.8, "inStock": true }
+]

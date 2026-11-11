@@ -1,0 +1,65 @@
+{
+  "type": "written",
+  "title": "Write a test summary report for the Login regression run",
+  "playground": "login",
+  "statement": "На основі свого прогону з попереднього завдання напиши короткий **test summary report** для команди.\n\n- **Results** — скільки тестів виконано, пройдено, провалено.\n- **Failed tests** — по одному рядку: ID тест-кейсу і що не так.\n- **Risks & gaps** — що в продукті ризиковано і які вимоги набір тестів **не покриває** (порівняй 12 тест-кейсів з вимогами на сторінці).\n- **Recommendation** — go чи no-go і чому.",
+  "fields": [
+    { "id": "results", "label": "Results", "kind": "textarea", "placeholder": "Executed: … Passed: … Failed: …" },
+    { "id": "failed", "label": "Failed tests (one per line)", "kind": "list", "placeholder": "TC-05 — email in capitals is rejected" },
+    { "id": "risks", "label": "Risks & gaps", "kind": "textarea" },
+    { "id": "recommendation", "label": "Recommendation", "kind": "text", "placeholder": "Go / No-go because …" }
+  ],
+  "rules": [
+    {
+      "field": "results",
+      "check": "mentionsAll",
+      "value": ["(^|\\D)12(\\D|$)", "(^|\\D)8(\\D|$)", "(^|\\D)4(\\D|$)"],
+      "message": "У Results мають бути цифри прогону: **12** виконано, **8** Passed, **4** Failed. Перевір свій прогін."
+    },
+    { "field": "failed", "check": "minItems", "value": 4, "message": "Перелічи **всі** провалені тести — по одному в рядку." },
+    {
+      "field": "failed",
+      "check": "mentionsAll",
+      "value": ["tc-?0?5(\\D|$)", "tc-?0?8(\\D|$)", "tc-?0?9(\\D|$)", "tc-?12(\\D|$)"],
+      "message": "Серед failed тестів мають бути **TC-05, TC-08, TC-09, TC-12** — перевір, чи не пропустила якийсь."
+    },
+    { "field": "risks", "check": "minLength", "value": 40, "message": "Опиши ризики детальніше: що найнебезпечніше для користувачів?" },
+    {
+      "field": "risks",
+      "check": "mentionsAny",
+      "value": ["space|пробіл|remember|запам|not covered|не покрит|gap|прогалин|coverage|покритт|немає тест|no test|without test"],
+      "message": "Додай **прогалини в покритті**: які вимоги не перевіряє жоден тест-кейс з набору (порівняй з вимогами на сторінці)."
+    },
+    {
+      "field": "recommendation",
+      "check": "mentionsAny",
+      "value": ["no.?go|not ready|не готов|не випуска|не рекоменд|block|відклас|postpone|delay|затрим|not release|don.?t release"],
+      "message": "Серед провалених тестів є баги безпеки (блокування, заблокований акаунт). Яка рекомендація щодо релізу? Поясни **no-go** або обґрунтуй інше рішення."
+    }
+  ],
+  "model": {
+    "results": "Login page regression, demo build, Chrome 131 / Windows 11.\nExecuted: 12 of 12. Passed: 8. Failed: 4. Blocked: 0.",
+    "failed": [
+      "TC-05 — email in capitals (DEMO@TASKLY.TEST) is rejected; email must be case-insensitive",
+      "TC-08 — no lockout after 3 failed attempts; the 4th attempt with the correct password signs in",
+      "TC-09 — blocked account locked@taskly.test can sign in",
+      "TC-12 — Forgot password with an empty email shows \"we have sent a password reset link\""
+    ],
+    "risks": "Security: brute-force protection does not work (TC-08) and blocked users can sign in (TC-09) — the highest risk. Usability: users typing the email in capitals can't log in (TC-05). Coverage gaps: the suite has no tests for spaces around the email and for Remember me when it is NOT checked, so bugs there could go unnoticed — add these tests.",
+    "recommendation": "No-go: release only after TC-08 and TC-09 (security) are fixed and retested, plus a regression run of the whole suite."
+  },
+  "hints": [
+    "Почни з цифр: скільки рядків Passed і Failed у твоїй таблиці прогону?",
+    "Порівняй 12 тест-кейсів з усіма пунктами вимог на сторінці: для яких правил тесту немає?",
+    "Рекомендація має бути однозначною (go / no-go) і з причиною."
+  ],
+  "explanation": "Хороший звіт короткий і чесний: **цифри** (12 / 8 / 4), **провалені тести** з посиланням на суть проблеми, **ризики** (найважливіше — безпека: TC-08 і TC-09), **прогалини в покритті** (немає тестів для пробілів у email і Remember me без галочки) і **однозначна рекомендація** з причиною. Звіт допомагає команді прийняти рішення, а не просто перелічує факти.",
+  "checklist": [
+    "Numbers match the run: executed, passed, failed, blocked",
+    "Every failed test is listed with a short description",
+    "Risks are ordered by impact (security first)",
+    "Coverage gaps are named and a fix is suggested (add tests)",
+    "Recommendation is clear (go / no-go) and has a reason",
+    "The report fits on one screen"
+  ]
+}

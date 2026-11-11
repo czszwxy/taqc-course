@@ -1,0 +1,14 @@
+{
+  "items": [
+    { "id": "mouse", "name": "Wireless mouse M2", "price": 500, "qty": 1 },
+    { "id": "keyboard", "name": "Mechanical keyboard K8", "price": 1500, "qty": 1 },
+    { "id": "cable", "name": "USB-C cable 1 m", "price": 250, "qty": 2 }
+  ],
+  "rules": {
+    "minQty": 1,
+    "maxQty": 10,
+    "shippingFee": 100,
+    "freeShippingFrom": 3000,
+    "save10Percent": 10
+  }
+}

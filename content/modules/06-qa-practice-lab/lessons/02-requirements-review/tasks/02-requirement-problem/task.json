@@ -1,0 +1,54 @@
+{
+  "type": "classify",
+  "title": "What is wrong with this requirement?",
+  "statement": "Визнач **головну** проблему кожної вимоги (або що вона в порядку).",
+  "show": 7,
+  "categories": [
+    { "id": "ambiguous", "label": "Ambiguous / untestable", "description": "Розмите слово без критерію: fast, easy, modern, etc." },
+    { "id": "incomplete", "label": "Incomplete", "description": "Не сказано про межі, помилки, порожній стан, формат." },
+    { "id": "contradictory", "label": "Contradictory", "description": "Суперечить іншій вимозі." },
+    { "id": "ok", "label": "Good (testable)", "description": "Конкретно, з межами і очікуваною реакцією." }
+  ],
+  "items": [
+    { "id": "fast", "text": "«The search results should load quickly.»", "category": "ambiguous", "explain": "«Quickly» — скільки? Потрібна метрика, наприклад < 1 s для 95% запитів." },
+    {
+      "id": "promo-no-error",
+      "text": "«The customer can enter a promo code.» (і більше нічого про промокоди)",
+      "category": "incomplete",
+      "explain": "Не сказано: які коди, регістр, що при невалідному коді, чи можна кілька."
+    },
+    {
+      "id": "contra",
+      "text": "«Guests can check out without an account.» + у тому ж документі: «Only signed-in users can place orders.»",
+      "category": "contradictory"
+    },
+    {
+      "id": "good-length",
+      "text": "«Task text: 1–100 characters after trimming spaces. Longer → error \"Task is too long (max 100 characters)\".»",
+      "category": "ok"
+    },
+    { "id": "modern", "text": "«The new dashboard must look modern and user-friendly.»", "category": "ambiguous" },
+    {
+      "id": "upload-size",
+      "text": "«Users can upload documents up to 10 MB.»",
+      "category": "incomplete",
+      "explain": "Які формати? Що бачить користувач при 10.1 MB? 10 MB включно?"
+    },
+    {
+      "id": "good-lock",
+      "text": "«After 3 failed login attempts in a row the account is locked for 15 minutes and \"Too many failed attempts\" is shown.»",
+      "category": "ok"
+    },
+    {
+      "id": "contra-ship",
+      "text": "«Shipping is free from 1,000 UAH.» + у таблиці тарифів: «Free shipping from 1,500 UAH.»",
+      "category": "contradictory"
+    },
+    { "id": "etc", "text": "«The profile page shows name, email, phone, etc.»", "category": "ambiguous", "explain": "«Etc.» — що саме ще? Тестувальник не може перевірити невідомий список." }
+  ],
+  "hints": [
+    "Розмите слово (quickly, modern, etc.) → Ambiguous. Не вистачає меж, помилок чи форматів → Incomplete.",
+    "Дві вимоги кажуть протилежне → Contradictory. Є межі й реакція системи → Good."
+  ],
+  "explanation": "Під час рев'ю шукай: **розмиті слова** (неоднозначність), **відсутні деталі** — межі, помилки, формати (неповнота), **конфлікти** між пунктами (суперечність). Хороша вимога містить конкретні значення і описує реакцію системи, тому з неї одразу видно тести."
+}

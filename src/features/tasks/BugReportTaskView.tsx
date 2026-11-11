@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { PRIORITIES, SEVERITIES, type BugReportModel, type BugReportTask, type KnownBug } from '../../content/schema';
 import { useProgress } from '../progress/store';
 import { Markdown } from '../../components/Markdown';
 import { Callout, ProgressBar } from '../../components/ui';
 import { checkBugReportQuality, matchBug, type FormValues } from './forms';
 import { Field, ModelView, Select, StepsEditor, TextArea, TextInput } from './FormFields';
-import { Collapsible, CopyForReview, ExplanationPanel, FailureList, HintsPanel, NextActions, SelfReviewChecklist } from './shared';
-import { PLAYGROUND_PAGES } from '../../playground/registry';
+import { Collapsible, CopyForReview, ExplanationPanel, FailureList, HintsPanel, NextActions, SelfReviewChecklist, PlaygroundLink } from './shared';
 import type { TaskViewProps } from './types';
 
 interface BugForm {
@@ -116,7 +114,6 @@ export function BugReportTaskView({ ct, header, next }: TaskViewProps) {
     document.getElementById('bug-form')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const playground = PLAYGROUND_PAGES.find((p) => p.id === task.playground);
   const foundBugs = task.bugs.filter((b) => found.includes(b.id));
   const hiddenBugs = task.bugs.filter((b) => !found.includes(b.id));
   const goalReached = found.length >= task.minBugs;
@@ -138,11 +135,7 @@ export function BugReportTaskView({ ct, header, next }: TaskViewProps) {
     <div className="mx-auto max-w-4xl px-5 py-7 lg:px-8">
       {header}
       <Markdown>{task.statement}</Markdown>
-      {playground && (
-        <Link to={playground.path} target="_blank" className="btn btn-secondary mt-3">
-          🐞 Open “{playground.title}” in a new tab ↗
-        </Link>
-      )}
+      <PlaygroundLink id={task.playground} />
 
       <div className="card mt-5 p-4">
         <div className="flex items-center justify-between gap-3 text-sm">

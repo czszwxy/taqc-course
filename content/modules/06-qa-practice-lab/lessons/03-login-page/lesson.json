@@ -1,0 +1,30 @@
+{
+  "title": "Login page: checklist & test cases",
+  "minutes": 75,
+  "summary": "Що перевіряти на сторінці входу: валідні й невалідні дані, безпечні повідомлення, блокування після спроб, Remember me, Forgot password — від чекліста до тест-кейсу і баг-репортів",
+  "resources": [
+    {
+      "title": "OWASP Authentication Cheat Sheet",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Розділи про повідомлення про помилки входу та захист від перебору паролів.",
+      "needsVerification": true
+    },
+    {
+      "title": "ISTQB Glossary",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Терміни: checklist, test case, negative testing.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: how to test a login page (пошук)",
+      "url": "https://www.youtube.com/results?search_query=how+to+test+a+login+page+manual+testing",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

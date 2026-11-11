@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { useProgress } from '../progress/store';
 import { Markdown } from '../../components/Markdown';
+import { PLAYGROUND_PAGES } from '../../playground/registry';
 
 export function HintsPanel({ taskId, hints }: { taskId: string; hints: string[] }) {
   const used = useProgress((s) => s.tasks[taskId]?.hintsUsed ?? 0);
@@ -167,5 +168,16 @@ export function CopyForReview({ build }: { build: () => string }) {
     >
       {copied ? '✓ Copied' : '📋 Copy for review'}
     </button>
+  );
+}
+
+/** "Open <page> in a new tab" button for tasks that practise on a Bug Playground page. */
+export function PlaygroundLink({ id }: { id?: string }) {
+  const page = id ? PLAYGROUND_PAGES.find((p) => p.id === id) : undefined;
+  if (!page) return null;
+  return (
+    <Link to={page.path} target="_blank" className="btn btn-secondary mt-3">
+      🐞 Open “{page.title}” in a new tab ↗
+    </Link>
   );
 }

@@ -1,11 +1,13 @@
 {
   "title": "QA Practice Lab",
-  "description": "Практика ручного тестування на навмисно забагованих сторінках Bug Playground: аналіз вимог, тест-дизайн, тест-кейси, пошук і оформлення багів. Зараз доступний демо-урок «Registration form», решта уроків з'явиться пізніше.",
+  "description": "Практика ручного тестування на навмисно забагованих сторінках Bug Playground: підхід до нової функції, рев'ю вимог, чеклісти й тест-кейси, таблиці рішень і переходів станів, exploratory-сесії, регресійний прогін, баг-репорти і звіти. Завершується міні-проєктом з повною тестовою документацією для To-do застосунку.",
   "goals": [
-    "Break a feature into fields and rules and find test conditions",
-    "Apply equivalence partitioning and boundary value analysis to real form fields",
-    "Write clear, reproducible test cases",
+    "Approach a new feature step by step and break it into test conditions",
+    "Review requirements and ask questions that close the gaps",
+    "Write checklists and test cases for real pages",
+    "Apply EP, BVA, decision tables and state transitions to working UIs",
+    "Run an exploratory session with a charter",
     "Hunt for bugs and write bug reports a developer can act on",
-    "Choose severity and priority with a reason"
+    "Run a regression suite and write a test summary report with a go / no-go recommendation"
   ]
 }

@@ -1,0 +1,57 @@
+{
+  "type": "written",
+  "title": "Decompose a feature: password change",
+  "statement": "Нова функція **Change password** у профілі Taskly:\n\n> - Fields: **Current password**, **New password**, **Repeat new password**.\n> - New password: **8–20** characters, at least one digit, must be **different** from the current one.\n> - Repeat new password must match New password.\n> - On success: message \"Password changed\", all other sessions are signed out, an email is sent to the user.\n> - After **5** wrong current passwords the form is blocked for 30 minutes.\n\nРозклади функцію на **тестові умови** (щонайменше 10, по одному на рядок) і запиши **питання** до команди (щонайменше 3) — те, що у вимогах незрозуміло або пропущено.",
+  "fields": [
+    { "id": "conditions", "label": "Test conditions (one per line)", "kind": "list", "placeholder": "New password of 8 characters with a digit → accepted" },
+    { "id": "questions", "label": "Questions to the team (one per line)", "kind": "list", "placeholder": "Can the new password contain spaces?" }
+  ],
+  "rules": [
+    { "field": "conditions", "check": "minItems", "value": 10, "message": "Потрібно щонайменше **10** тестових умов." },
+    { "field": "conditions", "check": "mentionsAny", "value": ["(^|\\D)(7|8|20|21)(\\D|$)|length|довжин|символ|character"], "message": "Додай **граничні значення** довжини нового пароля (7, 8, 20, 21)." },
+    { "field": "conditions", "check": "mentionsAny", "value": ["digit|цифр|number|числ"], "message": "Перевір правило «щонайменше одна **цифра**»." },
+    { "field": "conditions", "check": "mentionsAny", "value": ["same|different|old|current|поточн|стар|однаков|такий самий|збіга"], "message": "Перевір, що новий пароль має **відрізнятися** від поточного." },
+    { "field": "conditions", "check": "mentionsAny", "value": ["repeat|match|confirm|повтор|збіга|співпада"], "message": "Перевір **Repeat new password**: збігається / не збігається." },
+    { "field": "conditions", "check": "mentionsAny", "value": ["wrong|invalid|incorrect|невір|неправильн"], "message": "Додай умову про **неправильний поточний** пароль." },
+    { "field": "conditions", "check": "mentionsAny", "value": ["(^|\\D)5(\\D|$)|block|блок|lock|attempt|спроб"], "message": "Додай умову про **блокування** після 5 неправильних спроб." },
+    { "field": "conditions", "check": "mentionsAny", "value": ["session|сесі|sign(ed)? out|log(ged)? out|вийт|вихід|device|пристр"], "message": "Додай перевірку побічного ефекту: **інші сесії** завершуються." },
+    { "field": "conditions", "check": "mentionsAny", "value": ["email|e-mail|лист|пошт"], "message": "Додай перевірку побічного ефекту: користувачу надсилається **email**." },
+    { "field": "questions", "check": "minItems", "value": 3, "message": "Запиши щонайменше **3** питання до команди." }
+  ],
+  "model": {
+    "conditions": [
+      "Valid change: correct current password, new 8–20 chars with a digit, repeat matches → \"Password changed\"",
+      "New password length 7 → rejected; 8 → accepted; 20 → accepted; 21 → rejected",
+      "New password without a digit → rejected",
+      "New password the same as the current one → rejected",
+      "Repeat new password does not match → rejected",
+      "Wrong current password → rejected, password not changed",
+      "Empty fields → required errors",
+      "4 wrong current passwords → still allowed; 5 → form blocked for 30 minutes",
+      "After success: other sessions (another browser) are signed out",
+      "After success: the current session stays signed in",
+      "After success: email about the change is sent",
+      "Old password no longer works for login; the new one works"
+    ],
+    "questions": [
+      "Are the new password rules (8–20, digit) case-sensitive and are spaces allowed?",
+      "Is \"different from the current one\" case-sensitive (Secret123 vs secret123)?",
+      "Does the 5-attempts counter reset after a successful change or after 30 minutes only?",
+      "What exactly does the email say, and is it sent if the email address is not verified?",
+      "Is the current session also signed out?"
+    ]
+  },
+  "hints": [
+    "Пройдися по категоріях: **входи** (три поля), **правила** (довжина, цифра, відмінність, збіг), **стани** (блокування після 5 спроб), **виходи** (повідомлення, вихід з інших сесій, email).",
+    "Для числових правил одразу додай межі: 7/8 і 20/21 символ, 4/5 спроб.",
+    "Питання шукай там, де вимоги мовчать: регістр, пробіли, чи завершується **поточна** сесія, що в листі."
+  ],
+  "explanation": "Розклад функції: **входи** (поля й обов'язковість), **правила** з межами (довжина 7/8/20/21, цифра, відмінність від поточного, збіг Repeat), **стани** (4 і 5 невдалих спроб, блокування), **побічні ефекти** (інші сесії, email, старий пароль більше не працює). Питання з'являються там, де вимоги неповні: регістр, пробіли, скидання лічильника, поточна сесія.",
+  "checklist": [
+    "Every requirement sentence has at least one test condition",
+    "Numeric rules have boundary values",
+    "Side effects (sessions, email) are covered, not only the form",
+    "Negative conditions are present (wrong, empty, mismatch)",
+    "Questions point to real gaps, not to things already answered"
+  ]
+}

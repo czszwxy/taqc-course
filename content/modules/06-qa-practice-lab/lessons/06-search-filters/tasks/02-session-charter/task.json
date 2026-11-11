@@ -1,0 +1,59 @@
+{
+  "type": "written",
+  "title": "Plan an exploratory session: charter and test ideas",
+  "playground": "search",
+  "statement": "Ти маєш **45 хвилин** на exploratory-сесію сторінки **Search & filters**. Перед стартом сплануй її:\n\n1. Напиши **charter** у форматі *Explore … with … to discover …*.\n2. Склади список **ідей для тестів** (щонайменше 8): які дані й комбінації спробуєш.\n3. Запиши **питання**, які виникли під час читання вимог (щонайменше 1).\n\nВідкрий сторінку і прочитай вимоги, але баги поки не оформлюй — це наступне завдання.",
+  "fields": [
+    { "id": "charter", "label": "Charter", "kind": "textarea", "placeholder": "Explore … with … to discover …" },
+    { "id": "ideas", "label": "Test ideas (one per line)", "kind": "list", "placeholder": "Search \"mouse\" in lowercase → same results as \"Mouse\"" },
+    { "id": "questions", "label": "Questions to the team (one per line)", "kind": "list", "placeholder": "Does search also look in the category name?" }
+  ],
+  "rules": [
+    { "field": "charter", "check": "mentionsAny", "value": ["explore|досліди|дослідж"], "message": "Charter починається з **Explore** (що досліджуємо)." },
+    { "field": "charter", "check": "mentionsAny", "value": ["discover|знайти|виявити|з'ясувати|дізнатися|find"], "message": "Додай частину **to discover …**: яку інформацію хочеш отримати." },
+    { "field": "ideas", "check": "minItems", "value": 8, "message": "Потрібно щонайменше **8** ідей для тестів." },
+    { "field": "ideas", "check": "mentionsAny", "value": ["case|регістр|upper|lower|велик|малими"], "message": "Додай ідею про **регістр** у пошуку." },
+    { "field": "ideas", "check": "mentionsAny", "value": ["max|min|мін|макс|price|цін"], "message": "Додай ідеї про **межі цін** (Max = точна ціна, Min > Max…)." },
+    { "field": "ideas", "check": "mentionsAny", "value": ["sort|сорт"], "message": "Додай ідею про **сортування**." },
+    { "field": "ideas", "check": "mentionsAny", "value": ["count|found|лічильник|кількіст|знайден"], "message": "Додай перевірку **лічильника** результатів." },
+    { "field": "ideas", "check": "mentionsAny", "value": ["clear|очист|скид|reset"], "message": "Додай перевірку **Clear filters**." },
+    { "field": "questions", "check": "minItems", "value": 1, "message": "Запиши хоча б одне питання до команди." }
+  ],
+  "model": {
+    "charter": "Explore the catalog search, filters and sorting with different letter case, boundary prices and filter combinations to discover wrong results, wrong order and an inconsistent result counter.",
+    "ideas": [
+      "Search \"mouse\" (lowercase) and \"MOUSE\" → the same 2 results as \"Mouse\"",
+      "Search with spaces before/after → the same results",
+      "Partial match: \"Wire\", \"less\", \"M2\"",
+      "Search with no results → \"No products match your filters\"",
+      "Max price = exact price of a product (1299) → the product is shown",
+      "Min price = Max price = 1299 → only products costing 1,299",
+      "Min price > Max price → error message, no products",
+      "Empty Min or Max → no limit on that side",
+      "Category + In stock only + price range together (AND)",
+      "Sort Price low → high and high → low: check the whole list",
+      "Sort by Rating: best first",
+      "Counter \"N products found\" = number of cards with every filter combination",
+      "Clear filters resets search text, category, prices, In stock only and sort",
+      "Out-of-stock products: label shown, Add to cart disabled"
+    ],
+    "questions": [
+      "Does search also match the category or only the product name?",
+      "Can prices have decimals (1299.50)? What happens with negative prices?",
+      "Should the filters be kept after a page reload?"
+    ]
+  },
+  "hints": [
+    "Charter: *Explore* \\<функцію\\> *with* \\<дані/техніки\\> *to discover* \\<які проблеми\\>.",
+    "Пройдися по таблиці евристик з теорії: регістр, межі, комбінації, сортування, лічильник, скидання, стан товару.",
+    "Питання часто виникають там, де вимоги мовчать: дробові ціни, від'ємні числа, збереження фільтрів після перезавантаження."
+  ],
+  "explanation": "План сесії складається з **мети** (charter), **ідей** (евристики, застосовані до конкретної сторінки) і **питань** (місця, де вимоги неповні). Ідеї мають бути конкретними: не «перевірити ціну», а «Max = 1299, товар за 1,299 показується». Питання — це теж результат тестування: вони знаходять прогалини у вимогах ще до багів.",
+  "checklist": [
+    "Charter has all three parts: Explore / with / to discover",
+    "Test ideas are concrete (exact values and expected behaviour)",
+    "Ideas cover search, price boundaries, combinations, sort, counter, reset, stock",
+    "At least one idea checks a boundary exactly (Max = product price)",
+    "Questions point to gaps in the requirements, not to things already answered"
+  ]
+}

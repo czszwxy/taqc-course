@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import type { WrittenField, WrittenTask } from '../../content/schema';
 import { useProgress } from '../progress/store';
 import { Markdown } from '../../components/Markdown';
 import { Callout } from '../../components/ui';
 import { evaluateRules, type FormValues } from './forms';
 import { Field, ModelView, StepsEditor, TextArea, TextInput } from './FormFields';
-import { Collapsible, CopyForReview, ExplanationPanel, FailureList, HintsPanel, NextActions, SelfReviewChecklist } from './shared';
-import { PLAYGROUND_PAGES } from '../../playground/registry';
+import { Collapsible, CopyForReview, ExplanationPanel, FailureList, HintsPanel, NextActions, SelfReviewChecklist, PlaygroundLink } from './shared';
 import type { TaskViewProps } from './types';
 
 /** The model answer can be opened after this many failed checks (or earlier with a confirmation). */
@@ -94,18 +92,13 @@ export function WrittenTaskView({ ct, header, onSimilar, next }: TaskViewProps) 
       'Please review my answer against the criteria and the model answer. What is good, what is missing, and how would an experienced QA engineer improve it?',
     ].join('\n\n');
 
-  const playground = task.playground ? PLAYGROUND_PAGES.find((p) => p.id === task.playground) : undefined;
   const locked = Boolean(result?.passed);
 
   return (
     <div className="mx-auto max-w-3xl px-5 py-7 lg:px-8">
       {header}
       <Markdown>{task.statement}</Markdown>
-      {playground && (
-        <Link to={playground.path} target="_blank" className="btn btn-secondary mt-3">
-          🐞 Open “{playground.title}” in a new tab ↗
-        </Link>
-      )}
+      <PlaygroundLink id={task.playground} />
 
       <div className="card mt-6 space-y-4 p-5">
         {task.fields.map((f) => (

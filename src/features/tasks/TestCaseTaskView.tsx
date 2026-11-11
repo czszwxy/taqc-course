@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { PRIORITIES, TEST_TYPES, type TestCaseModel, type TestCaseTask } from '../../content/schema';
 import { useProgress } from '../progress/store';
 import { Markdown } from '../../components/Markdown';
 import { Callout } from '../../components/ui';
 import { checkTestCase, type FormValues } from './forms';
 import { Field, ModelView, Select, StepsEditor, TextArea, TextInput } from './FormFields';
-import { Collapsible, CopyForReview, ExplanationPanel, FailureList, HintsPanel, NextActions, SelfReviewChecklist } from './shared';
-import { PLAYGROUND_PAGES } from '../../playground/registry';
+import { Collapsible, CopyForReview, ExplanationPanel, FailureList, HintsPanel, NextActions, SelfReviewChecklist, PlaygroundLink } from './shared';
 import type { TaskViewProps } from './types';
 
 interface TestCaseForm {
@@ -67,7 +65,6 @@ export function TestCaseTaskView({ ct, header, onSimilar, next }: TaskViewProps)
 
   const failed = progress?.failedAttempts ?? 0;
   const solved = progress?.status === 'solved';
-  const playground = task.playground ? PLAYGROUND_PAGES.find((p) => p.id === task.playground) : undefined;
   const locked = Boolean(result?.passed);
 
   const revealModel = () => {
@@ -94,11 +91,7 @@ export function TestCaseTaskView({ ct, header, onSimilar, next }: TaskViewProps)
     <div className="mx-auto max-w-4xl px-5 py-7 lg:px-8">
       {header}
       <Markdown>{task.statement}</Markdown>
-      {playground && (
-        <Link to={playground.path} target="_blank" className="btn btn-secondary mt-3">
-          🐞 Open “{playground.title}” in a new tab ↗
-        </Link>
-      )}
+      <PlaygroundLink id={task.playground} />
 
       <div className="card mt-6 space-y-4 p-5">
         <div className="text-sm font-semibold">Your test case</div>

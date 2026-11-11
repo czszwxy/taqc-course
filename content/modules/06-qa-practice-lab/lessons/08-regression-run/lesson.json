@@ -1,0 +1,30 @@
+{
+  "title": "Regression run & test report",
+  "minutes": 60,
+  "summary": "Прогін регресійного набору тестів на сторінці входу: статуси Passed / Failed / Blocked, retest vs regression, прогалини в покритті і короткий test summary report з рекомендацією go / no-go",
+  "resources": [
+    {
+      "title": "ISTQB — official site (syllabi, Foundation Level)",
+      "url": "https://www.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Розділ 5 Foundation Level: test monitoring, test reporting.",
+      "needsVerification": true
+    },
+    {
+      "title": "ISTQB Glossary",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Терміни: regression testing, confirmation testing, test summary report.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: regression testing explained (пошук)",
+      "url": "https://www.youtube.com/results?search_query=regression+testing+vs+retesting",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}
