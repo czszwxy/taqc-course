@@ -1,0 +1,25 @@
+{
+  "type": "classify",
+  "title": "Which evidence helps most?",
+  "statement": "Для кожного бага обери доказ, який допоможе розробнику **найбільше**.",
+  "show": 7,
+  "categories": [
+    { "id": "screenshot", "label": "Screenshot" },
+    { "id": "video", "label": "Video" },
+    { "id": "console", "label": "Console log" },
+    { "id": "network", "label": "Network request" },
+    { "id": "server", "label": "Time + request ID (server logs)" }
+  ],
+  "items": [
+    { "id": "typo", "text": "На кнопці написано «Chekout» замість «Checkout».", "category": "screenshot" },
+    { "id": "flaky-dropdown", "text": "Меню іноді закривається саме по собі, коли ведеш мишкою до пункту.", "category": "video" },
+    { "id": "js-error", "text": "Після кліку «Додати в обране» нічого не відбувається, а в консолі з'являється червоне повідомлення.", "category": "console" },
+    { "id": "wrong-price", "text": "У кошику ціна 0 грн; є підозра, що сервер повертає неправильне значення поля `price`.", "category": "network" },
+    { "id": "500", "text": "Оплата падає з «Internal Server Error», у відповіді є заголовок `X-Request-Id`.", "category": "server" },
+    { "id": "layout", "text": "На ширині 360 px текст кнопки виходить за її межі.", "category": "screenshot" },
+    { "id": "sequence", "text": "Кошик очищується лише після переходу: каталог → товар → «Назад» → оновлення сторінки.", "category": "video" },
+    { "id": "status-404", "text": "Фото профілю не завантажується: запит до файлу зображення повертає 404.", "category": "network" }
+  ],
+  "hints": ["Статичний вигляд → скриншот. Послідовність / нестабільність → відео. JS-помилка → консоль. Дані з сервера / статус-код → Network. Помилка на сервері з ID → серверні логи."],
+  "explanation": "Обирай доказ, який показує **причину** або **спосіб відтворення**: скриншот — для стану екрана, відео — для послідовності, Console — для помилок фронтенду, Network — для даних і статусів запитів, request ID — щоб бекенд знайшов запис у логах."
+}

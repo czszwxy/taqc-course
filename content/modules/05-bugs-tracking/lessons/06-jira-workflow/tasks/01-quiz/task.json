@@ -1,0 +1,70 @@
+{
+  "type": "quiz",
+  "title": "Quiz: Jira & JQL",
+  "show": 6,
+  "hints": ["JQL: field = value, AND, in (…), ~ для пошуку тексту, ORDER BY для сортування."],
+  "questions": [
+    {
+      "id": "epic",
+      "kind": "single",
+      "text": "«Новий checkout», який складається з 15 user stories. Який це тип задачі?",
+      "options": [
+        { "text": "Epic", "correct": true },
+        { "text": "Sub-task" },
+        { "text": "Bug" }
+      ]
+    },
+    {
+      "id": "jql-open-bugs",
+      "kind": "text",
+      "text": "Напиши JQL: усі задачі типу **Bug** у проєкті **SHOP** зі статусом **Open**.",
+      "accept": [
+        "project = SHOP AND type = Bug AND status = Open",
+        "project = SHOP AND issuetype = Bug AND status = Open",
+        "type = Bug AND project = SHOP AND status = Open",
+        "project = SHOP AND status = Open AND type = Bug",
+        "project=SHOP AND type=Bug AND status=Open",
+        "project = \"SHOP\" AND type = Bug AND status = \"Open\""
+      ],
+      "explanation": "Відповідь: `project = SHOP AND type = Bug AND status = Open` (замість `type` можна `issuetype`)."
+    },
+    {
+      "id": "contains",
+      "kind": "single",
+      "text": "Який оператор JQL шукає текст, що **містить** слова?",
+      "options": [
+        { "text": "`~`", "correct": true },
+        { "text": "`=`" },
+        { "text": "`in`" }
+      ]
+    },
+    {
+      "id": "my-tasks",
+      "kind": "single",
+      "text": "Який запит покаже незавершені задачі, призначені на тебе?",
+      "options": [
+        { "text": "`assignee = currentUser() AND status != Done`", "correct": true },
+        { "text": "`reporter = currentUser()`" },
+        { "text": "`status = Done`" }
+      ]
+    },
+    {
+      "id": "last-week",
+      "kind": "single",
+      "text": "Як знайти баги, створені за останні 7 днів?",
+      "options": [
+        { "text": "`type = Bug AND created >= -7d`", "correct": true },
+        { "text": "`type = Bug AND created = 7`" }
+      ]
+    },
+    {
+      "id": "ready-qa",
+      "kind": "single",
+      "text": "Задача в колонці «Ready for QA», але acceptance criteria не виконано. Що робити?",
+      "options": [
+        { "text": "Повернути задачу з коментарем, що саме не відповідає критеріям", "correct": true },
+        { "text": "Перевести в Done, бо розробник уже закінчив" }
+      ]
+    }
+  ]
+}

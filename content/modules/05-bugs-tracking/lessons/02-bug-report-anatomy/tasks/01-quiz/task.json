@@ -1,0 +1,64 @@
+{
+  "type": "quiz",
+  "title": "Quiz: bug report anatomy",
+  "show": 5,
+  "hints": ["Summary = де + що не так + за якої умови."],
+  "questions": [
+    {
+      "id": "summary",
+      "kind": "single",
+      "text": "Який summary найкращий?",
+      "options": [
+        { "text": "Checkout: \"Pay\" button stays disabled after entering a valid card", "correct": true },
+        { "text": "Checkout is broken!!!" },
+        { "text": "Bug #2 in payment" }
+      ]
+    },
+    {
+      "id": "actual",
+      "kind": "single",
+      "text": "Який **actual result** найкращий?",
+      "options": [
+        { "text": "Message \"Something went wrong (code 500)\" is shown; the order is not created", "correct": true },
+        { "text": "It doesn't work" },
+        { "text": "Error" }
+      ]
+    },
+    {
+      "id": "two-problems",
+      "kind": "single",
+      "text": "На сторінці профілю ти знайшов дві незалежні проблеми. Як оформити?",
+      "options": [
+        { "text": "Два окремі баг-репорти", "correct": true },
+        { "text": "Один репорт з обома проблемами" }
+      ]
+    },
+    {
+      "id": "environment",
+      "kind": "single",
+      "text": "Навіщо вказувати environment (браузер, ОС, білд)?",
+      "options": [
+        { "text": "Баг може відтворюватися лише в певному середовищі; без цього розробник може його не побачити", "correct": true },
+        { "text": "Це формальність, яку ніхто не читає" }
+      ]
+    },
+    {
+      "id": "steps-start",
+      "kind": "single",
+      "text": "З чого краще починати кроки відтворення?",
+      "options": [
+        { "text": "З описаної передумови, наприклад «Open the cart page as a logged-in user»", "correct": true },
+        { "text": "З «Увімкнути комп'ютер і відкрити браузер»" }
+      ]
+    },
+    {
+      "id": "reproducibility",
+      "kind": "single",
+      "text": "Баг відтворюється приблизно в 3 з 5 спроб. Що робити?",
+      "options": [
+        { "text": "Заводити баг і вказати reproducibility «3 of 5» та умови, які ти помітив", "correct": true },
+        { "text": "Не заводити, бо не завжди відтворюється" }
+      ]
+    }
+  ]
+}

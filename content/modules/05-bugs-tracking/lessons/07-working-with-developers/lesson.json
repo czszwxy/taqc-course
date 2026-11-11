@@ -1,0 +1,22 @@
+{
+  "title": "Working with developers",
+  "minutes": 30,
+  "summary": "Як спілкуватися про баги: «cannot reproduce», «works as designed», дублікати, конфлікти і конструктивний тон",
+  "resources": [
+    {
+      "title": "Ministry of Testing — community articles",
+      "url": "https://www.ministryoftesting.com/",
+      "kind": "article",
+      "lang": "en",
+      "note": "Пошукай на сайті матеріали про communication та bug advocacy.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: how testers communicate with developers (пошук)",
+      "url": "https://www.youtube.com/results?search_query=how+testers+communicate+with+developers",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

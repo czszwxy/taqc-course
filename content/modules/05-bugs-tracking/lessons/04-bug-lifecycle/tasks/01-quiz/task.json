@@ -1,0 +1,66 @@
+{
+  "type": "quiz",
+  "title": "Quiz: bug lifecycle",
+  "show": 5,
+  "hints": ["Reopen — лише для того самого бага, що досі відтворюється."],
+  "questions": [
+    {
+      "id": "verified",
+      "kind": "single",
+      "text": "QA перевірив виправлення на тестовому середовищі — баг більше не відтворюється. Який статус?",
+      "options": [
+        { "text": "Verified", "correct": true },
+        { "text": "New" },
+        { "text": "Reopened" }
+      ]
+    },
+    {
+      "id": "new-problem",
+      "kind": "single",
+      "text": "Баг про суму кошика виправлено, але під час перевірки ти помітив, що тепер не відображається назва товару. Що робити?",
+      "options": [
+        { "text": "Перевести старий баг у Verified і завести новий баг з посиланням на старий", "correct": true },
+        { "text": "Reopen старий баг і дописати нову проблему" }
+      ]
+    },
+    {
+      "id": "duplicate",
+      "kind": "single",
+      "text": "Ти завів баг, а потім знайшов такий самий BUG-120 тижневої давності. Що буде з твоїм?",
+      "options": [
+        { "text": "Duplicate з посиланням на BUG-120", "correct": true },
+        { "text": "Deferred" },
+        { "text": "Verified" }
+      ]
+    },
+    {
+      "id": "triage",
+      "kind": "single",
+      "text": "Що відбувається на тріажі багів?",
+      "options": [
+        { "text": "Команда вирішує, чи це баг, яка severity/priority, кому і коли виправляти", "correct": true },
+        { "text": "Розробники виправляють усі баги" },
+        { "text": "QA пише тест-кейси" }
+      ]
+    },
+    {
+      "id": "cannot-repro",
+      "kind": "single",
+      "text": "Баг повернувся зі статусом «Cannot reproduce». Що найкорисніше зробити?",
+      "options": [
+        { "text": "Перевірити й доповнити середовище, дані, кроки; додати відео", "correct": true },
+        { "text": "Закрити баг і забути" },
+        { "text": "Завести такий самий баг ще раз" }
+      ]
+    },
+    {
+      "id": "wad",
+      "kind": "single",
+      "text": "PO підтвердив, що поведінка відповідає вимогам. Статус бага?",
+      "options": [
+        { "text": "Rejected / Works as designed", "correct": true },
+        { "text": "In Progress" }
+      ]
+    }
+  ]
+}

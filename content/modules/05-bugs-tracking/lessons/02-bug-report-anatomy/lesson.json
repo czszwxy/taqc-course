@@ -1,0 +1,29 @@
+{
+  "title": "Bug report anatomy",
+  "minutes": 40,
+  "summary": "Поля баг-репорту, формула хорошого summary, кроки відтворення, фактичний і очікуваний результат",
+  "resources": [
+    {
+      "title": "Mozilla: Bug writing guidelines",
+      "url": "https://bugzilla.mozilla.org/page.cgi?id=bug-writing.html",
+      "kind": "article",
+      "lang": "en",
+      "note": "Класичний гайд від Mozilla про те, як писати баг-репорти.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: how to write a good bug report (пошук)",
+      "url": "https://www.youtube.com/results?search_query=how+to+write+a+good+bug+report",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: як написати баг-репорт (пошук українською)",
+      "url": "https://www.youtube.com/results?search_query=%D1%8F%D0%BA+%D0%BD%D0%B0%D0%BF%D0%B8%D1%81%D0%B0%D1%82%D0%B8+%D0%B1%D0%B0%D0%B3+%D1%80%D0%B5%D0%BF%D0%BE%D1%80%D1%82",
+      "kind": "video",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

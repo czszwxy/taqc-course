@@ -1,0 +1,28 @@
+{
+  "title": "Jira-style workflow & JQL basics",
+  "minutes": 40,
+  "summary": "Типи задач (Epic, Story, Task, Bug, Sub-task), дошка і спринт, поля бага в Jira і базові JQL-запити",
+  "resources": [
+    {
+      "title": "Atlassian Jira — official site",
+      "url": "https://www.atlassian.com/software/jira",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Atlassian Support: Use advanced search with JQL",
+      "url": "https://support.atlassian.com/jira-software-cloud/docs/use-advanced-search-with-jira-query-language-jql/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Jira tutorial for beginners (пошук)",
+      "url": "https://www.youtube.com/results?search_query=jira+tutorial+for+beginners+QA",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

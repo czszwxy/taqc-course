@@ -1,0 +1,46 @@
+{
+  "type": "written",
+  "title": "Write a bug report from your notes",
+  "statement": "Ти тестуєш кошик на **staging, build 2.4.1, Chrome 131, Windows 11**, залогінений як `olena@example.com`. Твої чорнові нотатки:\n\n> кошик порожній → додала Laptop Stand (1200 грн) → ввела SALE10 → натиснула Apply → з'явився рядок «Discount −120 грн», але Total так і лишився 1200 грн. Вимога US-58: SALE10 = −10% від суми товарів.\n\nОформи з нотаток **баг-репорт**.",
+  "fields": [
+    { "id": "summary", "label": "Summary", "kind": "text", "placeholder": "Cart: …" },
+    { "id": "environment", "label": "Environment", "kind": "text", "placeholder": "staging, build …, browser …, OS …" },
+    { "id": "steps", "label": "Steps to reproduce", "kind": "list", "placeholder": "Open the cart page as a logged-in user with an empty cart" },
+    { "id": "actual", "label": "Actual result", "kind": "textarea" },
+    { "id": "expected", "label": "Expected result", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "summary", "check": "mentionsAny", "value": ["sale10|promo|промокод|discount|знижк"], "message": "Summary: назви, **що** зламалось — промокод / знижка." },
+    { "field": "summary", "check": "mentionsAny", "value": ["total|сум|reduc|зменш|не змін|not (updated|change)"], "message": "Summary: уточни, **у чому** проблема — Total не зменшується." },
+    { "field": "summary", "check": "notMentions", "value": ["^\\s*(bug|баг)\\b", "!!"], "message": "Summary: без слова «Bug» на початку й без знаків оклику." },
+    { "field": "environment", "check": "mentionsAll", "value": ["chrome", "2\\.4\\.1|build|білд"], "message": "Environment: вкажи **браузер** і **білд** (Chrome 131, build 2.4.1)." },
+    { "field": "steps", "check": "minItems", "value": 3, "message": "Steps: щонайменше 3 кроки — додати товар, ввести код, натиснути Apply." },
+    { "field": "steps", "check": "mentionsAny", "value": ["sale10"], "message": "Steps: вкажи конкретний промокод **SALE10**." },
+    { "field": "actual", "check": "mentionsAll", "value": ["1\\s?200", "120"], "message": "Actual: опиши точно — рядок «Discount −120 грн» є, а Total лишився **1200 грн**." },
+    { "field": "expected", "check": "mentionsAny", "value": ["1\\s?080"], "message": "Expected: порахуй очікувану суму — **1080 грн** (1200 − 10%)." }
+  ],
+  "model": {
+    "summary": "Cart: SALE10 shows the discount line but the total is not reduced",
+    "environment": "staging, build 2.4.1, Chrome 131, Windows 11",
+    "steps": [
+      "Log in as olena@example.com and open the cart (the cart is empty)",
+      "Add \"Laptop Stand\" (1200 грн) to the cart",
+      "Type \"SALE10\" in the Promo code field",
+      "Click \"Apply\""
+    ],
+    "actual": "The line \"Discount −120 грн\" appears, but Total stays 1200 грн.",
+    "expected": "Total is 1080 грн (1200 грн − 10%), as required by US-58."
+  },
+  "hints": [
+    "Summary: де (Cart) + що не так (Total не зменшується) + умова (SALE10).",
+    "Expected — порахуй: 10% від 1200 = 120, тож Total має бути 1080 грн."
+  ],
+  "explanation": "Перетвори нотатки на структуру: середовище окремо, кроки — по одній дії від стану «кошик порожній», actual — точно те, що видно (рядок знижки є, Total 1200), expected — обчислене значення з посиланням на вимогу. Важлива деталь: рядок знижки показується — це допомагає розробнику зрозуміти, що зламався саме перерахунок Total.",
+  "checklist": [
+    "Summary зрозумілий без відкриття репорту",
+    "Environment містить середовище, білд, браузер, ОС",
+    "Кроки починаються зі стану й містять конкретні дані",
+    "Actual фіксує і те, що працює (рядок знижки), і те, що ні (Total)",
+    "Expected містить обчислене значення й посилання на вимогу"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "type": "table",
+  "title": "What is the next status?",
+  "statement": "Для кожної ситуації обери, в який статус має перейти баг.",
+  "givenColumns": ["Situation"],
+  "answerColumns": [
+    {
+      "id": "status",
+      "label": "Next status",
+      "options": ["Verified", "Reopened", "Duplicate", "Rejected / Works as designed", "Cannot reproduce", "Deferred"]
+    }
+  ],
+  "rows": [
+    { "given": ["QA перевіряє виправлений баг на staging — він досі відтворюється з тими самими кроками"], "answers": { "status": "Reopened" } },
+    { "given": ["Розробник показав вимогу, за якою поведінка навмисна, PO це підтвердив"], "answers": { "status": "Rejected / Works as designed" } },
+    { "given": ["Такий самий баг уже заведено як BUG-120"], "answers": { "status": "Duplicate" } },
+    { "given": ["PO вирішив виправити баг лише в наступному кварталі"], "answers": { "status": "Deferred" } },
+    { "given": ["Розробник пройшов кроки на тому самому середовищі й не побачив проблеми; просить більше деталей"], "answers": { "status": "Cannot reproduce" } },
+    { "given": ["QA перевірив виправлення — баг не відтворюється"], "answers": { "status": "Verified" } },
+    {
+      "given": ["Виправлення працює, але під час перевірки знайдено іншу проблему на тій самій сторінці"],
+      "answers": { "status": "Verified" },
+      "explain": "Старий баг виправлено → Verified. Нова проблема — це новий баг з посиланням на старий, а не Reopen."
+    }
+  ],
+  "hints": ["Reopened — лише коли відтворюється **той самий** баг. Інша проблема — новий баг."],
+  "explanation": "Статус описує стан **цього** бага. Ключові пастки: нова проблема після фікса — не Reopen; «не відтворюється в розробника» — Cannot reproduce, а не Rejected; рішення відкласти — Deferred, а не закриття."
+}

@@ -1,0 +1,22 @@
+{
+  "type": "classify",
+  "title": "About severity or about priority?",
+  "statement": "До якого поля стосується кожне твердження: **severity** чи **priority**?",
+  "show": 7,
+  "categories": [
+    { "id": "severity", "label": "Severity" },
+    { "id": "priority", "label": "Priority" }
+  ],
+  "items": [
+    { "id": "impact", "text": "Описує, наскільки сильно баг впливає на роботу системи.", "category": "severity" },
+    { "id": "urgency", "text": "Описує, як швидко баг треба виправити.", "category": "priority" },
+    { "id": "qa-sets", "text": "Зазвичай ставить QA на основі технічного впливу.", "category": "severity" },
+    { "id": "po-decides", "text": "Остаточно визначає Product Owner з урахуванням бізнесу.", "category": "priority" },
+    { "id": "campaign", "text": "Змінюється, бо завтра стартує маркетингова кампанія саме на цю сторінку.", "category": "priority", "explain": "Вплив бага не змінився, змінилась терміновість." },
+    { "id": "data-loss", "text": "Втрата даних користувача робить цей показник дуже високим.", "category": "severity" },
+    { "id": "workaround", "text": "Наявність обхідного шляху може знизити терміновість виправлення.", "category": "priority" },
+    { "id": "blocker", "text": "Значення «Blocker» означає, що система чи ключовий процес не працює взагалі.", "category": "severity" }
+  ],
+  "hints": ["Severity — «наскільки погано» (вплив). Priority — «наскільки терміново» (бізнес-рішення)."],
+  "explanation": "Severity — властивість самого бага: що він ламає. Priority — рішення команди про порядок виправлення: залежить від контексту (реліз, кампанія, кількість користувачів, обхідний шлях)."
+}

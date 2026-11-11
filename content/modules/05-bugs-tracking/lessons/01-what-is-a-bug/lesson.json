@@ -1,0 +1,28 @@
+{
+  "title": "What is a bug",
+  "minutes": 30,
+  "summary": "Коли поведінка — баг, коли — питання до вимог, а коли — очікувана поведінка; звідки беруться баги",
+  "resources": [
+    {
+      "title": "ISTQB Glossary: defect, failure, anomaly",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: Software bug",
+      "url": "https://en.wikipedia.org/wiki/Software_bug",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: що таке баг (пошук українською)",
+      "url": "https://www.youtube.com/results?search_query=%D1%89%D0%BE+%D1%82%D0%B0%D0%BA%D0%B5+%D0%B1%D0%B0%D0%B3+%D1%82%D0%B5%D1%81%D1%82%D1%83%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F",
+      "kind": "video",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

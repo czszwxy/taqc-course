@@ -1,0 +1,21 @@
+{
+  "title": "Severity vs priority",
+  "minutes": 35,
+  "summary": "Severity — наскільки серйозний вплив, priority — наскільки терміново виправляти; рівні, хто їх ставить і типові комбінації",
+  "resources": [
+    {
+      "title": "ISTQB Glossary: severity, priority",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: severity vs priority with examples (пошук)",
+      "url": "https://www.youtube.com/results?search_query=severity+vs+priority+in+software+testing+examples",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

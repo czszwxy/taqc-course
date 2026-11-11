@@ -1,0 +1,23 @@
+{
+  "type": "classify",
+  "title": "Good summary or needs work?",
+  "statement": "Оціни заголовки (summary) баг-репортів.",
+  "show": 7,
+  "categories": [
+    { "id": "good", "label": "Good summary" },
+    { "id": "bad", "label": "Needs work" }
+  ],
+  "items": [
+    { "id": "g1", "text": "Login: valid user is rejected when the email has capital letters", "category": "good" },
+    { "id": "b1", "text": "Login broken!!!", "category": "bad", "explain": "Емоції, немає деталей: що саме і за якої умови?" },
+    { "id": "g2", "text": "Cart: total is not recalculated after changing quantity from 1 to 3", "category": "good" },
+    { "id": "b2", "text": "Bug", "category": "bad" },
+    { "id": "b3", "text": "Developer forgot to validate the field again", "category": "bad", "explain": "Звинувачення людини замість опису проблеми. Пиши про поведінку системи." },
+    { "id": "g3", "text": "Checkout: order is created twice after double-clicking \"Pay\"", "category": "good" },
+    { "id": "b4", "text": "Several problems on the profile page", "category": "bad", "explain": "Кілька проблем — кілька репортів; і жодна з них не названа." },
+    { "id": "g4", "text": "Search: no results for \"iphone\" while \"iPhone 15\" exists", "category": "good" },
+    { "id": "b5", "text": "It doesn't work when I click", "category": "bad" }
+  ],
+  "hints": ["Хороший summary відповідає на три питання: де, що не так, за якої умови. Без емоцій і звинувачень."],
+  "explanation": "Summary — це те, що читають у списку багів. Він має бути конкретним (де + що + умова), нейтральним (без емоцій і звинувачень) і описувати одну проблему."
+}

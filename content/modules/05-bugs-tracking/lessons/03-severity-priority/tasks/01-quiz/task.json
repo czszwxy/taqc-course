@@ -1,0 +1,67 @@
+{
+  "type": "quiz",
+  "title": "Quiz: severity vs priority",
+  "show": 5,
+  "hints": ["Severity — «наскільки погано», priority — «наскільки терміново»."],
+  "questions": [
+    {
+      "id": "def",
+      "kind": "single",
+      "text": "Що описує **priority**?",
+      "options": [
+        { "text": "Наскільки терміново баг треба виправити", "correct": true },
+        { "text": "Наскільки сильно баг впливає на систему", "explain": "Це severity." },
+        { "text": "Хто знайшов баг" }
+      ]
+    },
+    {
+      "id": "who",
+      "kind": "single",
+      "text": "Хто зазвичай остаточно визначає priority?",
+      "options": [
+        { "text": "Product Owner / менеджер, з урахуванням пропозиції QA", "correct": true },
+        { "text": "Лише розробник, який виправлятиме" },
+        { "text": "Користувачі" }
+      ]
+    },
+    {
+      "id": "typo-logo",
+      "kind": "single",
+      "text": "Опечатка в назві компанії на головній сторінці. Типова оцінка?",
+      "options": [
+        { "text": "Severity Trivial, Priority High", "correct": true },
+        { "text": "Severity Blocker, Priority Low" },
+        { "text": "Severity Critical, Priority Low" }
+      ]
+    },
+    {
+      "id": "idor",
+      "kind": "single",
+      "text": "Будь-хто може побачити чужі замовлення з адресами, змінивши номер в URL. Severity?",
+      "options": [
+        { "text": "Critical", "correct": true },
+        { "text": "Minor" },
+        { "text": "Trivial" }
+      ]
+    },
+    {
+      "id": "major-low",
+      "kind": "single",
+      "text": "Падає експорт річного звіту, яким користуються раз на рік, і є обхідний шлях. Найімовірніша комбінація?",
+      "options": [
+        { "text": "Severity Major, Priority Low", "correct": true },
+        { "text": "Severity Trivial, Priority High" }
+      ]
+    },
+    {
+      "id": "blocker",
+      "kind": "single",
+      "text": "Після деплою сайт повертає 500 на всіх сторінках. Severity?",
+      "options": [
+        { "text": "Blocker", "correct": true },
+        { "text": "Major" },
+        { "text": "Minor" }
+      ]
+    }
+  ]
+}

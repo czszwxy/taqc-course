@@ -1,0 +1,26 @@
+{
+  "type": "classify",
+  "title": "Which Jira issue type?",
+  "statement": "Обери тип задачі Jira для кожного запису.",
+  "show": 7,
+  "categories": [
+    { "id": "epic", "label": "Epic" },
+    { "id": "story", "label": "Story" },
+    { "id": "task", "label": "Task" },
+    { "id": "bug", "label": "Bug" },
+    { "id": "subtask", "label": "Sub-task" }
+  ],
+  "items": [
+    { "id": "loyalty", "text": "Програма лояльності: бали, рівні, знижки, історія — на кілька спринтів.", "category": "epic" },
+    { "id": "paypal-story", "text": "As a customer, I want to pay with PayPal, so that I don't have to enter card details.", "category": "story" },
+    { "id": "env", "text": "Налаштувати тестове середовище з копією бази даних для регресії.", "category": "task" },
+    { "id": "total-bug", "text": "Cart: total is not updated after changing quantity.", "category": "bug" },
+    { "id": "tc-subtask", "text": "Написати тест-кейси для story «Оплата PayPal».", "category": "subtask" },
+    { "id": "export-story", "text": "As an accountant, I want to export orders to CSV, so that I can build monthly reports.", "category": "story" },
+    { "id": "crash-bug", "text": "Застосунок закривається при повороті екрана на сторінці профілю.", "category": "bug" },
+    { "id": "upgrade", "text": "Оновити версію Playwright у проєкті автотестів.", "category": "task" },
+    { "id": "api-subtask", "text": "Написати API-тести для ендпоінта оплати (частина story про PayPal).", "category": "subtask" }
+  ],
+  "hints": ["Epic — велике (кілька спринтів). Story — цінність для користувача. Task — технічна робота. Bug — дефект. Sub-task — частина конкретної story чи task."],
+  "explanation": "Тип задачі допомагає планувати й фільтрувати роботу: epics групують stories, stories несуть цінність для користувача, tasks — технічна робота, bugs — дефекти, sub-tasks — дрібні кроки всередині більшої задачі."
+}

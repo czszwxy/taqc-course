@@ -1,0 +1,28 @@
+{
+  "title": "Evidence: screenshots, video, logs, environment",
+  "minutes": 35,
+  "summary": "Які докази додавати до бага: скриншот, відео, лог консолі, мережевий запит, серверні логі, дані середовища",
+  "resources": [
+    {
+      "title": "Chrome DevTools: Console overview",
+      "url": "https://developer.chrome.com/docs/devtools/console",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Chrome DevTools: Network panel",
+      "url": "https://developer.chrome.com/docs/devtools/network",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: DevTools for testers (пошук)",
+      "url": "https://www.youtube.com/results?search_query=chrome+devtools+for+QA+testers",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "title": "Bugs & Bug Tracking",
+  "description": "Що вважати багом, як писати баг-репорти, severity і priority, життєвий цикл бага, докази (скриншоти, відео, логи), робота в Jira і конструктивна взаємодія з розробниками.",
+  "goals": [
+    "Decide whether a behaviour is a bug, a requirement gap or expected behaviour",
+    "Write a clear, reproducible bug report",
+    "Set severity and priority and explain the difference",
+    "Move a bug through its lifecycle correctly",
+    "Attach the right evidence: screenshots, video, console and network logs",
+    "Use Jira issue types and basic JQL",
+    "Handle 'cannot reproduce' and 'works as designed' professionally"
+  ]
+}

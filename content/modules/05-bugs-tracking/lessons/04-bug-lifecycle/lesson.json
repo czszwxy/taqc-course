@@ -1,0 +1,22 @@
+{
+  "title": "Bug lifecycle",
+  "minutes": 30,
+  "summary": "Статуси бага від New до Closed, альтернативні гілки (Reopened, Duplicate, Rejected, Deferred, Cannot reproduce) і хто що робить",
+  "resources": [
+    {
+      "title": "Atlassian Jira — official site",
+      "url": "https://www.atlassian.com/software/jira",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Знайди на сайті розділ Guides про issues і workflows.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: bug life cycle (пошук)",
+      "url": "https://www.youtube.com/results?search_query=bug+life+cycle+in+software+testing",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}
