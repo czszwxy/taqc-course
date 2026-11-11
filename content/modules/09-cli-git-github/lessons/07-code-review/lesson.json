@@ -1,0 +1,30 @@
+{
+  "title": "Code review etiquette",
+  "minutes": 45,
+  "summary": "Навіщо код-рев'ю, на що дивитися в тестовому коді (перевірки, очікування, незалежність, секрети, назви), як писати конструктивні коментарі (nit, питання, пропозиція), як реагувати на рев'ю свого коду",
+  "resources": [
+    {
+      "title": "Google Engineering Practices: Code Review",
+      "url": "https://google.github.io/eng-practices/review/",
+      "kind": "article",
+      "lang": "en",
+      "note": "Розділи «How to do a code review» і «The CL author's guide».",
+      "needsVerification": true
+    },
+    {
+      "title": "GitHub Docs: About pull request reviews",
+      "url": "https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Best Practices",
+      "url": "https://playwright.dev/docs/best-practices",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Чекліст того, що шукати в рев'ю тестів.",
+      "needsVerification": true
+    }
+  ]
+}

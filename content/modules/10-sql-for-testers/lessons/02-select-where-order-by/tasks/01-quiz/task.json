@@ -1,0 +1,81 @@
+{
+  "type": "quiz",
+  "title": "Quiz: SELECT, WHERE, ORDER BY",
+  "show": 5,
+  "hints": ["`BETWEEN` включає межі. `NULL` шукають через `IS NULL`. `AND` виконується раніше за `OR`."],
+  "questions": [
+    {
+      "id": "null",
+      "kind": "single",
+      "text": "Як знайти користувачів, у яких не вказане місто?",
+      "options": [
+        { "text": "`WHERE city IS NULL`", "correct": true },
+        { "text": "`WHERE city = NULL`", "explain": "Порівняння з NULL через `=` завжди дає «невідомо», тож рядків не буде." },
+        { "text": "`WHERE city = ''`", "explain": "Порожній рядок і NULL — різні речі." }
+      ]
+    },
+    {
+      "id": "between",
+      "kind": "single",
+      "text": "Чи потрапить товар з ціною рівно `10000` у результат `WHERE price BETWEEN 2000 AND 10000`?",
+      "options": [
+        { "text": "Так, BETWEEN включає обидві межі", "correct": true },
+        { "text": "Ні, верхня межа не включається" }
+      ]
+    },
+    {
+      "id": "precedence",
+      "kind": "single",
+      "text": "Що поверне `WHERE in_stock = 1 AND category = 'Laptops' OR category = 'Phones'`?",
+      "options": [
+        { "text": "Ноутбуки в наявності + **усі** телефони (і ті, яких немає)", "correct": true },
+        { "text": "Лише ноутбуки й телефони, які є в наявності", "explain": "Так було б з дужками: `in_stock = 1 AND (category = 'Laptops' OR category = 'Phones')`." }
+      ]
+    },
+    {
+      "id": "like",
+      "kind": "single",
+      "text": "Які назви знайде `WHERE name LIKE '%Phone%'`?",
+      "options": [
+        { "text": "`Phone S10`, `Phone Mini`, `Phone Ultra` і `Phone Case S10`", "correct": true },
+        { "text": "Лише товари категорії Phones", "explain": "LIKE перевіряє текст колонки `name`, а не категорію. Чохол `Phone Case S10` теж містить «Phone»." }
+      ]
+    },
+    {
+      "id": "limit",
+      "kind": "single",
+      "text": "Як отримати **3 найдорожчі** товари?",
+      "options": [
+        { "text": "`ORDER BY price DESC LIMIT 3`", "correct": true },
+        { "text": "`LIMIT 3`", "explain": "Без ORDER BY порядок не гарантований — це будуть «якісь» 3 рядки." },
+        { "text": "`ORDER BY price LIMIT 3`", "explain": "За замовчуванням ASC — це 3 найдешевші." }
+      ]
+    },
+    {
+      "id": "quotes",
+      "kind": "single",
+      "text": "Який запис умови правильний?",
+      "options": [
+        { "text": "`WHERE city = 'Lviv'`", "correct": true },
+        { "text": "`WHERE city = Lviv`", "explain": "Без лапок SQL шукатиме **колонку** з назвою Lviv." },
+        { "text": "`WHERE city == \"Lviv\"`", "explain": "У стандартному SQL текст пишуть в одинарних лапках, а порівнюють одним `=`." }
+      ]
+    },
+    {
+      "id": "distinct",
+      "kind": "text",
+      "text": "Яке ключове слово після `SELECT` прибирає повтори з результату? (одне слово)",
+      "accept": ["distinct"],
+      "explanation": "`SELECT DISTINCT city FROM users` покаже кожне місто один раз."
+    },
+    {
+      "id": "order-default",
+      "kind": "single",
+      "text": "Ти не написав `ORDER BY`. У якому порядку прийдуть рядки?",
+      "options": [
+        { "text": "Порядок не гарантований, тест на нього покладатися не може", "correct": true },
+        { "text": "Завжди за зростанням `id`", "explain": "Часто так здається, але база цього не обіцяє. Після змін даних порядок може стати іншим." }
+      ]
+    }
+  ]
+}

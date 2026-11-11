@@ -1,0 +1,75 @@
+{
+  "type": "quiz",
+  "title": "Quiz: verifying with SQL",
+  "show": 5,
+  "hints": ["Добрий запит-перевірка повертає 0 рядків, коли все гаразд. Осиротілі записи — LEFT JOIN … IS NULL."],
+  "questions": [
+    {
+      "id": "after-order",
+      "kind": "multiple",
+      "text": "UI показав «Замовлення 1003 створено». Що варто перевірити в БД? (обери всі правильні)",
+      "options": [
+        { "text": "Замовлення 1003 належить правильному користувачу й має правильний статус", "correct": true },
+        { "text": "Позиції замовлення: товари, кількість, ціна", "correct": true },
+        { "text": "Сума замовлення дорівнює сумі позицій", "correct": true },
+        { "text": "Що створено рівно одне замовлення, а не два", "correct": true },
+        { "text": "Нічого: якщо UI показав номер, усе гаразд", "explain": "UI показує лише частину. Дублікати чи неправильні суми видно тільки в даних." }
+      ]
+    },
+    {
+      "id": "orphan",
+      "kind": "single",
+      "text": "Як знайти замовлення, чий `user_id` не існує в `users`?",
+      "options": [
+        { "text": "`orders o LEFT JOIN users u ON u.id = o.user_id WHERE u.id IS NULL`", "correct": true },
+        { "text": "`orders o JOIN users u ON u.id = o.user_id WHERE u.id IS NULL`", "explain": "INNER JOIN уже відкинув такі замовлення — результат завжди порожній." },
+        { "text": "`SELECT * FROM orders WHERE user_id IS NULL`", "explain": "user_id тут не NULL — він вказує на неіснуючого користувача (наприклад, 99)." }
+      ]
+    },
+    {
+      "id": "case-dup",
+      "kind": "single",
+      "text": "`GROUP BY email HAVING COUNT(*) > 1` нічого не знаходить, але в базі є `Olena@…` і `olena@…`. Як їх знайти?",
+      "options": [
+        { "text": "Групувати за `LOWER(email)`", "correct": true },
+        { "text": "Додати `DISTINCT`" },
+        { "text": "Ніяк: це різні адреси", "explain": "Для пошти й людини це одна адреса — і два акаунти на неї." }
+      ]
+    },
+    {
+      "id": "good-check",
+      "kind": "single",
+      "text": "Яку поведінку має запит-перевірка цілісності, щоб його було легко автоматизувати?",
+      "options": [
+        { "text": "Повертає 0 рядків, коли все гаразд, і по рядку на кожен дефект", "correct": true },
+        { "text": "Повертає всі рядки таблиці, а тестувальник переглядає їх очима" }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "text": "Що найкраще додати в баг-репорт про неправильну суму замовлення?",
+      "options": [
+        { "text": "SQL-запит, його результат і середовище, де його виконано", "correct": true },
+        { "text": "Дамп усієї таблиці orders" },
+        { "text": "Лише фразу «суми не сходяться»" }
+      ]
+    },
+    {
+      "id": "fix-prod",
+      "kind": "single",
+      "text": "На production знайшлося замовлення зі статусом `shiped`. Твої дії?",
+      "options": [
+        { "text": "Баг-репорт з запитом-доказом; виправлення — розробники/адміністратори за процедурою", "correct": true },
+        { "text": "`UPDATE orders SET status = 'shipped' WHERE status = 'shiped'` — швидко й просто" }
+      ]
+    },
+    {
+      "id": "lower",
+      "kind": "text",
+      "text": "Яка функція переводить текст у нижній регістр? (лише назва)",
+      "accept": ["lower", "lower()"],
+      "explanation": "`LOWER('Olena@X')` → `olena@x`."
+    }
+  ]
+}

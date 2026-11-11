@@ -297,6 +297,30 @@ export const selectorTaskSchema = z.object({
   challenges: z.array(selectorChallengeSchema).min(1),
 });
 
+/**
+ * SQL practice on a SQLite database (sql.js). `database` names one or more scripts in content/databases/*.sql
+ * (concatenated in order). A challenge with `verify` is a data-changing statement: the verify query runs after the
+ * learner's statement and after the model statement, and the results must match.
+ */
+export const sqlChallengeSchema = z.object({
+  id: z.string(),
+  prompt: z.string(),
+  model: z.string(),
+  verify: z.string().optional(),
+  /** SELECT challenges: compare row order too (use when the prompt asks for ORDER BY). */
+  orderMatters: z.boolean().default(false),
+  rules: z.array(codeRuleSchema).default([]),
+  explain: z.string().optional(),
+});
+
+export const sqlTaskSchema = z.object({
+  type: z.literal('sql'),
+  ...baseTask,
+  statement: z.string(),
+  database: z.union([z.string(), z.array(z.string()).min(1)]),
+  challenges: z.array(sqlChallengeSchema).min(1),
+});
+
 export const taskSchema = z.discriminatedUnion('type', [
   quizTaskSchema,
   codeTaskSchema,
@@ -308,6 +332,7 @@ export const taskSchema = z.discriminatedUnion('type', [
   writtenTaskSchema,
   tableTaskSchema,
   selectorTaskSchema,
+  sqlTaskSchema,
 ]);
 
 export type Resource = z.infer<typeof resourceSchema>;
@@ -330,6 +355,8 @@ export type WrittenField = z.infer<typeof writtenFieldSchema>;
 export type TableTask = z.infer<typeof tableTaskSchema>;
 export type SelectorTask = z.infer<typeof selectorTaskSchema>;
 export type SelectorChallenge = z.infer<typeof selectorChallengeSchema>;
+export type SqlTask = z.infer<typeof sqlTaskSchema>;
+export type SqlChallenge = z.infer<typeof sqlChallengeSchema>;
 
 export const TASK_TYPE_LABEL: Record<Task['type'], string> = {
   quiz: 'Quiz',
@@ -342,6 +369,7 @@ export const TASK_TYPE_LABEL: Record<Task['type'], string> = {
   written: 'Written answer',
   table: 'Table',
   selector: 'Selectors',
+  sql: 'SQL',
 };
 
 export function formatZodError(err: z.ZodError): string {

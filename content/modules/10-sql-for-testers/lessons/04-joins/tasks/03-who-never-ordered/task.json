@@ -1,0 +1,50 @@
+{
+  "type": "sql",
+  "title": "Find what has no match (LEFT JOIN)",
+  "statement": "Маркетинг хоче надіслати знижку клієнтам, які ще нічого не купили, і прибрати з вітрини товари, які ніхто не купує. Звіти для цього вже є в адмінці. Перевір їх: напиши запити з `LEFT JOIN`.",
+  "database": "gadgetly",
+  "challenges": [
+    {
+      "id": "orders-count",
+      "prompt": "Усі користувачі і кількість їхніх замовлень, **включно з тими, хто не замовляв** (у них має бути 0): `name`, кількість.",
+      "model": "SELECT u.name, COUNT(o.id) FROM users u LEFT JOIN orders o ON o.user_id = u.id GROUP BY u.id, u.name;",
+      "explain": "`COUNT(o.id)`, а не `COUNT(*)`: інакше користувачі без замовлень отримають 1."
+    },
+    {
+      "id": "never-ordered",
+      "prompt": "Користувачі без жодного замовлення: `id`, `email`.",
+      "model": "SELECT u.id, u.email FROM users u LEFT JOIN orders o ON o.user_id = u.id WHERE o.id IS NULL;",
+      "rules": [
+        {
+          "kind": "require",
+          "pattern": "left\\s+join|not\\s+(in|exists)",
+          "message": "Знайди рядки без пари через `LEFT JOIN … WHERE … IS NULL`, а не вписуй id вручну. Запит-перевірка має працювати й на інших даних."
+        }
+      ]
+    },
+    {
+      "id": "never-sold",
+      "prompt": "Товари, які **ніколи** не замовляли: `name`.",
+      "model": "SELECT p.name FROM products p LEFT JOIN order_items i ON i.product_id = p.id WHERE i.id IS NULL;",
+      "rules": [
+        {
+          "kind": "require",
+          "pattern": "left\\s+join|not\\s+(in|exists)",
+          "message": "Знайди рядки без пари через `LEFT JOIN … WHERE … IS NULL`, а не вписуй id вручну. Запит-перевірка має працювати й на інших даних."
+        }
+      ]
+    },
+    {
+      "id": "units-sold",
+      "prompt": "Кожен товар і скільки його одиниць продано (сума `quantity`). Для непроданих — **0, а не NULL**: `name`, кількість.",
+      "model": "SELECT p.name, COALESCE(SUM(i.quantity), 0) FROM products p LEFT JOIN order_items i ON i.product_id = p.id GROUP BY p.id, p.name;",
+      "explain": "`SUM` по порожній групі дає NULL. `COALESCE(…, 0)` перетворює його на 0."
+    }
+  ],
+  "hints": [
+    "Ліва таблиця — та, з якої потрібні **всі** рядки: `users` або `products`.",
+    "Рядки без пари: `LEFT JOIN … WHERE права_таблиця.id IS NULL`.",
+    "Нулі замість NULL — `COALESCE(SUM(i.quantity), 0)`. Кількість — `COUNT(o.id)`."
+  ],
+  "explanation": "`LEFT JOIN` залишає всі рядки лівої таблиці. Там, де пари немає, праві колонки дорівнюють NULL, і саме за цим NULL знаходять «рядки без пари». У підрахунках з `LEFT JOIN` рахуй колонку правої таблиці (`COUNT(o.id)`) і заміняй NULL на 0 через `COALESCE`. Інакше «нульові» рядки дадуть 1 або NULL."
+}

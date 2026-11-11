@@ -1,0 +1,27 @@
+{
+  "type": "classify",
+  "title": "Commit it or ignore it?",
+  "statement": "Ти налаштовуєш `.gitignore` для проєкту з Playwright-тестами. Для кожного файлу чи папки вирішіть: **комітимо** в репозиторій чи **додаємо в .gitignore**?",
+  "categories": [
+    { "id": "commit", "label": "Commit to the repo", "description": "Source, config, docs — what the team needs to build and run the project" },
+    { "id": "ignore", "label": "Add to .gitignore", "description": "Generated, secret or personal files" }
+  ],
+  "items": [
+    { "id": "spec", "text": "`tests/login.spec.ts`", "category": "commit" },
+    { "id": "pkg", "text": "`package.json`", "category": "commit" },
+    { "id": "lock", "text": "`package-lock.json`", "category": "commit", "explain": "Фіксує точні версії для всіх і для CI (`npm ci`)." },
+    { "id": "config", "text": "`playwright.config.ts`", "category": "commit" },
+    { "id": "env-example", "text": "`.env.example` (variable names with placeholder values)", "category": "commit", "explain": "Зразок без справжніх значень підказує колегам, які змінні потрібні." },
+    { "id": "readme", "text": "`README.md`", "category": "commit" },
+    { "id": "node-modules", "text": "`node_modules/`", "category": "ignore", "explain": "Відтворюється командою `npm install`, займає сотні МБ." },
+    { "id": "env", "text": "`.env` (real API token and test-user password)", "category": "ignore", "explain": "Секрети не комітимо ніколи." },
+    { "id": "report", "text": "`playwright-report/`", "category": "ignore", "explain": "Генерується після кожного прогону." },
+    { "id": "results", "text": "`test-results/` (screenshots and traces of failed tests)", "category": "ignore" },
+    { "id": "log", "text": "`debug.log`", "category": "ignore" },
+    { "id": "ds", "text": "`.DS_Store` / `Thumbs.db`", "category": "ignore", "explain": "Службові файли операційної системи." }
+  ],
+  "show": 9,
+  "hints": ["Питання до кожного файлу: «чи можна його згенерувати командою?» і «чи є в ньому секрети?» Якщо так — ігноруємо."],
+  "explanation": "У репозиторії лежить те, що потрібно команді, щоб зібрати й запустити проєкт: код, тести, конфіги, `package.json` і lock-файл, документація, зразок `.env.example`. Ігнорують **згенероване** (node_modules, звіти, результати, логи), **секретне** (.env) і **особисте/системне** (.DS_Store, налаштування IDE). Пам'ятай: `.gitignore` не допоможе, якщо файл уже закомічено.",
+  "passScore": 0.85
+}

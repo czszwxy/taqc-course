@@ -21,6 +21,13 @@ const taskCodeFiles = import.meta.glob<string>('/content/modules/*/lessons/*/tas
   query: '?raw',
   import: 'default',
 });
+const databaseFiles = import.meta.glob<string>('/content/databases/*.sql', { query: '?raw', import: 'default', eager: true });
+
+/** SQL setup scripts for sql tasks, keyed by file name without .sql (e.g. "gadgetly"). */
+export const DATABASE_SCRIPTS: Record<string, string> = Object.fromEntries(
+  Object.entries(databaseFiles).map(([path, sql]) => [path.slice(path.lastIndexOf('/') + 1).replace('.sql', ''), sql]),
+);
+
 const mutantFiles = import.meta.glob<string>('/content/modules/*/lessons/*/tasks/*/mutants/*.ts', {
   query: '?raw',
   import: 'default',

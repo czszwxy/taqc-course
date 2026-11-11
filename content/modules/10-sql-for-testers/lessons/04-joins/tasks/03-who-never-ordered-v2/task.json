@@ -1,0 +1,36 @@
+{
+  "type": "sql",
+  "title": "Find what has no match (practice 2)",
+  "variantOf": "03-who-never-ordered",
+  "statement": "Ще кілька перевірок звітів з `LEFT JOIN`.",
+  "database": "gadgetly",
+  "challenges": [
+    {
+      "id": "customers-no-orders",
+      "prompt": "Клієнти (роль `customer`) без жодного замовлення: `name`. Адмінів не враховуй.",
+      "model": "SELECT u.name FROM users u LEFT JOIN orders o ON o.user_id = u.id WHERE o.id IS NULL AND u.role = 'customer';",
+      "rules": [
+        {
+          "kind": "require",
+          "pattern": "left\\s+join|not\\s+(in|exists)",
+          "message": "Знайди рядки без пари через `LEFT JOIN … WHERE … IS NULL`, а не вписуй id вручну. Запит-перевірка має працювати й на інших даних."
+        }
+      ]
+    },
+    {
+      "id": "spent-all",
+      "prompt": "Кожен користувач і загальна сума його замовлень (0, якщо замовлень немає): `email`, сума.",
+      "model": "SELECT u.email, COALESCE(SUM(o.total), 0) FROM users u LEFT JOIN orders o ON o.user_id = u.id GROUP BY u.id, u.email;"
+    },
+    {
+      "id": "laptop-lines",
+      "prompt": "Ноутбуки (`Laptops`) і в скількох позиціях замовлень (`order_items`) кожен з'являється, 0 для незамовлених: `name`, кількість.",
+      "model": "SELECT p.name, COUNT(i.id) FROM products p LEFT JOIN order_items i ON i.product_id = p.id WHERE p.category = 'Laptops' GROUP BY p.id, p.name;"
+    }
+  ],
+  "hints": [
+    "Додаткова умова на ліву таблицю (роль, категорія) — у `WHERE` разом з іншими.",
+    "Порожня сума → `COALESCE(SUM(o.total), 0)`; кількість з LEFT JOIN → `COUNT(i.id)`."
+  ],
+  "explanation": "Схема та сама: `LEFT JOIN` + `IS NULL`, щоб знайти рядки без пари, і `COUNT(права.id)` / `COALESCE(SUM(…), 0)`, щоб правильно порахувати нулі. Фільтр на ліву таблицю (`u.role = 'customer'`, `p.category = 'Laptops'`) просто додається в `WHERE`."
+}

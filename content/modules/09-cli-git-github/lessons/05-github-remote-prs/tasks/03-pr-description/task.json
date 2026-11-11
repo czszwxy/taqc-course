@@ -1,0 +1,38 @@
+{
+  "type": "written",
+  "title": "Write a pull request description",
+  "statement": "Ти зробив дві речі в гілці `feature/search-tests` (задача **QA-217**):\n\n- додав 3 тести сторінки пошуку: порожній запит показує всі товари; фільтр за категорією; повідомлення «No results» для запиту без збігів;\n- виправив нестабільний (flaky) тест кошика: замінив `waitForTimeout(3000)` на очікування відповіді API кошика.\n\nЛокально `npx playwright test` дав 24 passed. Нові й виправлений тести ти прогнав 10 разів (`--repeat-each=10`): 0 падінь.\n\nНапиши заголовок і опис pull request.",
+  "fields": [
+    { "id": "title", "label": "PR title", "kind": "text", "placeholder": "Add … (QA-217)" },
+    { "id": "summary", "label": "What & why", "kind": "textarea", "placeholder": "- Add …\n- Fix …\nTask: …" },
+    { "id": "testing", "label": "How it was tested", "kind": "textarea", "placeholder": "npx playwright test — …" }
+  ],
+  "rules": [
+    { "field": "title", "check": "minLength", "value": 20, "message": "Title: заголовок має пояснювати зміну, а не бути одним словом. Наприклад: «Add search page tests and fix flaky cart test»." },
+    { "field": "title", "check": "mentionsAny", "value": ["search|пошук"], "message": "Title: назви головну зміну — тести **пошуку**." },
+    { "field": "summary", "check": "mentionsAny", "value": ["search|пошук"], "message": "What & why: опиши нові тести пошуку (що саме вони перевіряють)." },
+    { "field": "summary", "check": "mentionsAny", "value": ["flak|cart|кошик|нестабільн"], "message": "What & why: не забудь другу зміну — виправлення flaky-тесту кошика." },
+    { "field": "summary", "check": "mentionsAny", "value": ["waitForTimeout|api|response|відповід|sleep|wait"], "message": "What & why: поясни, **як** виправлено flaky-тест (замість фіксованого очікування — чекаємо відповідь API)." },
+    { "field": "any", "check": "mentionsAny", "value": ["QA-217"], "message": "Додай номер задачі **QA-217**, щоб PR був пов'язаний з трекером." },
+    { "field": "testing", "check": "mentionsAny", "value": ["playwright test|npm test|npm run"], "message": "How it was tested: вкажи команду, якою запускав тести." },
+    { "field": "testing", "check": "mentionsAny", "value": ["repeat|10 times|10 раз|разів|times"], "message": "How it was tested: для flaky-фіксу важливо, що тест прогнано **багато разів** (`--repeat-each=10`)." }
+  ],
+  "model": {
+    "title": "Add search page tests and fix flaky cart test (QA-217)",
+    "summary": "- Add 3 tests for the search page: empty query shows all products, filtering by category, \"No results\" message for a query without matches.\n- Fix the flaky cart test: replace waitForTimeout(3000) with waiting for the cart API response, so the test no longer depends on timing.\nTask: QA-217",
+    "testing": "- npx playwright test — 24 passed locally.\n- New and fixed tests run 10 times with --repeat-each=10 — 0 failures."
+  },
+  "hints": [
+    "Заголовок: дієслово + що змінено (+ номер задачі). Як повідомлення коміту, тільки для всього PR.",
+    "Для виправлення flaky-тесту рев'юеру важливо знати причину і доказ стабільності: багаторазовий прогін."
+  ],
+  "explanation": "Опис PR економить час рев'юера: він одразу бачить **що** змінено (кожна зміна окремим пунктом), **навіщо** (задача) і **як перевірено** (команда й результат). Для виправлення нестабільного тесту головний доказ — багаторазовий прогін без падінь. Один зелений запуск нічого не доводить: flaky-тест теж іноді проходить.",
+  "checklist": [
+    "Заголовок зрозумілий без відкриття PR",
+    "Обидві зміни описані окремими пунктами",
+    "Пояснено причину flaky-тесту і спосіб виправлення",
+    "Є посилання на задачу",
+    "Вказано команди перевірки і результат, включно з багаторазовим прогоном",
+    "Немає секретів (паролів, токенів) в описі"
+  ]
+}

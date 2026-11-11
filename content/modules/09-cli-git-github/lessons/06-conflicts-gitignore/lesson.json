@@ -1,0 +1,36 @@
+{
+  "title": "Merge conflicts & .gitignore",
+  "minutes": 55,
+  "summary": "Чому виникають конфлікти злиття, як читати маркери <<<<<<< ======= >>>>>>> і розв'язувати конфлікт (зокрема поєднуючи обидві зміни), git merge --abort, конфлікти в package-lock.json, .gitignore і що робити, якщо секрет потрапив у репозиторій",
+  "resources": [
+    {
+      "title": "GitHub Docs: Resolving a merge conflict using the command line",
+      "url": "https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/resolving-a-merge-conflict-using-the-command-line",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "GitHub Docs: Ignoring files",
+      "url": "https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "github/gitignore — collection of .gitignore templates",
+      "url": "https://github.com/github/gitignore",
+      "kind": "tool",
+      "lang": "en",
+      "note": "Подивись шаблон Node.gitignore.",
+      "needsVerification": true
+    },
+    {
+      "title": "VS Code: Merge conflicts",
+      "url": "https://code.visualstudio.com/docs/sourcecontrol/overview#_merge-conflicts",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

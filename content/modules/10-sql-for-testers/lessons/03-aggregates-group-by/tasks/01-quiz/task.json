@@ -1,0 +1,81 @@
+{
+  "type": "quiz",
+  "title": "Quiz: aggregates & GROUP BY",
+  "show": 5,
+  "hints": ["WHERE — до групування (рядки), HAVING — після (групи). COUNT(колонка) пропускає NULL."],
+  "questions": [
+    {
+      "id": "count-null",
+      "kind": "single",
+      "text": "У таблиці `users` 10 рядків, у одного з них `city` = NULL. Що поверне `SELECT COUNT(city) FROM users`?",
+      "options": [
+        { "text": "9", "correct": true },
+        { "text": "10", "explain": "Так рахує `COUNT(*)`. `COUNT(city)` пропускає NULL." },
+        { "text": "Помилку" }
+      ]
+    },
+    {
+      "id": "having",
+      "kind": "single",
+      "text": "Треба знайти статуси, у яких **більше 2** замовлень. Як записати умову?",
+      "options": [
+        { "text": "`GROUP BY status HAVING COUNT(*) > 2`", "correct": true },
+        { "text": "`WHERE COUNT(*) > 2 GROUP BY status`", "explain": "У WHERE агрегати не можна: рядки фільтруються до підрахунку." }
+      ]
+    },
+    {
+      "id": "where-vs-having",
+      "kind": "single",
+      "text": "Чим `WHERE` відрізняється від `HAVING`?",
+      "options": [
+        { "text": "WHERE фільтрує рядки до групування, HAVING — групи після підрахунку", "correct": true },
+        { "text": "Нічим, це синоніми" },
+        { "text": "HAVING працює лише з текстом, WHERE — з числами" }
+      ]
+    },
+    {
+      "id": "group-select",
+      "kind": "single",
+      "text": "Чому `SELECT status, id, COUNT(*) FROM orders GROUP BY status` — поганий запит?",
+      "options": [
+        { "text": "У групі багато замовлень, тож незрозуміло, яке `id` показати", "correct": true },
+        { "text": "Бо `COUNT(*)` не можна писати разом з іншими колонками" }
+      ]
+    },
+    {
+      "id": "ui-count",
+      "kind": "single",
+      "text": "Адмінка показує «Доставлено: 6». Як перевірити це число?",
+      "options": [
+        { "text": "`SELECT COUNT(*) FROM orders WHERE status = 'delivered'` — і порівняти", "correct": true },
+        { "text": "`SELECT * FROM orders` — і порахувати очима", "explain": "Можна на 12 рядках, але не на 12 000. Агрегат точніший і швидший." }
+      ]
+    },
+    {
+      "id": "order",
+      "kind": "single",
+      "text": "Який порядок частин запиту правильний?",
+      "options": [
+        { "text": "`SELECT … FROM … WHERE … GROUP BY … HAVING … ORDER BY …`", "correct": true },
+        { "text": "`SELECT … FROM … GROUP BY … WHERE … ORDER BY … HAVING …`" }
+      ]
+    },
+    {
+      "id": "sum-func",
+      "kind": "text",
+      "text": "Яка агрегатна функція рахує **суму** значень колонки? (лише назва)",
+      "accept": ["sum", "sum()"],
+      "explanation": "`SUM(total)` — сума всіх значень `total`."
+    },
+    {
+      "id": "rounding",
+      "kind": "single",
+      "text": "Запит дає середній чек `9334.4`, а UI показує `9335`. Що робиш першим?",
+      "options": [
+        { "text": "Дивлюся, яке правило округлення в вимогах, і лише тоді вирішую, чи це баг", "correct": true },
+        { "text": "Одразу заводжу баг: числа різні" },
+        { "text": "Ігнорую — різниця менше гривні" }
+      ]
+    }
+  ]
+}

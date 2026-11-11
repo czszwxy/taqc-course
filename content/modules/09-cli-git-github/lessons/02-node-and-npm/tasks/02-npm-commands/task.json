@@ -1,0 +1,39 @@
+{
+  "type": "table",
+  "title": "What does each npm command do?",
+  "statement": "Ось package.json тестового проєкту:\n\n```json\n{\n  \"scripts\": {\n    \"test\": \"playwright test\",\n    \"test:smoke\": \"playwright test --grep @smoke\",\n    \"report\": \"playwright show-report\"\n  },\n  \"devDependencies\": {\n    \"@playwright/test\": \"^1.48.0\",\n    \"typescript\": \"^5.6.3\"\n  }\n}\n```\n\nЩо станеться після кожної команди?",
+  "givenColumns": ["Command"],
+  "answerColumns": [
+    {
+      "id": "effect",
+      "label": "What happens",
+      "options": [
+        "Installs everything listed in package.json",
+        "Clean install exactly from package-lock.json",
+        "Adds a package to dependencies",
+        "Adds a package to devDependencies",
+        "Runs the \"test\" script",
+        "Runs the \"test:smoke\" script",
+        "Runs a package CLI from node_modules",
+        "Shows the installed Node.js version",
+        "Error: no such script"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`npm install`"], "answers": { "effect": "Installs everything listed in package.json" } },
+    { "given": ["`npm ci`"], "answers": { "effect": "Clean install exactly from package-lock.json" }, "explain": "Так встановлюють залежності на CI: швидко і з точно тими самими версіями." },
+    { "given": ["`npm install zod`"], "answers": { "effect": "Adds a package to dependencies" } },
+    { "given": ["`npm install -D @types/node`"], "answers": { "effect": "Adds a package to devDependencies" } },
+    { "given": ["`npm test`"], "answers": { "effect": "Runs the \"test\" script" }, "explain": "`npm test` — скорочення для `npm run test`." },
+    { "given": ["`npm run test:smoke`"], "answers": { "effect": "Runs the \"test:smoke\" script" } },
+    { "given": ["`npx playwright show-report`"], "answers": { "effect": "Runs a package CLI from node_modules" } },
+    { "given": ["`node -v`"], "answers": { "effect": "Shows the installed Node.js version" } },
+    { "given": ["`npm run smoke`"], "answers": { "effect": "Error: no such script" }, "explain": "Скрипт називається `test:smoke`, а не `smoke`. npm відповість `Missing script: \"smoke\"`." }
+  ],
+  "hints": [
+    "`npm run X` запускає скрипт X, лише якщо такий ключ є в `scripts`.",
+    "`-D` = devDependencies; без прапорця — dependencies."
+  ],
+  "explanation": "npm-команди бувають трьох видів: встановлення (`install`, `ci`, з `-D` або без), запуск скриптів з package.json (`npm run назва`, а `npm test` — скорочення) і запуск CLI пакетів (`npx`). Назва скрипта має збігатися з ключем у `scripts` точно, до символу."
+}

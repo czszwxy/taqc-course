@@ -1,0 +1,37 @@
+{
+  "title": "Relational databases & keys",
+  "minutes": 45,
+  "summary": "Що таке реляційна база даних, таблиці, рядки й колонки, типи даних і NULL, первинні та зовнішні ключі, зв'язки й обмеження — і навіщо все це тестувальнику",
+  "resources": [
+    {
+      "title": "PostgreSQL Tutorial: Concepts",
+      "url": "https://www.postgresql.org/docs/current/tutorial-concepts.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Коротко: таблиці, рядки, колонки в реляційній БД.",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLite: Datatypes In SQLite",
+      "url": "https://www.sqlite.org/datatype3.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Типи даних у SQLite — саме цю БД ти використовуєш у практиці.",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLite: Foreign Key Support",
+      "url": "https://www.sqlite.org/foreignkeys.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: реляційні бази даних для початківців",
+      "url": "https://www.youtube.com/results?search_query=реляційні+бази+даних+для+початківців",
+      "kind": "video",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "type": "sql",
+  "title": "Group orders and products (practice 2)",
+  "variantOf": "03-group-orders",
+  "statement": "Ще кілька групових звітів — та сама техніка, інші питання.",
+  "database": "gadgetly",
+  "challenges": [
+    {
+      "id": "orders-per-user",
+      "prompt": "Скільки замовлень зробив кожен користувач (з тих, хто має замовлення): `user_id`, кількість.",
+      "model": "SELECT user_id, COUNT(*) FROM orders GROUP BY user_id;"
+    },
+    {
+      "id": "sum-per-status",
+      "prompt": "Загальна сума замовлень у кожному статусі: `status`, сума `total`.",
+      "model": "SELECT status, SUM(total) FROM orders GROUP BY status;"
+    },
+    {
+      "id": "sold-units",
+      "prompt": "Товари, яких продано **2 штуки і більше** (за таблицею `order_items`): `product_id`, сума `quantity`.",
+      "model": "SELECT product_id, SUM(quantity) FROM order_items GROUP BY product_id HAVING SUM(quantity) >= 2;",
+      "explain": "Рахуємо одиниці (`SUM(quantity)`), а не позиції (`COUNT(*)`): позиція з `quantity = 3` — це три проданих чохли."
+    },
+    {
+      "id": "max-per-category",
+      "prompt": "Найдорожчий товар у кожній категорії: `category`, найбільша ціна.",
+      "model": "SELECT category, MAX(price) FROM products GROUP BY category;"
+    },
+    {
+      "id": "busy-statuses",
+      "prompt": "Статуси, у яких більше одного замовлення: `status`, кількість. Від більшої кількості до меншої, при однаковій — за назвою статусу (A→Z).",
+      "model": "SELECT status, COUNT(*) AS n FROM orders GROUP BY status HAVING COUNT(*) > 1 ORDER BY n DESC, status;",
+      "orderMatters": true
+    }
+  ],
+  "hints": [
+    "Кількість проданих одиниць — `SUM(quantity)`, кількість позицій — `COUNT(*)`.",
+    "Фільтр на групи — `HAVING`. Сортування — `ORDER BY` після нього, кілька ключів через кому."
+  ],
+  "explanation": "Та сама схема: `GROUP BY` визначає групу, агрегат рахує, `HAVING` відкидає групи, `ORDER BY` впорядковує. Слідкуй, **що** саме рахуєш: рядки (`COUNT(*)`) чи суму значень (`SUM(quantity)`). Різниця видно на позиції «3 × Phone Case S10»."
+}

@@ -1,0 +1,71 @@
+{
+  "type": "quiz",
+  "title": "Quiz: JOINs",
+  "show": 5,
+  "hints": ["INNER JOIN — лише рядки з парою. LEFT JOIN — усі рядки лівої таблиці, без пари → NULL."],
+  "questions": [
+    {
+      "id": "inner",
+      "kind": "single",
+      "text": "Користувач 9 не має замовлень. Чи буде він у результаті `users u JOIN orders o ON o.user_id = u.id`?",
+      "options": [
+        { "text": "Ні, INNER JOIN залишає лише рядки, для яких знайшлася пара", "correct": true },
+        { "text": "Так, з NULL замість даних замовлення", "explain": "Так поводиться LEFT JOIN." }
+      ]
+    },
+    {
+      "id": "no-match",
+      "kind": "single",
+      "text": "Як знайти товари, які **ніколи** не замовляли?",
+      "options": [
+        { "text": "`products p LEFT JOIN order_items i ON i.product_id = p.id WHERE i.id IS NULL`", "correct": true },
+        { "text": "`products p JOIN order_items i ON i.product_id = p.id WHERE i.id IS NULL`", "explain": "INNER JOIN уже викинув товари без пари, тож NULL там не буде — 0 рядків." },
+        { "text": "`SELECT * FROM products WHERE quantity = 0`", "explain": "У products немає колонки quantity, і замовлення — в іншій таблиці." }
+      ]
+    },
+    {
+      "id": "on",
+      "kind": "single",
+      "text": "Яка умова `ON` правильна для `orders o JOIN users u`?",
+      "options": [
+        { "text": "`ON u.id = o.user_id`", "correct": true },
+        { "text": "`ON u.id = o.id`", "explain": "id замовлення (1001…) і id користувача (1…10) — різні речі. Такий JOIN дасть порожній або хибний результат." },
+        { "text": "`ON u.name = o.status`" }
+      ]
+    },
+    {
+      "id": "ambiguous",
+      "kind": "single",
+      "text": "Запит `SELECT id, email FROM orders o JOIN users u ON u.id = o.user_id` падає з «ambiguous column name: id». Чому?",
+      "options": [
+        { "text": "Колонка `id` є в обох таблицях — треба писати `o.id` або `u.id`", "correct": true },
+        { "text": "У таблиці users немає колонки id" }
+      ]
+    },
+    {
+      "id": "count-left",
+      "kind": "single",
+      "text": "`users LEFT JOIN orders … GROUP BY u.id` з `COUNT(*)` показує користувачу без замовлень **1**. Чому?",
+      "options": [
+        { "text": "LEFT JOIN дає для нього один рядок з NULL, і `COUNT(*)` його рахує. Треба `COUNT(o.id)`", "correct": true },
+        { "text": "Це баг бази даних" }
+      ]
+    },
+    {
+      "id": "coalesce",
+      "kind": "text",
+      "text": "Яка функція повертає перше не-NULL значення, наприклад щоб показати 0 замість NULL? (лише назва)",
+      "accept": ["coalesce", "coalesce()", "ifnull"],
+      "explanation": "`COALESCE(SUM(o.total), 0)` дає 0 там, де сума — NULL."
+    },
+    {
+      "id": "multiply",
+      "kind": "single",
+      "text": "Замовлення 1009 має три позиції. Скільки рядків з ним поверне `orders o JOIN order_items i ON i.order_id = o.id`?",
+      "options": [
+        { "text": "3 — по рядку на кожну позицію, `total` повториться тричі", "correct": true },
+        { "text": "1 — JOIN не змінює кількість рядків", "explain": "Зв'язок один-до-багатьох «розмножує» рядок замовлення." }
+      ]
+    }
+  ]
+}

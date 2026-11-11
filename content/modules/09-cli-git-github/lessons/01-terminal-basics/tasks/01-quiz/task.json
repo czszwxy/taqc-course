@@ -1,0 +1,77 @@
+{
+  "type": "quiz",
+  "title": "Quiz: terminal basics",
+  "show": 5,
+  "hints": ["`pwd` — де я, `ls` — що тут, `cd` — перейти, `..` — рівень вище."],
+  "questions": [
+    {
+      "id": "pwd",
+      "kind": "text",
+      "text": "Яка команда показує поточну папку (і в PowerShell, і в bash)?",
+      "accept": ["pwd"],
+      "explanation": "`pwd` — print working directory."
+    },
+    {
+      "id": "up",
+      "kind": "text",
+      "text": "Ти в `D:\\qa-academy\\tests`. Яка команда перейде в `D:\\qa-academy`?",
+      "accept": ["cd ..", "cd ../", "cd ..\\", "cd D:\\qa-academy", "cd d:\\qa-academy"],
+      "explanation": "`..` — батьківська папка: `cd ..`."
+    },
+    {
+      "id": "list",
+      "kind": "text",
+      "text": "Якою командою подивитися, які файли й папки є в поточній папці? (працює і в PowerShell, і в bash)",
+      "accept": ["ls", "dir", "ls -la", "ls -l", "get-childitem"]
+    },
+    {
+      "id": "relative",
+      "kind": "single",
+      "text": "Ти в `/home/olena/projects/shop`. Куди веде шлях `../docs`?",
+      "options": [
+        { "text": "`/home/olena/projects/docs`", "correct": true },
+        { "text": "`/home/olena/projects/shop/docs`", "explain": "Це був би шлях `docs` або `./docs`." },
+        { "text": "`/docs`" }
+      ]
+    },
+    {
+      "id": "ctrl-c",
+      "kind": "single",
+      "text": "Dev-сервер працює в терміналі, і тобі треба його зупинити. Що натиснути?",
+      "options": [
+        { "text": "Ctrl+C", "correct": true },
+        { "text": "Ctrl+Z", "explain": "У bash Ctrl+Z лише призупиняє процес у фоні, він далі займає порт." },
+        { "text": "Закрити ноутбук" }
+      ]
+    },
+    {
+      "id": "not-recognized",
+      "kind": "single",
+      "text": "Ти ввів `npx playwright test` і бачиш `'npx' is not recognized as an internal or external command`. Найімовірніша причина?",
+      "options": [
+        { "text": "Node.js не встановлений або його немає в PATH", "correct": true },
+        { "text": "У тестах є помилка", "explain": "До тестів справа не дійшла: shell не знайшов саму програму npx." },
+        { "text": "Немає інтернету" }
+      ]
+    },
+    {
+      "id": "flag",
+      "kind": "single",
+      "text": "У команді `npx playwright test login.spec.ts --headed` що таке `--headed`?",
+      "options": [
+        { "text": "Прапорець (option), що змінює поведінку команди", "correct": true },
+        { "text": "Назва файлу з тестами", "explain": "Файл — це аргумент `login.spec.ts`." },
+        { "text": "Коментар" }
+      ]
+    },
+    {
+      "id": "spaces",
+      "kind": "single",
+      "text": "Як перейти в папку `C:\\Program Files\\nodejs`?",
+      "options": [
+        { "text": "`cd \"C:\\Program Files\\nodejs\"`", "correct": true },
+        { "text": "`cd C:\\Program Files\\nodejs`", "explain": "Без лапок shell побачить два аргументи: `C:\\Program` і `Files\\nodejs`." }
+      ]
+    }
+  ]
+}

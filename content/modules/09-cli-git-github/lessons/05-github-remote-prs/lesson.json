@@ -1,0 +1,36 @@
+{
+  "title": "GitHub: remote, push/pull, pull requests",
+  "minutes": 55,
+  "summary": "Git проти GitHub, віддалений репозиторій (origin), clone / push / pull / fetch, автентифікація (токен або SSH), pull request: опис, CI-перевірки, рев'ю, злиття, і роль QA у PR",
+  "resources": [
+    {
+      "title": "GitHub Docs: Get started",
+      "url": "https://docs.github.com/en/get-started",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "GitHub Docs: Pull requests",
+      "url": "https://docs.github.com/en/pull-requests",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Pro Git book (українською): Git на сервері / GitHub",
+      "url": "https://git-scm.com/book/uk/v2",
+      "kind": "book",
+      "lang": "uk",
+      "note": "Розділи 2.5 (віддалені сховища) і 6 (GitHub).",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: GitHub pull request для початківців",
+      "url": "https://www.youtube.com/results?search_query=GitHub+pull+request+для+початківців",
+      "kind": "video",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

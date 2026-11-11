@@ -1,0 +1,30 @@
+{
+  "type": "table",
+  "title": "Find the keys in the Gadgetly schema",
+  "statement": "Схема бази Gadgetly:\n\n```text\nusers        id, email, name, city, role, created_at\nproducts     id, name, category, price, rating, in_stock\norders       id, user_id, status, total, created_at\norder_items  id, order_id, product_id, quantity, unit_price\n```\n\nДля кожної колонки визнач, чи це **primary key**, **foreign key** або звичайна колонка, і на що вона посилається (для FK).",
+  "givenColumns": ["Table", "Column"],
+  "answerColumns": [
+    { "id": "kind", "label": "Kind", "options": ["Primary key", "Foreign key", "Regular column"] },
+    { "id": "refs", "label": "Points to", "options": ["—", "users.id", "orders.id", "products.id"] }
+  ],
+  "rows": [
+    { "given": ["users", "id"], "answers": { "kind": "Primary key", "refs": "—" } },
+    {
+      "given": ["users", "email"],
+      "answers": { "kind": "Regular column", "refs": "—" },
+      "explain": "На `email` є обмеження `UNIQUE`, але первинний ключ таблиці — `id`. Унікальність email — окрема вимога, яку теж тестують."
+    },
+    { "given": ["orders", "id"], "answers": { "kind": "Primary key", "refs": "—" } },
+    { "given": ["orders", "user_id"], "answers": { "kind": "Foreign key", "refs": "users.id" }, "explain": "`user_id` каже, **чиє** це замовлення: він посилається на `users.id`." },
+    { "given": ["orders", "total"], "answers": { "kind": "Regular column", "refs": "—" } },
+    { "given": ["order_items", "id"], "answers": { "kind": "Primary key", "refs": "—" } },
+    { "given": ["order_items", "order_id"], "answers": { "kind": "Foreign key", "refs": "orders.id" } },
+    { "given": ["order_items", "product_id"], "answers": { "kind": "Foreign key", "refs": "products.id" } },
+    { "given": ["products", "price"], "answers": { "kind": "Regular column", "refs": "—" } }
+  ],
+  "hints": [
+    "У кожній таблиці Gadgetly первинний ключ — колонка `id`.",
+    "Колонка з назвою `<щось>_id` зазвичай посилається на `id` таблиці `<щось>s`: `user_id` → `users.id`."
+  ],
+  "explanation": "Первинний ключ — власний ідентифікатор рядка (`id`). Зовнішній ключ — «посилання» на рядок іншої таблиці, зазвичай з назвою `<table>_id`. `order_items` — проміжна таблиця зв'язку many-to-many: вона має два FK (на замовлення й на товар). Часта помилка — вважати `email` ключем через `UNIQUE`: він унікальний, але рядки ідентифікує `id`."
+}

@@ -1,0 +1,29 @@
+{
+  "title": "Terminal basics (PowerShell & bash)",
+  "minutes": 45,
+  "summary": "Що таке термінал і shell, поточна папка, абсолютні й відносні шляхи, базові команди (pwd, ls, cd, mkdir, cat, cp, mv, rm), автодоповнення, історія та як читати помилки",
+  "resources": [
+    {
+      "title": "VS Code: Terminal Basics",
+      "url": "https://code.visualstudio.com/docs/terminal/basics",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Вбудований термінал VS Code — там ти запускатимеш тести.",
+      "needsVerification": true
+    },
+    {
+      "title": "Microsoft Learn: PowerShell documentation",
+      "url": "https://learn.microsoft.com/en-us/powershell/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: командний рядок для початківців",
+      "url": "https://www.youtube.com/results?search_query=командний+рядок+термінал+для+початківців",
+      "kind": "video",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

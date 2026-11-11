@@ -1,0 +1,48 @@
+{
+  "type": "sql",
+  "title": "Filter and sort the product catalogue",
+  "statement": "Ти тестуєш фільтри каталогу Gadgetly. Щоб знати **очікуваний результат** кожного фільтра, напиши відповідний SQL-запит до таблиці `products`.\n\nНагадування: `in_stock = 1` означає «є в наявності», `0` — «немає».",
+  "database": "gadgetly",
+  "challenges": [
+    {
+      "id": "laptops",
+      "prompt": "Фільтр «Категорія: Laptops». Виведи `name`, `price` товарів категорії `Laptops`.",
+      "model": "SELECT name, price FROM products WHERE category = 'Laptops';"
+    },
+    {
+      "id": "out-of-stock",
+      "prompt": "Товари, яких **немає** в наявності: виведи `name`.",
+      "model": "SELECT name FROM products WHERE in_stock = 0;"
+    },
+    {
+      "id": "cheap",
+      "prompt": "Товари дешевші за 1000 грн: `name`, `price`.",
+      "model": "SELECT name, price FROM products WHERE price < 1000;"
+    },
+    {
+      "id": "range",
+      "prompt": "Фільтр «Ціна від 2000 до 10000 включно» + «Лише в наявності»: `name`, `price`.",
+      "model": "SELECT name, price FROM products WHERE in_stock = 1 AND price BETWEEN 2000 AND 10000;",
+      "explain": "Обидві умови одночасно → `AND`. `BETWEEN` включає межі, як і вимога «включно»."
+    },
+    {
+      "id": "sorted",
+      "prompt": "Сортування «Від найдорожчих»: усі товари, колонки `name`, `price`. Якщо ціна однакова, сортуй за назвою від A до Z.",
+      "model": "SELECT name, price FROM products ORDER BY price DESC, name;",
+      "orderMatters": true,
+      "explain": "Два товари коштують по 1299 грн. Друга колонка в `ORDER BY` вирішує, хто з них перший."
+    },
+    {
+      "id": "top3",
+      "prompt": "Блок «Топ-3 найдорожчі в наявності»: `name`, `price`, від найдорожчого.",
+      "model": "SELECT name, price FROM products WHERE in_stock = 1 ORDER BY price DESC LIMIT 3;",
+      "orderMatters": true
+    }
+  ],
+  "hints": [
+    "Кілька умов одночасно з'єднуй через `AND`: `WHERE in_stock = 1 AND price < 1000`.",
+    "Від найдорожчого — `ORDER BY price DESC`. Друга колонка сортування йде через кому: `ORDER BY price DESC, name`.",
+    "Топ-N: спочатку `ORDER BY`, потім `LIMIT N` (саме в такому порядку)."
+  ],
+  "explanation": "Кожен фільтр UI — це умова `WHERE`, а сортування — `ORDER BY`. Запит дає тобі очікуваний результат, з яким порівнюєш те, що показує сторінка. Часті помилки: `BETWEEN` замість строгого `<` або навпаки (межі!), забутий `DESC`, `LIMIT` без `ORDER BY`."
+}

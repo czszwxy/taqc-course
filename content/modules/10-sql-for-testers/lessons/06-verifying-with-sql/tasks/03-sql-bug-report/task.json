@@ -1,0 +1,45 @@
+{
+  "type": "written",
+  "title": "Report a data bug with SQL evidence",
+  "statement": "Перевірка цілісності після нічного імпорту (test DB, build 3.2.0) знайшла замовлення **1013**: `total` = 5000, а сума позицій — 2999 (одна позиція: `Wireless Headphones H1`, 1 × 2999). Клієнт побачить і оплатить 5000 грн.\n\nОформи **баг-репорт**, де доказом є SQL-запит і його результат.",
+  "fields": [
+    { "id": "summary", "label": "Summary", "kind": "text", "placeholder": "Order 1013: …" },
+    { "id": "environment", "label": "Environment", "kind": "text", "placeholder": "test DB, build …, after …" },
+    { "id": "evidence", "label": "Evidence (SQL query and its result)", "kind": "textarea", "placeholder": "SELECT …\n→ result" },
+    { "id": "actual", "label": "Actual result", "kind": "textarea" },
+    { "id": "expected", "label": "Expected result", "kind": "textarea" },
+    { "id": "severity", "label": "Severity and why", "kind": "text", "placeholder": "Critical / Major / … — because …" }
+  ],
+  "rules": [
+    { "field": "summary", "check": "mentionsAny", "value": ["1013"], "message": "Summary: назви конкретне замовлення — **1013**." },
+    { "field": "summary", "check": "mentionsAny", "value": ["total|sum|сум"], "message": "Summary: скажи, що саме не так: **total не збігається з сумою позицій**." },
+    { "field": "environment", "check": "mentionsAny", "value": ["import|імпорт|migrat|міграц"], "message": "Environment: вкажи, **після чого** з'явилися дані — нічний імпорт / міграція." },
+    { "field": "environment", "check": "mentionsAny", "value": ["3\\.2\\.0|build|білд"], "message": "Environment: додай білд (3.2.0)." },
+    { "field": "evidence", "check": "mentionsAll", "value": ["select", "order_items", "sum"], "message": "Evidence: потрібен запит, що рахує **SUM** позицій з `order_items` поряд з `total`." },
+    { "field": "evidence", "check": "mentionsAll", "value": ["5\\s?000", "2\\s?999"], "message": "Evidence: додай **результат** запиту (1013 | 5000 | 2999), а не лише текст запиту." },
+    { "field": "actual", "check": "mentionsAny", "value": ["5\\s?000"], "message": "Actual: точне значення — `total` = **5000**." },
+    { "field": "expected", "check": "mentionsAny", "value": ["2\\s?999"], "message": "Expected: `total` має дорівнювати сумі позицій — **2999**." },
+    { "field": "severity", "check": "mentionsAny", "value": ["critical|major|high|blocker|критич|висок|серйоз"], "message": "Severity: клієнт переплачує понад 2000 грн — це щонайменше Major (часто Critical)." }
+  ],
+  "model": {
+    "summary": "Order 1013: total (5000) does not match the sum of its items (2999)",
+    "environment": "test DB, build 3.2.0, after the nightly data import",
+    "evidence": "SELECT o.id, o.total, SUM(i.quantity * i.unit_price) AS items_sum\nFROM orders o JOIN order_items i ON i.order_id = o.id\nWHERE o.id = 1013\nGROUP BY o.id, o.total;\n→ 1013 | 5000 | 2999",
+    "actual": "orders.total for order 1013 is 5000. The order has one item (Wireless Headphones H1, 1 × 2999), so the items sum to 2999.",
+    "expected": "orders.total equals the sum of quantity × unit_price of its items: 2999.",
+    "severity": "Critical — the customer is charged 2001 UAH more than the goods cost (money and trust); the import may have corrupted other totals too."
+  },
+  "hints": [
+    "Evidence = запит + результат. Візьми запит з перевірки цілісності й обмеж його `WHERE o.id = 1013`.",
+    "Expected — не «правильна сума», а конкретне число й правило: total = сума `quantity × unit_price` = 2999."
+  ],
+  "explanation": "Баг у даних доводиться запитом, який будь-хто може повторити, і його результатом. Вкажи середовище (база, білд, після чого з'явилося), точні actual/expected з числами й оціни вплив: тут клієнт переплачує гроші, тож severity висока. Добрий додатковий крок — зазначити, що імпорт міг зіпсувати й інші замовлення, і запропонувати прогнати перевірку на всій таблиці.",
+  "checklist": [
+    "Summary називає замовлення й суть проблеми без відкриття репорту",
+    "Environment каже, де і після чого знайдено (база, білд, імпорт)",
+    "Evidence містить запит, який можна скопіювати, і його результат",
+    "Actual і Expected містять конкретні числа (5000 / 2999) і правило",
+    "Severity обґрунтована впливом на клієнта й бізнес",
+    "У репорті немає зайвих персональних даних клієнта"
+  ]
+}

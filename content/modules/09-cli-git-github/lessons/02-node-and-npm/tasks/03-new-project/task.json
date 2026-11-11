@@ -1,0 +1,17 @@
+{
+  "type": "order",
+  "title": "Set up a new test project from scratch",
+  "statement": "Ти створюєш з нуля проєкт для Playwright-тестів на чистому комп'ютері. Розстав кроки в правильному порядку.",
+  "items": [
+    "Install Node.js LTS from nodejs.org",
+    "Check the installation: `node -v` and `npm -v`",
+    "Create a project folder and go into it: `mkdir gadgetly-tests`, `cd gadgetly-tests`",
+    "Create package.json: `npm init -y`",
+    "Install the test runner: `npm install -D @playwright/test`",
+    "Download the browsers: `npx playwright install`",
+    "Write the first test in `tests/example.spec.ts`",
+    "Run the tests: `npx playwright test`"
+  ],
+  "hints": ["Без Node.js не працює жодна npm-команда. Без package.json нікуди записати залежність."],
+  "explanation": "Кожен крок спирається на попередній. npm з'являється разом з Node.js. `npm init` створює package.json у **поточній** папці, тож спершу треба в неї перейти. Пакет `@playwright/test` записується в package.json, а браузери завантажуються окремою командою. Тест можна запустити лише після того, як є що запускати."
+}

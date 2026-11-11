@@ -1,0 +1,44 @@
+{
+  "type": "written",
+  "title": "Review a test in a pull request",
+  "statement": "Колега-новачок відкрив PR з першим тестом для кошика Gadgetly:\n\n```ts\ntest('test1', async ({ page }) => {\n  await page.goto('https://staging.gadgetly.test/login');\n  await page.fill('#email', 'olena.kovalenko@gadgetly.test');\n  await page.fill('#password', 'Olena2024!');\n  await page.click('button');\n  await page.waitForTimeout(5000);\n  await page.click('text=Cart');\n});\n```\n\nЗроби рев'ю: перелічи проблеми, напиши повний коментар до **найсерйознішої** з них (ввічливо: чому це проблема і як виправити) і прийми рішення.",
+  "fields": [
+    { "id": "issues", "label": "Issues you found (one per line)", "kind": "list", "placeholder": "No assertion: …" },
+    { "id": "comment", "label": "Your review comment for the most serious issue", "kind": "textarea", "placeholder": "The test … because … Could we …?" },
+    { "id": "verdict", "label": "Decision (Approve / Request changes / Comment) and why", "kind": "text" }
+  ],
+  "rules": [
+    { "field": "issues", "check": "minItems", "value": 3, "message": "Issues: проблем тут щонайменше 3–4. Перевір перевірки, очікування, секрети, назву." },
+    { "field": "issues", "check": "mentionsAny", "value": ["expect|assert|перевір|checks? nothing|нічого не"], "message": "Issues: головна проблема — у тесті **немає жодної перевірки** (`expect`). Він пройде, навіть якщо логін зламаний." },
+    { "field": "issues", "check": "mentionsAny", "value": ["waitForTimeout|hard.?wait|sleep|5000|очікуван|чека"], "message": "Issues: `waitForTimeout(5000)` — жорстке очікування: повільно й нестабільно." },
+    { "field": "issues", "check": "mentionsAny", "value": ["password|парол|credential|secret|секрет"], "message": "Issues: пароль прямо в коді тесту — секрет у репозиторії." },
+    { "field": "comment", "check": "minLength", "value": 60, "message": "Comment: поясни **чому** це проблема і запропонуй **як** виправити — це не вміщується в одне речення." },
+    { "field": "comment", "check": "notMentions", "value": ["stupid|terrible|awful|wtf|жах|дурн|криво|відстій|хто так"], "message": "Comment: коментуй код, а не людину, і без емоційних оцінок." },
+    { "field": "verdict", "check": "mentionsAny", "value": ["request(ed)? changes|changes requested|запит\\S* змін|потрібні зміни|потрібно змін"], "message": "Decision: тест без перевірок і з паролем у коді не можна зливати — **Request changes**." }
+  ],
+  "model": {
+    "issues": [
+      "No assertion: the test only clicks and never checks anything, so it passes even if login or the cart is broken.",
+      "waitForTimeout(5000): a fixed sleep makes the test slow and still flaky; rely on auto-waiting and web-first assertions.",
+      "A real-looking password is hard-coded in the test; move credentials to environment variables or a fixture (and change the password, it is now in Git history).",
+      "The name 'test1' says nothing; e.g. 'logged-in user can open the cart'.",
+      "The full staging URL is hard-coded; use baseURL from the config so the test runs on any environment.",
+      "page.click('button') is ambiguous; use a specific locator such as getByRole('button', { name: 'Log in' })."
+    ],
+    "comment": "The test has no assertions, so it stays green even if login or the cart page is broken, which means it can't catch a regression. Could we add checks for the result? For example, after logging in: await expect(page.getByTestId('user-menu')).toBeVisible(), and at the end: await expect(page).toHaveURL(/cart/). With these checks the waitForTimeout(5000) can also go, because expect waits automatically.",
+    "verdict": "Request changes: without assertions the test checks nothing, and the password must not be in the code. The other points can be fixed in the same round."
+  },
+  "hints": [
+    "Спершу шукай `expect`: чи може цей тест взагалі впасти?",
+    "Далі перевір очікування (`waitForTimeout`), секрети (пароль у коді), назву тесту, локатор `'button'` і захардкоджену адресу."
+  ],
+  "explanation": "Пріоритети рев'ю тесту: (1) чи він щось **перевіряє**, (2) чи він **стабільний** (жорсткі очікування, розмиті локатори), (3) чи немає **секретів**, (4) чи його можна **зрозуміти й підтримувати** (назва, baseURL). Коментар до головної проблеми пояснює наслідок («тест зелений, навіть коли все зламано») і пропонує конкретне виправлення з кодом. Тест без перевірок і з паролем у коді — це Request changes, а не Approve з nit-ами.",
+  "checklist": [
+    "Знайдено відсутність перевірок як головну проблему",
+    "Названо жорстке очікування, секрет у коді, неінформативну назву",
+    "Коментар пояснює наслідок проблеми, а не лише констатує її",
+    "Коментар пропонує конкретне виправлення (приклад коду)",
+    "Тон — про код, не про людину",
+    "Рішення відповідає серйозності проблем"
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "type": "quiz",
+  "title": "Quiz: Git basics",
+  "show": 5,
+  "hints": ["working directory → `git add` → staging → `git commit` → історія."],
+  "questions": [
+    {
+      "id": "status",
+      "kind": "text",
+      "text": "Яка команда показує, які файли змінені, нові або вже додані в staging?",
+      "accept": ["git status"]
+    },
+    {
+      "id": "add-all",
+      "kind": "text",
+      "text": "Як додати в staging **усі** зміни в поточній папці?",
+      "accept": ["git add .", "git add -a", "git add --all", "git add -A"]
+    },
+    {
+      "id": "commit",
+      "kind": "single",
+      "text": "Що робить `git commit -m \"Add login tests\"`?",
+      "options": [
+        { "text": "Зберігає в історії все, що зараз у staging, з цим повідомленням", "correct": true },
+        { "text": "Зберігає всі змінені файли, навіть не додані через `git add`", "explain": "Коміт бере лише те, що в staging." },
+        { "text": "Відправляє зміни на GitHub", "explain": "Це `git push` (урок 5)." }
+      ]
+    },
+    {
+      "id": "untracked",
+      "kind": "single",
+      "text": "Ти створив новий файл `cart.spec.ts` і нічого з ним не робив. Який у нього стан?",
+      "options": [
+        { "text": "Untracked", "correct": true },
+        { "text": "Modified", "explain": "Modified буває лише у файлів, які Git уже відстежує." },
+        { "text": "Staged" }
+      ]
+    },
+    {
+      "id": "log",
+      "kind": "text",
+      "text": "Яка команда показує історію комітів коротко, по одному рядку на коміт?",
+      "accept": ["git log --oneline"]
+    },
+    {
+      "id": "message",
+      "kind": "single",
+      "text": "Яке повідомлення коміту найкраще?",
+      "options": [
+        { "text": "`Fix flaky search test by waiting for results to load`", "correct": true },
+        { "text": "`fix`" },
+        { "text": "`Changes in tests folder`", "explain": "Не каже, що саме змінено і навіщо." }
+      ]
+    },
+    {
+      "id": "restore",
+      "kind": "single",
+      "text": "Ти зіпсував файл і хочеш повернути його до стану останнього коміту. Яка команда?",
+      "options": [
+        { "text": "`git restore <файл>`", "correct": true },
+        { "text": "`git commit <файл>`" },
+        { "text": "`git log <файл>`", "explain": "Покаже історію файлу, але нічого не змінить." }
+      ]
+    },
+    {
+      "id": "staging-why",
+      "kind": "single",
+      "text": "Навіщо потрібна staging area?",
+      "options": [
+        { "text": "Щоб вибрати, які саме зміни підуть у наступний коміт", "correct": true },
+        { "text": "Це резервна копія на випадок збою" },
+        { "text": "Щоб інші бачили твої зміни до коміту" }
+      ]
+    }
+  ]
+}

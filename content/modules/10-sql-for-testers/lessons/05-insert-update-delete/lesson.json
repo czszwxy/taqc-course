@@ -1,0 +1,36 @@
+{
+  "title": "INSERT, UPDATE, DELETE",
+  "minutes": 50,
+  "summary": "Як створювати, змінювати й видаляти тестові дані: INSERT, UPDATE … SET … WHERE, DELETE … WHERE, золоте правило «спершу SELECT з тим самим WHERE», транзакції й гігієна тестових даних",
+  "resources": [
+    {
+      "title": "SQLite: INSERT",
+      "url": "https://www.sqlite.org/lang_insert.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLite: UPDATE",
+      "url": "https://www.sqlite.org/lang_update.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLite: DELETE",
+      "url": "https://www.sqlite.org/lang_delete.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLBolt — interactive SQL lessons",
+      "url": "https://sqlbolt.com/",
+      "kind": "course",
+      "lang": "en",
+      "note": "Уроки 13–15: вставка, оновлення, видалення.",
+      "needsVerification": true
+    }
+  ]
+}

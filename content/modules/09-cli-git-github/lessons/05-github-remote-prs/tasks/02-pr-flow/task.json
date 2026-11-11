@@ -1,0 +1,22 @@
+{
+  "type": "order",
+  "title": "Contribute tests through a pull request",
+  "statement": "Тебе додали в команду, у якої є репозиторій з e2e-тестами на GitHub. Твоя перша задача — тести на пошук. Розстав кроки від клонування до оновленого `main` у правильному порядку.",
+  "items": [
+    "Clone the repository: `git clone <repository URL>`",
+    "Go into the folder and install dependencies: `cd e2e-tests`, `npm install`",
+    "Create a branch: `git switch -c feature/search-tests`",
+    "Write the tests and run them locally until they pass",
+    "Commit: `git add .`, `git commit -m \"Add search filter tests\"`",
+    "Push the branch: `git push -u origin feature/search-tests`",
+    "Open a pull request on GitHub with a description (what, why, how tested)",
+    "Wait for CI and the review; push fixes for the review comments",
+    "Merge the pull request after approval and green checks",
+    "Update local main: `git switch main`, `git pull`"
+  ],
+  "hints": [
+    "PR можна відкрити лише для гілки, яка вже є на GitHub (після push).",
+    "Merge робиться після рев'ю і зеленого CI, а локальний `main` оновлюється вже після злиття."
+  ],
+  "explanation": "Ланцюжок: отримати код (clone + install) → ізолювати задачу (гілка) → зробити й перевірити → зафіксувати (commit) → опублікувати (push) → запропонувати (PR) → перевірити разом (CI + review, виправлення окремими комітами) → влити → синхронізуватися (`pull`). Пропуск кроку «запустити тести локально» перекладає перевірку на CI і колег. Так робити не варто."
+}

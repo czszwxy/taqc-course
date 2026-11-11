@@ -1,0 +1,41 @@
+{
+  "type": "table",
+  "title": "Match commands to what they do",
+  "statement": "Ти щойно відкрив термінал у папці проєкту з тестами. Що зробить кожна команда?",
+  "givenColumns": ["Command"],
+  "answerColumns": [
+    {
+      "id": "effect",
+      "label": "What it does",
+      "options": [
+        "Shows the current folder",
+        "Lists files in the current folder",
+        "Goes into a folder",
+        "Goes one level up",
+        "Creates a folder",
+        "Prints a file's contents",
+        "Copies a file",
+        "Renames / moves a file",
+        "Deletes a file",
+        "Shows the command's help"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`pwd`"], "answers": { "effect": "Shows the current folder" } },
+    { "given": ["`ls`"], "answers": { "effect": "Lists files in the current folder" } },
+    { "given": ["`cd tests`"], "answers": { "effect": "Goes into a folder" } },
+    { "given": ["`cd ..`"], "answers": { "effect": "Goes one level up" } },
+    { "given": ["`mkdir reports`"], "answers": { "effect": "Creates a folder" } },
+    { "given": ["`cat package.json`"], "answers": { "effect": "Prints a file's contents" } },
+    { "given": ["`cp login.spec.ts login-copy.spec.ts`"], "answers": { "effect": "Copies a file" } },
+    { "given": ["`mv draft.md README.md`"], "answers": { "effect": "Renames / moves a file" }, "explain": "`mv` переміщує файл. Якщо нове місце — та сама папка, це просто перейменування." },
+    { "given": ["`rm old-report.html`"], "answers": { "effect": "Deletes a file" }, "explain": "Без кошика, назавжди." },
+    { "given": ["`npx playwright test --help`"], "answers": { "effect": "Shows the command's help" } }
+  ],
+  "hints": [
+    "`cd` + назва — зайти в папку, `cd ..` — вийти на рівень вище.",
+    "`cp` = copy, `mv` = move, `rm` = remove, `mkdir` = make directory."
+  ],
+  "explanation": "Назви команд — скорочення англійських слів: **p**rint **w**orking **d**irectory, **l**i**s**t, **c**hange **d**irectory, **m**a**k**e **dir**ectory, **c**o**p**y, **m**o**v**e, **r**e**m**ove. Запам'ятай слово, і команда запам'ятається сама. Прапорець `--help` є майже в усіх програм."
+}

@@ -1,0 +1,48 @@
+{
+  "type": "sql",
+  "title": "Find users and orders (practice 2)",
+  "variantOf": "03-find-users-orders",
+  "statement": "Ще один набір пошуків по `users`, `orders` і `products` — та сама техніка, інші умови.",
+  "database": "gadgetly",
+  "challenges": [
+    {
+      "id": "lviv-odesa",
+      "prompt": "Користувачі з `Lviv` або `Odesa`: `name`, `city`.",
+      "model": "SELECT name, city FROM users WHERE city IN ('Lviv', 'Odesa');"
+    },
+    {
+      "id": "big-orders",
+      "prompt": "Замовлення на суму понад 10000 грн: `id`, `total`.",
+      "model": "SELECT id, total FROM orders WHERE total > 10000;"
+    },
+    {
+      "id": "not-finished",
+      "prompt": "Замовлення, які ще не доставлені й не скасовані (статус **не** `delivered` і **не** `cancelled`): `id`, `status`.",
+      "model": "SELECT id, status FROM orders WHERE status NOT IN ('delivered', 'cancelled');"
+    },
+    {
+      "id": "good-headphones",
+      "prompt": "Навушники (`Headphones`) з рейтингом 4.4 і вище: `name`, `rating`.",
+      "model": "SELECT name, rating FROM products WHERE category = 'Headphones' AND rating >= 4.4;",
+      "explain": "«4.4 і вище» — це `>=`. З `>` загубиться товар з рейтингом рівно 4.4: класична помилка на межі."
+    },
+    {
+      "id": "early-users",
+      "prompt": "Користувачі, зареєстровані **до** 1 березня 2024: `name`, `created_at`, від найстаріших.",
+      "model": "SELECT name, created_at FROM users WHERE created_at < '2024-03-01' ORDER BY created_at;",
+      "orderMatters": true
+    },
+    {
+      "id": "latest-orders",
+      "prompt": "5 найновіших замовлень: `id`, `created_at`, від найновішого.",
+      "model": "SELECT id, created_at FROM orders ORDER BY created_at DESC LIMIT 5;",
+      "orderMatters": true
+    }
+  ],
+  "hints": [
+    "«Не одне з» — `NOT IN ('delivered', 'cancelled')`.",
+    "«4.4 і вище» → `>=`; «до 1 березня» → `< '2024-03-01'`.",
+    "Найновіші — `ORDER BY created_at DESC`, потім `LIMIT 5`."
+  ],
+  "explanation": "Перекладай кожне слово вимоги в оператор: «або» → `IN` / `OR`, «не» → `NOT IN` / `<>`, «і вище» → `>=`, «до» → `<`, «найновіші» → `DESC`. Перевір межі: рядок рівно на межі (рейтинг 4.4) має потрапити або не потрапити в результат саме так, як каже вимога."
+}

@@ -1,0 +1,40 @@
+{
+  "type": "sql",
+  "title": "Check the admin dashboard numbers",
+  "statement": "Адмін-дашборд Gadgetly показує загальну статистику магазину. Щоб перевірити кожне число, напиши запит, який його рахує. Кожен запит повертає **один рядок**.",
+  "database": "gadgetly",
+  "challenges": [
+    {
+      "id": "orders-count",
+      "prompt": "«Усього замовлень»: скільки рядків у таблиці `orders`?",
+      "model": "SELECT COUNT(*) FROM orders;"
+    },
+    {
+      "id": "delivered-sum",
+      "prompt": "«Виручка з доставлених»: сума `total` усіх замовлень зі статусом `delivered`.",
+      "model": "SELECT SUM(total) FROM orders WHERE status = 'delivered';"
+    },
+    {
+      "id": "min-max",
+      "prompt": "«Ціни в каталозі від … до …»: найменша і найбільша ціна товару, дві колонки в цьому порядку.",
+      "model": "SELECT MIN(price), MAX(price) FROM products;"
+    },
+    {
+      "id": "avg-in-stock",
+      "prompt": "«Середня ціна товарів у наявності»: середнє `price` для `in_stock = 1`, округлене до цілого (`ROUND`).",
+      "model": "SELECT ROUND(AVG(price)) FROM products WHERE in_stock = 1;"
+    },
+    {
+      "id": "with-city",
+      "prompt": "«Користувачів з указаним містом»: скільки користувачів мають заповнене `city`?",
+      "model": "SELECT COUNT(city) FROM users;",
+      "explain": "`COUNT(city)` пропускає NULL. Те саме дасть `COUNT(*) … WHERE city IS NOT NULL`."
+    }
+  ],
+  "hints": [
+    "Одне число з усієї таблиці → агрегат без `GROUP BY`: `SELECT COUNT(*) FROM orders`.",
+    "Умова «лише доставлені» / «лише в наявності» йде в `WHERE` — вона відбирає рядки до підрахунку.",
+    "`COUNT(city)` рахує лише рядки, де `city` не NULL."
+  ],
+  "explanation": "Кожне число на дашборді — агрегат: кількість (`COUNT`), сума (`SUM`), середнє (`AVG`), межі (`MIN`/`MAX`). Умова йде в `WHERE`. Ключова пастка — `COUNT(*)` проти `COUNT(колонка)`: перший рахує всі рядки, другий пропускає NULL."
+}

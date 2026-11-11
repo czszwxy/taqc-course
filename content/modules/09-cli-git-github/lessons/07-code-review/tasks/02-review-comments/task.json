@@ -1,0 +1,25 @@
+{
+  "type": "classify",
+  "title": "Constructive or not?",
+  "statement": "Ось коментарі з рев'ю PR з тестами кошика. Які з них конструктивні (допомагають покращити код і поважають автора), а які ні?",
+  "categories": [
+    { "id": "good", "label": "Constructive", "description": "About the code, explains why, suggests how, respectful" },
+    { "id": "bad", "label": "Not constructive", "description": "Vague, personal, rude or unhelpful" }
+  ],
+  "items": [
+    { "id": "wait", "text": "«`waitForTimeout(3000)` makes the test slow and still flaky. Could we wait for the cart badge instead: `await expect(badge).toHaveText('1')`?»", "category": "good" },
+    { "id": "nit-name", "text": "«nit: the name could say what is checked, e.g. 'adds a product to an empty cart'.»", "category": "good" },
+    { "id": "password", "text": "«This password looks real. Can we move it to an environment variable and rotate it, since it is already in Git history?»", "category": "good" },
+    { "id": "edge", "text": "«Could you add a case for quantity 0? The requirement says the minimum is 1.»", "category": "good" },
+    { "id": "praise", "text": "«👍 Nice idea to reuse the login fixture. Question: does it also work for the admin user?»", "category": "good" },
+    { "id": "wrong", "text": "«This is wrong.»", "category": "bad", "explain": "Що саме не так і як виправити?" },
+    { "id": "who", "text": "«Who writes tests like this?»", "category": "bad", "explain": "Про людину, а не про код." },
+    { "id": "rewrite", "text": "«Rewrite everything, I don't like it.»", "category": "bad" },
+    { "id": "lgtm", "text": "«LGTM» (on a 1500-line PR, a minute after it was opened)", "category": "bad", "explain": "Рев'ю без читання дає лише хибне відчуття перевірки." },
+    { "id": "mess", "text": "«Fix your mess before asking for a review.»", "category": "bad" }
+  ],
+  "show": 8,
+  "hints": ["Конструктивний коментар: про код + чому + як (пропозиція чи питання) + спокійний тон."],
+  "explanation": "Конструктивний коментар говорить про **код**, пояснює **чому** це проблема і пропонує **як** покращити (або чесно питає). Похвала теж конструктивна: вона закріплює добрі рішення. Неконструктивні коментарі розмиті («wrong»), особисті («who writes…») або імітують рев'ю («LGTM» без читання). Вони не покращують код і псують стосунки в команді.",
+  "passScore": 0.85
+}

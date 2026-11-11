@@ -1,0 +1,37 @@
+{
+  "title": "Node.js & npm",
+  "minutes": 45,
+  "summary": "Навіщо Node.js автотестам, npm і package.json, dependencies і devDependencies, node_modules і package-lock.json, npm install / npm run / npx і типові помилки встановлення",
+  "resources": [
+    {
+      "title": "Node.js — Download",
+      "url": "https://nodejs.org/en/download",
+      "kind": "tool",
+      "lang": "en",
+      "note": "Обирай версію LTS.",
+      "needsVerification": true
+    },
+    {
+      "title": "npm Docs: About npm",
+      "url": "https://docs.npmjs.com/about-npm",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Installation",
+      "url": "https://playwright.dev/docs/intro",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Подивись, які npm-команди використовуються для старту проєкту.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: npm і package.json для початківців",
+      "url": "https://www.youtube.com/results?search_query=npm+package.json+для+початківців",
+      "kind": "video",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

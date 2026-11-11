@@ -1,0 +1,76 @@
+{
+  "type": "quiz",
+  "title": "Quiz: Node.js & npm",
+  "show": 5,
+  "hints": ["`-D` — devDependencies. `npm run <script>` — скрипт з package.json. node_modules не комітимо."],
+  "questions": [
+    {
+      "id": "install-all",
+      "kind": "text",
+      "text": "Ти склонував проєкт з тестами. Яка команда встановить усі його залежності з package.json?",
+      "accept": ["npm install", "npm i", "npm ci"],
+      "explanation": "`npm install` (або `npm ci` для точного встановлення за lock-файлом)."
+    },
+    {
+      "id": "dev-dep",
+      "kind": "single",
+      "text": "Куди потрапить пакет після `npm install -D @playwright/test`?",
+      "options": [
+        { "text": "У `devDependencies`", "correct": true },
+        { "text": "У `dependencies`", "explain": "Без `-D` — так." },
+        { "text": "Встановиться глобально на комп'ютер", "explain": "Глобально — з прапорцем `-g`." }
+      ]
+    },
+    {
+      "id": "run-script",
+      "kind": "text",
+      "text": "У package.json є скрипт `\"test:smoke\": \"playwright test --grep @smoke\"`. Як його запустити?",
+      "accept": ["npm run test:smoke"],
+      "explanation": "Будь-який скрипт запускається через `npm run <назва>`."
+    },
+    {
+      "id": "node-modules",
+      "kind": "single",
+      "text": "Чи потрібно комітити папку `node_modules` у Git?",
+      "options": [
+        { "text": "Ні: вона величезна і відтворюється командою `npm install`", "correct": true },
+        { "text": "Так, інакше колеги не зможуть запустити проєкт" }
+      ]
+    },
+    {
+      "id": "lock",
+      "kind": "single",
+      "text": "Навіщо комітити `package-lock.json`?",
+      "options": [
+        { "text": "Щоб у всіх розробників і на CI встановлювалися точно ті самі версії пакетів", "correct": true },
+        { "text": "Це секретний файл з паролями", "explain": "Ні, там лише версії та адреси пакетів." },
+        { "text": "Без нього не запуститься Node.js" }
+      ]
+    },
+    {
+      "id": "npx",
+      "kind": "single",
+      "text": "Що робить `npx playwright test`?",
+      "options": [
+        { "text": "Запускає CLI Playwright, встановлений у проєкті (node_modules)", "correct": true },
+        { "text": "Встановлює Playwright глобально" },
+        { "text": "Запускає скрипт `playwright` з package.json", "explain": "Скрипти запускає `npm run`." }
+      ]
+    },
+    {
+      "id": "missing-script",
+      "kind": "single",
+      "text": "`npm run tests` → `Missing script: \"tests\"`. Що перевірити першим?",
+      "options": [
+        { "text": "Назви скриптів у package.json — найімовірніше, скрипт називається `test`", "correct": true },
+        { "text": "Перевстановити Node.js" }
+      ]
+    },
+    {
+      "id": "version",
+      "kind": "text",
+      "text": "Якою командою перевірити, яка версія Node.js встановлена?",
+      "accept": ["node -v", "node --version"]
+    }
+  ]
+}

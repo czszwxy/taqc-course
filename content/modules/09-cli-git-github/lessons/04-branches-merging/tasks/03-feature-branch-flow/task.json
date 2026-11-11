@@ -1,0 +1,21 @@
+{
+  "type": "order",
+  "title": "Fix a test in its own branch",
+  "statement": "Тест логіну падає, бо змінився текст помилки. Виправ його в окремій гілці й влий у `main` локально. Розстав кроки в правильному порядку.",
+  "items": [
+    "Switch to the main branch: `git switch main`",
+    "Create a branch for the fix and switch to it: `git switch -c fix/login-error-text`",
+    "Update the expected text in `login.spec.ts` and run the test until it passes",
+    "Check what changed: `git status` and `git diff`",
+    "Stage the change: `git add login.spec.ts`",
+    "Commit: `git commit -m \"Fix expected error text in login test\"`",
+    "Switch back to main: `git switch main`",
+    "Merge the fix: `git merge fix/login-error-text`",
+    "Delete the merged branch: `git branch -d fix/login-error-text`"
+  ],
+  "hints": [
+    "Гілку створюють від `main`, а вливають, перебуваючи в `main`.",
+    "Перед `git add` переконайся, що змінено саме те, що треба (`status`, `diff`)."
+  ],
+  "explanation": "Цикл задачі: від `main` → нова гілка → зміни й перевірка → `status`/`diff` → `add` → `commit` → назад у `main` → `merge` → видалити гілку. Найчастіша помилка — виконати `git merge main`, перебуваючи у feature-гілці, і чекати, що зміни потраплять у `main`. Merge вливає вказану гілку в **поточну**."
+}

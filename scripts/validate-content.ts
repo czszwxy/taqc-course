@@ -6,6 +6,8 @@
  *  - bug-report tasks: each model report passes quality checks and is matched to its own bug
  *  - value-set tasks: generator exists and accepts its own expected answer for several seeds
  *  - quiz / classify / order: structural sanity (one correct option, known categories, unique items…)
+ *  - sql tasks: database scripts load; every reference query runs and is accepted (SELECTs return rows,
+ *    change statements really change the result of their verify query)
  *
  * Run: npm run validate
  */
@@ -26,6 +28,8 @@ import { PLAYGROUND_PAGES } from '../src/playground/registry';
 import { JSDOM } from 'jsdom';
 import { checkChallenge, prepareSnippet } from '../src/features/tasks/selectors';
 import { evaluateTestSuite, SUBJECT_FILE } from '../src/runner/mutation';
+import initSqlJs, { type SqlJsStatic } from 'sql.js';
+import { checkSqlChallenge, compareResults, openDatabase, runChange, runOnFreshDb } from '../src/features/sql/engine';
 
 /** Theory files shorter than this are treated as "not written yet". */
 const MIN_THEORY_LENGTH = 200;
@@ -83,6 +87,7 @@ const checkTestsTask = async (dir: string, task: TaskOf<'code'>, support: Record
   if (missing.length) return;
   const mutantDir = path.join(dir, 'mutants');
   const files = fs.existsSync(mutantDir) ? fs.readdirSync(mutantDir).filter((f) => f.endsWith('.ts')) : [];
+  // Strips the ".ts" extension: matches "off-by-one.ts" → "off-by-one", rejects "notes.ts.bak". https://regex101.com/?regex=%5C.ts%24
   const mutantCode = Object.fromEntries(files.map((f) => [f.replace(/\.ts$/, ''), fs.readFileSync(path.join(mutantDir, f), 'utf8')]));
   const ids = task.mutants.map((m) => m.id);
   if (ids.length === 0) fail(dir, 'tests mode needs at least one mutant');
@@ -253,6 +258,71 @@ const checkSelectorTask: Checker<'selector'> = (dir, task) => {
   });
 };
 
+const databasesDir = path.join(contentDir, 'databases');
+const readDatabase = (name: string): string | null => {
+  const file = path.join(databasesDir, `${name}.sql`);
+  return fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : null;
+};
+let sqlJs: SqlJsStatic | null = null;
+const getSqlJs = async (): Promise<SqlJsStatic> => {
+  sqlJs ??= await initSqlJs();
+  return sqlJs;
+};
+
+/** True when a task-defined rule pattern from content JSON compiles. */
+const isValidPattern = (pattern: string, flags = 'i'): boolean => {
+  try {
+    /*
+     * Task-defined rule pattern from content JSON, e.g. "join" (require):
+     * matches "SELECT … JOIN orders …", rejects "SELECT … FROM orders WHERE …".
+     * https://regex101.com/?regex=join&flags=i
+     */
+    return new RegExp(pattern, flags) instanceof RegExp;
+  } catch {
+    return false;
+  }
+};
+
+const checkSqlTask: Checker<'sql'> = async (dir, task) => {
+  const names = Array.isArray(task.database) ? task.database : [task.database];
+  const missing = names.filter((name) => readDatabase(name) === null);
+  if (missing.length > 0) {
+    fail(dir, `unknown database "${missing.join('", "')}" (expected content/databases/<name>.sql)`);
+    return;
+  }
+  const scripts = names.map((name) => readDatabase(name) ?? '');
+  const SQL = await getSqlJs();
+  try {
+    openDatabase(SQL, scripts).close();
+  } catch (e) {
+    fail(dir, `database scripts ${names.join(' + ')} fail to load: ${e instanceof Error ? e.message : String(e)}`);
+    return;
+  }
+  duplicates(task.challenges.map((c) => c.id)).forEach((id) => fail(dir, `duplicate challenge id "${id}"`));
+  const badRules = task.challenges.flatMap((c) => c.rules.filter((r) => !isValidPattern(r.pattern, r.flags)).map((r) => `"${c.id}": /${r.pattern}/`));
+  if (badRules.length > 0) {
+    fail(dir, `invalid rule regex in ${badRules.join(', ')}`);
+    return;
+  }
+  task.challenges.forEach((c) => {
+    const untouched = runOnFreshDb(SQL, scripts, c.verify ?? c.model);
+    if (!untouched.ok) {
+      fail(dir, `${c.verify ? 'verify' : 'reference'} query of "${c.id}" fails: ${untouched.error}`);
+      return;
+    }
+    if (!c.verify && (untouched.result?.rows.length ?? 0) === 0) fail(dir, `reference query of "${c.id}" returns 0 rows — add data so a wrong query is visible`);
+    if (c.verify) {
+      const changed = runChange(SQL, scripts, c.model, c.verify);
+      if (!changed.ok) fail(dir, `reference statement of "${c.id}" fails: ${changed.error}`);
+      if (changed.ok && compareResults(changed.result, untouched.result, true).equal) {
+        fail(dir, `reference statement of "${c.id}" does not change the result of its verify query (doing nothing would pass)`);
+      }
+    }
+    const self = checkSqlChallenge(SQL, scripts, c, c.model);
+    if (self.status !== 'correct') fail(dir, `reference of "${c.id}" is not accepted: ${self.message}`);
+  });
+};
+
 const CHECKS: { [K in Task['type']]: Checker<K> } = {
   code: checkCode,
   quiz: checkQuiz,
@@ -264,6 +334,7 @@ const CHECKS: { [K in Task['type']]: Checker<K> } = {
   written: checkWritten,
   table: checkTable,
   selector: checkSelectorTask,
+  sql: checkSqlTask,
 };
 
 /* ---------- structure ---------- */

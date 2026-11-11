@@ -1,0 +1,37 @@
+{
+  "title": "Aggregates & GROUP BY",
+  "minutes": 55,
+  "summary": "Агрегатні функції COUNT, SUM, AVG, MIN, MAX, ROUND; групування GROUP BY; фільтр груп HAVING і чим він відрізняється від WHERE; як порівнювати лічильники в UI з даними",
+  "resources": [
+    {
+      "title": "SQLite: Built-in Aggregate Functions",
+      "url": "https://www.sqlite.org/lang_aggfunc.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "PostgreSQL Tutorial: Aggregate Functions",
+      "url": "https://www.postgresql.org/docs/current/tutorial-agg.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Добре пояснює різницю між WHERE і HAVING.",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLBolt — interactive SQL lessons",
+      "url": "https://sqlbolt.com/",
+      "kind": "course",
+      "lang": "en",
+      "note": "Уроки 10–11: агрегати й GROUP BY.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: SQL GROUP BY HAVING",
+      "url": "https://www.youtube.com/results?search_query=SQL+GROUP+BY+HAVING+пояснення",
+      "kind": "video",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

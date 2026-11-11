@@ -1,0 +1,35 @@
+{
+  "type": "table",
+  "title": "What state is the file in?",
+  "statement": "Репозиторій тестового проєкту чистий (`working tree clean`). Для кожної ситуації визнач стан файлу **після** описаних дій і що покаже `git status`.",
+  "givenColumns": ["What you did"],
+  "answerColumns": [
+    { "id": "state", "label": "File state", "options": ["Untracked", "Modified", "Staged", "Committed"] }
+  ],
+  "rows": [
+    { "given": ["Created a new file `checkout.spec.ts`"], "answers": { "state": "Untracked" } },
+    { "given": ["Created `checkout.spec.ts`, then ran `git add checkout.spec.ts`"], "answers": { "state": "Staged" } },
+    { "given": ["Created `checkout.spec.ts`, ran `git add .` and `git commit -m \"Add checkout test\"`"], "answers": { "state": "Committed" } },
+    {
+      "given": ["Edited `login.spec.ts`, which was committed yesterday"],
+      "answers": { "state": "Modified" },
+      "explain": "Файл відстежується, але зміна ще не в staging: `Changes not staged for commit`."
+    },
+    { "given": ["Edited `login.spec.ts`, then ran `git add login.spec.ts`"], "answers": { "state": "Staged" } },
+    {
+      "given": ["Ran `git add login.spec.ts`, then `git restore --staged login.spec.ts`"],
+      "answers": { "state": "Modified" },
+      "explain": "`restore --staged` прибирає зміну зі staging, але сама зміна лишається у файлі."
+    },
+    {
+      "given": ["Edited `login.spec.ts`, then ran `git restore login.spec.ts`"],
+      "answers": { "state": "Committed" },
+      "explain": "`git restore` відкинув зміни: файл знову такий, як в останньому коміті (обережно, зміни втрачено)."
+    }
+  ],
+  "hints": [
+    "Новий файл, якого Git ще не бачив, — untracked. Змінений відстежуваний файл — modified.",
+    "`git add` → staged, `git commit` → committed (робоча папка чиста)."
+  ],
+  "explanation": "Стан залежить від двох питань: чи Git уже знає файл (tracked / untracked) і де зараз зміна — у робочій папці (modified), у staging (staged) чи вже в історії (committed). `git restore --staged` повертає зміну зі staging у робочу папку, а `git restore` відкидає її зовсім."
+}

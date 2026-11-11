@@ -1,0 +1,13 @@
+{
+  "title": "Command Line, Git & GitHub",
+  "description": "Інструменти, без яких не працює жоден QA Automation: термінал (PowerShell і bash), Node.js і npm, Git (коміти, історія, гілки, злиття), GitHub (remote, push/pull, pull requests), конфлікти злиття й .gitignore, етикет код-рев'ю. Практика: команди, послідовності дій, справжній merge conflict у коді тестових даних і рев'ю тесту.",
+  "goals": [
+    "Navigate folders and work with files in a terminal (PowerShell and bash)",
+    "Install Node.js packages and run npm scripts; read package.json",
+    "Track changes with Git: status, add, commit, log, diff",
+    "Work in branches and merge them",
+    "Collaborate on GitHub: clone, push, pull, open and update a pull request",
+    "Resolve merge conflicts and keep generated files and secrets out of the repo with .gitignore",
+    "Review test code and respond to reviews constructively"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "title": "Branches & merging",
+  "minutes": 50,
+  "summary": "Що таке гілка і HEAD, навіщо працювати в окремих гілках, git branch / switch / merge, fast-forward і merge commit, назви гілок і видалення злитих гілок",
+  "resources": [
+    {
+      "title": "Learn Git Branching (interactive)",
+      "url": "https://learngitbranching.js.org/",
+      "kind": "tool",
+      "lang": "en",
+      "note": "Візуальний тренажер гілок, є українська мова інтерфейсу.",
+      "needsVerification": true
+    },
+    {
+      "title": "Pro Git book (українською): Галуження в git",
+      "url": "https://git-scm.com/book/uk/v2",
+      "kind": "book",
+      "lang": "uk",
+      "note": "Розділ 3.",
+      "needsVerification": true
+    },
+    {
+      "title": "Git — git-switch documentation",
+      "url": "https://git-scm.com/docs/git-switch",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

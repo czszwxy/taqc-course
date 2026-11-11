@@ -1,0 +1,37 @@
+{
+  "title": "JOINs",
+  "minutes": 65,
+  "summary": "Як поєднувати таблиці: INNER JOIN за ключами, псевдоніми таблиць, LEFT JOIN і пошук рядків без пари (IS NULL), COALESCE, JOIN кількох таблиць і JOIN з GROUP BY",
+  "resources": [
+    {
+      "title": "PostgreSQL Tutorial: Joins Between Tables",
+      "url": "https://www.postgresql.org/docs/current/tutorial-join.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "W3Schools: SQL Joins",
+      "url": "https://www.w3schools.com/sql/sql_join.asp",
+      "kind": "article",
+      "lang": "en",
+      "note": "Діаграми INNER / LEFT / RIGHT / FULL JOIN.",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLBolt — interactive SQL lessons",
+      "url": "https://sqlbolt.com/",
+      "kind": "course",
+      "lang": "en",
+      "note": "Уроки 6–7: INNER і OUTER JOIN.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: SQL JOIN пояснення",
+      "url": "https://www.youtube.com/results?search_query=SQL+JOIN+LEFT+JOIN+пояснення",
+      "kind": "video",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

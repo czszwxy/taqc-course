@@ -1,0 +1,12 @@
+{
+  "title": "SQL for Testers",
+  "description": "Бази даних очима тестувальника: таблиці, ключі й зв'язки, вибірки SELECT з фільтрами й сортуванням, агрегати й GROUP BY, JOIN-и, зміна даних (INSERT, UPDATE, DELETE) і перевірка цілісності даних після тестів. Уся практика — справжні SQL-запити до навчальної бази магазину Gadgetly (SQLite працює прямо в браузері, кожен запуск — на свіжій копії).",
+  "goals": [
+    "Read a database schema: tables, columns, data types, primary and foreign keys",
+    "Write SELECT queries with WHERE, ORDER BY, LIMIT, LIKE, IN, BETWEEN and IS NULL",
+    "Summarize data with COUNT, SUM, AVG, MIN, MAX, GROUP BY and HAVING",
+    "Combine tables with INNER JOIN and LEFT JOIN, find rows without a match",
+    "Prepare and clean test data with INSERT, UPDATE and DELETE — always with a safe WHERE",
+    "Verify test results and data integrity with SQL and use queries as bug evidence"
+  ]
+}

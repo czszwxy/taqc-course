@@ -1,0 +1,104 @@
+{
+  "type": "sql",
+  "title": "Data integrity checks after a data import",
+  "statement": "Уночі на тестову базу Gadgetly імпортували нові дані (міграція зі старої системи). Тест-лід просить прогнати **перевірки цілісності**. Кожен запит має знаходити лише проблемні рядки. На чистих даних він повертав би 0 рядків.\n\nДопустимі статуси замовлень: `created`, `paid`, `shipped`, `delivered`, `cancelled`.",
+  "database": [
+    "gadgetly",
+    "gadgetly-anomalies"
+  ],
+  "challenges": [
+    {
+      "id": "total-mismatch",
+      "prompt": "Замовлення, у яких `total` **не дорівнює** сумі позицій (`quantity * unit_price`): `id`, `total`, сума позицій.",
+      "model": "SELECT o.id, o.total, SUM(i.quantity * i.unit_price) FROM orders o JOIN order_items i ON i.order_id = o.id GROUP BY o.id, o.total HAVING o.total <> SUM(i.quantity * i.unit_price);",
+      "explain": "Клієнт заплатить 5000 грн за товар на 2999. Це критичний дефект даних.",
+      "rules": [
+        {
+          "kind": "require",
+          "pattern": "sum\\s*\\(",
+          "message": "Порахуй суму позицій через `SUM(quantity * unit_price)`: перевірка має знаходити будь-яке таке замовлення, а не лише 1013."
+        }
+      ]
+    },
+    {
+      "id": "bad-status",
+      "prompt": "Замовлення з недопустимим статусом: `id`, `status`.",
+      "model": "SELECT id, status FROM orders WHERE status NOT IN ('created', 'paid', 'shipped', 'delivered', 'cancelled');",
+      "explain": "`shiped` — одрук. Такого замовлення не знайде жоден фільтр за статусом `shipped`, і воно «загубиться».",
+      "rules": [
+        {
+          "kind": "forbid",
+          "pattern": "shiped",
+          "message": "Не шукай конкретний одрук. Перевір, що статус **не входить** у список допустимих (`NOT IN (…)`), і знайдеш будь-яке неправильне значення."
+        }
+      ]
+    },
+    {
+      "id": "zero-quantity",
+      "prompt": "Позиції з кількістю 0 або менше: `id`, `order_id`, `quantity`.",
+      "model": "SELECT id, order_id, quantity FROM order_items WHERE quantity <= 0;",
+      "rules": [
+        {
+          "kind": "require",
+          "pattern": "<=\\s*0|<\\s*1(?!\\d)",
+          "message": "«0 або менше» — це `<= 0`: від'ємне значення теж дефект, і запит має його знаходити."
+        }
+      ]
+    },
+    {
+      "id": "orphan-orders",
+      "prompt": "Замовлення, що посилаються на **неіснуючого** користувача: `id`, `user_id`.",
+      "model": "SELECT o.id, o.user_id FROM orders o LEFT JOIN users u ON u.id = o.user_id WHERE u.id IS NULL;",
+      "explain": "Зовнішні ключі в цій базі не перевіряються, тож імпорт зміг записати `user_id = 99`.",
+      "rules": [
+        {
+          "kind": "require",
+          "pattern": "left\\s+join|not\\s+(in|exists)",
+          "message": "Знайди рядки без пари через `LEFT JOIN … WHERE … IS NULL`, а не вписуй id вручну. Запит-перевірка має працювати й на інших даних."
+        }
+      ]
+    },
+    {
+      "id": "empty-orders",
+      "prompt": "Замовлення без жодної позиції: `id`.",
+      "model": "SELECT o.id FROM orders o LEFT JOIN order_items i ON i.order_id = o.id WHERE i.id IS NULL;",
+      "rules": [
+        {
+          "kind": "require",
+          "pattern": "left\\s+join|not\\s+(in|exists)",
+          "message": "Знайди рядки без пари через `LEFT JOIN … WHERE … IS NULL`, а не вписуй id вручну. Запит-перевірка має працювати й на інших даних."
+        }
+      ]
+    },
+    {
+      "id": "duplicate-emails",
+      "prompt": "Дублікати email **без урахування регістру**: email у нижньому регістрі, кількість акаунтів з ним.",
+      "model": "SELECT LOWER(email), COUNT(*) FROM users GROUP BY LOWER(email) HAVING COUNT(*) > 1;",
+      "rules": [
+        {
+          "kind": "require",
+          "pattern": "lower|upper|nocase",
+          "message": "Порівнюй email без урахування регістру: `GROUP BY LOWER(email)`."
+        }
+      ]
+    },
+    {
+      "id": "free-products",
+      "prompt": "Товари з ціною 0 або менше (схоже на забуті тестові дані): `id`, `name`, `price`.",
+      "model": "SELECT id, name, price FROM products WHERE price <= 0;",
+      "rules": [
+        {
+          "kind": "require",
+          "pattern": "<=\\s*0|<\\s*1(?!\\d)",
+          "message": "«0 або менше» — це `<= 0`: від'ємне значення теж дефект, і запит має його знаходити."
+        }
+      ]
+    }
+  ],
+  "hints": [
+    "Сума позицій: `JOIN order_items` + `GROUP BY o.id, o.total` + `HAVING o.total <> SUM(i.quantity * i.unit_price)`.",
+    "«Посилання в нікуди» і «замовлення без позицій» знаходить `LEFT JOIN … WHERE права.id IS NULL`. Подумай, яка таблиця ліва.",
+    "Дублікати без регістру: `GROUP BY LOWER(email) HAVING COUNT(*) > 1`."
+  ],
+  "explanation": "Кожна перевірка цілісності описує «неможливий» стан і шукає саме його: суму, що не сходиться (`HAVING`), значення поза списком (`NOT IN`), поза діапазоном (`<= 0`), посилання без пари (`LEFT JOIN … IS NULL`), повтори (`GROUP BY … HAVING COUNT(*) > 1`). Результат такого запиту — готовий список дефектів для баг-репортів. Порожній результат означає, що перевірку пройдено."
+}

@@ -1,0 +1,37 @@
+{
+  "title": "SELECT, WHERE, ORDER BY",
+  "minutes": 60,
+  "summary": "Вибірка потрібних колонок, фільтрація рядків (WHERE з =, <>, >, AND/OR, IN, BETWEEN, LIKE, IS NULL), сортування ORDER BY, LIMIT і DISTINCT",
+  "resources": [
+    {
+      "title": "SQLite: SELECT",
+      "url": "https://www.sqlite.org/lang_select.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLBolt — interactive SQL lessons",
+      "url": "https://sqlbolt.com/",
+      "kind": "course",
+      "lang": "en",
+      "note": "Уроки 1–4 — та сама тема з вправами.",
+      "needsVerification": true
+    },
+    {
+      "title": "W3Schools SQL Tutorial",
+      "url": "https://www.w3schools.com/sql/",
+      "kind": "course",
+      "lang": "en",
+      "note": "Короткий довідник з прикладами для кожного оператора.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: SQL SELECT WHERE для початківців",
+      "url": "https://www.youtube.com/results?search_query=SQL+SELECT+WHERE+ORDER+BY+для+початківців",
+      "kind": "video",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

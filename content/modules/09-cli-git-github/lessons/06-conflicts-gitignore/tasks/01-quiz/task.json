@@ -1,0 +1,85 @@
+{
+  "type": "quiz",
+  "title": "Quiz: conflicts & .gitignore",
+  "show": 5,
+  "hints": ["Між `<<<<<<< HEAD` і `=======` — поточна гілка; між `=======` і `>>>>>>>` — та, що вливається."],
+  "questions": [
+    {
+      "id": "why",
+      "kind": "single",
+      "text": "Коли під час `git merge` виникає конфлікт?",
+      "options": [
+        { "text": "Коли обидві гілки по-різному змінили ті самі рядки одного файлу", "correct": true },
+        { "text": "Завжди, коли обидві гілки змінили один і той самий файл", "explain": "Якщо зміни в різних місцях файлу, Git зіллє їх сам." },
+        { "text": "Коли гілки мають різні назви" }
+      ]
+    },
+    {
+      "id": "markers",
+      "kind": "single",
+      "text": "Ти в `main` виконав `git merge feature/x`. Що між `<<<<<<< HEAD` і `=======`?",
+      "options": [
+        { "text": "Версія з `main` (поточної гілки)", "correct": true },
+        { "text": "Версія з `feature/x`", "explain": "Вона між `=======` і `>>>>>>> feature/x`." },
+        { "text": "Спільна стара версія" }
+      ]
+    },
+    {
+      "id": "after-edit",
+      "kind": "single",
+      "text": "Ти виправив файл і прибрав маркери. Що далі?",
+      "options": [
+        { "text": "Запустити тести, потім `git add <файл>` і `git commit`", "correct": true },
+        { "text": "Одразу `git push`", "explain": "Злиття ще не завершене: файл треба додати й закомітити." },
+        { "text": "`git merge --abort`", "explain": "Це скасує злиття разом з твоєю роботою." }
+      ]
+    },
+    {
+      "id": "abort",
+      "kind": "text",
+      "text": "Яка команда скасовує злиття, що зупинилося на конфлікті, і повертає все як було?",
+      "accept": ["git merge --abort"]
+    },
+    {
+      "id": "ignore-what",
+      "kind": "multiple",
+      "text": "Що з цього варто додати в `.gitignore` тестового проєкту? (обери всі правильні)",
+      "options": [
+        { "text": "`node_modules/`", "correct": true },
+        { "text": "`playwright-report/`", "correct": true },
+        { "text": "`.env`", "correct": true },
+        { "text": "`package-lock.json`", "explain": "Lock-файл комітять: він фіксує версії для всіх." },
+        { "text": "`playwright.config.ts`", "explain": "Конфіг — частина проєкту, його комітять." }
+      ]
+    },
+    {
+      "id": "already-tracked",
+      "kind": "single",
+      "text": "Ти додав `.env` у `.gitignore`, але `git status` все одно показує зміни в `.env`. Чому?",
+      "options": [
+        { "text": "Файл уже закомічений раніше, а `.gitignore` не діє на відстежувані файли. Потрібен `git rm --cached .env`", "correct": true },
+        { "text": "`.gitignore` працює лише після перезапуску комп'ютера" }
+      ]
+    },
+    {
+      "id": "secret",
+      "kind": "single",
+      "text": "Ти випадково запушив токен API у публічний репозиторій. Що найважливіше зробити?",
+      "options": [
+        { "text": "Відкликати й замінити токен (rotate) і повідомити команду", "correct": true },
+        { "text": "Видалити рядок наступним комітом, і все", "explain": "Токен лишиться в історії, його можуть знайти." },
+        { "text": "Нічого: репозиторій мало хто дивиться" }
+      ]
+    },
+    {
+      "id": "lock-conflict",
+      "kind": "single",
+      "text": "Конфлікт у `package-lock.json`. Як найкраще вчинити?",
+      "options": [
+        { "text": "Взяти версію з `main`, виконати `npm install` і закомітити перегенерований lock-файл", "correct": true },
+        { "text": "Вручну редагувати тисячі рядків lock-файлу" },
+        { "text": "Видалити package-lock.json з репозиторію" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "type": "quiz",
+  "title": "Quiz: GitHub & pull requests",
+  "show": 5,
+  "hints": ["`pull` = `fetch` + `merge`. PR — запит влити гілку, з рев'ю і CI."],
+  "questions": [
+    {
+      "id": "git-vs-github",
+      "kind": "single",
+      "text": "Чим Git відрізняється від GitHub?",
+      "options": [
+        { "text": "Git — програма контролю версій, GitHub — сервіс, що зберігає репозиторії й додає PR, рев'ю, CI", "correct": true },
+        { "text": "Це одне й те саме" },
+        { "text": "GitHub — нова версія Git" }
+      ]
+    },
+    {
+      "id": "first-push",
+      "kind": "text",
+      "text": "Ти створив локально гілку `feature/search-tests` і закомітив зміни. Яка команда вперше відправить її на GitHub (remote `origin`)?",
+      "accept": ["git push -u origin feature/search-tests", "git push --set-upstream origin feature/search-tests", "git push origin feature/search-tests"]
+    },
+    {
+      "id": "pull",
+      "kind": "single",
+      "text": "Що робить `git pull`?",
+      "options": [
+        { "text": "Завантажує нові коміти з remote і вливає їх у поточну гілку", "correct": true },
+        { "text": "Лише завантажує коміти, нічого не змінюючи у файлах", "explain": "Це `git fetch`." },
+        { "text": "Відправляє твої коміти на сервер", "explain": "Це `git push`." }
+      ]
+    },
+    {
+      "id": "rejected",
+      "kind": "single",
+      "text": "`git push` відхилено: «Updates were rejected because the remote contains work that you do not have». Що робиш?",
+      "options": [
+        { "text": "`git pull`, розв'язую конфлікти, якщо є, і знову `git push`", "correct": true },
+        { "text": "`git push --force`", "explain": "Так ти перезапишеш чужі коміти на сервері." },
+        { "text": "Видаляю репозиторій і клоную заново" }
+      ]
+    },
+    {
+      "id": "pr",
+      "kind": "single",
+      "text": "Що таке pull request?",
+      "options": [
+        { "text": "Запит влити гілку в іншу (зазвичай `main`) з обговоренням, рев'ю і CI-перевірками", "correct": true },
+        { "text": "Команда `git pull`" },
+        { "text": "Запит на доступ до репозиторію" }
+      ]
+    },
+    {
+      "id": "pr-description",
+      "kind": "multiple",
+      "text": "Що має бути в описі PR? (обери всі правильні)",
+      "options": [
+        { "text": "Що змінено", "correct": true },
+        { "text": "Навіщо (посилання на задачу)", "correct": true },
+        { "text": "Як це перевірено", "correct": true },
+        { "text": "Токен доступу, щоб рев'юер міг запустити тести", "explain": "Секрети ніколи не пишуть у PR." }
+      ]
+    },
+    {
+      "id": "red-ci",
+      "kind": "single",
+      "text": "У твоєму PR червоний CI: впав тест, який ти не чіпав. Найкращий перший крок?",
+      "options": [
+        { "text": "Відкрити лог CI, подивитися, що саме впало, і чи пов'язано це з моєю зміною", "correct": true },
+        { "text": "Перезапускати CI, доки не стане зеленим" },
+        { "text": "Вимкнути цей тест" }
+      ]
+    },
+    {
+      "id": "auth",
+      "kind": "single",
+      "text": "Чим автентифікуватися на GitHub для `git push` через HTTPS?",
+      "options": [
+        { "text": "Personal Access Token (або вхід через Git Credential Manager)", "correct": true },
+        { "text": "Звичайним паролем від акаунта", "explain": "GitHub не приймає пароль акаунта для git-операцій." }
+      ]
+    }
+  ]
+}

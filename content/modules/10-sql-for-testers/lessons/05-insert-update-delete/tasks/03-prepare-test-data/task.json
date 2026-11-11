@@ -1,0 +1,47 @@
+{
+  "type": "sql",
+  "title": "Prepare data for test cases",
+  "statement": "Тест-лід дав список тест-кейсів, для яких потрібні особливі дані. Підготуй їх SQL-командами. Кожна команда має змінити **рівно те**, що потрібно, і нічого більше.",
+  "database": "gadgetly",
+  "challenges": [
+    {
+      "id": "out-of-stock",
+      "prompt": "TC «Товар закінчився»: зроби `Phone Mini` відсутнім у наявності (`in_stock = 0`).",
+      "model": "UPDATE products SET in_stock = 0 WHERE name = 'Phone Mini';",
+      "verify": "SELECT id, name, in_stock FROM products ORDER BY id;"
+    },
+    {
+      "id": "phones-price",
+      "prompt": "TC «Нові ціни на телефони»: підніми ціну **всіх** товарів категорії `Phones` на 500 грн (кожному — від його поточної ціни).",
+      "model": "UPDATE products SET price = price + 500 WHERE category = 'Phones';",
+      "verify": "SELECT id, price FROM products ORDER BY id;",
+      "explain": "`SET price = price + 500` бере старе значення кожного рядка й додає 500."
+    },
+    {
+      "id": "no-city",
+      "prompt": "TC «Доставка без міста»: прибери місто (зроби `NULL`) у користувача з email `nazar.lysenko@gadgetly.test`.",
+      "model": "UPDATE users SET city = NULL WHERE email = 'nazar.lysenko@gadgetly.test';",
+      "verify": "SELECT id, email, city FROM users ORDER BY id;"
+    },
+    {
+      "id": "ship-old-paid",
+      "prompt": "TC «Відправлені замовлення»: переведи в статус `shipped` усі замовлення зі статусом `paid`, створені **до** `2024-09-10`.",
+      "model": "UPDATE orders SET status = 'shipped' WHERE status = 'paid' AND created_at < '2024-09-10';",
+      "verify": "SELECT id, status, created_at FROM orders ORDER BY id;",
+      "explain": "Під обидві умови підходить лише 1008. Замовлення 1002 теж `paid`, але створене 14 вересня."
+    },
+    {
+      "id": "new-order",
+      "prompt": "TC «Нове замовлення»: додай замовлення `1013` для користувача 9 (статус `created`, `total` 998, `created_at` `2024-10-02`) і його позицію `id` 19: товар 1, кількість 2, ціна за одиницю 499.",
+      "model": "INSERT INTO orders (id, user_id, status, total, created_at) VALUES (1013, 9, 'created', 998, '2024-10-02');\nINSERT INTO order_items (id, order_id, product_id, quantity, unit_price) VALUES (19, 1013, 1, 2, 499);",
+      "verify": "SELECT o.id, o.user_id, o.status, o.total, o.created_at, i.id AS item_id, i.product_id, i.quantity, i.unit_price FROM orders o LEFT JOIN order_items i ON i.order_id = o.id WHERE o.id > 1012 ORDER BY o.id, i.id;",
+      "explain": "Замовлення без позиції — неповні дані: в UI воно виглядало б як порожнє замовлення на 998 грн."
+    }
+  ],
+  "hints": [
+    "Спершу напиши SELECT з потрібним WHERE і переконайся, що він знаходить саме ті рядки.",
+    "Обчислення від поточного значення: `SET price = price + 500`. Очищення: `SET city = NULL`.",
+    "Дві умови одночасно — `WHERE status = 'paid' AND created_at < '2024-09-10'`."
+  ],
+  "explanation": "Готуючи дані, формулюй `WHERE` так само точно, як вимогу: «усі телефони» → `category = 'Phones'`, «конкретний користувач» → унікальний `email` або `id`, «оплачені до дати» → дві умови через `AND`. Перевірочна таблиця показує всі рядки, тож зайва зміна відразу видно."
+}

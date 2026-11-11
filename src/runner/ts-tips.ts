@@ -3,6 +3,7 @@ export const TS_TIPS: Record<number, string> = {
   1005: 'Syntax error: a symbol is missing (often `;`, `)`, `}` or `,`). Look at the line above too.',
   1109: 'An expression is expected here — something is missing after an operator or `=`.',
   1128: 'Declaration or statement expected — usually an extra or missing `}`.',
+  1185: 'Git merge conflict marker (<<<<<<<, ======= or >>>>>>>). Decide what the final code should be and delete all three markers.',
   1161: 'A string or template literal is not closed — check your quotes / backticks.',
   2304: 'Unknown name. Check the spelling (TypeScript is case-sensitive) or declare the variable first.',
   2322: 'Type mismatch: the value does not match the declared type. Compare the type on the left with the value on the right.',

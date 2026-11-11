@@ -1,0 +1,45 @@
+{
+  "type": "table",
+  "title": "Pick the Git command for each goal",
+  "statement": "Ти працюєш над тестами в репозиторії з гілками `main` і `feature/search-tests`. Яка команда досягає кожної мети?",
+  "givenColumns": ["Goal"],
+  "answerColumns": [
+    {
+      "id": "cmd",
+      "label": "Command",
+      "options": [
+        "git branch",
+        "git switch -c feature/order-tests",
+        "git switch main",
+        "git merge feature/search-tests",
+        "git branch -d feature/search-tests",
+        "git status",
+        "git log --oneline --graph --all",
+        "git stash"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["See which local branches exist and which one you are on"], "answers": { "cmd": "git branch" } },
+    { "given": ["Start a new branch for order-status tests and move into it"], "answers": { "cmd": "git switch -c feature/order-tests" } },
+    { "given": ["Go back to the main branch"], "answers": { "cmd": "git switch main" } },
+    {
+      "given": ["You are on `main`: bring the finished search tests into it"],
+      "answers": { "cmd": "git merge feature/search-tests" },
+      "explain": "Merge вливає вказану гілку в поточну (`main`)."
+    },
+    { "given": ["Clean up the search branch after it was merged"], "answers": { "cmd": "git branch -d feature/search-tests" } },
+    { "given": ["Check which files are changed or staged right now"], "answers": { "cmd": "git status" } },
+    { "given": ["See the history of all branches as a tree"], "answers": { "cmd": "git log --oneline --graph --all" } },
+    {
+      "given": ["Put unfinished changes aside to switch branches with a clean working tree"],
+      "answers": { "cmd": "git stash" },
+      "explain": "`git stash` відкладає зміни, `git stash pop` повертає їх."
+    }
+  ],
+  "hints": [
+    "`switch -c` — create and switch; `switch` без `-c` — лише перейти.",
+    "`branch` без аргументів — список; `branch -d` — видалити."
+  ],
+  "explanation": "Щоденна робота з гілками — це п'ять команд: подивитися (`git branch`, `git status`), створити (`git switch -c`), перейти (`git switch`), влити (`git merge`, перебуваючи в цільовій гілці) і прибрати (`git branch -d`). `git log --graph` допомагає побачити картину, `git stash` — тимчасово відкласти незавершене."
+}

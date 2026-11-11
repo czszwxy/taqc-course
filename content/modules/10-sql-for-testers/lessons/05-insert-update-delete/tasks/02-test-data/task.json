@@ -1,0 +1,40 @@
+{
+  "type": "sql",
+  "title": "Create, change and delete test data",
+  "statement": "Готуєш дані для тестів. Кожен пункт — команда, що **змінює** дані. Після неї автоматично виконується **перевірочний запит** (він показаний після ▶ Run), і його результат має збігтися з очікуваним.\n\nКожен запуск починається з оригінальної бази, тож помилитися не страшно. Але подумай про `WHERE` до того, як натиснеш Run.",
+  "database": "gadgetly",
+  "challenges": [
+    {
+      "id": "insert-user",
+      "prompt": "Додай користувача: `id` 11, email `new.tester@gadgetly.test`, ім'я `New Tester`, місто `Lviv`, `created_at` `2024-10-01`. Колонку `role` **не вказуй**: перевір, що спрацює `DEFAULT`.",
+      "model": "INSERT INTO users (id, email, name, city, created_at) VALUES (11, 'new.tester@gadgetly.test', 'New Tester', 'Lviv', '2024-10-01');",
+      "verify": "SELECT id, email, name, city, role, created_at FROM users WHERE id > 10 ORDER BY id;",
+      "explain": "Після вставки `role` = `customer`: так працює `DEFAULT`."
+    },
+    {
+      "id": "pay-order",
+      "prompt": "Тест-кейс «оплачене замовлення»: переведи замовлення 1006 у статус `paid`. Інші замовлення не мають змінитися.",
+      "model": "UPDATE orders SET status = 'paid' WHERE id = 1006;",
+      "verify": "SELECT id, status FROM orders ORDER BY id;"
+    },
+    {
+      "id": "cable-price",
+      "prompt": "Ціна `USB-C Cable 1 m` змінилася: встанови 299 грн.",
+      "model": "UPDATE products SET price = 299 WHERE name = 'USB-C Cable 1 m';",
+      "verify": "SELECT id, name, price FROM products ORDER BY id;"
+    },
+    {
+      "id": "delete-order",
+      "prompt": "Видали скасоване замовлення **1005** разом з його позиціями. Це дві команди `DELETE` (спершу позиції, потім замовлення), їх можна написати одну під одною.",
+      "model": "DELETE FROM order_items WHERE order_id = 1005;\nDELETE FROM orders WHERE id = 1005;",
+      "verify": "SELECT (SELECT COUNT(*) FROM orders) AS orders_left, (SELECT COUNT(*) FROM order_items) AS items_left, (SELECT COUNT(*) FROM orders WHERE id = 1005) AS order_1005, (SELECT COUNT(*) FROM order_items WHERE order_id = 1005) AS items_of_1005;",
+      "explain": "Скасованих замовлень два (1005 і 1011). `WHERE status = 'cancelled'` видалив би обидва, а треба лише 1005."
+    }
+  ],
+  "hints": [
+    "INSERT: `INSERT INTO users (id, email, name, city, created_at) VALUES (…);` — текст в одинарних лапках.",
+    "UPDATE і DELETE — завжди з `WHERE`. Якщо після Run «Rows changed» більше 1, умова надто широка.",
+    "Для видалення спершу `DELETE FROM order_items WHERE order_id = 1005;`, потім `DELETE FROM orders WHERE id = 1005;`."
+  ],
+  "explanation": "Кожна зміна даних — це «що змінити» (`SET` / `VALUES`) плюс «де» (`WHERE`). Перевірочний запит показує всю таблицю: зайве змінений рядок одразу видно. Типові помилки: `UPDATE` без `WHERE` (змінилися всі рядки), видалення замовлення без його позицій і надто широка умова (`status = 'cancelled'` замість `id = 1005`)."
+}

@@ -1,0 +1,73 @@
+{
+  "type": "quiz",
+  "title": "Quiz: changing data safely",
+  "show": 5,
+  "hints": ["UPDATE і DELETE без WHERE зачіпають усі рядки. Спершу SELECT з тим самим WHERE."],
+  "questions": [
+    {
+      "id": "no-where",
+      "kind": "single",
+      "text": "Що зробить `UPDATE orders SET status = 'cancelled';`?",
+      "options": [
+        { "text": "Скасує **всі** замовлення в таблиці", "correct": true },
+        { "text": "Видасть помилку, бо немає WHERE", "explain": "SQL виконає команду без попереджень." },
+        { "text": "Скасує лише останнє замовлення" }
+      ]
+    },
+    {
+      "id": "safe-order",
+      "kind": "single",
+      "text": "Як безпечно видалити замовлення 1005?",
+      "options": [
+        { "text": "Спершу `SELECT` з тим самим WHERE, потім видалити позиції, потім саме замовлення, потім перевірити", "correct": true },
+        { "text": "Одразу `DELETE FROM orders WHERE id = 1005`", "explain": "Лишаться «осиротілі» позиції в order_items, а з увімкненими FK база не дасть видалити." }
+      ]
+    },
+    {
+      "id": "default",
+      "kind": "single",
+      "text": "У таблиці `users` колонка `role` має `DEFAULT 'customer'`. Ти вставив користувача без `role`. Яке значення буде?",
+      "options": [
+        { "text": "`customer`", "correct": true },
+        { "text": "`NULL`", "explain": "NULL було б, якби DEFAULT не було." },
+        { "text": "Помилка вставки" }
+      ]
+    },
+    {
+      "id": "unique",
+      "kind": "single",
+      "text": "Ти вставляєш користувача з email, який уже є, і бачиш `UNIQUE constraint failed: users.email`. Це…",
+      "options": [
+        { "text": "Очікувана поведінка: обмеження працює", "correct": true },
+        { "text": "Баг бази даних" }
+      ]
+    },
+    {
+      "id": "prod",
+      "kind": "single",
+      "text": "На production знайшовся неправильний статус замовлення. Що робить тестувальник?",
+      "options": [
+        { "text": "Описує проблему в баг-репорті з запитом-доказом; виправлення даних — за процедурою команди", "correct": true },
+        { "text": "Виправляє статус через UPDATE, щоб клієнт не чекав", "explain": "Зміни на production без дозволу й процедури можуть зламати більше, ніж виправити." }
+      ]
+    },
+    {
+      "id": "rollback",
+      "kind": "text",
+      "text": "Яка команда скасовує всі зміни, зроблені після `BEGIN`? (одне слово)",
+      "accept": ["rollback", "rollback;"],
+      "explanation": "`ROLLBACK` скасовує транзакцію, `COMMIT` її зберігає."
+    },
+    {
+      "id": "test-data",
+      "kind": "multiple",
+      "text": "Що з цього — хороша гігієна тестових даних? (обери всі правильні)",
+      "options": [
+        { "text": "Позначати тестові записи (`qa+…@`, `TEST …`)", "correct": true },
+        { "text": "Прибирати створені тестом дані після прогону", "correct": true },
+        { "text": "Змінювати записи колег на staging, якщо так швидше", "explain": "Так ламаються чужі тести." },
+        { "text": "Готувати дані на production, щоб тест був реалістичнішим", "explain": "Production не чіпаємо." }
+      ]
+    }
+  ]
+}

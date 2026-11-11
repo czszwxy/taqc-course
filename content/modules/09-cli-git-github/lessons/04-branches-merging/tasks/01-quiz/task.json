@@ -1,0 +1,66 @@
+{
+  "type": "quiz",
+  "title": "Quiz: branches & merging",
+  "show": 5,
+  "hints": ["`git merge X` вливає X у ПОТОЧНУ гілку. `git switch -c` створює і перемикає."],
+  "questions": [
+    {
+      "id": "create",
+      "kind": "text",
+      "text": "Яка команда створює гілку `feature/cart-tests` і одразу перемикає на неї?",
+      "accept": ["git switch -c feature/cart-tests", "git checkout -b feature/cart-tests"]
+    },
+    {
+      "id": "merge-direction",
+      "kind": "single",
+      "text": "Ти в гілці `main` і виконуєш `git merge feature/cart-tests`. Що відбувається?",
+      "options": [
+        { "text": "Зміни з `feature/cart-tests` вливаються в `main`", "correct": true },
+        { "text": "Зміни з `main` вливаються в `feature/cart-tests`", "explain": "Merge завжди вливає вказану гілку в поточну." },
+        { "text": "Створюється нова гілка" }
+      ]
+    },
+    {
+      "id": "branch-is",
+      "kind": "single",
+      "text": "Що таке гілка в Git?",
+      "options": [
+        { "text": "Рухомий вказівник на коміт", "correct": true },
+        { "text": "Повна копія всіх файлів проєкту в окремій папці", "explain": "Файли не копіюються, тому гілки створюються миттєво." },
+        { "text": "Окремий репозиторій на GitHub" }
+      ]
+    },
+    {
+      "id": "ff",
+      "kind": "single",
+      "text": "Коли злиття буде **fast-forward**?",
+      "options": [
+        { "text": "Коли в цільовій гілці не з'явилося нових комітів, відколи від неї відгалузилися", "correct": true },
+        { "text": "Коли гілка дуже маленька" },
+        { "text": "Коли є конфлікт" }
+      ]
+    },
+    {
+      "id": "list",
+      "kind": "text",
+      "text": "Яка команда показує список локальних гілок і позначає поточну зірочкою?",
+      "accept": ["git branch"]
+    },
+    {
+      "id": "name",
+      "kind": "single",
+      "text": "Яка назва гілки найкраще відповідає домовленостям?",
+      "options": [
+        { "text": "`fix/flaky-login-test`", "correct": true },
+        { "text": "`My Branch 2`", "explain": "Пробіли й великі літери в назвах гілок створюють проблеми." },
+        { "text": "`test`", "explain": "Нічого не каже про задачу." }
+      ]
+    },
+    {
+      "id": "delete",
+      "kind": "text",
+      "text": "Яка команда видаляє локальну гілку `feature/cart-tests`, яку вже влито?",
+      "accept": ["git branch -d feature/cart-tests", "git branch --delete feature/cart-tests"]
+    }
+  ]
+}

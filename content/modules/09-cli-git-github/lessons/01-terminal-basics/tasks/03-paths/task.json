@@ -1,0 +1,24 @@
+{
+  "type": "classify",
+  "title": "Absolute or relative path?",
+  "statement": "Визнач, чи шлях **абсолютний** (працює з будь-якої папки) чи **відносний** (залежить від поточної папки).",
+  "categories": [
+    { "id": "absolute", "label": "Absolute path", "description": "Starts from the root of a drive or file system" },
+    { "id": "relative", "label": "Relative path", "description": "Starts from the current folder" }
+  ],
+  "items": [
+    { "id": "win-abs", "text": "`D:\\qa-academy\\package.json`", "category": "absolute" },
+    { "id": "unix-abs", "text": "`/home/olena/projects/shop`", "category": "absolute" },
+    { "id": "c-users", "text": "`C:\\Users\\Olena\\Documents`", "category": "absolute" },
+    { "id": "usr-bin", "text": "`/usr/local/bin/node`", "category": "absolute" },
+    { "id": "tests", "text": "`tests/login.spec.ts`", "category": "relative" },
+    { "id": "dot-slash", "text": "`./playwright.config.ts`", "category": "relative", "explain": "`.` — поточна папка, тож шлях залежить від того, де ти зараз." },
+    { "id": "dotdot", "text": "`../reports/summary.html`", "category": "relative", "explain": "`..` — батьківська папка поточної." },
+    { "id": "src", "text": "`src\\pages\\LoginPage.ts`", "category": "relative" },
+    { "id": "parent", "text": "`..`", "category": "relative" }
+  ],
+  "show": 7,
+  "hints": ["Абсолютний шлях починається з літери диска (`C:\\`) або з `/`. Усе інше рахується від поточної папки."],
+  "explanation": "Абсолютний шлях однозначний: `C:\\…`, `D:\\…` на Windows або `/…` на Linux і macOS. Відносний рахується від поточної папки: `tests/…`, `./…`, `../…`. У конфігах і тестах зазвичай використовують відносні шляхи від кореня проєкту. Тоді проєкт працює на будь-якому комп'ютері й на CI, а не лише в папці `C:\\Users\\Olena`.",
+  "passScore": 0.85
+}

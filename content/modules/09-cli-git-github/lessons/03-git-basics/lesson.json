@@ -1,0 +1,37 @@
+{
+  "title": "Git: repository, commits, history",
+  "minutes": 55,
+  "summary": "Навіщо система контролю версій, репозиторій, три стани файлів (working directory → staging area → commit), git init / status / add / commit / log / diff, добрі повідомлення комітів і як відкотити зміни",
+  "resources": [
+    {
+      "title": "Pro Git book (українською)",
+      "url": "https://git-scm.com/book/uk/v2",
+      "kind": "book",
+      "lang": "uk",
+      "note": "Розділи 1–2: основи Git.",
+      "needsVerification": true
+    },
+    {
+      "title": "Git — Reference documentation",
+      "url": "https://git-scm.com/docs",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "VS Code: Source Control",
+      "url": "https://code.visualstudio.com/docs/sourcecontrol/overview",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Ті самі дії мишкою: stage, commit, diff.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Git для початківців",
+      "url": "https://www.youtube.com/results?search_query=git+для+початківців+українською",
+      "kind": "video",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "type": "classify",
+  "title": "Good or poor commit message?",
+  "statement": "Історію комітів читатимуть колеги через пів року, шукаючи, коли і чому змінився тест. Які повідомлення їм допоможуть?",
+  "categories": [
+    { "id": "good", "label": "Good message", "description": "Says what changed (and why), imperative mood, one logical change" },
+    { "id": "poor", "label": "Poor message", "description": "Vague, meaningless or mixes unrelated changes" }
+  ],
+  "items": [
+    { "id": "flaky", "text": "`Fix flaky cart test by waiting for the API response`", "category": "good" },
+    { "id": "neg-login", "text": "`Add negative login tests for empty and wrong password`", "category": "good" },
+    { "id": "secret", "text": "`Remove hard-coded password from checkout test`", "category": "good" },
+    { "id": "readme", "text": "`Update README with steps to run tests locally`", "category": "good" },
+    { "id": "bump", "text": "`Upgrade @playwright/test to 1.48`", "category": "good" },
+    { "id": "fix", "text": "`fix`", "category": "poor", "explain": "Що виправлено? Де? Навіщо?" },
+    { "id": "wip", "text": "`wip`", "category": "poor", "explain": "«Work in progress» — у спільній історії так не лишають." },
+    { "id": "asdf", "text": "`asdf`", "category": "poor" },
+    { "id": "final", "text": "`final version 2`", "category": "poor" },
+    { "id": "stuff", "text": "`Add search tests, fix typo in README, change CI config and update login page object`", "category": "poor", "explain": "Чотири різні зміни в одному коміті. Їх не вийде переглянути чи відкотити окремо." },
+    { "id": "changes", "text": "`changes`", "category": "poor" }
+  ],
+  "show": 8,
+  "hints": ["Добре повідомлення відповідає на питання «що змінилося?» і починається з дієслова: Add, Fix, Remove, Update."],
+  "explanation": "Повідомлення коміту — це документація для майбутніх читачів: колег, тебе самого через рік, автора баг-репорту про регресію. Формула: **дієслово + що (+ навіщо)**, одна логічна зміна на коміт. Порожні слова (`fix`, `changes`, `wip`) і «збірні» коміти роблять історію марною для розслідувань.",
+  "passScore": 0.85
+}

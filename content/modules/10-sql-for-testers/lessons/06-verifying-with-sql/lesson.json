@@ -1,0 +1,29 @@
+{
+  "title": "Verifying test results with SQL",
+  "minutes": 60,
+  "summary": "Як тестувальник використовує SQL у роботі: перевірка результату дії в UI/API, перевірки цілісності даних (суми, статуси, осиротілі записи, дублікати, тестові дані), SQL як доказ у баг-репорті",
+  "resources": [
+    {
+      "title": "SQLite: Core Functions (LOWER, COALESCE, …)",
+      "url": "https://www.sqlite.org/lang_corefunc.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "ISTQB Glossary",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Пошукай терміни data integrity, grey-box testing.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: SQL для тестувальників",
+      "url": "https://www.youtube.com/results?search_query=SQL+для+тестувальників",
+      "kind": "video",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

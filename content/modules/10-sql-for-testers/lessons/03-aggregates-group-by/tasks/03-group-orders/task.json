@@ -1,0 +1,41 @@
+{
+  "type": "sql",
+  "title": "Group orders and products",
+  "statement": "Звіти «по групах»: по статусах, категоріях і користувачах. Кожен запит повертає по **рядку на групу**.",
+  "database": "gadgetly",
+  "challenges": [
+    {
+      "id": "by-status",
+      "prompt": "Скільки замовлень у кожному статусі: `status`, кількість.",
+      "model": "SELECT status, COUNT(*) FROM orders GROUP BY status;"
+    },
+    {
+      "id": "by-category",
+      "prompt": "Скільки товарів у кожній категорії: `category`, кількість.",
+      "model": "SELECT category, COUNT(*) FROM products GROUP BY category;"
+    },
+    {
+      "id": "spent",
+      "prompt": "Скільки витратив кожен користувач: `user_id`, сума `total` усіх його замовлень. Від найбільшої суми до найменшої.",
+      "model": "SELECT user_id, SUM(total) AS spent FROM orders GROUP BY user_id ORDER BY spent DESC;",
+      "orderMatters": true
+    },
+    {
+      "id": "repeat-customers",
+      "prompt": "Постійні клієнти — користувачі з **більш ніж одним** замовленням: `user_id`, кількість замовлень.",
+      "model": "SELECT user_id, COUNT(*) FROM orders GROUP BY user_id HAVING COUNT(*) > 1;",
+      "explain": "Умова на результат підрахунку → `HAVING`, а не `WHERE`."
+    },
+    {
+      "id": "pricey-categories",
+      "prompt": "Категорії, у яких **середня** ціна товару понад 10000 грн: лише `category`.",
+      "model": "SELECT category FROM products GROUP BY category HAVING AVG(price) > 10000;"
+    }
+  ],
+  "hints": [
+    "Спитай себе: «що одна група?» Це колонка для `GROUP BY` (статус, категорія, користувач).",
+    "Умова на кількість / середнє групи пишеться в `HAVING` після `GROUP BY`.",
+    "Сортувати можна за агрегатом: `ORDER BY SUM(total) DESC` або за псевдонімом `ORDER BY spent DESC`."
+  ],
+  "explanation": "`GROUP BY колонка` + агрегат дає підсумок для кожного значення колонки. Умови на окремі рядки пишуть у `WHERE`, умови на підсумок групи — у `HAVING`. Часта помилка — `WHERE COUNT(*) > 1`: це синтаксична помилка, бо рядки фільтруються ще до підрахунку."
+}

@@ -1,0 +1,47 @@
+{
+  "type": "sql",
+  "title": "Find users and orders",
+  "statement": "Готуєш тестові дані для кількох тест-кейсів і шукаєш у базі потрібні записи. Таблиці: `users` і `orders`.",
+  "database": "gadgetly",
+  "challenges": [
+    {
+      "id": "kyiv",
+      "prompt": "Користувачі з міста `Kyiv`: `name`, `email`.",
+      "model": "SELECT name, email FROM users WHERE city = 'Kyiv';"
+    },
+    {
+      "id": "no-city",
+      "prompt": "Тест «профіль без міста»: знайди користувачів, у яких `city` не заповнене. Виведи `id`, `name`.",
+      "model": "SELECT id, name FROM users WHERE city IS NULL;",
+      "explain": "`= NULL` нічого не знаходить, потрібен `IS NULL`."
+    },
+    {
+      "id": "in-progress",
+      "prompt": "Замовлення в статусі `paid` або `shipped`: `id`, `status`.",
+      "model": "SELECT id, status FROM orders WHERE status IN ('paid', 'shipped');"
+    },
+    {
+      "id": "phone-names",
+      "prompt": "Пошук по слову «Phone»: товари (`products`), у назві яких є `Phone`. Виведи `name`.",
+      "model": "SELECT name FROM products WHERE name LIKE '%Phone%';",
+      "explain": "Пошук знаходить і чохол `Phone Case S10`. Чи це очікувана поведінка пошуку, вирішує вимога. Добре питання до аналітика!"
+    },
+    {
+      "id": "august",
+      "prompt": "Замовлення, створені в серпні 2024 (`created_at` від `2024-08-01` до `2024-08-31`): `id`, `created_at`, від найстарішого до найновішого.",
+      "model": "SELECT id, created_at FROM orders WHERE created_at BETWEEN '2024-08-01' AND '2024-08-31' ORDER BY created_at;",
+      "orderMatters": true
+    },
+    {
+      "id": "cities",
+      "prompt": "Список міст користувачів **без повторів** і без `NULL`: одна колонка `city`.",
+      "model": "SELECT DISTINCT city FROM users WHERE city IS NOT NULL;"
+    }
+  ],
+  "hints": [
+    "Значення зі списку: `status IN ('paid', 'shipped')`. Шаблон тексту: `LIKE '%Phone%'`.",
+    "Дати в цій базі — текст `'2024-08-05'`, тож `BETWEEN '2024-08-01' AND '2024-08-31'` працює.",
+    "Без повторів — `SELECT DISTINCT city`, без NULL — `WHERE city IS NOT NULL`."
+  ],
+  "explanation": "Під кожну потребу є свій оператор: точне значення (`=`), список (`IN`), діапазон (`BETWEEN`), шаблон (`LIKE`), відсутність значення (`IS NULL`). Найчастіша помилка — `city = NULL`: запит виконується без помилок, але повертає 0 рядків. Тест на такому запиті «пройде», хоча нічого не перевірив."
+}

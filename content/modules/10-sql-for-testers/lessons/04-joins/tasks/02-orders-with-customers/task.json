@@ -1,0 +1,42 @@
+{
+  "type": "sql",
+  "title": "Join orders with customers and products",
+  "statement": "Сторінки адмінки показують замовлення разом з даними клієнта і назвами товарів. Напиши запити з `JOIN`, які дають ті самі дані: це твій очікуваний результат для перевірки сторінок.\n\n```sql\nSELECT o.id, u.email\nFROM orders o\nJOIN users u ON u.id = o.user_id;\n```",
+  "database": "gadgetly",
+  "challenges": [
+    {
+      "id": "order-email",
+      "prompt": "Список замовлень: `id` замовлення, `email` клієнта, `status`.",
+      "model": "SELECT o.id, u.email, o.status FROM orders o JOIN users u ON u.id = o.user_id;",
+      "rules": [{ "kind": "require", "pattern": "join", "message": "Поєднай таблиці через `JOIN … ON`: це тема уроку." }]
+    },
+    {
+      "id": "lviv-orders",
+      "prompt": "Замовлення клієнтів зі Львова (`Lviv`): `id` замовлення, `name` клієнта, `total`.",
+      "model": "SELECT o.id, u.name, o.total FROM orders o JOIN users u ON u.id = o.user_id WHERE u.city = 'Lviv';"
+    },
+    {
+      "id": "order-1009",
+      "prompt": "Склад замовлення 1009: назва товару (`products.name`), `quantity`, `unit_price`.",
+      "model": "SELECT p.name, i.quantity, i.unit_price FROM order_items i JOIN products p ON p.id = i.product_id WHERE i.order_id = 1009;"
+    },
+    {
+      "id": "orders-by-city",
+      "prompt": "Скільки замовлень зроблено з кожного міста: `city`, кількість замовлень.",
+      "model": "SELECT u.city, COUNT(*) FROM orders o JOIN users u ON u.id = o.user_id GROUP BY u.city;",
+      "explain": "Спершу JOIN (до кожного замовлення приєднали місто), потім GROUP BY за містом."
+    },
+    {
+      "id": "mouse-buyers",
+      "prompt": "Хто купував `Wireless Mouse M2`? Виведи `email` покупців (без повторів).",
+      "model": "SELECT DISTINCT u.email FROM order_items i JOIN orders o ON o.id = i.order_id JOIN users u ON u.id = o.user_id JOIN products p ON p.id = i.product_id WHERE p.name = 'Wireless Mouse M2';",
+      "explain": "Ланцюжок: позиція → замовлення → користувач, і позиція → товар (для фільтра за назвою)."
+    }
+  ],
+  "hints": [
+    "Умова JOIN поєднує foreign key з primary key: `u.id = o.user_id`, `p.id = i.product_id`, `o.id = i.order_id`.",
+    "Колонки, що є в кількох таблицях (`id`), уточнюй псевдонімом: `o.id`.",
+    "Для останнього пункту потрібні чотири таблиці: `order_items`, `orders`, `users`, `products`."
+  ],
+  "explanation": "Знайди, у яких таблицях лежать потрібні колонки, і з'єднай їх ланцюжком FK → PK. Кожен `JOIN` має свій `ON`. Фільтри (`WHERE`) і групування (`GROUP BY`) працюють уже з поєднаним результатом. Часта помилка — неправильна пара в `ON` (`u.id = o.id`). Запит виконується, але дає нісенітницю."
+}
