@@ -1,0 +1,13 @@
+{
+  "title": "How the Web Works",
+  "description": "Технічна база для тестувальника вебзастосунків: як браузер говорить із сервером, з чого складаються HTML, CSS і DOM, як писати CSS- і XPath-селектори, як працювати з DevTools (Elements, Console, Network, Application), де браузер зберігає дані і як тестувати адаптивність і різні браузери. Практика — на сторінках DevTools Lab і Product page.",
+  "goals": [
+    "Explain the client–server model and read every part of a URL",
+    "Read HTML and spot accessibility and testability problems",
+    "Write CSS and XPath selectors that match exactly the elements you need",
+    "Use DevTools Elements and Console to find hidden values and JavaScript errors",
+    "Use the Network panel to check requests, responses and status codes",
+    "Inspect cookies, localStorage and sessionStorage and test logout and caching",
+    "Test responsive layouts and plan cross-browser checks"
+  ]
+}

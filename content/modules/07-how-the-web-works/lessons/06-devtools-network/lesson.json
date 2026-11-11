@@ -1,0 +1,28 @@
+{
+  "title": "DevTools: Network",
+  "minutes": 55,
+  "summary": "Вкладка Network: список запитів, метод, статус, час, заголовки, payload і відповідь; фільтри, Preserve log, Disable cache, throttling, Copy as cURL — і баги, які видно лише тут",
+  "resources": [
+    {
+      "title": "Chrome DevTools: Inspect network activity",
+      "url": "https://developer.chrome.com/docs/devtools/network",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Chrome DevTools: Network features reference",
+      "url": "https://developer.chrome.com/docs/devtools/network/reference",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Network tab for QA (пошук)",
+      "url": "https://www.youtube.com/results?search_query=chrome+devtools+network+tab+for+QA+testers",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

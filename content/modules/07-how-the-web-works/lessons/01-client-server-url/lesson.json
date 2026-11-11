@@ -1,0 +1,28 @@
+{
+  "title": "Client–server, URL, DNS",
+  "minutes": 40,
+  "summary": "Як браузер (клієнт) отримує сторінку від сервера: частини URL, DNS, HTTP і HTTPS, порти, середовища dev / staging / production",
+  "resources": [
+    {
+      "title": "MDN: How the web works",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: What is a URL?",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: what happens when you type a URL (пошук)",
+      "url": "https://www.youtube.com/results?search_query=what+happens+when+you+type+a+url+in+the+browser",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

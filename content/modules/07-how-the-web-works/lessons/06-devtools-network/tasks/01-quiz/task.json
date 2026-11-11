@@ -1,0 +1,73 @@
+{
+  "type": "quiz",
+  "title": "Quiz: the Network panel",
+  "show": 5,
+  "hints": ["Payload — що відправили. Response — що отримали. Фільтр Fetch/XHR — лише запити даних."],
+  "questions": [
+    {
+      "id": "payload",
+      "kind": "single",
+      "text": "Де подивитися, які дані форма **відправила** на сервер?",
+      "options": [
+        { "text": "Network → запит → Payload", "correct": true },
+        { "text": "Network → запит → Response", "explain": "Response — це те, що сервер **повернув**." },
+        { "text": "Console" }
+      ]
+    },
+    {
+      "id": "filter",
+      "kind": "single",
+      "text": "У списку 80 запитів (картинки, шрифти, скрипти). Як швидко залишити лише запити даних?",
+      "options": [
+        { "text": "Фільтр Fetch/XHR", "correct": true },
+        { "text": "Фільтр Img" }
+      ]
+    },
+    {
+      "id": "preserve",
+      "kind": "single",
+      "text": "Після відправки форми сторінка перезавантажується, і запит зникає зі списку. Що ввімкнути?",
+      "options": [
+        { "text": "Preserve log", "correct": true },
+        { "text": "Disable cache" },
+        { "text": "Throttling" }
+      ]
+    },
+    {
+      "id": "throttling",
+      "kind": "single",
+      "text": "Як перевірити, що користувач на повільному інтернеті бачить спінер і не може двічі натиснути «Pay»?",
+      "options": [
+        { "text": "Увімкнути Throttling (наприклад, Slow 3G) і повторити дію", "correct": true },
+        { "text": "Очистити кеш" }
+      ]
+    },
+    {
+      "id": "silent-404",
+      "kind": "single",
+      "text": "Аватар на сторінці показується (заглушка з ініціалами), але в Network є червоний запит зі статусом 404. Це баг?",
+      "options": [
+        { "text": "Так: файл не завантажується, інтерфейс лише маскує проблему", "correct": true },
+        { "text": "Ні: користувач бачить картинку, отже все гаразд" }
+      ]
+    },
+    {
+      "id": "curl",
+      "kind": "single",
+      "text": "Як найшвидше передати розробнику **точний** запит, що зламався?",
+      "options": [
+        { "text": "Правий клік на запиті → Copy as cURL (або експорт HAR)", "correct": true },
+        { "text": "Описати запит своїми словами" }
+      ]
+    },
+    {
+      "id": "double",
+      "kind": "single",
+      "text": "Після одного кліку «Place order» у Network два однакові запити `POST /orders`. Що це означає?",
+      "options": [
+        { "text": "Ймовірно, баг: замовлення може створитися двічі", "correct": true },
+        { "text": "Нормальна поведінка браузера" }
+      ]
+    }
+  ]
+}

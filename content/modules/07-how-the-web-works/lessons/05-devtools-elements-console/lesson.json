@@ -1,0 +1,35 @@
+{
+  "title": "DevTools: Elements & Console",
+  "minutes": 50,
+  "summary": "Інструменти розробника як рентген для тестувальника: інспектувати й редагувати DOM і CSS, перевіряти селектори, читати помилки в Console і виконувати команди",
+  "resources": [
+    {
+      "title": "Chrome DevTools: View and change the DOM",
+      "url": "https://developer.chrome.com/docs/devtools/dom",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Chrome DevTools: Console overview",
+      "url": "https://developer.chrome.com/docs/devtools/console",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Firefox DevTools User Docs",
+      "url": "https://firefox-source-docs.mozilla.org/devtools-user/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Chrome DevTools for testers (пошук)",
+      "url": "https://www.youtube.com/results?search_query=chrome+devtools+for+manual+testers",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

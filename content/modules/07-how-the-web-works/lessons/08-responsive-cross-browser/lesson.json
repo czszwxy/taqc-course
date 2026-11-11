@@ -1,0 +1,36 @@
+{
+  "title": "Responsive & cross-browser testing",
+  "minutes": 50,
+  "summary": "Адаптивність і різні браузери: breakpoints, режим пристрою в DevTools, реальні пристрої vs емуляція, рушії Chromium / Firefox / WebKit, матриця підтримки і типові баги верстки",
+  "resources": [
+    {
+      "title": "Chrome DevTools: Simulate mobile devices with device mode",
+      "url": "https://developer.chrome.com/docs/devtools/device-mode",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Responsive design",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright docs: Emulation (devices, viewport)",
+      "url": "https://playwright.dev/docs/emulation",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Як ті самі перевірки автоматизують у Playwright (модулі 15–16).",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: responsive testing with Chrome DevTools (пошук)",
+      "url": "https://www.youtube.com/results?search_query=responsive+testing+chrome+devtools+device+mode",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -23,6 +23,8 @@ import { courseSchema, formatZodError, lessonSchema, moduleSchema, taskSchema, t
 import { checkBugReportQuality, checkTestCase, evaluateRules, matchBug, type FormValues } from '../src/features/tasks/forms';
 import { GENERATORS } from '../src/features/tasks/generators';
 import { PLAYGROUND_PAGES } from '../src/playground/registry';
+import { JSDOM } from 'jsdom';
+import { checkChallenge, prepareSnippet } from '../src/features/tasks/selectors';
 
 /** Theory files shorter than this are treated as "not written yet". */
 const MIN_THEORY_LENGTH = 200;
@@ -175,6 +177,23 @@ const checkTable: Checker<'table'> = (dir, task) => {
   });
 };
 
+const checkSelectorTask: Checker<'selector'> = (dir, task) => {
+  const doc = new JSDOM(task.html).window.document;
+  const expected = prepareSnippet(doc);
+  const ids = task.challenges.map((c) => c.id);
+  duplicates(ids).forEach((id) => fail(dir, `duplicate challenge id "${id}"`));
+  [...expected.keys()].filter((id) => !ids.includes(id)).forEach((id) => fail(dir, `data-expect refers to unknown challenge "${id}"`));
+  task.challenges.forEach((c) => {
+    const targets = expected.get(c.id) ?? [];
+    if (targets.length === 0) {
+      fail(dir, `challenge "${c.id}" has no target elements (add data-expect="${c.id}")`);
+      return;
+    }
+    const result = checkChallenge(doc, task.syntax, c, targets, c.model);
+    if (result.status !== 'correct') fail(dir, `reference selector for "${c.id}" (${c.model}) is not accepted: ${result.message}`);
+  });
+};
+
 const CHECKS: { [K in Task['type']]: Checker<K> } = {
   code: checkCode,
   quiz: checkQuiz,
@@ -185,6 +204,7 @@ const CHECKS: { [K in Task['type']]: Checker<K> } = {
   order: checkOrder,
   written: checkWritten,
   table: checkTable,
+  selector: checkSelectorTask,
 };
 
 /* ---------- structure ---------- */

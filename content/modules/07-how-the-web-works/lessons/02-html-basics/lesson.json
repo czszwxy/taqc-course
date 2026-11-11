@@ -1,0 +1,36 @@
+{
+  "title": "HTML basics",
+  "minutes": 45,
+  "summary": "Теги, атрибути й елементи; структура сторінки; форми, кнопки, посилання, таблиці; семантика і доступність — і чому все це важливо для тестів і автотестів",
+  "resources": [
+    {
+      "title": "MDN: HTML — reference and guides",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: The input element (all types)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "uk.javascript.info — підручник українською",
+      "url": "https://uk.javascript.info/",
+      "kind": "course",
+      "lang": "uk",
+      "note": "Розділ «Браузер: документ, події, інтерфейси» — про HTML і DOM з погляду JavaScript.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: HTML basics for testers (пошук)",
+      "url": "https://www.youtube.com/results?search_query=html+basics+for+software+testers",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

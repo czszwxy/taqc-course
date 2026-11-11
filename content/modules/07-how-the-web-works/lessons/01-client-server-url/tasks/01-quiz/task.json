@@ -1,0 +1,80 @@
+{
+  "type": "quiz",
+  "title": "Quiz: client, server, URL",
+  "show": 5,
+  "hints": ["Розбери URL по частинах: protocol://domain:port/path?query#fragment."],
+  "questions": [
+    {
+      "id": "port",
+      "kind": "text",
+      "text": "Який **порт** у URL `https://shop.example.com:8443/cart?coupon=SAVE10#summary`?",
+      "accept": ["8443"],
+      "explanation": "Порт іде після двокрапки за доменом: **8443**."
+    },
+    {
+      "id": "path",
+      "kind": "text",
+      "text": "Яка **path** у URL `https://gadgetly.com/catalog/phones?sort=price`?",
+      "accept": ["/catalog/phones", "catalog/phones"],
+      "explanation": "Path — частина після домену і до `?`: **/catalog/phones**."
+    },
+    {
+      "id": "fragment",
+      "kind": "single",
+      "text": "Яка частина URL **не надсилається** на сервер?",
+      "options": [
+        { "text": "Fragment (після `#`)", "correct": true },
+        { "text": "Query (після `?`)", "explain": "Query-параметри надсилаються на сервер разом із path." },
+        { "text": "Path" }
+      ]
+    },
+    {
+      "id": "dns",
+      "kind": "single",
+      "text": "Що робить DNS?",
+      "options": [
+        { "text": "Перетворює доменне ім'я на IP-адресу сервера", "correct": true },
+        { "text": "Шифрує дані між браузером і сервером", "explain": "Це робить TLS у HTTPS." },
+        { "text": "Малює сторінку в браузері" }
+      ]
+    },
+    {
+      "id": "client",
+      "kind": "multiple",
+      "text": "Що з переліченого може бути **клієнтом**?",
+      "options": [
+        { "text": "Браузер", "correct": true },
+        { "text": "Postman", "correct": true },
+        { "text": "Автотест Playwright", "correct": true },
+        { "text": "База даних на сервері", "explain": "База даних — частина серверної сторони." }
+      ]
+    },
+    {
+      "id": "https",
+      "kind": "single",
+      "text": "Чому форма входу має працювати лише через HTTPS?",
+      "options": [
+        { "text": "Щоб пароль передавався зашифрованим", "correct": true },
+        { "text": "Щоб сторінка завантажувалась швидше" }
+      ]
+    },
+    {
+      "id": "environment",
+      "kind": "single",
+      "text": "Ти хочеш перевірити оформлення замовлення з тестовою карткою. Де це робити?",
+      "options": [
+        { "text": "На staging / test середовищі", "correct": true },
+        { "text": "На production — там справжні дані", "explain": "Тестове замовлення на production — справжнє замовлення з реальними наслідками." }
+      ]
+    },
+    {
+      "id": "query-tests",
+      "kind": "single",
+      "text": "Сторінка каталогу має URL `…/catalog?page=2`. Яка перевірка найкорисніша?",
+      "options": [
+        { "text": "Змінити в адресі `page` на `0`, `-1`, `abc` і подивитися, як сайт це обробляє", "correct": true },
+        { "text": "Перевірити, що адреса починається з https" }
+      ]
+    }
+  ]
+}

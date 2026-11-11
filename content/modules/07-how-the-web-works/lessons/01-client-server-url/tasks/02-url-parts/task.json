@@ -1,0 +1,18 @@
+{
+  "type": "table",
+  "title": "Name every part of the URL",
+  "statement": "Розбери URL на частини:\n\n```text\nhttps://staging.gadgetly.com:8443/catalog/phones?sort=price&page=2#reviews\n```\n\nДля кожного фрагмента обери, яка це частина URL.",
+  "givenColumns": ["Fragment of the URL"],
+  "answerColumns": [{ "id": "part", "label": "Part", "options": ["Protocol", "Domain (host)", "Port", "Path", "Query parameter", "Fragment"] }],
+  "rows": [
+    { "given": ["`https`"], "answers": { "part": "Protocol" } },
+    { "given": ["`staging.gadgetly.com`"], "answers": { "part": "Domain (host)" } },
+    { "given": ["`8443`"], "answers": { "part": "Port" } },
+    { "given": ["`/catalog/phones`"], "answers": { "part": "Path" } },
+    { "given": ["`sort=price`"], "answers": { "part": "Query parameter" } },
+    { "given": ["`page=2`"], "answers": { "part": "Query parameter" }, "explain": "Параметри query розділяються символом `&`: тут їх два." },
+    { "given": ["`reviews`"], "answers": { "part": "Fragment" }, "explain": "Усе після `#` — fragment. Браузер не надсилає його на сервер." }
+  ],
+  "hints": ["Порядок частин завжди однаковий: protocol → domain → port → path → query (після ?) → fragment (після #)."],
+  "explanation": "`https` — протокол, `staging.gadgetly.com` — домен, `8443` — порт, `/catalog/phones` — path, `sort=price` і `page=2` — два query-параметри, `reviews` — fragment. Тестувальник постійно змінює path і query прямо в адресному рядку, тому важливо швидко їх бачити."
+}

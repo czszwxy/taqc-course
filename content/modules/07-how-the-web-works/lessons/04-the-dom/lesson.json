@@ -1,0 +1,36 @@
+{
+  "title": "The DOM",
+  "minutes": 50,
+  "summary": "DOM — живе дерево сторінки: вузли й зв'язки (батько, дитина, сусід), різниця між HTML-кодом і DOM, видимі й приховані елементи, основи XPath",
+  "resources": [
+    {
+      "title": "MDN: Introduction to the DOM",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: XPath",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/XML/XPath",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "uk.javascript.info — підручник українською",
+      "url": "https://uk.javascript.info/",
+      "kind": "course",
+      "lang": "uk",
+      "note": "Розділ «Документ»: DOM-дерево, навігація по DOM, пошук елементів.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: XPath tutorial for testers (пошук)",
+      "url": "https://www.youtube.com/results?search_query=xpath+tutorial+for+testers",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "title": "CSS basics & selectors",
+  "minutes": 55,
+  "summary": "Як CSS оформлює сторінку і як CSS-селектори знаходять елементи: тег, клас, id, атрибути, комбінатори, псевдокласи — основа локаторів в автотестах",
+  "resources": [
+    {
+      "title": "MDN: CSS selectors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Attribute selectors",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright docs: Other locators (CSS)",
+      "url": "https://playwright.dev/docs/other-locators",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Як ті самі CSS-селектори використовуються в Playwright (детально — у модулі 15).",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: CSS selectors for testers (пошук)",
+      "url": "https://www.youtube.com/results?search_query=css+selectors+for+test+automation",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

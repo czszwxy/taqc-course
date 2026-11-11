@@ -1,0 +1,106 @@
+{
+  "type": "quiz",
+  "title": "DevTools hunt: Elements & Console",
+  "playground": "devtools",
+  "intro": "Відкрий **DevTools Lab** у новій вкладці (кнопка нижче) і відкрий DevTools (F12). Відповіді на ці питання **не видно** на сторінці — їх можна знайти лише через Elements і Console. Якщо щось пішло не так, натисни **Reset demo data** або онови сторінку.",
+  "hints": [
+    "Приховані значення шукай у вкладці Elements: Ctrl+F і пошук за `csrf`, `promo`, `product-card`.",
+    "Повідомлення сторінки — у Console. Якщо їх не видно, онови сторінку з відкритим DevTools.",
+    "Щоб увімкнути кнопку «Apply promo», знайди її в Elements, клацни правою кнопкою по атрибуту `disabled` → Delete attribute (або подвійний клік і стерти)."
+  ],
+  "questions": [
+    {
+      "id": "csrf",
+      "kind": "text",
+      "text": "Яке значення має приховане поле `csrf_token`?",
+      "accept": [
+        "QA-4821"
+      ],
+      "explanation": "У DOM є `<input type=\"hidden\" name=\"csrf_token\" value=\"QA-4821\">`."
+    },
+    {
+      "id": "promo",
+      "kind": "text",
+      "text": "На сторінці є прихований (`display: none`) секретний промокод. Який?",
+      "accept": [
+        "HIDDEN-SALE-25"
+      ],
+      "explanation": "`<p class=\"promo-secret\" style=\"display: none\">Secret promo code: HIDDEN-SALE-25</p>`."
+    },
+    {
+      "id": "cards",
+      "kind": "text",
+      "text": "Скільки елементів знаходить селектор `.product-card`?",
+      "accept": [
+        "6"
+      ],
+      "explanation": "`$$('.product-card').length` → **6**."
+    },
+    {
+      "id": "build",
+      "kind": "text",
+      "text": "Який номер збірки (Build) сторінка пише в Console під час завантаження?",
+      "accept": [
+        "2.7.1-rc3",
+        "build: 2.7.1-rc3"
+      ],
+      "explanation": "`[lab] Build: 2.7.1-rc3` — повідомлення типу info."
+    },
+    {
+      "id": "deprecated",
+      "kind": "text",
+      "text": "Яке API позначене як застаріле (жовте попередження в Console)?",
+      "accept": [
+        "/v1/cart",
+        "v1/cart"
+      ],
+      "explanation": "`[lab] Deprecated API: /v1/cart will be removed in 3.0`."
+    },
+    {
+      "id": "error-type",
+      "kind": "text",
+      "text": "Натисни **Calculate total**. На сторінці — «Something went wrong». Який **тип** помилки в Console?",
+      "accept": [
+        "TypeError",
+        "Uncaught TypeError"
+      ],
+      "explanation": "`TypeError: Cannot read properties of undefined (reading 'price')` — код звертається до елемента, якого немає."
+    },
+    {
+      "id": "flag",
+      "kind": "single",
+      "text": "Виконай у Console `labConfig.featureFlags.newCheckout`. Що повертає?",
+      "options": [
+        {
+          "text": "false",
+          "correct": true
+        },
+        {
+          "text": "true"
+        },
+        {
+          "text": "undefined"
+        }
+      ],
+      "explanation": "Feature flag `newCheckout` вимкнено: `false`."
+    },
+    {
+      "id": "disabled-promo",
+      "kind": "single",
+      "text": "Прибери атрибут `disabled` у кнопки **Apply promo** і натисни її. Що відбувається?",
+      "options": [
+        {
+          "text": "Знижка −50% застосовується — сервер не перевіряє, що користувач гість",
+          "correct": true
+        },
+        {
+          "text": "Сервер відхиляє запит з помилкою 403"
+        },
+        {
+          "text": "Кнопка все одно не натискається"
+        }
+      ],
+      "explanation": "Це баг: обмеження лише в інтерфейсі (`disabled`) легко обійти, сервер теж має перевіряти права."
+    }
+  ]
+}

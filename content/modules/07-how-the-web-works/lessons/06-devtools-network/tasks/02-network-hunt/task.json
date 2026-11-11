@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Network hunt on the DevTools Lab",
+  "playground": "devtools",
+  "intro": "Відкрий **DevTools Lab** (кнопка нижче), відкрий DevTools → **Network**, увімкни фільтр **Fetch/XHR** і по черзі натискай кнопки в розділі «3. Network». Відповіді шукай у Headers, Payload і Response запитів.",
+  "hints": [
+    "Клікни на запит у списку, потім перемикай вкладки Headers / Payload / Response.",
+    "Для «Load avatar» зніми фільтр Fetch/XHR (або вибери Img) — картинка завантажується як зображення, а не fetch.",
+    "Перед «Load orders» переконайся, що у списку Status вибрано **Paid**."
+  ],
+  "questions": [
+    {
+      "id": "phones-total",
+      "kind": "text",
+      "text": "**Load phones**: яке значення поля `total` у відповіді сервера?",
+      "accept": ["3"],
+      "explanation": "Відповідь містить `\"total\": 3` — у каталозі три телефони."
+    },
+    {
+      "id": "phones-limit",
+      "kind": "text",
+      "text": "**Load phones**: яке значення query-параметра `limit`?",
+      "accept": ["5", "limit=5"],
+      "explanation": "URL запиту: `/api/products?category=Phones&limit=5`."
+    },
+    {
+      "id": "profile-method",
+      "kind": "single",
+      "text": "**Save profile**: яким HTTP-методом відправляється профіль?",
+      "options": [{ "text": "POST", "correct": true }, { "text": "GET" }, { "text": "PUT" }]
+    },
+    {
+      "id": "profile-status",
+      "kind": "text",
+      "text": "**Save profile**: який статус-код повертає сервер?",
+      "accept": ["201", "201 created"],
+      "explanation": "**201 Created** — ресурс створено/збережено."
+    },
+    {
+      "id": "profile-request-id",
+      "kind": "text",
+      "text": "**Save profile**: яке значення заголовка відповіді `X-Request-Id`?",
+      "accept": ["lab-7f3a9c"],
+      "explanation": "Response Headers → `X-Request-Id: lab-7f3a9c`."
+    },
+    {
+      "id": "newsletter",
+      "kind": "single",
+      "text": "**Save profile** з відміченою галочкою «Subscribe to newsletter»: яке значення `newsletter` у Payload?",
+      "options": [{ "text": "false", "correct": true }, { "text": "true" }],
+      "explanation": "Галочка відмічена, а відправляється `false` — це баг, який видно лише в Network."
+    },
+    {
+      "id": "avatar",
+      "kind": "text",
+      "text": "**Load avatar**: який статус-код у запиту картинки?",
+      "accept": ["404", "404 not found"],
+      "explanation": "Запит `avatar.png` повертає **404**, а інтерфейс тихо показує заглушку."
+    },
+    {
+      "id": "orders-status",
+      "kind": "text",
+      "text": "**Load orders** зі статусом **Paid**: яке значення query-параметра `status` реально відправляється?",
+      "accept": ["all", "status=all"],
+      "explanation": "Вибрано Paid, а відправляється `status=all` — фільтр не працює."
+    },
+    {
+      "id": "slowest",
+      "kind": "single",
+      "text": "Натисни **Generate report**. Який запит виконується найдовше (колонка Time)?",
+      "options": [
+        { "text": "`slow?ms=2500`", "correct": true },
+        { "text": "`products?category=Phones&limit=5`" },
+        { "text": "`lab/orders?…`" }
+      ]
+    }
+  ]
+}

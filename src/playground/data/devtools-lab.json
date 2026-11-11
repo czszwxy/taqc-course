@@ -1,0 +1,16 @@
+{
+  "products": [
+    { "name": "Wireless Mouse M2", "price": 499 },
+    { "name": "USB-C Cable 1 m", "price": 249 },
+    { "name": "Phone Case S10", "price": 399 },
+    { "name": "Mechanical Keyboard K8", "price": 2199 },
+    { "name": "Sport Earbuds", "price": 1299 },
+    { "name": "Wireless Headphones H1", "price": 2999 }
+  ],
+  "cart": { "items": [{ "productId": 1, "qty": 2 }, { "productId": 4, "qty": 1 }, { "productId": 11, "qty": 1 }], "currency": "UAH" },
+  "totalItems": [
+    { "name": "Wireless Mouse M2", "price": 499 },
+    { "name": "USB-C Cable 1 m", "price": 249 },
+    { "name": "Phone Case S10", "price": 399 }
+  ]
+}

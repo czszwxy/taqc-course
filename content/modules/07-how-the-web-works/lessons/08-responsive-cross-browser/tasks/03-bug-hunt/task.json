@@ -1,0 +1,104 @@
+{
+  "type": "bug-report",
+  "title": "Bug hunt: responsive Product page",
+  "playground": "responsive",
+  "minBugs": 2,
+  "statement": "На сторінці **Product page (responsive)** сховано **4 баги верстки**. На широкому моніторі все виглядає добре — баги з'являються лише на певних ширинах екрана.\n\n1. Відкрий сторінку, увімкни DevTools → **Device toolbar** (Ctrl+Shift+M).\n2. Вибери **Responsive** і перевір ширини 320, 375, 768, 800, 1024, 1280 px; плавно тягни межу вікна.\n3. Оформи щонайменше **2** баг-репорти. У кожному вкажи ширину viewport (або пристрій) і браузер.",
+  "hints": [
+    "На ширині 375 px пошукай кнопку покупки і перевір, чи сторінку можна прокрутити вбік.",
+    "Між 768 і 1023 px подивись на навігацію: чи є посилання або кнопка ☰?",
+    "Порівняй назву товару на телефоні і на десктопі: чи її видно повністю?"
+  ],
+  "explanation": "Баги адаптивної верстки знаходять, перевіряючи **межі breakpoints** і проміжні ширини: на телефоні сховали кнопку покупки й не зробили альтернативи; таблиця ширша за екран; довга назва не переноситься; на планшетній ширині «провалилась» навігація між двома правилами (посилання з 1024 px, а ☰ лише до 767 px). У репорті головне — ширина й пристрій, на яких баг відтворюється, і ширина, де все гаразд.",
+  "bugs": [
+    {
+      "id": "add-to-cart-hidden-mobile",
+      "title": "Add to cart is missing on phones",
+      "match": [
+        "add to cart|в кошик|до кошика|кнопк|button|buy|купит",
+        "(^|\\D)(320|360|375|390|393|412|414|430|480|600)(\\D|$)|mobile|мобіл|phone|телефон|iphone|android|pixel|galaxy|small|вузьк"
+      ],
+      "severity": ["Critical", "Blocker", "Major"],
+      "severityWhy": "На телефонах неможливо купити товар — основна функція магазину недоступна для великої частки користувачів: Critical.",
+      "model": {
+        "title": "Product page: \"Add to cart\" button is missing on phones (viewport 375 px); visible from 640 px",
+        "environment": "Chrome 131, Windows 11, DevTools device mode 375×812 (iPhone X)",
+        "preconditions": "Product page /playground/responsive is open",
+        "steps": ["Open DevTools → Device toolbar", "Select iPhone X (375×812)", "Look at the product price block"],
+        "testData": "Viewport widths checked: 375 px (missing), 640 px and wider (visible)",
+        "actualResult": "Below the price there is no \"Add to cart\" button; it appears only at 640 px and wider.",
+        "expectedResult": "\"Add to cart\" is visible on every device (requirement), including 375 px.",
+        "severity": "Critical",
+        "priority": "High",
+        "attachments": "screenshot-375-no-button.png"
+      }
+    },
+    {
+      "id": "nav-missing-tablet",
+      "title": "No navigation on tablet widths (768–1023 px)",
+      "match": ["nav|menu|меню|навігац|☰|hamburger|гамбургер|links|посилан", "(^|\\D)(76[89]|7[7-9]\\d|8\\d\\d|9\\d\\d|10[01]\\d|102[0-3])(\\D|$)|tablet|планшет|ipad"],
+      "severity": ["Major", "Critical"],
+      "severityWhy": "На планшетах користувач не може перейти в каталог, підтримку чи акаунт — важлива функція недоступна для групи пристроїв: Major.",
+      "model": {
+        "title": "Product page: no navigation at 768–1023 px — neither the links nor the ☰ menu button are shown",
+        "environment": "Chrome 131, Windows 11, DevTools device mode Responsive 800×1000 and iPad Mini 768×1024",
+        "preconditions": "Product page /playground/responsive is open",
+        "steps": ["Open DevTools → Device toolbar → Responsive", "Set the width to 800 px", "Look at the header next to \"Gadgetly Store\""],
+        "testData": "Widths: 767 px (☰ shown), 768–1023 px (nothing), 1024 px (links shown)",
+        "actualResult": "Only \"Gadgetly Store\" is shown in the header: no Catalog / Deals / Support / Account links and no ☰ button.",
+        "expectedResult": "Navigation is always available: links from 768 px, the ☰ menu below 768 px.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": "video-resize-768-1024.mp4"
+      }
+    },
+    {
+      "id": "specs-table-overflow",
+      "title": "Specs table causes horizontal scrolling on phones",
+      "match": ["table|таблиц|specs|характеристик|specification", "scroll|прокрут|скрол|overflow|ширш|wider|виходить за|за межі|horizontal|горизонт"],
+      "severity": ["Minor", "Major"],
+      "severityWhy": "Сторінка «їздить» вбік, частина тексту поза екраном, але купити товар можна: Minor (Major, якщо заважає основним діям).",
+      "model": {
+        "title": "Product page: the specifications table is wider than the screen at 375 px and the whole page scrolls horizontally",
+        "environment": "Chrome 131, Windows 11, DevTools device mode 375×812",
+        "preconditions": "Product page /playground/responsive is open",
+        "steps": ["Open DevTools → Device toolbar, width 375 px", "Scroll down to Specifications", "Swipe / scroll the page to the right"],
+        "testData": "Viewport 375 px; also reproduced at 320 px",
+        "actualResult": "The table is about 640 px wide; the whole page scrolls horizontally and the right part of the content is off-screen.",
+        "expectedResult": "No horizontal page scrolling; the table fits the screen or scrolls inside its own box.",
+        "severity": "Minor",
+        "priority": "Medium",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "title-not-wrapping",
+      "title": "Long product title is cut off on phones",
+      "match": [
+        "title|назв|заголов|heading|name|h1",
+        "cut|обріза|не перенос|wrap|перенос|не вміщ|truncat|hidden|не видно|не повністю|partially|частков"
+      ],
+      "severity": ["Minor", "Trivial"],
+      "severityWhy": "Користувач не бачить повну назву товару, але може купити його: Minor.",
+      "model": {
+        "title": "Product page: long product title does not wrap and is cut off at 375 px",
+        "environment": "Chrome 131, Windows 11, DevTools device mode 375×812",
+        "preconditions": "Product page /playground/responsive is open",
+        "steps": ["Open DevTools → Device toolbar, width 375 px", "Look at the product title"],
+        "testData": "Title: \"Noise Cancelling Headphones NC-700 Pro Wireless Over-Ear Edition\"",
+        "actualResult": "Only \"Noise Cancelling Headphones NC-7…\" is visible; the rest of the title is cut off.",
+        "expectedResult": "The title wraps to the next lines and is fully readable (requirement: long product names wrap).",
+        "severity": "Minor",
+        "priority": "Medium",
+        "attachments": "screenshot-title-375.png"
+      }
+    }
+  ],
+  "checklist": [
+    "Environment includes the browser and the viewport width or device",
+    "The report says at which widths the bug appears and where it disappears",
+    "Steps explain how to set the width (device mode, preset or Responsive)",
+    "Actual result describes what is missing / overlapping / scrolling",
+    "Severity reflects how many users are affected and what they can't do"
+  ]
+}

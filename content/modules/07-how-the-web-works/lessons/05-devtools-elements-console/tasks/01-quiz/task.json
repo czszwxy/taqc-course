@@ -1,0 +1,65 @@
+{
+  "type": "quiz",
+  "title": "Quiz: DevTools Elements & Console",
+  "show": 5,
+  "hints": ["Elements — DOM і стилі. Console — повідомлення сторінки і виконання команд."],
+  "questions": [
+    {
+      "id": "open",
+      "kind": "single",
+      "text": "Як швидко вибрати елемент на сторінці, щоб побачити його в DOM?",
+      "options": [
+        { "text": "Ctrl+Shift+C, потім клік по елементу (або правий клік → Inspect)", "correct": true },
+        { "text": "Ctrl+U", "explain": "Ctrl+U відкриває вихідний HTML, а не живий DOM." }
+      ]
+    },
+    {
+      "id": "count",
+      "kind": "text",
+      "text": "Яку команду можна виконати в Console, щоб дізнатися **кількість** елементів з класом `product-card`?",
+      "accept": [
+        "$$('.product-card').length",
+        "$$(\".product-card\").length",
+        "document.querySelectorAll('.product-card').length",
+        "document.querySelectorAll(\".product-card\").length"
+      ],
+      "explanation": "`$$('.product-card').length` або `document.querySelectorAll('.product-card').length`."
+    },
+    {
+      "id": "red",
+      "kind": "single",
+      "text": "Після кліку на «Pay» нічого не відбувається. Що перевірити першим у DevTools?",
+      "options": [
+        { "text": "Console: чи з'явилася червона помилка", "correct": true },
+        { "text": "Вкладку Styles" }
+      ]
+    },
+    {
+      "id": "edit",
+      "kind": "single",
+      "text": "Ти змінила текст кнопки в Elements. Що станеться після перезавантаження сторінки?",
+      "options": [
+        { "text": "Зміна зникне — вона була лише в DOM твого браузера", "correct": true },
+        { "text": "Зміна збережеться на сервері" }
+      ]
+    },
+    {
+      "id": "disabled",
+      "kind": "single",
+      "text": "Ти прибрала `disabled` у кнопки «Apply promo» через Elements, натиснула — і знижка застосувалась. Що це означає?",
+      "options": [
+        { "text": "Перевірка лише на клієнті — сервер мав відхилити запит. Це баг", "correct": true },
+        { "text": "Усе гаразд: звичайний користувач так не зробить" }
+      ]
+    },
+    {
+      "id": "report",
+      "kind": "single",
+      "text": "Як найкраще додати помилку з Console до баг-репорту?",
+      "options": [
+        { "text": "Скопіювати текст помилки (і за потреби додати скриншот)", "correct": true },
+        { "text": "Написати «у консолі щось червоне»" }
+      ]
+    }
+  ]
+}

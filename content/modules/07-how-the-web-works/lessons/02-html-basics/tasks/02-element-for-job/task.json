@@ -1,0 +1,29 @@
+{
+  "type": "classify",
+  "title": "Which HTML element is right for the job?",
+  "statement": "Обери **правильний** HTML-елемент для кожного елемента інтерфейсу.",
+  "show": 8,
+  "categories": [
+    { "id": "button", "label": "<button>" },
+    { "id": "a", "label": "<a href>" },
+    { "id": "input", "label": "<input>" },
+    { "id": "select", "label": "<select>" },
+    { "id": "label", "label": "<label>" },
+    { "id": "img", "label": "<img alt>" },
+    { "id": "table", "label": "<table>" }
+  ],
+  "items": [
+    { "id": "save", "text": "«Save changes» — відправляє форму", "category": "button" },
+    { "id": "help", "text": "«Help center» — відкриває іншу сторінку", "category": "a", "explain": "Перехід на іншу сторінку — це посилання, а не кнопка." },
+    { "id": "email", "text": "Поле для введення email", "category": "input" },
+    { "id": "country", "text": "Вибір країни з довгого списку", "category": "select" },
+    { "id": "caption", "text": "Підпис «Email» над полем, клік по якому ставить фокус у поле", "category": "label" },
+    { "id": "logo", "text": "Логотип компанії", "category": "img" },
+    { "id": "orders", "text": "Список замовлень з колонками ID, Status, Total", "category": "table" },
+    { "id": "terms", "text": "Галочка «I accept the terms»", "category": "input", "explain": "Це `<input type=\"checkbox\">`." },
+    { "id": "delete", "text": "Іконка 🗑 «Delete», що видаляє рядок без переходу на іншу сторінку", "category": "button" },
+    { "id": "birth", "text": "Поле для дати народження", "category": "input", "explain": "`<input type=\"date\">`." }
+  ],
+  "hints": ["Дія на поточній сторінці → button. Перехід на іншу адресу → a. Введення даних → input (з різними type)."],
+  "explanation": "Правило: **дія** — `<button>`, **перехід** — `<a href>`, **введення** — `<input>` потрібного типу (email, checkbox, date…), **вибір зі списку** — `<select>`, **підпис поля** — `<label>`, **картинка** — `<img>` з `alt`, **табличні дані** — `<table>`. Правильні елементи дають доступність і стабільні локатори для автотестів."
+}

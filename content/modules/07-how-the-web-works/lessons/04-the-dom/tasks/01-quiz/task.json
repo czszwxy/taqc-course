@@ -1,0 +1,82 @@
+{
+  "type": "quiz",
+  "title": "Quiz: the DOM and XPath",
+  "show": 6,
+  "hints": ["`//` — будь-де нижче, `/` — прямий дочірній, `@` — атрибут, `..` — батько."],
+  "questions": [
+    {
+      "id": "dom",
+      "kind": "single",
+      "text": "Що таке DOM?",
+      "options": [
+        { "text": "Дерево об'єктів, яке браузер будує з HTML і яке змінює JavaScript", "correct": true },
+        { "text": "Файл зі стилями сторінки" },
+        { "text": "Сервер, що віддає сторінку" }
+      ]
+    },
+    {
+      "id": "source-vs-elements",
+      "kind": "single",
+      "text": "Товарів немає у «View page source», але вони є у вкладці Elements. Що це означає?",
+      "options": [
+        { "text": "Товари додав JavaScript після завантаження сторінки", "correct": true },
+        { "text": "Це баг: так не буває" }
+      ]
+    },
+    {
+      "id": "sibling",
+      "kind": "single",
+      "text": "Два `<li>` всередині одного `<ul>` — хто вони один одному?",
+      "options": [
+        { "text": "Siblings (сусіди)", "correct": true },
+        { "text": "Parent і child" },
+        { "text": "Ancestor і descendant" }
+      ]
+    },
+    {
+      "id": "xpath-text",
+      "kind": "text",
+      "text": "Напиши XPath для кнопки з **точним** текстом `Checkout`.",
+      "accept": ["//button[text()='Checkout']", "//button[text()=\"Checkout\"]", "//button[.='Checkout']", "//button[.=\"Checkout\"]"],
+      "explanation": "`//button[text()='Checkout']` — пошук за точним текстом."
+    },
+    {
+      "id": "contains-class",
+      "kind": "single",
+      "text": "У елемента `class=\"product-card sale\"`. Який XPath його знайде?",
+      "options": [
+        { "text": "`//li[contains(@class,'sale')]`", "correct": true },
+        { "text": "`//li[@class='sale']`", "explain": "`@class='sale'` вимагає, щоб class був **рівно** `sale`." }
+      ]
+    },
+    {
+      "id": "parent",
+      "kind": "single",
+      "text": "Що означає `/..` в кінці XPath?",
+      "options": [
+        { "text": "Перейти до батьківського елемента", "correct": true },
+        { "text": "Усі нащадки" },
+        { "text": "Наступний сусід" }
+      ]
+    },
+    {
+      "id": "hidden",
+      "kind": "single",
+      "text": "Елемент має `display: none`. Що з ним?",
+      "options": [
+        { "text": "Він є в DOM, але користувач його не бачить і не може клікнути", "correct": true },
+        { "text": "Його немає в DOM" }
+      ]
+    },
+    {
+      "id": "xpath-vs-css",
+      "kind": "single",
+      "text": "Що вміє XPath, але не вміє CSS?",
+      "options": [
+        { "text": "Шукати за текстом елемента і переходити до батька", "correct": true },
+        { "text": "Шукати за класом" },
+        { "text": "Шукати за атрибутом" }
+      ]
+    }
+  ]
+}

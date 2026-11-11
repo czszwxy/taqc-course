@@ -96,6 +96,8 @@ export const quizTaskSchema = z.object({
   type: z.literal('quiz'),
   ...baseTask,
   intro: z.string().optional(),
+  /** Bug Playground page the questions are about (shows an "Open page" button). */
+  playground: z.string().optional(),
   /** How many questions to show per attempt (sampled from the pool on retries). */
   show: z.number().int().positive().optional(),
   passScore: z.number().min(0).max(1).default(DEFAULT_PASS_SCORE),
@@ -252,6 +254,30 @@ export const tableTaskSchema = z.object({
     .min(1),
 });
 
+/**
+ * Write CSS or XPath selectors for an HTML snippet. Target elements are marked in `html` with
+ * `data-expect="<challenge id> …"`; the marker is removed before the learner sees or queries the snippet.
+ */
+export const selectorChallengeSchema = z.object({
+  id: z.string(),
+  /** What to select (Markdown). */
+  prompt: z.string(),
+  /** Reference selector — must match exactly the marked elements (checked by the validator). */
+  model: z.string(),
+  /** Optional require/forbid regexes on the selector text, e.g. forbid :nth-child. */
+  rules: z.array(codeRuleSchema).default([]),
+  explain: z.string().optional(),
+});
+
+export const selectorTaskSchema = z.object({
+  type: z.literal('selector'),
+  ...baseTask,
+  statement: z.string(),
+  syntax: z.enum(['css', 'xpath']),
+  html: z.string(),
+  challenges: z.array(selectorChallengeSchema).min(1),
+});
+
 export const taskSchema = z.discriminatedUnion('type', [
   quizTaskSchema,
   codeTaskSchema,
@@ -262,6 +288,7 @@ export const taskSchema = z.discriminatedUnion('type', [
   orderTaskSchema,
   writtenTaskSchema,
   tableTaskSchema,
+  selectorTaskSchema,
 ]);
 
 export type Resource = z.infer<typeof resourceSchema>;
@@ -281,6 +308,8 @@ export type OrderTask = z.infer<typeof orderTaskSchema>;
 export type WrittenTask = z.infer<typeof writtenTaskSchema>;
 export type WrittenField = z.infer<typeof writtenFieldSchema>;
 export type TableTask = z.infer<typeof tableTaskSchema>;
+export type SelectorTask = z.infer<typeof selectorTaskSchema>;
+export type SelectorChallenge = z.infer<typeof selectorChallengeSchema>;
 
 export const TASK_TYPE_LABEL: Record<Task['type'], string> = {
   quiz: 'Quiz',
@@ -292,6 +321,7 @@ export const TASK_TYPE_LABEL: Record<Task['type'], string> = {
   order: 'Order',
   written: 'Written answer',
   table: 'Table',
+  selector: 'Selectors',
 };
 
 export function formatZodError(err: z.ZodError): string {

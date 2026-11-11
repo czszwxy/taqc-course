@@ -14,6 +14,9 @@ import { CartPage } from './playground/CartPage';
 import { SearchPage } from './playground/SearchPage';
 import { OrderPage } from './playground/OrderPage';
 import { TodoPage } from './playground/TodoPage';
+import { DevToolsLabPage } from './playground/DevToolsLabPage';
+import { ResponsivePage } from './playground/ResponsivePage';
+import { ApiConsolePage } from './playground/ApiConsolePage';
 import { useSettings } from './features/progress/store';
 
 export default function App() {
@@ -31,6 +34,9 @@ export default function App() {
       <Route path="/playground/search" element={<SearchPage />} />
       <Route path="/playground/order" element={<OrderPage />} />
       <Route path="/playground/todo" element={<TodoPage />} />
+      <Route path="/playground/devtools" element={<DevToolsLabPage />} />
+      <Route path="/playground/responsive" element={<ResponsivePage />} />
+      <Route path="/playground/api" element={<ApiConsolePage />} />
       <Route element={<Layout />}>
         <Route index element={<Dashboard />} />
         <Route path="module/:moduleSlug" element={<ModulePage />} />

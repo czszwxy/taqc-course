@@ -1,0 +1,79 @@
+{
+  "type": "bug-report",
+  "title": "Report the bugs you found in the Network panel",
+  "playground": "devtools",
+  "minBugs": 2,
+  "statement": "У розділі «3. Network» сторінки **DevTools Lab** є **3 баги**, які видно лише в DevTools: інтерфейс показує, що все гаразд, але запити кажуть інше. Оформи щонайменше **2** баг-репорти.\n\nУ репорті вкажи метод і URL запиту, що саме надіслано / отримано (Payload, статус-код) і чим це відрізняється від того, що показує інтерфейс.",
+  "hints": [
+    "Порівняй форму профілю з Payload запиту `POST /api/lab/profile`.",
+    "Порівняй вибраний статус замовлень із query-параметрами запиту `lab/orders`.",
+    "Подивись на статус запиту картинки після «Load avatar»."
+  ],
+  "explanation": "Баги «за інтерфейсом» знаходять, порівнюючи UI з Network: (1) форма відправляє `newsletter: false`, хоча галочку відмічено; (2) фільтр замовлень надсилає `status=all` замість вибраного; (3) аватар запитується з неіснуючої адреси (404), а заглушка маскує проблему. У репорті головне — докази з Network: метод, URL, payload або статус.",
+  "bugs": [
+    {
+      "id": "newsletter-false",
+      "title": "Save profile sends newsletter: false although the box is checked",
+      "match": ["newsletter|розсилк|підписк|subscribe", "false|payload|body|тіл|запит|request|відправл|sent|send"],
+      "severity": ["Major", "Minor"],
+      "severityWhy": "Згода користувача на розсилку не зберігається: функція не працює, а інтерфейс показує успіх. Major (Minor, якщо розсилка неважлива для бізнесу).",
+      "model": {
+        "title": "DevTools Lab: Save profile sends \"newsletter\": false although \"Subscribe to newsletter\" is checked",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "DevTools Lab /playground/devtools is open, DevTools → Network (Fetch/XHR) is open",
+        "steps": ["Make sure \"Subscribe to newsletter\" is checked", "Click \"Save profile\"", "Open the POST /api/lab/profile request → Payload"],
+        "testData": "Name: Olena; Subscribe to newsletter: checked; Language: Українська",
+        "actualResult": "The request payload contains \"newsletter\": false; the UI shows \"Profile saved ✓\".",
+        "expectedResult": "The payload contains \"newsletter\": true — exactly what the form shows.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": "screenshot-payload.png"
+      }
+    },
+    {
+      "id": "orders-filter-all",
+      "title": "Load orders sends status=all instead of the selected status",
+      "match": ["order|замовлен", "status|filter|фільтр|статус", "(^|[^a-z])all([^a-z]|$)|paid|усі|всі"],
+      "severity": ["Major", "Minor"],
+      "severityWhy": "Фільтр не працює: користувач бачить не ті замовлення, яких очікує. Основна функція працює неправильно — Major.",
+      "model": {
+        "title": "DevTools Lab: Load orders sends status=all although the Paid filter is selected",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "DevTools Lab /playground/devtools is open, DevTools → Network (Fetch/XHR) is open",
+        "steps": ["Select \"Paid\" in the Status list", "Click \"Load orders\"", "Open the GET /api/lab/orders request → Payload (query parameters)"],
+        "testData": "Status filter: Paid",
+        "actualResult": "The request is GET /api/lab/orders?status=all&page=1 — the selected status is ignored.",
+        "expectedResult": "The request contains status=paid (the selected filter).",
+        "severity": "Major",
+        "priority": "Medium",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "avatar-404",
+      "title": "Avatar request returns 404 (hidden by a fallback)",
+      "match": ["avatar|аватар|image|зображен|картин|png|photo|фото", "404|not found|не знайден|failed|помилк|broken"],
+      "severity": ["Minor", "Major"],
+      "severityWhy": "Користувач бачить заглушку замість свого фото; функція не працює, але нічого не блокує — Minor.",
+      "model": {
+        "title": "DevTools Lab: avatar request GET /api/lab/avatar.png fails with 404; the UI silently shows a fallback",
+        "environment": "Chrome 131, Windows 11",
+        "preconditions": "DevTools Lab /playground/devtools is open, DevTools → Network is open (filter All or Img)",
+        "steps": ["Click \"Load avatar\"", "Find the avatar.png request in the Network list"],
+        "testData": "User: Olena",
+        "actualResult": "GET /api/lab/avatar.png returns 404 Not Found; the page shows a generic \"OT\" fallback picture.",
+        "expectedResult": "The user's avatar loads successfully (status 200), with no failed requests.",
+        "severity": "Minor",
+        "priority": "Medium",
+        "attachments": "network-avatar-404.png"
+      }
+    }
+  ],
+  "checklist": [
+    "The report names the request: method and URL",
+    "Actual result quotes the evidence from Network (payload value, query parameter, status code)",
+    "It is clear how the UI differs from what the request shows",
+    "Steps say which DevTools tab and filter to use",
+    "Evidence is attached or described (screenshot of Payload / HAR)"
+  ]
+}

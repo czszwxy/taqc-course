@@ -1,0 +1,39 @@
+{
+  "type": "classify",
+  "title": "Visible, hidden or not in the DOM?",
+  "statement": "Для кожного елемента визнач його стан: **видимий**, **є в DOM, але прихований** чи **відсутній у DOM**.",
+  "show": 7,
+  "categories": [
+    { "id": "visible", "label": "Visible", "description": "Є в DOM і користувач може його побачити (можливо, після прокрутки)." },
+    { "id": "hidden", "label": "In the DOM, hidden", "description": "Елемент існує, але не показується." },
+    { "id": "absent", "label": "Not in the DOM", "description": "Елемента зараз взагалі немає в дереві." }
+  ],
+  "items": [
+    { "id": "display-none", "text": "Блок з CSS `display: none`", "category": "hidden" },
+    { "id": "visibility", "text": "Підказка з CSS `visibility: hidden`", "category": "hidden" },
+    { "id": "hidden-input", "text": "`<input type=\"hidden\" name=\"csrf_token\">`", "category": "hidden" },
+    { "id": "hidden-attr", "text": "`<div hidden>` з повідомленням про помилку", "category": "hidden" },
+    {
+      "id": "modal",
+      "text": "Модальне вікно, яке React ще не відрендерив, бо користувач не натиснув «Open»",
+      "category": "absent",
+      "explain": "Компонент не відрендерено — у DOM його немає, і селектор нічого не знайде."
+    },
+    { "id": "closed-toast", "text": "Сповіщення, яке JavaScript **видалив** через 3 секунди", "category": "absent" },
+    {
+      "id": "below-fold",
+      "text": "Футер унизу довгої сторінки — щоб побачити, треба прокрутити",
+      "category": "visible",
+      "explain": "Елемент видимий, просто поза поточною областю екрана. Playwright сам прокручує до нього перед кліком."
+    },
+    { "id": "button", "text": "Звичайна кнопка «Add to cart» на екрані", "category": "visible" },
+    {
+      "id": "white-text",
+      "text": "Білий текст на білому фоні",
+      "category": "visible",
+      "explain": "Технічно елемент **видимий** (і для браузера, і для автотесту), але користувач його не прочитає — це баг дизайну/контрасту, який автотест на «visible» не впіймає."
+    }
+  ],
+  "hints": ["Спитай себе: (1) чи існує елемент у дереві зараз? (2) якщо так — чи приховує його CSS або атрибут?"],
+  "explanation": "**Прихований** елемент є в DOM (його знаходить селектор), але не відображається: `display: none`, `visibility: hidden`, атрибут `hidden`, `input type=hidden`. **Відсутній** — ще не відрендерений або вже видалений. **Видимий** — навіть якщо за межами екрана. Цікавий випадок — білий текст на білому: для інструментів він видимий, а людина його не бачить. Такі баги знаходить лише уважний ручний тестувальник або візуальні тести."
+}

@@ -1,0 +1,74 @@
+{
+  "type": "quiz",
+  "title": "Quiz: cookies, storage and cache",
+  "show": 5,
+  "hints": ["Cookies — автоматично йдуть на сервер. localStorage — живе довго. sessionStorage — лише у вкладці."],
+  "questions": [
+    {
+      "id": "sent",
+      "kind": "single",
+      "text": "Які дані браузер **автоматично** надсилає на сервер з кожним запитом?",
+      "options": [
+        { "text": "Cookies", "correct": true },
+        { "text": "localStorage" },
+        { "text": "sessionStorage" }
+      ]
+    },
+    {
+      "id": "session-tab",
+      "kind": "single",
+      "text": "Що станеться з даними в sessionStorage, якщо закрити вкладку?",
+      "options": [
+        { "text": "Вони зникнуть", "correct": true },
+        { "text": "Залишаться, поки їх не видалять вручну" }
+      ]
+    },
+    {
+      "id": "httponly",
+      "kind": "single",
+      "text": "Навіщо cookie сесії атрибут `HttpOnly`?",
+      "options": [
+        { "text": "Щоб JavaScript на сторінці не міг його прочитати (захист від крадіжки сесії)", "correct": true },
+        { "text": "Щоб cookie працював лише через HTTP, а не HTTPS" }
+      ]
+    },
+    {
+      "id": "logout",
+      "kind": "multiple",
+      "text": "Що перевірити після **Log out**?",
+      "options": [
+        { "text": "Cookie сесії видалено", "correct": true },
+        { "text": "Особисті дані прибрано з localStorage / sessionStorage", "correct": true },
+        { "text": "Кнопка «Назад» у браузері не повертає в акаунт", "correct": true },
+        { "text": "Колір кнопки Log in" }
+      ]
+    },
+    {
+      "id": "cache",
+      "kind": "single",
+      "text": "Після релізу в колеги нова кнопка є, а в тебе — ні. Що зробити першим?",
+      "options": [
+        { "text": "Жорстке перезавантаження (Ctrl+F5) або перевірка в інкогніто", "correct": true },
+        { "text": "Одразу завести баг Blocker" }
+      ]
+    },
+    {
+      "id": "privacy",
+      "kind": "single",
+      "text": "У localStorage ти знайшла ключ `user` з полем `password: \"Secret123\"`. Що це?",
+      "options": [
+        { "text": "Баг безпеки: пароль не можна зберігати в браузері", "correct": true },
+        { "text": "Нормально: так зручніше для автологіну" }
+      ]
+    },
+    {
+      "id": "progress",
+      "kind": "single",
+      "text": "Чому прогрес у QA Academy не з'являється на іншому комп'ютері автоматично?",
+      "options": [
+        { "text": "Він зберігається в localStorage цього браузера, а не на сервері", "correct": true },
+        { "text": "Через кеш" }
+      ]
+    }
+  ]
+}

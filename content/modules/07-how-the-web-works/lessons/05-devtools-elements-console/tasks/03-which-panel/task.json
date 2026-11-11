@@ -1,0 +1,26 @@
+{
+  "type": "classify",
+  "title": "Which DevTools panel do you need?",
+  "statement": "Обери вкладку DevTools, яка **найкраще** допоможе в кожній ситуації.",
+  "show": 8,
+  "categories": [
+    { "id": "elements", "label": "Elements", "description": "DOM, атрибути, CSS-стилі" },
+    { "id": "console", "label": "Console", "description": "Повідомлення і помилки JavaScript, виконання команд" },
+    { "id": "network", "label": "Network", "description": "Запити до сервера і відповіді" },
+    { "id": "application", "label": "Application", "description": "Cookies, localStorage, sessionStorage, кеш" }
+  ],
+  "items": [
+    { "id": "hidden-field", "text": "Дізнатися значення прихованого поля форми", "category": "elements" },
+    { "id": "js-error", "text": "Кнопка «Pay» нічого не робить — знайти причину на боці JavaScript", "category": "console" },
+    { "id": "status-500", "text": "Перевірити, який статус-код повернув сервер після «Save»", "category": "network" },
+    { "id": "cookie", "text": "Перевірити, чи видалився cookie сесії після Log out", "category": "application" },
+    { "id": "color", "text": "З'ясувати, чому кнопка сіра — яке CSS-правило діє", "category": "elements" },
+    { "id": "selector-count", "text": "Швидко порахувати, скільки елементів знаходить `$$('.row')`", "category": "console" },
+    { "id": "payload", "text": "Подивитися, які саме дані форма відправила на сервер", "category": "network" },
+    { "id": "local-storage", "text": "Перевірити, що вміст кошика зберігся в localStorage", "category": "application" },
+    { "id": "maxlength", "text": "Прибрати `maxlength` у поля, щоб перевірити серверну валідацію", "category": "elements" },
+    { "id": "slow", "text": "Знайти запит, який виконується 5 секунд", "category": "network" }
+  ],
+  "hints": ["DOM і стилі → Elements. Помилки JS і команди → Console. Запити й відповіді → Network. Збережені дані → Application."],
+  "explanation": "Чотири вкладки покривають більшість задач QA: **Elements** — що зараз у DOM і чому так виглядає; **Console** — що зламалося в JavaScript і швидкі команди; **Network** — що пішло на сервер і що повернулося; **Application** — що браузер зберігає (cookies, storage, кеш)."
+}

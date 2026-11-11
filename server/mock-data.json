@@ -1,0 +1,72 @@
+{
+  "users": [
+    {
+      "id": 42,
+      "email": "qa@gadgetly.test",
+      "password": "Test1234",
+      "name": "Olena Tester",
+      "role": "customer"
+    },
+    {
+      "id": 17,
+      "email": "taras@gadgetly.test",
+      "password": "Taras1234",
+      "name": "Taras Buyer",
+      "role": "customer"
+    }
+  ],
+  "orders": [
+    {
+      "id": 1001,
+      "userId": 17,
+      "productId": 5,
+      "quantity": 1,
+      "status": "paid",
+      "createdAt": "2026-03-02T10:15:00Z"
+    },
+    {
+      "id": 1002,
+      "userId": 42,
+      "productId": 1,
+      "quantity": 2,
+      "status": "created",
+      "createdAt": "2026-03-05T18:40:00Z"
+    }
+  ],
+  "nextOrderId": 1003,
+  "token": {
+    "iat": 1767225600,
+    "exp": 4102444800,
+    "signature": "gadgetly-demo-signature"
+  },
+  "limits": {
+    "minQuantity": 1,
+    "maxQuantity": 10,
+    "defaultPage": 1,
+    "defaultLimit": 10,
+    "maxLimit": 50,
+    "maxBodyBytes": 100000,
+    "maxDelayMs": 5000,
+    "requestIdDigits": 4,
+    "jsonIndent": 2
+  },
+  "lab": {
+    "requestId": "lab-7f3a9c"
+  },
+  "version": "1.4.0",
+  "status": {
+    "ok": 200,
+    "created": 201,
+    "noContent": 204,
+    "badRequest": 400,
+    "unauthorized": 401,
+    "forbidden": 403,
+    "notFound": 404,
+    "methodNotAllowed": 405,
+    "conflict": 409,
+    "payloadTooLarge": 413,
+    "unsupportedMediaType": 415,
+    "unprocessable": 422,
+    "serverError": 500
+  }
+}

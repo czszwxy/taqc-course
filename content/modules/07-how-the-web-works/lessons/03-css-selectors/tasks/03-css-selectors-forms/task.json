@@ -1,0 +1,52 @@
+{
+  "type": "selector",
+  "title": "Write CSS selectors: checkout form and orders table",
+  "syntax": "css",
+  "statement": "Складніший фрагмент: форма оформлення замовлення, таблиця замовлень і навігація. Напиши **CSS-селектори** — тепер знадобляться атрибути з частковим збігом і псевдокласи.",
+  "html": "<form id=\"checkout\">\n  <label for=\"email\">Email</label>\n  <input id=\"email\" type=\"email\" name=\"email\" data-expect=\"email\">\n  <label for=\"phone\">Phone</label>\n  <input id=\"phone\" type=\"tel\" name=\"phone\">\n  <div class=\"error\" data-expect=\"errors\">Phone is required</div>\n  <input type=\"checkbox\" id=\"terms\" name=\"terms\" data-expect=\"checkbox\">\n  <label for=\"terms\">I accept the terms</label>\n  <button type=\"submit\" data-testid=\"submit-order\" data-expect=\"submit\">Place order</button>\n</form>\n<p class=\"error\">This message is outside the form</p>\n<table class=\"orders\">\n  <thead><tr><th>ID</th><th>Status</th><th>Total</th></tr></thead>\n  <tbody>\n    <tr data-expect=\"firstrow\"><td>1001</td><td class=\"status status-paid\">Paid</td><td>499 UAH</td></tr>\n    <tr><td>1002</td><td class=\"status status-cancelled\" data-expect=\"cancelled\">Cancelled</td><td>1,299 UAH</td></tr>\n    <tr><td>1003</td><td class=\"status status-paid\">Paid</td><td>2,199 UAH</td></tr>\n  </tbody>\n</table>\n<nav>\n  <a href=\"https://gadgetly.test/help\" data-expect=\"external\">Help</a>\n  <a href=\"/orders\">Orders</a>\n  <a href=\"https://gadgetly.test/blog\" data-expect=\"external\">Blog</a>\n</nav>\n<style>\n  form { display: grid; gap: 4px; max-width: 280px; }\n  .error { color: #dc2626; }\n  table { border-collapse: collapse; margin-top: 10px; }\n  td, th { border: 1px solid #ddd; padding: 4px 8px; }\n  nav a { margin-right: 10px; }\n</style>",
+  "challenges": [
+    {
+      "id": "submit",
+      "prompt": "Кнопку «Place order» за атрибутом **`data-testid`**.",
+      "model": "[data-testid=\"submit-order\"]",
+      "rules": [{ "kind": "require", "pattern": "data-testid", "message": "Використай атрибут `data-testid`." }]
+    },
+    {
+      "id": "email",
+      "prompt": "Поле email за атрибутом **`type`**.",
+      "model": "input[type=\"email\"]",
+      "rules": [{ "kind": "require", "pattern": "type", "message": "Знайди поле за атрибутом `type`." }]
+    },
+    { "id": "checkbox", "prompt": "**Чекбокс** умов (за типом поля).", "model": "input[type=\"checkbox\"]" },
+    {
+      "id": "errors",
+      "prompt": "Повідомлення про помилку (клас `error`) — лише те, що **всередині форми** `#checkout`.",
+      "model": "#checkout .error",
+      "explain": "На сторінці є ще один `.error` поза формою — тому потрібен батьківський контекст."
+    },
+    {
+      "id": "firstrow",
+      "prompt": "**Перший рядок** даних у таблиці (рядок у `tbody`, не заголовок).",
+      "model": "tbody tr:first-child",
+      "explain": "`:first-child` — перший серед братів. Без `tbody` селектор також знайде рядок заголовка в `thead`."
+    },
+    {
+      "id": "cancelled",
+      "prompt": "Клітинку статусу **Cancelled** (у неї клас `status-cancelled`).",
+      "model": "td.status-cancelled",
+      "explain": "Також підійде `[class*=\"cancelled\"]`."
+    },
+    {
+      "id": "external",
+      "prompt": "Усі **зовнішні** посилання — ті, чий `href` **починається** з `https://`.",
+      "model": "a[href^=\"https://\"]",
+      "rules": [{ "kind": "require", "pattern": "\\^=", "message": "Використай атрибутний селектор «починається з»: `^=`." }]
+    }
+  ],
+  "hints": [
+    "Якщо селектор знаходить зайве, додай **контекст** батька: `#checkout .error`, `tbody tr`.",
+    "«Починається з» — `^=`, «містить» — `*=`, «закінчується на» — `$=`.",
+    "Перший серед братів — `:first-child`. Перевір лічильник: заголовок таблиці теж рядок!"
+  ],
+  "explanation": "Коли простий селектор знаходить зайве, звужуй його **контекстом** (`#checkout .error`, `tbody tr:first-child`) або **точнішим атрибутом** (`a[href^=\"https://\"]`, `td.status-cancelled`). Для автотестів найкраще працюють `data-testid` і атрибути полів (`type`, `name`), бо вони не залежать від оформлення."
+}

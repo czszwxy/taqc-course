@@ -1,0 +1,63 @@
+{
+  "type": "quiz",
+  "title": "Storage hunt: DevTools → Application",
+  "playground": "devtools",
+  "intro": "Відкрий **DevTools Lab** (кнопка нижче) і в DevTools вкладку **Application** (у Firefox — **Storage**). Ліворуч розгорни **Local storage**, **Session storage** і **Cookies** → `http://localhost:5173`. Якщо дані зникли — натисни **Reset demo data** на сторінці.",
+  "hints": [
+    "Значення ключа видно, якщо клікнути на нього: JSON розгортається внизу.",
+    "Cookies — окремий розділ ліворуч, там видно Name, Value, Expires, HttpOnly.",
+    "Для останніх питань натисни на сторінці **Log out** і подивись, що зникло, а що ні."
+  ],
+  "questions": [
+    {
+      "id": "cart-items",
+      "kind": "text",
+      "text": "Скільки товарів (елементів масиву `items`) у ключі `lab:cart` у Local storage?",
+      "accept": ["3"],
+      "explanation": "`{\"items\":[…3 items…],\"currency\":\"UAH\"}`."
+    },
+    {
+      "id": "theme",
+      "kind": "text",
+      "text": "Яке значення cookie `lab_theme`?",
+      "accept": ["dark"],
+      "explanation": "Cookie `lab_theme=dark`."
+    },
+    {
+      "id": "wizard-storage",
+      "kind": "single",
+      "text": "Де зберігається ключ `lab:wizardStep`?",
+      "options": [{ "text": "Session storage", "correct": true }, { "text": "Local storage" }, { "text": "Cookies" }]
+    },
+    {
+      "id": "httponly",
+      "kind": "single",
+      "text": "Чи має cookie `lab_session` позначку **HttpOnly**?",
+      "options": [
+        { "text": "Ні — його створив JavaScript, тож він доступний і для JavaScript", "correct": true },
+        { "text": "Так" }
+      ],
+      "explanation": "Справжній cookie сесії має бути HttpOnly — це ще одне зауваження до безпеки цієї сторінки."
+    },
+    {
+      "id": "after-logout",
+      "kind": "text",
+      "text": "Натисни **Log out**. Який ключ `lab:…` **залишився** в Local storage, хоча за вимогами мав зникнути?",
+      "accept": ["lab:cart"],
+      "explanation": "`lab:cart` залишається після виходу — баг приватності: наступна людина за цим комп'ютером побачить чужий кошик."
+    },
+    {
+      "id": "session-cookie",
+      "kind": "single",
+      "text": "Що сталося з cookie `lab_session` після Log out?",
+      "options": [{ "text": "Його видалено", "correct": true }, { "text": "Він залишився" }]
+    },
+    {
+      "id": "academy",
+      "kind": "text",
+      "text": "Під яким ключем у Local storage цей застосунок зберігає **твій прогрес** навчання?",
+      "accept": ["qa-academy:progress"],
+      "explanation": "`qa-academy:progress` (а налаштування — у `qa-academy:settings`). Сторінки Bug Playground працюють на тому самому origin, тож ти бачиш і ці ключі."
+    }
+  ]
+}

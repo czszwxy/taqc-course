@@ -1,0 +1,52 @@
+{
+  "type": "selector",
+  "title": "Write XPath expressions",
+  "syntax": "xpath",
+  "statement": "Той самий світ Gadgetly, але тепер — **XPath**. Напиши вираз для кожного завдання; знайдені елементи підсвічуються праворуч.\n\nНагадування: `//` — будь-де, `/` — прямий дочірній, `@attr` — атрибут, `text()` — текст, `contains(…)` — містить, `/..` — батько, `following-sibling::` — наступні сусіди.",
+  "html": "<input type=\"search\" name=\"q\" placeholder=\"Search\" data-expect=\"search\">\n<ul class=\"products\">\n  <li class=\"product-card\" data-expect=\"cards\">\n    <h3 data-expect=\"titles\">Wireless Mouse M2</h3>\n    <span class=\"price\">499 UAH</span>\n    <button>Add to cart</button>\n  </li>\n  <li class=\"product-card sale\" data-expect=\"cards sale\">\n    <h3 data-expect=\"titles\">Gaming Mouse X7</h3>\n    <span class=\"price\" data-expect=\"gamingprice\">1,299 UAH</span>\n    <button>Add to cart</button>\n  </li>\n  <li class=\"product-card\" data-expect=\"cards earbuds\">\n    <h3 data-expect=\"titles\">Sport Earbuds</h3>\n    <span class=\"price\">1,299 UAH</span>\n    <button disabled>Add to cart</button>\n  </li>\n</ul>\n<h2>Your cart</h2>\n<ul id=\"cart\">\n  <li data-expect=\"cartitems\">Wireless Mouse M2 × 2</li>\n  <li data-expect=\"cartitems\">USB-C Cable × 1</li>\n</ul>\n<button data-expect=\"checkout\">Checkout</button>\n<style>\n  ul { padding-left: 18px; }\n  .product-card { border: 1px solid #ddd; border-radius: 8px; padding: 6px; margin-bottom: 6px; list-style: none; }\n</style>",
+  "challenges": [
+    { "id": "titles", "prompt": "Усі заголовки **`h3`**.", "model": "//h3" },
+    { "id": "search", "prompt": "Поле пошуку за атрибутом **`name`** (`q`).", "model": "//input[@name='q']" },
+    {
+      "id": "checkout",
+      "prompt": "Кнопку з **точним текстом** `Checkout`.",
+      "model": "//button[text()='Checkout']",
+      "rules": [{ "kind": "require", "pattern": "text\\(\\)|\\.\\s*=", "message": "Знайди кнопку саме **за текстом**: `text()='…'`." }]
+    },
+    {
+      "id": "cards",
+      "prompt": "Усі картки товарів — `li`, у яких class **містить** `product-card`.",
+      "model": "//li[contains(@class,'product-card')]",
+      "rules": [{ "kind": "require", "pattern": "contains", "message": "Використай `contains(@class, '…')`." }]
+    },
+    {
+      "id": "sale",
+      "prompt": "Лише картку зі знижкою — class **містить** `sale`.",
+      "model": "//li[contains(@class,'sale')]",
+      "explain": "`@class='sale'` не спрацює: у елемента class = `product-card sale`."
+    },
+    {
+      "id": "cartitems",
+      "prompt": "Товари в кошику — прямі діти `li` списку з id **`cart`**.",
+      "model": "//ul[@id='cart']/li"
+    },
+    {
+      "id": "earbuds",
+      "prompt": "Картку (`li`), **в якій** є заголовок `Sport Earbuds`. Підказка: знайди заголовок і піднімися до батька.",
+      "model": "//h3[text()='Sport Earbuds']/..",
+      "explain": "Також підійде `//li[h3[text()='Sport Earbuds']]` — «li, у якого є такий h3»."
+    },
+    {
+      "id": "gamingprice",
+      "prompt": "**Ціну** товару `Gaming Mouse X7` — `span` одразу після його заголовка.",
+      "model": "//h3[text()='Gaming Mouse X7']/following-sibling::span",
+      "explain": "Знайди заголовок за текстом і перейди до наступних сусідів: `following-sibling::span`."
+    }
+  ],
+  "hints": [
+    "Атрибут: `//input[@name='q']`. Текст: `//button[text()='Checkout']`. Частковий збіг: `contains(@class,'sale')`.",
+    "Прямий дочірній — одна риска: `//ul[@id='cart']/li`.",
+    "Батько — `/..`; наступні сусіди — `/following-sibling::span`."
+  ],
+  "explanation": "XPath особливо корисний, коли треба знайти елемент **за текстом** (`text()='Checkout'`) або **відносно іншого елемента**: піднятися до батька (`/..`) чи перейти до сусіда (`following-sibling::`). Для класів із кількома значеннями використовуй `contains(@class,'…')`. В автотестах XPath — запасний варіант: спочатку пробуй ролі, `data-testid` і CSS."
+}

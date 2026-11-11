@@ -1,0 +1,41 @@
+{
+  "type": "written",
+  "title": "Review the HTML of a login form",
+  "statement": "Розробник надіслав на рев'ю HTML форми входу:\n\n```html\n<div class=\"form\">\n  <img src=\"logo.png\">\n  <span>Email</span>\n  <input id=\"field\" type=\"text\">\n  <span>Password</span>\n  <input id=\"field\" type=\"text\">\n  <div class=\"btn\" onclick=\"login()\">Log in</div>\n</div>\n```\n\nЗнайди проблеми (щонайменше **5**, по одній у рядку): що тут погано для користувачів, доступності, безпеки й автотестів?",
+  "fields": [{ "id": "problems", "label": "Problems (one per line)", "kind": "list", "placeholder": "Password field has type=\"text\" — the password is visible" }],
+  "rules": [
+    { "field": "problems", "check": "minItems", "value": 5, "message": "Знайди щонайменше **5** проблем." },
+    { "field": "problems", "check": "mentionsAny", "value": ["password|пароль"], "message": "Подивись на поле **пароля**: який у нього `type`?" },
+    { "field": "problems", "check": "mentionsAny", "value": ["label|підпис|span"], "message": "Підписи зроблені через `<span>` — вони не пов'язані з полями. Чим їх замінити?" },
+    { "field": "problems", "check": "mentionsAny", "value": ["(^|[^a-z])id([^a-z]|$)|дубл|duplicate|однаков|same"], "message": "Подивись на атрибути `id` двох полів." },
+    { "field": "problems", "check": "mentionsAny", "value": ["(^|[^a-z])alt([^a-z]|$)|logo|логотип|img|картин|зображ"], "message": "Що не так із картинкою логотипа?" },
+    { "field": "problems", "check": "mentionsAny", "value": ["div|button|кнопк|keyboard|клавіатур|enter|tab"], "message": "«Кнопка» Log in — це `<div>`. Чим це погано?" }
+  ],
+  "model": {
+    "problems": [
+      "Password field has type=\"text\" — the password is visible on the screen; it must be type=\"password\"",
+      "Captions are <span>, not <label for=\"…\">: screen readers don't connect them to the inputs, clicking a caption doesn't focus the field",
+      "Both inputs have the same id=\"field\" — ids must be unique (labels, selectors and tests break)",
+      "The logo <img> has no alt text",
+      "\"Log in\" is a <div> with onclick, not a <button>: no keyboard access (Tab / Enter), screen readers don't announce a button",
+      "No <form> element: pressing Enter does not submit, the browser can't offer to save the password",
+      "Email field is type=\"text\" instead of type=\"email\": no email keyboard on phones, no built-in format check",
+      "No name / autocomplete attributes and no required — browsers can't autofill, empty values are not prevented",
+      "No data-testid attributes — automated tests will rely on fragile selectors"
+    ]
+  },
+  "hints": [
+    "Пройдися по кожному рядку: який елемент використано і який **мав би** бути?",
+    "Подумай про людей, які користуються лише клавіатурою або екранною читалкою.",
+    "Подумай про автотести: чи можна однозначно знайти кожне поле?"
+  ],
+  "explanation": "Типові проблеми HTML-форм: неправильні `type` (пароль видно, email без перевірки), підписи без `<label>`, дубльовані `id`, картинки без `alt`, «кнопки» з `<div>`, відсутній `<form>` (Enter не відправляє), немає `name`/`autocomplete`/`required` і тестових атрибутів. Кожна з них — або баг доступності, або безпеки, або майбутній нестабільний автотест.",
+  "checklist": [
+    "Found the password visibility problem",
+    "Found the label / span problem",
+    "Found the duplicate id",
+    "Found the missing alt",
+    "Found the div-as-button problem and explained who is affected",
+    "Each problem says why it matters (users, accessibility, security or tests)"
+  ]
+}

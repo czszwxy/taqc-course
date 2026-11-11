@@ -1,0 +1,43 @@
+{
+  "type": "selector",
+  "title": "Write CSS selectors: product catalog",
+  "syntax": "css",
+  "statement": "Ось фрагмент сторінки каталогу. Напиши **CSS-селектор** для кожного завдання. Коли ти клікаєш у поле, знайдені елементи підсвічуються праворуч, а поруч видно кількість збігів.\n\nСелектор правильний, якщо знаходить **рівно** потрібні елементи: не більше й не менше.",
+  "html": "<header>\n  <h1 id=\"page-title\">Gadgetly catalog</h1>\n  <input type=\"search\" name=\"q\" placeholder=\"Search products\" data-expect=\"search\">\n</header>\n<ul class=\"products\">\n  <li class=\"product-card\" data-testid=\"product\" data-expect=\"cards testid\">\n    <h3 class=\"title\" data-expect=\"titles\">Wireless Mouse M2</h3>\n    <span class=\"price\" data-expect=\"prices\">499 UAH</span>\n    <button class=\"btn btn-primary\">Add to cart</button>\n  </li>\n  <li class=\"product-card sale\" data-testid=\"product\" data-expect=\"cards testid sale\">\n    <h3 class=\"title\" data-expect=\"titles\">Gaming Mouse X7</h3>\n    <span class=\"price old\">1,599 UAH</span>\n    <span class=\"price\" data-expect=\"prices\">1,299 UAH</span>\n    <button class=\"btn btn-primary\">Add to cart</button>\n  </li>\n  <li class=\"product-card out-of-stock\" data-testid=\"product\" data-expect=\"cards testid\">\n    <h3 class=\"title\" data-expect=\"titles\">Sport Earbuds</h3>\n    <span class=\"price\" data-expect=\"prices\">1,299 UAH</span>\n    <button class=\"btn btn-primary\" disabled data-expect=\"disabled\">Add to cart</button>\n  </li>\n</ul>\n<a href=\"/cart\" class=\"btn\" data-expect=\"cartlink\">Cart (2)</a>\n<style>\n  .products { list-style: none; padding: 0; display: grid; gap: 8px; }\n  .product-card { border: 1px solid #ddd; border-radius: 8px; padding: 8px; }\n  .old { text-decoration: line-through; color: #999; margin-right: 6px; }\n  .btn { display: inline-block; margin-top: 6px; }\n</style>",
+  "challenges": [
+    { "id": "cards", "prompt": "Усі **картки товарів** (за класом).", "model": ".product-card", "rules": [{ "kind": "require", "pattern": "\\.", "message": "Тут потрібен селектор за **класом** (з крапкою)." }] },
+    {
+      "id": "testid",
+      "prompt": "Ті самі картки, але за атрибутом **`data-testid`**.",
+      "model": "[data-testid=\"product\"]",
+      "rules": [{ "kind": "require", "pattern": "data-testid", "message": "Використай атрибут `data-testid`." }]
+    },
+    { "id": "titles", "prompt": "**Назви** всіх товарів (заголовки `h3` усередині карток).", "model": ".product-card h3" },
+    {
+      "id": "sale",
+      "prompt": "Лише картку товару **зі знижкою** — у неї є і клас `product-card`, і клас `sale`.",
+      "model": ".product-card.sale",
+      "explain": "Два класи без пробілу між ними = один елемент з обома класами."
+    },
+    {
+      "id": "prices",
+      "prompt": "**Актуальні** ціни — усі `.price`, крім перекресленої старої ціни (клас `old`).",
+      "model": ".price:not(.old)",
+      "explain": "`:not(.old)` виключає елементи з класом `old`."
+    },
+    { "id": "disabled", "prompt": "**Вимкнену** кнопку «Add to cart».", "model": "button[disabled]", "explain": "Також підійде `button:disabled`." },
+    {
+      "id": "search",
+      "prompt": "Поле **пошуку** за атрибутом `name`.",
+      "model": "input[name=\"q\"]",
+      "rules": [{ "kind": "require", "pattern": "name", "message": "Знайди поле саме за атрибутом `name`." }]
+    },
+    { "id": "cartlink", "prompt": "Посилання на **кошик** за атрибутом `href`.", "model": "a[href=\"/cart\"]" }
+  ],
+  "hints": [
+    "Клас — з крапкою (`.price`), атрибут — у квадратних дужках (`[name=\"q\"]`).",
+    "«Усередині» — пробіл: `.product-card h3`. «Обидва класи на одному елементі» — без пробілу: `.product-card.sale`.",
+    "Виключити частину збігів допомагає `:not(...)`. Вимкнений стан — атрибут `[disabled]` або псевдоклас `:disabled`."
+  ],
+  "explanation": "Типові інструменти: **клас** `.product-card`, **атрибут** `[data-testid=\"product\"]`, `[name=\"q\"]`, `[href=\"/cart\"]`, **нащадок** `.product-card h3`, **кілька класів** `.product-card.sale`, **виключення** `.price:not(.old)`, **стан** `button[disabled]`. Завжди дивись на лічильник збігів: зайвий або пропущений елемент — найчастіша причина нестабільних автотестів."
+}

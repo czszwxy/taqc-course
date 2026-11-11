@@ -24,10 +24,14 @@ interface ShellProps {
   /** `<li>` elements describing the expected behaviour. */
   requirements: ReactNode;
   onReset?: () => void;
+  /** Title of the yellow side panel. */
+  asideTitle?: string;
+  /** Wider main column for tool-like pages (API console). */
+  wide?: boolean;
   children: ReactNode;
 }
 
-export function PlaygroundShell({ brand, fixed, requirements, onReset, children }: ShellProps) {
+export function PlaygroundShell({ brand, fixed, requirements, onReset, asideTitle = 'Requirements (for testers)', wide = false, children }: ShellProps) {
   const b = BRANDS[brand];
   return (
     <div className="min-h-full bg-slate-100 text-slate-900" style={{ colorScheme: 'light' }}>
@@ -43,11 +47,11 @@ export function PlaygroundShell({ brand, fixed, requirements, onReset, children 
         </div>
       </header>
 
-      <main className="mx-auto grid max-w-6xl gap-6 px-5 py-8 lg:grid-cols-[1fr_340px]">
+      <main className={`mx-auto grid gap-6 px-5 py-8 lg:grid-cols-[1fr_340px] ${wide ? 'max-w-7xl' : 'max-w-6xl'}`}>
         <div className="min-w-0 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">{children}</div>
 
         <aside className="h-fit rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm">
-          <div className="font-semibold text-amber-900">📋 Requirements (for testers)</div>
+          <div className="font-semibold text-amber-900">📋 {asideTitle}</div>
           <ul className="mt-2 list-disc space-y-1.5 pl-5 text-amber-950/80">{requirements}</ul>
           {onReset && (
             <button

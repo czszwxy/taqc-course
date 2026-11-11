@@ -1,0 +1,74 @@
+{
+  "type": "quiz",
+  "title": "Quiz: responsive & cross-browser testing",
+  "show": 5,
+  "hints": ["Межі breakpoints — як межі в BVA. Safari на iOS — це WebKit, і DevTools його не емулює."],
+  "questions": [
+    {
+      "id": "shortcut",
+      "kind": "single",
+      "text": "Як у Chrome DevTools увімкнути режим пристрою (Device toolbar)?",
+      "options": [
+        { "text": "Ctrl+Shift+M", "correct": true },
+        { "text": "Ctrl+Shift+J", "explain": "Це відкриває Console." },
+        { "text": "Ctrl+U" }
+      ]
+    },
+    {
+      "id": "breakpoint",
+      "kind": "single",
+      "text": "Меню змінюється на ширині 768 px. Які ширини найважливіше перевірити?",
+      "options": [
+        { "text": "767 і 768 px (і плавно тягнути ширину навколо)", "correct": true },
+        { "text": "500 і 1500 px" }
+      ]
+    },
+    {
+      "id": "webkit",
+      "kind": "single",
+      "text": "Який рушій використовує Chrome на iPhone?",
+      "options": [
+        { "text": "WebKit — на iOS усі браузери працюють на WebKit", "correct": true },
+        { "text": "Chromium (Blink), як на комп'ютері" }
+      ]
+    },
+    {
+      "id": "real-device",
+      "kind": "single",
+      "text": "Що DevTools device mode **не** покаже достовірно?",
+      "options": [
+        { "text": "Як віртуальна клавіатура iPhone перекриває поле вводу", "correct": true },
+        { "text": "Чи з'являється горизонтальний скрол на ширині 375 px" }
+      ]
+    },
+    {
+      "id": "hscroll",
+      "kind": "single",
+      "text": "На телефоні сторінку можна прокрутити **вбік**. Що найімовірніше?",
+      "options": [
+        { "text": "Якийсь елемент (таблиця, картинка, довге слово) ширший за екран", "correct": true },
+        { "text": "Так і має бути на мобільних" }
+      ]
+    },
+    {
+      "id": "report",
+      "kind": "multiple",
+      "text": "Що обов'язково вказати в баг-репорті про верстку?",
+      "options": [
+        { "text": "Ширину viewport або модель пристрою", "correct": true },
+        { "text": "Браузер і версію", "correct": true },
+        { "text": "Орієнтацію (portrait / landscape)", "correct": true },
+        { "text": "Улюблений колір дизайнера" }
+      ]
+    },
+    {
+      "id": "matrix",
+      "kind": "single",
+      "text": "Як вирішити, які браузери і пристрої тестувати першими?",
+      "options": [
+        { "text": "За аналітикою: найпопулярніші серед реальних користувачів продукту", "correct": true },
+        { "text": "Ті, що є в тестувальника вдома" }
+      ]
+    }
+  ]
+}

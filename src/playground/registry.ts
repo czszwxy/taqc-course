@@ -50,4 +50,25 @@ export const PLAYGROUND_PAGES: PlaygroundPage[] = [
     description: 'Add, edit, complete, filter and delete tasks; counter, Clear completed and saving between reloads.',
     bugs: 6,
   },
+  {
+    id: 'devtools',
+    title: 'DevTools Lab',
+    path: '/playground/devtools',
+    description: 'Practice page for the Elements, Console, Network and Application panels: hidden values, console errors, requests and storage.',
+    bugs: 6,
+  },
+  {
+    id: 'responsive',
+    title: 'Product page (responsive)',
+    path: '/playground/responsive',
+    description: 'A product page to test at different screen widths with the DevTools device toolbar.',
+    bugs: 4,
+  },
+  {
+    id: 'api',
+    title: 'Gadgetly API console',
+    path: '/playground/api',
+    description: 'A mini Postman inside the app for the local Gadgetly REST API: products, login with a token, orders CRUD.',
+    bugs: 6,
+  },
 ];

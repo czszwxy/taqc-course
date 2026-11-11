@@ -1,0 +1,35 @@
+{
+  "title": "Cookies, localStorage, sessions, cache",
+  "minutes": 50,
+  "summary": "Де браузер зберігає дані: cookies (з атрибутами HttpOnly, Secure, SameSite, Expires), localStorage, sessionStorage, серверні сесії, кеш — і як тестувати вихід із системи, «запам'ятати мене» та оновлення сайту",
+  "resources": [
+    {
+      "title": "MDN: Using HTTP cookies",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Window.localStorage",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Chrome DevTools: View, add, edit and delete cookies",
+      "url": "https://developer.chrome.com/docs/devtools/application/cookies",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: cookies vs localStorage vs sessionStorage (пошук)",
+      "url": "https://www.youtube.com/results?search_query=cookies+vs+localstorage+vs+sessionstorage",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

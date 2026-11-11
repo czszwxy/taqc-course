@@ -1,0 +1,16 @@
+{
+  "type": "order",
+  "title": "What happens when you open a URL",
+  "statement": "Розстав кроки в правильному порядку: від натискання Enter в адресному рядку до готової сторінки.",
+  "items": [
+    "You type the URL and press Enter",
+    "The browser asks DNS for the server's IP address",
+    "The browser opens a (TLS-encrypted) connection to the server",
+    "The browser sends an HTTP request: GET /catalog/phones",
+    "The server processes the request and sends a response with a status code and HTML",
+    "The browser parses the HTML and requests CSS, JavaScript and images",
+    "The page is rendered and becomes interactive"
+  ],
+  "hints": ["Спочатку треба знайти сервер (DNS), потім підключитися, і лише потім щось у нього просити."],
+  "explanation": "Знайти адресу (DNS) → підключитися (TCP/TLS) → попросити (HTTP request) → отримати відповідь (status + HTML) → догрузити ресурси (CSS, JS, картинки — це окремі запити) → намалювати сторінку. Баги бувають на кожному кроці: DNS не знаходить staging, сертифікат прострочений, сервер повертає 500, картинка — 404, JavaScript падає під час рендерингу."
+}

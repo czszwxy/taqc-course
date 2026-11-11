@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { isNeededLibFile } from './src/runner/lib-files';
+import { API_BASE, API_FIXED_BASE, mockApiMiddleware } from './server/mock-api';
 
 const require = createRequire(import.meta.url);
 
@@ -40,8 +41,23 @@ function tsLibs(): Plugin {
   };
 }
 
+/** Local Gadgetly REST API (/api = with intentional bugs, /api-fixed = correct) for the HTTP & API modules. */
+function mockApi(): Plugin {
+  return {
+    name: 'qa-academy:mock-api',
+    configureServer(server) {
+      server.middlewares.use(API_BASE, mockApiMiddleware(API_BASE));
+      server.middlewares.use(API_FIXED_BASE, mockApiMiddleware(API_FIXED_BASE));
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(API_BASE, mockApiMiddleware(API_BASE));
+      server.middlewares.use(API_FIXED_BASE, mockApiMiddleware(API_FIXED_BASE));
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react(), tailwindcss(), tsLibs()],
+  plugins: [react(), tailwindcss(), tsLibs(), mockApi()],
   worker: {
     format: 'es',
     plugins: () => [tsLibs()],

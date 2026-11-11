@@ -4,7 +4,7 @@ import { useProgress } from '../progress/store';
 import { CodeBlock, Markdown } from '../../components/Markdown';
 import { Callout } from '../../components/ui';
 import { hashString, mulberry32, shuffle } from '../../lib/random';
-import { HintsPanel, NextActions } from './shared';
+import { HintsPanel, NextActions, PlaygroundLink } from './shared';
 import type { TaskViewProps } from './types';
 
 type Answer = number[] | string;
@@ -70,6 +70,7 @@ export function QuizTaskView({ ct, seed, header, onSimilar, next }: TaskViewProp
     <div className="mx-auto max-w-3xl px-5 py-7 lg:px-8">
       {header}
       {task.intro && <Markdown>{task.intro}</Markdown>}
+      <PlaygroundLink id={task.playground} />
       <p className="mt-2 text-sm text-muted">
         {questions.length} questions · pass mark {Math.round(task.passScore * 100)}%
         {task.questions.length > questions.length && ` · a retry draws a new set from ${task.questions.length} questions`}

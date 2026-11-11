@@ -1,0 +1,83 @@
+{
+  "type": "quiz",
+  "title": "Quiz: CSS selectors",
+  "show": 6,
+  "hints": ["`.` — клас, `#` — id, `[ ]` — атрибут, пробіл — «всередині», `>` — «прямий дочірній»."],
+  "questions": [
+    {
+      "id": "class",
+      "kind": "single",
+      "text": "Який селектор знайде всі елементи з класом `price`?",
+      "options": [
+        { "text": "`.price`", "correct": true },
+        { "text": "`#price`", "explain": "`#` шукає за id." },
+        { "text": "`price`", "explain": "Без крапки це селектор тегу `<price>`." }
+      ]
+    },
+    {
+      "id": "testid",
+      "kind": "text",
+      "text": "Напиши CSS-селектор для елемента з атрибутом `data-testid` зі значенням `submit-order`.",
+      "accept": ["[data-testid=\"submit-order\"]", "[data-testid='submit-order']", "[data-testid=submit-order]"],
+      "explanation": "Атрибутний селектор: `[data-testid=\"submit-order\"]`."
+    },
+    {
+      "id": "space",
+      "kind": "single",
+      "text": "Чим відрізняються `.card.sale` і `.card .sale`?",
+      "options": [
+        { "text": "Перший — один елемент з обома класами; другий — елемент `.sale` всередині `.card`", "correct": true },
+        { "text": "Нічим, пробіл ігнорується" }
+      ]
+    },
+    {
+      "id": "child",
+      "kind": "single",
+      "text": "Що означає `ul > li`?",
+      "options": [
+        { "text": "`li`, які є **прямими** дочірніми елементами `ul`", "correct": true },
+        { "text": "`li`, які стоять після `ul`" },
+        { "text": "`ul`, більший за `li`" }
+      ]
+    },
+    {
+      "id": "starts",
+      "kind": "single",
+      "text": "Як знайти всі посилання, чий `href` **починається** з `https://`?",
+      "options": [
+        { "text": "`a[href^=\"https://\"]`", "correct": true },
+        { "text": "`a[href*=\"https://\"]`", "explain": "`*=` означає «містить будь-де», а не «починається з»." },
+        { "text": "`a[href$=\"https://\"]`", "explain": "`$=` — «закінчується на»." }
+      ]
+    },
+    {
+      "id": "stable",
+      "kind": "single",
+      "text": "Який селектор найстабільніший для автотесту?",
+      "options": [
+        { "text": "`[data-testid=\"add-to-cart\"]`", "correct": true },
+        { "text": "`div > div:nth-child(3) > button`", "explain": "Будь-яка зміна верстки зламає такий селектор." },
+        { "text": "`.btn.btn-orange.mt-4`", "explain": "Класи оформлення змінюються при редизайні." }
+      ]
+    },
+    {
+      "id": "not",
+      "kind": "single",
+      "text": "Що знайде `.price:not(.old)`?",
+      "options": [
+        { "text": "Усі елементи з класом `price`, крім тих, що мають клас `old`", "correct": true },
+        { "text": "Лише елементи з класом `old`" }
+      ]
+    },
+    {
+      "id": "display-none",
+      "kind": "single",
+      "text": "Кнопка є в HTML, але на сторінці її не видно. Яке CSS-правило найімовірніше винне?",
+      "options": [
+        { "text": "`display: none`", "correct": true },
+        { "text": "`color: red`" },
+        { "text": "`font-weight: bold`" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "type": "classify",
+  "title": "Device mode or a real device?",
+  "statement": "Для кожної перевірки визнач: чи достатньо **DevTools device mode**, чи потрібен **реальний пристрій або справжній браузер**.",
+  "show": 8,
+  "categories": [
+    { "id": "devtools", "label": "DevTools device mode is enough" },
+    { "id": "real", "label": "Needs a real device / real browser" }
+  ],
+  "items": [
+    { "id": "hidden-button", "text": "Чи видно кнопку «Add to cart» на ширині 375 px", "category": "devtools" },
+    { "id": "safari-date", "text": "Як виглядає поле дати в Safari на iPhone", "category": "real", "explain": "Safari — інший рушій (WebKit). Chrome DevTools показує Chromium." },
+    { "id": "hscroll", "text": "Чи з'являється горизонтальний скрол на 320 px", "category": "devtools" },
+    { "id": "keyboard", "text": "Чи перекриває віртуальна клавіатура поле «Card number»", "category": "real" },
+    { "id": "breakpoint", "text": "Що відбувається з меню між 767 і 1024 px", "category": "devtools" },
+    { "id": "swipe", "text": "Чи працює свайп між фото в галереї товару", "category": "real", "explain": "Емуляція тачу в DevTools груба; жести треба перевіряти пальцем." },
+    { "id": "landscape", "text": "Як виглядає сторінка при повороті 812×375 (landscape)", "category": "devtools" },
+    { "id": "firefox-font", "text": "Чи однаково рендериться шрифт у Firefox і Chrome", "category": "real", "explain": "Потрібен справжній Firefox: device mode не змінює рушій." },
+    { "id": "slow-phone", "text": "Чи не «гальмує» анімація на дешевому Android-телефоні", "category": "real" },
+    { "id": "long-title", "text": "Чи переноситься довга назва товару на вузькому екрані", "category": "devtools" }
+  ],
+  "hints": ["Device mode змінює **розмір** вікна, але не **рушій** браузера, не клавіатуру і не «залізо» телефона."],
+  "explanation": "DevTools device mode чудово перевіряє **верстку за шириною**: приховані елементи, скрол, переноси, breakpoints, орієнтацію. Але він не змінює **рушій** (Safari/WebKit, Firefox/Gecko), не має справжньої **віртуальної клавіатури** і **жестів**, і не імітує **продуктивність** слабкого телефона. Для цього потрібні реальні пристрої, справжні браузери або хмарні ферми пристроїв."
+}
