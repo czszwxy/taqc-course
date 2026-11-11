@@ -1,0 +1,10 @@
+{
+  "type": "value-set",
+  "title": "3-value BVA",
+  "generator": {
+    "name": "bva-range",
+    "params": { "field": "Tickets per order", "min": 1, "max": 8, "approach": "three-value" }
+  },
+  "hints": ["Для кожної межі — три значення: перед межею, сама межа, після межі.", "Для нижньої межі 1: 0, 1, 2. Для верхньої межі — так само."],
+  "explanation": "3-value BVA перевіряє кожну межу з обох боків і саму межу: min−1, min, min+1, max−1, max, max+1. Значення «одразу всередині» ловлять помилки на кшталт `== min` замість `>= min`."
+}

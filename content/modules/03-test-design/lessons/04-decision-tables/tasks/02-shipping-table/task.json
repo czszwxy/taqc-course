@@ -1,0 +1,25 @@
+{
+  "type": "table",
+  "title": "Decision table: free shipping and loyalty discount",
+  "statement": "Вимога інтернет-магазину:\n\n> **Безкоштовна доставка** — якщо сума замовлення ≥ 1000 грн **або** введено промокод `FREESHIP`.\n> **Знижка 5%** — лише для учасників програми лояльності і лише на замовлення від 1000 грн.\n\nЗаповни дії для кожного з 8 правил.",
+  "givenColumns": ["Loyalty member?", "Order ≥ 1000 грн?", "Promo FREESHIP?"],
+  "answerColumns": [
+    { "id": "shipping", "label": "Free shipping", "options": ["Yes", "No"] },
+    { "id": "discount", "label": "5% discount", "options": ["Yes", "No"] }
+  ],
+  "rows": [
+    { "given": ["Yes", "Yes", "Yes"], "answers": { "shipping": "Yes", "discount": "Yes" } },
+    { "given": ["Yes", "Yes", "No"], "answers": { "shipping": "Yes", "discount": "Yes" } },
+    { "given": ["Yes", "No", "Yes"], "answers": { "shipping": "Yes", "discount": "No" }, "explain": "Промокод дає безкоштовну доставку, але знижка 5% потребує суми від 1000 грн." },
+    { "given": ["Yes", "No", "No"], "answers": { "shipping": "No", "discount": "No" }, "explain": "Ні суми, ні промокоду — доставка платна. Членство без суми ≥ 1000 знижки не дає." },
+    { "given": ["No", "Yes", "Yes"], "answers": { "shipping": "Yes", "discount": "No" }, "explain": "Знижка лише для учасників програми лояльності." },
+    { "given": ["No", "Yes", "No"], "answers": { "shipping": "Yes", "discount": "No" } },
+    { "given": ["No", "No", "Yes"], "answers": { "shipping": "Yes", "discount": "No" }, "explain": "Промокод FREESHIP сам по собі дає безкоштовну доставку." },
+    { "given": ["No", "No", "No"], "answers": { "shipping": "No", "discount": "No" } }
+  ],
+  "hints": [
+    "Дві дії залежать від різних умов. «Free shipping» — від суми **або** промокоду. «5% discount» — від членства **і** суми.",
+    "Слово «або» означає: достатньо однієї умови. Слово «і» (лише… лише…) означає: потрібні обидві."
+  ],
+  "explanation": "Розбери кожну дію окремо. Free shipping = (сума ≥ 1000) OR (FREESHIP). Discount = (member) AND (сума ≥ 1000). Потім для кожного рядка підстав значення. Найчастіша помилка — вважати, що промокод чи членство «дає все»."
+}

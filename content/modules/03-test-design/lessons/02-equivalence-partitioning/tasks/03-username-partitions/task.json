@@ -1,0 +1,29 @@
+{
+  "type": "table",
+  "title": "Which partition does each username belong to?",
+  "statement": "Вимога: **Username** — від 3 до 16 символів; дозволено лише **латинські літери, цифри та `_`**; поле обов'язкове.\n\nДля кожного значення визнач клас еквівалентності.",
+  "givenColumns": ["Value"],
+  "answerColumns": [
+    {
+      "id": "partition",
+      "label": "Partition",
+      "options": ["Valid", "Invalid: empty", "Invalid: too short", "Invalid: too long", "Invalid: forbidden characters"]
+    }
+  ],
+  "rows": [
+    { "given": ["`qa_tester`"], "answers": { "partition": "Valid" } },
+    { "given": ["`ab`"], "answers": { "partition": "Invalid: too short" }, "explain": "2 символи — менше мінімуму 3." },
+    { "given": ["(порожньо)"], "answers": { "partition": "Invalid: empty" }, "explain": "Поле обов'язкове: порожнє значення — окремий невалідний клас." },
+    { "given": ["`olena-k`"], "answers": { "partition": "Invalid: forbidden characters" }, "explain": "Дефіс `-` не входить до дозволених символів." },
+    { "given": ["`a_very_long_username_2026`"], "answers": { "partition": "Invalid: too long" }, "explain": "25 символів — більше максимуму 16." },
+    { "given": ["`Ivan2026`"], "answers": { "partition": "Valid" }, "explain": "Латинські літери й цифри, 8 символів." },
+    { "given": ["`іван`"], "answers": { "partition": "Invalid: forbidden characters" }, "explain": "Кирилиця — не латинські літери." },
+    { "given": ["`abc`"], "answers": { "partition": "Valid" }, "explain": "Рівно 3 символи — мінімум входить у діапазон." },
+    { "given": ["`user name`"], "answers": { "partition": "Invalid: forbidden characters" }, "explain": "Пробіл — заборонений символ." }
+  ],
+  "hints": [
+    "Спершу перевір, чи значення не порожнє, потім — довжину, потім — символи.",
+    "Порахуй символи уважно: `a_very_long_username_2026` довший, ніж здається на перший погляд."
+  ],
+  "explanation": "У полі з кількома правилами кожне правило дає свій невалідний клас: порожнє значення, закоротке, задовге, із забороненими символами. Тести треба писати так, щоб кожне невалідне значення порушувало **одне** правило — тоді зрозуміло, що саме перевірено."
+}

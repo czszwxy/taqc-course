@@ -234,6 +234,23 @@ export const writtenTaskSchema = z.object({
   checklist: z.array(z.string()).default([]),
 });
 
+/**
+ * Fill in a table: some columns are given (conditions, current state + event, test case),
+ * the learner picks a value from a fixed list in every answer column (action, next state, requirement…).
+ */
+export const tableTaskSchema = z.object({
+  type: z.literal('table'),
+  ...baseTask,
+  statement: z.string(),
+  givenColumns: z.array(z.string()).min(1),
+  answerColumns: z
+    .array(z.object({ id: z.string(), label: z.string(), options: z.array(z.string()).min(MIN_CHOICES) }))
+    .min(1),
+  rows: z
+    .array(z.object({ given: z.array(z.string()), answers: z.record(z.string()), explain: z.string().optional() }))
+    .min(1),
+});
+
 export const taskSchema = z.discriminatedUnion('type', [
   quizTaskSchema,
   codeTaskSchema,
@@ -243,6 +260,7 @@ export const taskSchema = z.discriminatedUnion('type', [
   classifyTaskSchema,
   orderTaskSchema,
   writtenTaskSchema,
+  tableTaskSchema,
 ]);
 
 export type Resource = z.infer<typeof resourceSchema>;
@@ -261,6 +279,7 @@ export type ClassifyTask = z.infer<typeof classifyTaskSchema>;
 export type OrderTask = z.infer<typeof orderTaskSchema>;
 export type WrittenTask = z.infer<typeof writtenTaskSchema>;
 export type WrittenField = z.infer<typeof writtenFieldSchema>;
+export type TableTask = z.infer<typeof tableTaskSchema>;
 
 export const TASK_TYPE_LABEL: Record<Task['type'], string> = {
   quiz: 'Quiz',
@@ -271,6 +290,7 @@ export const TASK_TYPE_LABEL: Record<Task['type'], string> = {
   classify: 'Classify',
   order: 'Order',
   written: 'Written answer',
+  table: 'Table',
 };
 
 export function formatZodError(err: z.ZodError): string {

@@ -1,0 +1,28 @@
+{
+  "title": "Boundary value analysis",
+  "minutes": 45,
+  "summary": "Чому баги живуть на межах, 2-value і 3-value BVA, межі довжини рядків, дат і грошей",
+  "resources": [
+    {
+      "title": "ISTQB — Foundation Level syllabus (4.2.2 Boundary Value Analysis)",
+      "url": "https://www.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: Boundary-value analysis",
+      "url": "https://en.wikipedia.org/wiki/Boundary-value_analysis",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: boundary value analysis (пошук)",
+      "url": "https://www.youtube.com/results?search_query=boundary+value+analysis+2+value+3+value",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

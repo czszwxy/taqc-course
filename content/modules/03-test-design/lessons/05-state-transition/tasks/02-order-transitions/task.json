@@ -1,0 +1,23 @@
+{
+  "type": "table",
+  "title": "State transition table: order lifecycle",
+  "statement": "Замовлення має стани **New, Paid, Shipped, Delivered, Cancelled**. Правила:\n\n- New → *Pay* → Paid; New → *Cancel* → Cancelled\n- Paid → *Ship* → Shipped; Paid → *Cancel* → Cancelled (з поверненням коштів)\n- Shipped → *Deliver* → Delivered\n- Усі інші пари «стан × подія» — **невалідні**: стан не змінюється.\n\nВизнач новий стан для кожної пари.",
+  "givenColumns": ["Current state", "Event"],
+  "answerColumns": [
+    { "id": "next", "label": "Next state", "options": ["Paid", "Shipped", "Delivered", "Cancelled", "Invalid (no transition)"] }
+  ],
+  "rows": [
+    { "given": ["New", "Pay"], "answers": { "next": "Paid" } },
+    { "given": ["New", "Ship"], "answers": { "next": "Invalid (no transition)" }, "explain": "Не можна відправити неоплачене замовлення." },
+    { "given": ["New", "Cancel"], "answers": { "next": "Cancelled" } },
+    { "given": ["Paid", "Ship"], "answers": { "next": "Shipped" } },
+    { "given": ["Paid", "Pay"], "answers": { "next": "Invalid (no transition)" }, "explain": "Повторна оплата — класичний ризик (подвійне списання). Перехід має бути заборонений." },
+    { "given": ["Paid", "Cancel"], "answers": { "next": "Cancelled" } },
+    { "given": ["Shipped", "Deliver"], "answers": { "next": "Delivered" } },
+    { "given": ["Shipped", "Cancel"], "answers": { "next": "Invalid (no transition)" }, "explain": "Відправлене замовлення скасувати не можна (за цими правилами)." },
+    { "given": ["Delivered", "Cancel"], "answers": { "next": "Invalid (no transition)" }, "explain": "Delivered — кінцевий стан: жодних переходів." },
+    { "given": ["Cancelled", "Pay"], "answers": { "next": "Invalid (no transition)" }, "explain": "Cancelled — теж кінцевий стан." }
+  ],
+  "hints": ["Перелічені в умові переходи — єдині дозволені. Усе інше — Invalid.", "Delivered і Cancelled — кінцеві стани: з них переходів немає."],
+  "explanation": "Таблиця переходів змушує подумати про кожну комбінацію. Дозволених переходів лише 5; решта мають відхилятися без зміни стану. Найризиковіші невалідні переходи (повторна оплата, скасування відправленого) обов'язково стають окремими тест-кейсами."
+}

@@ -1,0 +1,28 @@
+{
+  "title": "State transition testing",
+  "minutes": 50,
+  "summary": "Стани, події, переходи: діаграма і таблиця переходів, валідні й невалідні переходи, покриття переходів",
+  "resources": [
+    {
+      "title": "ISTQB — Foundation Level syllabus (4.2.4 State Transition Testing)",
+      "url": "https://www.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: State diagram",
+      "url": "https://en.wikipedia.org/wiki/State_diagram",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: state transition testing (пошук)",
+      "url": "https://www.youtube.com/results?search_query=state+transition+testing+technique",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

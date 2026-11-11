@@ -1,0 +1,35 @@
+{
+  "title": "Equivalence partitioning",
+  "minutes": 45,
+  "summary": "Поділ даних на класи, що обробляються однаково: валідні й невалідні класи, представники, кілька правил одного поля",
+  "resources": [
+    {
+      "title": "ISTQB — Foundation Level syllabus (4.2.1 Equivalence Partitioning)",
+      "url": "https://www.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: Equivalence partitioning",
+      "url": "https://en.wikipedia.org/wiki/Equivalence_partitioning",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: equivalence partitioning explained (пошук)",
+      "url": "https://www.youtube.com/results?search_query=equivalence+partitioning+testing+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: класи еквівалентності (пошук українською)",
+      "url": "https://www.youtube.com/results?search_query=%D0%BA%D0%BB%D0%B0%D1%81%D0%B8+%D0%B5%D0%BA%D0%B2%D1%96%D0%B2%D0%B0%D0%BB%D0%B5%D0%BD%D1%82%D0%BD%D0%BE%D1%81%D1%82%D1%96+%D1%82%D0%B5%D1%81%D1%82%D1%83%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F",
+      "kind": "video",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

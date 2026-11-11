@@ -12,6 +12,7 @@ import { BugReportTaskView } from '../features/tasks/BugReportTaskView';
 import { ClassifyTaskView } from '../features/tasks/ClassifyTaskView';
 import { OrderTaskView } from '../features/tasks/OrderTaskView';
 import { WrittenTaskView } from '../features/tasks/WrittenTaskView';
+import { TableTaskView } from '../features/tasks/TableTaskView';
 import type { TaskViewProps } from '../features/tasks/types';
 import { NotFound } from './NotFound';
 
@@ -26,6 +27,7 @@ const TASK_VIEWS: Record<Task['type'], ComponentType<TaskViewProps>> = {
   classify: ClassifyTaskView,
   order: OrderTaskView,
   written: WrittenTaskView,
+  table: TableTaskView,
 };
 
 /** Task types whose "similar task" is generated from a new seed (re-sampled / re-shuffled) instead of a variant folder. */

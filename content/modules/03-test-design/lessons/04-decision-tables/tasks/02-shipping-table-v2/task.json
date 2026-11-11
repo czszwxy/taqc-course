@@ -1,0 +1,23 @@
+{
+  "type": "table",
+  "variantOf": "02-shipping-table",
+  "title": "Decision table: login with two-factor authentication",
+  "statement": "Вимога до входу в систему. Перевірки виконуються **в такому порядку**:\n\n1. Якщо пароль неправильний → повідомлення **«Wrong password»**, вхід заборонено.\n2. Якщо пароль правильний, але акаунт заблоковано → **«Account blocked»**, вхід заборонено.\n3. Якщо пароль правильний, акаунт активний, але 2FA-код неправильний → **«Wrong 2FA code»**, вхід заборонено.\n4. Інакше — вхід дозволено, повідомлення немає (**«None»**).\n\nЗаповни таблицю для всіх 8 комбінацій.",
+  "givenColumns": ["Password correct?", "Account active?", "2FA code correct?"],
+  "answerColumns": [
+    { "id": "access", "label": "Access granted", "options": ["Yes", "No"] },
+    { "id": "message", "label": "Message", "options": ["None", "Wrong password", "Account blocked", "Wrong 2FA code"] }
+  ],
+  "rows": [
+    { "given": ["Yes", "Yes", "Yes"], "answers": { "access": "Yes", "message": "None" } },
+    { "given": ["Yes", "Yes", "No"], "answers": { "access": "No", "message": "Wrong 2FA code" } },
+    { "given": ["Yes", "No", "Yes"], "answers": { "access": "No", "message": "Account blocked" } },
+    { "given": ["Yes", "No", "No"], "answers": { "access": "No", "message": "Account blocked" }, "explain": "Перевірка блокування йде раніше за 2FA: до коду справа не доходить." },
+    { "given": ["No", "Yes", "Yes"], "answers": { "access": "No", "message": "Wrong password" } },
+    { "given": ["No", "Yes", "No"], "answers": { "access": "No", "message": "Wrong password" }, "explain": "Неправильний пароль перевіряється першим — інші умови вже не важливі." },
+    { "given": ["No", "No", "Yes"], "answers": { "access": "No", "message": "Wrong password" }, "explain": "Навіть для заблокованого акаунта спершу повідомляємо про пароль (і не розкриваємо стан акаунта)." },
+    { "given": ["No", "No", "No"], "answers": { "access": "No", "message": "Wrong password" } }
+  ],
+  "hints": ["Перевірки йдуть **по черзі**: як тільки одна спрацювала, наступні вже не важливі.", "Чотири рядки з неправильним паролем мають однаковий результат — у скороченій таблиці вони стали б одним правилом з «—»."],
+  "explanation": "Коли умови перевіряються послідовно, результат визначає **перша** умова, що не виконалась. Тому таблицю можна скоротити до 4 правил: «пароль Н» (решта —), «пароль Т, активний Н» (2FA —), «пароль Т, активний Т, 2FA Н», «усе Т»."
+}

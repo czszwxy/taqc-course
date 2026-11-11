@@ -1,0 +1,28 @@
+{
+  "title": "Use case & scenario testing",
+  "minutes": 40,
+  "summary": "Use case: актор, передумови, основний, альтернативні й виняткові потоки, і як з них отримати наскрізні тести",
+  "resources": [
+    {
+      "title": "Wikipedia: Use case",
+      "url": "https://en.wikipedia.org/wiki/Use_case",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "ISTQB Glossary: use case testing, scenario",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: use case testing (пошук)",
+      "url": "https://www.youtube.com/results?search_query=use+case+testing+technique",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

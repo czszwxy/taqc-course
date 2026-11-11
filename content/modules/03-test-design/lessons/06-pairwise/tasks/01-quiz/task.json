@@ -1,0 +1,59 @@
+{
+  "type": "quiz",
+  "title": "Quiz: pairwise testing",
+  "show": 5,
+  "hints": ["Усі комбінації = добуток кількостей значень. Мінімум pairwise ≈ добуток двох найбільших."],
+  "questions": [
+    {
+      "id": "all-combos",
+      "kind": "text",
+      "text": "Параметри: Browser (Chrome, Firefox, Safari), OS (Windows, macOS), Payment (Card, PayPal, Cash), Language (UK, EN). Скільки **всіх** комбінацій?",
+      "accept": ["36"],
+      "explanation": "3 × 2 × 3 × 2 = 36."
+    },
+    {
+      "id": "pairwise-min",
+      "kind": "text",
+      "text": "Для тих самих параметрів: яка **нижня межа** кількості pairwise-тестів?",
+      "accept": ["9"],
+      "explanation": "Два найбільші параметри — Browser (3) і Payment (3): 3 × 3 = 9."
+    },
+    {
+      "id": "idea",
+      "kind": "single",
+      "text": "На чому ґрунтується pairwise testing?",
+      "options": [
+        { "text": "Більшість дефектів спричиняє один параметр або взаємодія двох", "correct": true },
+        { "text": "Дефекти виникають лише при всіх параметрах одночасно" },
+        { "text": "Параметри ніколи не взаємодіють" }
+      ]
+    },
+    {
+      "id": "constraint",
+      "kind": "single",
+      "text": "Генератор створив комбінацію «Safari + Windows», якої не буває. Що робити?",
+      "options": [
+        { "text": "Задати обмеження (constraint) в інструменті й перегенерувати", "correct": true },
+        { "text": "Пропустити цей рядок і вважати пару покритою" }
+      ]
+    },
+    {
+      "id": "not-fit",
+      "kind": "single",
+      "text": "Коли pairwise **не** підходить?",
+      "options": [
+        { "text": "Розрахунок тарифу залежить від комбінації умов за бізнес-правилами, і помилка коштує дорого", "correct": true },
+        { "text": "Треба перевірити сайт у 4 браузерах, 3 ОС і 5 мовах" }
+      ]
+    },
+    {
+      "id": "manual-add",
+      "kind": "single",
+      "text": "Що варто зробити із згенерованим pairwise-набором?",
+      "options": [
+        { "text": "Додати вручну найважливіші бізнес-комбінації", "correct": true },
+        { "text": "Нічого: він гарантує відсутність багів" }
+      ]
+    }
+  ]
+}

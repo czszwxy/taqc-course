@@ -1,0 +1,52 @@
+{
+  "type": "written",
+  "title": "Derive tests from a state machine: account lock",
+  "statement": "Акаунт користувача має стани **Active**, **Locked** і **Deactivated**:\n\n- Active → після **3-ї поспіль** невдалої спроби входу → **Locked**\n- Locked → користувач переходить за посиланням зі **скидання пароля** в листі → **Active**\n- Locked → **адміністратор** розблоковує → **Active**\n- Active → **адміністратор** деактивує → **Deactivated**\n- У стані Locked вхід навіть з **правильним** паролем неможливий; у стані Deactivated вхід неможливий узагалі.\n\nНапиши тести (один рядок — один тест), які покривають **усі 4 валідні переходи** і **щонайменше 2 невалідні** ситуації.",
+  "fields": [
+    {
+      "id": "tests",
+      "label": "Test ideas",
+      "kind": "list",
+      "placeholder": "Active: 3 wrong passwords in a row → account becomes Locked",
+      "hint": "Формат: стан → подія → очікуваний стан / результат."
+    }
+  ],
+  "rules": [
+    { "field": "tests", "check": "minItems", "value": 6, "message": "Потрібно щонайменше 6 тестів: 4 валідні переходи + 2 невалідні." },
+    { "field": "tests", "check": "mentionsAny", "value": ["(^|\\D)3(\\D|$)|three|три|трет"], "message": "Додай тест на блокування після **3-ї** невдалої спроби." },
+    { "field": "tests", "check": "mentionsAny", "value": ["reset|скид|відновл|посилан|link|лист|email"], "message": "Додай перехід Locked → Active через **посилання скидання пароля**." },
+    { "field": "tests", "check": "mentionsAny", "value": ["unlock|розблок"], "message": "Додай перехід Locked → Active, коли **адміністратор розблоковує**." },
+    { "field": "tests", "check": "mentionsAny", "value": ["deactiv|деактив"], "message": "Додай перехід Active → **Deactivated** (адміністратор деактивує)." },
+    {
+      "field": "tests",
+      "check": "mentionsAny",
+      "value": ["correct password|правильн[а-яіїє]* парол|right password|valid password"],
+      "message": "Додай невалідну ситуацію: у стані Locked вхід з **правильним паролем** не має спрацювати."
+    }
+  ],
+  "model": {
+    "tests": [
+      "Active: 2 wrong passwords in a row → still Active, login with the correct password works",
+      "Active: 3 wrong passwords in a row → Locked, message about the lock is shown",
+      "Locked: open the password reset link from the email and set a new password → Active, login works",
+      "Locked: admin unlocks the account → Active, login with the correct password works",
+      "Active: admin deactivates the account → Deactivated",
+      "Locked: login with the correct password → still Locked, login is refused (invalid)",
+      "Deactivated: login with the correct password → refused, state stays Deactivated (invalid)",
+      "Deactivated: password reset link requested → no transition to Active (invalid)"
+    ]
+  },
+  "hints": [
+    "Спершу випиши всі валідні переходи з умови: їх 4. Кожен — окремий тест.",
+    "Невалідні ситуації: що користувач **спробує** зробити в стані, де це не дозволено? Наприклад, увійти з правильним паролем, коли акаунт Locked.",
+    "Межа «3 спроби» — привід для BVA: 2 спроби ще не блокують, 3 — блокують."
+  ],
+  "explanation": "З діаграми станів отримують тести двох видів: кожен **валідний перехід** (тут 4) і **невалідні події** у станах, де вони заборонені. Корисно поєднати з BVA: «2 невдалі спроби — ще Active, 3 — Locked».",
+  "checklist": [
+    "Кожен із 4 валідних переходів має свій тест",
+    "Є щонайменше 2 невалідні ситуації з очікуванням «стан не змінюється»",
+    "Перевірено межу кількості спроб (2 vs 3)",
+    "Для кожного тесту зрозумілий початковий стан, подія й очікуваний результат",
+    "Перевіряються не лише стани, а й наслідки (можна / не можна увійти, повідомлення)"
+  ]
+}

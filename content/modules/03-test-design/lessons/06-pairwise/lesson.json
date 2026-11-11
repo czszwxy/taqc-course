@@ -1,0 +1,28 @@
+{
+  "title": "Pairwise testing",
+  "minutes": 40,
+  "summary": "Чому більшість багів спричиняють пари параметрів, як pairwise скорочує комбінації і коли його не варто застосовувати",
+  "resources": [
+    {
+      "title": "Wikipedia: All-pairs testing",
+      "url": "https://en.wikipedia.org/wiki/All-pairs_testing",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Microsoft PICT — free pairwise test generator (GitHub)",
+      "url": "https://github.com/microsoft/pict",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: pairwise testing (пошук)",
+      "url": "https://www.youtube.com/results?search_query=pairwise+testing+all+pairs+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

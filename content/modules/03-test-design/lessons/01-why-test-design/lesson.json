@@ -1,0 +1,35 @@
+{
+  "title": "Why test design matters",
+  "minutes": 35,
+  "summary": "Навіщо потрібні техніки тест-дизайну, огляд технік і процес: від вимоги до тест-кейсу",
+  "resources": [
+    {
+      "title": "ISTQB — Foundation Level syllabus (chapter 4: Test analysis and design)",
+      "url": "https://www.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: Test design",
+      "url": "https://en.wikipedia.org/wiki/Test_design",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: test design techniques (пошук)",
+      "url": "https://www.youtube.com/results?search_query=software+test+design+techniques+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: техніки тест-дизайну (пошук українською)",
+      "url": "https://www.youtube.com/results?search_query=%D1%82%D0%B5%D1%85%D0%BD%D1%96%D0%BA%D0%B8+%D1%82%D0%B5%D1%81%D1%82+%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D1%83",
+      "kind": "video",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

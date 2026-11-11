@@ -1,0 +1,24 @@
+{
+  "type": "classify",
+  "title": "Black-box, white-box or experience-based?",
+  "statement": "До якої групи технік тест-дизайну належить кожен підхід?",
+  "show": 7,
+  "categories": [
+    { "id": "black", "label": "Black-box" },
+    { "id": "white", "label": "White-box" },
+    { "id": "experience", "label": "Experience-based" }
+  ],
+  "items": [
+    { "id": "ep", "text": "Поділ значень поля на класи еквівалентності за вимогою.", "category": "black" },
+    { "id": "branch", "text": "Тест на кожну гілку `if` у функції розрахунку знижки.", "category": "white" },
+    { "id": "guess", "text": "Ввести емодзі в поле імені, бо такі баги вже траплялись у минулих проєктах.", "category": "experience" },
+    { "id": "dt", "text": "Таблиця рішень для правил безкоштовної доставки.", "category": "black" },
+    { "id": "checklist", "text": "Пройти командний чекліст «стандартні перевірки текстового поля».", "category": "experience" },
+    { "id": "statement-cov", "text": "Перевірити звіт покриття і додати тест для рядка коду, який ніколи не виконувався.", "category": "white" },
+    { "id": "st", "text": "Тести для всіх переходів статусів замовлення за діаграмою станів.", "category": "black" },
+    { "id": "explore", "text": "90-хвилинна дослідницька сесія з чартером на нову сторінку оплати.", "category": "experience" },
+    { "id": "bva", "text": "Значення 17, 18, 65, 66 для поля віку 18–65.", "category": "black" }
+  ],
+  "hints": ["Black-box — за вимогами й поведінкою. White-box — за кодом. Experience-based — за досвідом, інтуїцією, історією багів."],
+  "explanation": "Групу визначає **джерело**, з якого береться тест: специфікація (black-box), структура коду (white-box) чи досвід тестувальника (experience-based). Хороша стратегія поєднує всі три."
+}

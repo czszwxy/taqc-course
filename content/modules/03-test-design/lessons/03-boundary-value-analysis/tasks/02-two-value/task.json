@@ -1,0 +1,10 @@
+{
+  "type": "value-set",
+  "title": "2-value BVA for a text length",
+  "generator": {
+    "name": "bva-range",
+    "params": { "field": "Comment length", "min": 10, "max": 500, "unit": "символів", "approach": "two-value" }
+  },
+  "hints": ["Дві межі — по два значення на кожну: сама межа і найближче значення ззовні.", "Для мінімуму 10: це 9 і 10."],
+  "explanation": "У 2-value BVA для діапазону з двома межами завжди 4 значення: min−1, min, max, max+1. Для довжини рядка це кількості символів, які потім перетворюються на конкретні тестові рядки."
+}

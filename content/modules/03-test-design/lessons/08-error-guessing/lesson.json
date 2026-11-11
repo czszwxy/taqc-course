@@ -1,0 +1,29 @@
+{
+  "title": "Error guessing & experience-based techniques",
+  "minutes": 40,
+  "summary": "Вгадування помилок, атаки на дефекти, тестування за чеклістами і як накопичувати власну базу «підозрілих місць»",
+  "resources": [
+    {
+      "title": "ISTQB — Foundation Level syllabus (4.4 Experience-based Test Techniques)",
+      "url": "https://www.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: Error guessing",
+      "url": "https://en.wikipedia.org/wiki/Error_guessing",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Big List of Naughty Strings (GitHub)",
+      "url": "https://github.com/minimaxir/big-list-of-naughty-strings",
+      "kind": "tool",
+      "lang": "en",
+      "note": "Відомий список «підступних» рядків для тестування текстових полів.",
+      "needsVerification": true
+    }
+  ]
+}

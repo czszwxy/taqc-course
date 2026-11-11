@@ -161,6 +161,19 @@ const checkWritten: Checker<'written'> = (dir, task) => {
   if (failures.length) fail(dir, `model answer fails its own rules:\n      ${failures.join('\n      ')}`);
 };
 
+const checkTable: Checker<'table'> = (dir, task) => {
+  const columnIds = task.answerColumns.map((c) => c.id);
+  duplicates(columnIds).forEach((id) => fail(dir, `duplicate answer column id "${id}"`));
+  task.rows.forEach((row, r) => {
+    if (row.given.length !== task.givenColumns.length) {
+      fail(dir, `row ${r + 1}: ${row.given.length} given values, but ${task.givenColumns.length} given columns`);
+    }
+    task.answerColumns
+      .filter((col) => !col.options.includes(row.answers[col.id] ?? ''))
+      .forEach((col) => fail(dir, `row ${r + 1}: answer for "${col.id}" is missing or not one of its options`));
+  });
+};
+
 const CHECKS: { [K in Task['type']]: Checker<K> } = {
   code: checkCode,
   quiz: checkQuiz,
@@ -170,6 +183,7 @@ const CHECKS: { [K in Task['type']]: Checker<K> } = {
   classify: checkClassify,
   order: checkOrder,
   written: checkWritten,
+  table: checkTable,
 };
 
 /* ---------- structure ---------- */

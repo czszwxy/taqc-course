@@ -1,0 +1,14 @@
+{
+  "title": "Test Design Techniques",
+  "description": "Як придумати мінімум тестів, які знайдуть максимум багів: класи еквівалентності, граничні значення, таблиці рішень, переходи станів, pairwise, сценарії use case і техніки на основі досвіду.",
+  "goals": [
+    "Explain why test design techniques beat random testing",
+    "Split input data into equivalence partitions and pick representatives",
+    "Find boundary values with 2-value and 3-value BVA",
+    "Build a decision table for business rules with several conditions",
+    "Model a feature as states and transitions and derive tests from it",
+    "Use pairwise testing to cut down combinations of parameters",
+    "Derive tests from use cases: main, alternative and exception flows",
+    "Use error guessing and checklists to find bugs techniques miss"
+  ]
+}

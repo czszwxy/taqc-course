@@ -1,0 +1,28 @@
+{
+  "title": "Decision tables",
+  "minutes": 50,
+  "summary": "Як перевіряти правила з кількома умовами: умови, дії, правила, кількість комбінацій і скорочення таблиці",
+  "resources": [
+    {
+      "title": "ISTQB — Foundation Level syllabus (4.2.3 Decision Table Testing)",
+      "url": "https://www.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Wikipedia: Decision table",
+      "url": "https://en.wikipedia.org/wiki/Decision_table",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: decision table testing (пошук)",
+      "url": "https://www.youtube.com/results?search_query=decision+table+testing+technique",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

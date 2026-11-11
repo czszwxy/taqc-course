@@ -1,0 +1,13 @@
+[
+  { "field": "Age", "min": 18, "max": 65, "unit": "роки" },
+  { "field": "Password length", "min": 8, "max": 20, "unit": "символів" },
+  { "field": "Quantity", "min": 1, "max": 99, "unit": "шт." },
+  { "field": "Discount", "min": 5, "max": 50, "unit": "%" },
+  { "field": "Username length", "min": 3, "max": 16, "unit": "символів" },
+  { "field": "Rating", "min": 1, "max": 5, "unit": "зірок" },
+  { "field": "Number of guests", "min": 1, "max": 12 },
+  { "field": "Delivery days", "min": 2, "max": 14, "unit": "днів" },
+  { "field": "Monthly payment", "min": 100, "max": 5000, "unit": "грн" },
+  { "field": "Comment length", "min": 10, "max": 500, "unit": "символів" },
+  { "field": "Tickets per order", "min": 1, "max": 8 }
+]
