@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Create Promises with setTimeout",
+  "statement": "Напиши дві функції, що повертають Promise:\n\n1. `delay(ms)` — `Promise<void>`, що виконується (resolve) через `ms` мілісекунд.\n2. `later(ms, value)` — generic `Promise<T>`, що через `ms` мс повертає `value`.\n\n```ts\ndelay(100).then(() => console.log('100 ms later'));\nlater(50, 'done').then((v) => console.log(v));  // 'done'\n```",
+  "hints": [
+    "`return new Promise((resolve) => setTimeout(resolve, ms));`",
+    "Для `later`: `new Promise<T>((resolve) => setTimeout(() => resolve(value), ms))`."
+  ],
+  "explanation": "```ts\nexport function delay(ms: number): Promise<void> {\n  return new Promise((resolve) => setTimeout(resolve, ms));\n}\nexport function later<T>(ms: number, value: T): Promise<T> {\n  return new Promise((resolve) => setTimeout(() => resolve(value), ms));\n}\n```\n\nСаме так влаштовані «чекалки» в тестах — хоча в Playwright замість фіксованих пауз краще чекати на подію чи елемент."
+}

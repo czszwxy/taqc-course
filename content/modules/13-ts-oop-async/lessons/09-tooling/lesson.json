@@ -1,0 +1,35 @@
+{
+  "title": "tsconfig, strict mode, ESLint & Prettier",
+  "minutes": 50,
+  "summary": "Налаштування TypeScript-проєкту: що означають target, module, strict, include, outDir у tsconfig.json; які помилки ловить strict-режим; чим ESLint відрізняється від Prettier і як вони допомагають тестовому проєкту",
+  "resources": [
+    {
+      "title": "TypeScript: TSConfig Reference",
+      "url": "https://www.typescriptlang.org/tsconfig",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "ESLint — Getting Started",
+      "url": "https://eslint.org/docs/latest/use/getting-started",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Prettier — What is Prettier?",
+      "url": "https://prettier.io/docs/en/index.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "typescript-eslint — Getting Started",
+      "url": "https://typescript-eslint.io/getting-started",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

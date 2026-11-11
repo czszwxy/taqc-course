@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "Fix the strict-mode errors",
+  "statement": "Колега написав функції для звіту, але в strict-режимі код не компілюється. Виправ **усі** помилки TypeScript так, щоб функції працювали за описом:\n\n1. `findEmail(users, id)` — email користувача з таким `id` або `'unknown'`, якщо його немає.\n2. `sumDurations(durations)` — сума чисел масиву.\n3. `statusLabel(passed)` — `'PASS'` або `'FAIL'`.\n\nНатисни **Check**, щоб побачити помилки компілятора, і виправляй їх по черзі.",
+  "hints": [
+    "Параметри без типів → додай типи: `durations: number[]`, `passed: boolean`.",
+    "`find` може повернути `undefined` — використай `?.` і `??`: `users.find(...)?.email ?? 'unknown'`.",
+    "Кожна гілка функції має щось повертати (`noImplicitReturns`)."
+  ],
+  "explanation": "```ts\nexport function findEmail(users: User[], id: number): string {\n  return users.find((u) => u.id === id)?.email ?? 'unknown';\n}\nexport function sumDurations(durations: number[]): number {\n  return durations.reduce((sum, d) => sum + d, 0);\n}\nexport function statusLabel(passed: boolean): string {\n  if (passed) return 'PASS';\n  return 'FAIL';\n}\n```\n\nТри класичні вимоги strict: явні типи параметрів (noImplicitAny), перевірка на undefined (strictNullChecks) і повернення значення з кожної гілки (noImplicitReturns)."
+}

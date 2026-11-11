@@ -1,0 +1,22 @@
+{
+  "type": "code",
+  "title": "Import a helper from another file",
+  "statement": "У проєкті є файл `money.ts` (його видно над редактором) з функцією `formatMoney` і константою `CURRENCY`.\n\nНапиши `priceLabel(name, price)`, яка **імпортує** `formatMoney` з `./money` і повертає:\n\n```text\n<name> — <formatMoney(price)>\n```\n\n```ts\npriceLabel('Mouse', 499);      // 'Mouse — 499 UAH'\npriceLabel('Laptop', 32999);   // 'Laptop — 32,999 UAH'\n```\n\nНе копіюй логіку форматування — використай готову функцію.",
+  "hints": [
+    "Перший рядок файлу: `import { formatMoney } from './money';`",
+    "`` return `${name} — ${formatMoney(price)}`; ``"
+  ],
+  "explanation": "```ts\nimport { formatMoney } from './money';\n\nexport function priceLabel(name: string, price: number): string {\n  return `${name} — ${formatMoney(price)}`;\n}\n```\n\nОдне джерело правди: якщо формат грошей зміниться, оновити треба лише `money.ts`.",
+  "codeRules": [
+    {
+      "kind": "require",
+      "pattern": "import\\s*\\{[^}]*formatMoney[^}]*\\}\\s*from\\s*['\"]\\./money['\"]",
+      "message": "Імпортуй formatMoney з './money'."
+    },
+    {
+      "kind": "forbid",
+      "pattern": "toLocaleString",
+      "message": "Не копіюй форматування — використай імпортовану formatMoney."
+    }
+  ]
+}

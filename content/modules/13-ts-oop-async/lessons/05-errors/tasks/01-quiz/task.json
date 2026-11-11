@@ -1,0 +1,63 @@
+{
+  "type": "quiz",
+  "title": "Quiz: errors",
+  "show": 5,
+  "hints": ["finally — завжди. Тип помилки в catch — unknown. Власну помилку перевіряють через instanceof."],
+  "questions": [
+    {
+      "id": "finally",
+      "kind": "text",
+      "text": "Що виведе код (рядки через кому)?",
+      "code": "const out: string[] = [];\ntry {\n  out.push('a');\n  throw new Error('x');\n} catch {\n  out.push('b');\n} finally {\n  out.push('c');\n}\nconsole.log(out.join(','));",
+      "accept": ["a,b,c"]
+    },
+    {
+      "id": "unknown",
+      "kind": "single",
+      "text": "Який тип має `error` у `catch (error)` в strict TypeScript?",
+      "options": [{ "text": "`unknown`", "correct": true }, { "text": "`Error`" }, { "text": "`string`" }]
+    },
+    {
+      "id": "instanceof",
+      "kind": "single",
+      "text": "Як перевірити, що перехоплена помилка — саме `ValidationError`?",
+      "options": [
+        { "text": "`error instanceof ValidationError`", "correct": true },
+        { "text": "`typeof error === 'ValidationError'`" }
+      ]
+    },
+    {
+      "id": "swallow",
+      "kind": "single",
+      "text": "Чим небезпечний у тесті код `try { await checkout(); } catch {}`?",
+      "options": [
+        { "text": "Помилка «проковтнута»: тест пройде, навіть якщо оформлення зламане", "correct": true },
+        { "text": "Нічим, так тест стабільніший" }
+      ]
+    },
+    {
+      "id": "name",
+      "kind": "single",
+      "text": "Навіщо у власному класі помилки писати `this.name = 'ValidationError'`?",
+      "options": [
+        { "text": "Щоб у логах і повідомленнях було видно тип помилки, а не просто 'Error'", "correct": true },
+        { "text": "Без цього instanceof не працює" }
+      ]
+    },
+    {
+      "id": "rethrow",
+      "kind": "single",
+      "text": "У `catch` ти обробляєш лише `ValidationError`. Що робити з іншими помилками?",
+      "options": [{ "text": "Перекинути далі: `throw error`", "correct": true }, { "text": "Ігнорувати" }]
+    },
+    {
+      "id": "to-throw",
+      "kind": "single",
+      "text": "Як у тесті перевірити, що `validateAge(16)` кидає помилку?",
+      "options": [
+        { "text": "`expect(() => validateAge(16)).toThrow()`", "correct": true },
+        { "text": "`expect(validateAge(16)).toThrow()`", "explain": "Тут функція виконається ДО expect, і помилка вилетить раніше, ніж expect встигне її перехопити." }
+      ]
+    }
+  ]
+}

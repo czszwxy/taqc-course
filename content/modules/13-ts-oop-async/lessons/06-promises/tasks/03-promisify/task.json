@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "Wrap a callback API in a Promise",
+  "statement": "У проєкті є старий модуль `legacy.ts` (над редактором) з функцією:\n\n```ts\nloadUserLegacy(id: number, callback: (error: Error | null, user?: User) => void): void\n```\n\nНапиши `loadUser(id): Promise<User>`, яка **загортає** її в Promise:\n\n- якщо колбек отримав помилку — Promise **rejected** з цією помилкою;\n- інакше — **resolved** з користувачем.\n\n```ts\nloadUser(1).then((u) => u.name);   // 'Olena'\nloadUser(99).catch((e) => e.message); // 'User 99 not found'\n```",
+  "hints": [
+    "`import { loadUserLegacy, type User } from './legacy';`",
+    "`return new Promise((resolve, reject) => { loadUserLegacy(id, (error, user) => { … }); });`",
+    "Якщо `error` є або `user` відсутній — `reject(error ?? new Error('No user'))`, інакше `resolve(user)`."
+  ],
+  "explanation": "```ts\nimport { loadUserLegacy, type User } from './legacy';\n\nexport function loadUser(id: number): Promise<User> {\n  return new Promise((resolve, reject) => {\n    loadUserLegacy(id, (error, user) => {\n      if (error || !user) reject(error ?? new Error('No user'));\n      else resolve(user);\n    });\n  });\n}\n```"
+}

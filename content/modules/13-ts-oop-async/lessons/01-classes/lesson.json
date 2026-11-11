@@ -1,0 +1,29 @@
+{
+  "title": "Classes",
+  "minutes": 60,
+  "summary": "Класи як «креслення» об'єктів: поля, конструктор, методи, this, статичні члени — основа Page Object Model у Playwright",
+  "resources": [
+    {
+      "title": "TypeScript Handbook: Classes",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/classes.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Класи",
+      "url": "https://uk.javascript.info/class",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright docs: Page object models",
+      "url": "https://playwright.dev/docs/pom",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Подивись, як класи використовуються для сторінок — повернешся до цього в модулі 16.",
+      "needsVerification": true
+    }
+  ]
+}

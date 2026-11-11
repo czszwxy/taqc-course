@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "A validating setter",
+  "statement": "Напиши клас `RunConfig` з властивістю `retries`, яка працює через getter/setter:\n\n- значення зберігається в `private _retries`, на старті `0`;\n- `get retries()` повертає значення;\n- `set retries(value)` приймає лише **ціле** число від `0` до `5` включно, інакше кидає `RangeError` з повідомленням `retries must be an integer from 0 to 5`; при помилці значення не змінюється.\n\n```ts\nconst cfg = new RunConfig();\ncfg.retries = 3;\ncfg.retries;      // 3\ncfg.retries = 6;  // RangeError\ncfg.retries;      // still 3\n```",
+  "hints": [
+    "`get retries(): number { return this._retries; }`",
+    "У сеттері: `if (!Number.isInteger(value) || value < MIN_RETRIES || value > MAX_RETRIES) throw new RangeError('…');`"
+  ],
+  "explanation": "```ts\nexport class RunConfig {\n  private _retries = 0;\n\n  get retries(): number {\n    return this._retries;\n  }\n  set retries(value: number) {\n    if (!Number.isInteger(value) || value < MIN_RETRIES || value > MAX_RETRIES) {\n      throw new RangeError('retries must be an integer from 0 to 5');\n    }\n    this._retries = value;\n  }\n}\n```"
+}

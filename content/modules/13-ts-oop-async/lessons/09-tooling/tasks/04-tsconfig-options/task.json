@@ -1,0 +1,32 @@
+{
+  "type": "table",
+  "title": "Match tsconfig options to what they do",
+  "statement": "Ось фрагмент `tsconfig.json` тестового проєкту. Обери, що робить кожна опція.\n\n```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"commonjs\",\n    \"strict\": true,\n    \"outDir\": \"dist\",\n    \"noUnusedLocals\": true,\n    \"esModuleInterop\": true\n  },\n  \"include\": [\"tests\", \"pages\"]\n}\n```",
+  "givenColumns": ["Option"],
+  "answerColumns": [
+    {
+      "id": "effect",
+      "label": "What it does",
+      "options": [
+        "JavaScript version to compile to",
+        "Module format of the output",
+        "Turns on all strict type checks",
+        "Folder for the compiled JavaScript",
+        "Error on unused variables",
+        "Lets you default-import CommonJS packages",
+        "Which folders the compiler checks"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`target`"], "answers": { "effect": "JavaScript version to compile to" } },
+    { "given": ["`module`"], "answers": { "effect": "Module format of the output" } },
+    { "given": ["`strict`"], "answers": { "effect": "Turns on all strict type checks" } },
+    { "given": ["`outDir`"], "answers": { "effect": "Folder for the compiled JavaScript" } },
+    { "given": ["`noUnusedLocals`"], "answers": { "effect": "Error on unused variables" } },
+    { "given": ["`esModuleInterop`"], "answers": { "effect": "Lets you default-import CommonJS packages" } },
+    { "given": ["`include`"], "answers": { "effect": "Which folders the compiler checks" } }
+  ],
+  "hints": ["Назви підказують: out-Dir — вихідна папка, include — що включити, target — цільова версія."],
+  "explanation": "`target` — версія JavaScript; `module` — формат модулів; `strict` — суворі перевірки; `outDir` — куди класти скомпільоване; `noUnusedLocals` — помилка на невикористане; `esModuleInterop` — сумісність імпортів з CommonJS-пакетами; `include` — які файли перевіряти. Відкрий `tsconfig.json` цього курсу в корені проєкту — більшість цих опцій там є."
+}

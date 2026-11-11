@@ -1,0 +1,72 @@
+{
+  "type": "quiz",
+  "title": "Quiz: event loop and Promises",
+  "show": 5,
+  "hints": ["Синхронний код → мікрозадачі (then) → макрозадачі (setTimeout)."],
+  "questions": [
+    {
+      "id": "order",
+      "kind": "text",
+      "text": "У якому порядку виведуться числа? (через кому)",
+      "code": "console.log(1);\nsetTimeout(() => console.log(2), 0);\nPromise.resolve().then(() => console.log(3));\nconsole.log(4);",
+      "accept": ["1,4,3,2", "1, 4, 3, 2"],
+      "explanation": "Спочатку синхронний код (1, 4), потім мікрозадачі Promise (3), потім таймер (2)."
+    },
+    {
+      "id": "states",
+      "kind": "multiple",
+      "text": "Які стани може мати Promise?",
+      "options": [
+        { "text": "pending", "correct": true },
+        { "text": "fulfilled", "correct": true },
+        { "text": "rejected", "correct": true },
+        { "text": "paused" }
+      ]
+    },
+    {
+      "id": "single-thread",
+      "kind": "single",
+      "text": "Чому `setTimeout(fn, 1000)` не «заморожує» сторінку на секунду?",
+      "options": [
+        { "text": "Таймер лише реєструється; код іде далі, а fn потрапить у чергу через секунду", "correct": true },
+        { "text": "JavaScript запускає fn в окремому потоці" }
+      ]
+    },
+    {
+      "id": "catch-chain",
+      "kind": "single",
+      "text": "Ланцюжок `a().then(b).then(c).catch(handle)`. Крок `b` кинув помилку. Що станеться?",
+      "options": [
+        { "text": "`c` пропуститься, помилку отримає `handle`", "correct": true },
+        { "text": "Виконається `c`, а помилка загубиться" }
+      ]
+    },
+    {
+      "id": "then-return",
+      "kind": "single",
+      "text": "Що повертає `promise.then(fn)`?",
+      "options": [
+        { "text": "Новий Promise з результатом fn", "correct": true },
+        { "text": "Результат fn одразу" }
+      ]
+    },
+    {
+      "id": "finally",
+      "kind": "single",
+      "text": "Коли виконується `.finally(...)`?",
+      "options": [
+        { "text": "Завжди: і після успіху, і після помилки", "correct": true },
+        { "text": "Лише після успіху" }
+      ]
+    },
+    {
+      "id": "wrap",
+      "kind": "single",
+      "text": "Як перетворити функцію з колбеком `(error, result)` на Promise?",
+      "options": [
+        { "text": "`new Promise((resolve, reject) => legacy((e, r) => (e ? reject(e) : resolve(r))))`", "correct": true },
+        { "text": "Просто дописати `async` перед функцією" }
+      ]
+    }
+  ]
+}

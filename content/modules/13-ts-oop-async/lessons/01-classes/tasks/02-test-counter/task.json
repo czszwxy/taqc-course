@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "A class that counts test results",
+  "statement": "Напиши клас `TestCounter`:\n\n- поля `passed` і `failed` — числа, на старті `0`;\n- метод `record(status)` — збільшує відповідний лічильник (`status`: `'passed'` або `'failed'`);\n- метод `total()` — загальна кількість;\n- метод `passRate()` — відсоток пройдених, округлений до цілого (`Math.round`); для `0` тестів — `0`.\n\n```ts\nconst c = new TestCounter();\nc.record('passed');\nc.record('passed');\nc.record('failed');\nc.total();     // 3\nc.passRate();  // 67\n```",
+  "hints": [
+    "Поля з початковими значеннями: `passed = 0;`",
+    "У методах звертайся до полів через `this`: `this.passed++`.",
+    "Відсоток: `Math.round((this.passed / this.total()) * 100)`, але спершу перевір `total() === 0`."
+  ],
+  "explanation": "```ts\nexport class TestCounter {\n  passed = 0;\n  failed = 0;\n\n  record(status: 'passed' | 'failed'): void {\n    if (status === 'passed') this.passed++;\n    else this.failed++;\n  }\n  total(): number {\n    return this.passed + this.failed;\n  }\n  passRate(): number {\n    if (this.total() === 0) return 0;\n    return Math.round((this.passed / this.total()) * PERCENT);\n  }\n}\n```"
+}

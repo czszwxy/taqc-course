@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "variantOf": "03-abstract-validator",
+  "title": "Implement an abstract notifier",
+  "statement": "Є абстрактний `Notifier` з абстрактним `format(message)` і готовим `send(message)`, що повертає `[<channel>] <formatted>`. Напиши нащадки:\n\n- `EmailNotifier` — канал `'email'`, формат `Subject: <message>`;\n- `SlackNotifier` — канал `'slack'`, формат `:rotating_light: <MESSAGE у верхньому регістрі>`.\n\n```ts\nnew EmailNotifier().send('Build failed');  // '[email] Subject: Build failed'\nnew SlackNotifier().send('Build failed');  // '[slack] :rotating_light: BUILD FAILED'\n```",
+  "hints": [
+    "`constructor() { super('email'); }`",
+    "`` format(message: string): string { return `Subject: ${message}`; } ``"
+  ],
+  "explanation": "```ts\nexport class EmailNotifier extends Notifier {\n  constructor() { super('email'); }\n  format(message: string): string { return `Subject: ${message}`; }\n}\n```"
+}

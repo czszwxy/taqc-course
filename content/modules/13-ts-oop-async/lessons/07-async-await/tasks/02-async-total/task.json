@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "Rewrite a Promise chain with async/await",
+  "statement": "Той самий `shop.ts`, що й у минулому уроці. Перепиши `orderTotal(orderId)` з **`async/await`**:\n\n- отримай замовлення і товар через `await`;\n- поверни `price × quantity`;\n- будь-яка помилка → `null` (через `try/catch`).\n\nБез `.then()`.\n\n```ts\nawait orderTotal(1002);  // 998\nawait orderTotal(9999);  // null\n```",
+  "hints": ["`export async function orderTotal(orderId: number): Promise<number | null> { try { … } catch { return null; } }`", "`const order = await getOrder(orderId);`"],
+  "explanation": "```ts\nexport async function orderTotal(orderId: number): Promise<number | null> {\n  try {\n    const order = await getOrder(orderId);\n    const product = await getProduct(order.productId);\n    return product.price * order.quantity;\n  } catch {\n    return null;\n  }\n}\n```\n\nПорівняй з версією на `.then`: обидва значення доступні звичайними змінними, без вкладеності.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\bawait\\b", "message": "Використай await." },
+    { "kind": "forbid", "pattern": "\\.then\\(", "message": "Без .then() — лише async/await." }
+  ]
+}

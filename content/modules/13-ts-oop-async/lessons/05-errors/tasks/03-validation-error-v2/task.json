@@ -1,0 +1,8 @@
+{
+  "type": "code",
+  "variantOf": "03-validation-error",
+  "title": "A custom HttpError",
+  "statement": "1. Створи `export class HttpError extends Error` з readonly-полем `status: number`; конструктор `(status, message)`; `name` = `'HttpError'`.\n2. Напиши `assertOk(status: number, body: string): void` — якщо `status >= 400`, кидає `new HttpError(status, 'HTTP <status>: <body>')`.\n\n```ts\nassertOk(200, 'ok');           // nothing\nassertOk(404, 'Not found');    // throws HttpError, message 'HTTP 404: Not found'\n```",
+  "hints": ["`constructor(readonly status: number, message: string) { super(message); this.name = 'HttpError'; }`", "Межа: 400 — уже помилка."],
+  "explanation": "```ts\nexport function assertOk(status: number, body: string): void {\n  if (status >= ERROR_FROM) throw new HttpError(status, `HTTP ${status}: ${body}`);\n}\n```"
+}

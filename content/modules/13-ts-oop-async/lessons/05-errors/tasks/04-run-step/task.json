@@ -1,0 +1,18 @@
+{
+  "type": "code",
+  "title": "try / catch / finally: a test step logger",
+  "statement": "Напиши `runStep(name, fn, log)` — так тестові фреймворки логують кроки:\n\n1. додає в `log` рядок `start <name>`;\n2. викликає `fn()`;\n3. якщо успішно — додає `pass <name>` і повертає `true`;\n4. якщо `fn` кинула помилку — додає `fail <name>: <message>` і повертає `false`. `message` — це `error.message` для `Error` або `String(error)` для будь-чого іншого;\n5. **завжди** в кінці додає `end <name>` (використай `finally`).\n\n```ts\nconst log: string[] = [];\nrunStep('open page', () => {}, log);\nrunStep('click pay', () => { throw new Error('button not found'); }, log);\nlog;\n// ['start open page', 'pass open page', 'end open page',\n//  'start click pay', 'fail click pay: button not found', 'end click pay']\n```",
+  "hints": [
+    "Структура: `` log.push(...); try { fn(); log.push(...); return true; } catch (error) { … return false; } finally { log.push(`end ${name}`); } ``",
+    "`finally` виконується навіть після `return` у `try` чи `catch`.",
+    "`const message = error instanceof Error ? error.message : String(error);`"
+  ],
+  "explanation": "```ts\nexport function runStep(name: string, fn: () => void, log: string[]): boolean {\n  log.push(`start ${name}`);\n  try {\n    fn();\n    log.push(`pass ${name}`);\n    return true;\n  } catch (error) {\n    const message = error instanceof Error ? error.message : String(error);\n    log.push(`fail ${name}: ${message}`);\n    return false;\n  } finally {\n    log.push(`end ${name}`);\n  }\n}\n```",
+  "codeRules": [
+    {
+      "kind": "require",
+      "pattern": "finally",
+      "message": "Рядок `end <name>` додавай у блоці `finally`."
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "type": "code",
+  "variantOf": "03-bug-report-class",
+  "title": "A Cart class",
+  "statement": "Напиши клас `Cart`:\n\n- поле `items` — масив `{ name: string; price: number; quantity: number }`, на старті порожній;\n- `add(name, price, quantity = 1)` — якщо товар з такою назвою вже є, збільшує його `quantity`, інакше додає новий;\n- `count()` — загальна кількість штук;\n- `total()` — загальна сума.\n\n```ts\nconst cart = new Cart();\ncart.add('Mouse', 500);\ncart.add('Cable', 250, 2);\ncart.add('Mouse', 500);\ncart.count();  // 4\ncart.total();  // 1500\n```",
+  "hints": ["Знайди наявний товар: `this.items.find((i) => i.name === name)`.", "`total`: `reduce((sum, i) => sum + i.price * i.quantity, 0)`."],
+  "explanation": "```ts\nadd(name: string, price: number, quantity = 1): void {\n  const existing = this.items.find((i) => i.name === name);\n  if (existing) existing.quantity += quantity;\n  else this.items.push({ name, price, quantity });\n}\n```"
+}

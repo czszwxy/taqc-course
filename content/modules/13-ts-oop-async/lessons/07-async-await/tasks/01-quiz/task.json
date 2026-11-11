@@ -1,0 +1,60 @@
+{
+  "type": "quiz",
+  "title": "Quiz: async/await",
+  "show": 5,
+  "hints": ["async → завжди Promise. Promise.all → паралельно, порядок збережено, падає від першої помилки."],
+  "questions": [
+    {
+      "id": "returns",
+      "kind": "single",
+      "text": "Що повертає `async function f() { return 5; }`?",
+      "options": [{ "text": "`Promise<number>`, що виконується з 5", "correct": true }, { "text": "Число 5" }]
+    },
+    {
+      "id": "forgot-await",
+      "kind": "single",
+      "text": "У тесті написали `page.click('#pay');` без `await`. Що станеться?",
+      "options": [
+        { "text": "Клік лише запуститься, тест піде далі не чекаючи — можливий нестабільний результат", "correct": true },
+        { "text": "Помилка компіляції" },
+        { "text": "Нічого: Playwright сам дочекається" }
+      ]
+    },
+    {
+      "id": "parallel",
+      "kind": "single",
+      "text": "Кожен `getUser` триває 100 мс. Скільки приблизно триватиме `await Promise.all([getUser(1), getUser(2), getUser(3)])`?",
+      "options": [{ "text": "~100 мс", "correct": true }, { "text": "~300 мс" }, { "text": "~0 мс" }]
+    },
+    {
+      "id": "all-reject",
+      "kind": "single",
+      "text": "Один з трьох Promise у `Promise.all` rejected. Що буде?",
+      "options": [
+        { "text": "Увесь Promise.all rejected з цією помилкою", "correct": true },
+        { "text": "Повернеться масив з двох результатів" }
+      ]
+    },
+    {
+      "id": "settled",
+      "kind": "single",
+      "text": "Що використати, щоб отримати результати **всіх** перевірок, навіть якщо деякі впали?",
+      "options": [{ "text": "`Promise.allSettled`", "correct": true }, { "text": "`Promise.all`" }, { "text": "`Promise.race`" }]
+    },
+    {
+      "id": "dependent",
+      "kind": "single",
+      "text": "Спочатку треба отримати токен, потім з ним — замовлення. Як виконувати?",
+      "options": [
+        { "text": "Послідовно: `const token = await login(); const orders = await getOrders(token);`", "correct": true },
+        { "text": "Паралельно через Promise.all" }
+      ]
+    },
+    {
+      "id": "await-where",
+      "kind": "single",
+      "text": "Де можна писати `await`?",
+      "options": [{ "text": "Усередині async-функцій (і на верхньому рівні модулів у сучасних середовищах)", "correct": true }, { "text": "Будь-де" }]
+    }
+  ]
+}

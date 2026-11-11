@@ -1,0 +1,28 @@
+{
+  "title": "Error handling & custom errors",
+  "minutes": 55,
+  "summary": "throw, try/catch/finally, тип помилки unknown у catch, власні класи помилок (ValidationError, HttpError), повторні спроби (retry) — і як помилки впливають на результат тесту",
+  "resources": [
+    {
+      "title": "MDN: try...catch",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Власні помилки, розширення Error",
+      "url": "https://uk.javascript.info/custom-errors",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: TypeScript error handling custom errors (пошук)",
+      "url": "https://www.youtube.com/results?search_query=typescript+error+handling+custom+error+class",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

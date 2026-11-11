@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Retry a flaky action",
+  "statement": "Напиши generic `retry<T>(fn, attempts)`:\n\n- викликає `fn()` до `attempts` разів;\n- повертає результат **першого** успішного виклику;\n- якщо всі спроби впали — кидає помилку з **останньої** спроби;\n- якщо `attempts < 1` — `throw new RangeError('attempts must be at least 1')` (і `fn` не викликається).\n\n```ts\nlet calls = 0;\nconst flaky = () => {\n  calls++;\n  if (calls < 3) throw new Error(`fail ${calls}`);\n  return 'ok';\n};\nretry(flaky, 5);   // 'ok' (after 3 calls)\nretry(() => { throw new Error('down'); }, 2);  // throws Error('down')\n```",
+  "hints": [
+    "Цикл `for (let i = 0; i < attempts; i++)` з `try { return fn(); } catch (error) { lastError = error; }` усередині.",
+    "Після циклу: `throw lastError;` — тип `unknown`, і це нормально для throw."
+  ],
+  "explanation": "```ts\nexport function retry<T>(fn: () => T, attempts: number): T {\n  if (attempts < 1) throw new RangeError('attempts must be at least 1');\n  let lastError: unknown;\n  for (let i = 0; i < attempts; i++) {\n    try {\n      return fn();\n    } catch (error) {\n      lastError = error;\n    }\n  }\n  throw lastError;\n}\n```\n\n`return` усередині `try` одразу завершує функцію — наступні спроби не потрібні."
+}

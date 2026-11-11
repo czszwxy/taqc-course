@@ -1,0 +1,29 @@
+{
+  "title": "fetch & typing API responses",
+  "minutes": 65,
+  "summary": "fetch у TypeScript: GET і POST з JSON, перевірка response.ok і статус-кодів, заголовки, типізація відповіді (as vs type guard), власний HttpError — перший крок до API-тестів у коді",
+  "resources": [
+    {
+      "title": "MDN: Using the Fetch API",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Response",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Response",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright docs: API testing",
+      "url": "https://playwright.dev/docs/api-testing",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Те саме в Playwright — через фікстуру request (модуль 17).",
+      "needsVerification": true
+    }
+  ]
+}

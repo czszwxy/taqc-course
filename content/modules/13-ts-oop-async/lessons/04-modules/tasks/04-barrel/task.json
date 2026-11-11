@@ -1,0 +1,12 @@
+{
+  "type": "code",
+  "title": "Build a barrel file",
+  "statement": "У проєкті є два файли (їх видно над редактором):\n\n- `auth.ts` — `loginAs(role)` і тип `Role`;\n- `data.ts` — масив `USERS` і функція `findUser(email)`.\n\nТвій файл — **barrel**: він нічого не реалізує сам, а лише **реекспортує**, щоб тести могли імпортувати все з одного місця:\n\n```ts\nimport { loginAs, USERS, findUser, getUser, type Role } from './solution';\n```\n\nВимоги:\n\n- реекспортуй `loginAs` і тип `Role` з `./auth`;\n- реекспортуй **усе** з `./data` (`export *`);\n- додатково реекспортуй `findUser` під новим ім'ям `getUser`.",
+  "hints": [
+    "`export { loginAs } from './auth';` і `export type { Role } from './auth';`",
+    "`export * from './data';`",
+    "Перейменування при реекспорті: `export { findUser as getUser } from './data';`"
+  ],
+  "explanation": "```ts\nexport { loginAs } from './auth';\nexport type { Role } from './auth';\nexport * from './data';\nexport { findUser as getUser } from './data';\n```\n\nТак виглядає `pages/index.ts` у тестових проєктах: тести не знають, у якому саме файлі лежить кожна сторінка.",
+  "codeRules": [{ "kind": "forbid", "pattern": "function\\s|=>", "message": "Barrel лише реекспортує — не пиши тут функції." }]
+}

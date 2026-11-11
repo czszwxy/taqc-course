@@ -1,0 +1,14 @@
+{
+  "type": "code",
+  "title": "Chain Promises with then and catch",
+  "statement": "У модулі `shop.ts` є дві асинхронні функції:\n\n- `getOrder(id): Promise<{ productId: number; quantity: number }>`;\n- `getProduct(id): Promise<{ name: string; price: number }>`.\n\nОбидві повертають rejected Promise, якщо нічого не знайдено.\n\nНапиши `orderTotal(orderId): Promise<number | null>` **ланцюжком `.then()`** (без `async/await` — їх у наступному уроці):\n\n1. отримай замовлення;\n2. отримай його товар;\n3. поверни `price × quantity`;\n4. якщо будь-який крок упав — поверни `null` (через `.catch`).\n\n```ts\norderTotal(1002).then(console.log);  // 998\norderTotal(9999).then(console.log);  // null\n```",
+  "hints": [
+    "Потрібні обидва значення: замовлення і товар. Усередині першого `then` поверни `getProduct(order.productId).then((product) => product.price * order.quantity)`.",
+    "В кінці ланцюжка: `.catch(() => null)`."
+  ],
+  "explanation": "```ts\nexport function orderTotal(orderId: number): Promise<number | null> {\n  return getOrder(orderId)\n    .then((order) => getProduct(order.productId).then((product) => product.price * order.quantity))\n    .catch(() => null);\n}\n```\n\nВкладений `then` потрібен, бо в останньому кроці треба і `order`, і `product`. У наступному уроці з `async/await` це читається значно простіше.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\.then\\(", "message": "Використай ланцюжок `.then()`." },
+    { "kind": "forbid", "pattern": "\\basync\\b|\\bawait\\b", "message": "Тут — без async/await: потренуйся з `.then` і `.catch`." }
+  ]
+}

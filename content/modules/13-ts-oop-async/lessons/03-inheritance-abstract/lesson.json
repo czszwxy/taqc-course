@@ -1,0 +1,28 @@
+{
+  "title": "Inheritance & abstract classes",
+  "minutes": 60,
+  "summary": "extends і super, перевизначення методів (override), protected, абстрактні класи й методи, поліморфізм — як у Page Object Model будують BasePage і конкретні сторінки",
+  "resources": [
+    {
+      "title": "TypeScript Handbook: Classes (extends, abstract)",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/classes.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Успадкування класів",
+      "url": "https://uk.javascript.info/class-inheritance",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: TypeScript inheritance abstract classes (пошук)",
+      "url": "https://www.youtube.com/results?search_query=typescript+inheritance+abstract+classes",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

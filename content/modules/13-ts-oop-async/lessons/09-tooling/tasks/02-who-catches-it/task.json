@@ -1,0 +1,26 @@
+{
+  "type": "classify",
+  "title": "Who catches it: tsc, ESLint, Prettier or a test?",
+  "statement": "Який інструмент **першим** знайде кожну проблему?",
+  "show": 8,
+  "categories": [
+    { "id": "tsc", "label": "TypeScript compiler (tsc)" },
+    { "id": "eslint", "label": "ESLint" },
+    { "id": "prettier", "label": "Prettier" },
+    { "id": "test", "label": "Only a test (runtime)" }
+  ],
+  "items": [
+    { "id": "string-number", "text": "У функцію `setQuantity(qty: number)` передали рядок `'2'`", "category": "tsc" },
+    { "id": "floating", "text": "`page.click('#pay');` без `await`", "category": "eslint" },
+    { "id": "indent", "text": "Половина файлу з відступом 2 пробіли, половина — 4", "category": "prettier" },
+    { "id": "logic", "text": "Знижка рахується від суми з доставкою замість суми товарів", "category": "test", "explain": "Код типово правильний і «гарний» — помилка в логіці. Її ловить лише перевірка результату." },
+    { "id": "only", "text": "У тесті залишився `test.only`, і решта тестів не запускається", "category": "eslint", "explain": "Плагін eslint-plugin-playwright має правило no-focused-test." },
+    { "id": "undefined", "text": "`users.find((u) => u.id === 7).email` — користувача може не бути", "category": "tsc", "explain": "strictNullChecks: результат find має тип User | undefined." },
+    { "id": "quotes", "text": "В одному файлі змішані одинарні й подвійні лапки", "category": "prettier" },
+    { "id": "unused", "text": "Імпорт `CartPage`, який ніде не використовується", "category": "eslint", "explain": "Правило no-unused-vars (або noUnusedLocals у tsconfig)." },
+    { "id": "wrong-url", "text": "Тест відкриває `/login`, а сторінка тепер живе на `/sign-in`", "category": "test" },
+    { "id": "missing-field", "text": "Об'єкт тестового користувача без обов'язкового поля `password`", "category": "tsc" }
+  ],
+  "hints": ["Типи → tsc. Підозрілі практики (await, test.only, невикористане) → ESLint. Вигляд коду → Prettier. Неправильна поведінка → тест."],
+  "explanation": "Інструменти доповнюють одне одного: **tsc** перевіряє типи (рядок замість числа, відсутні поля, можливий undefined), **ESLint** — ризиковані патерни (забутий await, test.only, зайві імпорти), **Prettier** — однаковий вигляд, а **тести** — чи програма робить те, що потрібно. Жоден інструмент не замінює тести логіки."
+}

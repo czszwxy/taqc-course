@@ -1,0 +1,28 @@
+{
+  "title": "async/await & Promise.all",
+  "minutes": 65,
+  "summary": "async-функції та await, try/catch для асинхронних помилок, послідовне vs паралельне виконання, Promise.all, Promise.allSettled і Promise.race (таймаут) — мова кожного тесту Playwright",
+  "resources": [
+    {
+      "title": "MDN: async function",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Promise.all()",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Async/await",
+      "url": "https://uk.javascript.info/async-await",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

@@ -3,7 +3,7 @@
   "title": "Generic API responses: unwrap and pluck",
   "statement": "У файлі є generic-інтерфейс відповіді API:\n\n```ts\nexport interface ApiResponse<T> {\n  status: number;\n  data: T;\n}\n```\n\nНапиши:\n\n1. `unwrap<T>(response: ApiResponse<T>): T` — повертає `data`, якщо `status` < 400, інакше **кидає** `Error` з повідомленням `Request failed with status <status>`.\n2. `pluck<T, K extends keyof T>(items: T[], key: K): T[K][]` — масив значень поля `key` з кожного елемента.\n\n```ts\nunwrap({ status: 200, data: [1, 2] });   // [1, 2]\nunwrap({ status: 404, data: null });     // throws 'Request failed with status 404'\npluck(users, 'email');                   // ['qa@gadgetly.test', 'taras@gadgetly.test']\npluck(users, 'emial');                   // ❌ compile error\n```",
   "hints": [
-    "`if (response.status >= ERROR_STATUS) throw new Error(`Request failed with status ${response.status}`);`",
+    "`` if (response.status >= ERROR_STATUS) throw new Error(`Request failed with status ${response.status}`); ``",
     "`pluck`: `return items.map((item) => item[key]);` — тип `T[K][]` TypeScript виведе сам."
   ],
   "explanation": "```ts\nexport function unwrap<T>(response: ApiResponse<T>): T {\n  if (response.status >= ERROR_STATUS) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  return response.data;\n}\n\nexport function pluck<T, K extends keyof T>(items: T[], key: K): T[K][] {\n  return items.map((item) => item[key]);\n}\n```"

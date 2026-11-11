@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Health check with Promise.allSettled",
+  "statement": "Перед прогоном тестів перевіряють, чи живі всі сервіси. У `status-api.ts` є `ping(service): Promise<number>` — повертає час відповіді, або rejected, якщо сервіс лежить.\n\nНапиши `checkServices(names): Promise<{ up: string[]; down: string[] }>`:\n\n- пінгує **всі** сервіси паралельно;\n- `up` — назви тих, що відповіли; `down` — тих, що впали;\n- порядок у кожному списку — як у `names`;\n- функція **ніколи** не падає через один зламаний сервіс.\n\n```ts\nawait checkServices(['api', 'payments', 'search']);\n// { up: ['api', 'search'], down: ['payments'] }\n```",
+  "hints": [
+    "`const results = await Promise.allSettled(names.map((n) => ping(n)));`",
+    "`results[i].status === 'fulfilled'` — сервіс `names[i]` живий. Пройди індексами або `forEach((r, i) => …)`."
+  ],
+  "explanation": "```ts\nexport async function checkServices(names: string[]): Promise<{ up: string[]; down: string[] }> {\n  const results = await Promise.allSettled(names.map((n) => ping(n)));\n  const up = names.filter((_, i) => results[i]?.status === 'fulfilled');\n  const down = names.filter((_, i) => results[i]?.status === 'rejected');\n  return { up, down };\n}\n```\n\nЗ `Promise.all` перша ж помилка обірвала б перевірку — і ми не дізналися б про інші сервіси."
+}

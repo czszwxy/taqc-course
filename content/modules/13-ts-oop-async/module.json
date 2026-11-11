@@ -1,0 +1,15 @@
+{
+  "title": "TypeScript: OOP, Modules & Async",
+  "description": "Те, без чого не обходиться жоден фреймворк автотестів: класи (основа Page Object Model), модифікатори доступу, наслідування, модулі import/export, обробка помилок, а також асинхронність — Promise, async/await, Promise.all і fetch. Завершується налаштуванням tsconfig, ESLint і Prettier.",
+  "goals": [
+    "Write classes with fields, methods, constructors and static members",
+    "Encapsulate state with private fields, getters and setters",
+    "Reuse behaviour with inheritance and abstract classes",
+    "Split code into modules with import and export",
+    "Handle errors with try/catch/finally and custom error classes",
+    "Understand the event loop, callbacks and Promises",
+    "Write async code with async/await, Promise.all and allSettled",
+    "Call APIs with fetch and type the responses safely",
+    "Read tsconfig options and know what ESLint and Prettier do"
+  ]
+}

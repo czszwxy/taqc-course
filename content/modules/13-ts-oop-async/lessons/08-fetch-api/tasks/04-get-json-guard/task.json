@@ -1,0 +1,12 @@
+{
+  "type": "code",
+  "title": "A typed getJson with a type guard",
+  "statement": "Напиши універсальну функцію для API-тестів:\n\n```ts\ngetJson<T>(path: string, isT: (value: unknown) => value is T): Promise<T>\n```\n\n- робить `GET ${BASE_URL}${path}`;\n- не-`ok` відповідь → `throw new HttpError(status, 'HTTP <status>')` (клас `HttpError` уже є у файлі);\n- тіло, яке не проходить `isT` → `throw new Error('Unexpected response shape')`;\n- інакше повертає дані з точним типом `T`.\n\nТакож напиши guard `isProduct(value): value is Product` (усі п'ять полів з правильними типами).\n\n```ts\nawait getJson('/api/products/1', isProduct);   // Product\nawait getJson('/api/products/999', isProduct); // HttpError, status 404\nawait getJson('/api/health', isProduct);       // Error('Unexpected response shape')\n```",
+  "hints": [
+    "`const data: unknown = await response.json();` — саме unknown, а не any.",
+    "Порядок: спочатку статус, потім форма.",
+    "У `isProduct` перевір: не-null об'єкт, `typeof` для `id`, `name`, `category`, `price`, `inStock`."
+  ],
+  "explanation": "```ts\nexport async function getJson<T>(path: string, isT: (value: unknown) => value is T): Promise<T> {\n  const response = await fetch(`${BASE_URL}${path}`);\n  if (!response.ok) throw new HttpError(response.status, `HTTP ${response.status}`);\n  const data: unknown = await response.json();\n  if (!isT(data)) throw new Error('Unexpected response shape');\n  return data;\n}\n```\n\nЦе вже майже API-тест: статус, форма відповіді, типобезпечні дані.",
+  "codeRules": [{ "kind": "forbid", "pattern": "\\bas\\s+T\\b|:\\s*any\\b|as\\s+any\\b", "message": "Не обіцяй тип через `as T` / any — перевір дані guard'ом isT." }]
+}

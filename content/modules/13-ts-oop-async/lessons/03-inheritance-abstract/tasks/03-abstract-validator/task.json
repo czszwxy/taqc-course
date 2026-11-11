@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Implement an abstract class",
+  "statement": "У файлі є абстрактний клас `FieldValidator` з абстрактним методом `check(value): string | null` і готовим методом `validate`. Напиши два нащадки:\n\n1. `RequiredValidator` — `check` повертає `'is required'`, якщо значення порожнє після `trim()`, інакше `null`.\n2. `MaxLengthValidator` — конструктор `(field: string, max: number)`; `check` повертає `'must be at most <max> characters'`, якщо довжина більша за `max`, інакше `null`.\n\n```ts\nnew RequiredValidator('email').validate('  ');       // 'email: is required'\nnew MaxLengthValidator('name', 5).validate('Olena');  // null\nnew MaxLengthValidator('name', 5).validate('Olenka'); // 'name: must be at most 5 characters'\n```",
+  "hints": [
+    "`export class RequiredValidator extends FieldValidator { check(value: string): string | null { … } }`",
+    "Для `MaxLengthValidator`: `constructor(field: string, private readonly max: number) { super(field); }`"
+  ],
+  "explanation": "```ts\nexport class RequiredValidator extends FieldValidator {\n  check(value: string): string | null {\n    return value.trim() ? null : 'is required';\n  }\n}\n\nexport class MaxLengthValidator extends FieldValidator {\n  constructor(field: string, private readonly max: number) {\n    super(field);\n  }\n  check(value: string): string | null {\n    return value.length > this.max ? `must be at most ${this.max} characters` : null;\n  }\n}\n```"
+}

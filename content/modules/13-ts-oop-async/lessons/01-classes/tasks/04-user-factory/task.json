@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Static members: a test user factory",
+  "statement": "Тести не повинні ділити одного користувача, тому потрібна фабрика з **унікальними** email. Напиши клас `UserFactory` лише зі **статичними** членами:\n\n- `static nextId` — наступний номер, на старті `1`;\n- `static create(role)` — повертає `{ id, email, role }`, де `email` = `<role><id>@gadgetly.test`; після кожного виклику `nextId` збільшується;\n- `static reset()` — повертає `nextId` до `1`.\n\n```ts\nUserFactory.create('admin');    // { id: 1, email: 'admin1@gadgetly.test', role: 'admin' }\nUserFactory.create('customer'); // { id: 2, email: 'customer2@gadgetly.test', role: 'customer' }\nUserFactory.reset();\nUserFactory.create('guest');    // { id: 1, … }\n```",
+  "hints": [
+    "`static nextId = 1;` — звертайся через ім'я класу: `UserFactory.nextId`.",
+    "`const id = UserFactory.nextId; UserFactory.nextId += 1;`"
+  ],
+  "explanation": "```ts\nexport class UserFactory {\n  static nextId = 1;\n\n  static create(role: string): TestUser {\n    const id = UserFactory.nextId;\n    UserFactory.nextId += 1;\n    return { id, email: `${role}${id}@gadgetly.test`, role };\n  }\n\n  static reset(): void {\n    UserFactory.nextId = 1;\n  }\n}\n```"
+}

@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "GET a product with fetch",
+  "statement": "Напиши `getProduct(id): Promise<Product>`:\n\n- робить `GET ${BASE_URL}/api/products/<id>`;\n- якщо відповідь не `ok` — кидає `Error` з повідомленням `HTTP <status>`;\n- інакше повертає тіло відповіді як `Product`.\n\n```ts\nawait getProduct(1);    // { id: 1, name: 'Wireless Mouse M2', category: 'Accessories', price: 499, inStock: true }\nawait getProduct(999);  // throws Error('HTTP 404')\n```",
+  "hints": [
+    "`` const response = await fetch(`${BASE_URL}/api/products/${id}`); ``",
+    "`` if (!response.ok) throw new Error(`HTTP ${response.status}`); ``",
+    "`return (await response.json()) as Product;`"
+  ],
+  "explanation": "```ts\nexport async function getProduct(id: number): Promise<Product> {\n  const response = await fetch(`${BASE_URL}/api/products/${id}`);\n  if (!response.ok) throw new Error(`HTTP ${response.status}`);\n  return (await response.json()) as Product;\n}\n```\n\nБез перевірки `ok` функція «успішно» повернула б `{ error: 'Product not found' }` як товар."
+}

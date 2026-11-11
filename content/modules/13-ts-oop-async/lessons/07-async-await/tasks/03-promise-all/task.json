@@ -1,0 +1,7 @@
+{
+  "type": "code",
+  "title": "Load users in parallel with Promise.all",
+  "statement": "У `users-api.ts` є `getUser(id): Promise<User>` — кожен виклик триває ~80 мс; для неіснуючого id Promise rejected.\n\nНапиши `loadUsers(ids): Promise<User[]>`:\n\n- завантажує всіх користувачів **паралельно**;\n- повертає їх у **тому ж порядку**, що й `ids`;\n- якщо хоч один не знайдено — Promise rejected (як `Promise.all`).\n\nТест перевіряє **час**: 5 користувачів мають завантажитися значно швидше за 5 × 80 мс.\n\n```ts\nawait loadUsers([2, 1]);  // [{ id: 2, … }, { id: 1, … }]\n```",
+  "hints": ["`ids.map((id) => getUser(id))` дає масив Promise — і всі запити вже стартували.", "`return Promise.all(ids.map((id) => getUser(id)));`"],
+  "explanation": "```ts\nexport function loadUsers(ids: number[]): Promise<User[]> {\n  return Promise.all(ids.map((id) => getUser(id)));\n}\n```\n\nЦикл з `await` усередині (`for … { users.push(await getUser(id)); }`) теж «працює», але чекає кожен запит по черзі — у 5 разів повільніше."
+}

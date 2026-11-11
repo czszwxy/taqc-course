@@ -1,0 +1,8 @@
+{
+  "type": "code",
+  "variantOf": "03-retries-setter",
+  "title": "A normalizing email setter",
+  "statement": "Напиши клас `Profile` з властивістю `email` через getter/setter:\n\n- сеттер прибирає пробіли по краях і переводить у нижній регістр;\n- якщо після цього в значенні немає `@` → `throw new Error('Invalid email')`, старе значення залишається;\n- на старті email — порожній рядок `''`.\n\n```ts\nconst p = new Profile();\np.email = '  QA@Gadgetly.Test ';\np.email;         // 'qa@gadgetly.test'\np.email = 'qa';  // Error: Invalid email\n```",
+  "hints": ["`private _email = '';`", "`const normalized = value.trim().toLowerCase();`"],
+  "explanation": "```ts\nset email(value: string) {\n  const normalized = value.trim().toLowerCase();\n  if (!normalized.includes('@')) throw new Error('Invalid email');\n  this._email = normalized;\n}\n```"
+}

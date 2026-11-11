@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Parameter properties and a computed getter",
+  "statement": "Напиши клас `TestAccount`, використовуючи **parameter properties**:\n\n```ts\nconstructor(public readonly email: string, private password: string, private failedLogins = 0)\n```\n\nМетоди й властивості:\n\n- `login(password)` — `true`, якщо пароль збігається (і скидає `failedLogins` до 0); інакше збільшує `failedLogins` і повертає `false`;\n- `get locked()` — `true`, якщо невдалих спроб **3 або більше**; заблокований акаунт не може увійти навіть з правильним паролем (`login` повертає `false`).\n\nПриховані тести перевіряють, що `email` не можна змінити, а `password` не можна прочитати ззовні.",
+  "hints": [
+    "Тіло конструктора може бути порожнім: `constructor(public readonly email: string, private password: string, private failedLogins = 0) {}`.",
+    "На початку `login`: `if (this.locked) return false;`"
+  ],
+  "explanation": "```ts\nexport class TestAccount {\n  constructor(public readonly email: string, private password: string, private failedLogins = 0) {}\n\n  get locked(): boolean {\n    return this.failedLogins >= LOCK_AFTER;\n  }\n\n  login(password: string): boolean {\n    if (this.locked) return false;\n    if (password === this.password) {\n      this.failedLogins = 0;\n      return true;\n    }\n    this.failedLogins++;\n    return false;\n  }\n}\n```\n\nЗнайома логіка? Це сторінка Login з модуля 06 — тепер у вигляді класу."
+}

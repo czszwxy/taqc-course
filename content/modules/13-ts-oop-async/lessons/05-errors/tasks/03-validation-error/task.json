@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "A custom ValidationError",
+  "statement": "1. Створи `export class ValidationError extends Error`:\n   - конструктор `(field: string, message: string)`;\n   - публічне readonly-поле `field`;\n   - `name` = `'ValidationError'`.\n2. Напиши `validateAge(age: number): void` — кидає `new ValidationError('age', 'Age must be an integer between 18 and 65')`, якщо вік не ціле число або поза межами 18–65 (межі включно).\n\n```ts\nvalidateAge(30);   // ok, nothing happens\nvalidateAge(17);   // throws ValidationError, error.field === 'age'\n```",
+  "hints": [
+    "```ts\nexport class ValidationError extends Error {\n  constructor(readonly field: string, message: string) {\n    super(message);\n    this.name = 'ValidationError';\n  }\n}\n```",
+    "Умова: `!Number.isInteger(age) || age < MIN_AGE || age > MAX_AGE`."
+  ],
+  "explanation": "```ts\nexport function validateAge(age: number): void {\n  if (!Number.isInteger(age) || age < MIN_AGE || age > MAX_AGE) {\n    throw new ValidationError('age', 'Age must be an integer between 18 and 65');\n  }\n}\n```"
+}

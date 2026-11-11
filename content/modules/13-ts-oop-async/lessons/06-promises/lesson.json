@@ -1,0 +1,29 @@
+{
+  "title": "Event loop, callbacks & Promises",
+  "minutes": 70,
+  "summary": "Чому JavaScript однопотоковий, але не «зависає»: event loop, черги задач, колбеки і «пекло колбеків», Promise (pending / fulfilled / rejected), then / catch / finally і перетворення колбеків на Promise",
+  "resources": [
+    {
+      "title": "MDN: Using promises",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Проміси",
+      "url": "https://uk.javascript.info/promise-basics",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: What the heck is the event loop anyway (пошук)",
+      "url": "https://www.youtube.com/results?search_query=what+the+heck+is+the+event+loop+anyway",
+      "kind": "video",
+      "lang": "en",
+      "note": "Відома доповідь Philip Roberts — найкраще пояснення event loop.",
+      "needsVerification": true
+    }
+  ]
+}

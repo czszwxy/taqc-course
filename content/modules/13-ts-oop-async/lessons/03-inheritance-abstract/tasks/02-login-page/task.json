@@ -1,0 +1,17 @@
+{
+  "type": "code",
+  "title": "A Page Object that extends BasePage",
+  "statement": "У файлі вже є `BasePage`. Напиши `LoginPage`, який його **розширює**:\n\n- конструктор без параметрів викликає `super('/login')`;\n- `override title()` повертає `'Gadgetly — Login'` (використай `super.title()`);\n- `login(email, password)` додає в `actions` три записи:\n  `fill email: <email>`, `fill password: <password>`, `click Log in`.\n\n```ts\nconst page = new LoginPage();\npage.open();\npage.login('qa@gadgetly.test', 'Test1234');\npage.actions;\n// ['goto /login', 'fill email: qa@gadgetly.test', 'fill password: Test1234', 'click Log in']\n```",
+  "hints": [
+    "`export class LoginPage extends BasePage { constructor() { super('/login'); } … }`",
+    "`` override title(): string { return `${super.title()} — Login`; } ``"
+  ],
+  "explanation": "```ts\nexport class LoginPage extends BasePage {\n  constructor() {\n    super('/login');\n  }\n  override title(): string {\n    return `${super.title()} — Login`;\n  }\n  login(email: string, password: string): void {\n    this.actions.push(`fill email: ${email}`, `fill password: ${password}`, 'click Log in');\n  }\n}\n```\n\nУ Playwright на місці `actions.push` будуть справжні дії: `await this.page.fill(...)`.",
+  "codeRules": [
+    {
+      "kind": "require",
+      "pattern": "class\\s+LoginPage\\s+extends\\s+BasePage",
+      "message": "LoginPage має розширювати BasePage (extends)."
+    }
+  ]
+}

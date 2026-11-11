@@ -1,0 +1,114 @@
+{
+  "type": "quiz",
+  "title": "Quiz: fetch",
+  "show": 5,
+  "hints": [
+    "fetch не кидає помилку на 404/500. response.json() теж асинхронний."
+  ],
+  "questions": [
+    {
+      "id": "no-throw",
+      "kind": "single",
+      "text": "Сервер повернув 404. Що зробить `await fetch(url)`?",
+      "options": [
+        {
+          "text": "Поверне Response зі status 404 і ok = false — помилку треба перевіряти самому",
+          "correct": true
+        },
+        {
+          "text": "Кине помилку"
+        }
+      ]
+    },
+    {
+      "id": "ok-range",
+      "kind": "single",
+      "text": "Для яких статусів `response.ok === true`?",
+      "options": [
+        {
+          "text": "200–299",
+          "correct": true
+        },
+        {
+          "text": "Будь-яких, крім 500"
+        },
+        {
+          "text": "Лише 200"
+        }
+      ]
+    },
+    {
+      "id": "json-await",
+      "kind": "single",
+      "text": "Як правильно отримати тіло відповіді?",
+      "options": [
+        {
+          "text": "`const data = await response.json();`",
+          "correct": true
+        },
+        {
+          "text": "`const data = response.json;`"
+        },
+        {
+          "text": "`const data = response.body;`"
+        }
+      ]
+    },
+    {
+      "id": "post-body",
+      "kind": "single",
+      "text": "Як надіслати JSON у POST?",
+      "options": [
+        {
+          "text": "`body: JSON.stringify(data)` і заголовок `Content-Type: application/json`",
+          "correct": true
+        },
+        {
+          "text": "`body: data` — fetch сам перетворить об'єкт"
+        }
+      ]
+    },
+    {
+      "id": "as-vs-guard",
+      "kind": "single",
+      "text": "Чим type guard кращий за `as Product` для відповіді API в тесті?",
+      "options": [
+        {
+          "text": "Guard реально перевіряє дані, а `as` лише обіцяє компілятору",
+          "correct": true
+        },
+        {
+          "text": "Нічим, це одне й те саме"
+        }
+      ]
+    },
+    {
+      "id": "network-error",
+      "kind": "single",
+      "text": "Коли `fetch` справді кидає помилку (rejected)?",
+      "options": [
+        {
+          "text": "Коли запит не вдалося виконати: немає мережі, неіснуючий хост",
+          "correct": true
+        },
+        {
+          "text": "Коли статус 500"
+        }
+      ]
+    },
+    {
+      "id": "auth-header",
+      "kind": "single",
+      "text": "Як передати токен у fetch?",
+      "options": [
+        {
+          "text": "`` headers: { Authorization: `Bearer ${token}` } ``",
+          "correct": true
+        },
+        {
+          "text": "`body: token`"
+        }
+      ]
+    }
+  ]
+}

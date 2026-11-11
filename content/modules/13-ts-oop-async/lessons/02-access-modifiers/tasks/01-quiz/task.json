@@ -1,0 +1,68 @@
+{
+  "type": "quiz",
+  "title": "Quiz: access modifiers, getters & setters",
+  "show": 5,
+  "hints": ["private — лише всередині класу, protected — ще й у нащадках. get/set виглядають як звичайне поле."],
+  "questions": [
+    {
+      "id": "private",
+      "kind": "single",
+      "text": "Що скаже TypeScript на `wallet.balance = 5`, якщо `balance` — `private`?",
+      "options": [
+        { "text": "Помилка: властивість приватна", "correct": true },
+        { "text": "Нічого, значення зміниться" }
+      ]
+    },
+    {
+      "id": "protected",
+      "kind": "single",
+      "text": "Де доступне `protected` поле?",
+      "options": [
+        { "text": "Усередині класу і його підкласів", "correct": true },
+        { "text": "Будь-де" },
+        { "text": "Лише в конструкторі" }
+      ]
+    },
+    {
+      "id": "param-props",
+      "kind": "single",
+      "text": "Що робить `constructor(private readonly page: Page) {}`?",
+      "options": [
+        { "text": "Створює приватне readonly-поле page і присвоює йому аргумент", "correct": true },
+        { "text": "Лише описує параметр — поле треба створити окремо" }
+      ]
+    },
+    {
+      "id": "getter-call",
+      "kind": "single",
+      "text": "Як прочитати значення getter'а `get total()`?",
+      "options": [{ "text": "`run.total`", "correct": true }, { "text": "`run.total()`" }, { "text": "`run.get('total')`" }]
+    },
+    {
+      "id": "setter",
+      "kind": "text",
+      "text": "Що виведе код?",
+      "code": "class C {\n  private _x = 1;\n  get x() { return this._x; }\n  set x(v: number) { if (v >= 0) this._x = v; }\n}\nconst c = new C();\nc.x = -5;\nconsole.log(c.x);",
+      "accept": ["1"],
+      "explanation": "Сеттер ігнорує від'ємні значення, тож `_x` залишився 1."
+    },
+    {
+      "id": "hash",
+      "kind": "single",
+      "text": "Чим `#balance` відрізняється від `private balance`?",
+      "options": [
+        { "text": "`#` — приватність JavaScript, діє і під час виконання; `private` перевіряє лише TypeScript", "correct": true },
+        { "text": "Нічим" }
+      ]
+    },
+    {
+      "id": "why",
+      "kind": "single",
+      "text": "Навіщо інкапсуляція?",
+      "options": [
+        { "text": "Щоб стан об'єкта змінювався лише через методи, які перевіряють правила", "correct": true },
+        { "text": "Щоб код працював швидше" }
+      ]
+    }
+  ]
+}

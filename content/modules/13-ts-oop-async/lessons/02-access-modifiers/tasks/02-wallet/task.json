@@ -1,0 +1,7 @@
+{
+  "type": "code",
+  "title": "Encapsulate state with private",
+  "statement": "Напиши клас `Wallet`:\n\n- `private balance`, на старті `0`;\n- `deposit(amount)` — додає суму; якщо `amount <= 0` → `throw new Error('Amount must be positive')`;\n- `withdraw(amount)` — знімає суму; якщо `amount <= 0` → та сама помилка; якщо грошей не вистачає → `throw new Error('Insufficient funds')`, баланс не змінюється;\n- `getBalance()` — поточний баланс.\n\nПриховані тести перевіряють, що `wallet.balance` **недоступний** ззовні.",
+  "hints": ["`private balance = 0;`", "Спочатку всі перевірки, потім зміна балансу — так невдалий виклик нічого не зіпсує."],
+  "explanation": "```ts\nexport class Wallet {\n  private balance = 0;\n\n  deposit(amount: number): void {\n    if (amount <= 0) throw new Error('Amount must be positive');\n    this.balance += amount;\n  }\n  withdraw(amount: number): void {\n    if (amount <= 0) throw new Error('Amount must be positive');\n    if (amount > this.balance) throw new Error('Insufficient funds');\n    this.balance -= amount;\n  }\n  getBalance(): number {\n    return this.balance;\n  }\n}\n```"
+}

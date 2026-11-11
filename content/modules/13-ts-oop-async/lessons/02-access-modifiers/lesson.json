@@ -1,0 +1,28 @@
+{
+  "title": "Access modifiers, getters & setters",
+  "minutes": 55,
+  "summary": "Інкапсуляція: public, private, protected, readonly, parameter properties, а також get/set з перевіркою значень — щоб об'єкт не можна було зіпсувати ззовні",
+  "resources": [
+    {
+      "title": "TypeScript Handbook: Classes (member visibility, getters/setters)",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/classes.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Private class features (#)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: TypeScript access modifiers getters setters (пошук)",
+      "url": "https://www.youtube.com/results?search_query=typescript+access+modifiers+getters+setters",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

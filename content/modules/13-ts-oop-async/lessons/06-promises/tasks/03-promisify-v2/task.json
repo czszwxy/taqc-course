@@ -1,0 +1,8 @@
+{
+  "type": "code",
+  "variantOf": "03-promisify",
+  "title": "Wrap a config reader in a Promise",
+  "statement": "У `legacy-config.ts` є `readConfigLegacy(name, callback)` з колбеком `(error: Error | null, value?: string)`.\n\nНапиши `readConfig(name): Promise<string>`.\n\n```ts\nreadConfig('baseUrl');   // resolves 'http://localhost:5173'\nreadConfig('unknown');   // rejects Error('Config unknown is not set')\n```",
+  "hints": ["`import { readConfigLegacy } from './legacy-config';`", "Та сама схема: `new Promise((resolve, reject) => readConfigLegacy(name, (error, value) => …))`."],
+  "explanation": "```ts\nexport function readConfig(name: string): Promise<string> {\n  return new Promise((resolve, reject) => {\n    readConfigLegacy(name, (error, value) => {\n      if (error || value === undefined) reject(error ?? new Error('No value'));\n      else resolve(value);\n    });\n  });\n}\n```"
+}

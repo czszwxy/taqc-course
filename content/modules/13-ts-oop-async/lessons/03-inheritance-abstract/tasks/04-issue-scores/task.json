@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "Polymorphism: score different issues",
+  "statement": "Є абстрактний `Issue` з полем `title` і абстрактним методом `score(): number`. Напиши:\n\n1. `Bug` — конструктор `(title, severity)`, де `severity` — `'Critical' | 'Major' | 'Minor'`; `score()`: Critical → 30, Major → 20, Minor → 10.\n2. `Story` — конструктор `(title, points)`; `score()` повертає `points`.\n3. `topIssue(issues: Issue[])` — `title` задачі з найбільшим `score()`, або `null` для порожнього масиву. Якщо кілька однакових — перша з них.\n\n```ts\ntopIssue([new Story('PayPal', 13), new Bug('Total is wrong', 'Major'), new Bug('Crash', 'Critical')]);\n// 'Crash'\n```",
+  "hints": [
+    "Бали severity зручно тримати в словнику: `const SEVERITY_SCORE: Record<Severity, number> = { Critical: 30, Major: 20, Minor: 10 };`",
+    "`topIssue`: пройди масив і запам'ятовуй найкращий; або `reduce`, порівнюючи `score()`. Порівнюй через `>`, щоб при рівності залишалась перша."
+  ],
+  "explanation": "```ts\nexport function topIssue(issues: Issue[]): string | null {\n  if (issues.length === 0) return null;\n  const best = issues.reduce((top, issue) => (issue.score() > top.score() ? issue : top));\n  return best.title;\n}\n```\n\n`topIssue` нічого не знає про `Bug` і `Story` — працює з будь-яким `Issue`. Це і є поліморфізм."
+}

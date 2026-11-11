@@ -1,0 +1,63 @@
+{
+  "type": "quiz",
+  "title": "Quiz: inheritance & abstract classes",
+  "show": 5,
+  "hints": ["super() — спочатку. abstract — не можна new, а abstract-методи реалізують нащадки."],
+  "questions": [
+    {
+      "id": "super-first",
+      "kind": "single",
+      "text": "Що треба зробити в конструкторі класу-нащадка перед використанням `this`?",
+      "options": [{ "text": "Викликати `super(...)`", "correct": true }, { "text": "Нічого особливого" }]
+    },
+    {
+      "id": "abstract-new",
+      "kind": "single",
+      "text": "Що буде при `new FieldValidator('x')`, якщо клас абстрактний?",
+      "options": [
+        { "text": "Помилка компіляції: не можна створити екземпляр абстрактного класу", "correct": true },
+        { "text": "Об'єкт створиться без методу check" }
+      ]
+    },
+    {
+      "id": "override",
+      "kind": "text",
+      "text": "Що виведе код?",
+      "code": "class A { name(): string { return 'A'; } }\nclass B extends A { override name(): string { return super.name() + 'B'; } }\nconsole.log(new B().name());",
+      "accept": ["AB"]
+    },
+    {
+      "id": "instanceof",
+      "kind": "single",
+      "text": "`class LoginPage extends BasePage`. Що поверне `new LoginPage() instanceof BasePage`?",
+      "options": [{ "text": "`true`", "correct": true }, { "text": "`false`" }]
+    },
+    {
+      "id": "abstract-method",
+      "kind": "single",
+      "text": "Нащадок абстрактного класу не реалізував абстрактний метод. Що станеться?",
+      "options": [
+        { "text": "Помилка компіляції в класі-нащадку", "correct": true },
+        { "text": "Метод просто поверне undefined" }
+      ]
+    },
+    {
+      "id": "polymorphism",
+      "kind": "single",
+      "text": "Що таке поліморфізм?",
+      "options": [
+        { "text": "Однаковий виклик методу дає різну поведінку залежно від класу об'єкта", "correct": true },
+        { "text": "Можливість мати кілька конструкторів" }
+      ]
+    },
+    {
+      "id": "composition",
+      "kind": "single",
+      "text": "Шапка сайту однакова на всіх сторінках. Який підхід часто кращий за довгий ланцюжок наслідування?",
+      "options": [
+        { "text": "Композиція: у сторінки є поле `header: HeaderComponent`", "correct": true },
+        { "text": "Скопіювати методи шапки в кожну сторінку" }
+      ]
+    }
+  ]
+}

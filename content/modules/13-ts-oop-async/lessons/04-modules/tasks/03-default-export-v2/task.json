@@ -1,0 +1,8 @@
+{
+  "type": "code",
+  "variantOf": "03-default-export",
+  "title": "A default-exported class",
+  "statement": "Тести імпортують:\n\n```ts\nimport CartPage, { CART_URL } from './solution';\n```\n\nЗроби named export `CART_URL = '/cart'` і **default** export класу `CartPage` з методом `url()`, що повертає `CART_URL`, і методом `itemSelector(name)`, що повертає `[data-testid=\"cart-item-<name>\"]`.\n\n```ts\nnew CartPage().itemSelector('mouse'); // '[data-testid=\"cart-item-mouse\"]'\n```",
+  "hints": ["`export default class CartPage { … }`", "Лапки всередині рядка: використай template literal з подвійними лапками всередині."],
+  "explanation": "```ts\nexport const CART_URL = '/cart';\nexport default class CartPage {\n  url(): string { return CART_URL; }\n  itemSelector(name: string): string { return `[data-testid=\"cart-item-${name}\"]`; }\n}\n```"
+}

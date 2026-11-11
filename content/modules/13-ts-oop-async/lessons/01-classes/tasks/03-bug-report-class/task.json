@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "A BugReport class with a constructor and methods",
+  "statement": "Напиши клас `BugReport`:\n\n- `constructor(id: number, title: string)` — зберігає `id` і `title`;\n- поле `status` — на старті `'New'`;\n- поле `assignee` — `string | null`, на старті `null`;\n- `assign(name)` — встановлює `assignee` і `status = 'Assigned'`;\n- `close()` — `status = 'Closed'`;\n- `isOpen()` — `true`, якщо статус не `'Closed'`.\n\n```ts\nconst bug = new BugReport(12, 'Total is wrong');\nbug.assign('Andrii');\nbug.status;     // 'Assigned'\nbug.close();\nbug.isOpen();   // false\n```",
+  "hints": [
+    "Оголоси поля: `id: number; title: string; status = 'New'; assignee: string | null = null;`",
+    "У конструкторі: `this.id = id; this.title = title;`"
+  ],
+  "explanation": "```ts\nexport class BugReport {\n  id: number;\n  title: string;\n  status = 'New';\n  assignee: string | null = null;\n\n  constructor(id: number, title: string) {\n    this.id = id;\n    this.title = title;\n  }\n  assign(name: string): void {\n    this.assignee = name;\n    this.status = 'Assigned';\n  }\n  close(): void {\n    this.status = 'Closed';\n  }\n  isOpen(): boolean {\n    return this.status !== 'Closed';\n  }\n}\n```"
+}

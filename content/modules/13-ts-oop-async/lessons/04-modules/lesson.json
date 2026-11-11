@@ -1,0 +1,28 @@
+{
+  "title": "Modules: import & export",
+  "minutes": 50,
+  "summary": "Розбиття коду на файли: named і default export, import, перейменування (as), import type, barrel-файли (index.ts) і як модулі організовують тестовий проєкт",
+  "resources": [
+    {
+      "title": "TypeScript Handbook: Modules",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/modules.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: JavaScript modules",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "javascript.info (укр): Модулі, вступ",
+      "url": "https://uk.javascript.info/modules-intro",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "type": "code",
+  "title": "POST JSON: log in and get a token",
+  "statement": "Напиши `login(email, password): Promise<string>`:\n\n- `POST ${BASE_URL}/api/auth/login` з JSON-тілом `{ email, password }` і заголовком `Content-Type: application/json`;\n- статус `401` → `throw new Error('Invalid credentials')`;\n- будь-який інший не-`ok` статус → `throw new Error('HTTP <status>')`;\n- успіх → поверни поле `token` з відповіді.\n\n```ts\nawait login('qa@gadgetly.test', 'Test1234');  // 'test-token-42'\nawait login('qa@gadgetly.test', 'wrong');     // throws 'Invalid credentials'\n```",
+  "hints": [
+    "```ts\nconst response = await fetch(`${BASE_URL}/api/auth/login`, {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({ email, password }),\n});\n```",
+    "`const data = (await response.json()) as { token: string };`"
+  ],
+  "explanation": "```ts\nexport async function login(email: string, password: string): Promise<string> {\n  const response = await fetch(`${BASE_URL}/api/auth/login`, {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({ email, password }),\n  });\n  if (response.status === UNAUTHORIZED) throw new Error('Invalid credentials');\n  if (!response.ok) throw new Error(`HTTP ${response.status}`);\n  const data = (await response.json()) as { token: string };\n  return data.token;\n}\n```"
+}

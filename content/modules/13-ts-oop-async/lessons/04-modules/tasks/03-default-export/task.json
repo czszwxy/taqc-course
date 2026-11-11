@@ -1,0 +1,7 @@
+{
+  "type": "code",
+  "title": "Default and named exports together",
+  "statement": "Тести імпортують з твого файлу **так**:\n\n```ts\nimport createUser, { DEFAULT_ROLE } from './solution';\n```\n\nОтже, файл має:\n\n- named export `DEFAULT_ROLE = 'customer'`;\n- **default** export — функцію `createUser(email, role = DEFAULT_ROLE)`, яка повертає `{ email, role }` з email у нижньому регістрі.\n\n```ts\ncreateUser('QA@Gadgetly.test');           // { email: 'qa@gadgetly.test', role: 'customer' }\ncreateUser('admin@gadgetly.test', 'admin'); // { email: 'admin@gadgetly.test', role: 'admin' }\n```",
+  "hints": ["`export const DEFAULT_ROLE = 'customer';`", "`export default function createUser(email: string, role: string = DEFAULT_ROLE) { … }`"],
+  "explanation": "```ts\nexport const DEFAULT_ROLE = 'customer';\n\nexport default function createUser(email: string, role: string = DEFAULT_ROLE): { email: string; role: string } {\n  return { email: email.toLowerCase(), role };\n}\n```\n\nЯкщо тести пишуть «Module has no default export» — бракує слова `default`."
+}

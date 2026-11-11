@@ -1,0 +1,8 @@
+{
+  "type": "code",
+  "variantOf": "03-login",
+  "title": "POST JSON with a token: create an order",
+  "statement": "Напиши `createOrder(token, productId, quantity): Promise<number>`:\n\n- `POST ${BASE_URL}/api/orders` з JSON `{ productId, quantity }` і заголовками `Content-Type: application/json`, `Authorization: Bearer <token>`;\n- `401` → `throw new Error('Unauthorized')`;\n- інший не-`ok` → `throw new Error(<поле error з тіла відповіді>)`;\n- успіх → поверни `id` створеного замовлення.\n\n```ts\nawait createOrder('test-token-42', 1, 2);   // 1003\nawait createOrder('bad', 1, 2);             // throws 'Unauthorized'\nawait createOrder('test-token-42', 1, 0);   // throws 'quantity must be from 1 to 10'\n```",
+  "hints": ["Два заголовки в одному об'єкті `headers`.", "Для помилки: `const body = (await response.json()) as { error: string }; throw new Error(body.error);`"],
+  "explanation": "```ts\nif (response.status === UNAUTHORIZED) throw new Error('Unauthorized');\nconst body = (await response.json()) as { id?: number; error?: string };\nif (!response.ok) throw new Error(body.error ?? `HTTP ${response.status}`);\nreturn body.id as number;\n```"
+}

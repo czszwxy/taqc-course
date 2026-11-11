@@ -1,0 +1,68 @@
+{
+  "type": "quiz",
+  "title": "Quiz: classes",
+  "show": 5,
+  "hints": ["`new` викликає constructor. `this` — поточний екземпляр. `static` — спільне для класу."],
+  "questions": [
+    {
+      "id": "new",
+      "kind": "single",
+      "text": "Що робить `new BugReport(1, 'A')`?",
+      "options": [
+        { "text": "Створює новий об'єкт і викликає constructor з аргументами", "correct": true },
+        { "text": "Оголошує новий клас" }
+      ]
+    },
+    {
+      "id": "independent",
+      "kind": "text",
+      "text": "Що виведе код?",
+      "code": "class Counter {\n  value = 0;\n  inc(): void { this.value++; }\n}\nconst a = new Counter();\nconst b = new Counter();\na.inc();\na.inc();\nb.inc();\nconsole.log(a.value + b.value);",
+      "accept": ["3"],
+      "explanation": "Кожен екземпляр має своє поле: a.value = 2, b.value = 1."
+    },
+    {
+      "id": "static",
+      "kind": "single",
+      "text": "Як звернутися до статичного поля `nextId` класу `UserFactory`?",
+      "options": [
+        { "text": "`UserFactory.nextId`", "correct": true },
+        { "text": "`new UserFactory().nextId`" },
+        { "text": "`this.nextId` у будь-якому місці" }
+      ]
+    },
+    {
+      "id": "this-lost",
+      "kind": "single",
+      "text": "Чому `setTimeout(bug.close, 100)` може зламатися?",
+      "options": [
+        { "text": "Метод передано без об'єкта — `this` усередині буде не `bug`", "correct": true },
+        { "text": "setTimeout не приймає методи класів" }
+      ]
+    },
+    {
+      "id": "runtime",
+      "kind": "single",
+      "text": "Що з цього існує під час виконання програми (у JavaScript)?",
+      "options": [{ "text": "Клас", "correct": true }, { "text": "Інтерфейс" }]
+    },
+    {
+      "id": "init",
+      "kind": "single",
+      "text": "У strict-режимі поле `title: string;` без значення і без присвоєння в конструкторі — це…",
+      "options": [
+        { "text": "Помилка компіляції: поле не ініціалізоване", "correct": true },
+        { "text": "Нормально: буде undefined" }
+      ]
+    },
+    {
+      "id": "pom",
+      "kind": "single",
+      "text": "Що таке Page Object у автотестах?",
+      "options": [
+        { "text": "Клас, який описує сторінку: її елементи й дії з ними", "correct": true },
+        { "text": "Скриншот сторінки" }
+      ]
+    }
+  ]
+}

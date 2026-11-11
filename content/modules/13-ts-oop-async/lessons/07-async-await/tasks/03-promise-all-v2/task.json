@@ -1,0 +1,8 @@
+{
+  "type": "code",
+  "variantOf": "03-promise-all",
+  "title": "Sum prices fetched in parallel",
+  "statement": "У `catalog-api.ts` є `getPrice(productId): Promise<number>` (~80 мс кожен).\n\nНапиши `cartTotal(productIds): Promise<number>` — сума цін усіх товарів, завантажених **паралельно**. Для порожнього масиву — `0`.\n\n```ts\nawait cartTotal([1, 3]);  // 499 + 2199 = 2698\n```",
+  "hints": ["`const prices = await Promise.all(productIds.map((id) => getPrice(id)));`", "Потім `reduce` з початковим 0."],
+  "explanation": "```ts\nexport async function cartTotal(productIds: number[]): Promise<number> {\n  const prices = await Promise.all(productIds.map((id) => getPrice(id)));\n  return prices.reduce((sum, p) => sum + p, 0);\n}\n```"
+}

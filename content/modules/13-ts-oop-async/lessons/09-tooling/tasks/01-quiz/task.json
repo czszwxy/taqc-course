@@ -1,0 +1,75 @@
+{
+  "type": "quiz",
+  "title": "Quiz: tsconfig, ESLint, Prettier",
+  "show": 5,
+  "hints": ["tsc — типи, ESLint — підозрілий код, Prettier — форматування."],
+  "questions": [
+    {
+      "id": "strict",
+      "kind": "single",
+      "text": "Що вмикає `\"strict\": true` у tsconfig?",
+      "options": [
+        { "text": "Набір суворих перевірок: noImplicitAny, strictNullChecks та інші", "correct": true },
+        { "text": "Заборону на використання класів" },
+        { "text": "Автоматичне форматування коду" }
+      ]
+    },
+    {
+      "id": "prettier",
+      "kind": "single",
+      "text": "Що робить Prettier?",
+      "options": [
+        { "text": "Переформатовує код в єдиному стилі", "correct": true },
+        { "text": "Шукає баги в логіці" },
+        { "text": "Перевіряє типи" }
+      ]
+    },
+    {
+      "id": "floating",
+      "kind": "single",
+      "text": "Який інструмент знайде забутий `await` перед `page.click()`?",
+      "options": [
+        { "text": "ESLint (правило no-floating-promises)", "correct": true },
+        { "text": "Prettier" },
+        { "text": "Ніхто, лише запуск тесту" }
+      ]
+    },
+    {
+      "id": "target",
+      "kind": "single",
+      "text": "Що задає `\"target\": \"ES2022\"`?",
+      "options": [
+        { "text": "Версію JavaScript, у яку компілюється TypeScript", "correct": true },
+        { "text": "Браузер, у якому запускаються тести" }
+      ]
+    },
+    {
+      "id": "null-checks",
+      "kind": "single",
+      "text": "Яка частина strict-режиму ловить `users.find(...).name` без перевірки на undefined?",
+      "options": [
+        { "text": "strictNullChecks", "correct": true },
+        { "text": "noImplicitAny" },
+        { "text": "outDir" }
+      ]
+    },
+    {
+      "id": "include",
+      "kind": "single",
+      "text": "Для чого `\"include\": [\"tests\"]`?",
+      "options": [
+        { "text": "Вказує, які файли бачить і перевіряє компілятор", "correct": true },
+        { "text": "Підключає бібліотеку tests з інтернету" }
+      ]
+    },
+    {
+      "id": "ci",
+      "kind": "single",
+      "text": "Навіщо запускати `tsc --noEmit` і `eslint` у CI перед тестами?",
+      "options": [
+        { "text": "Щоб дешево зловити помилки ще до запуску браузерних тестів", "correct": true },
+        { "text": "Щоб тести працювали швидше" }
+      ]
+    }
+  ]
+}
