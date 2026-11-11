@@ -1,0 +1,25 @@
+{
+  "type": "table",
+  "title": "Map CRUD actions to REST requests",
+  "statement": "Для кожної дії з замовленнями обери **метод**, **адресу** і **статус успіху** за домовленостями REST (і документацією Gadgetly API).",
+  "givenColumns": ["Action"],
+  "answerColumns": [
+    { "id": "method", "label": "Method", "options": ["GET", "POST", "PUT", "PATCH", "DELETE"] },
+    { "id": "path", "label": "Path", "options": ["/orders", "/orders/{id}", "/createOrder", "/orders/delete/{id}"] },
+    { "id": "status", "label": "Success status", "options": ["200", "201", "204"] }
+  ],
+  "rows": [
+    { "given": ["Get the list of my orders"], "answers": { "method": "GET", "path": "/orders", "status": "200" } },
+    { "given": ["Get one order"], "answers": { "method": "GET", "path": "/orders/{id}", "status": "200" } },
+    { "given": ["Create a new order"], "answers": { "method": "POST", "path": "/orders", "status": "201" }, "explain": "Створення — POST на **колекцію** `/orders`, а не на `/createOrder`." },
+    { "given": ["Replace the whole order (new productId and quantity)"], "answers": { "method": "PUT", "path": "/orders/{id}", "status": "200" } },
+    { "given": ["Change only the quantity"], "answers": { "method": "PATCH", "path": "/orders/{id}", "status": "200" } },
+    {
+      "given": ["Delete an order"],
+      "answers": { "method": "DELETE", "path": "/orders/{id}", "status": "204" },
+      "explain": "Дія задається методом DELETE; адреса — сам ресурс. Успіх без тіла — 204."
+    }
+  ],
+  "hints": ["Колекція `/orders` — для списку і створення. Елемент `/orders/{id}` — для читання, зміни й видалення одного замовлення."],
+  "explanation": "REST-шаблон: **колекція** (`/orders`) — GET список, POST створення (201); **елемент** (`/orders/{id}`) — GET (200), PUT/PATCH (200), DELETE (204). Адреси на кшталт `/createOrder` чи `/orders/delete/{id}` — ознака не-REST дизайну: дія має бути в методі."
+}

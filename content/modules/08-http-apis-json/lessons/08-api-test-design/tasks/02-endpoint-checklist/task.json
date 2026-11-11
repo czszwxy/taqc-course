@@ -1,0 +1,53 @@
+{
+  "type": "written",
+  "title": "Write a test checklist for POST /api/orders",
+  "playground": "api",
+  "statement": "Напиши **чекліст** API-тестів для ендпоінта створення замовлення (щонайменше **12** пунктів, по одному в рядку). Документація — у жовтій панелі API console:\n\n> 🔒 `POST /api/orders` `{ productId, quantity }` → **201** + `Location`. quantity — ціле **1–10**; `total = unitPrice × quantity`; unknown product → **422**; out of stock → **409**; no/invalid token → **401**; body must be JSON with `Content-Type: application/json` (else **415**).\n\nПокрий позитивні тести, межі, типи, відсутні поля, неіснуючі й відсутні товари, доступ, формат запиту і стан системи після створення.",
+  "fields": [{ "id": "checklist", "label": "Checklist for POST /api/orders", "kind": "list", "placeholder": "Valid order {productId: 1, quantity: 2} → 201, Location header, total = 998" }],
+  "rules": [
+    { "field": "checklist", "check": "minItems", "value": 12, "message": "Потрібно щонайменше **12** пунктів." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["201"], "message": "Додай позитивний тест: успішне створення → **201**." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["(^|\\D)0(\\D|$)|(^|\\D)11(\\D|$)|boundar|меж"], "message": "Додай **граничні** значення quantity: 0, 1, 10, 11." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["string|рядок|type|тип|\"2\"|decimal|дроб|1\\.5"], "message": "Перевір **типи**: quantity рядком (`\"2\"`), дробове число." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["missing|without|відсутн|без |немає поля|no productid|no quantity"], "message": "Додай тести з **відсутніми** полями (без productId / quantity)." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["422|99999|unknown product|non-?exist|неіснуюч"], "message": "Додай тест з **неіснуючим** товаром (422)." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["409|out of stock|наявн"], "message": "Додай тест з товаром, якого **немає в наявності** (409)." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["401|token|токен"], "message": "Додай тести **доступу**: без токена, невалідний токен → 401." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["415|content-type|invalid json|невалідн\\S* json"], "message": "Додай тести **формату** запиту: невалідний JSON, не той Content-Type." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["total|сум|unitprice"], "message": "Перевір **бізнес-правило**: total = unitPrice × quantity." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["get /|get-запит|then get|location|список|list"], "message": "Перевір **стан системи**: створене замовлення знаходиться через GET." }
+  ],
+  "model": {
+    "checklist": [
+      "Valid order {productId: 1, quantity: 2} → 201, Location: /api/orders/<id>, body has id, status \"created\"",
+      "total = unitPrice × quantity (499 × 2 = 998); unitPrice comes from the product, not from the request",
+      "GET /api/orders/<id> returns the same order; GET /api/orders list contains it",
+      "quantity = 1 → 201; quantity = 10 → 201",
+      "quantity = 0 → 400; quantity = 11 → 400; quantity = -1 → 400",
+      "quantity as string \"2\" → 400; quantity 1.5 → 400; quantity null → 400",
+      "Missing quantity → 400; missing productId → 400; empty body {} → 400",
+      "productId 99999 (unknown product) → 422",
+      "productId of an out-of-stock product (2) → 409",
+      "No Authorization header → 401; invalid / tampered token → 401",
+      "Body with Content-Type: text/plain → 415; invalid JSON → 400",
+      "Extra fields \"total\": 1 and \"userId\": 17 are ignored (total recalculated, order belongs to me)",
+      "Two identical POSTs create two orders with different ids (no silent merging)",
+      "Error responses have the format {\"error\": \"…\"} with a clear message",
+      "Response time < 1 s"
+    ]
+  },
+  "hints": [
+    "Пройдися по кожному полю тіла: валідне, межі, тип, відсутнє, null.",
+    "Не забудь про те, що навколо тіла: токен, Content-Type, невалідний JSON.",
+    "Після успішного створення перевір стан системи (GET) і бізнес-правило total."
+  ],
+  "explanation": "Чекліст API-ендпоінта будується шарами: **позитивні** (типові й граничні валідні значення) → **негативні по кожному полю** (межі, типи, відсутні поля, null) → **посилання** на інші ресурси (неіснуючий товар 422, немає в наявності 409) → **доступ** (401) → **формат запиту** (415, невалідний JSON) → **бізнес-правила** (total) → **стан системи** (GET після POST) → безпека (зайві поля userId/total).",
+  "checklist": [
+    "Positive and boundary values for quantity are covered (0, 1, 10, 11)",
+    "Each field has type and missing-field checks",
+    "Product-related errors (422, 409) are covered",
+    "Access checks (no token, invalid token) are present",
+    "Request format checks (Content-Type, invalid JSON) are present",
+    "There is a check of the stored state (GET after POST) and of total"
+  ]
+}

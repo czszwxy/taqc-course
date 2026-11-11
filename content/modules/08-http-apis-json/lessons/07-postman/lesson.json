@@ -1,0 +1,37 @@
+{
+  "title": "Manual API testing with Postman",
+  "minutes": 50,
+  "summary": "Postman: запити, колекції, змінні й оточення ({{baseUrl}}, {{token}}), вкладка Authorization, прості тести pm.test, Collection Runner; альтернативи — curl, API console, розширення для VS Code",
+  "resources": [
+    {
+      "title": "Postman Learning Center",
+      "url": "https://learning.postman.com/docs/introduction/overview/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Postman — download the desktop app",
+      "url": "https://www.postman.com/downloads/",
+      "kind": "tool",
+      "lang": "en",
+      "note": "Безкоштовний застосунок для Windows. Для локального API використовуй десктопну версію, а не веб-версію.",
+      "needsVerification": true
+    },
+    {
+      "title": "curl — official documentation",
+      "url": "https://curl.se/docs/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "У Windows 10/11 curl уже встановлено: команда curl.exe.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Postman tutorial for beginners (пошук)",
+      "url": "https://www.youtube.com/results?search_query=postman+tutorial+for+beginners+api+testing",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

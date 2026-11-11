@@ -1,0 +1,25 @@
+{
+  "type": "table",
+  "title": "Name the JSON type of each value",
+  "statement": "Відповідь API на `GET /api/orders/1003`:\n\n```json\n{\n  \"id\": 1003,\n  \"status\": \"created\",\n  \"paid\": false,\n  \"coupon\": null,\n  \"total\": 998,\n  \"quantity\": \"2\",\n  \"zip\": \"01001\",\n  \"items\": [{ \"productId\": 1 }],\n  \"customer\": { \"id\": 42 },\n  \"createdAt\": \"2026-03-05T18:40:00Z\"\n}\n```\n\nВизнач **JSON-тип** кожного значення — і подумай, де тип не відповідає змісту.",
+  "givenColumns": ["Path", "Value"],
+  "answerColumns": [{ "id": "type", "label": "Type", "options": ["string", "number", "boolean", "null", "array", "object"] }],
+  "rows": [
+    { "given": ["`id`", "`1003`"], "answers": { "type": "number" } },
+    { "given": ["`status`", "`\"created\"`"], "answers": { "type": "string" } },
+    { "given": ["`paid`", "`false`"], "answers": { "type": "boolean" } },
+    { "given": ["`coupon`", "`null`"], "answers": { "type": "null" } },
+    { "given": ["`total`", "`998`"], "answers": { "type": "number" } },
+    {
+      "given": ["`quantity`", "`\"2\"`"],
+      "answers": { "type": "string" },
+      "explain": "Значення в лапках — рядок. Для кількості це **баг типу**: має бути число `2`."
+    },
+    { "given": ["`zip`", "`\"01001\"`"], "answers": { "type": "string" }, "explain": "Тут рядок — правильно: індекс із нулем на початку." },
+    { "given": ["`items`", "`[{ \"productId\": 1 }]`"], "answers": { "type": "array" } },
+    { "given": ["`customer`", "`{ \"id\": 42 }`"], "answers": { "type": "object" } },
+    { "given": ["`createdAt`", "`\"2026-03-05T18:40:00Z\"`"], "answers": { "type": "string" }, "explain": "У JSON немає типу «дата»: дати передають рядком у форматі ISO 8601." }
+  ],
+  "hints": ["Лапки → string. Без лапок число → number. true/false → boolean. `[ ]` → array. `{ }` → object."],
+  "explanation": "Тип визначається записом, а не змістом: `\"2\"` — рядок, навіть якщо це кількість. Тому API-тест перевіряє **тип** кожного важливого поля: кількість і суми — number, ідентифікатори з нулями й дати — string, порожній список — `[]`, а не `null`."
+}

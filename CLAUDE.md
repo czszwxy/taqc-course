@@ -9,7 +9,7 @@ Self-study web app that takes a learner from zero to **Trainee QA Automation Eng
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173
+npm run dev        # http://localhost:5173 (also serves the Gadgetly mock API at /api)
 npm run validate   # validates ALL content + proves every code task is solvable — run after every content change
 npm run typecheck  # tsc on src/ and scripts/
 npm run build      # typecheck + production build
@@ -27,7 +27,7 @@ Colors are CSS variables in `src/index.css` (`:root` = light, `.dark` = dark), e
 
 ## Stack
 
-Vite 6 + React 19 + TypeScript, React Router 7, Tailwind CSS v4 (CSS-variable tokens in `src/index.css`, dark mode via `.dark` class), Zustand (+ persist → localStorage), Zod (content schemas), react-markdown + remark-gfm + rehype-highlight, Monaco (`@monaco-editor/react`, bundled locally — no CDN), real `typescript` compiler in a Web Worker.
+Vite 6 + React 19 + TypeScript, React Router 7, Tailwind CSS v4 (CSS-variable tokens in `src/index.css`, dark mode via `.dark` class), Zustand (+ persist → localStorage), Zod (content schemas), react-markdown + remark-gfm + rehype-highlight, Monaco (`@monaco-editor/react`, bundled locally — no CDN), real `typescript` compiler in a Web Worker. Dev-only: `jsdom` (validator checks selector tasks), `tsx`.
 
 ## Architecture
 
@@ -47,10 +47,11 @@ src/
   runner/client.ts           ← main-thread API: checkCode / runCode (compile worker reused; exec worker per run, 5 s timeout)
   runner/*.worker.ts         ← Web Workers
   features/progress/         ← Zustand stores (progress + settings) and selectors (task/lesson/module stats)
-  features/tasks/            ← one view per task type + forms.ts (rules, bug matching) + generators.ts (value-set)
+  features/tasks/            ← one view per task type + forms.ts (rules, bug matching) + generators.ts (value-set) + selectors.ts (CSS/XPath checking, pure)
   playground/                ← intentionally buggy demo pages (Bug Playground) + registry.ts
   pages/                     ← Dashboard, ModulePage, LessonPage (Theory/Resources/Practice tabs), TaskPage, Settings, Playground
-scripts/validate-content.ts  ← Node; reuses compiler/harness/forms/generators to verify content
+server/mock-api.ts           ← Gadgetly REST API mounted into the Vite dev/preview server (/api buggy, /api-fixed correct); data in server/mock-data.json
+scripts/validate-content.ts  ← Node; reuses compiler/harness/forms/generators/selectors (jsdom) to verify content
 lab/                         ← (future) real Playwright project + local mock API for hands-on labs
 ```
 
@@ -73,7 +74,7 @@ Markdown + GFM tables. Callouts: a blockquote starting with `[!TIP]`, `[!NOTE]`,
 
 | type | extra fields | how it's checked |
 |---|---|---|
-| `quiz` | `questions[]` (`kind`: `single` / `multiple` / `text`), `show?` (sample size per attempt), `passScore` (default 0.8), `intro?` | auto; per-option `explain`, per-question `explanation`; retry = new random sample (seed) |
+| `quiz` | `questions[]` (`kind`: `single` / `multiple` / `text`), `show?` (sample size per attempt), `passScore` (default 0.8), `intro?`, `playground?` | auto; per-option `explain`, per-question `explanation`; retry = new random sample (seed) |
 | `code` | `statement`, `codeRules[]` (`require`/`forbid` regex on comment-stripped code, use sparingly) + files `starter.ts`, `solution.ts`, `tests.ts` | real TS compile (strict) of solution + tests, then hidden tests in a worker |
 | `value-set` | `generator: { name, params }` (see `features/tasks/generators.ts`, e.g. `bva-range`) | set comparison with targeted feedback; "similar task" = new seed → new generated problem |
 | `test-case` | `statement`, `playground?`, `rules[]`, `model` (title, type, priority, preconditions, testData, steps[], expectedResult), `checklist[]` | built-in structure rules + task `rules` → then model answer + self-review checklist |
@@ -82,6 +83,7 @@ Markdown + GFM tables. Callouts: a blockquote starting with `[!TIP]`, `[!NOTE]`,
 | `order` | `statement`, `items[]` **in the correct order** (≥ 3) | UI shuffles; exact order required; green/red per row; correct order revealed after 2 fails |
 | `written` | `statement`, `playground?`, `fields[]` (`id`, `label`, `kind`: `text`/`textarea`/`list`, `placeholder?`, `hint?`), `rules[]`, `model` (field id → string or string[]), `checklist[]` | all fields required + rules → model answer + self-review checklist + Copy for review. Use for acceptance criteria, requirement reviews, charters, plans |
 | `table` | `statement`, `playground?`, `givenColumns[]` (header labels), `answerColumns[]` (`id`, `label`, `options[]`), `rows[]` (`given[]` same length as givenColumns, `answers` {colId → option}, `explain?`) | every answer cell must match; green/red per cell; row `explain` shown for wrong rows; answers revealed after 2 fails. Use for decision tables, state transition tables, partition tables, traceability matrices |
+| `selector` | `statement`, `syntax` (`css` or `xpath`), `html` (snippet; targets marked `data-expect="<challengeId> …"`, marker stripped before display), `challenges[]` (`id`, `prompt`, `model`, `rules[]` require/forbid regex on the selector text, `explain?`) | live match count + highlighting in a sandboxed iframe; a selector is correct when it matches exactly the marked elements (+ rules); reference selectors revealed after 2 fails. Validator runs every `model` through jsdom. Use for CSS/XPath/locator practice |
 
 Value-set generators (`src/features/tasks/generators.ts`, presets in `range-presets.json`): `bva-range` (params `field`, `min`, `max`, `unit?`, `approach`: `two-value` | `three-value`) and `ep-range` (one representative per integer partition: below / inside / above). Seed 0 uses the task params; other seeds pick a random preset.
 
@@ -99,8 +101,9 @@ Field rules (`rules[]`): `{ field, check, value?, message }` where `check` ∈ `
 Pages in `src/playground/`, registered in `registry.ts`, routed standalone (no app chrome) in `App.tsx`. Each page has intentional bugs behind flags (`getBugs(fixed)`) and a `?fixed` query param that disables them (for future Playwright "must pass on fixed / fail on buggy" grading; never advertise `?fixed` to the learner). Keep the page's bug flags and the task's `bugs[]` catalog in sync. Use semantic HTML, labels and `data-testid` for future automation.
 
 - Shared chrome: `PlaygroundShell.tsx` (brand header, yellow "Requirements (for testers)" panel, optional **Reset demo data** button, `isFixedMode()`, `PgField`, `inputClass`, `formatUah`). Data lives in `src/playground/data/*.json`.
-- Pages and bug counts: signup 7, login 6, cart 6, search 6, order 5, todo 6 (todo persists to localStorage keys `qa-playground:todo` / `qa-playground:todo-fixed`).
-- Tasks reference a page with `playground: "<id>"` (test-case, bug-report, written, table) → "Open page" button (`PlaygroundLink` in `features/tasks/shared.tsx`). The validator rejects unknown ids.
+- Pages and bug counts: signup 7, login 6, cart 6, search 6, order 5, todo 6 (todo persists to localStorage keys `qa-playground:todo` / `qa-playground:todo-fixed`), devtools 6 (DevTools Lab: hidden values, console messages, network requests, storage — answers exist only in DevTools), responsive 4 (layout bugs at certain widths), api 6 (bugs live in `server/mock-api.ts`; the page is an in-app API client with docs and a JWT decoder).
+- Gadgetly API (`server/mock-api.ts`): products (14, from `src/playground/data/products.json`), login → deterministic JWT for `qa@gadgetly.test` / `Test1234` (user 42; order 1002 is theirs, 1001 belongs to user 17), orders CRUD, `/slow?ms=`, `/lab/*` helpers for the DevTools Lab, `POST /reset`. Status codes and limits live in `server/mock-data.json` (hook: no magic numbers). Answers in content tasks depend on this seed data — change it only together with the tasks.
+- Tasks reference a page with `playground: "<id>"` (test-case, bug-report, written, table, quiz) → "Open page" button (`PlaygroundLink` in `features/tasks/shared.tsx`). The validator rejects unknown ids.
 - Bug catalog regexes: every `match` pattern must hit the report; ties are broken by hits in title + actual result, then by catalog order. Make patterns specific enough that one bug's model never matches another bug better (the validator checks self-matching). Avoid bare `case` (matches "test case"), `esc` (matches "description"), `три` (matches "отримати").
 - Table/given cells and other Markdown fields: wrap emails in backticks, otherwise they render as mailto links.
 
@@ -119,9 +122,11 @@ Pages in `src/playground/`, registered in `registry.ts`, routed standalone (no a
 - ✅ Module 11 "Programming Basics with TypeScript" — 10 lessons, 40 main tasks + 10 variants.
 - ✅ Module 05 "Bugs & Bug Tracking" — 7 lessons, 19 tasks (text-described bugs only, no playground answers).
 - ✅ Module 06 "QA Practice Lab" — 9 lessons, 30 main tasks + 1 variant: approach & requirements review (text features), then hands-on pages: login (checklist, test case, bug hunt), registration, cart (decision table, bug hunt), search (charter, bug hunt), order (transition run table, bug reports), regression run on login (table + summary report), Todo mini-project (checklist, test case, bug hunt, summary report).
+- ✅ Module 07 "How the Web Works" — 8 lessons, 24 tasks (selector tasks for CSS and XPath, DevTools hunts on the DevTools Lab, responsive bug hunt).
+- ✅ Module 08 "HTTP, REST APIs & JSON" — 8 lessons, 24 tasks (hands-on with the API console: status-code run, params hunt, CRUD flow, token hunt, API bug hunt).
 - Theory-module pattern (modules 01–05): each lesson = quiz (6–8 questions, show 5) + 2 practical tasks (classify / order / written), easy → harder. Never put Bug Playground bug answers in model answers of other modules (spoilers for the module 06 bug hunt).
-- Next suggested batch: module 07 "How the Web Works" (8 lessons) + module 08 "HTTP, REST APIs & JSON" (8 lessons). They will likely need new engines: CSS/XPath selector tasks (sandboxed iframe over a small HTML snippet) and DevTools hunts (find a value in Console/Network of a playground page). Reuse the playground pages for DevTools practice instead of creating new ones where possible.
-- ⏳ Remaining modules in batches (owner reviews each batch). Planned engines to add when needed: CSS/XPath selector tasks (sandboxed iframe), DevTools hunts, SQL (sql.js), Playwright-API simulator over playground pages with mutation grading, `lab/` with real `@playwright/test` + `npm run lab:check <id>`, local mock REST API (Node, zero deps).
+- Next suggested batch: module 09 "Command Line, Git & GitHub" (7 lessons; terminal/Git practice can be quiz + order + written tasks with real commands the learner runs locally) + module 10 "SQL for Testers" (6 lessons; needs a new `sql` task engine on sql.js with a seeded Gadgetly database — reuse the products/orders data of the mock API).
+- ⏳ Remaining modules in batches (owner reviews each batch). Planned engines to add when needed: SQL (sql.js), Playwright-API simulator over playground pages with mutation grading (use the `?fixed` builds and `/api-fixed`), `lab/` with real `@playwright/test` + `npm run lab:check <id>`.
 - Full outline lives in `content/course.json`.
 
 ## Git

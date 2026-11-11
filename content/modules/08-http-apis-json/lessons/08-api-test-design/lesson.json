@@ -1,0 +1,30 @@
+{
+  "title": "API test design",
+  "minutes": 60,
+  "summary": "Що перевіряти в API: статус, заголовки, схема і типи, бізнес-правила, негативні дані, межі, доступ, ідемпотентність, пагінація, стан після змін — чекліст для ендпоінта і пошук багів у Gadgetly API",
+  "resources": [
+    {
+      "title": "OWASP API Security Top 10",
+      "url": "https://owasp.org/API-Security/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Найпоширеніші вразливості API, зокрема Broken Object Level Authorization (IDOR).",
+      "needsVerification": true
+    },
+    {
+      "title": "ISTQB Glossary",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Терміни: negative testing, boundary value analysis, test condition.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: API testing test cases (пошук)",
+      "url": "https://www.youtube.com/results?search_query=how+to+write+api+test+cases",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

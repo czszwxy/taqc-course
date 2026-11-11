@@ -1,0 +1,70 @@
+{
+  "type": "quiz",
+  "title": "Quiz: HTTP requests and methods",
+  "show": 5,
+  "hints": ["GET — читати, POST — створювати, PUT — замінити повністю, PATCH — частково, DELETE — видалити."],
+  "questions": [
+    {
+      "id": "parts",
+      "kind": "multiple",
+      "text": "З чого може складатися HTTP-**запит**?",
+      "options": [
+        { "text": "Метод", "correct": true },
+        { "text": "URL", "correct": true },
+        { "text": "Заголовки (headers)", "correct": true },
+        { "text": "Тіло (body)", "correct": true },
+        { "text": "Статус-код", "explain": "Статус-код є лише у **відповіді** сервера." }
+      ]
+    },
+    {
+      "id": "patch",
+      "kind": "single",
+      "text": "Треба змінити лише кількість у замовленні, не чіпаючи інших полів. Який метод?",
+      "options": [
+        { "text": "PATCH", "correct": true },
+        { "text": "PUT", "explain": "PUT замінює ресурс **повністю** — треба надіслати всі поля." },
+        { "text": "GET" }
+      ]
+    },
+    {
+      "id": "safe",
+      "kind": "single",
+      "text": "Який метод **безпечний** — не має нічого змінювати на сервері?",
+      "options": [{ "text": "GET", "correct": true }, { "text": "POST" }, { "text": "DELETE" }]
+    },
+    {
+      "id": "idempotent",
+      "kind": "single",
+      "text": "Який метод **не** ідемпотентний: два однакові запити дадуть різний результат?",
+      "options": [
+        { "text": "POST — створить два ресурси", "correct": true },
+        { "text": "PUT" },
+        { "text": "DELETE" }
+      ]
+    },
+    {
+      "id": "double-click",
+      "kind": "single",
+      "text": "Користувач двічі швидко натиснув «Place order». Що варто перевірити в API?",
+      "options": [
+        { "text": "Чи не створилось два замовлення двома POST-запитами", "correct": true },
+        { "text": "Нічого: це проблема користувача" }
+      ]
+    },
+    {
+      "id": "why-api",
+      "kind": "single",
+      "text": "Чому API-тести зазвичай швидші й стабільніші за UI-тести?",
+      "options": [
+        { "text": "Вони не залежать від верстки й браузера — лише запит і відповідь", "correct": true },
+        { "text": "Бо API ніколи не має багів" }
+      ]
+    },
+    {
+      "id": "status-where",
+      "kind": "single",
+      "text": "Де знаходиться статус-код `201 Created`?",
+      "options": [{ "text": "У першому рядку відповіді", "correct": true }, { "text": "У тілі запиту" }, { "text": "У URL" }]
+    }
+  ]
+}

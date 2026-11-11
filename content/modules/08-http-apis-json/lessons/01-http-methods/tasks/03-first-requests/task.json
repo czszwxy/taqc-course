@@ -1,0 +1,52 @@
+{
+  "type": "quiz",
+  "title": "First requests to the Gadgetly API",
+  "playground": "api",
+  "intro": "Відкрий **API console** (кнопка нижче). Надсилай запити й знаходь відповіді в тілі відповіді (Response body). Підказка: кнопки-приклади заповнюють метод, URL і body за тебе.",
+  "hints": [
+    "Поле `total` у відповіді `GET /api/products` — кількість товарів, що відповідають фільтрам (на всіх сторінках).",
+    "Фільтр за категорією: `GET /api/products?category=Laptops`.",
+    "Для логіну використай приклад «Log in» — тестовий користувач уже підставлений."
+  ],
+  "questions": [
+    {
+      "id": "version",
+      "kind": "text",
+      "text": "`GET /api/health` — яке значення поля `version`?",
+      "accept": ["1.4.0"],
+      "explanation": "`{ \"status\": \"ok\", \"version\": \"1.4.0\" }`."
+    },
+    {
+      "id": "product-3",
+      "kind": "text",
+      "text": "`GET /api/products/3` — як називається товар (`name`)?",
+      "accept": ["Mechanical Keyboard K8"],
+      "explanation": "Товар з id 3 — **Mechanical Keyboard K8**."
+    },
+    {
+      "id": "total",
+      "kind": "text",
+      "text": "`GET /api/products` — скільки всього товарів у каталозі (`total`)?",
+      "accept": ["14"],
+      "explanation": "`total: 14`, хоча на першій сторінці показано лише 10 (`limit` за замовчуванням)."
+    },
+    {
+      "id": "laptops",
+      "kind": "text",
+      "text": "`GET /api/products?category=Laptops` — скільки ноутбуків (`total`)?",
+      "accept": ["3"]
+    },
+    {
+      "id": "login-status",
+      "kind": "text",
+      "text": "`POST /api/auth/login` з тестовим користувачем — який статус-код відповіді?",
+      "accept": ["200", "200 ok"]
+    },
+    {
+      "id": "role",
+      "kind": "text",
+      "text": "У відповіді логіну є об'єкт `user`. Яка в нього роль (`role`)?",
+      "accept": ["customer"]
+    }
+  ]
+}

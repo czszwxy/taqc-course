@@ -1,0 +1,16 @@
+{
+  "type": "order",
+  "title": "Set up a Postman collection for an API",
+  "statement": "Розстав кроки налаштування Postman для тестування Gadgetly API у правильному порядку.",
+  "items": [
+    "Install the Postman desktop app",
+    "Create a collection \"Gadgetly API\"",
+    "Create an environment \"Gadgetly local\" with baseUrl = http://localhost:5173/api",
+    "Add a POST {{baseUrl}}/auth/login request with a script that saves the token to {{token}}",
+    "Add other requests using {{baseUrl}} and Authorization: Bearer {{token}}",
+    "Add pm.test checks for status codes and key fields",
+    "Run the whole collection with the Collection Runner"
+  ],
+  "hints": ["Спочатку інструмент і місце для запитів, потім змінні, потім логін (щоб отримати токен), потім решта запитів і перевірки."],
+  "explanation": "Логіка: інструмент → колекція (де зберігати) → оточення (куди надсилати) → логін зі збереженням токена (щоб працювали захищені запити) → решта запитів зі змінними → тести → прогін колекції. Порядок важливий: без токена захищені запити повертатимуть 401."
+}

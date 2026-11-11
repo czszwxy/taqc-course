@@ -1,0 +1,61 @@
+{
+  "type": "quiz",
+  "title": "Parameters & headers hunt",
+  "playground": "api",
+  "intro": "Відкрий **API console** (кнопка нижче). Змінюй URL, заголовки й тіло і знаходь відповіді в Response body та Response headers. Перед початком натисни **Reset demo data**.",
+  "hints": [
+    "Кілька фільтрів поєднуються через `&`: `/api/products?category=Phones&inStock=true`.",
+    "Заголовки відповіді — у блоці «Response headers» ліворуч від тіла.",
+    "Для питання про `WWW-Authenticate` надішли `GET /api/me` без заголовка Authorization."
+  ],
+  "questions": [
+    {
+      "id": "phones-in-stock",
+      "kind": "text",
+      "text": "`GET /api/products?category=Phones&inStock=true` — скільки товарів (`total`)?",
+      "accept": ["2"],
+      "explanation": "Phone S10 і Phone Mini; Phone Ultra немає в наявності."
+    },
+    {
+      "id": "price-range",
+      "kind": "text",
+      "text": "`GET /api/products?minPrice=1000&maxPrice=3000` — скільки товарів (`total`)?",
+      "accept": ["4"],
+      "explanation": "1,299 (Gaming Mouse X7), 2,199 (Keyboard K8), 2,999 (Headphones H1), 1,299 (Sport Earbuds) — межі включно."
+    },
+    {
+      "id": "request-id",
+      "kind": "single",
+      "text": "Який заголовок відповіді Gadgetly API містить унікальний id кожного запиту?",
+      "options": [{ "text": "`X-Request-Id`", "correct": true }, { "text": "`Content-Length`" }, { "text": "`Location`" }]
+    },
+    {
+      "id": "limit-max",
+      "kind": "text",
+      "text": "`GET /api/products?limit=51` — який статус-код?",
+      "accept": ["400", "400 bad request"],
+      "explanation": "Максимальний `limit` — 50 (див. документацію в API console): 400."
+    },
+    {
+      "id": "location",
+      "kind": "text",
+      "text": "Увійди, додай токен і створи замовлення `POST /api/orders` з тілом `{\"productId\": 4, \"quantity\": 2}`. Яке значення заголовка `Location`?",
+      "accept": ["/api/orders/1003"],
+      "explanation": "Після Reset наступний id — 1003: `Location: /api/orders/1003`."
+    },
+    {
+      "id": "www-auth",
+      "kind": "text",
+      "text": "`GET /api/me` без Authorization повертає 401. Яке значення заголовка `WWW-Authenticate`?",
+      "accept": ["Bearer"],
+      "explanation": "Сервер підказує, що чекає Bearer-токен."
+    },
+    {
+      "id": "no-content-type",
+      "kind": "text",
+      "text": "Надішли `POST /api/orders` з правильним JSON-тілом, але **прибери** рядок `Content-Type` із заголовків. Який статус-код?",
+      "accept": ["415", "415 unsupported media type"],
+      "explanation": "Без `Content-Type: application/json` сервер не приймає тіло: 415."
+    }
+  ]
+}

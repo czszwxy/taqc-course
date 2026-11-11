@@ -1,0 +1,33 @@
+{
+  "type": "quiz",
+  "title": "Run a full CRUD flow",
+  "playground": "api",
+  "intro": "Пройди повний цикл у **API console** (кнопка нижче) і відповідай на питання за результатами.\n\n1. **Reset demo data** → **Log in** → додай токен у заголовки.\n2. `POST /api/orders` з тілом `{\"productId\": 4, \"quantity\": 2}`.\n3. `GET /api/orders/{id}` створеного замовлення.\n4. `GET /api/orders`.\n5. `DELETE /api/orders/{id}`.\n6. Знову `GET /api/orders/{id}`.",
+  "hints": [
+    "id нового замовлення є і в тілі відповіді, і в заголовку Location.",
+    "Товар 4 — USB-C Cable 1 m за 249 UAH.",
+    "Після Reset у тебе вже є одне замовлення (1002)."
+  ],
+  "questions": [
+    { "id": "new-id", "kind": "text", "text": "Який `id` отримало нове замовлення?", "accept": ["1003"] },
+    { "id": "total", "kind": "text", "text": "Яке значення `total` у новому замовленні?", "accept": ["498"], "explanation": "249 × 2 = **498**." },
+    {
+      "id": "list-count",
+      "kind": "text",
+      "text": "Скільки замовлень повертає `GET /api/orders` після створення (кількість елементів `items`)?",
+      "accept": ["2"],
+      "explanation": "Твоє старе замовлення 1002 і нове 1003."
+    },
+    { "id": "delete-status", "kind": "text", "text": "Який статус-код у `DELETE /api/orders/1003`?", "accept": ["204", "204 no content"] },
+    { "id": "after-delete", "kind": "text", "text": "Який статус-код у `GET /api/orders/1003` після видалення?", "accept": ["404", "404 not found"] },
+    {
+      "id": "post-twice",
+      "kind": "single",
+      "text": "Що станеться, якщо надіслати той самий `POST /api/orders` двічі?",
+      "options": [
+        { "text": "Створяться два різні замовлення з різними id — POST не ідемпотентний", "correct": true },
+        { "text": "Друге замовлення замінить перше" }
+      ]
+    }
+  ]
+}

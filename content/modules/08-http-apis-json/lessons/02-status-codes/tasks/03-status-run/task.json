@@ -1,0 +1,39 @@
+{
+  "type": "table",
+  "title": "Run the requests and record the status codes",
+  "playground": "api",
+  "statement": "Виконай запити в **API console** і запиши статус-код кожної відповіді.\n\n1. Натисни **Reset demo data** (у жовтій панелі).\n2. Виконай **Log in** і натисни «Add the token … as Authorization header» — для рядків з 🔒.\n3. Виконуй рядки **по черзі**: деякі змінюють дані.\n\nДля тіла запиту з `Content-Type: text/plain` прибери або зміни рядок `Content-Type` у полі Headers.",
+  "givenColumns": ["#", "Request", "Body / note"],
+  "answerColumns": [
+    {
+      "id": "status",
+      "label": "Status",
+      "options": ["200", "201", "204", "400", "401", "403", "404", "405", "409", "415", "422", "500"]
+    }
+  ],
+  "rows": [
+    { "given": ["1", "`GET /api/health`", "—"], "answers": { "status": "200" } },
+    { "given": ["2", "`GET /api/products/999`", "—"], "answers": { "status": "404" } },
+    { "given": ["3", "`GET /api/products/abc`", "—"], "answers": { "status": "400" }, "explain": "id має бути числом: сервер відповідає 400 «Product id must be a number»." },
+    { "given": ["4", "`DELETE /api/products/1`", "—"], "answers": { "status": "405" }, "explain": "Каталог доступний лише для читання; у заголовку `Allow` видно дозволені методи." },
+    { "given": ["5", "`POST /api/auth/login`", "`{\"email\": \"qa@gadgetly.test\", \"password\": \"wrong\"}`"], "answers": { "status": "401" } },
+    { "given": ["6", "`GET /api/me` без Authorization", "прибери рядок Authorization з Headers"], "answers": { "status": "401" } },
+    { "given": ["7", "🔒 `POST /api/orders`", "`{\"productId\": 2, \"quantity\": 1}` (Gaming Mouse X7)"], "answers": { "status": "409" }, "explain": "Товару немає в наявності — конфлікт стану: 409." },
+    { "given": ["8", "🔒 `POST /api/orders`", "`{\"productId\": 99, \"quantity\": 1}`"], "answers": { "status": "422" }, "explain": "Формат правильний, але товару 99 не існує — порушене бізнес-правило: 422." },
+    { "given": ["9", "🔒 `POST /api/orders`", "`{\"productId\": 1, \"quantity\": \"two\"}`"], "answers": { "status": "400" } },
+    { "given": ["10", "🔒 `POST /api/orders`", "`{\"productId\": 1, \"quantity\": 2}`"], "answers": { "status": "201" } },
+    { "given": ["11", "🔒 `GET /api/orders/1002`", "—"], "answers": { "status": "200" } },
+    { "given": ["12", "🔒 `DELETE /api/orders/1002`", "—"], "answers": { "status": "204" } },
+    {
+      "given": ["13", "🔒 `POST /api/orders`", "тіло `hello`, заголовок `Content-Type: text/plain`"],
+      "answers": { "status": "415" },
+      "explain": "Сервер приймає лише JSON: 415 Unsupported Media Type."
+    }
+  ],
+  "hints": [
+    "Якщо рядок 6 повертає 200 — ти не прибрала заголовок Authorization.",
+    "Рядки 11–12 залежать від того, чи існує замовлення 1002: почни з Reset demo data.",
+    "Статус видно в кольоровій плашці над тілом відповіді."
+  ],
+  "explanation": "Цей прогін — мініатюрний набір API-тестів: успіхи (200, 201, 204), помилки клієнта різних типів (400 — формат, 401 — автентифікація, 404 — немає ресурсу, 405 — метод, 409 — стан, 415 — тип тіла, 422 — бізнес-правило). Хороше API відповідає **різними** кодами на різні проблеми — і тестувальник перевіряє кожну."
+}

@@ -1,0 +1,29 @@
+{
+  "title": "JSON",
+  "minutes": 40,
+  "summary": "Синтаксис JSON (об'єкти, масиви, рядки, числа, true/false/null), типові помилки, шляхи до значень (order.items[0].price) і чому тип даних — це теж вимога",
+  "resources": [
+    {
+      "title": "JSON — official site (json.org)",
+      "url": "https://www.json.org/json-en.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: JSON (JavaScript reference)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "uk.javascript.info — підручник українською",
+      "url": "https://uk.javascript.info/",
+      "kind": "course",
+      "lang": "uk",
+      "note": "Розділ про методи JSON (JSON.parse, JSON.stringify).",
+      "needsVerification": true
+    }
+  ]
+}

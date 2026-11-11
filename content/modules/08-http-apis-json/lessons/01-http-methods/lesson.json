@@ -1,0 +1,28 @@
+{
+  "title": "HTTP requests & methods",
+  "minutes": 45,
+  "summary": "Будова HTTP-запиту і відповіді; методи GET, POST, PUT, PATCH, DELETE; безпечні та ідемпотентні методи; перші запити до Gadgetly API в API console",
+  "resources": [
+    {
+      "title": "MDN: An overview of HTTP",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: HTTP request methods",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: HTTP methods explained (пошук)",
+      "url": "https://www.youtube.com/results?search_query=http+methods+get+post+put+patch+delete+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

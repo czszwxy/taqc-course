@@ -1,0 +1,21 @@
+{
+  "title": "Status codes",
+  "minutes": 45,
+  "summary": "Класи статус-кодів 1xx–5xx і найважливіші коди (200, 201, 204, 301, 304, 400, 401, 403, 404, 405, 409, 415, 422, 429, 500, 502, 503); коли код — це баг; прогін запитів у Gadgetly API",
+  "resources": [
+    {
+      "title": "MDN: HTTP response status codes",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: HTTP status codes explained (пошук)",
+      "url": "https://www.youtube.com/results?search_query=http+status+codes+explained+for+testers",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

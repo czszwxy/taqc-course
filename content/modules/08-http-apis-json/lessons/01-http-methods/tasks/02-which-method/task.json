@@ -1,0 +1,27 @@
+{
+  "type": "classify",
+  "title": "Which HTTP method?",
+  "statement": "Обери HTTP-метод для кожної дії клієнта.",
+  "show": 8,
+  "categories": [
+    { "id": "get", "label": "GET" },
+    { "id": "post", "label": "POST" },
+    { "id": "put", "label": "PUT" },
+    { "id": "patch", "label": "PATCH" },
+    { "id": "delete", "label": "DELETE" }
+  ],
+  "items": [
+    { "id": "list", "text": "Отримати список товарів категорії Phones", "category": "get" },
+    { "id": "create-order", "text": "Оформити нове замовлення", "category": "post" },
+    { "id": "qty", "text": "Змінити лише кількість у замовленні 1002", "category": "patch" },
+    { "id": "replace", "text": "Повністю перезаписати замовлення 1002 новими productId і quantity", "category": "put" },
+    { "id": "remove", "text": "Видалити замовлення 1002", "category": "delete" },
+    { "id": "login", "text": "Увійти: надіслати email і пароль, отримати токен", "category": "post", "explain": "Логін передає секретні дані в тілі запиту і створює сесію/токен — тому POST, а не GET (пароль не можна класти в URL)." },
+    { "id": "profile", "text": "Отримати дані поточного користувача (`/me`)", "category": "get" },
+    { "id": "email", "text": "Оновити лише email у профілі", "category": "patch" },
+    { "id": "unsubscribe", "text": "Прибрати товар з обраного", "category": "delete" },
+    { "id": "search", "text": "Знайти товари за словом «mouse»", "category": "get", "explain": "Пошук — читання даних: `GET /products?q=mouse`." }
+  ],
+  "hints": ["Читаєш — GET. Створюєш нове — POST. Замінюєш усе — PUT. Змінюєш частину — PATCH. Видаляєш — DELETE."],
+  "explanation": "Метод показує **намір** клієнта: GET — прочитати (без змін), POST — створити або виконати дію (логін, оплата), PUT — повністю замінити, PATCH — частково змінити, DELETE — видалити. Секретні дані (пароль) ніколи не передають у URL GET-запиту — лише в тілі POST."
+}

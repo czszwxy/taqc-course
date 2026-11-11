@@ -1,0 +1,195 @@
+{
+  "type": "bug-report",
+  "title": "Bug hunt: the Gadgetly API",
+  "playground": "api",
+  "minBugs": 3,
+  "statement": "У **Gadgetly API** сховано **6 багів**: місць, де поведінка не відповідає документації (жовта панель API console). Знайди й оформи щонайменше **3**.\n\n- Працюй через API console, Postman або curl. Перед серією тестів натискай **Reset demo data**.\n- Використай свій чекліст: межі, типи, відсутні поля, доступ до чужих ресурсів, пагінація, повтори, перерахунок сум.\n- У репорті замість кроків UI — **запити**: метод, URL, тіло. У Actual — статус і важливий фрагмент відповіді.",
+  "hints": [
+    "Межі quantity при створенні замовлення: 0, 1, 10, 11. А що з логіном, якщо прибрати одне з полів?",
+    "Тобі належить замовлення 1002. А що, якщо запитати 1001? Що, якщо видалити неіснуюче 9999?",
+    "Порівняй `page=1` і `page=2` з `limit=5`. Зміни quantity через PATCH і подивись на total."
+  ],
+  "explanation": "Баги API знаходять систематично: **межі** (quantity 0 приймається), **відсутні поля** (логін без пароля → 500), **доступ** (чуже замовлення 1001 повертається з 200 — IDOR), **узгодженість даних** (PATCH не перераховує total), **коректні коди** (DELETE неіснуючого → 204), **колекції** (сторінки перекриваються). Хороший репорт містить точний запит, статус і фрагмент відповіді, і посилається на документацію.",
+  "bugs": [
+    {
+      "id": "pagination-overlap",
+      "title": "Page 2 repeats the last product of page 1",
+      "match": [
+        "page|pagination|пагінац|сторінк",
+        "duplicat|дубл|повтор|same|той самий|overlap|двічі|twice|again|both|обох|перекрив|last item|останн"
+      ],
+      "severity": [
+        "Minor",
+        "Major"
+      ],
+      "severityWhy": "Користувач бачить один товар двічі, а гортаючи сторінки, може пропускати товари — функція каталогу працює некоректно, але обхід є: Minor (Major для великих каталогів).",
+      "model": {
+        "title": "API: GET /api/products page 2 repeats the last product of page 1 (Laptop Air 13 is on both pages)",
+        "environment": "Gadgetly API http://localhost:5173/api, API console in Chrome 131, Windows 11",
+        "preconditions": "No authentication needed",
+        "steps": [
+          "GET /api/products?page=1&limit=5",
+          "GET /api/products?page=2&limit=5",
+          "Compare the items of both pages"
+        ],
+        "testData": "page=1 and page=2, limit=5; total = 14",
+        "actualResult": "Page 1 ends with \"Laptop Air 13\" (id 5), and page 2 starts with the same product (id 5) — it is returned on both pages.",
+        "expectedResult": "Page 2 starts with the 6th product (Laptop Pro 15, id 6); pages don't overlap and every product appears exactly once.",
+        "severity": "Minor",
+        "priority": "Medium",
+        "attachments": "curl-page1-page2.txt"
+      }
+    },
+    {
+      "id": "login-missing-password-500",
+      "title": "Login without password returns 500",
+      "match": [
+        "login|auth|логін|вхід|увійт|sign in",
+        "500|internal server error"
+      ],
+      "severity": [
+        "Major",
+        "Minor"
+      ],
+      "severityWhy": "Необроблена помилка сервера на звичайні неповні дані: клієнт не отримує зрозумілої помилки, а 500 у логах маскує справжні збої. Major.",
+      "model": {
+        "title": "API: POST /api/auth/login without the \"password\" field returns 500 Internal Server Error",
+        "environment": "Gadgetly API http://localhost:5173/api, API console in Chrome 131, Windows 11",
+        "preconditions": "No authentication needed",
+        "steps": [
+          "Set the header Content-Type: application/json",
+          "POST /api/auth/login with body {\"email\": \"qa@gadgetly.test\"}"
+        ],
+        "testData": "Body: {\"email\": \"qa@gadgetly.test\"} — no password field",
+        "actualResult": "Status 500, body {\"error\": \"Internal Server Error\"}.",
+        "expectedResult": "Status 400 with a clear message, e.g. {\"error\": \"email and password are required\"} (documentation: missing fields → 400).",
+        "severity": "Major",
+        "priority": "Medium",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "order-quantity-zero",
+      "title": "Order with quantity 0 is created",
+      "match": [
+        "quantity|кількіст",
+        "(^|\\D)0(\\D|$)|zero|нуль"
+      ],
+      "severity": [
+        "Major",
+        "Minor"
+      ],
+      "severityWhy": "Система створює порожні замовлення з сумою 0, які потім потрапляють у склад, доставку й звітність. Порушене бізнес-правило — Major.",
+      "model": {
+        "title": "API: POST /api/orders with quantity 0 creates an order (201) with total 0",
+        "environment": "Gadgetly API http://localhost:5173/api, API console in Chrome 131, Windows 11",
+        "preconditions": "Logged in as qa@gadgetly.test; Authorization: Bearer <token>",
+        "steps": [
+          "POST /api/auth/login as qa@gadgetly.test and add Authorization: Bearer <token>",
+          "POST /api/orders with body {\"productId\": 1, \"quantity\": 0}",
+          "GET /api/orders and find the new order"
+        ],
+        "testData": "productId 1, quantity 0 (documentation: quantity is an integer 1–10)",
+        "actualResult": "Status 201 Created; the new order has quantity 0 and total 0.",
+        "expectedResult": "Status 400 {\"error\": \"quantity must be from 1 to 10\"}; no order is created.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "other-users-order",
+      "title": "Another user's order is returned (IDOR)",
+      "match": [
+        "1001|another user|other user|чуж|інш\\S* користувач|someone else|not mine|не мо[єї]|не свої|userid\\D*17|user 17",
+        "200|(^|[^a-z])ok([^a-z]|$)|access|доступ|returned|поверта|бачу|see|видно|отрима|shown"
+      ],
+      "severity": [
+        "Critical",
+        "Blocker",
+        "Major"
+      ],
+      "severityWhy": "Будь-який користувач може читати чужі замовлення, перебираючи id: витік персональних даних (IDOR). Critical.",
+      "model": {
+        "title": "API: GET /api/orders/1001 returns another user's order with 200 instead of 403",
+        "environment": "Gadgetly API http://localhost:5173/api, API console in Chrome 131, Windows 11",
+        "preconditions": "Logged in as qa@gadgetly.test (user 42); order 1001 belongs to user 17",
+        "steps": [
+          "POST /api/auth/login as qa@gadgetly.test and copy the token",
+          "GET /api/orders/1001 with Authorization: Bearer <token>"
+        ],
+        "testData": "My user: id 42; order 1001: userId 17",
+        "actualResult": "Status 200 and the full order of user 17 is returned (\"userId\": 17).",
+        "expectedResult": "Status 403 {\"error\": \"You don't have access to this order\"} (documentation: someone else's order → 403).",
+        "severity": "Critical",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "patch-total-not-recalculated",
+      "title": "PATCH quantity does not recalculate total",
+      "match": [
+        "patch|update|оновл|змін",
+        "total|сум",
+        "recalculat|not (updated|changed)|не (оновл|змін|перерах)|old|стар|same|той самий|залиш|unchanged|stays|stay"
+      ],
+      "severity": [
+        "Major",
+        "Critical"
+      ],
+      "severityWhy": "Сума замовлення не відповідає кількості — клієнт платить неправильну суму або компанія втрачає гроші. Major.",
+      "model": {
+        "title": "API: PATCH /api/orders/1002 changes quantity but total is not recalculated",
+        "environment": "Gadgetly API http://localhost:5173/api, API console in Chrome 131, Windows 11",
+        "preconditions": "Demo data reset; logged in as qa@gadgetly.test",
+        "steps": [
+          "PATCH /api/orders/1002 with body {\"quantity\": 5}",
+          "GET /api/orders/1002"
+        ],
+        "testData": "Order 1002: product 1 (unitPrice 499), quantity 2 → 5",
+        "actualResult": "quantity is 5, but total stays 998 (the old value for 2 items).",
+        "expectedResult": "total = unitPrice × quantity = 499 × 5 = 2495.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "delete-missing-204",
+      "title": "DELETE of a non-existent order returns 204",
+      "match": [
+        "delete|видал",
+        "204",
+        "9999|non-?exist|неіснуюч|not exist|не існує|missing|unknown|невідом|404"
+      ],
+      "severity": [
+        "Minor",
+        "Trivial"
+      ],
+      "severityWhy": "Клієнт думає, що видалив замовлення, якого не було; помилки в id маскуються. Даних не втрачено — Minor.",
+      "model": {
+        "title": "API: DELETE /api/orders/9999 (non-existent order) returns 204 instead of 404",
+        "environment": "Gadgetly API http://localhost:5173/api, API console in Chrome 131, Windows 11",
+        "preconditions": "Logged in as qa@gadgetly.test",
+        "steps": [
+          "POST /api/auth/login as qa@gadgetly.test and add Authorization: Bearer <token>",
+          "DELETE /api/orders/9999"
+        ],
+        "testData": "Order 9999 does not exist",
+        "actualResult": "Status 204 No Content — as if the order was deleted.",
+        "expectedResult": "Status 404 {\"error\": \"Order not found\"} (documentation: unknown id → 404).",
+        "severity": "Minor",
+        "priority": "Low",
+        "attachments": ""
+      }
+    }
+  ],
+  "checklist": [
+    "The request is complete: method, URL, important headers (no real secrets), body",
+    "Actual result has the status code and the key part of the response body",
+    "Expected result refers to the API documentation",
+    "Preconditions say which user / token and which data state (reset)",
+    "Security bugs (other users' data) get the highest severity"
+  ]
+}

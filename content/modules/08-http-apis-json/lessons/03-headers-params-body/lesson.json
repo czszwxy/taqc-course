@@ -1,0 +1,28 @@
+{
+  "title": "Headers, query params, body",
+  "minutes": 45,
+  "summary": "Де живуть дані запиту: path-параметри, query-параметри (фільтри, пагінація), заголовки (Content-Type, Accept, Authorization, Location, X-Request-Id) і тіло; типові баги з кодуванням і Content-Type",
+  "resources": [
+    {
+      "title": "MDN: HTTP headers",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Content-Type",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: query parameters vs path parameters (пошук)",
+      "url": "https://www.youtube.com/results?search_query=path+parameters+vs+query+parameters+REST+API",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

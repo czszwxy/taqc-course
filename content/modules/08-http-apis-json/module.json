@@ -1,0 +1,14 @@
+{
+  "title": "HTTP, REST APIs & JSON",
+  "description": "Як застосунки обмінюються даними: HTTP-запити й методи, статус-коди, заголовки й параметри, JSON, REST і CRUD, автентифікація токенами, ручне тестування API в Postman і в API console, дизайн API-тестів. Практика — на локальному Gadgetly API, яке працює разом із застосунком (/api).",
+  "goals": [
+    "Read and build HTTP requests: method, URL, headers, body",
+    "Know what each common status code means and when it is a bug",
+    "Use query parameters, path parameters and headers correctly",
+    "Read and validate JSON, spot type problems",
+    "Map CRUD operations to REST endpoints and methods",
+    "Test authentication and authorization: tokens, JWT, 401 vs 403",
+    "Test an API manually with Postman, curl or the in-app API console",
+    "Design API test cases and report API bugs"
+  ]
+}

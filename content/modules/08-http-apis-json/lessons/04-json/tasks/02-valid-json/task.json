@@ -1,0 +1,26 @@
+{
+  "type": "classify",
+  "title": "Valid or invalid JSON?",
+  "statement": "Визнач, чи є кожен фрагмент **валідним JSON**.",
+  "show": 9,
+  "categories": [
+    { "id": "valid", "label": "Valid JSON" },
+    { "id": "invalid", "label": "Invalid JSON" }
+  ],
+  "items": [
+    { "id": "ok-object", "text": "`{\"name\": \"Mouse\", \"price\": 499}`", "category": "valid" },
+    { "id": "single-quotes", "text": "`{'name': 'Mouse'}`", "category": "invalid", "explain": "Лише подвійні лапки." },
+    { "id": "trailing-comma", "text": "`{\"price\": 499,}`", "category": "invalid", "explain": "Кома після останнього поля." },
+    { "id": "capital-true", "text": "`{\"inStock\": True}`", "category": "invalid", "explain": "`true` пишеться малими літерами." },
+    { "id": "array", "text": "`[1, 2, 3]`", "category": "valid", "explain": "Масив теж може бути цілим JSON-документом." },
+    { "id": "null", "text": "`{\"coupon\": null}`", "category": "valid" },
+    { "id": "unquoted-key", "text": "`{name: \"Mouse\"}`", "category": "invalid", "explain": "Ключі мають бути в подвійних лапках." },
+    { "id": "comment", "text": "`{\"a\": 1 // first}`", "category": "invalid", "explain": "У JSON немає коментарів." },
+    { "id": "string-only", "text": "`\"hello\"`", "category": "valid", "explain": "Рядок у подвійних лапках — теж валідний JSON-документ." },
+    { "id": "leading-zero", "text": "`{\"zip\": 01001}`", "category": "invalid", "explain": "Числа не можуть починатися з нуля. Індекс треба передавати рядком." },
+    { "id": "nested", "text": "`{\"items\": [{\"id\": 1}, {\"id\": 2}]}`", "category": "valid" },
+    { "id": "undefined", "text": "`{\"value\": undefined}`", "category": "invalid", "explain": "`undefined` — не JSON-тип. Використовують `null` або не передають поле." }
+  ],
+  "hints": ["Перевір: подвійні лапки скрізь? ключі в лапках? немає коми в кінці? true/false/null малими? немає коментарів і нулів на початку чисел?"],
+  "explanation": "Найчастіші помилки JSON: одинарні лапки, ключі без лапок, кома після останнього елемента, `True`/`undefined`, коментарі, числа з нулем на початку. Валідний JSON-документ може бути не лише об'єктом, а й масивом чи рядком."
+}

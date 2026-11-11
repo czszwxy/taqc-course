@@ -1,0 +1,27 @@
+{
+  "type": "classify",
+  "title": "Path, query, header or body?",
+  "statement": "Куди в HTTP-запиті покласти кожну частину даних?",
+  "show": 8,
+  "categories": [
+    { "id": "path", "label": "Path parameter" },
+    { "id": "query", "label": "Query parameter" },
+    { "id": "header", "label": "Header" },
+    { "id": "body", "label": "Body" }
+  ],
+  "items": [
+    { "id": "order-id", "text": "id замовлення, яке треба отримати", "category": "path" },
+    { "id": "page", "text": "Номер сторінки результатів", "category": "query" },
+    { "id": "token", "text": "Токен доступу", "category": "header" },
+    { "id": "new-order", "text": "productId і quantity нового замовлення", "category": "body" },
+    { "id": "category", "text": "Фільтр за категорією товарів", "category": "query" },
+    { "id": "format", "text": "Формат даних, які ти надсилаєш (JSON)", "category": "header", "explain": "`Content-Type: application/json`." },
+    { "id": "password", "text": "Пароль під час логіну", "category": "body", "explain": "Паролі ніколи не кладуть у URL (path чи query) — вони потраплять у логи й історію." },
+    { "id": "product-id", "text": "id товару в `GET /products/3`", "category": "path" },
+    { "id": "sort", "text": "Порядок сортування (`price`, `rating`)", "category": "query" },
+    { "id": "lang", "text": "Мова, якою клієнт хоче отримати відповідь", "category": "header", "explain": "`Accept-Language: uk`." },
+    { "id": "profile", "text": "Нові ім'я та телефон у PATCH профілю", "category": "body" }
+  ],
+  "hints": ["Ідентифікатор ресурсу → path. Фільтр/сортування/сторінка → query. Метадані й секрети доступу → header. Дані для створення/зміни → body."],
+  "explanation": "Path ідентифікує ресурс (`/orders/1002`), query налаштовує вибірку (`?page=2&category=Phones`), headers несуть метадані (`Content-Type`, `Authorization`, `Accept-Language`), body — дані, що створюються або змінюються. Секрети (паролі, токени) ніколи не кладуть в URL."
+}

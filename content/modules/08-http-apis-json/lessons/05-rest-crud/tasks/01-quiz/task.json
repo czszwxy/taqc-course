@@ -1,0 +1,66 @@
+{
+  "type": "quiz",
+  "title": "Quiz: REST and CRUD",
+  "show": 5,
+  "hints": ["Адреса — іменник у множині, дія — метод. Після зміни — перевіряй GET-ом."],
+  "questions": [
+    {
+      "id": "rest-uri",
+      "kind": "single",
+      "text": "Яка адреса відповідає REST-стилю для видалення замовлення 1002?",
+      "options": [
+        { "text": "`DELETE /orders/1002`", "correct": true },
+        { "text": "`GET /orders/delete?id=1002`", "explain": "GET не має змінювати дані, а дія має бути в методі, не в адресі." },
+        { "text": "`POST /deleteOrder`" }
+      ]
+    },
+    {
+      "id": "create-status",
+      "kind": "single",
+      "text": "Який статус очікується після успішного `POST /orders`?",
+      "options": [{ "text": "201 Created (і заголовок Location)", "correct": true }, { "text": "200 OK" }, { "text": "204 No Content" }]
+    },
+    {
+      "id": "verify",
+      "kind": "single",
+      "text": "`PATCH /orders/1003` повернув 200. Як переконатися, що зміна справді збереглася?",
+      "options": [
+        { "text": "Виконати `GET /orders/1003` і перевірити поля", "correct": true },
+        { "text": "Статусу 200 достатньо" }
+      ]
+    },
+    {
+      "id": "after-delete",
+      "kind": "single",
+      "text": "Що має повернути `GET /orders/1003` після успішного `DELETE /orders/1003`?",
+      "options": [{ "text": "404 Not Found", "correct": true }, { "text": "200 з порожнім тілом" }, { "text": "500" }]
+    },
+    {
+      "id": "stateless",
+      "kind": "single",
+      "text": "Що означає «REST API stateless»?",
+      "options": [
+        { "text": "Кожен запит несе все потрібне (зокрема токен); сервер не покладається на попередні запити", "correct": true },
+        { "text": "API не зберігає дані в базі" }
+      ]
+    },
+    {
+      "id": "dependent",
+      "kind": "single",
+      "text": "Ти змінила `quantity` у замовленні з 2 на 5. Що ще обов'язково перевірити?",
+      "options": [
+        { "text": "Що `total` перерахувався: unitPrice × 5", "correct": true },
+        { "text": "Лише саме поле quantity" }
+      ]
+    },
+    {
+      "id": "cleanup",
+      "kind": "single",
+      "text": "Навіщо видаляти тестові замовлення після тесту?",
+      "options": [
+        { "text": "Щоб наступні тести починали з передбачуваного стану", "correct": true },
+        { "text": "Щоб сервер працював швидше" }
+      ]
+    }
+  ]
+}

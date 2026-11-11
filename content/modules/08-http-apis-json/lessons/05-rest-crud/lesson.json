@@ -1,0 +1,28 @@
+{
+  "title": "REST & CRUD",
+  "minutes": 45,
+  "summary": "REST: ресурси й URI, колекція і елемент, CRUD ↔ методи ↔ статус-коди, пагінація й фільтри, statelessness — і повний цикл create → read → update → delete на Gadgetly API",
+  "resources": [
+    {
+      "title": "MDN: REST (glossary)",
+      "url": "https://developer.mozilla.org/en-US/docs/Glossary/REST",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: CRUD (glossary)",
+      "url": "https://developer.mozilla.org/en-US/docs/Glossary/CRUD",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: REST API explained (пошук)",
+      "url": "https://www.youtube.com/results?search_query=rest+api+explained+crud",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

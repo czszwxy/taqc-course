@@ -1,0 +1,63 @@
+{
+  "type": "quiz",
+  "title": "Quiz: authentication and authorization",
+  "show": 6,
+  "hints": ["401 — хто ти? 403 — тобі не можна. Base64 — не шифрування. Payload JWT читає будь-хто."],
+  "questions": [
+    {
+      "id": "authn-authz",
+      "kind": "single",
+      "text": "Що перевіряє **авторизація**?",
+      "options": [
+        { "text": "Чи має користувач право на конкретну дію чи ресурс", "correct": true },
+        { "text": "Чи правильний пароль", "explain": "Це автентифікація — перевірка, **хто** ти." }
+      ]
+    },
+    {
+      "id": "base64",
+      "kind": "single",
+      "text": "Чи захищає Base64 у Basic auth пароль від перехоплення?",
+      "options": [
+        { "text": "Ні: це лише кодування, його легко розкодувати — потрібен HTTPS", "correct": true },
+        { "text": "Так, це шифрування" }
+      ]
+    },
+    {
+      "id": "jwt-parts",
+      "kind": "text",
+      "text": "Скільки частин, розділених крапками, має JWT?",
+      "accept": ["3", "three", "три"],
+      "explanation": "header.payload.signature — **3** частини."
+    },
+    {
+      "id": "jwt-tamper",
+      "kind": "single",
+      "text": "Ти змінила в payload токена `role` на `admin`. Що має відповісти сервер?",
+      "options": [
+        { "text": "401: підпис більше не збігається з вмістом", "correct": true },
+        { "text": "200 з правами адміністратора", "explain": "Якщо так — це критичний баг безпеки: сервер не перевіряє підпис." }
+      ]
+    },
+    {
+      "id": "idor",
+      "kind": "single",
+      "text": "Користувач змінив у URL `/orders/1002` на `/orders/1001` і бачить чуже замовлення. Як називається ця вразливість?",
+      "options": [{ "text": "IDOR (Insecure Direct Object Reference)", "correct": true }, { "text": "XSS" }, { "text": "DNS spoofing" }]
+    },
+    {
+      "id": "expired",
+      "kind": "single",
+      "text": "Що має повернути API на запит із **простроченим** токеном?",
+      "options": [{ "text": "401", "correct": true }, { "text": "403" }, { "text": "200" }]
+    },
+    {
+      "id": "payload-secrets",
+      "kind": "single",
+      "text": "Чи можна зберігати в payload JWT пароль користувача?",
+      "options": [
+        { "text": "Ні: payload розкодовує будь-хто", "correct": true },
+        { "text": "Так, токен же підписаний" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "type": "quiz",
+  "title": "Quiz: JSON",
+  "show": 6,
+  "hints": ["Нумерація в масивах починається з 0. Рядки — лише в подвійних лапках."],
+  "questions": [
+    {
+      "id": "path-items",
+      "kind": "text",
+      "text": "Яке значення за шляхом `items[1].name`?",
+      "code": "{\n  \"items\": [\n    { \"name\": \"Wireless Mouse M2\", \"qty\": 2 },\n    { \"name\": \"USB-C Cable 1 m\", \"qty\": 1 }\n  ]\n}",
+      "accept": ["USB-C Cable 1 m"],
+      "explanation": "`items[1]` — **другий** елемент (індекси з 0): `USB-C Cable 1 m`."
+    },
+    {
+      "id": "path-nested",
+      "kind": "text",
+      "text": "Яке значення за шляхом `customer.address.city`?",
+      "code": "{\n  \"customer\": {\n    \"name\": \"Olena\",\n    \"address\": { \"city\": \"Lviv\", \"zip\": \"79000\" }\n  }\n}",
+      "accept": ["Lviv"]
+    },
+    {
+      "id": "quotes",
+      "kind": "single",
+      "text": "Який рядок — **валідний** JSON?",
+      "options": [
+        { "text": "`{\"name\": \"Mouse\", \"price\": 499}`", "correct": true },
+        { "text": "`{'name': 'Mouse', 'price': 499}`", "explain": "У JSON лише подвійні лапки." },
+        { "text": "`{name: \"Mouse\", price: 499,}`", "explain": "Ключі без лапок і кома в кінці." }
+      ]
+    },
+    {
+      "id": "type-quantity",
+      "kind": "single",
+      "text": "API повертає `\"quantity\": \"2\"`. Що з цим не так?",
+      "options": [
+        { "text": "Кількість має бути числом `2`, а не рядком", "correct": true },
+        { "text": "Усе гаразд, значення ж правильне" }
+      ]
+    },
+    {
+      "id": "null-vs-empty",
+      "kind": "single",
+      "text": "Замість порожнього масиву `\"items\": []` API повертає `\"items\": null`. Чим це ризиковано?",
+      "options": [
+        { "text": "Клієнтський код, що звертається до `items.length`, впаде з помилкою", "correct": true },
+        { "text": "Нічим, це те саме" }
+      ]
+    },
+    {
+      "id": "boolean",
+      "kind": "single",
+      "text": "Як правильно записати логічне значення в JSON?",
+      "options": [{ "text": "`true`", "correct": true }, { "text": "`True`" }, { "text": "`\"true\"`", "explain": "Це рядок, а не boolean." }]
+    },
+    {
+      "id": "zip",
+      "kind": "single",
+      "text": "Поштовий індекс `01001`. Яким типом його краще передавати?",
+      "options": [
+        { "text": "Рядком `\"01001\"` — інакше загубиться нуль на початку", "correct": true },
+        { "text": "Числом `01001`", "explain": "Числа з нулем на початку в JSON невалідні, а `1001` — це вже інший індекс." }
+      ]
+    }
+  ]
+}

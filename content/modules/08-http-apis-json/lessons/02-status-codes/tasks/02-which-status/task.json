@@ -1,0 +1,32 @@
+{
+  "type": "classify",
+  "title": "Which status code should the API return?",
+  "statement": "Обери **правильний** статус-код для кожної ситуації.",
+  "show": 9,
+  "categories": [
+    { "id": "200", "label": "200 OK" },
+    { "id": "201", "label": "201 Created" },
+    { "id": "204", "label": "204 No Content" },
+    { "id": "400", "label": "400 Bad Request" },
+    { "id": "401", "label": "401 Unauthorized" },
+    { "id": "403", "label": "403 Forbidden" },
+    { "id": "404", "label": "404 Not Found" },
+    { "id": "409", "label": "409 Conflict" },
+    { "id": "500", "label": "500 Internal Server Error" }
+  ],
+  "items": [
+    { "id": "get-ok", "text": "`GET /products/3` — товар існує", "category": "200" },
+    { "id": "post-ok", "text": "`POST /orders` — замовлення створено", "category": "201" },
+    { "id": "delete-ok", "text": "`DELETE /orders/1003` — видалено, тіла немає", "category": "204" },
+    { "id": "qty-string", "text": "`POST /orders` з `\"quantity\": \"two\"`", "category": "400" },
+    { "id": "no-token", "text": "`GET /me` без заголовка Authorization", "category": "401" },
+    { "id": "other-user", "text": "Користувач з валідним токеном відкриває **чуже** замовлення", "category": "403" },
+    { "id": "missing", "text": "`GET /orders/9999` — такого замовлення немає", "category": "404" },
+    { "id": "stock", "text": "`POST /orders` на товар, якого немає в наявності", "category": "409" },
+    { "id": "crash", "text": "Сервер упав з необробленим винятком через помилку в коді", "category": "500", "explain": "Це саме те, що означає 500. Сам факт такої відповіді — привід для баг-репорту." },
+    { "id": "expired", "text": "`GET /orders` з простроченим токеном", "category": "401" },
+    { "id": "patch-ok", "text": "`PATCH /orders/1002` — кількість змінено, у тілі оновлене замовлення", "category": "200" }
+  ],
+  "hints": ["Спочатку визнач клас: успіх (2xx), проблема запиту (4xx) чи сервера (5xx). Потім уточни код."],
+  "explanation": "Успіх: 200 (дані є), 201 (створено), 204 (успіх без тіла). Помилки клієнта: 400 (невалідні дані), 401 (не автентифікований: немає/невалідний/прострочений токен), 403 (немає прав на чужий ресурс), 404 (не існує), 409 (конфлікт стану). 500 — необроблена помилка сервера."
+}

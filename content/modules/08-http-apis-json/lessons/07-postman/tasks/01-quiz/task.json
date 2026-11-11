@@ -1,0 +1,65 @@
+{
+  "type": "quiz",
+  "title": "Quiz: Postman and curl",
+  "show": 5,
+  "hints": ["Collection — набір запитів. Environment — набір змінних для одного середовища. `{{name}}` — змінна."],
+  "questions": [
+    {
+      "id": "variable",
+      "kind": "single",
+      "text": "Як у Postman записати змінну `baseUrl` в адресі запиту?",
+      "options": [{ "text": "`{{baseUrl}}/orders`", "correct": true }, { "text": "`$baseUrl/orders`" }, { "text": "`[baseUrl]/orders`" }]
+    },
+    {
+      "id": "environment",
+      "kind": "single",
+      "text": "Навіщо в Postman **оточення** (environments)?",
+      "options": [
+        { "text": "Щоб тими самими запитами тестувати різні середовища (local, staging), перемикаючи набір змінних", "correct": true },
+        { "text": "Щоб змінити тему оформлення" }
+      ]
+    },
+    {
+      "id": "web-local",
+      "kind": "single",
+      "text": "Чому для `http://localhost:5173` потрібна десктопна версія Postman?",
+      "options": [
+        { "text": "Веб-версія працює з хмари і не бачить твій комп'ютер (localhost)", "correct": true },
+        { "text": "Веб-версія не підтримує GET" }
+      ]
+    },
+    {
+      "id": "pm-test",
+      "kind": "single",
+      "text": "Що робить `pm.environment.set(\"token\", body.token)` у скрипті після логіну?",
+      "options": [
+        { "text": "Зберігає токен у змінну оточення для наступних запитів", "correct": true },
+        { "text": "Надсилає токен на сервер" }
+      ]
+    },
+    {
+      "id": "copy-curl",
+      "kind": "single",
+      "text": "Як найшвидше перенести запит, який сайт робить у браузері, в Postman?",
+      "options": [
+        { "text": "DevTools → Network → Copy as cURL → Postman → Import → Raw text", "correct": true },
+        { "text": "Переписати вручну" }
+      ]
+    },
+    {
+      "id": "runner",
+      "kind": "single",
+      "text": "Що робить Collection Runner?",
+      "options": [
+        { "text": "Виконує всі запити колекції по черзі і показує результати тестів", "correct": true },
+        { "text": "Запускає сервер API" }
+      ]
+    },
+    {
+      "id": "raw-json",
+      "kind": "single",
+      "text": "Де в Postman задати JSON-тіло для POST?",
+      "options": [{ "text": "Body → raw → JSON", "correct": true }, { "text": "Params" }, { "text": "Authorization" }]
+    }
+  ]
+}

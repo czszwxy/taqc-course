@@ -1,0 +1,50 @@
+{
+  "type": "written",
+  "title": "Describe a complete API request and its checks",
+  "playground": "api",
+  "statement": "Колега-новачок просить: «Як мені в Postman створити замовлення на 3 штуки товару з id 1 і що перевірити у відповіді?»\n\nОпиши запит повністю — так, щоб його можна було відтворити в Postman, curl або API console. Потім виконай його в API console і переконайся, що все працює.",
+  "fields": [
+    { "id": "method", "label": "Method", "kind": "text", "placeholder": "POST" },
+    { "id": "url", "label": "URL", "kind": "text", "placeholder": "{{baseUrl}}/…" },
+    { "id": "headers", "label": "Headers (one per line)", "kind": "list", "placeholder": "Content-Type: application/json" },
+    { "id": "body", "label": "Body", "kind": "textarea", "placeholder": "{ … }" },
+    { "id": "checks", "label": "What to check in the response (one per line)", "kind": "list", "placeholder": "Status is 201" }
+  ],
+  "rules": [
+    { "field": "method", "check": "equals", "value": "POST", "message": "Створення ресурсу — метод **POST**." },
+    { "field": "url", "check": "mentionsAny", "value": ["/orders\\s*$"], "message": "Адреса — колекція замовлень: `…/api/orders` (або `{{baseUrl}}/orders`)." },
+    { "field": "headers", "check": "mentionsAll", "value": ["content-type:\\s*application/json", "authorization:\\s*bearer"], "message": "Потрібні два заголовки: `Content-Type: application/json` і `Authorization: Bearer <token>`." },
+    { "field": "body", "check": "mentionsAll", "value": ["\"productId\"\\s*:\\s*1(\\D|$)", "\"quantity\"\\s*:\\s*3(\\D|$)"], "message": "Тіло — JSON з числами: `{\"productId\": 1, \"quantity\": 3}`." },
+    { "field": "checks", "check": "minItems", "value": 3, "message": "Назви щонайменше **3** перевірки відповіді." },
+    { "field": "checks", "check": "mentionsAny", "value": ["201"], "message": "Який статус-код очікується після створення?" },
+    { "field": "checks", "check": "mentionsAny", "value": ["total|1497|сум"], "message": "Перевір **суму**: `total = unitPrice × quantity` (499 × 3)." },
+    { "field": "checks", "check": "mentionsAny", "value": ["location|(^|[^a-z])id([^a-z]|$)|get"], "message": "Перевір, що замовлення справді створено: `id` / заголовок `Location` / окремий `GET`." }
+  ],
+  "model": {
+    "method": "POST",
+    "url": "{{baseUrl}}/orders",
+    "headers": ["Content-Type: application/json", "Authorization: Bearer {{token}}"],
+    "body": "{\n  \"productId\": 1,\n  \"quantity\": 3\n}",
+    "checks": [
+      "Status is 201 Created",
+      "Header Location: /api/orders/<id>",
+      "Body has id, productId = 1, quantity = 3 (numbers, not strings), status = \"created\"",
+      "unitPrice = 499 and total = 1497 (499 × 3)",
+      "GET /api/orders/<id> returns the same order; GET /api/orders contains it",
+      "Response time is reasonable (< 1 s)"
+    ]
+  },
+  "hints": [
+    "Перед створенням замовлення треба увійти: токен іде в заголовок Authorization.",
+    "Товар з id 1 — Wireless Mouse M2 за 499 UAH. Скільки коштуватимуть 3 штуки?",
+    "Хороші перевірки: статус, заголовки, поля і їх типи, розрахунки, і що ресурс справді з'явився (GET)."
+  ],
+  "explanation": "Повний опис запиту = метод + URL + заголовки (`Content-Type`, `Authorization`) + тіло. Перевірки відповіді йдуть від простого до глибокого: статус (201) → заголовки (`Location`) → поля і типи → бізнес-правила (`total = 499 × 3 = 1497`) → стан системи (окремий GET знаходить нове замовлення).",
+  "checklist": [
+    "Method and URL are correct and use variables ({{baseUrl}}, {{token}})",
+    "Both headers are present",
+    "Body is valid JSON with numbers, not strings",
+    "Checks include status, Location / id, field types and the total calculation",
+    "There is a check that the order really exists (GET after POST)"
+  ]
+}

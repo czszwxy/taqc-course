@@ -1,0 +1,34 @@
+{
+  "type": "quiz",
+  "title": "Token hunt: log in, decode the JWT, call protected endpoints",
+  "playground": "api",
+  "intro": "Відкрий **API console** (кнопка нижче).\n\n1. Виконай **Log in** і скопіюй значення `token` з відповіді.\n2. Встав токен у **JWT decoder** внизу сторінки.\n3. Додай токен у заголовки і викликай захищені ендпоінти.",
+  "hints": [
+    "JWT decoder показує два JSON-блоки: header (ліворуч) і payload (праворуч).",
+    "Щоб «зіпсувати» токен, зміни одну літеру в рядку Authorization у полі Headers.",
+    "`GET /api/me` повертає дані користувача, якому належить токен."
+  ],
+  "questions": [
+    { "id": "token-type", "kind": "text", "text": "Яке значення поля `tokenType` у відповіді логіну?", "accept": ["Bearer"] },
+    { "id": "alg", "kind": "text", "text": "Який алгоритм (`alg`) вказано в header токена?", "accept": ["HS256"] },
+    { "id": "sub", "kind": "text", "text": "Яке значення `sub` (id користувача) у payload?", "accept": ["42"] },
+    { "id": "role", "kind": "text", "text": "Яка `role` у payload?", "accept": ["customer"] },
+    { "id": "me-name", "kind": "text", "text": "`GET /api/me` з токеном — яке значення `name`?", "accept": ["Olena Tester"] },
+    {
+      "id": "tampered",
+      "kind": "text",
+      "text": "Зміни одну літеру токена в заголовку Authorization і повтори `GET /api/me`. Який статус-код?",
+      "accept": ["401", "401 unauthorized"],
+      "explanation": "Сервер не впізнає змінений токен: **401** `Invalid token`."
+    },
+    {
+      "id": "no-bearer",
+      "kind": "single",
+      "text": "Прибери слово `Bearer` (залиш лише токен) і повтори `GET /api/me`. Що відповідає сервер?",
+      "options": [
+        { "text": "401 з підказкою про формат `Authorization: Bearer <token>`", "correct": true },
+        { "text": "200 — сервер сам здогадується" }
+      ]
+    }
+  ]
+}

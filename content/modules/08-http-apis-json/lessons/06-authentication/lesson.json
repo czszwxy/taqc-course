@@ -1,0 +1,36 @@
+{
+  "title": "Authentication: basic, tokens, JWT, cookies",
+  "minutes": 50,
+  "summary": "Автентифікація vs авторизація (401 vs 403); Basic auth, API keys, Bearer-токени, JWT (header.payload.signature), сесійні cookies; що тестувати: відсутній, невалідний, прострочений токен, чужі ресурси, ролі",
+  "resources": [
+    {
+      "title": "MDN: HTTP authentication",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "JWT.io — Introduction to JSON Web Tokens",
+      "url": "https://jwt.io/introduction",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Не вставляй на сторонні сайти справжні робочі токени. Для навчальних — можна; або використовуй JWT decoder в API console.",
+      "needsVerification": true
+    },
+    {
+      "title": "OWASP Authentication Cheat Sheet",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: authentication vs authorization, JWT (пошук)",
+      "url": "https://www.youtube.com/results?search_query=authentication+vs+authorization+jwt+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

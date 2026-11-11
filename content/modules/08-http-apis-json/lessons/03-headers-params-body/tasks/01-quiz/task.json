@@ -1,0 +1,63 @@
+{
+  "type": "quiz",
+  "title": "Quiz: headers, parameters and body",
+  "show": 5,
+  "hints": ["Path — який ресурс. Query — фільтри й пагінація. Headers — метадані (формат, токен). Body — дані."],
+  "questions": [
+    {
+      "id": "path",
+      "kind": "single",
+      "text": "У запиті `GET /api/orders/1002?expand=items` що є **path-параметром**?",
+      "options": [{ "text": "`1002`", "correct": true }, { "text": "`expand=items`", "explain": "Це query-параметр (після `?`)." }, { "text": "`GET`" }]
+    },
+    {
+      "id": "content-type",
+      "kind": "text",
+      "text": "Яке значення заголовка `Content-Type` для тіла у форматі JSON?",
+      "accept": ["application/json", "application/json; charset=utf-8"],
+      "explanation": "`Content-Type: application/json`."
+    },
+    {
+      "id": "token",
+      "kind": "single",
+      "text": "Де передають токен доступу?",
+      "options": [
+        { "text": "У заголовку `Authorization: Bearer <token>`", "correct": true },
+        { "text": "У query: `?token=…`", "explain": "URL з токеном потрапляє в логи, історію браузера і посилання — це небезпечно." }
+      ]
+    },
+    {
+      "id": "location",
+      "kind": "single",
+      "text": "Після `201 Created` який заголовок підкаже адресу нового ресурсу?",
+      "options": [{ "text": "`Location`", "correct": true }, { "text": "`Accept`" }, { "text": "`Allow`" }]
+    },
+    {
+      "id": "extra-field",
+      "kind": "single",
+      "text": "Ти додала в тіло `POST /orders` поле `\"total\": 1`. Що перевіряєш?",
+      "options": [
+        { "text": "Що сервер ігнорує це поле і рахує суму сам — інакше клієнт підмінить ціну", "correct": true },
+        { "text": "Що сервер повертає 200" }
+      ]
+    },
+    {
+      "id": "encoding",
+      "kind": "single",
+      "text": "Чому пошук `?q=Phone & Case` може зламатися?",
+      "options": [
+        { "text": "`&` розділяє параметри — значення треба кодувати (`%26`)", "correct": true },
+        { "text": "Бо пошук не підтримує великі літери" }
+      ]
+    },
+    {
+      "id": "request-id",
+      "kind": "single",
+      "text": "Навіщо в баг-репорті про 500 вказувати значення `X-Request-Id`?",
+      "options": [
+        { "text": "За ним розробник знайде точний запис у логах сервера", "correct": true },
+        { "text": "Це пароль від сервера" }
+      ]
+    }
+  ]
+}
