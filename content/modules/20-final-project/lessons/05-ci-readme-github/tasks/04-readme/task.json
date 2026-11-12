@@ -1,0 +1,43 @@
+{
+  "type": "written",
+  "title": "Write the README of your portfolio project",
+  "statement": "Напиши README свого портфоліо-репозиторію **англійською**. Його відкриють першим — рекрутер, тімлід на співбесіді, ти сам через пів року.",
+  "fields": [
+    { "id": "intro", "label": "Title, badge and one-paragraph intro", "kind": "textarea" },
+    { "id": "tested", "label": "What is tested and why (areas, API vs UI split)", "kind": "textarea" },
+    { "id": "structure", "label": "Project structure", "kind": "textarea" },
+    { "id": "run", "label": "How to run", "kind": "textarea" },
+    { "id": "docs", "label": "Test documentation and CI", "kind": "textarea" },
+    { "id": "next", "label": "Known issues / next steps", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "any", "check": "notMentions", "value": ["[а-яґєії]"], "message": "README — англійською, без кирилиці." },
+    { "field": "intro", "check": "mentionsAny", "value": ["badge\\.svg|!\\["], "message": "Intro: додай бейдж CI." },
+    { "field": "intro", "check": "mentionsAll", "value": ["playwright", "typescript"], "message": "Intro: назви стек." },
+    { "field": "tested", "check": "mentionsAll", "value": ["\\bapi\\b", "\\bui\\b"], "message": "Tested: що на рівні UI, що на рівні API і чому." },
+    { "field": "structure", "check": "mentionsAll", "value": ["pages", "fixtures", "tests"], "message": "Structure: pages/, fixtures/, tests/ (і api/, docs/)." },
+    { "field": "run", "check": "mentionsAll", "value": ["npm ci|npm install", "playwright install", "playwright test|npm test"], "message": "Run: встановлення залежностей, браузера і запуск тестів." },
+    { "field": "docs", "check": "mentionsAny", "value": ["docs/|test plan|checklist"], "message": "Docs: посилання на тест-план, чекліст, тест-кейси." },
+    { "field": "next", "check": "minLength", "value": 40, "message": "Next steps: що покращив би далі — це показує зрілість." }
+  ],
+  "model": {
+    "intro": "# Toolshop test automation\n\n![Playwright tests](https://github.com/<you>/toolshop-tests/actions/workflows/playwright.yml/badge.svg)\n\nUI and API tests for the Toolshop demo shop (practicesoftwaretesting.com) written in TypeScript with Playwright Test and run on GitHub Actions. A portfolio project: test plan and documentation in docs/, a framework with page objects, an API client and fixtures.",
+    "tested": "UI: product search and filters, cart, checkout flow, sign-in — the user-facing behaviour (dependent fields, totals on the page, validation messages). API: products, cart and authentication endpoints — status codes, response contract and business rules, as fast data-driven tests. Pricing and validation rules live on the API level; UI tests cover only the key end-to-end scenarios.",
+    "structure": "pages/        page objects and components\napi/          API client\nfixtures/     test fixtures (pages, API client, test data with cleanup)\ndata/         test data and builders\ntests/ui/     UI specs\ntests/api/    API specs\ndocs/         test plan, checklist, test cases, Gadgetly Checkout case study",
+    "run": "Requirements: Node.js 20+.\n\n```bash\nnpm ci\nnpx playwright install chromium\nnpx playwright test\nnpx playwright show-report\n```\n\nRun only smoke tests: `npx playwright test --grep @smoke`. Another environment: `BASE_URL=https://... npx playwright test`.",
+    "docs": "docs/test-plan.md, docs/checklist.md and docs/test-cases.md describe the approach and coverage; docs/gadgetly-checkout/ contains my full case study (decision table, 12 bug reports). CI runs on every push to main and every pull request; the HTML report with traces is uploaded as an artifact.",
+    "next": "Add visual comparisons for the product page, run on Firefox and WebKit, add JSON-schema validation for API responses and a nightly full run with sharding."
+  },
+  "hints": [
+    "Читач має за 30 секунд зрозуміти: що це, що тестується, як запустити.",
+    "Покажи рішення: чому правила ціни на API, а сценарії — в UI."
+  ],
+  "explanation": "README — вітрина проєкту. Бейдж показує, що тести зелені; вступ — стек і мету; розділ «що тестується» — твоє мислення (розподіл API/UI); структура і запуск — що проєкт охайний і відтворюваний; документація — що ти не лише пишеш код, а тестуєш системно; наступні кроки — зрілість.",
+  "checklist": [
+    "Англійською, без помилок",
+    "Бейдж CI і стек у першому абзаці",
+    "Пояснено розподіл UI / API",
+    "Команди запуску працюють у новій папці",
+    "Є посилання на документацію і наступні кроки"
+  ]
+}

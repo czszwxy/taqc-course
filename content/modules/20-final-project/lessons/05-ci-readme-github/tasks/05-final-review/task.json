@@ -1,0 +1,52 @@
+{
+  "type": "written",
+  "title": "Final review of your portfolio project",
+  "statement": "Фінальний крок курсу. Опублікуй репозиторій, пройди самоперевірку і натисни **Copy for review** — встав у чат з Claude разом із посиланням на репозиторій і попроси рецензію, як від тімліда на співбесіді.",
+  "fields": [
+    { "id": "repo", "label": "Repository link", "kind": "text", "placeholder": "https://github.com/<you>/<repo>" },
+    { "id": "summary", "label": "What the project contains (tests, docs, CI) — 2–4 sentences", "kind": "textarea" },
+    { "id": "decisions", "label": "Three decisions you made and why (one per line)", "kind": "list" },
+    { "id": "selfcheck", "label": "Self-check: what you verified before publishing (one per line)", "kind": "list" },
+    { "id": "story", "label": "Your 1-minute interview story about this project", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "repo", "check": "mentionsAny", "value": ["github\\.com/"], "message": "Repo: посилання на GitHub-репозиторій." },
+    { "field": "summary", "check": "minLength", "value": 120, "message": "Summary: що всередині — тести (скільки, UI/API), документація, CI." },
+    { "field": "decisions", "check": "minItems", "value": 3, "message": "Decisions: три рішення з причинами (наприклад, чому правила ціни — на API)." },
+    { "field": "decisions", "check": "mentionsAny", "value": ["because|бо |оскільки|so that|щоб|to avoid|to keep"], "message": "Decisions: для кожного рішення — **чому**." },
+    { "field": "selfcheck", "check": "minItems", "value": 4, "message": "Self-check: щонайменше 4 перевірки (CI зелений, запуск з нуля, без секретів, незалежні тести…)." },
+    { "field": "selfcheck", "check": "mentionsAny", "value": ["clone|склон|fresh|з нуля|new folder|нов\\S* папк"], "message": "Self-check: запуск за README у новій папці." },
+    { "field": "story", "check": "minLength", "value": 200, "message": "Story: контекст → що зробив → рішення → результат (≈1 хвилина)." }
+  ],
+  "model": {
+    "repo": "https://github.com/<you>/toolshop-tests",
+    "summary": "A Playwright + TypeScript framework for the Toolshop demo shop: 18 UI tests with page objects and fixtures, 9 data-driven API tests with an API client, and documentation (test plan, checklist, test cases). Tests run on GitHub Actions on every push and pull request with an HTML report. docs/ also contains my Gadgetly Checkout case study with 12 bug reports.",
+    "decisions": [
+      "Pricing and validation rules are tested on the API level, because it is fast and precise; UI tests cover only key user flows",
+      "Every test creates and deletes its own data through fixtures, so tests run in parallel and in any order",
+      "User-facing locators and web-first assertions only, to keep tests stable without waits"
+    ],
+    "selfcheck": [
+      "CI is green on main, the report artifact opens",
+      "Cloned the repository into a new folder and ran it by the README",
+      "No secrets, .env, node_modules or reports in the repository",
+      "Each test passes alone (--grep) and with --repeat-each=3",
+      "README is in English and checked for typos",
+      "Pinned on my GitHub profile and linked from my CV and LinkedIn"
+    ],
+    "story": "As my final project I tested a checkout feature end to end. I started with a requirements review and a test plan, wrote a checklist and a decision table for the pricing rules and found twelve bugs — from a wrong free-delivery boundary to order tracking that showed personal data for any phone. Then I built a Playwright framework in TypeScript: page objects, fixtures with test data cleanup, an API client and data-driven API tests for the pricing rules, plus a regression suite that caught every seeded defect. I applied the same approach to the public Toolshop demo app, so the tests run on GitHub Actions with a report. The key decision was to test pricing on the API level and keep only the key user flows in the UI."
+  },
+  "hints": [
+    "Рішення: що, чому, яка альтернатива — саме про це спитають на співбесіді.",
+    "Історія — це STAR без Situation на хвилину: контекст, дії, рішення, результат."
+  ],
+  "explanation": "Фінальне рев'ю перевіряє, що проєкт готовий до показу: посилання працює, CI зелений, README запускається з нуля, у репозиторії немає секретів, а ти можеш за хвилину розповісти про проєкт і пояснити свої рішення. Ця історія — відповідь на «розкажи про свій проєкт» на кожній співбесіді.",
+  "checklist": [
+    "Репозиторій публічний, CI зелений, бейдж у README",
+    "Запуск за README у новій папці працює",
+    "Немає секретів і зайвих файлів",
+    "Є документація: план, чекліст, тест-кейси, баги",
+    "Ти можеш пояснити кожне рішення і кожен рядок коду",
+    "Посилання додано в резюме і LinkedIn"
+  ]
+}

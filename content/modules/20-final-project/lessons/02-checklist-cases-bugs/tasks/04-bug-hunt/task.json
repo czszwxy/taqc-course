@@ -1,0 +1,250 @@
+{
+  "type": "bug-report",
+  "title": "Bug hunt: Checkout page and API",
+  "playground": "checkout",
+  "minBugs": 5,
+  "statement": "Повноцінний пошук багів у фінальній системі. Сторінка **Checkout** (`/playground/checkout`) і **checkout API** містять **12** дефектів — частину видно на сторінці, частину лише в **Network** або в прямих запитах до API (див. приклад `fetch` у теорії).\n\nЗнайди й оформи щонайменше **5** баг-репортів. Використай свій чекліст і таблицю рішень. На кожен баг — окремий репорт і **Submit**.\n\nПорада: тестуй за **вимогами** з жовтої панелі, порівнюй order summary, підтвердження і збережене замовлення (`GET /api/checkout/orders/:id?phone=`).",
+  "hints": [
+    "Межі: «+» на 5, сума рівно 10 000 з Courier, кількість 6 через API.",
+    "Зміни стану: зміни доставку, видали промокод — чи оновився summary? Pickup — що з полем Address?",
+    "Оформлення: порівняй total у summary і в підтвердженні, з промокодом і без; двічі клацни Place order; відстеж замовлення з іншим телефоном."
+  ],
+  "explanation": "Дефекти цієї системи — на межах (максимум кількості, 10 000, кількість 6 в API), у залежних полях (Address для Pickup), у перерахунку після змін (доставка, видалення промокоду), у валідації (телефон з 8 цифрами), у грошах (знижка від суми з доставкою, втрачена знижка в замовленні, сума в підтвердженні, подвійний клік) і в безпеці (трекінг з чужим телефоном). Добрий репорт називає точні значення: «Courier 150 UAH при subtotal 10,000 UAH».",
+  "bugs": [
+    {
+      "id": "plus-at-max",
+      "title": "\"+\" allows a quantity above 5",
+      "match": ["\\+|increase|plus|збільш|плюс", "(^|\\D)6(\\D|$)|six|шість|more than 5|більше (ніж )?5|above 5|понад 5", "button|кнопк|disabl|неактив|enabled|активн|cart|кошик"],
+      "severity": ["Minor", "Major"],
+      "severityWhy": "Вимогу про максимум порушено, але сервер відхиляє 6 шт. і замовлення з такою кількістю не пройде — користувач бачить помилку. Minor (або Major через заплутаний стан кошика).",
+      "model": {
+        "title": "Checkout cart: the \"+\" button stays enabled at quantity 5 and sets quantity 6",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/checkout with the starting cart",
+        "steps": ["Click \"+\" for Wireless Mouse M2 four times (quantity 5)", "Check the \"+\" button", "Click \"+\" once more"],
+        "testData": "Wireless Mouse M2, quantity 1 → 6",
+        "actualResult": "At quantity 5 the \"+\" button is still enabled; the next click shows quantity 6 and an error under the summary.",
+        "expectedResult": "The \"+\" button is disabled at quantity 5; the maximum is 5 per product.",
+        "severity": "Minor",
+        "priority": "Medium",
+        "attachments": "screenshot-qty-6.png"
+      }
+    },
+    {
+      "id": "phone-short",
+      "title": "A phone with 8 digits passes the form check",
+      "match": ["phone|телефон", "8 digits|8 цифр|(^|\\D)8(\\D|$)|\\+38067123456(\\D|$)|short|корот|eight|вісім"],
+      "severity": ["Minor", "Major"],
+      "severityWhy": "Сторінка пропускає некоректний телефон, і користувач отримує незрозумілу помилку від сервера замість підказки біля поля. Замовлення не створюється — Minor/Major.",
+      "model": {
+        "title": "Checkout form: a phone with 8 digits after +380 passes the form check and the order fails with a server error",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/checkout with the starting cart",
+        "steps": ["Fill Full name \"Olena Tester\", Address \"Post office 12\"", "Fill Phone +38067123456 (8 digits after +380)", "Click \"Place order\""],
+        "testData": "Phone: +38067123456",
+        "actualResult": "No error next to the Phone field; the banner says \"Could not place the order: customer.phone must look like +380XXXXXXXXX\".",
+        "expectedResult": "The form shows \"Phone must look like +380XXXXXXXXX\" next to the field and does not send the order.",
+        "severity": "Minor",
+        "priority": "Medium",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "address-for-pickup",
+      "title": "The Address field is required for pickup",
+      "match": ["address|адрес", "pickup|самовивіз|in store|в магазин"],
+      "severity": ["Major", "Critical"],
+      "severityWhy": "Для самовивозу користувач змушений вигадувати адресу, інакше не оформить замовлення. Основний сценарій заблоковано без обхідного шляху для тих, хто не здогадається — Major.",
+      "model": {
+        "title": "Checkout: the Address field is shown and required for \"Pickup in store\"",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/checkout with the starting cart",
+        "steps": ["Select \"Pickup in store\"", "Fill Full name and Phone, leave Address empty", "Click \"Place order\""],
+        "testData": "Olena Tester, +380671234567",
+        "actualResult": "The Address field stays visible and the form shows \"Enter the delivery address\"; the order cannot be placed.",
+        "expectedResult": "For Pickup the Address field is hidden and not required; the order is placed.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "stale-delivery",
+      "title": "Changing the delivery method does not re-price the summary",
+      "match": ["deliver|доставк", "chang|switch|змін|перемк|обира|select|choose|вибира|обра", "still|залиша|not updat|не онов|не перерах|not re-?pric|not recalc|stale|old|стар|same|той самий|та сама|не змін"],
+      "severity": ["Major", "Critical"],
+      "severityWhy": "Користувач бачить одну суму, а платить іншу (у підтвердженні вже правильна доставка). Гроші й довіра — Major або Critical.",
+      "model": {
+        "title": "Checkout summary is not re-priced after switching the delivery method",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/checkout with the starting cart (Post office selected)",
+        "steps": ["Check the summary: Delivery 70 UAH, Total 5,570 UAH", "Select \"Courier\"", "Check the summary again"],
+        "testData": "Starting cart 5,500 UAH",
+        "actualResult": "The summary still shows Delivery 70 UAH and Total 5,570 UAH after switching to Courier.",
+        "expectedResult": "After switching to Courier the summary shows Delivery 150 UAH and Total 5,650 UAH.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "promo-remove-stale",
+      "title": "The discount stays after removing the promo code",
+      "match": ["promo|промо|welcome5|minus200|discount|знижк", "remov|видал|прибра|delete"],
+      "severity": ["Major"],
+      "severityWhy": "Сума на сторінці не відповідає замовленню: знижка показана, хоча коду вже немає. Плутанина з грошима — Major.",
+      "model": {
+        "title": "Checkout: after \"Remove\" the promo code disappears, but its discount stays in the summary",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/checkout with the starting cart",
+        "steps": ["Apply promo code WELCOME5 — Discount -275 UAH, Total 5,295 UAH", "Click \"Remove\"", "Check the summary"],
+        "testData": "WELCOME5",
+        "actualResult": "The code chip is gone, but the summary still shows Discount -275 UAH and Total 5,295 UAH.",
+        "expectedResult": "After Remove the discount disappears: Discount —, Total 5,570 UAH.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "double-submit",
+      "title": "A double click on Place order creates two orders",
+      "match": ["double|двічі|подвійн|twice|two orders|два замовлення|2 orders|2 замовлення|two post|2 post|два запит"],
+      "severity": ["Critical", "Major"],
+      "severityWhy": "Подвійне замовлення = подвійне списання грошей і зайва логістика. Critical.",
+      "model": {
+        "title": "Checkout: a double click on \"Place order\" sends two POST requests and creates two orders",
+        "environment": "Chrome 131, Windows 11, QA Academy local, DevTools Network open",
+        "preconditions": "/playground/checkout, valid contact details filled",
+        "steps": ["Fill Full name, Phone +380671234567, Address", "Double-click \"Place order\"", "Check DevTools → Network"],
+        "testData": "Olena Tester, +380671234567, Post office 12",
+        "actualResult": "Two POST /api/checkout/orders requests are sent and two orders are created (e.g. #2001 and #2002); the button is not disabled while processing.",
+        "expectedResult": "The button is disabled while the order is processing; one click = one order.",
+        "severity": "Critical",
+        "priority": "High",
+        "attachments": "network-two-orders.png"
+      }
+    },
+    {
+      "id": "confirmation-subtotal",
+      "title": "The confirmation shows the subtotal instead of the total",
+      "match": ["confirm|підтвердж|thank you|дякуємо", "subtotal|5[ ,.]?500|без доставк|without delivery|without the delivery"],
+      "severity": ["Major", "Minor"],
+      "severityWhy": "Користувачу показано неправильну суму до сплати після оформлення. Гроші — Major.",
+      "model": {
+        "title": "Checkout confirmation shows the subtotal (5,500 UAH) instead of the order total",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/checkout with the starting cart, Post office",
+        "steps": ["Fill valid contact details", "Check the summary Total: 5,570 UAH", "Click \"Place order\"", "Check the confirmation"],
+        "testData": "Olena Tester, +380671234567, Post office 12",
+        "actualResult": "The confirmation says \"Total: 5,500 UAH\" — the subtotal without delivery.",
+        "expectedResult": "The confirmation total equals the summary total: 5,570 UAH.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "courier-boundary",
+      "title": "Courier is not free at exactly 10,000 UAH",
+      "match": ["courier|кур", "10[ ,.\\u00a0]?000", "150|not free|не безкошт|paid|платн|charged"],
+      "severity": ["Major", "Minor"],
+      "severityWhy": "Клієнт на межі акції платить за доставку, хоча має отримати її безкоштовно. Гроші і порушене обіцяне правило — Major.",
+      "model": {
+        "title": "Courier delivery costs 150 UAH for a subtotal of exactly 10,000 UAH (should be free)",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/checkout with the starting cart",
+        "steps": ["Click \"+\" for Headphones NC5 (subtotal 10,000 UAH)", "Select \"Courier\"", "Check the summary"],
+        "testData": "Headphones NC5 × 2, Wireless Mouse M2 × 1, USB-C Cable × 2 = 10,000 UAH",
+        "actualResult": "Delivery 150 UAH, Total 10,150 UAH. POST /api/checkout/quote returns deliveryFee 150.",
+        "expectedResult": "Courier is free from 10,000 UAH: Delivery Free, Total 10,000 UAH.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "welcome-on-total",
+      "title": "WELCOME5 is calculated from subtotal + delivery",
+      "match": ["welcome5|5 ?%", "282|507|including deliver|з доставк|with delivery|subtotal \\+ deliver|plus deliver|delivery (is|was) discount|від суми з доставк"],
+      "severity": ["Minor", "Major"],
+      "severityWhy": "Знижка більша, ніж за правилами: бізнес втрачає гроші на кожному замовленні з платною доставкою. Невелика сума, але масовий ефект — Minor/Major.",
+      "model": {
+        "title": "WELCOME5 gives 282 UAH instead of 275 UAH with Courier: 5 % is taken from subtotal + delivery",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/checkout with the starting cart",
+        "steps": ["Select \"Courier\" (150 UAH)", "Apply promo code WELCOME5", "Check the Discount"],
+        "testData": "Subtotal 5,500 UAH, Courier 150 UAH, WELCOME5",
+        "actualResult": "Discount -282 UAH (5 % of 5,650 including delivery), Total 5,368 UAH.",
+        "expectedResult": "Discount is 5 % of the subtotal only: -275 UAH, Total 5,375 UAH.",
+        "severity": "Minor",
+        "priority": "Medium",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "max-qty-ignored",
+      "title": "The API accepts quantity 6–10",
+      "match": ["\\bapi\\b|quote|endpoint|request body|тіло запиту|fetch|postman|curl", "(^|\\D)(6|7|8|9|10)(\\D|$)|six|шість", "quantit|кількіст"],
+      "severity": ["Minor", "Major"],
+      "severityWhy": "Сторінка обмежує кількість, але сервер — ні: будь-який клієнт (мобільний застосунок, інтеграція) може замовити більше дозволеного. Валідація має бути на сервері — Minor/Major.",
+      "model": {
+        "title": "POST /api/checkout/quote accepts quantity 6 (max is 5) and returns 200",
+        "environment": "QA Academy local, DevTools Console / Postman",
+        "preconditions": "Checkout API available at /api/checkout",
+        "steps": ["Send POST /api/checkout/quote with body {\"items\":[{\"productId\":103,\"quantity\":6}],\"delivery\":\"post\"}", "Check the status and the body"],
+        "testData": "productId 103, quantity 6",
+        "actualResult": "200 OK with quantity 6 and lineTotal 3,000.",
+        "expectedResult": "400 Bad Request: \"quantity must be from 1 to 5\".",
+        "severity": "Minor",
+        "priority": "Medium",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "order-ignores-promo",
+      "title": "The saved order loses the promo discount",
+      "match": ["promo|промо|welcome5|minus200|discount|знижк", "order|замовл|saved|збереж|confirm|підтвердж", "5[ ,.]?570|ignor|ігнор|lost|втрач|not applied|не застос|without (the )?discount|без знижки|discount 0|знижка 0"],
+      "severity": ["Critical", "Major"],
+      "severityWhy": "Користувачу показали знижку, а в замовленні її немає — клієнт платить більше, ніж бачив. Гроші й довіра — Critical.",
+      "model": {
+        "title": "Order placed with WELCOME5 is saved without the discount: confirmation shows 5,570 UAH instead of 5,295 UAH",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/checkout with the starting cart, Post office",
+        "steps": ["Apply promo code WELCOME5 — summary Total 5,295 UAH", "Fill valid contact details", "Click \"Place order\"", "Check the confirmation and GET /api/checkout/orders/<id>?phone=+380671234567"],
+        "testData": "WELCOME5, Olena Tester, +380671234567",
+        "actualResult": "The confirmation shows 5,570 UAH; the saved order has promoCode WELCOME5 but discount 0 and total 5,570 — the discount was ignored.",
+        "expectedResult": "The saved order keeps the discount: discount 275, total 5,295 UAH, the same as in the summary.",
+        "severity": "Critical",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "tracking-ignores-phone",
+      "title": "Order tracking works with any phone",
+      "match": ["track|відстеж|трекінг", "phone|телефон", "another|other|wrong|інш|чуж|неправильн|будь-як|any|random"],
+      "severity": ["Critical", "Major"],
+      "severityWhy": "Будь-хто, перебираючи номери замовлень, бачить чужі ім'я, телефон і адресу. Витік персональних даних — Critical.",
+      "model": {
+        "title": "Track an order shows someone's order (name, phone, address via API) for any phone number",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "An order placed with phone +380671234567, its number is known (e.g. #2001)",
+        "steps": ["In \"Track an order\" enter the order number", "Enter another phone: +380500000000", "Click \"Track\""],
+        "testData": "Order #2001, wrong phone +380500000000",
+        "actualResult": "The order is shown; GET /api/checkout/orders/2001?phone=+380500000000 returns 200 with the customer's name, phone and address.",
+        "expectedResult": "\"Order not found. Check the number and the phone.\"; the API returns 404 for a phone that does not match.",
+        "severity": "Critical",
+        "priority": "High",
+        "attachments": ""
+      }
+    }
+  ],
+  "checklist": [
+    "Заголовок: що, де і за якої умови, з числами",
+    "Кроки відтворення з конкретними даними",
+    "Actual і expected з точними сумами / текстами",
+    "Для API-багів — запит, тіло і статус",
+    "Severity обґрунтована (гроші, персональні дані, блокування сценарію)"
+  ]
+}

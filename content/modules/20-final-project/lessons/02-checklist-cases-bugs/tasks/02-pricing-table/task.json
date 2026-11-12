@@ -1,0 +1,28 @@
+{
+  "type": "table",
+  "title": "Decision table: delivery fee and discount",
+  "playground": "checkout",
+  "statement": "Заповни таблицю рішень за **вимогами** (не за тим, що показує сторінка — там можуть бути баги). Для кожної комбінації визнач плату за доставку і знижку. Якщо API за вимогами має відхилити запит — обери `400 error` в обох колонках.\n\nНагадування: Courier безкоштовний від 10 000 (subtotal до знижки); WELCOME5 — 5 % від subtotal вниз до цілого; MINUS200 — 200 від 2 000.",
+  "givenColumns": ["#", "Subtotal", "Delivery", "Promo code"],
+  "answerColumns": [
+    { "id": "fee", "label": "Delivery fee", "options": ["0", "70", "150", "400 error"] },
+    { "id": "discount", "label": "Discount", "options": ["0", "200", "275", "282", "487", "500", "507", "400 error"] }
+  ],
+  "rows": [
+    { "given": ["1", "5,500", "Post office", "—"], "answers": { "fee": "70", "discount": "0" } },
+    { "given": ["2", "5,500", "Courier", "—"], "answers": { "fee": "150", "discount": "0" } },
+    { "given": ["3", "9,750", "Courier", "—"], "answers": { "fee": "150", "discount": "0" }, "explain": "9 750 < 10 000 — Courier ще платний." },
+    { "given": ["4", "10,000", "Courier", "—"], "answers": { "fee": "0", "discount": "0" }, "explain": "Рівно 10 000 — уже безкоштовно («від 10 000»)." },
+    { "given": ["5", "5,500", "Courier", "WELCOME5"], "answers": { "fee": "150", "discount": "275" }, "explain": "5 % від 5 500 = 275. Доставка не знижується, тому не 282 (5 % від 5 650)." },
+    { "given": ["6", "10,000", "Courier", "WELCOME5"], "answers": { "fee": "0", "discount": "500" }, "explain": "Безкоштовний Courier рахується від subtotal до знижки: 10 000 ≥ 10 000, хоча після знижки сума 9 500." },
+    { "given": ["7", "9,750", "Post office", "welcome5"], "answers": { "fee": "70", "discount": "487" }, "explain": "Регістр неважливий. 5 % від 9 750 = 487,5 → вниз до 487." },
+    { "given": ["8", "5,500", "Pickup in store", "MINUS200"], "answers": { "fee": "0", "discount": "200" } },
+    { "given": ["9", "2,000", "Post office", "MINUS200"], "answers": { "fee": "70", "discount": "200" }, "explain": "Рівно 2 000 — межа включна («від 2 000»)." },
+    { "given": ["10", "1,750", "Post office", "MINUS200"], "answers": { "fee": "400 error", "discount": "400 error" }, "explain": "Нижче 2 000 MINUS200 не діє: API відповідає 400 з поясненням." }
+  ],
+  "hints": [
+    "Спершу доставка (залежить лише від способу і subtotal), потім знижка (лише від subtotal і коду).",
+    "Межі включні: «від 10 000» і «від 2 000» означають ≥."
+  ],
+  "explanation": "Таблиця рішень робить правила ціни перевірюваними: кожен рядок — комбінація умов і очікуваний результат. Найважливіші рядки — на межах (9 750 / 10 000, 2 000 / 1 750) і в комбінаціях, де легко помилитися: знижка від суми з доставкою (282 замість 275) або безкоштовний Courier після знижки. Цю таблицю ти перетвориш на data-driven API-тести."
+}

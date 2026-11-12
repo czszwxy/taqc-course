@@ -1,0 +1,80 @@
+{
+  "type": "quiz",
+  "title": "API layer and combined flows",
+  "show": 7,
+  "hints": ["Правила ціни — на API; поведінка сторінки — на UI; дані — свої, з прибиранням."],
+  "questions": [
+    {
+      "id": "where-rules",
+      "kind": "single",
+      "text": "Де найкраще перевіряти 10 рядків таблиці рішень «сума × доставка × промокод»?",
+      "options": [
+        { "text": "Data-driven API-тестами для POST /api/checkout/quote", "correct": true },
+        { "text": "10 окремими UI-тестами з кліками" }
+      ]
+    },
+    {
+      "id": "matchobject",
+      "kind": "single",
+      "text": "Навіщо `toMatchObject({ deliveryFee: 0, discount: 500 })` замість `toEqual(весь об'єкт)`?",
+      "options": [
+        { "text": "Перевіряє лише важливі для тесту поля; тест не ламається від нових полів у відповіді", "correct": true },
+        { "text": "Він швидший" }
+      ]
+    },
+    {
+      "id": "after-post",
+      "kind": "single",
+      "text": "POST /api/checkout/orders повернув 201. Як переконатися, що замовлення справді збережено правильно?",
+      "options": [
+        { "text": "GET /api/checkout/orders/:id?phone= і порівняти суму, знижку, доставку", "correct": true },
+        { "text": "Статусу 201 достатньо" }
+      ]
+    },
+    {
+      "id": "plus-in-query",
+      "kind": "single",
+      "text": "Запит `GET /api/checkout/orders/2001?phone=+380671234567` повертає 404 для правильного телефону. Найімовірніша причина в тесті?",
+      "options": [
+        { "text": "`+` у query перетворився на пробіл; треба передавати `{ params: { phone } }` або кодувати `%2B`", "correct": true },
+        { "text": "Сервер завжди повертає 404" }
+      ]
+    },
+    {
+      "id": "global-count",
+      "kind": "single",
+      "text": "Чому тест не має перевіряти «після створення замовлень стало рівно 3»?",
+      "options": [
+        { "text": "Паралельні тести теж створюють замовлення у спільному середовищі — лічильник непередбачуваний", "correct": true },
+        { "text": "Бо API не повертає кількість" }
+      ]
+    },
+    {
+      "id": "api-ui",
+      "kind": "single",
+      "text": "Треба перевірити Track an order у UI. Як найшвидше підготувати замовлення?",
+      "options": [
+        { "text": "Створити його запитом POST /api/checkout/orders у beforeEach або фікстурі", "correct": true },
+        { "text": "Щоразу оформлювати через форму в UI" }
+      ]
+    },
+    {
+      "id": "security-both",
+      "kind": "single",
+      "text": "Сторінка трекінгу з чужим телефоном показує «Order not found». Цього достатньо для безпеки?",
+      "options": [
+        { "text": "Ні: треба перевірити й API — сервер має повертати 404, інакше дані доступні будь-кому напряму", "correct": true },
+        { "text": "Так, раз сторінка не показала" }
+      ]
+    },
+    {
+      "id": "contract",
+      "kind": "single",
+      "text": "Що з цього — перевірка контракту відповіді?",
+      "options": [
+        { "text": "Поля `subtotal`, `discount`, `deliveryFee`, `total` є і мають тип number; немає зайвих чутливих полів", "correct": true },
+        { "text": "Відповідь прийшла швидше за 1 секунду" }
+      ]
+    }
+  ]
+}

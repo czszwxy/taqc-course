@@ -1,0 +1,98 @@
+{
+  "type": "quiz",
+  "title": "Know the system: Gadgetly Checkout rules",
+  "playground": "checkout",
+  "show": 8,
+  "intro": "Перевір, що ти уважно прочитав вимоги і API, — без цього план і тести будуть неточними.",
+  "hints": ["Відповіді — в теорії уроку і в жовтій панелі сторінки Checkout."],
+  "questions": [
+    {
+      "id": "courier",
+      "kind": "single",
+      "text": "Subtotal рівно 10 000 UAH, доставка Courier. Скільки коштує доставка за вимогою?",
+      "options": [{ "text": "0 — безкоштовно від 10 000", "correct": true }, { "text": "150 UAH" }, { "text": "70 UAH" }]
+    },
+    {
+      "id": "welcome",
+      "kind": "single",
+      "text": "Subtotal 5 500, Courier (150), промокод WELCOME5. Яка знижка?",
+      "options": [
+        { "text": "275 — 5 % лише від subtotal", "correct": true },
+        { "text": "282 — 5 % від 5 650", "explain": "Доставка не знижується." },
+        { "text": "500" }
+      ]
+    },
+    {
+      "id": "qty",
+      "kind": "single",
+      "text": "Які кількості одного товару допустимі?",
+      "options": [{ "text": "1–5", "correct": true }, { "text": "0–5" }, { "text": "1–10" }]
+    },
+    {
+      "id": "address",
+      "kind": "single",
+      "text": "Обрано Pickup in store. Що з полем Address?",
+      "options": [
+        { "text": "Приховане і не обов'язкове", "correct": true },
+        { "text": "Обов'язкове, як для інших способів" }
+      ]
+    },
+    {
+      "id": "tracking",
+      "kind": "single",
+      "text": "Що потрібно, щоб відстежити замовлення?",
+      "options": [
+        { "text": "Номер замовлення і телефон, вказаний під час оформлення", "correct": true },
+        { "text": "Лише номер замовлення" }
+      ]
+    },
+    {
+      "id": "who-prices",
+      "kind": "single",
+      "text": "Хто рахує subtotal, знижку, доставку і total?",
+      "options": [
+        { "text": "Сервер: POST /api/checkout/quote; сторінка лише показує", "correct": true },
+        { "text": "JavaScript на сторінці" }
+      ]
+    },
+    {
+      "id": "minus200",
+      "kind": "single",
+      "text": "Що має повернути API для MINUS200 при subtotal 1 750?",
+      "options": [
+        { "text": "400 з поясненням: MINUS200 діє від 2 000 UAH", "correct": true },
+        { "text": "200 і знижку 200" },
+        { "text": "200 і total 1 550" }
+      ]
+    },
+    {
+      "id": "cleanup",
+      "kind": "single",
+      "text": "Навіщо в API є DELETE /api/checkout/orders/:id?phone=?",
+      "options": [
+        { "text": "Щоб тести прибирали створені ними замовлення", "correct": true },
+        { "text": "Щоб видаляти товари з каталогу" }
+      ]
+    },
+    {
+      "id": "split",
+      "kind": "single",
+      "text": "Де найкраще перевіряти 20 комбінацій «сума × доставка × промокод»?",
+      "options": [
+        { "text": "На рівні API (quote): швидко і точно; в UI — кілька ключових сценаріїв", "correct": true },
+        { "text": "Усі 20 через UI" }
+      ]
+    },
+    {
+      "id": "deliverables",
+      "kind": "single",
+      "text": "Що з цього НЕ є результатом фінального проєкту?",
+      "options": [
+        { "text": "Виправлений код сторінки Checkout", "correct": true, "explain": "Виправляє розробник. Від QA — план, документація, баг-репорти, автотести, CI." },
+        { "text": "Тест-план" },
+        { "text": "Баг-репорти" },
+        { "text": "Автотести з CI" }
+      ]
+    }
+  ]
+}

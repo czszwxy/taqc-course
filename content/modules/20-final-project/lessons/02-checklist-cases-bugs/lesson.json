@@ -1,0 +1,22 @@
+{
+  "title": "Checklist, test cases & bug reports",
+  "minutes": 120,
+  "summary": "Тест-дизайн для Checkout: чекліст за областями, таблиця рішень «доставка × промокод», межі (кількість, 10 000, 2 000), тест-кейс для межі безкоштовної доставки і повноцінний пошук багів у UI та API з баг-репортами",
+  "resources": [
+    {
+      "title": "ISTQB Glossary",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Chrome DevTools: Network features reference",
+      "url": "https://developer.chrome.com/docs/devtools/network/reference",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Дивись Payload і Response запитів quote й orders під час пошуку багів.",
+      "needsVerification": true
+    }
+  ]
+}

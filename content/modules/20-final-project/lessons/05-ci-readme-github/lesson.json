@@ -1,0 +1,37 @@
+{
+  "title": "CI pipeline, README & publishing on GitHub",
+  "minutes": 120,
+  "summary": "Регресійний набір Checkout, а потім — портфоліо: власний репозиторій з тією ж архітектурою на публічному навчальному застосунку (Toolshop з UI, API і Swagger), конфіг, GitHub Actions зі звітом, README з бейджем, публікація і фінальне самоперевіряння",
+  "resources": [
+    {
+      "title": "Practice Software Testing (Toolshop) — repository with app, REST API and Swagger",
+      "url": "https://github.com/testsmith-io/practice-software-testing",
+      "kind": "tool",
+      "lang": "en",
+      "note": "Застосунок: practicesoftwaretesting.com; API: api.practicesoftwaretesting.com; Swagger: api.practicesoftwaretesting.com/api/documentation.",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Setting up CI",
+      "url": "https://playwright.dev/docs/ci-intro",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "GitHub Docs — Adding a workflow status badge",
+      "url": "https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/monitoring-workflows/adding-a-workflow-status-badge",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright TodoMVC demo",
+      "url": "https://demo.playwright.dev/todomvc/",
+      "kind": "tool",
+      "lang": "en",
+      "note": "Простий запасний варіант для невеликого UI-репозиторію.",
+      "needsVerification": true
+    }
+  ]
+}

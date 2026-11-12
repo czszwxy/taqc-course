@@ -1,0 +1,12 @@
+{
+  "title": "Final Portfolio Project",
+  "description": "Фінальний проєкт: повний цикл QA на новій системі — сторінці Gadgetly Checkout і її API. Від брифу і тест-плану через чекліст, тест-кейси, таблицю рішень і пошук багів до фреймворку автотестів (Page Object, фікстури, API-тести, комбіновані сценарії) і регресійного набору. Кожен крок автоматизації перевіряється на зламаних версіях системи. Наприкінці — CI, README і публікація проєкту на GitHub як головного пункту портфоліо.",
+  "goals": [
+    "Analyse requirements and write a test plan for a new feature",
+    "Design a checklist, a decision table and test cases; find and report bugs in UI and API",
+    "Build a UI test framework with Page Objects and custom fixtures",
+    "Write API tests and combined API + UI flows with test data cleanup",
+    "Assemble a regression suite that catches real defects",
+    "Publish the project on GitHub with CI, a README and a green badge"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "type": "order",
+  "title": "Publishing your project: the right order",
+  "statement": "Розстав кроки публікації портфоліо-репозиторію в правильному порядку.",
+  "items": [
+    "Create a public repository on GitHub with a .gitignore for Node",
+    "Push the code with meaningful commits (pages, fixtures, tests, docs)",
+    "Add the GitHub Actions workflow and push it",
+    "Check that the workflow is green in the Actions tab and open the report artifact",
+    "Add the status badge and finish the README",
+    "Clone the repository into an empty folder and follow the README as a new user",
+    "Pin the repository on your profile and add the link to your CV and LinkedIn"
+  ],
+  "hints": ["Бейдж має сенс, коли workflow уже існує і зелений; посилання в резюме — коли все перевірено."],
+  "explanation": "Порядок: репозиторій → код → workflow → переконатися, що CI зелений → бейдж і README → перевірка «з нуля» очима нового користувача → закріпити і поширити. Типова помилка — поставити посилання в резюме раніше, ніж перевірено, що проєкт запускається за README і CI зелений."
+}

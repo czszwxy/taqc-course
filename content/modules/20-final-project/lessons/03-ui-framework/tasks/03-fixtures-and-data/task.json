@@ -1,0 +1,23 @@
+{
+  "type": "playwright",
+  "title": "Milestone 3b: custom fixtures and test data",
+  "playground": "checkout",
+  "statement": "Другий крок фреймворку — **фікстури**. Тест не має сам створювати Page Object і вигадувати дані: він просить їх у параметрах.\n\nУ стартері є `test = base.extend<Fixtures>(...)` з фікстурами `checkout` (відкрита сторінка) і `customer` (валідні контактні дані) та один тест. Напиши ще тести на **оформлення замовлення** (Post office, сума за замовчуванням `5,570 UAH`):\n\n1. Валідне замовлення → підтвердження з номером `#…` і **тим самим** total, що був в order summary.\n2. Телефон з **8** цифрами (`+38067123456`) → помилка біля поля `Phone must look like +380XXXXXXXXX`, підтвердження немає.\n3. **Подвійний клік** на «Place order» → на сервер іде **лише один** запит `POST /api/checkout/orders` (лічи запити через `page.on('request', ...)`).",
+  "mutants": [
+    { "id": "confirmationSubtotal", "description": "the confirmation showed the subtotal instead of the total.", "hint": "Place a valid order and compare the confirmation total with 5,570 UAH." },
+    { "id": "phoneShort", "description": "a phone with 8 digits passed the form check.", "hint": "Fill +38067123456 and expect the inline phone error." },
+    { "id": "doubleSubmit", "description": "a double click placed two orders.", "hint": "Count POST /checkout/orders requests around a dblclick on Place order." }
+  ],
+  "minTests": 3,
+  "codeRules": [
+    { "kind": "require", "pattern": "\\.extend\\s*<", "message": "Опиши фікстури через `base.extend<Fixtures>({...})`." },
+    { "kind": "require", "pattern": "page\\.on\\(\\s*['\"]request['\"]", "message": "Для подвійного кліку порахуй запити: `page.on('request', ...)`." },
+    { "kind": "forbid", "pattern": "waitForTimeout", "message": "Без фіксованих пауз." }
+  ],
+  "hints": [
+    "Поле Phone: `getByLabel('Phone', { exact: true })` — інакше локатор знайде і «Phone used at checkout» у блоці Track an order.",
+    "Номер замовлення невідомий заздалегідь: `toHaveText(/^#\\d+$/)`.",
+    "Подвійний клік: `await checkout.placeOrderButton.dblclick()`, дочекайся підтвердження, потім `expect(orderRequests).toHaveLength(1)`."
+  ],
+  "explanation": "Фікстури прибирають повтори з тестів: сторінку відкриває фікстура `checkout`, дані дає `customer`, і кожен тест отримує свіжі екземпляри. Подвійне натискання — класичний баг грошових форм: перевірити його надійно можна лише на рівні мережі, порахувавши запити. Сума в підтвердженні має збігатися з order summary — інакше користувач бачить одну суму, а платить іншу."
+}

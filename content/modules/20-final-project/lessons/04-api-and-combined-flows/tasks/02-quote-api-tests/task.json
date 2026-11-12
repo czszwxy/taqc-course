@@ -1,0 +1,22 @@
+{
+  "type": "playwright",
+  "title": "Milestone 4a: API tests for the price calculation",
+  "playground": "checkout",
+  "statement": "Усі суми на сторінці рахує сервер: `POST /api/checkout/quote`. Перевіряти правила ціни через UI — довго; через API — швидко і точно. Напиши **API-тести** з фікстурою `request` (без браузера):\n\n1. Courier **безкоштовний** рівно від `10 000`: кошик 101×2, 103×1, 104×2 = **10 000** → `deliveryFee: 0`.\n2. Нижче межі: 101×2, 103×1, 104×1 = **9 750** → `deliveryFee: 150`.\n3. `WELCOME5` — 5 % **лише від subtotal**: 5 500 з Courier → `discount: 275`, `total: 5375`.\n4. Кількість **6** → `400`, кількість **5** → `200`.\n\nФормат запиту:\n\n```json\n{ \"items\": [{ \"productId\": 101, \"quantity\": 1 }], \"delivery\": \"courier\", \"promoCode\": \"WELCOME5\" }\n```\n\nТовари: 101 — Headphones NC5 (4 500), 103 — Wireless Mouse M2 (500), 104 — USB-C Cable (250).",
+  "mutants": [
+    { "id": "courierBoundary", "description": "courier was free only above 10,000 UAH, not from 10,000.", "hint": "Quote exactly 10,000 UAH with courier delivery and expect deliveryFee 0." },
+    { "id": "welcomeOnTotal", "description": "WELCOME5 was calculated from subtotal + delivery.", "hint": "Quote 5,500 UAH with courier and WELCOME5: the discount must be 275." },
+    { "id": "maxQtyIgnored", "description": "the API accepted quantity 6.", "hint": "Send quantity 6 and expect status 400." }
+  ],
+  "minTests": 4,
+  "codeRules": [
+    { "kind": "require", "pattern": "request\\.post\\(", "message": "Це API-тести: надсилай запити через `request.post(...)`." },
+    { "kind": "forbid", "pattern": "page\\.", "message": "Без браузера: лише фікстура `request`." }
+  ],
+  "hints": [
+    "Хелпер `cart(headphones, mouse, cables)` повертає масив items — тести стануть короткими.",
+    "`expect(await response.json()).toMatchObject({ discount: 275, total: 5375 })` перевіряє кілька полів одразу.",
+    "Межа 10 000 — класичний BVA: значення на межі (10 000) і поруч (9 750)."
+  ],
+  "explanation": "API-тести для правил ціни швидкі й точні: межу безкоштовної доставки перевіряємо рівно на 10 000 і поруч, знижку — у комбінації з платною доставкою (інакше помилку «знижка від суми з доставкою» не видно), валідацію — з обох боків межі кількості. Саме такі тести варто тримати на рівні API, а в UI залишити 1–2 ключові сценарії."
+}

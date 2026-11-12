@@ -1,0 +1,29 @@
+{
+  "type": "playwright",
+  "title": "Milestone 5: the full regression suite",
+  "playground": "checkout",
+  "statement": "Фінальний іспит фреймворку: **один регресійний набір**, який ловить вісім різних дефектів Checkout — і в UI, і в API. Збери в одному файлі найкраще з попередніх кроків: Page Object, фікстури, API-хелпери, прибирання даних.\n\nНабір має покривати:\n\n- кошик: максимум кількості 5;\n- доставку: поле Address для pickup, перерахунок суми при зміні доставки, безкоштовний Courier **рівно** від 10 000 (API);\n- контакти: телефон з 8 цифрами;\n- оформлення: один запит на подвійний клік;\n- ціну: `WELCOME5` лише від subtotal (API), збережене замовлення має ту саму суму, що й quote (API).\n\nЦе той самий набір, який ти потім перенесеш у свій репозиторій і запускатимеш на CI.",
+  "mutants": [
+    { "id": "plusAtMax", "description": "\"+\" stayed enabled at quantity 5.", "hint": "Check that \"+\" is disabled at 5." },
+    { "id": "addressForPickup", "description": "the Address field stayed visible for pickup.", "hint": "Choose pickup and expect no Address field." },
+    { "id": "staleDelivery", "description": "changing the delivery method did not re-price the summary.", "hint": "Switch delivery and check the summary." },
+    { "id": "phoneShort", "description": "a phone with 8 digits passed the form check.", "hint": "Try +38067123456 and expect the inline error." },
+    { "id": "doubleSubmit", "description": "a double click placed two orders.", "hint": "Count POST /checkout/orders requests around a dblclick." },
+    { "id": "courierBoundary", "description": "courier was free only above 10,000 UAH.", "hint": "Quote exactly 10,000 UAH with courier via the API." },
+    { "id": "welcomeOnTotal", "description": "WELCOME5 was calculated from subtotal + delivery.", "hint": "Quote WELCOME5 with courier via the API." },
+    { "id": "orderIgnoresPromo", "description": "the saved order lost the promo discount.", "hint": "Create an order with WELCOME5 via the API and compare its total with the quote." }
+  ],
+  "minTests": 8,
+  "codeRules": [
+    { "kind": "require", "pattern": "class\\s+CheckoutPage", "message": "Використай Page Object `CheckoutPage`." },
+    { "kind": "require", "pattern": "\\.extend\\s*<", "message": "Використай фікстури (`base.extend<...>`)." },
+    { "kind": "require", "pattern": "request\\.delete\\(", "message": "Прибирай створені замовлення (`request.delete(...)`)." },
+    { "kind": "forbid", "pattern": "waitForTimeout", "message": "Без фіксованих пауз." }
+  ],
+  "hints": [
+    "Почни з копії рішень кроків 3a, 3b, 4a і 4b — потім прибери повтори: один `CheckoutPage`, один `test.extend`.",
+    "Згрупуй тести через `test.describe('Cart')`, `test.describe('Delivery')`, `test.describe('Pricing API')` — так звіт читається як чекліст.",
+    "Перевірку «збережене замовлення = quote» зроби через API: quote → order → порівняй `total` → delete."
+  ],
+  "explanation": "Регресійний набір — це не сума випадкових тестів, а покриття ризиків: межі кількості й безкоштовної доставки, залежні поля, перерахунок сум, валідація, подвійне списання, розрахунок знижки і збереження замовлення. Правила ціни перевіряються через API (швидко), поведінка сторінки — через UI з Page Object і фікстурами, а кожен тест прибирає свої дані. Такий файл з групами `describe` добре виглядає і в репозиторії, і в HTML-звіті на CI."
+}

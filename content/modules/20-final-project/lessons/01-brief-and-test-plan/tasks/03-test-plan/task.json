@@ -1,0 +1,59 @@
+{
+  "type": "written",
+  "title": "Write the test plan for Checkout",
+  "playground": "checkout",
+  "statement": "Напиши короткий **тест-план** для релізу сторінки Checkout і checkout API (1–2 сторінки). Це документ `docs/test-plan.md` твого проєкту. Використай рев'ю вимог з попереднього завдання.",
+  "fields": [
+    { "id": "scope", "label": "Scope: in scope / out of scope", "kind": "textarea" },
+    { "id": "approach", "label": "Approach: levels, test types, what is manual vs automated, API vs UI split", "kind": "textarea" },
+    { "id": "environment", "label": "Environment and test data (incl. cleanup)", "kind": "textarea" },
+    { "id": "risks", "label": "Risks and mitigations (one per line)", "kind": "list" },
+    { "id": "criteria", "label": "Entry and exit criteria", "kind": "textarea" },
+    { "id": "deliverables", "label": "Deliverables and schedule (one per line)", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "scope", "check": "mentionsAny", "value": ["out of scope|не входить|поза scope|not in scope|excluded"], "message": "Scope: явно назви, що поза scope." },
+    { "field": "scope", "check": "mentionsAll", "value": ["track|трекінг|відстеж", "promo|промо"], "message": "Scope: перелічи всі частини фічі, зокрема промокоди і трекінг." },
+    { "field": "approach", "check": "mentionsAll", "value": ["\\bapi\\b", "\\bui\\b|interface|інтерфейс"], "message": "Approach: поясни розподіл перевірок між API і UI." },
+    { "field": "approach", "check": "mentionsAny", "value": ["boundar|межов|bva|граничн|decision table|таблиц"], "message": "Approach: назви техніки тест-дизайну (межі, таблиця рішень)." },
+    { "field": "approach", "check": "mentionsAny", "value": ["automat|автоматиз|playwright"], "message": "Approach: що автоматизуєш і чим." },
+    { "field": "environment", "check": "mentionsAny", "value": ["clean|прибира|delete|видал|unique|унікальн|own data|свої дані"], "message": "Environment: як тести готують і прибирають свої дані." },
+    { "field": "risks", "check": "minItems", "value": 3, "message": "Risks: щонайменше 3 ризики з тим, як їх зменшуєш." },
+    { "field": "criteria", "check": "mentionsAll", "value": ["entry|вход|start|почат", "exit|вихід|finish|заверш"], "message": "Criteria: і entry, і exit критерії." },
+    { "field": "deliverables", "check": "minItems", "value": 4, "message": "Deliverables: щонайменше 4 результати (план, чекліст, баг-репорти, автотести, CI…)." }
+  ],
+  "model": {
+    "scope": "In scope: the Checkout page (cart quantities, delivery methods, contact details, promo codes, placing an order, confirmation, order tracking) and the checkout API (quote, orders, tracking, cancel). Functional, boundary, negative and basic security checks in desktop Chrome. Out of scope: real payment processing, performance and load testing, mobile layouts, other browsers, the rest of the Gadgetly shop.",
+    "approach": "API level: all pricing rules (delivery fees, the free courier boundary, promo codes, quantity validation, contact validation) — fast, data-driven Playwright request tests. UI level: page behaviour — dependent fields (address for pickup), re-pricing after changes, inline validation, double submission, confirmation and tracking — with Page Objects and fixtures. Combined flows: create data via API and check the UI, or place an order in the UI and verify it via the API. Techniques: boundary values (quantity 1/5/6, subtotal 9,750/10,000, MINUS200 from 2,000), equivalence partitions (delivery methods, valid/invalid promo codes), a decision table for fee × discount, error guessing (double click, wrong phone in tracking). Exploratory session first, then automation of the regression set.",
+    "environment": "Local QA Academy dev server (http://localhost:5173), checkout API at /api/checkout. Test data: the fixed catalogue (101–106) and a test customer. Every test creates its own orders and deletes them via DELETE /api/checkout/orders/:id?phone=; no test relies on global counts or other tests' data.",
+    "risks": [
+      "Wrong totals or discounts → pricing rules covered by API tests on every boundary",
+      "Double charge from a double click → a UI test counting order requests",
+      "Personal data visible to strangers in tracking → a negative test with a wrong phone (UI and API)",
+      "Summary differs from the saved order → combined UI + API check of totals",
+      "Flaky UI tests → user-facing locators, web-first assertions, isolated data"
+    ],
+    "criteria": "Entry: the feature is deployed to the test environment, requirements are reviewed, the API responds. Exit: all high-priority checks executed, regression suite green on CI (except tests marked test.fail for known bugs), no open Blocker/Critical bugs, known issues listed in the test summary.",
+    "deliverables": [
+      "Requirements review and test plan — day 1–2",
+      "Checklist, decision table, test cases — day 3–4",
+      "Bug reports from the bug hunt — day 5",
+      "UI framework (Page Objects, fixtures) and UI tests — week 2",
+      "API tests and combined flows — week 2",
+      "Regression suite on CI, README, publication on GitHub — week 3"
+    ]
+  },
+  "hints": [
+    "Почни зі scope і ризиків — решта плану з них випливає.",
+    "У підході назви конкретно: що на API, що на UI, які техніки, що автоматизуєш."
+  ],
+  "explanation": "Добрий тест-план короткий і конкретний: межі scope, розподіл перевірок між API і UI з обґрунтуванням, техніки тест-дизайну, ізоляція тестових даних, ризики з діями, критерії входу/виходу і графік. Такий документ у репозиторії показує рекрутеру, що ти вмієш планувати, а не лише писати код.",
+  "checklist": [
+    "Scope явно містить out of scope",
+    "Є розподіл API vs UI з причинами",
+    "Названо техніки тест-дизайну і конкретні межі",
+    "Описано прибирання тестових даних",
+    "Ризики мають дії, критерії — вимірювані",
+    "Є графік і перелік результатів"
+  ]
+}

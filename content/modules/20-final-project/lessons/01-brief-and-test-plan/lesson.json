@@ -1,0 +1,22 @@
+{
+  "title": "Project brief & test plan",
+  "minutes": 60,
+  "summary": "Бриф фінального проєкту: що тестуємо (Gadgetly Checkout — кошик, доставка, промокоди, оформлення, трекінг і checkout API), що здаємо на кожному етапі і де це житиме в репозиторії; рев'ю вимог і тест-план",
+  "resources": [
+    {
+      "title": "ISTQB Glossary: test plan",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Practice Software Testing (Toolshop) — app, REST API and Swagger for practice",
+      "url": "https://github.com/testsmith-io/practice-software-testing",
+      "kind": "tool",
+      "lang": "en",
+      "note": "Публічний навчальний застосунок, на який ти перенесеш свій фреймворк в уроці 5 (для CI на GitHub).",
+      "needsVerification": true
+    }
+  ]
+}

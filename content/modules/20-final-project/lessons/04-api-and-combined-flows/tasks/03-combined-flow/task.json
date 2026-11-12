@@ -1,0 +1,23 @@
+{
+  "type": "playwright",
+  "title": "Milestone 4b: API + UI flows with cleanup",
+  "playground": "checkout",
+  "statement": "Комбіновані сценарії: дані готуємо або перевіряємо через **API**, а користувацьку частину — через **UI**. Кожен тест створює **своє** замовлення і **видаляє** його після себе (`DELETE /api/checkout/orders/:id?phone=`).\n\n1. Замовлення, створене через API з `WELCOME5`, **зберігає знижку**: `GET /api/checkout/orders/:id?phone=` → `discount: 275`, `total: 5295`.\n2. **Track an order** у UI з правильним телефоном показує номер і `5,295 UAH`.\n3. Track з **іншим** телефоном → `Order not found. Check the number and the phone.`\n4. Замовлення, оформлене **в UI** з `WELCOME5`, має в підтвердженні `5,295 UAH`, і API повертає той самий `total`.\n\nТіло замовлення = тіло quote + `customer`:\n\n```json\n{ \"items\": [...], \"delivery\": \"post\", \"promoCode\": \"WELCOME5\",\n  \"customer\": { \"name\": \"Olena Tester\", \"phone\": \"+380671234567\", \"city\": \"Kyiv\", \"address\": \"Post office 12\" } }\n```",
+  "mutants": [
+    { "id": "orderIgnoresPromo", "description": "the saved order lost the promo discount.", "hint": "Create an order with WELCOME5 via the API and check discount and total in GET /checkout/orders/:id." },
+    { "id": "trackingIgnoresPhone", "description": "tracking showed the order for a wrong phone.", "hint": "Track your order with another phone and expect \"Order not found\"." },
+    { "id": "confirmationSubtotal", "description": "the confirmation showed the subtotal instead of the total.", "hint": "Place an order with WELCOME5 in the UI and expect 5,295 UAH in the confirmation." }
+  ],
+  "minTests": 4,
+  "codeRules": [
+    { "kind": "require", "pattern": "request\\.delete\\(", "message": "Прибирай за собою: видаляй створені замовлення (`request.delete(...)`)." },
+    { "kind": "require", "pattern": "request\\.(post|get)\\(", "message": "Готуй або перевіряй дані через API (`request.post` / `request.get`)." },
+    { "kind": "forbid", "pattern": "waitForTimeout", "message": "Без фіксованих пауз." }
+  ],
+  "hints": [
+    "`test.beforeEach` створює замовлення через `request.post`, `test.afterEach` видаляє його — дані кожного тесту ізольовані.",
+    "`request.get(url, { params: { phone } })` правильно закодує `+` у телефоні.",
+    "Номер з UI: `const id = (await page.getByTestId('order-number').textContent())!.slice(1)`."
+  ],
+  "explanation": "Комбіновані тести поєднують швидкість API і перевірку того, що бачить користувач: замовлення створюємо запитом, а трекінг перевіряємо в UI; або оформлюємо в UI і звіряємо збережені дані через API. Спільне сховище означає: тест створює свої дані, адресує їх за id і прибирає за собою. Перевірка «чужий телефон → не знайдено» — це вже безпека: без неї будь-хто перебором номерів побачить чужі замовлення."
+}

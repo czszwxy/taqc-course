@@ -1,0 +1,21 @@
+{
+  "title": "API tests & combined flows",
+  "minutes": 90,
+  "summary": "API-шар фреймворку: клієнт CheckoutApi, data-driven тести правил ціни з таблиці рішень, перевірка контракту відповіді, комбіновані сценарії API + UI і прибирання тестових даних у спільному середовищі",
+  "resources": [
+    {
+      "title": "Playwright: API testing",
+      "url": "https://playwright.dev/docs/api-testing",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Parameterize tests",
+      "url": "https://playwright.dev/docs/test-parameterize",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

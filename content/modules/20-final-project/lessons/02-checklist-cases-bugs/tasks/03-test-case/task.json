@@ -1,0 +1,43 @@
+{
+  "type": "test-case",
+  "title": "Test case: courier becomes free at exactly 10,000 UAH",
+  "playground": "checkout",
+  "statement": "Напиши тест-кейс для межі безкоштовної доставки **в UI**:\n\n> *Courier — 150 UAH, free for orders from 10,000 UAH (subtotal before discount).*\n\nСтартовий кошик: Headphones NC5 (4 500) × 1, Wireless Mouse M2 (500) × 1, USB-C Cable (250) × 2 = 5 500. Тест має показати обидва боки межі.",
+  "hints": [
+    "Один «+» на навушниках робить subtotal рівно 10 000. А як отримати 9 750? (Підказка: кабелі.)",
+    "Очікування з числами: Delivery 150 UAH і Total при 9 750; Delivery Free і Total 10,000 UAH при 10 000."
+  ],
+  "explanation": "Тест-кейс для межі має перевірити значення **на межі** (10 000 — безкоштовно) і **поруч** (9 750 — платно), з точними кроками, як отримати ці суми, і з числовими очікуваннями для доставки і total. Передумова — стартовий кошик і обраний Courier.",
+  "rules": [
+    { "field": "title", "check": "mentionsAny", "value": ["courier|кур", "free|безкошт"], "message": "Назва: що перевіряється — безкоштовний Courier на межі." },
+    { "field": "any", "check": "mentionsAll", "value": ["10[ ,.]?000", "9[ ,.]?750"], "message": "Перевір обидва боки межі: 10 000 і 9 750." },
+    { "field": "steps", "check": "minItems", "value": 4, "message": "Щонайменше 4 кроки: Courier, зміни кількості, перевірки після кожної." },
+    { "field": "expectedResult", "check": "mentionsAny", "value": ["free|безкошт|(^|\\D)0 uah"], "message": "Очікування: на 10 000 доставка Free." },
+    { "field": "expectedResult", "check": "mentionsAny", "value": ["150"], "message": "Очікування: на 9 750 доставка 150 UAH." },
+    { "field": "preconditions", "check": "minLength", "value": 15, "message": "Передумова: сторінка відкрита, стартовий кошик (Reset demo data)." },
+    { "field": "type", "check": "equals", "value": "Positive", "message": "Це позитивний тест: перевіряємо правило на валідних даних." },
+    { "field": "priority", "check": "equals", "value": "High", "message": "Правило про гроші — priority High." }
+  ],
+  "model": {
+    "title": "Checkout: Courier delivery is free from exactly 10,000 UAH and paid at 9,750 UAH",
+    "type": "Positive",
+    "priority": "High",
+    "preconditions": "/playground/checkout is open with the starting cart (Reset demo data): Headphones NC5 × 1, Wireless Mouse M2 × 1, USB-C Cable × 2 (subtotal 5,500 UAH).",
+    "testData": "Prices: Headphones NC5 4,500; Wireless Mouse M2 500; USB-C Cable 250. Threshold: 10,000 UAH.",
+    "steps": [
+      "Select delivery \"Courier\" — check Delivery 150 UAH, Total 5,650 UAH",
+      "Click \"+\" for Headphones NC5 (quantity 2) — subtotal 10,000 UAH",
+      "Check the order summary",
+      "Click \"−\" for USB-C Cable (quantity 1) — subtotal 9,750 UAH",
+      "Check the order summary"
+    ],
+    "expectedResult": "Step 3: Subtotal 10,000 UAH, Delivery Free, Total 10,000 UAH. Step 5: Subtotal 9,750 UAH, Delivery 150 UAH, Total 9,900 UAH."
+  },
+  "checklist": [
+    "Перевірено обидва боки межі: 10 000 і 9 750",
+    "Кроки пояснюють, як отримати потрібні суми",
+    "Очікування з точними числами для Delivery і Total",
+    "Передумова гарантує стартовий кошик",
+    "Назва містить умову і результат"
+  ]
+}

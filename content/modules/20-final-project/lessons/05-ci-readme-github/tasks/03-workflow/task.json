@@ -1,0 +1,39 @@
+{
+  "type": "written",
+  "title": "Write the CI workflow and config for your repository",
+  "statement": "Напиши для свого портфоліо-репозиторію:\n\n1. `.github/workflows/playwright.yml` — запуск на push у `main` і на pull request, Node 20, `npm ci`, встановлення Chromium, тести, HTML-звіт як артефакт (навіть якщо тести впали).\n2. Ключові налаштування `playwright.config.ts` для CI.\n3. `.gitignore`.",
+  "fields": [
+    { "id": "workflow", "label": ".github/workflows/playwright.yml", "kind": "textarea" },
+    { "id": "config", "label": "playwright.config.ts (CI-related settings)", "kind": "textarea" },
+    { "id": "gitignore", "label": ".gitignore (one entry per line)", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "workflow", "check": "mentionsAll", "value": ["push", "pull_request"], "message": "Workflow: тригери push і pull_request." },
+    { "field": "workflow", "check": "mentionsAny", "value": ["npm ci"], "message": "Workflow: `npm ci` для відтворюваного встановлення." },
+    { "field": "workflow", "check": "mentionsAny", "value": ["playwright install"], "message": "Workflow: встанови браузер (`npx playwright install --with-deps chromium`)." },
+    { "field": "workflow", "check": "mentionsAny", "value": ["playwright test|npm test|npm run test"], "message": "Workflow: запуск тестів." },
+    { "field": "workflow", "check": "mentionsAny", "value": ["upload-artifact"], "message": "Workflow: збережи звіт як артефакт (`actions/upload-artifact`)." },
+    { "field": "workflow", "check": "mentionsAny", "value": ["always\\(\\)|!cancelled\\(\\)"], "message": "Workflow: звіт потрібен саме тоді, коли тести впали — додай `if: ${{ !cancelled() }}` або `always()`." },
+    { "field": "config", "check": "mentionsAny", "value": ["retries"], "message": "Config: retries лише на CI (`process.env.CI ? 2 : 0`)." },
+    { "field": "config", "check": "mentionsAny", "value": ["trace"], "message": "Config: trace для діагностики (`on-first-retry`)." },
+    { "field": "config", "check": "mentionsAny", "value": ["baseurl"], "message": "Config: baseURL (краще з env-змінної)." },
+    { "field": "gitignore", "check": "mentionsAll", "value": ["node_modules", "playwright-report|test-results"], "message": ".gitignore: node_modules і результати тестів." }
+  ],
+  "model": {
+    "workflow": "name: Playwright tests\non:\n  push:\n    branches: [main]\n  pull_request:\njobs:\n  test:\n    runs-on: ubuntu-latest\n    timeout-minutes: 20\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with:\n          node-version: 20\n          cache: npm\n      - run: npm ci\n      - run: npx playwright install --with-deps chromium\n      - run: npx playwright test\n      - uses: actions/upload-artifact@v4\n        if: ${{ !cancelled() }}\n        with:\n          name: playwright-report\n          path: playwright-report/\n          retention-days: 14",
+    "config": "fullyParallel: true,\nforbidOnly: !!process.env.CI,\nretries: process.env.CI ? 2 : 0,\nreporter: [['list'], ['html', { open: 'never' }]],\nuse: {\n  baseURL: process.env.BASE_URL ?? 'https://practicesoftwaretesting.com',\n  trace: 'on-first-retry',\n  screenshot: 'only-on-failure',\n},",
+    "gitignore": ["node_modules/", "playwright-report/", "test-results/", "blob-report/", "playwright/.cache/", ".env", ".auth/"]
+  },
+  "hints": [
+    "Звіт без `if: ${{ !cancelled() }}` не завантажиться саме тоді, коли він найпотрібніший — після падіння.",
+    "`forbidOnly` на CI не дасть випадково закомітити `test.only`."
+  ],
+  "explanation": "Мінімальний надійний CI: тригери push і PR, `npm ci`, встановлення лише потрібного браузера з залежностями, запуск тестів і завантаження HTML-звіту навіть після падіння. У конфігу — retries лише на CI, trace на першому повторі, `forbidOnly`, baseURL з env. У `.gitignore` — залежності, звіти, кеші і секрети.",
+  "checklist": [
+    "Workflow запускається на push і PR",
+    "Звіт завантажується і після падіння тестів",
+    "Retries і trace налаштовано лише для CI-діагностики",
+    "baseURL береться з env",
+    "У .gitignore немає місця для секретів і звітів у репозиторії"
+  ]
+}

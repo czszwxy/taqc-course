@@ -1,0 +1,24 @@
+{
+  "type": "playwright",
+  "title": "Milestone 3a: a CheckoutPage page object",
+  "playground": "checkout",
+  "statement": "Перший крок фреймворку фінального проєкту — **Page Object** для сторінки Checkout (`/playground/checkout`). У стартері вже є клас `CheckoutPage` з локаторами order summary, метод `open()` і один тест.\n\nДодай у клас методи (`increaseButton`, `quantity`, `chooseDelivery`, `applyPromo`, `removePromo`, локатор поля Address) і напиши тести, що спираються **лише на методи класу**:\n\n1. «+» неактивна на максимальній кількості **5** (Wireless Mouse M2: 1 → 5).\n2. Поле **Address** приховане для «Pickup in store».\n3. Зміна способу доставки **перераховує** summary: Courier → `150 UAH` / `5,650 UAH`, Pickup → `Free` / `5,500 UAH`.\n4. Після **Remove** промокоду знижка зникає: `WELCOME5` → `-275 UAH` / `5,295 UAH`, потім `—` / `5,570 UAH`.\n\nСтартовий кошик: Headphones NC5 (4 500) × 1, Wireless Mouse M2 (500) × 1, USB-C Cable (250) × 2 = **5 500 UAH**, доставка за замовчуванням — Post office (70 UAH).",
+  "mutants": [
+    { "id": "plusAtMax", "description": "\"+\" stayed enabled at quantity 5.", "hint": "Click \"+\" on Wireless Mouse M2 until 5 and expect the button to be disabled." },
+    { "id": "addressForPickup", "description": "the Address field stayed visible for pickup.", "hint": "Choose \"Pickup in store\" and expect the Address field to be hidden." },
+    { "id": "staleDelivery", "description": "changing the delivery method did not re-price the summary.", "hint": "Choose Courier and expect Delivery 150 UAH and the new total." },
+    { "id": "promoRemoveStale", "description": "the discount stayed after removing the promo code.", "hint": "Apply WELCOME5, remove it and expect the discount to be \"—\" again." }
+  ],
+  "minTests": 4,
+  "codeRules": [
+    { "kind": "require", "pattern": "class\\s+CheckoutPage", "message": "Тримай локатори й дії в класі `CheckoutPage`." },
+    { "kind": "require", "pattern": "new\\s+CheckoutPage\\(", "message": "Тести мають створювати `new CheckoutPage(page)` і працювати через нього." },
+    { "kind": "forbid", "pattern": "waitForTimeout", "message": "Без фіксованих пауз — web-first перевірки чекають самі." }
+  ],
+  "hints": [
+    "Кнопка «+»: `` page.getByRole('button', { name: `Increase ${product}` }) ``; кількість: `page.getByTestId('qty-103')`.",
+    "Радіо доставки: `page.getByRole('radio', { name: /^Courier/ })` і `.check()`. Поле: `page.getByLabel('Address')` → `toBeHidden()`.",
+    "Промокод: `getByLabel('Promo code').fill(...)`, кнопка `Apply`; видалення — кнопка `Remove promo code`."
+  ],
+  "explanation": "Page Object збирає локатори і дії сторінки в одному місці, а тести читаються як сценарії: `checkout.chooseDelivery('Courier')`, `checkout.removePromo()`. Перевірки (`expect`) лишаються в тестах. Кожен тест цілить у межу вимоги: максимум 5, адреса лише для доставки, перерахунок після зміни доставки і після видалення промокоду — саме там ховаються баги цієї сторінки."
+}

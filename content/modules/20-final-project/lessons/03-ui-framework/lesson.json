@@ -1,0 +1,28 @@
+{
+  "title": "UI framework: Page Object Model + fixtures",
+  "minutes": 90,
+  "summary": "Архітектура фреймворку фінального проєкту: структура папок, правила для Page Objects (локатори, дії, без перевірок), компоненти, фікстури зі скоупами і прибиранням, тестові дані, конфіг і теги; два кроки автоматизації Checkout, перевірені на зламаних версіях",
+  "resources": [
+    {
+      "title": "Playwright: Page object models",
+      "url": "https://playwright.dev/docs/pom",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Fixtures",
+      "url": "https://playwright.dev/docs/test-fixtures",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Best Practices",
+      "url": "https://playwright.dev/docs/best-practices",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

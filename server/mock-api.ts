@@ -1,5 +1,15 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { applyLabBugs, labBugsFromUserAgent } from './lab-types';
+import {
+  CHECKOUT_PROCESSING_MS,
+  CHECKOUT_PRODUCTS,
+  FIRST_CHECKOUT_ORDER_ID,
+  findCheckoutOrder,
+  placeCheckoutOrder,
+  quoteCheckout,
+  type CheckoutOrder,
+  type Outcome,
+} from './checkout-api';
 import productsData from '../src/playground/data/products.json';
 import data from './mock-data.json';
 
@@ -53,6 +63,9 @@ interface Order {
 interface Store {
   orders: Order[];
   nextOrderId: number;
+  /** Module 20 checkout orders (server/checkout-api.ts). */
+  checkoutOrders: CheckoutOrder[];
+  nextCheckoutId: number;
 }
 
 function getBugs(fixed: boolean) {
@@ -64,6 +77,12 @@ function getBugs(fixed: boolean) {
     otherUsersOrder: on, // GET /orders/:id returns another user's order (should be 403)
     patchTotal: on, // PATCH quantity does not recalculate total
     deleteMissing: on, // DELETE of a non-existent order returns 204 instead of 404
+    // Checkout API (module 20) — listed in the `checkout` page's bugIds in registry.ts:
+    courierBoundary: on, // courier is free only above 10,000 UAH instead of from 10,000
+    welcomeOnTotal: on, // WELCOME5 takes 5 % of subtotal + delivery instead of subtotal only
+    maxQtyIgnored: on, // quote/orders accept quantity 6–10 (max is 5)
+    orderIgnoresPromo: on, // POST /checkout/orders drops the promo discount from the order total
+    trackingIgnoresPhone: on, // GET /checkout/orders/:id returns the order with any phone (should be 404)
   };
 }
 type Bugs = ReturnType<typeof getBugs>;
@@ -97,7 +116,7 @@ function priceOf(productId: number): number {
 
 function seedStore(): Store {
   const orders = data.orders.map((o) => ({ ...o, unitPrice: priceOf(o.productId), total: priceOf(o.productId) * o.quantity }));
-  return { orders, nextOrderId: data.nextOrderId };
+  return { orders, nextOrderId: data.nextOrderId, checkoutOrders: [], nextCheckoutId: FIRST_CHECKOUT_ORDER_ID };
 }
 
 const stores: Record<string, Store> = { [API_BASE]: seedStore(), [API_FIXED_BASE]: seedStore() };
@@ -283,7 +302,7 @@ function createOrder({ base, body, store, bug, user }: Ctx): Reply {
     status: 'created',
     createdAt: new Date().toISOString(),
   };
-  const next: Store = { orders: [...store.orders, order], nextOrderId: store.nextOrderId + 1 };
+  const next: Store = { ...store, orders: [...store.orders, order], nextOrderId: store.nextOrderId + 1 };
   return { ...reply(STATUS.created, order, { Location: `${base}/orders/${order.id}` }), store: next };
 }
 
@@ -346,6 +365,32 @@ async function slow({ query }: Ctx): Promise<Reply> {
   return reply(STATUS.ok, { waitedMs: ms });
 }
 
+/* ---------- checkout (module 20): logic in checkout-api.ts ---------- */
+
+const fromOutcome = (o: Outcome): Reply => reply(o.status, o.body, o.headers);
+
+async function placeCheckout({ base, body, bug }: Ctx): Promise<Reply> {
+  // "Payment processing": a short delay makes a double click on "Place order" observable.
+  await wait(CHECKOUT_PROCESSING_MS);
+  // Read the store after the delay so parallel requests get different ids.
+  const store = stores[base] ?? seedStore();
+  const result = placeCheckoutOrder(base, body, bug, store.nextCheckoutId, new Date());
+  if (!result.order) return fromOutcome(result.outcome);
+  const next: Store = { ...store, checkoutOrders: [...store.checkoutOrders, result.order], nextCheckoutId: store.nextCheckoutId + 1 };
+  return { ...fromOutcome(result.outcome), store: next };
+}
+
+function trackCheckout({ store, params, query, bug }: Ctx): Reply {
+  const found = findCheckoutOrder(store.checkoutOrders, params.id ?? '', query.get('phone'), bug.trackingIgnoresPhone);
+  return found.ok ? reply(STATUS.ok, found.value) : fromOutcome(found.outcome);
+}
+
+function cancelCheckout({ store, params, query }: Ctx): Reply {
+  const found = findCheckoutOrder(store.checkoutOrders, params.id ?? '', query.get('phone'), false);
+  if (!found.ok) return fromOutcome(found.outcome);
+  return { ...reply(STATUS.noContent), store: { ...store, checkoutOrders: store.checkoutOrders.filter((o) => o.id !== found.value.id) } };
+}
+
 const ROUTES: Route[] = [
   { method: 'GET', path: '/health', handle: () => reply(STATUS.ok, { status: 'ok', version: data.version }) },
   { method: 'GET', path: '/products', handle: listProducts },
@@ -362,6 +407,11 @@ const ROUTES: Route[] = [
   { method: 'POST', path: '/lab/profile', handle: ({ body }) => reply(STATUS.created, { saved: true, profile: body }, { 'X-Request-Id': data.lab.requestId }) },
   { method: 'GET', path: '/lab/avatar.png', handle: () => error(STATUS.notFound, 'File not found') },
   { method: 'GET', path: '/lab/orders', handle: ({ query }) => reply(STATUS.ok, { filter: Object.fromEntries(query.entries()), items: [] }) },
+  { method: 'GET', path: '/checkout/products', handle: () => reply(STATUS.ok, { items: CHECKOUT_PRODUCTS }) },
+  { method: 'POST', path: '/checkout/quote', handle: ({ body, bug }) => fromOutcome(quoteCheckout(body, bug)) },
+  { method: 'POST', path: '/checkout/orders', handle: placeCheckout },
+  { method: 'GET', path: '/checkout/orders/:id', handle: trackCheckout },
+  { method: 'DELETE', path: '/checkout/orders/:id', handle: cancelCheckout },
 ];
 
 const METHODS_WITH_BODY = new Set(['POST', 'PUT', 'PATCH']);

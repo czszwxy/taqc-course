@@ -1,0 +1,57 @@
+{
+  "type": "written",
+  "title": "Review the Checkout requirements",
+  "playground": "checkout",
+  "statement": "Прочитай вимоги в жовтій панелі сторінки **Checkout** і таблицю API в теорії. Знайди, що незрозуміло, чого бракує і де найбільші ризики. Це перший документ проєкту: збережи його в `docs/requirements-review.md` свого репозиторію.",
+  "fields": [
+    { "id": "questions", "label": "Questions to the product team (ambiguities and gaps, one per line)", "kind": "list" },
+    { "id": "risks", "label": "Main risks (one per line: risk — why it matters)", "kind": "list" },
+    { "id": "assumptions", "label": "Assumptions you will test with until answers arrive (one per line)", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "questions", "check": "minItems", "value": 5, "message": "Questions: щонайменше 5 питань — неоднозначності й пропуски." },
+    { "field": "questions", "check": "mentionsAny", "value": ["round|округл|negative|від'ємн|below zero|менше нуля"], "message": "Questions: що з округленням знижки і чи може total стати від'ємним?" },
+    { "field": "questions", "check": "mentionsAny", "value": ["error|помилк|unavailable|недоступн|offline|fail|500|timeout"], "message": "Questions: що бачить користувач, якщо API недоступний або відповідає помилкою?" },
+    { "field": "risks", "check": "minItems", "value": 3, "message": "Risks: щонайменше 3 ризики." },
+    { "field": "risks", "check": "mentionsAny", "value": ["money|гроші|price|цін|total|сум|charge|списан|discount|знижк"], "message": "Risks: гроші — суми, знижки, подвійне списання." },
+    { "field": "risks", "check": "mentionsAny", "value": ["personal|персональн|phone|телефон|privacy|tracking|трекінг|security|безпек"], "message": "Risks: персональні дані в трекінгу (телефон, адреса)." },
+    { "field": "assumptions", "check": "minItems", "value": 2, "message": "Assumptions: щонайменше 2 припущення." }
+  ],
+  "model": {
+    "questions": [
+      "WELCOME5: is the discount rounded down to whole hryvnias? Is it the same in the UI and in the API?",
+      "Can a promo code make the total zero or negative (MINUS200 on a small order with free pickup)?",
+      "What does the user see if the quote or order request fails (500, timeout, no network)?",
+      "Can an item be removed from the cart completely, or is the minimum always 1?",
+      "Is a phone with spaces or dashes (+380 67 123 45 67) accepted and normalised?",
+      "Is the free courier threshold checked before or after the discount? (requirement says before — confirm)",
+      "How long can an order be tracked, and can it be cancelled by the customer?",
+      "Which browsers and screen sizes are supported? Is there a mobile layout?"
+    ],
+    "risks": [
+      "Wrong totals (discount, delivery fee, free courier boundary) — customers pay the wrong amount",
+      "Double submission — two orders and a double charge",
+      "Order tracking reveals personal data (name, phone, address) to strangers if the phone is not checked",
+      "Summary on the page differs from the saved order — the customer sees one amount and pays another",
+      "Validation only on the client — invalid data reaches the API"
+    ],
+    "assumptions": [
+      "Discount is rounded down to whole hryvnias on both UI and API",
+      "Free courier is based on the subtotal before discount",
+      "A phone must be exactly +380 and 9 digits without spaces",
+      "Only desktop Chrome is in scope for this release"
+    ]
+  },
+  "hints": [
+    "Пройди кожен рядок вимог і спитай: «а якщо …?» — межа, порожньо, помилка сервера, інший формат.",
+    "Ризики оцінюй за наслідками: гроші, персональні дані, неможливість оформити замовлення."
+  ],
+  "explanation": "Рев'ю вимог — найдешевший спосіб знайти дефекти: питання про округлення, від'ємний total, недоступність API чи формат телефону закривають прогалини ще до тестування. Ризики визначають пріоритети плану: гроші (суми, знижки, подвійне списання) і персональні дані (трекінг) — найвищі. Поки відповідей немає, тестуй за явно записаними припущеннями.",
+  "checklist": [
+    "Питання конкретні, з прикладами значень",
+    "Є питання про помилки API і про межові випадки",
+    "Ризики оцінені за наслідками для користувача і бізнесу",
+    "Припущення записані явно",
+    "Документ збережено в репозиторії (docs/)"
+  ]
+}

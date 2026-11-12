@@ -1,0 +1,81 @@
+{
+  "type": "quiz",
+  "title": "Framework design decisions",
+  "show": 7,
+  "hints": ["Page Object — локатори й дії; перевірки — у тестах; фікстури — ресурси з прибиранням."],
+  "questions": [
+    {
+      "id": "po-expect",
+      "kind": "single",
+      "text": "Де мають бути перевірки «total = 5,570 UAH»?",
+      "options": [
+        { "text": "У тесті; Page Object дає локатор `checkout.total`", "correct": true },
+        { "text": "У методі Page Object `checkTotal()` з жорстко вписаним 5,570" }
+      ]
+    },
+    {
+      "id": "component",
+      "kind": "single",
+      "text": "У кошику три однакові рядки з кнопками «−», «+» і кількістю. Як оформити це у фреймворку?",
+      "options": [
+        { "text": "Компонент `CartRow` (кнопки й кількість одного рядка), який Page Object повертає за назвою товару", "correct": true },
+        { "text": "Окремий метод для кожної кнопки кожного товару" }
+      ]
+    },
+    {
+      "id": "strict",
+      "kind": "single",
+      "text": "`getByLabel('Phone')` падає зі strict mode violation. Чому і що робити?",
+      "options": [
+        { "text": "Знайдено і «Phone», і «Phone used at checkout»: `{ exact: true }` або пошук усередині потрібної секції", "correct": true },
+        { "text": "Додати `.first()` і забути" }
+      ]
+    },
+    {
+      "id": "fixture-cleanup",
+      "kind": "single",
+      "text": "Фікстура створює замовлення через API для тесту. Де його видаляти?",
+      "options": [
+        { "text": "У тій самій фікстурі після `await use(order)`", "correct": true },
+        { "text": "Наприкінці останнього тесту у файлі" },
+        { "text": "Ніде, база колись очиститься" }
+      ]
+    },
+    {
+      "id": "import",
+      "kind": "single",
+      "text": "Звідки тести мають імпортувати `test`?",
+      "options": [
+        { "text": "З твого `fixtures/test.ts` (де `base.extend`), щоб мати доступ до фікстур", "correct": true },
+        { "text": "Завжди напряму з `@playwright/test`" }
+      ]
+    },
+    {
+      "id": "expected-values",
+      "kind": "single",
+      "text": "Звідки брати очікувану суму в тесті?",
+      "options": [
+        { "text": "З вимог (розрахувати: 5 500 + 70 = 5 570)", "correct": true },
+        { "text": "Прочитати зі сторінки і порівняти з нею ж", "explain": "Так тест «підтвердить» будь-який баг у розрахунку." }
+      ]
+    },
+    {
+      "id": "worker-scope",
+      "kind": "single",
+      "text": "Коли доречний скоуп фікстури `worker`?",
+      "options": [
+        { "text": "Для дорогого ресурсу, який безпечно ділити між тестами одного воркера (наприклад, токен або акаунт лише для читання)", "correct": true },
+        { "text": "Для сторінки, яку кожен тест змінює" }
+      ]
+    },
+    {
+      "id": "tags",
+      "kind": "single",
+      "text": "Як запускати лише швидкий smoke-набір на кожному PR?",
+      "options": [
+        { "text": "Позначити тести тегом `@smoke` і запускати `--grep @smoke`", "correct": true },
+        { "text": "Створити окремий репозиторій для smoke" }
+      ]
+    }
+  ]
+}

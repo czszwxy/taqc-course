@@ -1,0 +1,82 @@
+{
+  "type": "written",
+  "title": "Checklist for Checkout",
+  "playground": "checkout",
+  "statement": "Склади чекліст для сторінки Checkout і checkout API, згрупований за областями. Кожен пункт — конкретна перевірка з даними (не «перевірити промокод», а «`welcome5` у нижньому регістрі → застосовано, знижка 275»). Збережи як `docs/checklist.md`.",
+  "fields": [
+    { "id": "cart", "label": "Cart (one check per line)", "kind": "list" },
+    { "id": "delivery", "label": "Delivery (one check per line)", "kind": "list" },
+    { "id": "promo", "label": "Promo codes (one check per line)", "kind": "list" },
+    { "id": "contact", "label": "Contact details (one check per line)", "kind": "list" },
+    { "id": "order", "label": "Placing the order and tracking (one check per line)", "kind": "list" },
+    { "id": "api", "label": "API (one check per line)", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "cart", "check": "minItems", "value": 2, "message": "Cart: щонайменше 2 перевірки (межі 1 і 5, перерахунок)." },
+    { "field": "cart", "check": "mentionsAll", "value": ["(^|\\D)1(\\D|$)", "(^|\\D)5(\\D|$)"], "message": "Cart: межі кількості — 1 і 5." },
+    { "field": "delivery", "check": "minItems", "value": 3, "message": "Delivery: щонайменше 3 перевірки." },
+    { "field": "delivery", "check": "mentionsAny", "value": ["10[ ,.]?000"], "message": "Delivery: межа безкоштовного Courier — 10 000." },
+    { "field": "delivery", "check": "mentionsAny", "value": ["address|адрес"], "message": "Delivery: поле Address для Pickup." },
+    { "field": "promo", "check": "minItems", "value": 4, "message": "Promo: щонайменше 4 перевірки (регістр, невідомий, MINUS200 нижче межі, видалення)." },
+    { "field": "promo", "check": "mentionsAny", "value": ["remov|видал"], "message": "Promo: видалення промокоду." },
+    { "field": "promo", "check": "mentionsAny", "value": ["2[ ,.]?000"], "message": "Promo: межа MINUS200 — 2 000." },
+    { "field": "contact", "check": "minItems", "value": 3, "message": "Contact: щонайменше 3 (ім'я, телефон, адреса)." },
+    { "field": "contact", "check": "mentionsAny", "value": ["(^|\\D)(8|10) (digit|цифр)|\\+38067123456(\\D|$)|\\+38067123456\\d\\d"], "message": "Contact: межі телефону — 8 і 10 цифр після +380." },
+    { "field": "order", "check": "minItems", "value": 3, "message": "Order: щонайменше 3 (сума в підтвердженні, подвійний клік, трекінг)." },
+    { "field": "order", "check": "mentionsAny", "value": ["double|двічі|подвійн|twice"], "message": "Order: подвійний клік на Place order." },
+    { "field": "order", "check": "mentionsAny", "value": ["another phone|other phone|wrong phone|інш\\S* телефон|чуж"], "message": "Order: трекінг з чужим телефоном." },
+    { "field": "api", "check": "minItems", "value": 3, "message": "API: щонайменше 3 перевірки (статуси, валідація, збереження, видалення)." },
+    { "field": "api", "check": "mentionsAny", "value": ["400|404|409|422"], "message": "API: негативні статус-коди." }
+  ],
+  "model": {
+    "cart": [
+      "\"−\" is disabled at quantity 1; \"+\" is disabled at quantity 5",
+      "Changing a quantity updates the line total and the order summary",
+      "Starting cart: subtotal 5,500, Post office 70, total 5,570"
+    ],
+    "delivery": [
+      "Pickup — Free, Post office — 70 UAH, Courier — 150 UAH in the summary",
+      "Courier at subtotal 9,750 → 150 UAH; at exactly 10,000 → Free",
+      "Address field is hidden for Pickup and required for Post office and Courier",
+      "Switching the delivery method re-prices the summary immediately"
+    ],
+    "promo": [
+      "welcome5 (lower case) → applied, discount 275 on 5,500",
+      "MINUS200 → discount 200; via API with subtotal 1,750 → 400 \"needs an order from 2,000 UAH\"",
+      "Unknown code SAVE99 → \"Unknown promo code\", no discount",
+      "Remove → the discount disappears and the total goes back to 5,570",
+      "Applying a second code replaces the first one (only one at a time)",
+      "WELCOME5 with Courier: discount from the subtotal only (275, not 282)"
+    ],
+    "contact": [
+      "Name: 1 char → error, 2 → OK, 50 → OK, 51 → error; only spaces → error",
+      "Phone: +380671234567 → OK; 8 digits (+38067123456) and 10 digits (+3806712345678) → error; 0671234567 → error",
+      "Address empty with Post office / Courier → \"Enter the delivery address\""
+    ],
+    "order": [
+      "Valid order → confirmation with #number and the same total as the summary",
+      "Double click on Place order → one order (one POST request)",
+      "Order with WELCOME5 → confirmation and saved order keep the discount",
+      "Tracking with the checkout phone → order shown; with another phone → \"Order not found\"",
+      "Tracking a non-existent number → \"Order not found\""
+    ],
+    "api": [
+      "POST /quote with quantity 6 → 400; with product 999 → 422; with product 106 (out of stock) → 409",
+      "POST /orders valid → 201, Location header, body matches the quote",
+      "GET /orders/:id with a wrong phone → 404; DELETE with the right phone → 204, then GET → 404",
+      "Invalid delivery value or missing customer → 400 with a clear error"
+    ]
+  },
+  "hints": [
+    "Пройди кожен рядок вимог і для кожного запиши позитивну перевірку і межу / негативну.",
+    "Пиши з даними: значення і очікуваний результат."
+  ],
+  "explanation": "Чекліст, згрупований за областями, одразу показує покриття. Сильні пункти мають дані й межі: 1/5 шт., 9 750/10 000, MINUS200 від 2 000, телефони з 8 і 10 цифрами, видалення промокоду, подвійний клік, чужий телефон у трекінгу, негативні статус-коди API. Саме ці пункти пізніше стануть автотестами.",
+  "checklist": [
+    "Покрито всі області: кошик, доставка, промокоди, контакти, оформлення, трекінг, API",
+    "У пунктах є конкретні дані і очікування",
+    "Є межі: 1/5, 9 750/10 000, 2 000, 8/9/10 цифр",
+    "Є негативні перевірки і безпека трекінгу",
+    "Чекліст збережено в docs/checklist.md"
+  ]
+}
