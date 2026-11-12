@@ -1,0 +1,28 @@
+{
+  "title": "Validating status, headers & schema",
+  "minutes": 50,
+  "summary": "Що таке контракт API і як його перевіряти: статус-коди позитивних і негативних сценаріїв, заголовки (content-type, location, www-authenticate), форма відповіді й типи полів (toEqual з expect.any, toMatchObject), пагінація, схеми (JSON Schema, zod)",
+  "resources": [
+    {
+      "title": "Playwright: Assertions (generic matchers, expect.any)",
+      "url": "https://playwright.dev/docs/test-assertions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: HTTP response status codes",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "JSON Schema — Getting started",
+      "url": "https://json-schema.org/learn/getting-started-step-by-step",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

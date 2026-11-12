@@ -1,0 +1,22 @@
+{
+  "type": "playwright",
+  "title": "Prepare data through the API, check it in the UI",
+  "playground": "account",
+  "statement": "Найсильніша комбінація: **швидка підготовка через API + перевірка в UI**. Сторінка **My account** (`/playground/account`) показує замовлення як `2 pcs · created · 998 UAH` (рядок має `data-testid=\"order-<id>\"`, сума — `data-testid=\"order-total\"`).\n\n1. Замовлення, створене через API (`{ productId: 1, quantity: 2 }`), видно в UI з кількістю, статусом і сумою `998 UAH`. *Уже є.*\n2. Кількість, змінена через API (`PATCH` → `quantity: 3`), видно в UI після відкриття сторінки: `3 pcs` і сума `1,497 UAH`.\n3. Замовлення, **видалене через API**, зникає з UI після перезавантаження сторінки.\n\nУ UI заходимо **без форми**: токен з API кладемо в localStorage до завантаження сторінки (`page.addInitScript`). Наприкінці кожного тесту видаляй свої замовлення через API (`try / finally`).",
+  "mutants": [
+    { "id": "patchTotal", "description": "the API did not recalculate the total after PATCH — the UI showed the old 998 UAH.", "hint": "PATCH the quantity through the API, then check the total shown in the UI." },
+    { "id": "sessionLost", "description": "the account page ignored the saved session and showed the login form.", "hint": "Open the account page with the token already in localStorage and expect the dashboard." }
+  ],
+  "minTests": 3,
+  "codeRules": [
+    { "kind": "require", "pattern": "request\\.(post|patch)\\(", "message": "Готуй дані через API: `request.post('/api/orders', …)`." },
+    { "kind": "require", "pattern": "addInitScript\\(|storageState", "message": "Заходь у UI без форми: `page.addInitScript(…)` або `storageState` з токеном." },
+    { "kind": "require", "pattern": "finally", "message": "Прибирай створені замовлення навіть при падінні: `try { … } finally { await request.delete(…) }`." }
+  ],
+  "hints": [
+    "Відкрити кабінет з токеном: `await page.addInitScript((t) => localStorage.setItem('gadgetly:token', t), token); await page.goto('/playground/account');`",
+    "Рядок замовлення: `` page.getByTestId(`order-${order.id}`) ``; сума всередині: `row.getByTestId('order-total')`.",
+    "Видалення: `await request.delete(…)`, потім `await page.reload()` і `await expect(row).toHaveCount(0)`. (Порівнювати весь список з API тут ненадійно: паралельні тести того ж користувача створюють і видаляють свої замовлення.)"
+  ],
+  "explanation": "Підготовка даних через UI повільна й крихка: щоб перевірити список замовлень, не треба щоразу проходити кошик і оплату. Створи замовлення одним запитом, а UI-тест зосередь на тому, що справді перевіряєш: відображення. Зворотний напрям теж корисний: дія в UI, перевірка через API. Наприклад, «вихід справді видалив сесію» чи «форма зберегла саме ці дані». Комбіновані тести ловлять баги на стику: API порахував неправильно, а UI сумлінно показав неправильне число."
+}

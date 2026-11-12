@@ -1,0 +1,28 @@
+{
+  "title": "Framework structure & best practices",
+  "minutes": 55,
+  "summary": "Як виглядає тестовий фреймворк на Playwright: шари (тести, Page Objects, API-клієнти, фікстури, дані, конфіг), структура папок, домовленості про назви, що не можна робити, і чекліст проєкту для портфоліо",
+  "resources": [
+    {
+      "title": "Playwright: Best Practices",
+      "url": "https://playwright.dev/docs/best-practices",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Fixtures",
+      "url": "https://playwright.dev/docs/test-fixtures",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Page object models",
+      "url": "https://playwright.dev/docs/pom",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

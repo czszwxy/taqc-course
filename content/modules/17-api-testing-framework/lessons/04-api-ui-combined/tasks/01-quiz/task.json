@@ -1,0 +1,64 @@
+{
+  "type": "quiz",
+  "title": "Quiz: API + UI combined",
+  "show": 5,
+  "playground": "account",
+  "hints": ["API — для підготовки, логіну, прибирання й перевірки збереженого; UI — для того, що тестується."],
+  "questions": [
+    {
+      "id": "why",
+      "kind": "single",
+      "text": "Навіщо створювати тестове замовлення через API, якщо тест перевіряє сторінку кабінету?",
+      "options": [
+        { "text": "Швидше і стабільніше: тест не залежить від кошика й оплати, яких він не перевіряє", "correct": true },
+        { "text": "Бо через UI замовлення створити неможливо" }
+      ]
+    },
+    {
+      "id": "init-script",
+      "kind": "single",
+      "text": "Що робить `page.addInitScript((t) => localStorage.setItem('gadgetly:token', t), token)`?",
+      "options": [
+        { "text": "Перед завантаженням сторінки кладе токен у localStorage — сторінка відкривається вже залогіненою", "correct": true },
+        { "text": "Відправляє токен на сервер" }
+      ]
+    },
+    {
+      "id": "reverse",
+      "kind": "single",
+      "text": "UI показав «Profile saved». Як переконатися, що збережено правильні значення?",
+      "options": [
+        { "text": "Прочитати профіль через API (або з БД) і порівняти значення", "correct": true },
+        { "text": "Повідомлення достатньо" }
+      ]
+    },
+    {
+      "id": "page-request",
+      "kind": "single",
+      "text": "Чим `page.request` відрізняється від фікстури `request`?",
+      "options": [
+        { "text": "`page.request` ділить cookies з контекстом сторінки", "correct": true },
+        { "text": "Нічим" },
+        { "text": "`page.request` працює лише з GET" }
+      ]
+    },
+    {
+      "id": "too-much",
+      "kind": "single",
+      "text": "Вимога: «кнопка Delete account показує підтвердження». Тест видаляє акаунт через API й перевіряє 404. Що не так?",
+      "options": [
+        { "text": "Вимога про інтерфейс: підтвердження треба перевірити в UI", "correct": true },
+        { "text": "Усе правильно, API швидше" }
+      ]
+    },
+    {
+      "id": "e2e",
+      "kind": "single",
+      "text": "Чи потрібні повні end-to-end тести без «зрізань» через API?",
+      "options": [
+        { "text": "Так, кілька ключових: вони ловлять баги склеювання всіх частин", "correct": true },
+        { "text": "Ні, комбіновані тести повністю їх замінюють" }
+      ]
+    }
+  ]
+}

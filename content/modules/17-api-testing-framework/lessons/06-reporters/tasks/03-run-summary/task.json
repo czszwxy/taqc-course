@@ -1,0 +1,43 @@
+{
+  "type": "written",
+  "title": "Summarize a nightly run for the team",
+  "statement": "Нічний регресійний прогін Gadgetly на staging (build 3.4.0, 3 шарди, chromium + webkit). Підсумок HTML-звіту:\n\n| | |\n|---|---|\n| Total | 240 |\n| Passed | 228 |\n| Failed | 5 |\n| Flaky | 4 |\n| Skipped | 3 |\n\n**Failed:**\n1. `cart › SAVE10 gives 10% off` (chromium) — Expected `2,350 UAH`, Received `2,600 UAH`\n2. `cart › SAVE10 gives 10% off` (webkit) — та сама помилка\n3. `cart › promo is case-insensitive` (chromium) — Expected discount `250 UAH`, Received `—`\n4. `account › orders list` (webkit) — `net::ERR_CONNECTION_RESET` о 02:14\n5. `account › export data` (webkit) — `net::ERR_CONNECTION_RESET` о 02:14\n\n**Flaky:** 4 тести пошуку (`search › …`), у trace перевірка лічильника виконується до відповіді API.\n\n**Skipped:** 3 тести з `test.fixme` → QA-388.\n\nНапиши повідомлення для командного каналу.",
+  "fields": [
+    { "id": "summary", "label": "One-line summary", "kind": "text", "placeholder": "Nightly 3.4.0: 228/240 passed, …" },
+    { "id": "failures", "label": "Failures grouped by cause (one per line)", "kind": "list" },
+    { "id": "actions", "label": "Next actions (one per line)", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "summary", "check": "mentionsAll", "value": ["228|240", "3\\.4\\.0|build"], "message": "Summary: назви білд (3.4.0) і загальний результат (228 з 240)." },
+    { "field": "failures", "check": "minItems", "value": 2, "message": "Failures: згрупуй 5 падінь за причинами — їх лише дві." },
+    { "field": "failures", "check": "mentionsAny", "value": ["save10|promo|промо|знижк|discount"], "message": "Failures: три падіння — один баг промокодів (SAVE10 не застосовується)." },
+    { "field": "failures", "check": "mentionsAny", "value": ["connection|network|мереж|staging|02:14|environment|середовищ|infra"], "message": "Failures: два падіння webkit — одночасний обрив з'єднання о 02:14, схоже на проблему середовища." },
+    { "field": "actions", "check": "minItems", "value": 3, "message": "Actions: щонайменше 3 дії — баг-репорт, перевірка середовища/перезапуск, задача на flaky-тести." },
+    { "field": "actions", "check": "mentionsAny", "value": ["flaky|search|пошук|нестабільн"], "message": "Actions: не забудь flaky-тести пошуку — їм потрібна задача на виправлення (web-first очікування лічильника)." }
+  ],
+  "model": {
+    "summary": "Nightly regression, build 3.4.0 on staging: 228/240 passed — 1 product bug (promo codes), 1 short environment outage, 4 flaky search tests.",
+    "failures": [
+      "Promo codes: 3 failures (chromium + webkit) — SAVE10 gives no discount: total 2,600 UAH instead of 2,350 UAH, lowercase code shows no discount. Looks like a regression in 3.4.0.",
+      "Environment: 2 webkit account tests failed at 02:14 with net::ERR_CONNECTION_RESET at the same moment — staging connection drop, not a product failure."
+    ],
+    "actions": [
+      "Report the promo-code bug with trace and screenshots (blocker for release 3.4.0 if confirmed manually).",
+      "Re-run the 2 account tests on webkit and ask DevOps about the 02:14 connection resets on staging.",
+      "Create a task to fix the 4 flaky search tests: wait for the counter with a web-first assertion instead of reading it before the API answers.",
+      "Skipped tests are known (QA-388) — no action today."
+    ]
+  },
+  "hints": [
+    "Групуй падіння за **причиною**, а не за тестом: однакова помилка в кількох тестах — один баг.",
+    "Одночасна мережева помилка в різних тестах — ознака проблеми середовища, а не продукту."
+  ],
+  "explanation": "Добрий підсумок прогону — це висновки, а не список червоних рядків. Три падіння промокодів — один баг продукту (однакова помилка в різних браузерах). Два одночасні обриви з'єднання — середовище. Flaky-тести — технічний борг з відомою причиною (у trace видно, що перевірка йде до відповіді API). Кожна група отримує свою дію: баг-репорт, перевірку середовища, задачу на виправлення тестів.",
+  "checklist": [
+    "Результат і білд в одному рядку",
+    "Падіння згруповано за причинами, а не перелічено підряд",
+    "Відокремлено баг продукту від проблем середовища",
+    "Flaky-тести не проігноровано",
+    "Кожна група має конкретну наступну дію"
+  ]
+}

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, type FormEvent } from 'react';
-import { PlaygroundShell, PgField, inputClass, isFixedMode, withLabMode } from './PlaygroundShell';
+import { PlaygroundShell, PgField, formatUah, inputClass, isFixedMode, withLabMode } from './PlaygroundShell';
 
 /**
  * Bug Playground: Gadgetly "My account" — a signed-in area for the Playwright practice module (16): dialogs
@@ -46,6 +46,8 @@ interface OrderView {
   id: number;
   status: string;
   quantity: number;
+  /** Missing in some mocked responses — then the total is simply not shown. */
+  total?: number;
 }
 
 type Session = { kind: 'checking' } | { kind: 'signed-out' } | { kind: 'signed-in'; token: string; user: User } | { kind: 'deleted' };
@@ -84,7 +86,7 @@ async function fetchOrders(token: string): Promise<OrderView[] | null> {
     const res = await fetch(`${API}/orders`, { headers: authHeaders(token) });
     if (!res.ok) return null;
     const body = (await res.json()) as { items?: OrderView[] };
-    return (body.items ?? []).map(({ id, status, quantity }) => ({ id, status, quantity }));
+    return (body.items ?? []).map(({ id, status, quantity, total }) => ({ id, status, quantity, total }));
   } catch {
     return null;
   }
@@ -401,10 +403,11 @@ function OrdersBody({ orders, onRetry }: { orders: Orders; onRetry: () => void }
   return (
     <ul data-testid="orders" className="mt-2 divide-y divide-slate-200 rounded-lg border border-slate-200">
       {orders.items.map((o) => (
-        <li key={o.id} className="flex justify-between px-3 py-2 text-sm">
+        <li key={o.id} data-testid={`order-${o.id}`} className="flex justify-between gap-3 px-3 py-2 text-sm">
           <span className="font-medium">Order #{o.id}</span>
           <span className="text-slate-500">
             {o.quantity} pcs · {o.status}
+            {typeof o.total === 'number' && <span data-testid="order-total"> · {formatUah(o.total)}</span>}
           </span>
         </li>
       ))}

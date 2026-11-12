@@ -1,0 +1,57 @@
+{
+  "type": "quiz",
+  "title": "Quiz: reporters & results",
+  "show": 5,
+  "hints": ["html — для людей, junit/json — для систем, blob — для об'єднання шардів. Flaky = пройшов лише з повтору."],
+  "questions": [
+    {
+      "id": "jenkins",
+      "kind": "single",
+      "text": "Jenkins має показувати результати тестів у своєму інтерфейсі. Який репортер?",
+      "options": [{ "text": "`junit`", "correct": true }, { "text": "`dot`" }, { "text": "`list`" }]
+    },
+    {
+      "id": "flaky",
+      "kind": "single",
+      "text": "Що означає статус **flaky** у звіті?",
+      "options": [
+        { "text": "Тест упав, але пройшов з повтору", "correct": true },
+        { "text": "Тест пропущено" },
+        { "text": "Тест дуже повільний" }
+      ]
+    },
+    {
+      "id": "step",
+      "kind": "single",
+      "text": "Навіщо `test.step('apply SAVE10', async () => { … })`?",
+      "options": [
+        { "text": "Звіт показує тест як послідовність названих кроків, видно, на якому впало", "correct": true },
+        { "text": "Щоб запускати кроки паралельно" }
+      ]
+    },
+    {
+      "id": "show",
+      "kind": "text",
+      "text": "Яка команда відкриває HTML-звіт останнього прогону?",
+      "accept": ["npx playwright show-report"]
+    },
+    {
+      "id": "shards",
+      "kind": "single",
+      "text": "Набір розбито на 4 шарди на різних машинах. Як отримати один спільний HTML-звіт?",
+      "options": [
+        { "text": "Кожен шард пише `blob`-звіт, потім `npx playwright merge-reports --reporter html …`", "correct": true },
+        { "text": "Відкрити 4 HTML-звіти по черзі" }
+      ]
+    },
+    {
+      "id": "skipped",
+      "kind": "single",
+      "text": "У звіті 12 skipped. Що перевірити?",
+      "options": [
+        { "text": "Що кожен пропуск свідомий (fixme з задачею, умова середовища), а не забутий", "correct": true },
+        { "text": "Нічого: пропущені тести не впали" }
+      ]
+    }
+  ]
+}

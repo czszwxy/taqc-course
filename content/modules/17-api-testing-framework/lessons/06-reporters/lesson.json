@@ -1,0 +1,21 @@
+{
+  "title": "Reporters: HTML report & reading results",
+  "minutes": 45,
+  "summary": "Вбудовані репортери (list, line, dot, html, json, junit, github, blob), кілька репортерів одночасно, HTML-звіт (фільтри, кроки, trace, вкладення), test.step і annotations, merge-reports для шардів і як читати результати прогону: passed, failed, flaky, skipped",
+  "resources": [
+    {
+      "title": "Playwright: Reporters",
+      "url": "https://playwright.dev/docs/test-reporters",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright API: test.step",
+      "url": "https://playwright.dev/docs/api/class-test#test-step",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

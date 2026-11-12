@@ -1,0 +1,69 @@
+{
+  "type": "quiz",
+  "title": "Quiz: config, projects, parallelism",
+  "show": 5,
+  "hints": ["Середовище — через змінні оточення. retries + trace на CI. --shard ділить набір між машинами."],
+  "questions": [
+    {
+      "id": "env",
+      "kind": "single",
+      "text": "Як запускати ті самі тести і на dev, і на staging?",
+      "options": [
+        { "text": "`baseURL: process.env.BASE_URL ?? 'http://localhost:5173'` і задавати BASE_URL при запуску", "correct": true },
+        { "text": "Мати дві копії тестів з різними адресами" },
+        { "text": "Перед кожним запуском редагувати адресу в тестах" }
+      ]
+    },
+    {
+      "id": "project",
+      "kind": "text",
+      "text": "Який прапорець запускає лише project `webkit`? (повністю, з ім'ям)",
+      "accept": ["--project=webkit", "--project webkit"]
+    },
+    {
+      "id": "shard",
+      "kind": "single",
+      "text": "Що робить `npx playwright test --shard=2/4`?",
+      "options": [
+        { "text": "Запускає другу чверть набору: так прогін ділять між 4 машинами CI", "correct": true },
+        { "text": "Запускає кожен тест 2 рази на 4 воркерах" }
+      ]
+    },
+    {
+      "id": "workers1",
+      "kind": "single",
+      "text": "Набір проходить лише з `workers: 1`. Що це означає?",
+      "options": [
+        { "text": "У тестах є приховані залежності або спільні дані — треба виправляти", "correct": true },
+        { "text": "Так і має бути для великих наборів" }
+      ]
+    },
+    {
+      "id": "forbid",
+      "kind": "single",
+      "text": "Навіщо `forbidOnly: !!process.env.CI`?",
+      "options": [
+        { "text": "Щоб забутий `test.only` зупинив прогін на CI, а не тихо вимкнув решту тестів", "correct": true },
+        { "text": "Щоб заборонити запуск окремих тестів локально" }
+      ]
+    },
+    {
+      "id": "devices",
+      "kind": "single",
+      "text": "Як запустити тести в емуляції iPhone?",
+      "options": [
+        { "text": "Project з `use: { ...devices['iPhone 13'] }`", "correct": true },
+        { "text": "Встановити iOS-симулятор і змінити тести" }
+      ]
+    },
+    {
+      "id": "serial",
+      "kind": "single",
+      "text": "Коли доречний `test.describe.configure({ mode: 'serial' })`?",
+      "options": [
+        { "text": "Рідко: для кроків, які справді не можна розділити, усвідомлюючи, що падіння зупинить решту групи", "correct": true },
+        { "text": "Завжди, щоб тести йшли по порядку" }
+      ]
+    }
+  ]
+}

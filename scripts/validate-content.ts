@@ -337,10 +337,10 @@ const checkPlaywrightTask: Checker<'playwright'> = (dir, task) => {
   }
   if (!solution.includes("from '@playwright/test'")) fail(dir, "solution.ts must import test/expect from '@playwright/test'");
   if (starter.trim() === solution.trim()) fail(dir, 'starter.ts is identical to solution.ts');
-  const page = PLAYGROUND_PAGES.find((p) => p.id === task.playground);
-  const bugIds = page?.bugIds ?? [];
+  // Mutants may come from any playground page or the mock API ("api"): API + UI tasks combine them.
+  const bugIds = PLAYGROUND_PAGES.flatMap((p) => p.bugIds ?? []);
   duplicates(task.mutants.map((m) => m.id)).forEach((id) => fail(dir, `duplicate mutant id "${id}"`));
-  task.mutants.filter((m) => !bugIds.includes(m.id)).forEach((m) => fail(dir, `mutant "${m.id}" is not a bug id of playground page "${task.playground}"`));
+  task.mutants.filter((m) => !bugIds.includes(m.id)).forEach((m) => fail(dir, `mutant "${m.id}" is not a bug id of any playground page (registry.ts bugIds)`));
   const badRules = task.codeRules.filter((r) => !isValidPattern(r.pattern, r.flags ?? 'm'));
   badRules.forEach((r) => fail(dir, `invalid code rule regex /${r.pattern}/`));
   if (badRules.length === 0) evaluateCodeRules(solution, task.codeRules).forEach((m) => fail(dir, `solution.ts breaks its own code rule: ${m}`));

@@ -1,0 +1,67 @@
+{
+  "type": "quiz",
+  "title": "Quiz: the request fixture",
+  "show": 5,
+  "playground": "api",
+  "hints": ["`data` — тіло, `params` — query-рядок. Playwright не кидає помилку на 4xx/5xx."],
+  "questions": [
+    {
+      "id": "data",
+      "kind": "single",
+      "text": "Як надіслати JSON-тіло в POST-запиті?",
+      "options": [
+        { "text": "`request.post(url, { data: { email, password } })`", "correct": true },
+        { "text": "`request.post(url, { params: { email, password } })`", "explain": "`params` додає параметри в URL, а не в тіло." },
+        { "text": "`request.post(url + '?email=…')`" }
+      ]
+    },
+    {
+      "id": "500",
+      "kind": "single",
+      "text": "API відповів 500. Що зробить `const response = await request.get('/api/orders')`?",
+      "options": [
+        { "text": "Поверне звичайну відповідь зі статусом 500 — перевіряти статус треба самому", "correct": true },
+        { "text": "Кине помилку, і тест упаде автоматично", "explain": "Лише з `failOnStatusCode: true`." }
+      ]
+    },
+    {
+      "id": "ok",
+      "kind": "single",
+      "text": "Що повертає `response.ok()`?",
+      "options": [{ "text": "`true` для статусів 200–299", "correct": true }, { "text": "`true` лише для 200" }, { "text": "Тіло відповіді" }]
+    },
+    {
+      "id": "params",
+      "kind": "single",
+      "text": "Як отримати `/api/products?category=Phones&limit=5`?",
+      "options": [
+        { "text": "`request.get('/api/products', { params: { category: 'Phones', limit: 5 } })`", "correct": true },
+        { "text": "`request.get('/api/products', { data: { category: 'Phones', limit: 5 } })`" }
+      ]
+    },
+    {
+      "id": "headers",
+      "kind": "single",
+      "text": "Як прочитати заголовок `WWW-Authenticate` з відповіді?",
+      "options": [
+        { "text": "`response.headers()['www-authenticate']`", "correct": true },
+        { "text": "`response.headers()['WWW-Authenticate']`", "explain": "Назви заголовків приходять з малих літер." }
+      ]
+    },
+    {
+      "id": "missing-field",
+      "kind": "single",
+      "text": "Логін без поля password повертає 500. Чи це баг?",
+      "options": [
+        { "text": "Так: на некоректний запит сервер має відповідати 400 з поясненням", "correct": true },
+        { "text": "Ні: запит же неправильний, тож будь-яка помилка підходить" }
+      ]
+    },
+    {
+      "id": "fixture",
+      "kind": "text",
+      "text": "Як називається вбудована фікстура Playwright для HTTP-запитів без браузера?",
+      "accept": ["request", "{ request }"]
+    }
+  ]
+}

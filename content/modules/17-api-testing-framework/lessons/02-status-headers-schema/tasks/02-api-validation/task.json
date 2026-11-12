@@ -1,0 +1,21 @@
+{
+  "type": "playwright",
+  "title": "Validate status codes, headers and response shape",
+  "playground": "api",
+  "statement": "Глибша перевірка Gadgetly API: не лише «200», а **контракт**: форма відповіді, типи полів, заголовки, правильні коди помилок.\n\n1. `GET /api/products` → заголовок `content-type` містить `application/json`, є `x-request-id`; тіло має `page: 1`, `limit: 10`, `total: 14`, а **кожен** товар має саме поля `id` (number), `name` (string), `category` (string), `price` (number), `rating` (number), `inStock` (boolean). *Уже є.*\n2. Пагінація: сторінки `page=1` і `page=2` з `limit=5` **не перетинаються**, а друга починається з товару `id: 6`.\n3. `GET /api/orders` **без токена** → **401**, заголовок `www-authenticate: Bearer`, `{ error: 'Authorization header is missing' }`.\n4. Чуже замовлення → **403**: увійди як `taras@gadgetly.test` / `Taras1234`, створи замовлення (`POST /api/orders` з `{ productId: 1, quantity: 1 }`), потім спробуй прочитати його токеном `qa@gadgetly.test` → 403 і `{ error: \"You don't have access to this order\" }`. Наприкінці видали замовлення (токеном Тараса).\n5. `limit=51` → **400** `{ error: 'limit must not be greater than 50' }`.",
+  "mutants": [
+    { "id": "paginationOverlap", "description": "page 2 started with the last item of page 1.", "hint": "Compare the ids of page 1 and page 2 (limit 5): they must not overlap." },
+    { "id": "otherUsersOrder", "description": "a user could read another user's order (200 instead of 403).", "hint": "Create an order as Taras, then GET it with Olena's token — expect 403." }
+  ],
+  "minTests": 5,
+  "codeRules": [
+    { "kind": "require", "pattern": "\\.headers\\(\\)", "message": "Перевір заголовки відповіді: `response.headers()['content-type']`." },
+    { "kind": "require", "pattern": "expect\\.any\\(", "message": "Для типів полів використовуй `expect.any(Number)`, `expect.any(String)`, `expect.any(Boolean)`." }
+  ],
+  "hints": [
+    "Токен: `async function tokenFor(request, email, password) { const r = await request.post('/api/auth/login', { data: { email, password } }); return (await r.json()).token; }`",
+    "Без перетину: `const ids1 = body1.items.map((p) => p.id); … expect(ids2.filter((id) => ids1.includes(id))).toEqual([]);`",
+    "Заголовки в Playwright приходять з **малих** літер: `response.headers()['www-authenticate']`."
+  ],
+  "explanation": "Контракт API — це не лише статус. Клієнт (фронтенд, мобільний застосунок) покладається на **форму** відповіді: які поля є, якого вони типу, які заголовки, які коди помилок. `toEqual` з `expect.any(Number)` перевіряє і набір полів, і їх типи: зайве чи відсутнє поле теж падає. Пагінацію перевіряють на перетин і пропуски між сторінками. А 403 для чужого замовлення — перевірка авторизації: найдорожчі баги безпеки часто виглядають як «просто 200»."
+}

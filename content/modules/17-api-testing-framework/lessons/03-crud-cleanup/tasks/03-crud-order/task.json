@@ -1,0 +1,17 @@
+{
+  "type": "order",
+  "title": "Order the steps of a CRUD test with cleanup",
+  "statement": "Тест перевіряє повний життєвий цикл замовлення і має прибрати за собою навіть при падінні. Розстав кроки в правильному порядку.",
+  "items": [
+    "Log in through the API and keep the token",
+    "POST /api/orders → expect 201, remember the new id for cleanup",
+    "GET /api/orders/{id} → expect the same order",
+    "PATCH quantity 3 → expect 200 and the recalculated total",
+    "DELETE /api/orders/{id} → expect 204",
+    "GET /api/orders/{id} → expect 404",
+    "DELETE again → expect 404",
+    "afterEach: delete every remembered id that still exists"
+  ],
+  "hints": ["Id треба запам'ятати одразу після створення, ще до перевірок: якщо тест упаде на PATCH, прибирання все одно знатиме, що видаляти."],
+  "explanation": "Спершу токен, потім створення з негайним запам'ятовуванням id для прибирання, далі читання, оновлення (з похідними полями), видалення і дві перевірки, що ресурсу більше немає. `afterEach` наприкінці прибирає все, що лишилося. Він спрацює й тоді, коли тест упав на будь-якому кроці."
+}

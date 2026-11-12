@@ -1,0 +1,56 @@
+{
+  "type": "quiz",
+  "title": "Quiz: CRUD & cleanup",
+  "show": 5,
+  "hints": ["Після DELETE — GET 404 і повторний DELETE 404. Прибирай лише своє."],
+  "questions": [
+    {
+      "id": "after-delete",
+      "kind": "single",
+      "text": "Як переконатися, що DELETE справді видалив замовлення?",
+      "options": [
+        { "text": "Після 204 зробити GET того ж id і отримати 404", "correct": true },
+        { "text": "Достатньо статусу 204" }
+      ]
+    },
+    {
+      "id": "twice",
+      "kind": "single",
+      "text": "Що має відповісти повторний `DELETE /api/orders/1003` для вже видаленого замовлення?",
+      "options": [{ "text": "404", "correct": true }, { "text": "204", "explain": "Сервер повідомляє про успіх операції, якої не було." }, { "text": "500" }]
+    },
+    {
+      "id": "derived",
+      "kind": "single",
+      "text": "PATCH змінив `quantity` з 2 на 3 (ціна 499). Що ще перевірити?",
+      "options": [
+        { "text": "Що `total` став 1497", "correct": true },
+        { "text": "Нічого: змінювали лише quantity" }
+      ]
+    },
+    {
+      "id": "cleanup",
+      "kind": "single",
+      "text": "Чому прибирання краще робити в `afterEach` або teardown фікстури, а не останнім рядком тесту?",
+      "options": [
+        { "text": "Вони виконуються навіть тоді, коли тест упав посередині", "correct": true },
+        { "text": "Так тести швидші" }
+      ]
+    },
+    {
+      "id": "reset",
+      "kind": "single",
+      "text": "Колега пропонує в `beforeEach` викликати `POST /api/reset`, щоб «почати з чистого аркуша». Що не так?",
+      "options": [
+        { "text": "Паралельні тести втратять свої дані посеред роботи; прибирати треба лише своє", "correct": true },
+        { "text": "Нічого, це найкращий спосіб" }
+      ]
+    },
+    {
+      "id": "post",
+      "kind": "single",
+      "text": "Який метод НЕ ідемпотентний (повтор створює новий ресурс)?",
+      "options": [{ "text": "POST", "correct": true }, { "text": "PUT" }, { "text": "DELETE" }]
+    }
+  ]
+}

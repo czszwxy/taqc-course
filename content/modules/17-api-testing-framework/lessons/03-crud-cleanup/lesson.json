@@ -1,0 +1,21 @@
+{
+  "title": "CRUD flows & test data cleanup",
+  "minutes": 50,
+  "summary": "Повний життєвий цикл ресурсу Create → Read → Update → Delete, перевірка похідних полів, ідемпотентність і повторні операції, прибирання тестових даних (afterEach, фікстури, try/finally), ізоляція паралельних тестів",
+  "resources": [
+    {
+      "title": "Playwright: API testing — setup and teardown",
+      "url": "https://playwright.dev/docs/api-testing",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: HTTP request methods (idempotent)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

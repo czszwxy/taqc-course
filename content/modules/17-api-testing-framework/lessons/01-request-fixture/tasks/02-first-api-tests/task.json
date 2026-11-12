@@ -1,0 +1,21 @@
+{
+  "type": "playwright",
+  "title": "Your first API tests with the request fixture",
+  "playground": "api",
+  "statement": "Тестуємо **Gadgetly API** без браузера, через фікстуру `request`. Адреси відносні (`/api/...`): `baseURL` уже налаштований. Документація API є на сторінці API console (кнопка нижче).\n\n1. `GET /api/health` → **200** і `{ status: 'ok' }`. *Уже є.*\n2. `GET /api/products?category=Phones` → 200, `total` = **3**, і всі `items` з категорії `Phones`.\n3. `POST /api/auth/login` з `qa@gadgetly.test` / `Test1234` → 200, у відповіді є `token`, а `user.email` = `qa@gadgetly.test`.\n4. Логін з **неправильним** паролем → **401** і `{ error: 'Invalid email or password' }`.\n5. Логін **без поля password** → **400** (помилка клієнта, а не сервера) і `{ error: 'email and password are required' }`.\n\n```ts\nconst response = await request.post('/api/auth/login', { data: { email: '…', password: '…' } });\nexpect(response.status()).toBe(200);\nconst body = await response.json();\n```",
+  "mutants": [
+    { "id": "loginMissingPassword", "description": "login without a password field crashed with 500 instead of answering 400.", "hint": "Send the login body WITHOUT the password field and check the status code." }
+  ],
+  "minTests": 5,
+  "codeRules": [
+    { "kind": "require", "pattern": "request\\.post\\(", "message": "Логін — це `request.post('/api/auth/login', { data: … })`." },
+    { "kind": "require", "pattern": "\\.status\\(\\)", "message": "Перевіряй статус-код: `expect(response.status()).toBe(…)`." },
+    { "kind": "require", "pattern": "params\\s*:", "message": "Параметри запиту передавай через `{ params: { category: 'Phones' } }`." }
+  ],
+  "hints": [
+    "Параметри: `await request.get('/api/products', { params: { category: 'Phones' } })`.",
+    "Перевірити всі елементи: `for (const item of body.items) expect(item.category).toBe('Phones');`",
+    "Без пароля: `data: { email: 'qa@gadgetly.test' }` — і очікуй `400`."
+  ],
+  "explanation": "API-тест — це запит + перевірки відповіді: статус, тіло, за потреби заголовки. Фікстура `request` знає `baseURL`, автоматично серіалізує `data` в JSON і повертає `APIResponse` (`status()`, `ok()`, `json()`, `headers()`). Такі тести в десятки разів швидші за UI-тести. Негативні випадки обов'язкові: неправильні дані — 401, відсутнє поле — 400. А 500 на некоректний запит — це завжди баг: сервер має пояснити клієнту, що не так, а не падати."
+}

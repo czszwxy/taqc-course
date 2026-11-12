@@ -83,6 +83,7 @@ export const PLAYGROUND_PAGES: PlaygroundPage[] = [
     path: '/playground/api',
     description: 'A mini Postman inside the app for the local Gadgetly REST API: products, login with a token, orders CRUD.',
     bugs: 6,
+    bugIds: ['paginationOverlap', 'loginMissingPassword', 'quantityZero', 'otherUsersOrder', 'patchTotal', 'deleteMissing'],
   },
   {
     id: 'account',

@@ -1,4 +1,5 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
+import { applyLabBugs, labBugsFromUserAgent } from './lab-types';
 import productsData from '../src/playground/data/products.json';
 import data from './mock-data.json';
 
@@ -369,7 +370,8 @@ async function handle(base: string, req: IncomingMessage): Promise<Reply> {
   const url = new URL(req.url ?? '/', 'http://localhost');
   const method = (req.method ?? 'GET').toUpperCase();
   const store = stores[base] ?? seedStore();
-  const bug = getBugs(base === API_FIXED_BASE);
+  // Graded Playwright runs mark their requests (user agent) with the one bug to turn on — see server/lab-types.ts.
+  const bug = applyLabBugs(getBugs(base === API_FIXED_BASE), labBugsFromUserAgent(req.headers['user-agent']));
 
   if (method === 'POST' && url.pathname === '/reset') {
     const fresh = seedStore();

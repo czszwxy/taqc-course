@@ -1,0 +1,21 @@
+{
+  "title": "API + UI combined",
+  "minutes": 50,
+  "summary": "Комбіновані тести: підготовка даних і логін через API, перевірка в UI; дія в UI, перевірка через API; page.request і спільні cookies; коли що використовувати і як не перетворити UI-тест на API-тест",
+  "resources": [
+    {
+      "title": "Playwright: API testing — using request context with UI tests",
+      "url": "https://playwright.dev/docs/api-testing",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Authentication",
+      "url": "https://playwright.dev/docs/auth",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

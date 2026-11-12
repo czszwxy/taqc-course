@@ -13,6 +13,25 @@ export const LAB_BASE_URL = 'http://localhost:5173';
 export const LAB_BUGS_KEY = 'qa-lab:bugs';
 export const LAB_NO_BUGS = 'none';
 
+/*
+ * Bug marker that graded runs append to the browser / request user agent.
+ * Matches "Mozilla/5.0 … Chrome/158 qa-lab-bugs=emailCase" (captures "emailCase"), rejects a user agent without it.
+ * https://regex101.com/?regex=qa-lab-bugs%3D(%5BA-Za-z0-9%2C%5D%2B)
+ */
+const LAB_AGENT_MARKER = /qa-lab-bugs=([A-Za-z0-9,]+)/;
+
+/** "none", a bug id or a comma list taken from the user agent; null when the request is not part of a graded run. */
+export function labBugsFromUserAgent(userAgent: string | undefined): string | null {
+  return LAB_AGENT_MARKER.exec(userAgent ?? '')?.[1] ?? null;
+}
+
+/** Turns on exactly the selected bugs (all off for "none"); without a selection the flags stay as they are. */
+export function applyLabBugs<T extends Record<string, boolean>>(bugs: T, selection: string | null): T {
+  if (selection === null) return bugs;
+  const enabled = new Set(selection.split(','));
+  return Object.fromEntries(Object.keys(bugs).map((id) => [id, enabled.has(id)])) as T;
+}
+
 /** Project (page variant) names in a graded run. */
 export const LAB_CORRECT_PROJECT = 'correct';
 export const LAB_BUG_PREFIX = 'bug:';

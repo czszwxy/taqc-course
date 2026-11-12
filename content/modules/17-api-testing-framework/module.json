@@ -1,0 +1,13 @@
+{
+  "title": "API Testing & Framework Design",
+  "description": "Автотести API на Playwright (фікстура request): статуси, заголовки, форма відповіді, CRUD-ланцюжки з прибиранням, поєднання API і UI. Потім — як зібрати з цього фреймворк: конфіг (проєкти, середовища, повтори, паралельність), звіти й читання результатів, структура тестового проєкту і найкращі практики. Практика — справжні тести проти локального Gadgetly API з мутаційною перевіркою.",
+  "goals": [
+    "Send API requests with the request fixture and check status and body",
+    "Validate the API contract: response shape, field types, headers, error codes",
+    "Test full CRUD flows and clean up test data",
+    "Combine API setup with UI checks (and the other way round)",
+    "Configure projects, environments, retries and parallelism",
+    "Choose reporters and read test results like a QA engineer",
+    "Structure a test framework: clients, page objects, fixtures, data, config"
+  ]
+}

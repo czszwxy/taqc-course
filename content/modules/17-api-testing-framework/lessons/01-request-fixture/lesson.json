@@ -1,0 +1,28 @@
+{
+  "title": "API tests with the request fixture",
+  "minutes": 50,
+  "summary": "API-тести в Playwright: фікстура request, get / post / put / patch / delete, параметри, тіло, заголовки, APIResponse (status, ok, json, headers), окремий APIRequestContext і чому API-тести такі швидкі",
+  "resources": [
+    {
+      "title": "Playwright: API testing",
+      "url": "https://playwright.dev/docs/api-testing",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright API: APIRequestContext",
+      "url": "https://playwright.dev/docs/api/class-apirequestcontext",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright API: APIResponse",
+      "url": "https://playwright.dev/docs/api/class-apiresponse",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

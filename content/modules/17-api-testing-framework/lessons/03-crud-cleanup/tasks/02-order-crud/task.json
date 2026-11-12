@@ -1,0 +1,23 @@
+{
+  "type": "playwright",
+  "title": "Test the order CRUD flow and clean up after yourself",
+  "playground": "api",
+  "statement": "Повний життєвий цикл замовлення в Gadgetly API: **Create → Read → Update → Delete**. Усі запити до `/api/orders` — з токеном (`Authorization: Bearer …`).\n\nКожен тест створює **свої** дані і **прибирає** їх: id створених замовлень записуються в масив, а `afterEach` видаляє все, що лишилося. *Каркас уже є.*\n\n1. `POST /api/orders` з `{ productId: 1, quantity: 2 }` → **201**, тіло `{ productId: 1, quantity: 2, unitPrice: 499, total: 998, status: 'created' }`, заголовок `location` закінчується на `/orders/<id>`. *Уже є.*\n2. `GET /api/orders/<id>` → 200, те саме замовлення.\n3. `PATCH /api/orders/<id>` з `{ quantity: 3 }` → 200, `total` **перераховано**: `1497`.\n4. `DELETE` → **204**; потім `GET` → **404**; повторний `DELETE` → теж **404** (видаляти нічого).\n5. `quantity: 0` → **400** `{ error: 'quantity must be from 1 to 10' }`.",
+  "mutants": [
+    { "id": "patchTotal", "description": "PATCH changed the quantity but did not recalculate the total.", "hint": "After PATCH quantity 3, the total must be 3 × 499 = 1497." },
+    { "id": "deleteMissing", "description": "DELETE of an order that does not exist answered 204 instead of 404.", "hint": "Delete the same order twice: the second DELETE must be 404." },
+    { "id": "quantityZero", "description": "POST /orders accepted quantity 0.", "hint": "Create an order with quantity 0 — expect 400." }
+  ],
+  "minTests": 5,
+  "codeRules": [
+    { "kind": "require", "pattern": "afterEach\\(", "message": "Прибирання: `test.afterEach` видаляє замовлення, створені тестом." },
+    { "kind": "require", "pattern": "request\\.patch\\(", "message": "Оновлення: `` request.patch(`/api/orders/${id}`, { headers, data: { quantity: 3 } }) ``." },
+    { "kind": "require", "pattern": "request\\.delete\\(", "message": "Видалення: `request.delete(…)`." }
+  ],
+  "hints": [
+    "Хелпер створення, що одразу запам'ятовує id для прибирання: `async function createOrder(request, data) { const r = await request.post('/api/orders', { headers: auth(), data }); if (r.ok()) created.push((await r.json()).id); return r; }`",
+    "Після DELETE прибери id з масиву або просто ігноруй 404 у afterEach — повторне видалення там нічого не перевіряє.",
+    "Навіть якщо через баг quantity 0 створить замовлення, його треба прибрати: тому й хелпер записує id будь-якої успішної відповіді."
+  ],
+  "explanation": "CRUD-тест перевіряє не окремі виклики, а **ланцюжок**: створене читається, оновлення змінює і похідні поля (total), видалене справді зникає, а повторне видалення чесно каже 404. Прибирання — частина тесту: спільне тестове середовище не можна засмічувати, а паралельні тести не мають бачити чужих даних. `afterEach` виконується навіть після впалого тесту, тому прибирання там надійніше, ніж у кінці тесту."
+}

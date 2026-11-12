@@ -1,0 +1,24 @@
+{
+  "type": "table",
+  "title": "Pick the reporter for each need",
+  "statement": "Різні люди й системи хочуть бачити результати прогону по-різному. Який вбудований репортер Playwright підходить для кожної потреби?",
+  "givenColumns": ["Need"],
+  "answerColumns": [
+    {
+      "id": "reporter",
+      "label": "Reporter",
+      "options": ["list", "dot", "html", "json", "junit", "github", "blob"]
+    }
+  ],
+  "rows": [
+    { "given": ["You run tests locally and want one readable line per test in the terminal"], "answers": { "reporter": "list" } },
+    { "given": ["A huge CI log must stay short: just a symbol per test"], "answers": { "reporter": "dot" } },
+    { "given": ["A developer wants to open a failed test and click through its steps, screenshots and trace"], "answers": { "reporter": "html" } },
+    { "given": ["Jenkins / GitLab should show test results in its own UI"], "answers": { "reporter": "junit" } },
+    { "given": ["Failures should appear as annotations right in the GitHub pull request"], "answers": { "reporter": "github" } },
+    { "given": ["You build your own dashboard of pass rates and durations"], "answers": { "reporter": "json" } },
+    { "given": ["4 CI shards must be merged into one report afterwards"], "answers": { "reporter": "blob" }, "explain": "Кожен шард пише blob, потім `npx playwright merge-reports --reporter html …`." }
+  ],
+  "hints": ["Термінал — list / dot; людина в браузері — html; системи CI — junit / github; свої інструменти — json; шарди — blob."],
+  "explanation": "Репортер обирають під читача: людина в терміналі (`list`, `dot`), людина в браузері (`html` з trace і вкладеннями), CI-система (`junit`, `github`), власні метрики (`json`), об'єднання шардів (`blob`). Їх можна вмикати кілька одночасно, наприклад `github` + `html` на CI."
+}

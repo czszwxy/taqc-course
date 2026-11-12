@@ -1,0 +1,39 @@
+{
+  "type": "written",
+  "title": "Review a playwright.config.ts",
+  "statement": "Колега підготував конфіг для CI Gadgetly:\n\n```ts\nexport default defineConfig({\n  testDir: './tests',\n  timeout: 180_000,\n  retries: 5,\n  workers: 1,\n  use: {\n    baseURL: 'https://gadgetly.example.com',   // production\n    trace: 'on',\n    video: 'on',\n  },\n  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],\n});\n```\n\nЗроби рев'ю (модуль 09): знайди проблеми й запропонуй кращі значення.",
+  "fields": [
+    { "id": "problems", "label": "Problems (one per line)", "kind": "list", "placeholder": "retries: 5 hides flaky tests…" },
+    { "id": "fixed", "label": "Suggested config (key settings)", "kind": "textarea", "placeholder": "retries: process.env.CI ? 2 : 0, …" }
+  ],
+  "rules": [
+    { "field": "problems", "check": "minItems", "value": 4, "message": "Problems: тут щонайменше 4–5 проблем: середовище, повтори, таймаут, паралельність, записи, forbidOnly." },
+    { "field": "problems", "check": "mentionsAny", "value": ["prod|production|baseURL|env|середовищ"], "message": "Problems: тести спрямовані на **production** — це небезпечно й неправильно. Адреса має приходити зі змінної оточення." },
+    { "field": "problems", "check": "mentionsAny", "value": ["retries|повтор|flaky"], "message": "Problems: `retries: 5` ховає нестабільні тести." },
+    { "field": "problems", "check": "mentionsAny", "value": ["timeout|180|таймаут"], "message": "Problems: таймаут 3 хвилини на тест — справжні падіння чекатимуть дуже довго." },
+    { "field": "problems", "check": "mentionsAny", "value": ["workers|паралел|parallel"], "message": "Problems: `workers: 1` — набір іде по одному тесту, повільно (і може ховати залежності)." },
+    { "field": "fixed", "check": "mentionsAll", "value": ["process\\.env", "retries"], "message": "Suggested config: візьми адресу з `process.env.BASE_URL` і задай розумні `retries` (наприклад, `process.env.CI ? 2 : 0`)." }
+  ],
+  "model": {
+    "problems": [
+      "baseURL points to production: tests create and delete data there. Use the test environment from process.env.BASE_URL.",
+      "retries: 5 hides flaky tests; 1–2 retries on CI with a trace is enough, and flaky tests must be investigated.",
+      "timeout: 180_000 (3 minutes) makes every real failure wait for minutes; the default 30 s is usually fine.",
+      "workers: 1 runs the suite one test at a time — slow, and it may hide dependencies between tests.",
+      "trace: 'on' and video: 'on' record everything — huge artifacts; keep them for failures/retries only.",
+      "forbidOnly is missing: a forgotten test.only would silently skip the rest of the suite on CI."
+    ],
+    "fixed": "timeout: 30_000,\nretries: process.env.CI ? 2 : 0,\nworkers: process.env.CI ? 4 : undefined,\nfullyParallel: true,\nforbidOnly: !!process.env.CI,\nuse: {\n  baseURL: process.env.BASE_URL ?? 'http://localhost:5173',\n  trace: 'on-first-retry',\n  video: 'retain-on-failure',\n  screenshot: 'only-on-failure',\n},"
+  },
+  "hints": [
+    "Пройдись по кожному рядку: що станеться на CI, коли тест упаде? куди підуть запити? скільки це триватиме?",
+    "Для trace/video є економні режими: `on-first-retry`, `retain-on-failure`."
+  ],
+  "explanation": "Типові хвороби конфігів: продакшн-адреса в коді, «лікування» нестабільності великими повторами й таймаутами, вимкнена паралельність і запис усього підряд. Добрий конфіг бере середовище зі змінних оточення, дозволяє 1–2 повтори лише на CI з trace, тримає розумні таймаути, використовує паралельність і має запобіжник `forbidOnly`.",
+  "checklist": [
+    "Названо небезпеку тестів на production і запропоновано змінну оточення",
+    "Пояснено, чому великі retries і таймаути шкодять",
+    "Запропоновано паралельність і економні режими trace/video",
+    "Згадано forbidOnly для CI"
+  ]
+}

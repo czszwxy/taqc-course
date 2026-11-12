@@ -51,6 +51,13 @@ const STATUS_ICON: Record<LabTestResult['status'], string> = {
   interrupted: '✗',
 };
 
+/** " and red on the broken version — …" / " and red on all 4 broken versions — …" / "" when the task has no mutants. */
+function brokenVersionsText(count: number): string {
+  if (count === 0) return '';
+  if (count === 1) return ' and red on the broken version — the bug is caught';
+  return ` and red on all ${count} broken versions — every bug is caught`;
+}
+
 function seconds(ms: number): string {
   return `${(ms / MS_PER_SECOND).toFixed(1)} s`;
 }
@@ -312,7 +319,7 @@ function Summary({ task, grade, kind, durationMs }: { task: PlaywrightTask; grad
   if (grade.passed) {
     return (
       <Callout tone="ok" title="Great tests! 🎉">
-        Green on the correct page{task.mutants.length > 0 ? ` and red on all ${task.mutants.length} broken versions — every bug is caught` : ''}.
+        Green on the correct page{brokenVersionsText(task.mutants.length)}.
       </Callout>
     );
   }

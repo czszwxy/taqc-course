@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { LAB_BUGS_KEY } from '../../server/lab-types';
+import { applyLabBugs, labBugsFromUserAgent, LAB_BUGS_KEY } from '../../server/lab-types';
 
 /**
  * Shared chrome for Bug Playground pages: a fake product header, the page body and a yellow
@@ -16,14 +16,10 @@ export function isFixedMode(): boolean {
  * Automation labs (module 15+): the Playwright lab runner appends "qa-lab-bugs=<value>" to the browser's user agent
  * (a learner's own storageState or new tabs can't drop it) — "none" turns every bug off, "<bugId>" (or a comma list)
  * turns on only those. It wins over `?fixed`. LAB_BUGS_KEY in localStorage is an older fallback. Never shown to the learner.
- *
- * Matches "Mozilla/5.0 … Chrome/158 qa-lab-bugs=emailCase" (captures "emailCase"), rejects a user agent without the marker.
- * https://regex101.com/?regex=qa-lab-bugs%3D(%5BA-Za-z0-9%2C%5D%2B)
+ * The mock API (server/mock-api.ts) reads the same marker from request user agents.
  */
-const LAB_AGENT_MARKER = /qa-lab-bugs=([A-Za-z0-9,]+)/;
-
 function readLabBugs(): string | null {
-  const fromAgent = LAB_AGENT_MARKER.exec(navigator.userAgent)?.[1];
+  const fromAgent = labBugsFromUserAgent(navigator.userAgent);
   if (fromAgent) return fromAgent;
   try {
     return window.localStorage.getItem(LAB_BUGS_KEY);
@@ -34,10 +30,7 @@ function readLabBugs(): string | null {
 
 /** Applies the lab runner's bug selection (if any) on top of a page's bug flags. */
 export function withLabMode<T extends Record<string, boolean>>(bugs: T): T {
-  const lab = readLabBugs();
-  if (lab === null) return bugs;
-  const enabled = new Set(lab.split(','));
-  return Object.fromEntries(Object.keys(bugs).map((id) => [id, enabled.has(id)])) as T;
+  return applyLabBugs(bugs, readLabBugs());
 }
 
 export type Brand = 'taskly' | 'gadgetly';

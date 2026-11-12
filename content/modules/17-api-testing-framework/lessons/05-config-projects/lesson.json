@@ -1,0 +1,35 @@
+{
+  "title": "Config: projects, browsers, environments, retries, parallelism",
+  "minutes": 50,
+  "summary": "Як налаштувати набір під різні потреби: projects для браузерів і пристроїв, середовища через змінні оточення (BASE_URL, .env), retries і trace на CI, workers і fullyParallel, sharding, залежні проєкти, forbidOnly",
+  "resources": [
+    {
+      "title": "Playwright: Test configuration",
+      "url": "https://playwright.dev/docs/test-configuration",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Projects",
+      "url": "https://playwright.dev/docs/test-projects",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Parallelism",
+      "url": "https://playwright.dev/docs/test-parallel",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Sharding",
+      "url": "https://playwright.dev/docs/test-sharding",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

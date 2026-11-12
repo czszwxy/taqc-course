@@ -1,0 +1,23 @@
+{
+  "type": "classify",
+  "title": "API or UI for this step?",
+  "statement": "Ти пишеш тест «Кабінет показує скасоване замовлення з поверненням коштів». Для кожного кроку вибери, як його робити: через **API** чи через **UI**.",
+  "categories": [
+    { "id": "api", "label": "Through the API", "description": "Setup, login, cleanup, checking stored data" },
+    { "id": "ui", "label": "Through the UI", "description": "What the test is actually about: what the user sees and does" }
+  ],
+  "items": [
+    { "id": "login", "text": "Sign in as the test user", "category": "api", "explain": "Логін тестують окремо. Тут він лише підготовка." },
+    { "id": "create", "text": "Create a paid order for that user", "category": "api" },
+    { "id": "cancel-setup", "text": "Move the order to the Cancelled state before the check", "category": "api" },
+    { "id": "cleanup", "text": "Delete the order after the test", "category": "api" },
+    { "id": "stored", "text": "Make sure the refund amount was really stored for the order", "category": "api" },
+    { "id": "see-status", "text": "Check that the account shows the order as Cancelled", "category": "ui" },
+    { "id": "see-refund", "text": "Check the refund note text the customer sees", "category": "ui" },
+    { "id": "click-details", "text": "Open the order details from the list and check the layout of the refund block", "category": "ui" }
+  ],
+  "show": 7,
+  "hints": ["Запитай себе: це те, ПРО ЩО тест, чи лише шлях до потрібного стану?"],
+  "explanation": "Усе, що лише веде до потрібного стану (логін, створення, переведення в статус, прибирання), швидше і стабільніше робити через API. Те, про що тест (що бачить і робить клієнт), проходиться в UI. Перевірку «що реально збережено» зручно робити через API: вона доповнює перевірку відображення.",
+  "passScore": 0.85
+}

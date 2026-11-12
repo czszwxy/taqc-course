@@ -1,0 +1,34 @@
+{
+  "type": "table",
+  "title": "Which config setting solves it?",
+  "statement": "Команда Gadgetly описала потреби до тестового набору. Яке налаштування Playwright розв'язує кожну?",
+  "givenColumns": ["Need"],
+  "answerColumns": [
+    {
+      "id": "setting",
+      "label": "Setting",
+      "options": [
+        "projects with devices",
+        "baseURL from an environment variable",
+        "retries + trace on first retry",
+        "workers / fullyParallel",
+        "--shard",
+        "dependencies on a setup project",
+        "webServer",
+        "forbidOnly"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["Run the same tests in Chrome, Safari (WebKit) and on an iPhone screen"], "answers": { "setting": "projects with devices" } },
+    { "given": ["Run against localhost on laptops and against staging on CI without changing tests"], "answers": { "setting": "baseURL from an environment variable" } },
+    { "given": ["A rare network hiccup on CI should not fail the build, but we want evidence when it happens"], "answers": { "setting": "retries + trace on first retry" } },
+    { "given": ["Use all CPU cores of one machine, including tests inside the same file"], "answers": { "setting": "workers / fullyParallel" } },
+    { "given": ["The suite takes 40 minutes; split it across 4 CI machines"], "answers": { "setting": "--shard" } },
+    { "given": ["Log in once and let all UI tests start signed in"], "answers": { "setting": "dependencies on a setup project" } },
+    { "given": ["Start the app automatically before the tests if it is not running"], "answers": { "setting": "webServer" } },
+    { "given": ["A forgotten test.only must never silently skip the rest of the suite on CI"], "answers": { "setting": "forbidOnly" } }
+  ],
+  "hints": ["Браузери/пристрої — projects; адреса середовища — змінна оточення; кілька машин — shard; одна машина — workers."],
+  "explanation": "Кожна вимога до прогону має своє налаштування: де запускати (`projects`, `baseURL`), як швидко (`workers`, `fullyParallel`, `--shard`), як переживати збої і що записувати (`retries`, `trace`), що підготувати (`dependencies`, `webServer`) і від чого захиститися (`forbidOnly`)."
+}

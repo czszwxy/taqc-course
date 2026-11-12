@@ -1,0 +1,62 @@
+{
+  "type": "quiz",
+  "title": "Quiz: status, headers, schema",
+  "show": 5,
+  "playground": "api",
+  "hints": ["201 + Location для створення, 204 для видалення, 403 для чужого. toEqual — точна структура."],
+  "questions": [
+    {
+      "id": "create",
+      "kind": "single",
+      "text": "Який статус і заголовок очікуємо після успішного `POST /api/orders`?",
+      "options": [
+        { "text": "201 і `Location` з адресою нового замовлення", "correct": true },
+        { "text": "200 без заголовків" },
+        { "text": "204" }
+      ]
+    },
+    {
+      "id": "foreign",
+      "kind": "single",
+      "text": "Користувач читає чуже замовлення й отримує 200 з даними. Як оцінити?",
+      "options": [
+        { "text": "Серйозний баг безпеки: має бути 403", "correct": true },
+        { "text": "Нормально, бо замовлення існує" }
+      ]
+    },
+    {
+      "id": "toequal",
+      "kind": "single",
+      "text": "Чим `toEqual({ id: expect.any(Number), name: expect.any(String) })` відрізняється від `toMatchObject` з тим самим об'єктом?",
+      "options": [
+        { "text": "`toEqual` упаде, якщо у відповіді є зайві поля; `toMatchObject` їх ігнорує", "correct": true },
+        { "text": "Нічим" },
+        { "text": "`toEqual` не вміє `expect.any`" }
+      ]
+    },
+    {
+      "id": "pagination",
+      "kind": "single",
+      "text": "Як перевірити пагінацію `page=1` і `page=2`?",
+      "options": [
+        { "text": "Елементи сторінок не перетинаються й не пропускаються (друга починається одразу після першої)", "correct": true },
+        { "text": "Достатньо статусу 200 для обох" }
+      ]
+    },
+    {
+      "id": "any",
+      "kind": "text",
+      "text": "Допиши матчер «будь-яке число»: expect.____(Number)",
+      "accept": ["any", "expect.any"]
+    },
+    {
+      "id": "error-contract",
+      "kind": "single",
+      "text": "Що варто перевірити в негативній відповіді 400?",
+      "options": [
+        { "text": "Код 400 і зрозуміле повідомлення в тілі (`{ error: '…' }`)", "correct": true },
+        { "text": "Лише що статус не 200" }
+      ]
+    }
+  ]
+}

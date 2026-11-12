@@ -1,0 +1,25 @@
+{
+  "type": "classify",
+  "title": "Healthy framework or tech debt?",
+  "statement": "Ти вивчаєш тестовий репозиторій нової команди. Що з цього — здорові практики фреймворку, а що — технічний борг?",
+  "categories": [
+    { "id": "healthy", "label": "Healthy practice" },
+    { "id": "debt", "label": "Tech debt" }
+  ],
+  "items": [
+    { "id": "fixtures-import", "text": "Tests import `test` from fixtures/index.ts that provides page objects and an API client", "category": "healthy" },
+    { "id": "env", "text": "BASE_URL and passwords come from environment variables; the repo has .env.example", "category": "healthy" },
+    { "id": "api-setup", "text": "UI tests create their data through the API and delete it in fixture teardown", "category": "healthy" },
+    { "id": "tags", "text": "@smoke tests run on every PR, the full @regression suite nightly", "category": "healthy" },
+    { "id": "readme", "text": "README explains how to install, run and open the report", "category": "healthy" },
+    { "id": "copy-login", "text": "Each of 120 tests contains its own 6 lines of login through the form", "category": "debt" },
+    { "id": "sleep", "text": "A helper `waitABit()` that calls waitForTimeout(2000) is used in 40 places", "category": "debt" },
+    { "id": "order", "text": "Tests in checkout.spec.ts only pass when run in file order with workers: 1", "category": "debt" },
+    { "id": "retries", "text": "retries: 4 was added \"because CI is sometimes red\"", "category": "debt" },
+    { "id": "prod-pass", "text": "The admin password is written in tests/data/users.ts", "category": "debt" }
+  ],
+  "show": 8,
+  "hints": ["Що з цього полегшить зміну через рік, а що змусить правити 100 місць або сховає баг?"],
+  "explanation": "Здоровий фреймворк перевикористовує код через фікстури й клієнти, бере середовище й секрети з оточення, готує дані через API з прибиранням і має зрозумілу документацію. Технічний борг — копіпаста, паузи, залежність від порядку, «лікування» повторами і секрети в коді. Кожен такий пункт колись перетвориться на години розбору падінь.",
+  "passScore": 0.85
+}
