@@ -1,0 +1,11 @@
+{
+  "type": "python",
+  "title": "Run a dictionary of checks",
+  "statement": "Валідація поля — це набір перевірок «назва → функція». Напиши `failed_checks(value, checks)` — список **назв** перевірок, які повернули `False` для `value` (у порядку словника).\n\n```python\nEMAIL_CHECKS = {\n    \"not empty\": lambda s: s != \"\",\n    \"has @\": lambda s: \"@\" in s,\n    \"lowercase\": lambda s: s == s.lower(),\n}\nfailed_checks(\"QA@example.test\", EMAIL_CHECKS)   # ['lowercase']\nfailed_checks(\"\", EMAIL_CHECKS)                  # ['not empty', 'has @']\nfailed_checks(\"qa@example.test\", EMAIL_CHECKS)   # []\n```",
+  "hints": [
+    "Перебирай пари: `for name, check in checks.items():`.",
+    "`check` — функція: виклич її `check(value)` і збери назви, де результат `False`."
+  ],
+  "explanation": "Значення словника — функції, тож `check(value)` викликає чергову перевірку. Comprehension `[name for name, check in checks.items() if not check(value)]` збирає назви тих, що не пройшли. Порядок зберігається, бо словник пам'ятає порядок ключів.",
+  "codeRules": []
+}

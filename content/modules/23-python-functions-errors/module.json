@@ -1,0 +1,13 @@
+{
+  "title": "Functions, Modules & Errors",
+  "description": "Усе, що потрібно для коду тестового фреймворку: гнучкі параметри функцій (білдери тестових даних), замикання і функції як значення (retry, polling), модулі та стандартна бібліотека, винятки з зрозумілими повідомленнями, type hints і генератори — основа fixtures у pytest.",
+  "goals": [
+    "Use default, keyword-only, *args and **kwargs parameters and avoid the mutable default trap",
+    "Understand scope, closures and nonlocal; build function factories",
+    "Pass functions as values: callbacks, retry and polling helpers, map and filter",
+    "Split code into modules, import helpers and use the standard library (datetime, random, string)",
+    "Handle, raise and re-raise exceptions with clear messages; test them with pytest.raises",
+    "Annotate functions with type hints and read what a type checker would report",
+    "Write generators with yield for lazy and endless test data"
+  ]
+}

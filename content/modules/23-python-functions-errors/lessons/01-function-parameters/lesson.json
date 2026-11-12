@@ -1,0 +1,28 @@
+{
+  "title": "Function parameters: defaults, *args, **kwargs",
+  "minutes": 50,
+  "summary": "Позиційні та іменовані аргументи, значення за замовчуванням і пастка змінюваного default ([] у сигнатурі), keyword-only параметри після *, *args і **kwargs, розпакування при виклику — і білдери тестових даних з перевизначенням полів",
+  "resources": [
+    {
+      "title": "Python Tutorial: More on Defining Functions",
+      "url": "https://docs.python.org/3/tutorial/controlflow.html#more-on-defining-functions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python Tutorial: Default Argument Values (the mutable default warning)",
+      "url": "https://docs.python.org/3/tutorial/controlflow.html#default-argument-values",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Python *args and **kwargs",
+      "url": "https://www.youtube.com/results?search_query=python+args+kwargs+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

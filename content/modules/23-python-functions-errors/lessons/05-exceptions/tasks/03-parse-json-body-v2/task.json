@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Convert a column with a clear error",
+  "variantOf": "03-parse-json-body",
+  "statement": "Тест читає колонку «Кількість» з таблиці як список рядків. Напиши `to_int_list(values)` — список чисел. Якщо якийсь елемент не число, підніми `ValueError` з **номером** елемента (з 1) і значенням: `Item 2 is not a number: 'abc'`.\n\n```python\nto_int_list([\"1\", \" 7 \", \"12\"])      # [1, 7, 12]\nto_int_list([\"1\", \"abc\", \"x\"])\n# ValueError: Item 2 is not a number: 'abc'\n```",
+  "hints": [
+    "`for i, value in enumerate(values, start=1):` — номер і значення.",
+    "Усередині циклу: `try: numbers.append(int(value))` / `except ValueError:` → `raise ValueError(f\"Item {i} is not a number: '{value}'\")`."
+  ],
+  "explanation": "`int()` сам піднімає `ValueError`, але з повідомленням `invalid literal for int() with base 10: 'abc'` — без номера рядка. Перехопи його і підніми новий з контекстом: який елемент і яке значення. Перший поганий елемент зупиняє перетворення — його й треба показати.",
+  "codeRules": [
+    { "kind": "require", "pattern": "except\\s+ValueError", "message": "Перехопи `ValueError` від `int()` і підніми новий з номером елемента." }
+  ]
+}

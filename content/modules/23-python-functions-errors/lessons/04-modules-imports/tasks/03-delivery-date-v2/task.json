@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Days between two dates",
+  "variantOf": "03-delivery-date",
+  "statement": "Напиши `days_between(start, end)` — кількість днів від `start` до `end` (рядки `YYYY-MM-DD`). Якщо `end` раніше за `start` — від'ємне число.\n\n```python\ndays_between(\"2026-11-12\", \"2026-11-15\")    # 3\ndays_between(\"2028-02-28\", \"2028-03-01\")    # 2 — 29 лютого\ndays_between(\"2026-11-15\", \"2026-11-12\")    # -3\n```",
+  "hints": [
+    "Різниця двох `date` — це `timedelta`.",
+    "Кількість днів — атрибут `.days`: `(date.fromisoformat(end) - date.fromisoformat(start)).days`."
+  ],
+  "explanation": "Віднімання дат дає `timedelta`, а `.days` — ціле число днів зі знаком. Високосні роки й різна довжина місяців враховуються автоматично.",
+  "codeRules": [
+    { "kind": "require", "pattern": "fromisoformat", "message": "Перетвори рядки на дати через `date.fromisoformat`." }
+  ]
+}

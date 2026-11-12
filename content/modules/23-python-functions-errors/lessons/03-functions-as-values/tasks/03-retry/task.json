@@ -1,0 +1,11 @@
+{
+  "type": "python",
+  "title": "A retry helper",
+  "statement": "Напиши `retry(action, attempts)`: викликає `action()` (функцію без аргументів) до `attempts` разів, доки вона не поверне `True`. Повертає **номер спроби**, на якій вийшло (з 1), або `None`, якщо не вийшло жодного разу. Після успіху більше не викликає `action`.\n\n```python\nstatuses = iter([\"pending\", \"pending\", \"paid\"])\nretry(lambda: next(statuses) == \"paid\", 5)    # 3\nretry(lambda: False, 3)                        # None — action викликана рівно 3 рази\n```",
+  "hints": [
+    "`for attempt in range(1, attempts + 1):` — номери спроб з 1.",
+    "Якщо `action()` повернула `True` — одразу `return attempt`; після циклу — `return None`."
+  ],
+  "explanation": "`action` — callback: `retry` не знає, що саме перевіряється, лише викликає функцію. `return` усередині циклу зупиняє спроби одразу після успіху, а `None` після циклу означає «вичерпали всі спроби». Помилка «на одну спробу менше» (`range(attempts - 1)`) або нумерація з 0 ловляться тестами.",
+  "codeRules": []
+}

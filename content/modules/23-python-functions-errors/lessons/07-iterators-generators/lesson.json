@@ -1,0 +1,35 @@
+{
+  "title": "Iterators and generators",
+  "minutes": 50,
+  "summary": "Iterable та iterator, iter() і next(), StopIteration і пастка «ітератор вичерпано», функції-генератори з yield, ледачі обчислення, нескінченні генератори з islice, генераторні вирази, itertools — і yield у pytest fixtures як setup / teardown",
+  "resources": [
+    {
+      "title": "Python Tutorial: Iterators",
+      "url": "https://docs.python.org/3/tutorial/classes.html#iterators",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python Tutorial: Generators",
+      "url": "https://docs.python.org/3/tutorial/classes.html#generators",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "itertools — Functions creating iterators",
+      "url": "https://docs.python.org/3/library/itertools.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: yield fixtures (teardown)",
+      "url": "https://docs.pytest.org/en/stable/how-to/fixtures.html#yield-fixtures-recommended",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

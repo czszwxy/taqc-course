@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Clean a list with map and filter",
+  "statement": "Назви тестів прийшли з таблиці з зайвими пробілами, різним регістром і порожніми рядками. Напиши `clean_names(names)` **через `map` і `filter`**: прибери пробіли з країв, переведи в нижній регістр і відкинь порожні рядки.\n\n```python\nclean_names([\" Login \", \"\", \"CART\", \"   \", \"Search\"])\n# ['login', 'cart', 'search']\n```",
+  "hints": [
+    "`map(str.strip, names)` — без пробілів, `map(str.lower, ...)` — нижній регістр.",
+    "`filter(lambda n: n != \"\", ...)` відкидає порожні, а `list(...)` перетворює результат на список."
+  ],
+  "explanation": "`map` застосовує готову функцію (`str.strip`, `str.lower`) до кожного елемента, `filter` залишає лише непорожні. Обидва ледачі — без `list(...)` повернеться об'єкт `map`/`filter`, а не список. Фільтруй **після** `strip`: рядок `\"   \"` стає порожнім лише після обрізання.",
+  "codeRules": [
+    { "kind": "require", "pattern": "map\\s*\\(", "message": "Використай `map(...)`." },
+    { "kind": "require", "pattern": "filter\\s*\\(", "message": "Використай `filter(...)`." }
+  ]
+}

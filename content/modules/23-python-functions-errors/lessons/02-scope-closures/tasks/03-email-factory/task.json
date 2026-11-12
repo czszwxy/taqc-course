@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "Unique test emails with a closure",
+  "statement": "Тести реєстрації не мають конфліктувати: кожному потрібен новий email. Напиши `make_email_factory(domain)` — повертає функцію без параметрів, яка при кожному виклику дає наступний email: `user1@<domain>`, `user2@<domain>`, … Кожна фабрика рахує незалежно. Без `global`.\n\n```python\nnew_email = make_email_factory(\"test.dev\")\nnew_email()    # 'user1@test.dev'\nnew_email()    # 'user2@test.dev'\n\nother = make_email_factory(\"qa.dev\")\nother()        # 'user1@qa.dev' — свій лічильник\n```",
+  "hints": [
+    "Лічильник `count = 0` — у зовнішній функції, внутрішня його збільшує.",
+    "Щоб змінити `count` всередині внутрішньої функції, потрібен `nonlocal count`."
+  ],
+  "explanation": "Лічильник живе в замиканні: кожен виклик `make_email_factory` створює свій `count`. Без `nonlocal` рядок `count += 1` дасть `UnboundLocalError`, а `global` зробив би лічильник спільним для всіх фабрик — і тести знову залежали б один від одного.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "\\bglobal\\b", "message": "Без `global` — лічильник має жити в замиканні (nonlocal)." }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "title": "Exceptions: try, except, raise",
+  "minutes": 55,
+  "summary": "Обробка винятків try / except з конкретними типами, else і finally (виконується навіть після return), raise зі зрозумілим повідомленням, власні винятки, raise … from e, ієрархія винятків — і чому «except: pass» у тестах ховає баги; перевірка винятків через pytest.raises",
+  "resources": [
+    {
+      "title": "Python Tutorial: Errors and Exceptions",
+      "url": "https://docs.python.org/3/tutorial/errors.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Built-in Exceptions: exception hierarchy",
+      "url": "https://docs.python.org/3/library/exceptions.html#exception-hierarchy",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: assertions about expected exceptions",
+      "url": "https://docs.pytest.org/en/stable/how-to/assert.html#assertions-about-expected-exceptions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

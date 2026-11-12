@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "Poll until the status is reached",
+  "variantOf": "03-retry",
+  "statement": "Напиши `poll(get_status, expected, attempts)`: викликає `get_status()` до `attempts` разів. Як тільки результат дорівнює `expected` — повертає кількість зроблених викликів. Якщо очікуваний статус так і не з'явився — `None`.\n\n```python\nstatuses = iter([\"created\", \"paid\", \"shipped\"])\npoll(lambda: next(statuses), \"paid\", 5)       # 2\npoll(lambda: \"created\", \"paid\", 3)            # None\n```",
+  "hints": [
+    "Цикл `for call in range(1, attempts + 1):`.",
+    "Порівнюй `get_status() == expected`; при збігу — `return call`."
+  ],
+  "explanation": "Polling — той самий retry, але умова «статус дорівнює очікуваному» живе всередині хелпера, а callback лише читає поточний стан. Викликай `get_status()` один раз на спробу: два виклики в одній ітерації «з'їдять» зайвий статус.",
+  "codeRules": []
+}

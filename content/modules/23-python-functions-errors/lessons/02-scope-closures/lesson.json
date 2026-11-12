@@ -1,0 +1,28 @@
+{
+  "title": "Scope and closures",
+  "minutes": 45,
+  "summary": "Локальні й глобальні змінні, правило LEGB, чому global — погана ідея в тестах, функції всередині функцій, замикання (closure), що «пам'ятають» значення, nonlocal і фабрики функцій: перевірки з порогом і генератори унікальних тестових даних",
+  "resources": [
+    {
+      "title": "Python Tutorial: Python Scopes and Namespaces",
+      "url": "https://docs.python.org/3/tutorial/classes.html#python-scopes-and-namespaces",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "The nonlocal statement",
+      "url": "https://docs.python.org/3/reference/simple_stmts.html#the-nonlocal-statement",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Python closures explained",
+      "url": "https://www.youtube.com/results?search_query=python+closures+nonlocal+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

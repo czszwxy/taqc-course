@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Reproducible random test emails",
+  "statement": "Напиши `random_emails(count, seed)` — список з `count` випадкових email-ів формату `user_<6 малих латинських літер>@test.dev`. З тим самим `seed` результат має бути **однаковим**, і функція **не повинна** змінювати спільний генератор модуля `random` (інші тести на нього розраховують).\n\n```python\nrandom_emails(2, 42)   # наприклад ['user_xxxxxx@test.dev', 'user_yyyyyy@test.dev']\nrandom_emails(2, 42) == random_emails(2, 42)   # True\n```",
+  "hints": [
+    "Власний генератор: `rng = random.Random(seed)` — не `random.seed(seed)`.",
+    "Літери — `string.ascii_lowercase`; одна випадкова — `rng.choice(string.ascii_lowercase)`.",
+    "Шість літер: `\"\".join(rng.choice(string.ascii_lowercase) for _ in range(6))`."
+  ],
+  "explanation": "`random.Random(seed)` — окремий генератор: однаковий seed дає однакову послідовність, а спільний генератор модуля `random` лишається недоторканим. `random.seed(seed)` теж дав би відтворюваність, але змінив би стан для всіх інших тестів — тест `test_global_random_untouched` це ловить.",
+  "codeRules": [
+    { "kind": "require", "pattern": "Random\\s*\\(", "message": "Створи власний генератор: `random.Random(seed)`." }
+  ]
+}

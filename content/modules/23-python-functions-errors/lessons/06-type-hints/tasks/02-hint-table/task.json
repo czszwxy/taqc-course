@@ -1,0 +1,51 @@
+{
+  "type": "table",
+  "title": "Pick the type hint",
+  "statement": "Для кожного значення з тестового коду обери анотацію, яка його точно описує.",
+  "hints": [
+    "Читай вкладеність зсередини назовні: що лежить усередині колекції?",
+    "Кортеж з фіксованою кількістю полів — `tuple[тип1, тип2]`; значення, якого може не бути, — `X | None`."
+  ],
+  "explanation": "Анотація описує **форму** даних: яка колекція і що в ній лежить. Список тегів — `list[str]`, підсумок прогону — `dict[str, int]`, запис «назва + тривалість» — `tuple[str, float]`, а відповідь API зі списком товарів — `list[dict[str, int]]`. Функція-перевірка — `Callable[[str], bool]`.",
+  "givenColumns": ["Значення в тестовому коді"],
+  "answerColumns": [
+    {
+      "id": "hint",
+      "label": "Type hint",
+      "options": [
+        "list[str]",
+        "list[int]",
+        "dict[str, int]",
+        "dict[int, str]",
+        "tuple[str, float]",
+        "str | None",
+        "set[int]",
+        "list[dict[str, int]]",
+        "Callable[[str], bool]",
+        "bool"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`[\"smoke\", \"login\"]` — теги тесту"], "answers": { "hint": "list[str]" } },
+    { "given": ["`{\"passed\": 3, \"failed\": 1}` — підсумок прогону"], "answers": { "hint": "dict[str, int]" } },
+    { "given": ["`(\"test_login\", 1.25)` — назва і тривалість"], "answers": { "hint": "tuple[str, float]" } },
+    {
+      "given": ["`\"Kyiv\"` або `None` — місто, яке користувач міг не вказати"],
+      "answers": { "hint": "str | None" },
+      "explain": "Значення, якого може не бути, — `str | None`, а не просто `str`."
+    },
+    { "given": ["`{1001, 1002}` — унікальні id замовлень"], "answers": { "hint": "set[int]" } },
+    {
+      "given": ["`[{\"id\": 1, \"price\": 450}, {\"id\": 3, \"price\": 150}]` — товари з API"],
+      "answers": { "hint": "list[dict[str, int]]" },
+      "explain": "Зовні — список, кожен елемент — словник з ключами-рядками і значеннями-числами."
+    },
+    {
+      "given": ["`lambda s: \"@\" in s` — перевірка email"],
+      "answers": { "hint": "Callable[[str], bool]" },
+      "explain": "Це функція: приймає рядок, повертає bool."
+    },
+    { "given": ["`True` — прапорець «користувач активний»"], "answers": { "hint": "bool" } }
+  ]
+}

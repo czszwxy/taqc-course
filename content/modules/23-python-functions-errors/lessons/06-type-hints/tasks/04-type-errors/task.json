@@ -1,0 +1,23 @@
+{
+  "type": "classify",
+  "title": "What would the type checker say?",
+  "statement": "Функція з тестового проєкту:\n\n```python\ndef discount(price: int, percent: float) -> int:\n    return round(price * (1 - percent))\n```\n\nДля кожного рядка вирішіть: type checker (mypy, Pylance) пропустить його чи покаже помилку?",
+  "categories": [
+    { "id": "ok", "label": "OK", "description": "Типи збігаються — помилки не буде" },
+    { "id": "error", "label": "Type error", "description": "Type checker підкреслить цей рядок" }
+  ],
+  "items": [
+    { "id": "basic", "text": "`discount(450, 0.1)`", "category": "ok" },
+    { "id": "str-price", "text": "`discount(\"450\", 0.1)`", "category": "error", "explain": "`price` має бути `int`, а передано рядок." },
+    { "id": "int-for-float", "text": "`discount(450, 1)`", "category": "ok", "explain": "Там, де очікується `float`, можна передати `int`." },
+    { "id": "float-price", "text": "`discount(450.5, 0.1)`", "category": "error", "explain": "`float` не можна передати туди, де очікується `int`." },
+    { "id": "wrong-target", "text": "`label: str = discount(450, 0.1)`", "category": "error", "explain": "Функція повертає `int`, а змінна оголошена як `str`." },
+    { "id": "keywords", "text": "`discount(percent=0.2, price=900)`", "category": "ok", "explain": "Іменовані аргументи можна передавати в будь-якому порядку." },
+    { "id": "missing", "text": "`discount(450)`", "category": "error", "explain": "Бракує обов'язкового аргументу `percent`." },
+    { "id": "none", "text": "`discount(450, None)`", "category": "error", "explain": "`None` — не `float`; для цього анотація мала б бути `float | None`." }
+  ],
+  "show": 6,
+  "passScore": 0.8,
+  "hints": ["`int` підходить туди, де очікується `float`, але не навпаки. `None` — окремий тип."],
+  "explanation": "Type checker порівнює типи аргументів з анотаціями параметрів і тип результату — з анотацією змінної. Єдиний «поблажливий» випадок — `int` там, де очікується `float`. Відсутній аргумент і `None` замість числа — теж помилки, які видно ще до запуску."
+}

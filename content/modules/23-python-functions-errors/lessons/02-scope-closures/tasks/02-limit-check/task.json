@@ -1,0 +1,11 @@
+{
+  "type": "python",
+  "title": "A factory of limit checks",
+  "statement": "Напиши фабрику `make_limit_check(limit)`. Вона повертає **функцію** `check(value)`, яка повертає `True`, якщо `value` не більше за `limit`.\n\n```python\napi_fast = make_limit_check(500)\napi_fast(320)      # True\napi_fast(500)      # True — межа включно\napi_fast(501)      # False\n\npage_fast = make_limit_check(3000)\npage_fast(2500)    # True — свій limit\n```",
+  "hints": [
+    "Усередині `make_limit_check` оголоси `def check(value):` з `return value <= limit`.",
+    "Поверни саму функцію: `return check` (без дужок)."
+  ],
+  "explanation": "Внутрішня функція бачить `limit` зовнішньої (Enclosing) і пам'ятає його після завершення фабрики — це замикання. Кожен виклик фабрики створює окреме замикання зі своїм `limit`. Часта помилка — `return check()`: тоді повертається результат, а не функція.",
+  "codeRules": []
+}

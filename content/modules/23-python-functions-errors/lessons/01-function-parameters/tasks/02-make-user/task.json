@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "Test data builder with overrides",
+  "statement": "Напиши білдер тестового користувача `make_user(**overrides)`. Він повертає **новий** словник зі значеннями за замовчуванням, у якому перевизначені (або додані) поля з `overrides`.\n\nЗначення за замовчуванням:\n\n```python\n{\"email\": \"user@example.test\", \"password\": \"Secret123\", \"role\": \"customer\", \"active\": True}\n```\n\n```python\nmake_user()\n# {'email': 'user@example.test', 'password': 'Secret123', 'role': 'customer', 'active': True}\nmake_user(role=\"admin\", active=False)\n# {..., 'role': 'admin', 'active': False}\nmake_user(city=\"Kyiv\")\n# {..., 'active': True, 'city': 'Kyiv'}\n```",
+  "hints": [
+    "Сигнатура — `def make_user(**overrides):`; `overrides` — звичайний словник.",
+    "Створи словник з defaults **усередині** функції, потім `user.update(overrides)` і поверни його."
+  ],
+  "explanation": "`**overrides` збирає всі іменовані аргументи в словник, а `update` перезаписує defaults або додає нові поля. Важливо створювати словник **на кожен виклик**: якщо тримати один глобальний словник і змінювати його, тест, який зробив користувача адміном, «зламає» дані для всіх наступних тестів.",
+  "codeRules": [
+    { "kind": "require", "pattern": "def\\s+make_user\\s*\\(\\s*\\*\\*\\s*\\w+", "message": "Збери перевизначення через `**overrides` у сигнатурі." }
+  ]
+}

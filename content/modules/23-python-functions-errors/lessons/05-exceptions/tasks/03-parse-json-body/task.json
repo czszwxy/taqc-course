@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Wrap a low-level error in an ApiError",
+  "statement": "API-клієнт тестового проєкту має власний виняток `ApiError` (файл `errors.py` нижче, лише для читання). Напиши `parse_json_body(text)`:\n\n- повертає `json.loads(text)`;\n- якщо текст не JSON — піднімає `ApiError` з повідомленням `Response is not JSON: <перші 30 символів тексту>` і **зберігає** початкову помилку як причину (`raise ... from e`).\n\n```python\nparse_json_body('{\"id\": 42}')                      # {'id': 42}\nparse_json_body(\"<html>502 Bad Gateway</html>\")\n# ApiError: Response is not JSON: <html>502 Bad Gateway</html>\n```",
+  "hints": [
+    "`json.loads` для поганого тексту піднімає `json.JSONDecodeError` — лови саме його.",
+    "`except json.JSONDecodeError as e:` → `raise ApiError(f\"Response is not JSON: {text[:30]}\") from e`.",
+    "Не забудь `from errors import ApiError` на початку файлу."
+  ],
+  "explanation": "Тестам не цікаво, що «на рядку 1 стовпці 1 очікувалось значення» — їм потрібно знати, що **API** повернуло не JSON (наприклад, HTML-сторінку помилки 502). Власний `ApiError` з першими символами відповіді пояснює це одразу, а `from e` зберігає технічну причину в traceback для глибшого дебагу.",
+  "codeRules": [
+    { "kind": "require", "pattern": "raise\\s+ApiError", "message": "Підніми `ApiError`." },
+    { "kind": "forbid", "pattern": "except\\s*:", "message": "Лови конкретний виняток (`json.JSONDecodeError`), а не все підряд." }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "type": "quiz",
+  "title": "Function parameters",
+  "show": 6,
+  "hints": ["Default обчислюється один раз. *args — кортеж, **kwargs — словник. Після * — лише іменовані."],
+  "questions": [
+    {
+      "id": "mutable-default",
+      "kind": "single",
+      "text": "`def add_tag(tag, tags=[]): tags.append(tag); return tags`. Що поверне другий виклик `add_tag(\"login\")` після `add_tag(\"smoke\")`?",
+      "options": [
+        { "text": "`['smoke', 'login']` — список за замовчуванням спільний для всіх викликів", "correct": true },
+        { "text": "`['login']`" }
+      ]
+    },
+    {
+      "id": "args-type",
+      "kind": "single",
+      "text": "`def total(*durations): ...`. Що таке `durations` при виклику `total(1, 2, 3)`?",
+      "options": [{ "text": "Кортеж `(1, 2, 3)`", "correct": true }, { "text": "Список `[1, 2, 3]`" }, { "text": "Число 6" }]
+    },
+    {
+      "id": "kwargs-type",
+      "kind": "single",
+      "text": "`def make_user(**overrides): ...`. Що таке `overrides` при виклику `make_user(role=\"admin\")`?",
+      "options": [{ "text": "Словник `{'role': 'admin'}`", "correct": true }, { "text": "Рядок `'admin'`" }, { "text": "Кортеж" }]
+    },
+    {
+      "id": "keyword-only",
+      "kind": "single",
+      "text": "`def wait_for(url, *, timeout=5): ...`. Що буде при `wait_for(\"/api\", 10)`?",
+      "options": [
+        { "text": "`TypeError` — після `*` параметри передаються лише за ім'ям", "correct": true },
+        { "text": "`timeout` стане 10" }
+      ]
+    },
+    {
+      "id": "unpack",
+      "kind": "single",
+      "text": "`creds = {\"email\": \"qa@example.test\", \"password\": \"Secret123\"}`. Як передати їх у `login(email, password)`?",
+      "options": [{ "text": "`login(**creds)`", "correct": true }, { "text": "`login(*creds)`", "explain": "Одна зірочка розпакує ключі словника як позиційні аргументи." }, { "text": "`login(creds)`" }]
+    },
+    {
+      "id": "fix-default",
+      "kind": "single",
+      "text": "Як правильно задати «порожній список за замовчуванням»?",
+      "options": [
+        { "text": "`tags=None`, а всередині `if tags is None: tags = []`", "correct": true },
+        { "text": "`tags=[]`" },
+        { "text": "`tags=list`" }
+      ]
+    },
+    {
+      "id": "flaky",
+      "kind": "single",
+      "text": "Тест проходить сам по собі, але падає в повному прогоні. Що варто перевірити першим?",
+      "options": [
+        { "text": "Спільний змінюваний стан між тестами (наприклад, список за замовчуванням або глобальний словник)", "correct": true },
+        { "text": "Версію Python" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "title": "Type hints",
+  "minutes": 45,
+  "summary": "Анотації типів для параметрів, результату і змінних: базові типи, list[str], dict[str, int], tuple, X | None (Optional), -> None, Callable, Any; Python їх не перевіряє під час виконання — це роблять mypy, Pyright і редактор; навіщо page: Page у тестах Playwright",
+  "resources": [
+    {
+      "title": "typing — Support for type hints",
+      "url": "https://docs.python.org/3/library/typing.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "mypy: Type hints cheat sheet",
+      "url": "https://mypy.readthedocs.io/en/stable/cheat_sheet_py3.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "VS Code: Python type checking (Pylance)",
+      "url": "https://code.visualstudio.com/docs/python/settings-reference",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Шукай налаштування python.analysis.typeCheckingMode.",
+      "needsVerification": true
+    }
+  ]
+}

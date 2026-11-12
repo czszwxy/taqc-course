@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "Expected delivery date",
+  "statement": "Тест перевіряє дату доставки на сторінці замовлення. Напиши `delivery_date(order_date, days)`: дата замовлення — рядок `YYYY-MM-DD`, результат — дата через `days` днів у тому ж форматі. Використай `datetime`.\n\n```python\ndelivery_date(\"2026-11-12\", 3)    # '2026-11-15'\ndelivery_date(\"2026-11-29\", 3)    # '2026-12-02'\ndelivery_date(\"2026-12-30\", 3)    # '2027-01-02'\n```",
+  "hints": [
+    "`from datetime import date, timedelta`.",
+    "`date.fromisoformat(order_date) + timedelta(days=days)`, потім `.isoformat()`."
+  ],
+  "explanation": "`date.fromisoformat` перетворює рядок на дату, `timedelta(days=...)` — проміжок часу, а додавання сам правильно перейде через кінець місяця, року і 29 лютого. Обчислювати дати вручну рядками — гарантований баг на межах.",
+  "codeRules": [
+    { "kind": "require", "pattern": "timedelta", "message": "Порахуй дату через `timedelta` з модуля `datetime`." }
+  ]
+}

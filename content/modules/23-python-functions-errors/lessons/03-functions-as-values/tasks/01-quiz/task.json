@@ -1,0 +1,59 @@
+{
+  "type": "quiz",
+  "title": "Functions as values",
+  "show": 6,
+  "hints": ["Без дужок — сама функція, з дужками — її результат. map і filter повертають ледачі об'єкти."],
+  "questions": [
+    {
+      "id": "no-parens",
+      "kind": "single",
+      "text": "Що передається в `count_matching(codes, is_ok)`?",
+      "options": [{ "text": "Сама функція `is_ok`", "correct": true }, { "text": "Результат виклику `is_ok()`" }]
+    },
+    {
+      "id": "map",
+      "kind": "single",
+      "text": "Що дасть `list(map(int, [\"200\", \"404\"]))`?",
+      "options": [{ "text": "`[200, 404]`", "correct": true }, { "text": "`['200', '404']`" }, { "text": "`604`" }]
+    },
+    {
+      "id": "lazy",
+      "kind": "single",
+      "text": "Що виведе `print(map(int, [\"1\"]))`?",
+      "options": [
+        { "text": "Щось на зразок `<map object at 0x…>` — map ледачий, потрібен `list(...)`", "correct": true },
+        { "text": "`[1]`" }
+      ]
+    },
+    {
+      "id": "filter",
+      "kind": "single",
+      "text": "Що дасть `list(filter(lambda c: c >= 400, [200, 404, 500]))`?",
+      "options": [{ "text": "`[404, 500]`", "correct": true }, { "text": "`[False, True, True]`" }, { "text": "`[200]`" }]
+    },
+    {
+      "id": "retry",
+      "kind": "single",
+      "text": "Коли `retry` у тесті доречний?",
+      "options": [
+        { "text": "Коли стан з'являється не одразу (сервер ще обробляє замовлення) — і це задокументовано", "correct": true },
+        { "text": "Коли тест іноді падає — повторюємо, доки не пройде" }
+      ]
+    },
+    {
+      "id": "dict-of-checks",
+      "kind": "single",
+      "text": "Навіщо тримати перевірки у словнику «назва → функція»?",
+      "options": [
+        { "text": "Нова перевірка — новий рядок у словнику, а цикл і звіт не змінюються", "correct": true },
+        { "text": "Так код працює швидше" }
+      ]
+    },
+    {
+      "id": "callback",
+      "kind": "text",
+      "text": "Як називають функцію, яку передають аргументом в іншу функцію? (англійський термін, одне слово)",
+      "accept": ["callback", "call-back"]
+    }
+  ]
+}

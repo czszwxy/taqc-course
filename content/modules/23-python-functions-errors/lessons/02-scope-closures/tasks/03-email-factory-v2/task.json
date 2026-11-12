@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Sequential order ids",
+  "variantOf": "03-email-factory",
+  "statement": "Напиши `make_id_sequence(start)` — повертає функцію без параметрів, яка при кожному виклику дає наступний id: спершу `start`, потім `start + 1` і так далі. Послідовності незалежні. Без `global`.\n\n```python\nnext_id = make_id_sequence(2001)\nnext_id()    # 2001\nnext_id()    # 2002\nmake_id_sequence(10)()   # 10\n```",
+  "hints": [
+    "Зберігай у замиканні наступне значення: `current = start`.",
+    "Усередині: `nonlocal current`, запам'ятай значення, збільш `current`, поверни запам'ятоване."
+  ],
+  "explanation": "Той самий шаблон, що й з email-ами: стан у змінній зовнішньої функції і `nonlocal` для зміни. Пильнуй першого значення: перший виклик має повернути саме `start`, а не `start + 1`.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "\\bglobal\\b", "message": "Без `global` — стан у замиканні." }
+  ]
+}

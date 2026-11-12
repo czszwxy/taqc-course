@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Retry delays with exponential backoff",
+  "variantOf": "03-email-stream",
+  "statement": "Напиши генератор `backoff(base, attempts, cap)` — затримки між повторами запиту: `base`, потім щоразу вдвічі більше, але не більше за `cap`; усього `attempts` значень.\n\n```python\nlist(backoff(100, 5, 1000))   # [100, 200, 400, 800, 1000]\nlist(backoff(100, 3, 50))     # [50, 50, 50]\nlist(backoff(100, 0, 1000))   # []\n```",
+  "hints": [
+    "`delay = base`, далі цикл `for _ in range(attempts):`.",
+    "`yield min(delay, cap)`, потім `delay *= 2`."
+  ],
+  "explanation": "Exponential backoff — стандартна стратегія повторів у клієнтах API: кожна наступна пауза довша, але обмежена зверху. Генератор віддає затримки по одній, а код повторів бере наступну лише тоді, коли спроба справді не вдалась.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\byield\\b", "message": "Зроби функцію генератором через `yield`." }
+  ]
+}

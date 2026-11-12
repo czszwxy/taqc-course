@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "Reuse a helper module",
+  "statement": "У тестовому проєкті вже є модуль `money.py` (дивись файл нижче, лише для читання) з функцією `format_uah`. Напиши `receipt_line(name, price, qty)`, **імпортувавши** цей хелпер, — не пиши форматування заново.\n\n```python\nreceipt_line(\"Mouse\", 450, 2)       # 'Mouse x2 = 900 UAH'\nreceipt_line(\"Monitor\", 7500, 2)    # 'Monitor x2 = 15 000 UAH'\n```",
+  "hints": [
+    "На початку файлу: `from money import format_uah`.",
+    "Результат: `f\"{name} x{qty} = {format_uah(price * qty)}\"`."
+  ],
+  "explanation": "Спільна логіка (формат грошей) живе в одному модулі, а тести й хелпери імпортують її. Якщо формат зміниться (наприклад, «грн» замість «UAH»), правка буде в одному місці. Дубльоване форматування в кількох файлах рано чи пізно розійдеться.",
+  "codeRules": [
+    { "kind": "require", "pattern": "from\\s+money\\s+import|import\\s+money", "message": "Імпортуй хелпер з модуля `money`." }
+  ]
+}

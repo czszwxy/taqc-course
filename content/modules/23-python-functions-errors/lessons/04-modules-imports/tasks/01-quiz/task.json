@@ -1,0 +1,65 @@
+{
+  "type": "quiz",
+  "title": "Modules and the standard library",
+  "show": 6,
+  "hints": ["Імпорт виконує файл модуля. Код під if __name__ == \"__main__\" — лише при прямому запуску."],
+  "questions": [
+    {
+      "id": "from-import",
+      "kind": "single",
+      "text": "Після `from money import format_uah` як викликати функцію?",
+      "options": [{ "text": "`format_uah(1200)`", "correct": true }, { "text": "`money.format_uah(1200)`", "explain": "Ім'я `money` при такому імпорті не створюється." }]
+    },
+    {
+      "id": "main",
+      "kind": "single",
+      "text": "Коли виконається код під `if __name__ == \"__main__\":` у файлі `money.py`?",
+      "options": [
+        { "text": "Лише коли запускають сам файл (`python money.py`), не при імпорті", "correct": true },
+        { "text": "Завжди при `import money`" }
+      ]
+    },
+    {
+      "id": "shadow",
+      "kind": "single",
+      "text": "У проєкті з'явився файл `random.py`, і `import random` у тестах зламався. Чому?",
+      "options": [
+        { "text": "Python спершу шукає модулі в папці проєкту — твій файл перекрив стандартний модуль", "correct": true },
+        { "text": "random не можна імпортувати в тестах" }
+      ]
+    },
+    {
+      "id": "timedelta",
+      "kind": "single",
+      "text": "Що дасть `date(2026, 12, 30) + timedelta(days=3)`?",
+      "options": [{ "text": "`date(2027, 1, 2)`", "correct": true }, { "text": "`date(2026, 12, 33)`" }, { "text": "Помилку" }]
+    },
+    {
+      "id": "seed",
+      "kind": "single",
+      "text": "Навіщо фіксувати seed для випадкових тестових даних?",
+      "options": [
+        { "text": "Щоб тест, який упав на «випадкових» даних, можна було повторити з тими самими даними", "correct": true },
+        { "text": "Щоб дані були ще випадковішими" }
+      ]
+    },
+    {
+      "id": "own-rng",
+      "kind": "single",
+      "text": "Чому `rng = random.Random(42)` краще, ніж `random.seed(42)` усередині хелпера?",
+      "options": [
+        { "text": "Власний генератор не змінює спільний, яким користуються інші тести", "correct": true },
+        { "text": "random.seed не існує" }
+      ]
+    },
+    {
+      "id": "star",
+      "kind": "single",
+      "text": "Що не так з `from helpers import *`?",
+      "options": [
+        { "text": "Незрозуміло, звідки береться кожне ім'я, і імена можуть перекрити одне одне", "correct": true },
+        { "text": "Це синтаксична помилка" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "type": "quiz",
+  "title": "Iterators and generators",
+  "show": 6,
+  "hints": ["Ітератори одноразові. Виклик функції-генератора не виконує тіло — лише створює генератор."],
+  "questions": [
+    {
+      "id": "call",
+      "kind": "single",
+      "text": "Що повертає виклик функції-генератора `countdown(3)`?",
+      "options": [
+        { "text": "Об'єкт-генератор; тіло ще не почало виконуватись", "correct": true },
+        { "text": "Число 3" },
+        { "text": "Список `[3, 2, 1]`" }
+      ]
+    },
+    {
+      "id": "stop",
+      "kind": "single",
+      "text": "`it = iter([1, 2]); next(it); next(it); next(it)` — що на третьому `next`?",
+      "options": [{ "text": "`StopIteration`", "correct": true }, { "text": "`None`" }, { "text": "Знову 1" }]
+    },
+    {
+      "id": "exhausted",
+      "kind": "single",
+      "text": "`gen = (x for x in [1, 2])`. Що дасть другий виклик `list(gen)`?",
+      "options": [{ "text": "`[]` — генератор уже вичерпано", "correct": true }, { "text": "`[1, 2]`" }]
+    },
+    {
+      "id": "yield",
+      "kind": "single",
+      "text": "Чим `yield` відрізняється від `return`?",
+      "options": [
+        { "text": "`yield` віддає значення і призупиняє функцію; наступний `next` продовжить з того місця", "correct": true },
+        { "text": "Нічим" },
+        { "text": "`yield` повертає список" }
+      ]
+    },
+    {
+      "id": "infinite",
+      "kind": "single",
+      "text": "Як взяти перші 3 значення з нескінченного генератора `ids`?",
+      "options": [
+        { "text": "`list(islice(ids, 3))`", "correct": true },
+        { "text": "`list(ids)[:3]`", "explain": "`list(ids)` ніколи не завершиться." }
+      ]
+    },
+    {
+      "id": "fixture",
+      "kind": "single",
+      "text": "У pytest fixture з `yield` коли виконується код **після** `yield`?",
+      "options": [{ "text": "Після тесту — це teardown (прибирання)", "correct": true }, { "text": "До тесту" }, { "text": "Ніколи" }]
+    },
+    {
+      "id": "big-log",
+      "kind": "single",
+      "text": "Чому для розбору лога на 2 ГБ краще генератор, ніж список?",
+      "options": [
+        { "text": "Генератор обробляє рядок за рядком і не тримає весь лог у пам'яті", "correct": true },
+        { "text": "Списки не можуть містити рядки з лога" }
+      ]
+    }
+  ]
+}

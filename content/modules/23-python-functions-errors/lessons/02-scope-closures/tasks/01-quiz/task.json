@@ -1,0 +1,66 @@
+{
+  "type": "quiz",
+  "title": "Scope and closures",
+  "show": 6,
+  "hints": ["LEGB: Local → Enclosing → Global → Built-in. Щоб змінити змінну зовнішньої функції — nonlocal."],
+  "questions": [
+    {
+      "id": "local",
+      "kind": "single",
+      "text": "Функція створила змінну `path` і завершилась. Що буде при `print(path)` поза функцією?",
+      "options": [{ "text": "`NameError` — локальна змінна існує лише під час виклику", "correct": true }, { "text": "Виведе останнє значення" }]
+    },
+    {
+      "id": "legb",
+      "kind": "single",
+      "text": "У якому порядку Python шукає ім'я?",
+      "options": [
+        { "text": "Local → Enclosing → Global → Built-in", "correct": true },
+        { "text": "Built-in → Global → Local" },
+        { "text": "Global → Local" }
+      ]
+    },
+    {
+      "id": "unbound",
+      "kind": "single",
+      "text": "`counter = 0` на рівні модуля, а у функції `counter += 1`. Що буде при виклику?",
+      "options": [
+        { "text": "`UnboundLocalError` — присвоєння робить `counter` локальною", "correct": true },
+        { "text": "Глобальний counter стане 1" }
+      ]
+    },
+    {
+      "id": "shadow",
+      "kind": "single",
+      "text": "У модулі написали `max = 10`. Що станеться далі з `max([1, 5])` у цьому модулі?",
+      "options": [
+        { "text": "`TypeError: 'int' object is not callable` — ім'я перекрило вбудовану функцію", "correct": true },
+        { "text": "Поверне 5" }
+      ]
+    },
+    {
+      "id": "closure",
+      "kind": "single",
+      "text": "`check = make_limit_check(500)`. Чому `check(320)` знає про 500, хоча `make_limit_check` уже завершилась?",
+      "options": [
+        { "text": "`check` — замикання: воно пам'ятає змінні зовнішньої функції", "correct": true },
+        { "text": "500 зберігається в глобальній змінній" }
+      ]
+    },
+    {
+      "id": "nonlocal",
+      "kind": "single",
+      "text": "Що потрібно, щоб внутрішня функція могла **змінити** змінну зовнішньої?",
+      "options": [{ "text": "`nonlocal count`", "correct": true }, { "text": "`global count`" }, { "text": "Нічого — можна просто присвоїти" }]
+    },
+    {
+      "id": "return-fn",
+      "kind": "single",
+      "text": "Чим `return check` відрізняється від `return check()` у фабриці?",
+      "options": [
+        { "text": "`return check` повертає саму функцію, `check()` — результат її виклику", "correct": true },
+        { "text": "Нічим" }
+      ]
+    }
+  ]
+}

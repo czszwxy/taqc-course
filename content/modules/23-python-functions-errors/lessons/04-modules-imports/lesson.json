@@ -1,0 +1,35 @@
+{
+  "title": "Modules, imports and the standard library",
+  "minutes": 55,
+  "summary": "Модуль — це .py-файл: import, from … import, as, де Python шукає модулі, if __name__ == \"__main__\", пакети з __init__.py і огляд стандартної бібліотеки для тестів: datetime і timedelta, random з seed, string, collections, json, math",
+  "resources": [
+    {
+      "title": "Python Tutorial: Modules",
+      "url": "https://docs.python.org/3/tutorial/modules.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python Tutorial: Brief Tour of the Standard Library",
+      "url": "https://docs.python.org/3/tutorial/stdlib.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "datetime — Basic date and time types",
+      "url": "https://docs.python.org/3/library/datetime.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "random — Generate pseudo-random numbers",
+      "url": "https://docs.python.org/3/library/random.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

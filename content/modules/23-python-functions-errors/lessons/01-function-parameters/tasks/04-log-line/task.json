@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "A log helper with *args",
+  "statement": "Напиши `log_line(level, *parts, sep=\" \")` для логів тестового фреймворку: рівень великими літерами в квадратних дужках, далі всі `parts` (перетворені на рядки), з'єднані через `sep`. Без `parts` — лише рівень.\n\n```python\nlog_line(\"info\", \"user\", 42, \"logged in\")         # '[INFO] user 42 logged in'\nlog_line(\"error\", \"GET\", \"/api/orders\", 500, sep=\" | \")\n# '[ERROR] GET | /api/orders | 500'\nlog_line(\"warn\")                                  # '[WARN]'\n```",
+  "hints": [
+    "Сигнатура: `def log_line(level, *parts, sep=\" \"):` — `sep` після `*parts` можна передати лише за ім'ям.",
+    "`parts` — кортеж; перетвори кожен елемент: `[str(p) for p in parts]`, далі `sep.join(...)`.",
+    "Окремий випадок: якщо `parts` порожній — поверни лише `f\"[{level.upper()}]\"`, без пробілу в кінці."
+  ],
+  "explanation": "`*parts` збирає довільну кількість аргументів у кортеж, а параметр після нього (`sep`) стає keyword-only — так його не переплутаєш з частиною повідомлення. `join` приймає лише рядки, тому числа треба перетворити через `str`. Порожній `parts` — межовий випадок: без нього в кінці з'являється зайвий пробіл.",
+  "codeRules": [
+    { "kind": "require", "pattern": "def\\s+log_line\\s*\\([^)]*\\*\\s*\\w+", "message": "Збери частини повідомлення через `*parts` у сигнатурі." }
+  ]
+}

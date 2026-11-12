@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "An endless stream of test emails",
+  "statement": "Напиши **нескінченний** генератор `unique_emails(prefix, domain)`, який віддає `<prefix>1@<domain>`, `<prefix>2@<domain>` і так далі.\n\n```python\nemails = unique_emails(\"buyer\", \"test.dev\")\nnext(emails)    # 'buyer1@test.dev'\nnext(emails)    # 'buyer2@test.dev'\n\nfrom itertools import islice\nlist(islice(unique_emails(\"qa\", \"x.dev\"), 3))   # ['qa1@x.dev', 'qa2@x.dev', 'qa3@x.dev']\n```",
+  "hints": [
+    "Лічильник `number = 0` і нескінченний цикл `while True:`.",
+    "У циклі: збільш `number` і `yield f\"{prefix}{number}@{domain}\"`."
+  ],
+  "explanation": "`while True` у генераторі не «зависає»: на кожному `yield` функція засинає до наступного `next()`. Стан (лічильник) живе всередині генератора — порівняй із замиканням з уроку 2: те саме завдання, але без `nonlocal`. Кожен виклик `unique_emails(...)` — новий незалежний генератор.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\byield\\b", "message": "Зроби функцію генератором через `yield`." }
+  ]
+}

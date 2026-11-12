@@ -1,0 +1,67 @@
+{
+  "type": "quiz",
+  "title": "Type hints",
+  "show": 6,
+  "hints": ["Python не перевіряє анотації під час виконання. «Може не бути» — X | None."],
+  "questions": [
+    {
+      "id": "runtime",
+      "kind": "single",
+      "text": "`def f(x: int): return x * 2`. Що станеться при `f(\"ab\")`?",
+      "options": [
+        { "text": "Поверне `'abab'` — Python не перевіряє анотації під час виконання", "correct": true },
+        { "text": "`TypeError` через анотацію" }
+      ]
+    },
+    {
+      "id": "optional",
+      "kind": "single",
+      "text": "Параметр `city` — рядок, але користувач міг його не вказати. Яка анотація правильна?",
+      "options": [{ "text": "`city: str | None = None`", "correct": true }, { "text": "`city: str = None`" }, { "text": "`city: None`" }]
+    },
+    {
+      "id": "none-return",
+      "kind": "single",
+      "text": "Функція лише друкує звіт і нічого не повертає. Яка анотація результату?",
+      "options": [{ "text": "`-> None`", "correct": true }, { "text": "`-> str`" }, { "text": "Анотація результату заборонена" }]
+    },
+    {
+      "id": "callable",
+      "kind": "single",
+      "text": "Що означає `Callable[[str], bool]`?",
+      "options": [
+        { "text": "Функцію, яка приймає рядок і повертає bool", "correct": true },
+        { "text": "Список з рядка і bool" },
+        { "text": "Словник str → bool" }
+      ]
+    },
+    {
+      "id": "who-checks",
+      "kind": "single",
+      "text": "Хто перевіряє type hints?",
+      "options": [
+        { "text": "Інструменти до запуску: редактор (Pylance), mypy, pyright", "correct": true },
+        { "text": "Python під час виконання" }
+      ]
+    },
+    {
+      "id": "nested",
+      "kind": "single",
+      "text": "Що описує `list[dict[str, int]]`?",
+      "options": [
+        { "text": "Список словників з ключами-рядками і значеннями-числами", "correct": true },
+        { "text": "Словник списків" },
+        { "text": "Список з трьох елементів: dict, str, int" }
+      ]
+    },
+    {
+      "id": "page",
+      "kind": "single",
+      "text": "Навіщо в тестах Playwright для Python пишуть `def test_login(page: Page):`?",
+      "options": [
+        { "text": "Редактор знає тип і підказує методи `page`, а type checker ловить помилки у викликах", "correct": true },
+        { "text": "Без анотації тест не запуститься" }
+      ]
+    }
+  ]
+}

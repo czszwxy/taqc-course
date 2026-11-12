@@ -1,0 +1,28 @@
+{
+  "title": "Lambdas and built-in helpers (map, filter, any, all)",
+  "minutes": 50,
+  "summary": "Функції як значення: передати функцію в іншу (callback), зберігати перевірки в словнику, хелпери retry і polling як у фреймворках автотестів, map і filter проти comprehensions, any / all — повторення",
+  "resources": [
+    {
+      "title": "Python Functional Programming HOWTO",
+      "url": "https://docs.python.org/3/howto/functional.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Built-in function map()",
+      "url": "https://docs.python.org/3/library/functions.html#map",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Built-in function filter()",
+      "url": "https://docs.python.org/3/library/functions.html#filter",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

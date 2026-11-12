@@ -1,0 +1,19 @@
+{
+  "type": "order",
+  "title": "Predict the output: try, except, finally",
+  "statement": "Розстав рядки виводу програми в тому порядку, в якому їх надрукує Python.\n\n```python\ndef fetch(url):\n    print(f\"send {url}\")\n    try:\n        if \"slow\" in url:\n            raise TimeoutError(\"no response in 5 s\")\n        print(f\"200 from {url}\")\n        return \"ok\"\n    except TimeoutError as e:\n        print(f\"timeout on {url}: {e}\")\n        return \"retry\"\n    finally:\n        print(f\"close {url}\")\n\n\nresults = [fetch(\"/api/fast\"), fetch(\"/api/slow\")]\nprint(results)\n```",
+  "hints": [
+    "`finally` виконується навіть після `return` — але ще **до** того, як функція справді поверне значення.",
+    "Список `results` будується зліва направо: спершу повністю відпрацює перший `fetch`, потім другий."
+  ],
+  "explanation": "`return` у `try` або `except` не завершує функцію одразу: спершу виконується `finally`, і лише потім значення повертається. Тому `close …` друкується відразу після кожного запиту, а сам список — в самому кінці. Саме через цю гарантію в `finally` закривають з'єднання і браузери.",
+  "items": [
+    "`send /api/fast`",
+    "`200 from /api/fast`",
+    "`close /api/fast`",
+    "`send /api/slow`",
+    "`timeout on /api/slow: no response in 5 s`",
+    "`close /api/slow`",
+    "`['ok', 'retry']`"
+  ]
+}

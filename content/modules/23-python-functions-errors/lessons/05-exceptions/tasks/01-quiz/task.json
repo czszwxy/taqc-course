@@ -1,0 +1,63 @@
+{
+  "type": "quiz",
+  "title": "Exceptions",
+  "show": 6,
+  "hints": ["finally — завжди, else — лише без винятку. Конкретні except — першими."],
+  "questions": [
+    {
+      "id": "which",
+      "kind": "single",
+      "text": "Який `except` зловить помилку з `int(\"abc\")`?",
+      "options": [{ "text": "`except ValueError:`", "correct": true }, { "text": "`except TypeError:`" }, { "text": "`except KeyError:`" }]
+    },
+    {
+      "id": "finally",
+      "kind": "single",
+      "text": "Коли виконується блок `finally`?",
+      "options": [
+        { "text": "Завжди — і після винятку, і після `return` у `try`", "correct": true },
+        { "text": "Лише якщо був виняток" },
+        { "text": "Лише якщо винятку не було" }
+      ]
+    },
+    {
+      "id": "else",
+      "kind": "single",
+      "text": "Коли виконується `else` у конструкції `try / except / else`?",
+      "options": [{ "text": "Лише якщо в `try` не було винятку", "correct": true }, { "text": "Лише після винятку" }, { "text": "Завжди" }]
+    },
+    {
+      "id": "swallow",
+      "kind": "single",
+      "text": "Хелпер у тестах обгорнутий у `try: ... except: pass`. Чим це небезпечно?",
+      "options": [
+        { "text": "Він ковтає будь-яку помилку, навіть AssertionError, — тест буде зеленим попри баг", "correct": true },
+        { "text": "Нічим, так тести стабільніші" }
+      ]
+    },
+    {
+      "id": "from",
+      "kind": "single",
+      "text": "Що дає `raise ApiError(\"...\") from e`?",
+      "options": [
+        { "text": "Новий виняток з поясненням, а початковий зберігається як причина в traceback", "correct": true },
+        { "text": "Початковий виняток зникає" }
+      ]
+    },
+    {
+      "id": "order",
+      "kind": "single",
+      "text": "`except Exception:` стоїть **перед** `except ValueError:`. Що буде з `ValueError`?",
+      "options": [
+        { "text": "Його перехопить `except Exception`, гілка `ValueError` ніколи не виконається", "correct": true },
+        { "text": "Python сам обере найточніший except" }
+      ]
+    },
+    {
+      "id": "raises",
+      "kind": "single",
+      "text": "Тест `with pytest.raises(ValueError): parse_price(\"450\")` — функція повернула 450 без помилки. Результат тесту?",
+      "options": [{ "text": "Тест падає: DID NOT RAISE ValueError", "correct": true }, { "text": "Тест проходить" }]
+    }
+  ]
+}
