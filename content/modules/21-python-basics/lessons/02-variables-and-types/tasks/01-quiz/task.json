@@ -1,0 +1,67 @@
+{
+  "type": "quiz",
+  "title": "Variables and types",
+  "show": 6,
+  "hints": ["Дані з полів форми — завжди рядки. `True` і `False` пишуться з великої літери."],
+  "questions": [
+    {
+      "id": "type-str",
+      "kind": "single",
+      "text": "Яке значення має тип `str`?",
+      "options": [{ "text": "`\"42\"`", "correct": true }, { "text": "`42`" }, { "text": "`42.0`" }]
+    },
+    {
+      "id": "bool",
+      "kind": "single",
+      "text": "Як правильно записати логічне «так» у Python?",
+      "options": [{ "text": "`True`", "correct": true }, { "text": "`true`" }, { "text": "`\"True\"`", "explain": "Це рядок, а не bool." }]
+    },
+    {
+      "id": "snake",
+      "kind": "single",
+      "text": "Яке ім'я змінної відповідає стилю Python?",
+      "options": [{ "text": "`expected_total`", "correct": true }, { "text": "`expectedTotal`", "explain": "camelCase — стиль JavaScript." }, { "text": "`2nd_total`" }]
+    },
+    {
+      "id": "int-float",
+      "kind": "single",
+      "text": "Що поверне `int(\"3.5\")`?",
+      "options": [
+        { "text": "Помилку `ValueError`", "correct": true },
+        { "text": "`3`" },
+        { "text": "`4`" }
+      ]
+    },
+    {
+      "id": "form",
+      "kind": "single",
+      "text": "Користувач увів у поле «кількість» `3`. Якого типу це значення в програмі, доки його не перетворили?",
+      "options": [{ "text": "`str`", "correct": true }, { "text": "`int`" }, { "text": "`bool`" }]
+    },
+    {
+      "id": "none",
+      "kind": "single",
+      "text": "Що означає `None`?",
+      "options": [
+        { "text": "Значення відсутнє (наприклад, функція нічого не повернула)", "correct": true },
+        { "text": "Нуль" },
+        { "text": "Порожній рядок" }
+      ]
+    },
+    {
+      "id": "concat",
+      "kind": "single",
+      "text": "Що станеться при `\"Total: \" + 5570`?",
+      "options": [
+        { "text": "`TypeError`: не можна додати рядок і число — потрібно `str(5570)`", "correct": true },
+        { "text": "`Total: 5570`" }
+      ]
+    },
+    {
+      "id": "type-fn",
+      "kind": "text",
+      "text": "Яка вбудована функція показує тип значення? (лише назва)",
+      "accept": ["type", "type()"]
+    }
+  ]
+}

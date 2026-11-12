@@ -1,0 +1,57 @@
+{
+  "type": "quiz",
+  "title": "Strings and f-strings",
+  "show": 6,
+  "hints": ["Зріз не включає кінцевий індекс. Методи рядків повертають новий рядок."],
+  "questions": [
+    {
+      "id": "index",
+      "kind": "single",
+      "text": "`code = \"QA-1042\"`. Що таке `code[-1]`?",
+      "options": [{ "text": "`'2'`", "correct": true }, { "text": "`'Q'`" }, { "text": "`IndexError`" }]
+    },
+    {
+      "id": "slice",
+      "kind": "single",
+      "text": "`\"QA-1042\"[3:]` дорівнює…",
+      "options": [{ "text": "`'1042'`", "correct": true }, { "text": "`'-1042'`" }, { "text": "`'QA-'`" }]
+    },
+    {
+      "id": "immutable",
+      "kind": "single",
+      "text": "`s = \" Kyiv \"; s.strip(); print(s)` — що надрукується?",
+      "options": [
+        { "text": "` Kyiv ` з пробілами — strip() повернув новий рядок, але його не зберегли", "correct": true },
+        { "text": "`Kyiv`" }
+      ]
+    },
+    {
+      "id": "split",
+      "kind": "single",
+      "text": "Що поверне `\"smoke,regression\".split(\",\")`?",
+      "options": [{ "text": "`['smoke', 'regression']`", "correct": true }, { "text": "`'smoke regression'`" }, { "text": "`('smoke', 'regression')`" }]
+    },
+    {
+      "id": "fstring",
+      "kind": "single",
+      "text": "Що дасть `f\"{92.3076:.1f}%\"`?",
+      "options": [{ "text": "`'92.3%'`", "correct": true }, { "text": "`'92.3076%'`" }, { "text": "`'92%'`" }]
+    },
+    {
+      "id": "in",
+      "kind": "single",
+      "text": "Як перевірити, що повідомлення про помилку містить слово `invalid`?",
+      "options": [
+        { "text": "`\"invalid\" in message`", "correct": true },
+        { "text": "`message == \"invalid\"`", "explain": "Це перевірка повного збігу, а не входження." },
+        { "text": "`message.startswith(\"invalid\")`" }
+      ]
+    },
+    {
+      "id": "join",
+      "kind": "text",
+      "text": "Який метод склеює список рядків в один рядок через роздільник: `\", \".____(names)`?",
+      "accept": ["join", "join()"]
+    }
+  ]
+}

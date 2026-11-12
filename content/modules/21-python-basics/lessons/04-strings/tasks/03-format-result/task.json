@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "Format a test result line",
+  "statement": "Напиши `format_result(name, passed, total)`, яка повертає рядок для звіту:\n\n```python\nformat_result(\"login\", 12, 13)     # \"login: 12/13 passed (92.3%)\"\nformat_result(\"checkout\", 5, 5)   # \"checkout: 5/5 passed (100.0%)\"\nformat_result(\"search\", 0, 4)     # \"search: 0/4 passed (0.0%)\"\n```\n\nВідсоток — з **одним** знаком після коми. `total` завжди більше нуля.",
+  "hints": [
+    "Відсоток: `passed / total * 100`.",
+    "Формат з одним знаком: `f\"{percent:.1f}\"`."
+  ],
+  "explanation": "f-string вставляє значення у фігурні дужки, а `:.1f` форматує число з одним знаком після коми (з округленням). Обчислювати можна прямо в дужках: `f\"({passed / total * 100:.1f}%)\"`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "f[\"']", "message": "Склади рядок через f-string." }
+  ]
+}

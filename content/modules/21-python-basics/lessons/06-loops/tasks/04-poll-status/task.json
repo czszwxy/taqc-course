@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "Poll until the order is paid",
+  "statement": "Автотест перевіряє статус замовлення кілька разів поспіль, доки той не стане `\"paid\"`. Список `statuses` — відповіді сервера на кожну перевірку по черзі.\n\nНапиши `polls_until_paid(statuses, max_polls)` на циклі **`while`**: повертає **номер перевірки** (з 1), на якій прийшов `\"paid\"`; якщо за `max_polls` перевірок (або до кінця списку) `\"paid\"` не прийшов — `-1`.\n\n```python\npolls_until_paid([\"pending\", \"pending\", \"paid\"], 5)   # 3\npolls_until_paid([\"pending\", \"pending\", \"paid\"], 2)   # -1 — ліміт 2 перевірки\npolls_until_paid([\"paid\"], 5)                         # 1\npolls_until_paid([], 5)                                # -1\n```",
+  "hints": [
+    "Лічильник перевірок `poll = 0`; умова циклу: `poll < max_polls and poll < len(statuses)`.",
+    "У тілі: збільш `poll`, потім перевір `statuses[poll - 1] == \"paid\"` → `return poll`."
+  ],
+  "explanation": "Це модель очікування в автотестах: повторювати перевірку з обмеженням, а не нескінченно. Умова `while` має два обмеження — ліміт спроб і кінець даних. Головне — змінювати лічильник у тілі, інакше цикл ніколи не завершиться.",
+  "codeRules": [
+    { "kind": "require", "pattern": "while\\s", "message": "Розв'яжи циклом `while`." }
+  ]
+}

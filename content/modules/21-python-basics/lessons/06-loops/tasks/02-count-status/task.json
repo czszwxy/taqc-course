@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Count results with a loop",
+  "statement": "Напиши `count_status(results, status)` — скільки разів `status` трапляється у списку результатів. Розв'яжи **циклом** (без вбудованого `.count()` — так ти потренуєш шаблон лічильника).\n\n```python\nresults = [\"passed\", \"failed\", \"passed\", \"skipped\"]\ncount_status(results, \"passed\")   # 2\ncount_status(results, \"broken\")   # 0\ncount_status([], \"passed\")        # 0\n```",
+  "hints": [
+    "Лічильник `count = 0` — до циклу.",
+    "У циклі: `if result == status: count += 1`. Після циклу — `return count`."
+  ],
+  "explanation": "Шаблон лічильника: змінна до циклу, `+= 1` всередині за умовою, результат після. Типові помилки: обнулення лічильника всередині циклу і `return` всередині циклу (функція завершиться на першому елементі).",
+  "codeRules": [
+    { "kind": "require", "pattern": "for\\s+\\w+\\s+in", "message": "Розв'яжи циклом `for … in …`." },
+    { "kind": "forbid", "pattern": "\\.count\\s*\\(", "message": "Без `.count()` — порахуй самостійно в циклі." }
+  ]
+}

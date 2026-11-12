@@ -356,6 +356,23 @@ export const playwrightTaskSchema = z.object({
   codeRules: z.array(codeRuleSchema).default([]),
 });
 
+/**
+ * Python code task, run in the browser with Pyodide. Files: starter.py, solution.py, tests.py; any other
+ * *.py in the folder is a read-only support file. Tests are test_* functions (pytest style, a pytest subset is
+ * available); a test's docstring is the hint shown when it fails. Tests mode: the learner writes tests.py for
+ * subject.py, and they must fail on every mutants/<id>.py.
+ */
+export const pythonTaskSchema = z.object({
+  type: z.literal('python'),
+  ...baseTask,
+  statement: z.string(),
+  codeRules: z.array(codeRuleSchema).default([]),
+  mode: z.enum(['solution', 'tests']).default('solution'),
+  mutants: z.array(mutantSchema).default([]),
+  /** tests mode: minimum number of collected test cases. */
+  minTests: z.number().int().positive().optional(),
+});
+
 export const taskSchema = z.discriminatedUnion('type', [
   quizTaskSchema,
   codeTaskSchema,
@@ -369,6 +386,7 @@ export const taskSchema = z.discriminatedUnion('type', [
   selectorTaskSchema,
   sqlTaskSchema,
   playwrightTaskSchema,
+  pythonTaskSchema,
 ]);
 
 export type Resource = z.infer<typeof resourceSchema>;
@@ -394,6 +412,7 @@ export type SelectorChallenge = z.infer<typeof selectorChallengeSchema>;
 export type SqlTask = z.infer<typeof sqlTaskSchema>;
 export type SqlChallenge = z.infer<typeof sqlChallengeSchema>;
 export type PlaywrightTask = z.infer<typeof playwrightTaskSchema>;
+export type PythonTask = z.infer<typeof pythonTaskSchema>;
 
 export const TASK_TYPE_LABEL: Record<Task['type'], string> = {
   quiz: 'Quiz',
@@ -408,6 +427,7 @@ export const TASK_TYPE_LABEL: Record<Task['type'], string> = {
   selector: 'Selectors',
   sql: 'SQL',
   playwright: 'Playwright',
+  python: 'Python',
 };
 
 export function formatZodError(err: z.ZodError): string {

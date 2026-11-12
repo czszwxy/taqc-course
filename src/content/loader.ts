@@ -27,6 +27,11 @@ const taskCodeFiles = import.meta.glob<string>('/content/modules/*/lessons/*/tas
   query: '?raw',
   import: 'default',
 });
+const pythonFiles = import.meta.glob<string>('/content/modules/*/lessons/*/tasks/*/*.py', { query: '?raw', import: 'default' });
+const pythonMutantFiles = import.meta.glob<string>('/content/modules/*/lessons/*/tasks/*/mutants/*.py', {
+  query: '?raw',
+  import: 'default',
+});
 const databaseFiles = import.meta.glob<string>('/content/databases/*.sql', { query: '?raw', import: 'default', eager: true });
 
 /** SQL setup scripts for sql tasks, keyed by file name without .sql (e.g. "gadgetly"). */
@@ -344,6 +349,32 @@ export async function loadTaskCode(taskId: string): Promise<TaskCode> {
   ]);
   const support = Object.fromEntries(supportNames.map((name, i) => [name, supportCode[i] ?? '']));
   const mutants = Object.fromEntries(mutantPaths.map((p, i) => [p.slice(base.length + 'mutants/'.length, -TS_EXT.length), mutantCode[i] ?? '']));
+  return { starter, solution, tests, support, mutants };
+}
+
+const PY_EXT = '.py';
+const RESERVED_PYTHON_FILES = new Set(['starter.py', 'solution.py', 'tests.py']);
+
+/** Files of a python task: same shape as TaskCode, with *.py names (support: subject.py, helpers…). */
+export async function loadPythonTaskCode(taskId: string): Promise<TaskCode> {
+  const [m, l, t] = taskId.split('/');
+  const base = `/content/modules/${m}/lessons/${l}/tasks/${t}/`;
+  const get = async (file: string) => {
+    const load = pythonFiles[base + file];
+    return load ? load() : '';
+  };
+  const [starter, solution, tests] = await Promise.all([get('starter.py'), get('solution.py'), get('tests.py')]);
+  const supportNames = Object.keys(pythonFiles)
+    .filter((p) => p.startsWith(base))
+    .map((p) => p.slice(base.length))
+    .filter((name) => !RESERVED_PYTHON_FILES.has(name));
+  const mutantPaths = Object.keys(pythonMutantFiles).filter((p) => p.startsWith(base + 'mutants/'));
+  const [supportCode, mutantCode] = await Promise.all([
+    Promise.all(supportNames.map((name) => get(name))),
+    Promise.all(mutantPaths.map((p) => pythonMutantFiles[p]?.() ?? Promise.resolve(''))),
+  ]);
+  const support = Object.fromEntries(supportNames.map((name, i) => [name, supportCode[i] ?? '']));
+  const mutants = Object.fromEntries(mutantPaths.map((p, i) => [p.slice(base.length + 'mutants/'.length, -PY_EXT.length), mutantCode[i] ?? '']));
   return { starter, solution, tests, support, mutants };
 }
 

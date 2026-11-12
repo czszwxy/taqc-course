@@ -1,0 +1,28 @@
+{
+  "title": "Reading tracebacks & debugging",
+  "minutes": 45,
+  "summary": "Як читати traceback знизу вгору, найчастіші помилки (SyntaxError, IndentationError, NameError, TypeError, ValueError, IndexError, KeyError, ZeroDivisionError, AttributeError) і прийоми налагодження: print, ізоляція проблеми, дебагер VS Code",
+  "resources": [
+    {
+      "title": "Python Tutorial: Errors and Exceptions",
+      "url": "https://docs.python.org/3/tutorial/errors.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Built-in Exceptions",
+      "url": "https://docs.python.org/3/library/exceptions.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Debugging Python in VS Code",
+      "url": "https://code.visualstudio.com/docs/python/debugging",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

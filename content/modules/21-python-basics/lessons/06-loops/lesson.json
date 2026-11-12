@@ -1,0 +1,14 @@
+{
+  "title": "Loops: for and while",
+  "minutes": 50,
+  "summary": "Цикл for по списку, рядку і range(), enumerate(), накопичення результату (лічильник, сума), break і continue, цикл while для «повторювати, доки…» і як не написати нескінченний цикл",
+  "resources": [
+    {
+      "title": "Python Tutorial: for statements, range(), break and continue",
+      "url": "https://docs.python.org/3/tutorial/controlflow.html#for-statements",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

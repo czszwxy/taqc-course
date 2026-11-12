@@ -1,0 +1,21 @@
+{
+  "title": "Variables and data types",
+  "minutes": 45,
+  "summary": "Змінні й імена, основні типи (int, float, str, bool, None), type(), перетворення типів int()/float()/str() і чому дані з форм та API завжди треба перетворювати",
+  "resources": [
+    {
+      "title": "Python Tutorial: An Informal Introduction (numbers, text)",
+      "url": "https://docs.python.org/3/tutorial/introduction.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Built-in Types",
+      "url": "https://docs.python.org/3/library/stdtypes.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

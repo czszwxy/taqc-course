@@ -1,0 +1,14 @@
+{
+  "title": "Functions",
+  "minutes": 50,
+  "summary": "def, параметри й аргументи, return проти print, значення за замовчуванням, іменовані аргументи, повернення кількох значень (tuple), docstring і чому чисті функції легко тестувати",
+  "resources": [
+    {
+      "title": "Python Tutorial: Defining Functions",
+      "url": "https://docs.python.org/3/tutorial/controlflow.html#defining-functions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "type": "python",
+  "title": "Is the value within the boundaries?",
+  "statement": "Багато вимог звучать як «значення від … до … включно». Напиши `in_range(value, low, high)`, яка повертає `True`, якщо `value` між `low` і `high` **включно**, інакше `False`.\n\n```python\nin_range(18, 18, 99)   # True — межа включна\nin_range(99, 18, 99)   # True\nin_range(17, 18, 99)   # False\nin_range(100, 18, 99)  # False\n```",
+  "hints": ["Ланцюжок порівнянь: `low <= value <= high`."],
+  "explanation": "`low <= value <= high` — найчитабельніший спосіб перевірити діапазон. Типова помилка — `<` замість `<=`: тоді самі межі (18 і 99) вважатимуться невалідними. Саме тому тест-дизайн завжди перевіряє значення **на** межі.",
+  "codeRules": []
+}

@@ -1,0 +1,11 @@
+{
+  "type": "python",
+  "title": "Classify an HTTP status code",
+  "statement": "В API-тестах зручно групувати статус-коди. Напиши `http_status_class(code)`:\n\n| Діапазон | Результат |\n|---|---|\n| 200–299 | `\"success\"` |\n| 300–399 | `\"redirect\"` |\n| 400–499 | `\"client error\"` |\n| 500–599 | `\"server error\"` |\n| інше | `\"unknown\"` |\n\n```python\nhttp_status_class(201)   # \"success\"\nhttp_status_class(404)   # \"client error\"\nhttp_status_class(600)   # \"unknown\"\n```",
+  "hints": [
+    "Для кожного діапазону — ланцюжок `200 <= code <= 299`.",
+    "Остання гілка `else` (або фінальний `return`) — для всього іншого."
+  ],
+  "explanation": "Кожен діапазон — окрема гілка з обома межами: `400 <= code <= 499`. Якщо перевіряти лише одну межу (`code >= 400`), порядок гілок стає критичним і легко отримати баг. Перевір межі: 199, 200, 299, 300, 499, 500, 599, 600.",
+  "codeRules": []
+}

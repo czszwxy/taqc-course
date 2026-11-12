@@ -1,0 +1,63 @@
+{
+  "type": "quiz",
+  "title": "Reading tracebacks",
+  "show": 6,
+  "hints": ["Останній рядок traceback — тип помилки і повідомлення, рядок над ним — місце."],
+  "questions": [
+    {
+      "id": "direction",
+      "kind": "single",
+      "text": "З якого рядка traceback почати читання?",
+      "options": [{ "text": "З останнього: тип помилки і повідомлення", "correct": true }, { "text": "З першого: Traceback (most recent call last)" }]
+    },
+    {
+      "id": "keyerror",
+      "kind": "single",
+      "text": "`KeyError: 'qty'` означає…",
+      "options": [
+        { "text": "У словнику немає ключа `qty`", "correct": true },
+        { "text": "Змінна `qty` не визначена", "explain": "Це був би NameError." },
+        { "text": "Список закінчився" }
+      ]
+    },
+    {
+      "id": "typeerror",
+      "kind": "single",
+      "text": "Який тип помилки дасть `\"Passed: \" + 12`?",
+      "options": [{ "text": "`TypeError`", "correct": true }, { "text": "`ValueError`" }, { "text": "`SyntaxError`" }]
+    },
+    {
+      "id": "nameerror",
+      "kind": "single",
+      "text": "`NameError: name 'resutls' is not defined` — найімовірніша причина?",
+      "options": [{ "text": "Одруківка в назві змінної (`results`)", "correct": true }, { "text": "Порожній список" }]
+    },
+    {
+      "id": "attribute",
+      "kind": "single",
+      "text": "`AttributeError: 'NoneType' object has no attribute 'strip'` означає…",
+      "options": [
+        { "text": "Замість рядка прийшов `None` — найчастіше функція нічого не повернула", "correct": true },
+        { "text": "У рядках немає методу strip" }
+      ]
+    },
+    {
+      "id": "repr",
+      "kind": "single",
+      "text": "Навіщо при налагодженні друкувати `print(repr(value))`, а не `print(value)`?",
+      "options": [
+        { "text": "repr показує лапки й приховані символи: видно різницю між `5` і `'5'`, зайві пробіли і `\\n`", "correct": true },
+        { "text": "repr друкує швидше" }
+      ]
+    },
+    {
+      "id": "logic",
+      "kind": "single",
+      "text": "Код працює без помилок, але для суми рівно 10 000 повертає неправильну доставку. Що це?",
+      "options": [
+        { "text": "Логічна помилка (наприклад, `>` замість `>=`) — її ловлять тести на межах", "correct": true },
+        { "text": "Помилка Python" }
+      ]
+    }
+  ]
+}

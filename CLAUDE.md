@@ -37,7 +37,7 @@ The app's own look (chosen by the owner so it does not resemble other course pla
 
 ## Stack
 
-Vite 6 + React 19 + TypeScript, React Router 7, Tailwind CSS v4 (CSS-variable tokens in `src/index.css`, dark mode via `.dark` class), Zustand (+ persist → localStorage), Zod (content schemas), react-markdown + remark-gfm + rehype-highlight, Monaco (`@monaco-editor/react`, bundled locally — no CDN), real `typescript` compiler in a Web Worker, `sql.js` (SQLite in WebAssembly, wasm bundled locally via `?url`) for SQL tasks. Dev-only: `jsdom` (validator checks selector tasks), `tsx`.
+Vite 6 + React 19 + TypeScript, React Router 7, Tailwind CSS v4 (CSS-variable tokens in `src/index.css`, dark mode via `.dark` class), Zustand (+ persist → localStorage), Zod (content schemas), react-markdown + remark-gfm + rehype-highlight, Monaco (`@monaco-editor/react`, bundled locally — no CDN), real `typescript` compiler in a Web Worker, `sql.js` (SQLite in WebAssembly, wasm bundled locally via `?url`) for SQL tasks, **Pyodide** (CPython in WebAssembly, npm `pyodide`; vite.config.ts serves its 5 files at `/pyodide/` in dev/preview and emits them into `dist/pyodide/`) for Python tasks. Dev-only: `jsdom` (validator checks selector tasks), `tsx`.
 
 ## Architecture
 
@@ -59,6 +59,10 @@ src/
   runner/mutation.ts         ← pure: tests-mode checking (learner tests vs subject.ts and mutants)
   runner/client.ts           ← main-thread API: checkCode / runCode (compile worker reused; exec worker per run, 5 s timeout)
   runner/*.worker.ts         ← Web Workers
+  runner/python/qa_runner.py ← Python test runner (runs inside Pyodide): test_* functions, assert messages like pytest ("assert 4 == 5"), docstring = hint, fixtures (yield, scopes, conftest.py), parametrize, capsys; run_program for the Run button
+  runner/python/pytest_shim.py ← offline pytest subset written into the task folder as pytest.py (raises, approx, fail, mark.parametrize, custom marks, fixture)
+  runner/python.worker.ts    ← loads Pyodide once from /pyodide/ and runs jobs; python-client.ts = main-thread API (5 s per run after Python loaded; a timeout kills the worker) + checkPythonSolution / checkPythonTests (mutants) + evaluatePythonRules
+  features/python/           ← PythonTaskView (Monaco "python", Run / Check, tests mode with mutants)
   features/progress/         ← Zustand stores (progress + settings) and selectors (task/lesson/module stats)
   features/playwright/       ← playwright task view (lazy), client.ts (lab endpoints), grade.ts (pure grading), monaco-types.ts (real @playwright/test .d.ts for the editor)
   features/sql/              ← sql task engine (engine.ts: pure run/compare/check on a fresh DB per run; load.ts: lazy sql.js; SqlTaskView.tsx, lazy-loaded)
@@ -71,7 +75,7 @@ lab/playwright.config.ts     ← Playwright config: `npm run lab` runs lab/tests
 server/lab-runner.ts         ← real Playwright runs for playwright tasks: POST /__lab/run, GET /__lab/status (mounted by vite.config.ts); runLab() also used by scripts/validate-lab.ts
 server/lab-types.ts          ← shared lab constants/types (LAB_BASE_URL, LAB_BUGS_KEY, results)
 scripts/validate-lab.ts      ← runs every playwright task's solution/starter through runLab()
-scripts/validate-content.ts  ← Node; reuses compiler/harness/mutation/forms/generators/selectors (jsdom) to verify content; runs tasks one at a time (real timers)
+scripts/validate-content.ts  ← Node; reuses compiler/harness/mutation/forms/generators/selectors (jsdom) to verify content; runs tasks one at a time (real timers); python tasks run through scripts/python-node.ts (Pyodide in Node + the same qa_runner.py)
 lab/                         ← real Playwright: playwright.config.ts, tests/ (learner practice, example.spec.ts), .runs/ (temporary graded runs, gitignored)
 ```
 
@@ -87,7 +91,7 @@ IDs come from folder names: lesson id `11-ts-basics/02-variables-and-types`, tas
 Resource rules: only well-known sources (typescriptlang.org, playwright.dev, MDN, istqb.org, glossary.istqb.org, git-scm.com, code.visualstudio.com, uk.javascript.info, official channels). **Never invent URLs.** For videos use YouTube **search** URLs (`https://www.youtube.com/results?search_query=...`) instead of guessing video IDs. Always `"needsVerification": true` (the learner verifies; UI shows a badge + "I checked it" toggle).
 
 ### lesson.md
-Markdown + GFM tables. Callouts: a blockquote starting with `[!TIP]`, `[!NOTE]`, `[!WARNING]`, `[!IMPORTANT]` or `[!QA]` (QA angle — connect the topic to testing). Code fences: `ts`, `bash`, `json`, `sql`, `yaml`, `text`. Internal links starting with `/` use the router (e.g. `/playground`). Structure: intro (why it matters for QA) → sections with examples → callouts → `## Підсумок` bullet summary. ~100–180 lines.
+Markdown + GFM tables. Callouts: a blockquote starting with `[!TIP]`, `[!NOTE]`, `[!WARNING]`, `[!IMPORTANT]` or `[!QA]` (QA angle — connect the topic to testing). Code fences: `ts`, `python`, `bash`, `json`, `sql`, `yaml`, `text`. Internal links starting with `/` use the router (e.g. `/playground`). Structure: intro (why it matters for QA) → sections with examples → callouts → `## Підсумок` bullet summary. ~100–180 lines.
 
 ### task.json — common fields
 `type`, `title` (English), `hints[]` (progressive, revealed one by one; Markdown), `explanation` (Markdown "How to approach it", shown after a failed attempt), `optional?`, `variantOf?` (folder name of the main task in the same lesson → this task becomes its "similar task"; must have the same type).
@@ -105,6 +109,7 @@ Markdown + GFM tables. Callouts: a blockquote starting with `[!TIP]`, `[!NOTE]`,
 | `table` | `statement`, `playground?`, `givenColumns[]` (header labels), `answerColumns[]` (`id`, `label`, `options[]`), `rows[]` (`given[]` same length as givenColumns, `answers` {colId → option}, `explain?`) | every answer cell must match; green/red per cell; row `explain` shown for wrong rows; answers revealed after 2 fails. Use for decision tables, state transition tables, partition tables, traceability matrices |
 | `sql` | `statement`, `database` (name or array of names from `content/databases/*.sql`, run in order), `challenges[]` (`id`, `prompt`, `model`, `verify?`, `orderMatters?`, `rules[]` require/forbid regex on the query, `explain?`) | each run uses a fresh in-memory copy. SELECT challenge: learner result vs model result (set comparison unless `orderMatters`; column names ignored, column count/order matter). Change challenge (`verify` set): run the statement, then `verify`, compare with the same after the model (order matters → put ORDER BY in `verify`). Validator: model runs, SELECT models return ≥1 row, change models really change the verify result, rule regexes compile and pass on the model. References revealed after 2 fails |
 | `playwright` | `statement`, `playground` (page id), `mutants[]` (`id` = a bug flag from that page's `bugIds` in registry.ts, `description`, `hint`), `minTests?`, `codeRules[]` + files `starter.ts`, `solution.ts` (full spec files importing `@playwright/test`) | real Playwright in Chromium via the dev-server runner: the spec must be green on the correct page and red on every page variant with one mutant bug turned on; `codeRules` on the spec. `validate` checks files/ids/rules statically; `validate:lab` runs reference + starter |
+| `python` | `statement`, `codeRules[]` (regex on code without `#` comments), `mode?` (`solution` / `tests`), `mutants[]` + `minTests?` (tests mode) + files `starter.py`, `solution.py`, `tests.py`; other `*.py` = read-only support files (`subject.py` in tests mode), `mutants/<id>.py` | real Python (Pyodide) in a worker. Solution mode: hidden `tests.py` (`from solution import fn`, `test_*` functions, docstring = hint) on the learner's `solution.py`; Run executes `solution.py` and shows print() output. Tests mode: learner's `tests.py` must pass on `subject.py` and fail on every mutant. Validator runs them in Node with Pyodide |
 | `selector` | `statement`, `syntax` (`css` or `xpath`), `html` (snippet; targets marked `data-expect="<challengeId> …"`, marker stripped before display), `challenges[]` (`id`, `prompt`, `model`, `rules[]` require/forbid regex on the selector text, `explain?`) | live match count + highlighting in a sandboxed iframe; a selector is correct when it matches exactly the marked elements (+ rules); reference selectors revealed after 2 fails. Validator runs every `model` through jsdom. Use for CSS/XPath/locator practice |
 
 Value-set generators (`src/features/tasks/generators.ts`, presets in `range-presets.json`): `bva-range` (params `field`, `min`, `max`, `unit?`, `approach`: `two-value` | `three-value`) and `ep-range` (one representative per integer partition: below / inside / above). Seed 0 uses the task params; other seeds pick a random preset.
@@ -122,6 +127,12 @@ Field rules (`rules[]`): `{ field, check, value?, message }` where `check` ∈ `
 - Only use language features taught so far in the module (e.g. no `map/filter` in module 11). Compiler: ES2022 libs, no DOM, strict, `noImplicitReturns`.
 - Statement in Ukrainian with examples in a ```ts block; 2–3 hints; explanation with the idea + common mistake.
 - Give ~1 task per lesson a `-v2` similar variant (`variantOf`).
+
+### Python task conventions
+- Starters: the same signatures as the solution with `# твій код тут` + `pass` (a body with only a comment is a SyntaxError). The starter must NOT pass (validator enforces); a "fix the code" starter may contain the bugs/syntax errors to fix.
+- `tests.py`: `from solution import fn`, one behaviour per `test_*` function, a Ukrainian docstring hint on every non-trivial test (shown when it fails), boundaries and empty input covered. Plain `assert` — the runner shows compared values. Programs that print: purge and import inside a test with `capsys` (see 21-python-basics/01-first-program/02-print-report).
+- Available: the Python standard library and the pytest subset above (no pip packages in the browser yet — requests/Playwright for Python need the local lab, planned for modules 27–29). Per run 5 s.
+- Only use language features taught so far in the module; Python style: snake_case, 4-space indents, f-strings.
 
 ### SQL task conventions
 - Database facts the tasks rely on are listed in the header comment of `content/databases/gadgetly.sql` (users 7, 9, 10 have no orders; product 6 never ordered; user 9 city NULL; prices are integer UAH; dates are TEXT `YYYY-MM-DD`). Change the seed only together with the tasks — the validator will catch most breakages.
@@ -182,6 +193,9 @@ Pages in `src/playground/`, registered in `registry.ts`, routed standalone (no a
 - ✅ Module 19 "Getting Hired" — 12 lessons (expanded from research of real junior QA interviews: DOU 250+ questions, junior bar, job-search articles): question banks per topic (theory, JS/TS, Playwright, web/HTTP/API, SQL/Git/Agile, final mixed exam), practical on-the-spot tasks, English, job search, Claude mock interview. Original 6 lessons: mock-interview quizzes per lesson, written answers (theory differences, "test an elevator", your framework, CV, STAR, tell me about yourself), 3 TypeScript live-coding tasks, a Playwright live-coding task on login, and a 4-part take-home simulation on the account page (plan → bug hunt with a 7-bug catalog → graded automation → README). The account-page bug answers live only in lesson 04 — keep them out of other modules.
 - ✅ Module 20 "Final Portfolio Project" — 5 lessons, 18 tasks on the new Gadgetly Checkout page + checkout API (12 bugs): brief/requirements review/test plan, checklist, decision table (fee × discount), boundary test case, a 12-bug hunt (UI + API), then 5 graded Playwright milestones (page object, fixtures, quote API tests, API + UI flows with cleanup, an 8-mutant regression suite), and the portfolio track: own repo on the public Toolshop demo (practicesoftwaretesting.com + API/Swagger) with CI, README, final review. Checkout bug answers live only in module 20 lesson 02.
 - Course outline complete (modules 01–20). Next: owner feedback and polish.
+- ✅ Python engine: `python` task type (Pyodide worker, pytest-like runner, tests mode with mutants, Node validation).
+- ✅ Module 21 "Python Basics" (Python QA course; shared with Python Developer) — 8 lessons, 26 tasks (17 Python code tasks, quizzes, an error-type classification): first program, variables/types, operators, strings & f-strings, conditions, loops (polling with while), functions, tracebacks & debugging.
+- Next (Python QA course): 22 Python Collections, 23 Functions/Modules/Errors, 24 OOP/Files/Project setup, then 25–26 pytest (tests-mode tasks with mutants), 27–28 Playwright for Python (needs a local Python lab like the Node one: venv + pytest-playwright, browsers in lab/.browsers), 29 API testing with Python, 30 CI, 31 interview, 32 final project.
 - Outlines live in `content/courses/*.json` (status `available` / `in-progress` / `planned`, `order` in the catalog).
 
 ## Git

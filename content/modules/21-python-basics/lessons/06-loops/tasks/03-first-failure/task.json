@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "Find the first failed test",
+  "statement": "Напиши `first_failed_index(results)` — індекс **першого** `\"failed\"` у списку, або `-1`, якщо провалених немає.\n\n```python\nfirst_failed_index([\"passed\", \"failed\", \"failed\"])   # 1\nfirst_failed_index([\"passed\", \"passed\"])             # -1\nfirst_failed_index([])                               # -1\n```",
+  "hints": [
+    "`for index, result in enumerate(results):` дає і номер, і значення.",
+    "Знайшов — одразу `return index`. Після циклу — `return -1`."
+  ],
+  "explanation": "`enumerate` дає індекс разом з елементом, а `return` усередині циклу завершує функцію на першому знайденому — це і є «перший». Якщо цикл дійшов до кінця, нічого не знайдено: `return -1` після циклу.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "\\.index\\s*\\(", "message": "Без `.index()` — знайди сам у циклі з `enumerate`." }
+  ]
+}

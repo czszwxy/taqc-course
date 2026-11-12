@@ -1,0 +1,63 @@
+{
+  "type": "quiz",
+  "title": "Conditions",
+  "show": 6,
+  "hints": ["Умови перевіряються згори донизу. Порожній рядок — falsy, рядок з пробілами — truthy."],
+  "questions": [
+    {
+      "id": "order",
+      "kind": "single",
+      "text": "Скільки гілок виконається в `if / elif / elif / else`, якщо істинні дві умови?",
+      "options": [{ "text": "Лише перша істинна", "correct": true }, { "text": "Обидві" }, { "text": "Жодна" }]
+    },
+    {
+      "id": "falsy",
+      "kind": "multiple",
+      "text": "Які значення falsy? (кілька відповідей)",
+      "options": [
+        { "text": "`\"\"`", "correct": true },
+        { "text": "`0`", "correct": true },
+        { "text": "`None`", "correct": true },
+        { "text": "`\"   \"`", "explain": "Рядок з пробілами не порожній — truthy." },
+        { "text": "`\"False\"`", "explain": "Непорожній рядок — truthy, навіть якщо в ньому слово False." }
+      ]
+    },
+    {
+      "id": "blank",
+      "kind": "single",
+      "text": "Як правильно перевірити, що поле імені не заповнене (порожнє або лише пробіли)?",
+      "options": [
+        { "text": "`if not name.strip():`", "correct": true },
+        { "text": "`if not name:`", "explain": "Пропустить «   » — рядок з пробілами truthy." },
+        { "text": "`if name == None:`" }
+      ]
+    },
+    {
+      "id": "none",
+      "kind": "single",
+      "text": "Як прийнято перевіряти значення на `None`?",
+      "options": [{ "text": "`if value is None:`", "correct": true }, { "text": "`if value = None:`" }, { "text": "`if value.none():`" }]
+    },
+    {
+      "id": "wrong-order",
+      "kind": "single",
+      "text": "Перша умова — `if code >= 200: return \"success\"`, далі `elif code >= 400: return \"error\"`. Що поверне функція для 404?",
+      "options": [
+        { "text": "`\"success\"` — перша умова вже істинна, до `elif` справа не дійде", "correct": true },
+        { "text": "`\"error\"`" }
+      ]
+    },
+    {
+      "id": "in",
+      "kind": "single",
+      "text": "Що поверне `\"post\" in (\"pickup\", \"post\", \"courier\")`?",
+      "options": [{ "text": "`True`", "correct": true }, { "text": "`False`" }, { "text": "`1`" }]
+    },
+    {
+      "id": "ternary",
+      "kind": "single",
+      "text": "`label = \"free\" if fee == 0 else \"paid\"`. Чому дорівнює `label` при `fee = 70`?",
+      "options": [{ "text": "`\"paid\"`", "correct": true }, { "text": "`\"free\"`" }]
+    }
+  ]
+}

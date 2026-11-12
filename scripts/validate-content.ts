@@ -21,6 +21,9 @@ import { executeModules } from '../src/runner/harness';
 import { HARNESS_DTS } from '../src/runner/harness-dts';
 import { isNeededLibFile } from '../src/runner/lib-files';
 import { evaluateCodeRules } from '../src/runner/client';
+import { evaluatePythonRules } from '../src/runner/python-client';
+import type { PythonRunResult } from '../src/runner/python-protocol';
+import { runPythonJob } from './python-node';
 import { courseSchema, formatZodError, lessonSchema, moduleSchema, taskSchema, type Task } from '../src/content/schema';
 import { checkBugReportQuality, checkTestCase, evaluateRules, matchBug, type FormValues } from '../src/features/tasks/forms';
 import { GENERATORS } from '../src/features/tasks/generators';
@@ -347,7 +350,84 @@ const checkPlaywrightTask: Checker<'playwright'> = (dir, task) => {
   if (badRules.length === 0) evaluateCodeRules(solution, task.codeRules).forEach((m) => fail(dir, `solution.ts breaks its own code rule: ${m}`));
 };
 
+/* ---------- python tasks (Pyodide in Node, same runner as the browser) ---------- */
+
+const PY_RESERVED = new Set(['starter.py', 'solution.py', 'tests.py']);
+
+function readPythonSupport(dir: string): Record<string, string> {
+  return Object.fromEntries(
+    fs
+      .readdirSync(dir)
+      .filter((f) => f.endsWith('.py') && !PY_RESERVED.has(f))
+      .map((f) => [f, fs.readFileSync(path.join(dir, f), 'utf8')]),
+  );
+}
+
+/** Why a python test run is not green (empty when every collected test passed). */
+const pythonFailures = (run: PythonRunResult): string[] => [
+  ...(run.error ? [`error: ${run.error}`] : []),
+  ...(run.tests.length === 0 && !run.error ? ['no test_* functions were collected'] : []),
+  ...run.tests.filter((t) => !t.passed).map((t) => `test "${t.name}": ${t.error}`),
+];
+
+interface PythonGrade {
+  failures: string[];
+  survivors: string[];
+  tooFew: boolean;
+}
+
+/** Tests mode: run a tests file on subject.py, then on every mutant (only when green on subject.py). */
+async function gradePythonTests(tests: string, support: Record<string, string>, mutants: Record<string, string>, minTests?: number): Promise<PythonGrade> {
+  const base = await runPythonJob('test', { ...support, 'tests.py': tests }, 'tests.py');
+  const failures = pythonFailures(base);
+  const tooFew = minTests !== undefined && base.tests.length < minTests;
+  if (failures.length > 0) return { failures, survivors: [], tooFew };
+  const survivors = await Object.entries(mutants).reduce<Promise<string[]>>(async (accPromise, [id, code]) => {
+    const acc = await accPromise;
+    const run = await runPythonJob('test', { ...support, 'subject.py': code, 'tests.py': tests }, 'tests.py');
+    return pythonFailures(run).length > 0 ? acc : [...acc, id];
+  }, Promise.resolve([]));
+  return { failures, survivors, tooFew };
+}
+
+const checkPythonTask: Checker<'python'> = async (dir, task) => {
+  const testsMode = task.mode === 'tests';
+  const required = testsMode ? ['starter.py', 'solution.py', 'subject.py'] : ['starter.py', 'solution.py', 'tests.py'];
+  const missing = required.filter((f) => !fs.existsSync(path.join(dir, f)));
+  missing.forEach((f) => fail(path.join(dir, f), 'missing'));
+  if (missing.length > 0) return;
+  const read = (f: string) => fs.readFileSync(path.join(dir, f), 'utf8');
+  const [starter, solution] = [read('starter.py'), read('solution.py')];
+  if (starter.trim() === solution.trim()) fail(dir, 'starter.py is identical to solution.py');
+  const badRules = task.codeRules.filter((r) => !isValidPattern(r.pattern, r.flags ?? 'm'));
+  badRules.forEach((r) => fail(dir, `invalid code rule regex /${r.pattern}/`));
+  if (badRules.length === 0) evaluatePythonRules(solution, task.codeRules).forEach((m) => fail(dir, `solution.py breaks its own code rule: ${m}`));
+  const support = readPythonSupport(dir);
+
+  if (testsMode) {
+    duplicates(task.mutants.map((m) => m.id)).forEach((id) => fail(dir, `duplicate mutant id "${id}"`));
+    const mutantFile = (id: string) => path.join(dir, 'mutants', `${id}.py`);
+    task.mutants.filter((m) => !fs.existsSync(mutantFile(m.id))).forEach((m) => fail(mutantFile(m.id), 'missing'));
+    const mutants = Object.fromEntries(task.mutants.filter((m) => fs.existsSync(mutantFile(m.id))).map((m) => [m.id, fs.readFileSync(mutantFile(m.id), 'utf8')]));
+    const reference = await gradePythonTests(solution, support, mutants, task.minTests);
+    if (reference.failures.length > 0) fail(dir, `reference tests (solution.py) are not green on subject.py: ${reference.failures.join(' | ')}`);
+    reference.survivors.forEach((id) => fail(dir, `reference tests do not catch mutant "${id}"`));
+    if (reference.tooFew) fail(dir, `reference tests have fewer than minTests (${task.minTests})`);
+    const start = await gradePythonTests(starter, support, mutants, task.minTests);
+    if (start.failures.length === 0 && start.survivors.length === 0 && !start.tooFew) fail(dir, 'starter.py already passes — it must leave work to do');
+    return;
+  }
+
+  const tests = read('tests.py');
+  const sol = await runPythonJob('test', { ...support, 'solution.py': solution, 'tests.py': tests }, 'tests.py');
+  const solFailures = pythonFailures(sol);
+  if (solFailures.length > 0) fail(dir, `solution.py does not pass tests.py: ${solFailures.join(' | ')}`);
+  const start = await runPythonJob('test', { ...support, 'solution.py': starter, 'tests.py': tests }, 'tests.py');
+  if (pythonFailures(start).length === 0 && evaluatePythonRules(starter, task.codeRules).length === 0) fail(dir, 'starter.py already passes the tests');
+};
+
 const CHECKS: { [K in Task['type']]: Checker<K> } = {
+  python: checkPythonTask,
   code: checkCode,
   quiz: checkQuiz,
   'value-set': checkValueSet,

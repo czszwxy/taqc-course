@@ -1,0 +1,11 @@
+{
+  "type": "python",
+  "title": "Response time statistics",
+  "statement": "Є список часу відповіді API в мілісекундах. Напиши `response_stats(times)`, яка повертає **кортеж** `(мінімум, максимум, середнє)`; середнє округли до 1 знака. Для порожнього списку поверни `(0, 0, 0)`.\n\n```python\nresponse_stats([120, 80, 200])   # (80, 200, 133.3)\nresponse_stats([50])             # (50, 50, 50.0)\nresponse_stats([])               # (0, 0, 0)\n```",
+  "hints": [
+    "Вбудовані функції: `min(times)`, `max(times)`, `sum(times)`, `len(times)`.",
+    "Порожній список перевір першим: `if not times: return 0, 0, 0` — інакше `min([])` дасть помилку."
+  ],
+  "explanation": "Функція повертає кілька значень через `return a, b, c` — це кортеж. Порожній список — обов'язковий крайній випадок: `min([])` кидає `ValueError`, а `sum([]) / len([])` — `ZeroDivisionError`. Перевір його на початку (ранній return).",
+  "codeRules": []
+}

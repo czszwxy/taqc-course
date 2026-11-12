@@ -1,0 +1,63 @@
+{
+  "type": "quiz",
+  "title": "Loops",
+  "show": 6,
+  "hints": ["`range` не включає кінець. `break` виходить з циклу, `continue` — переходить до наступного кроку."],
+  "questions": [
+    {
+      "id": "range",
+      "kind": "single",
+      "text": "Які числа дає `range(1, 4)`?",
+      "options": [{ "text": "1, 2, 3", "correct": true }, { "text": "1, 2, 3, 4" }, { "text": "0, 1, 2, 3" }]
+    },
+    {
+      "id": "range-step",
+      "kind": "single",
+      "text": "Які числа дає `range(0, 10, 3)`?",
+      "options": [{ "text": "0, 3, 6, 9", "correct": true }, { "text": "3, 6, 9" }, { "text": "0, 3, 6, 9, 12" }]
+    },
+    {
+      "id": "break",
+      "kind": "single",
+      "text": "Що робить `break` у циклі?",
+      "options": [
+        { "text": "Одразу завершує цикл", "correct": true },
+        { "text": "Пропускає поточний крок і продовжує", "explain": "Це `continue`." },
+        { "text": "Перезапускає цикл" }
+      ]
+    },
+    {
+      "id": "enumerate",
+      "kind": "single",
+      "text": "Що дає `enumerate([\"a\", \"b\"])` у циклі?",
+      "options": [{ "text": "Пари (0, \"a\"), (1, \"b\")", "correct": true }, { "text": "Лише індекси 0, 1" }, { "text": "Лише значення" }]
+    },
+    {
+      "id": "infinite",
+      "kind": "single",
+      "text": "Чому `while attempt < 3: print(attempt)` зависне, якщо `attempt = 0`?",
+      "options": [
+        { "text": "`attempt` ніколи не змінюється, умова завжди істинна", "correct": true },
+        { "text": "Бо `print` повільний" }
+      ]
+    },
+    {
+      "id": "accumulator",
+      "kind": "single",
+      "text": "Де оголосити лічильник `failed = 0`, щоб порахувати провалені тести в циклі?",
+      "options": [
+        { "text": "До циклу", "correct": true },
+        { "text": "Усередині циклу", "explain": "Тоді на кожному кроці він знову обнулятиметься." }
+      ]
+    },
+    {
+      "id": "poll",
+      "kind": "single",
+      "text": "Як правильно чекати, доки замовлення стане `paid`?",
+      "options": [
+        { "text": "Повторювати перевірку в `while` з обмеженням кількості спроб", "correct": true },
+        { "text": "`while True:` без жодного виходу" }
+      ]
+    }
+  ]
+}

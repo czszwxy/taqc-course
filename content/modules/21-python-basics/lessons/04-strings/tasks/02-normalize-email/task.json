@@ -1,0 +1,8 @@
+{
+  "type": "python",
+  "title": "Normalize an email",
+  "statement": "Логін має працювати незалежно від пробілів по краях і регістру літер. Напиши `normalize_email(email)`, яка прибирає пробіли по краях і переводить email у нижній регістр.\n\n```python\nnormalize_email(\"  QA@Gadgetly.Test \")   # \"qa@gadgetly.test\"\nnormalize_email(\"user@site.com\")         # \"user@site.com\"\n```",
+  "hints": ["Методи можна викликати ланцюжком: `email.strip().lower()`."],
+  "explanation": "`strip()` прибирає пробіли (і переноси рядків) по краях, `lower()` — переводить у нижній регістр. Обидва повертають **новий** рядок, тому результат треба повернути. Пробіли всередині email не чіпаємо — це вже невалідний email, а не «зайве форматування».",
+  "codeRules": []
+}

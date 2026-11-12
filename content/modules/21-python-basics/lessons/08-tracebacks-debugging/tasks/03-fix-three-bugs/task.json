@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "Debug the test summary",
+  "statement": "Функція `summary(results)` має повертати рядок `\"<passed> passed, <failed> failed, <skipped> skipped\"`:\n\n```python\nsummary([\"passed\", \"failed\", \"passed\", \"skipped\"])\n# \"2 passed, 1 failed, 1 skipped\"\n```\n\nУ стартовому коді **три** помилки: одна дає traceback, дві — логічні (код працює, але рахує неправильно). Натисни **Check**, читай повідомлення тестів і виправ усі.",
+  "hints": [
+    "Traceback `TypeError: unsupported operand type(s) for +: 'int' and 'str'` — числа треба перетворити на рядки (`str()`) або скласти результат f-string-ом.",
+    "`failed =+ 1` — це не «додати 1», а «присвоїти +1». Правильно: `+=`.",
+    "Подивись уважно на рядок `\"skiped\"`."
+  ],
+  "explanation": "Три класичні типи помилок: `TypeError` (додавання числа до рядка) видно одразу з traceback; `=+` замість `+=` і одруківка `\"skiped\"` не дають помилок — їх ловлять лише тести, які перевіряють кожну гілку. Тому тест на кожен статус окремо — не надмірність, а спосіб знайти такі баги.",
+  "codeRules": []
+}

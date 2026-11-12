@@ -1,0 +1,21 @@
+{
+  "title": "Conditions",
+  "minutes": 45,
+  "summary": "if / elif / else, порядок перевірок, truthy і falsy значення (порожній рядок, 0, None), оператор in і ранній return — як писати логіку, яку легко тестувати на межах",
+  "resources": [
+    {
+      "title": "Python Tutorial: More Control Flow Tools (if)",
+      "url": "https://docs.python.org/3/tutorial/controlflow.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Truth Value Testing",
+      "url": "https://docs.python.org/3/library/stdtypes.html#truth-value-testing",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

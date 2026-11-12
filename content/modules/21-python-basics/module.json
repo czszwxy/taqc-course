@@ -1,0 +1,13 @@
+{
+  "title": "Python Basics",
+  "description": "Python з нуля для автоматизації тестування: як запускати програми, змінні й типи даних, оператори, рядки та f-strings, умови, цикли, функції і як читати повідомлення про помилки (traceback). Код пишеш і запускаєш прямо тут — справжній Python працює в браузері, а приховані тести перевіряють розв'язки.",
+  "goals": [
+    "Write and run small Python programs and functions",
+    "Use variables, numbers, strings, booleans and None, and convert between types",
+    "Build expressions with arithmetic, comparison and logical operators",
+    "Work with strings: indexing, slicing, methods and f-strings",
+    "Control the flow with if / elif / else and for / while loops",
+    "Write functions with parameters, defaults and return values",
+    "Read a traceback and fix the error it points to"
+  ]
+}

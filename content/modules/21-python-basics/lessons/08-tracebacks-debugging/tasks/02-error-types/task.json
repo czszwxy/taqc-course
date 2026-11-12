@@ -1,0 +1,32 @@
+{
+  "type": "classify",
+  "title": "Which error will Python raise?",
+  "statement": "Для кожного рядка коду визнач, яку помилку побачиш у traceback.",
+  "show": 10,
+  "passScore": 0.8,
+  "categories": [
+    { "id": "SyntaxError", "label": "SyntaxError" },
+    { "id": "NameError", "label": "NameError" },
+    { "id": "TypeError", "label": "TypeError" },
+    { "id": "ValueError", "label": "ValueError" },
+    { "id": "IndexError", "label": "IndexError" },
+    { "id": "KeyError", "label": "KeyError" },
+    { "id": "ZeroDivisionError", "label": "ZeroDivisionError" },
+    { "id": "AttributeError", "label": "AttributeError" }
+  ],
+  "items": [
+    { "id": "colon", "text": "`if status == \"passed\"` (без двокрапки)", "category": "SyntaxError" },
+    { "id": "typo", "text": "`print(totl)`, коли змінна називається `total`", "category": "NameError" },
+    { "id": "concat", "text": "`\"Total: \" + 5570`", "category": "TypeError" },
+    { "id": "args", "text": "`build_url()` — функція вимагає два аргументи", "category": "TypeError", "explain": "Неправильна кількість аргументів — TypeError." },
+    { "id": "int-abc", "text": "`int(\"abc\")`", "category": "ValueError" },
+    { "id": "index", "text": "`[\"a\", \"b\"][2]`", "category": "IndexError" },
+    { "id": "key", "text": "`{\"name\": \"Olena\"}[\"phone\"]`", "category": "KeyError" },
+    { "id": "avg", "text": "`sum([]) / len([])`", "category": "ZeroDivisionError" },
+    { "id": "none-strip", "text": "`None.strip()`", "category": "AttributeError" },
+    { "id": "method-typo", "text": "`\"QA\".lowr()`", "category": "AttributeError", "explain": "Методу `lowr` немає — одруківка у назві методу дає AttributeError." },
+    { "id": "unclosed", "text": "`print(\"login\"` (дужку не закрито)", "category": "SyntaxError" }
+  ],
+  "hints": ["Неправильний тип в операції — TypeError; правильний тип, але погане значення — ValueError."],
+  "explanation": "SyntaxError — Python не може навіть прочитати код. NameError — немає такого імені. TypeError — операція з невідповідним типом або неправильна кількість аргументів. ValueError — тип правильний, значення ні. IndexError / KeyError — немає такого індексу / ключа. AttributeError — у значення немає такого атрибута (часто через `None` або одруківку в назві методу)."
+}

@@ -58,6 +58,42 @@ function playwrightLab(): Plugin {
   };
 }
 
+/** Pyodide (Python in WebAssembly) files the Python task worker loads from /pyodide/ — served locally, so it works offline. */
+const PYODIDE_ROUTE = '/pyodide';
+const PYODIDE_FILES = ['pyodide.mjs', 'pyodide.asm.mjs', 'pyodide.asm.wasm', 'python_stdlib.zip', 'pyodide-lock.json'];
+const PYODIDE_TYPES: Record<string, string> = {
+  '.mjs': 'text/javascript',
+  '.wasm': 'application/wasm',
+  '.zip': 'application/zip',
+  '.json': 'application/json',
+};
+
+function pyodideAssets(): Plugin {
+  const dir = path.join(path.dirname(fileURLToPath(import.meta.url)), 'node_modules', 'pyodide');
+  const serve = (req: { url?: string }, res: NodeJS.WritableStream & { setHeader: (k: string, v: string) => void }, next: () => void) => {
+    const requested = (req.url ?? '').split('?')[0] ?? '';
+    const name = requested.startsWith('/') ? requested.slice(1) : requested;
+    if (!PYODIDE_FILES.includes(name)) {
+      next();
+      return;
+    }
+    res.setHeader('Content-Type', PYODIDE_TYPES[path.extname(name)] ?? 'application/octet-stream');
+    fs.createReadStream(path.join(dir, name)).pipe(res);
+  };
+  return {
+    name: 'my-university:pyodide',
+    configureServer(server) {
+      server.middlewares.use(PYODIDE_ROUTE, serve);
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(PYODIDE_ROUTE, serve);
+    },
+    generateBundle() {
+      PYODIDE_FILES.forEach((file) => this.emitFile({ type: 'asset', fileName: `pyodide/${file}`, source: fs.readFileSync(path.join(dir, file)) }));
+    },
+  };
+}
+
 /** Local Gadgetly REST API (/api = with intentional bugs, /api-fixed = correct) for the HTTP & API modules. */
 function mockApi(): Plugin {
   return {
@@ -74,7 +110,7 @@ function mockApi(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), tsLibs(), mockApi(), playwrightLab()],
+  plugins: [react(), tailwindcss(), tsLibs(), mockApi(), playwrightLab(), pyodideAssets()],
   worker: {
     format: 'es',
     plugins: () => [tsLibs()],

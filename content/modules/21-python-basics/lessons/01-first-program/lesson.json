@@ -1,0 +1,37 @@
+{
+  "title": "Python for testers & your first program",
+  "minutes": 40,
+  "summary": "Чому Python так популярний в автоматизації тестування, як Python виконує програму, print(), коментарі, відступи як частина синтаксису і як запускати код тут і на своєму комп'ютері",
+  "resources": [
+    {
+      "title": "The Python Tutorial (official)",
+      "url": "https://docs.python.org/3/tutorial/index.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Офіційний підручник. Розділи 1–3 — до цього уроку.",
+      "needsVerification": true
+    },
+    {
+      "title": "Download Python",
+      "url": "https://www.python.org/downloads/",
+      "kind": "tool",
+      "lang": "en",
+      "note": "На Windows під час встановлення познач «Add python.exe to PATH».",
+      "needsVerification": true
+    },
+    {
+      "title": "Python in Visual Studio Code",
+      "url": "https://code.visualstudio.com/docs/python/python-tutorial",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Python для початківців українською",
+      "url": "https://www.youtube.com/results?search_query=Python+для+початківців+українською",
+      "kind": "video",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

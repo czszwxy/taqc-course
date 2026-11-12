@@ -1,0 +1,21 @@
+{
+  "title": "Strings and f-strings",
+  "minutes": 55,
+  "summary": "Індекси й зрізи, len(), методи рядків (lower, strip, replace, split, join, startswith, in), незмінність рядків і f-strings з форматуванням чисел — усе, з чим тестувальник працює щодня",
+  "resources": [
+    {
+      "title": "String methods",
+      "url": "https://docs.python.org/3/library/stdtypes.html#string-methods",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python Tutorial: Fancier Output Formatting (f-strings)",
+      "url": "https://docs.python.org/3/tutorial/inputoutput.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "type": "python",
+  "title": "Build a URL for API tests",
+  "statement": "Напиши `build_url(base, path, page=1, per_page=10)`, яка будує адресу для API-запиту. Зайві `/` на стику `base` і `path` треба прибрати.\n\n```python\nbuild_url(\"https://api.shop.test\", \"products\")\n# \"https://api.shop.test/products?page=1&per_page=10\"\n\nbuild_url(\"https://api.shop.test/\", \"/orders\", page=3)\n# \"https://api.shop.test/orders?page=3&per_page=10\"\n\nbuild_url(\"https://api.shop.test\", \"orders\", per_page=50)\n# \"https://api.shop.test/orders?page=1&per_page=50\"\n```",
+  "hints": [
+    "`base.rstrip(\"/\")` прибирає `/` в кінці, `path.lstrip(\"/\")` — на початку.",
+    "Склади результат f-string-ом: `f\"{...}/{...}?page={page}&per_page={per_page}\"`."
+  ],
+  "explanation": "Значення за замовчуванням (`page=1, per_page=10`) роблять виклик коротким для типового випадку, а іменовані аргументи дозволяють змінити лише потрібне (`per_page=50`). `rstrip`/`lstrip` прибирають зайві слеші — без них легко отримати `//orders`, що деякі сервери не приймають.",
+  "codeRules": []
+}

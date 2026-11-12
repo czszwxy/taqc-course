@@ -1,0 +1,21 @@
+{
+  "title": "Operators and expressions",
+  "minutes": 45,
+  "summary": "Арифметика (+ − * / // % **), порівняння (== != < <= > >=, ланцюжки 1 <= x <= 10), логічні and / or / not, пріоритет операцій, round() і де все це трапляється в тестах (пагінація, межі, знижки)",
+  "resources": [
+    {
+      "title": "Python Tutorial: Numbers",
+      "url": "https://docs.python.org/3/tutorial/introduction.html#numbers",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python Reference: Comparisons",
+      "url": "https://docs.python.org/3/reference/expressions.html#comparisons",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

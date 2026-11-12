@@ -1,0 +1,59 @@
+{
+  "type": "quiz",
+  "title": "Functions",
+  "show": 6,
+  "hints": ["Без return функція повертає None. Параметри з default — після обов'язкових."],
+  "questions": [
+    {
+      "id": "param-arg",
+      "kind": "single",
+      "text": "`def login(email, password): ...` і виклик `login(\"qa@test\", \"1234\")`. Що таке `email`?",
+      "options": [{ "text": "Параметр", "correct": true }, { "text": "Аргумент", "explain": "Аргумент — значення `\"qa@test\"`, передане при виклику." }]
+    },
+    {
+      "id": "no-return",
+      "kind": "single",
+      "text": "Що поверне функція, у якої немає `return`?",
+      "options": [{ "text": "`None`", "correct": true }, { "text": "`0`" }, { "text": "Останній надрукований рядок" }]
+    },
+    {
+      "id": "default-order",
+      "kind": "single",
+      "text": "Яке оголошення правильне?",
+      "options": [
+        { "text": "`def build_url(base, path, page=1):`", "correct": true },
+        { "text": "`def build_url(page=1, base, path):`", "explain": "SyntaxError: параметр без default не може йти після параметра з default." }
+      ]
+    },
+    {
+      "id": "keyword",
+      "kind": "single",
+      "text": "Як викликати `build_url(base, path, page=1)` з `page` рівним 3, не змінюючи порядок?",
+      "options": [
+        { "text": "`build_url(\"https://shop.test\", \"orders\", page=3)`", "correct": true },
+        { "text": "`build_url(page: 3)`" }
+      ]
+    },
+    {
+      "id": "tuple",
+      "kind": "single",
+      "text": "Що поверне `def pair(): return 1, 2`?",
+      "options": [{ "text": "Кортеж `(1, 2)`", "correct": true }, { "text": "Лише `1`" }, { "text": "Помилку" }]
+    },
+    {
+      "id": "return-ends",
+      "kind": "single",
+      "text": "Що станеться з кодом після `return` усередині функції?",
+      "options": [{ "text": "Він не виконається — return завершує функцію", "correct": true }, { "text": "Виконається після повернення значення" }]
+    },
+    {
+      "id": "pure",
+      "kind": "single",
+      "text": "Яка функція найлегше тестується?",
+      "options": [
+        { "text": "Чиста: результат залежить лише від параметрів", "correct": true },
+        { "text": "Та, що змінює глобальні змінні й друкує" }
+      ]
+    }
+  ]
+}

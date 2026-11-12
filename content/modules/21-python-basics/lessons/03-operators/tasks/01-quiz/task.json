@@ -1,0 +1,57 @@
+{
+  "type": "quiz",
+  "title": "Operators",
+  "show": 6,
+  "hints": ["`/` завжди дає float, `//` — ціле вниз, `%` — остача."],
+  "questions": [
+    {
+      "id": "div",
+      "kind": "single",
+      "text": "Що поверне `10 / 5`?",
+      "options": [{ "text": "`2.0`", "correct": true }, { "text": "`2`" }, { "text": "`\"2\"`" }]
+    },
+    {
+      "id": "floordiv",
+      "kind": "single",
+      "text": "Що поверне `25 // 10`?",
+      "options": [{ "text": "`2`", "correct": true }, { "text": "`2.5`" }, { "text": "`3`" }]
+    },
+    {
+      "id": "mod",
+      "kind": "single",
+      "text": "Що поверне `25 % 10`?",
+      "options": [{ "text": "`5`", "correct": true }, { "text": "`2`" }, { "text": "`0.5`" }]
+    },
+    {
+      "id": "chain",
+      "kind": "single",
+      "text": "Як найкоротше перевірити, що `age` у діапазоні 18–99 включно?",
+      "options": [
+        { "text": "`18 <= age <= 99`", "correct": true },
+        { "text": "`18 < age < 99`", "explain": "Тоді 18 і 99 не пройдуть — межі виключені." },
+        { "text": "`age in 18-99`" }
+      ]
+    },
+    {
+      "id": "float",
+      "kind": "single",
+      "text": "Що поверне `0.1 + 0.2 == 0.3`?",
+      "options": [
+        { "text": "`False` — дробові числа зберігаються неточно", "correct": true },
+        { "text": "`True`" }
+      ]
+    },
+    {
+      "id": "or",
+      "kind": "single",
+      "text": "`is_member = False`, `subtotal = 12000`. Що дасть `is_member or subtotal >= 10000`?",
+      "options": [{ "text": "`True`", "correct": true }, { "text": "`False`" }]
+    },
+    {
+      "id": "plus-eq",
+      "kind": "single",
+      "text": "Що робить `retries += 1`?",
+      "options": [{ "text": "Збільшує `retries` на 1", "correct": true }, { "text": "Порівнює `retries` з 1" }]
+    }
+  ]
+}

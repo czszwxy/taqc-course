@@ -1,0 +1,74 @@
+{
+  "type": "quiz",
+  "title": "First steps in Python",
+  "show": 6,
+  "hints": ["Перечитай розділи про print(), коментарі й відступи."],
+  "questions": [
+    {
+      "id": "why",
+      "kind": "single",
+      "text": "Чому Python популярний в автоматизації тестування?",
+      "options": [
+        { "text": "Читабельний синтаксис і готові інструменти: pytest, Playwright for Python, requests", "correct": true },
+        { "text": "Бо на ньому неможливо зробити помилку" },
+        { "text": "Бо він працює лише в браузері" }
+      ]
+    },
+    {
+      "id": "comment",
+      "kind": "single",
+      "text": "Як у Python написати коментар?",
+      "options": [
+        { "text": "`# це коментар`", "correct": true },
+        { "text": "`// це коментар`", "explain": "Так пишуть коментарі в JavaScript / TypeScript." },
+        { "text": "`<!-- це коментар -->`" }
+      ]
+    },
+    {
+      "id": "indent",
+      "kind": "single",
+      "text": "Як Python розуміє, де закінчується тіло функції?",
+      "options": [
+        { "text": "За відступом: рядки тіла мають відступ (зазвичай 4 пробіли), перший рядок без нього — уже поза функцією", "correct": true },
+        { "text": "За фігурними дужками `{ }`" },
+        { "text": "За крапкою з комою" }
+      ]
+    },
+    {
+      "id": "print-many",
+      "kind": "single",
+      "text": "Що виведе `print(\"Passed:\", 12)`?",
+      "options": [
+        { "text": "`Passed: 12`", "correct": true },
+        { "text": "`Passed:12`" },
+        { "text": "`\"Passed:\", 12`" }
+      ]
+    },
+    {
+      "id": "return-print",
+      "kind": "single",
+      "text": "Функція друкує результат через `print()`, але не має `return`. Що вона повертає?",
+      "options": [
+        { "text": "`None`", "correct": true },
+        { "text": "Надрукований текст" },
+        { "text": "`0`" }
+      ]
+    },
+    {
+      "id": "run",
+      "kind": "single",
+      "text": "Як запустити файл `smoke.py` у терміналі?",
+      "options": [
+        { "text": "`python smoke.py` (на Windows також `py smoke.py`)", "correct": true },
+        { "text": "`run smoke.py`" },
+        { "text": "`node smoke.py`" }
+      ]
+    },
+    {
+      "id": "repl",
+      "kind": "text",
+      "text": "Як називається інтерактивний режим Python з підказкою `>>>`, де кожен рядок виконується одразу? (абревіатура з 4 літер)",
+      "accept": ["REPL", "repl"]
+    }
+  ]
+}
