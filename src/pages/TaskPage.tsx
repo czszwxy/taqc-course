@@ -15,6 +15,7 @@ import { OrderTaskView } from '../features/tasks/OrderTaskView';
 import { WrittenTaskView } from '../features/tasks/WrittenTaskView';
 import { TableTaskView } from '../features/tasks/TableTaskView';
 import { SelectorTaskView } from '../features/tasks/SelectorTaskView';
+import { TechCheckTaskView } from '../features/tasks/TechCheckTaskView';
 import type { TaskViewProps } from '../features/tasks/types';
 import { NotFound } from './NotFound';
 
@@ -37,10 +38,11 @@ const TASK_VIEWS: Record<Task['type'], ComponentType<TaskViewProps>> = {
   sql: SqlTaskView,
   playwright: PlaywrightTaskView,
   python: PythonTaskView,
+  'tech-check': TechCheckTaskView,
 };
 
 /** Task types whose "similar task" is generated from a new seed (re-sampled / re-shuffled) instead of a variant folder. */
-const SEEDED_TYPES: ReadonlySet<Task['type']> = new Set<Task['type']>(['quiz', 'value-set', 'classify', 'order']);
+const SEEDED_TYPES: ReadonlySet<Task['type']> = new Set<Task['type']>(['quiz', 'value-set', 'classify', 'order', 'tech-check']);
 
 function nextTarget(lesson: CourseLesson, main: CourseTask, course: Course | undefined): { to: string; label: string } | undefined {
   const nextTask = lesson.tasks[lesson.tasks.indexOf(main) + 1];

@@ -175,6 +175,31 @@ const checkQuiz: Checker<'quiz'> = (dir, task) => {
   duplicates(task.questions.map((q) => q.id)).forEach((id) => fail(dir, `duplicate question id "${id}"`));
 };
 
+interface CourseOutline {
+  id: string;
+  slugs: string[];
+}
+
+const courseOutlines = (): CourseOutline[] =>
+  (fs.existsSync(coursesDir) ? fs.readdirSync(coursesDir).filter((f) => f.endsWith('.json')) : []).flatMap((f) => {
+    const r = courseSchema.safeParse(readJson(path.join(coursesDir, f)));
+    return r.success ? [{ id: f.slice(0, -'.json'.length), slugs: r.data.tracks.flatMap((t) => t.modules.map((m) => m.slug)) }] : [];
+  });
+
+const checkTechCheck: Checker<'tech-check'> = (dir, task) => {
+  duplicates(task.questions.map((q) => q.id)).forEach((id) => fail(dir, `duplicate question id "${id}"`));
+  const known = new Set(dirs(modulesDir));
+  task.questions.filter((q) => !known.has(q.module)).forEach((q) => fail(dir, `question "${q.id}": unknown module "${q.module}"`));
+  const host = path.relative(modulesDir, dir).split(path.sep)[0];
+  courseOutlines()
+    .filter((c) => c.slugs.includes(host))
+    .forEach((c) => {
+      const pool = task.questions.filter((q) => c.slugs.includes(q.module)).length;
+      if (pool === 0) fail(dir, `course "${c.id}" gets no questions from this tech check`);
+      else if (pool < task.show) warnings.push(`${rel(dir)}: course "${c.id}" gets only ${pool} questions (show ${task.show})`);
+    });
+};
+
 const checkValueSet: Checker<'value-set'> = (dir, task) => {
   const gen = GENERATORS[task.generator.name];
   if (!gen) {
@@ -440,6 +465,7 @@ const CHECKS: { [K in Task['type']]: Checker<K> } = {
   selector: checkSelectorTask,
   sql: checkSqlTask,
   playwright: checkPlaywrightTask,
+  'tech-check': checkTechCheck,
 };
 
 /* ---------- structure ---------- */

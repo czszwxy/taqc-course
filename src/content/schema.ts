@@ -373,6 +373,40 @@ export const pythonTaskSchema = z.object({
   minTests: z.number().int().positive().optional(),
 });
 
+/** Questions per tech-check session when the task does not set `show`. */
+export const DEFAULT_TECH_CHECK_SHOW = 12;
+/** Soft time limit per tech-check question (seconds); the timer only warns. */
+export const DEFAULT_TECH_CHECK_SECONDS = 120;
+
+/** One open interview question: answered out loud, then self-assessed against its key points. */
+export const techCheckQuestionSchema = z.object({
+  id: z.string(),
+  /** Slug of the module the question checks. A session only draws questions from modules of the current course. */
+  module: z.string(),
+  question: z.string(),
+  /** Model answer of a strong junior (Markdown). */
+  answer: z.string(),
+  /** What the answer must cover; the learner ticks the points they actually said. */
+  keyPoints: z.array(z.string()).min(1),
+  /** A follow-up the interviewer would ask next — practised out loud, not scored. */
+  followUp: z.object({ question: z.string(), answer: z.string() }).optional(),
+});
+
+/**
+ * Tech check: an interview-style session of open questions with a timer. The learner answers out loud,
+ * opens the model answer and ticks the key points they covered; the score is the share of key points.
+ */
+export const techCheckTaskSchema = z.object({
+  type: z.literal('tech-check'),
+  ...baseTask,
+  intro: z.string().optional(),
+  /** Questions per session, drawn at random from the pool (a retry draws a new set). */
+  show: z.number().int().positive().default(DEFAULT_TECH_CHECK_SHOW),
+  secondsPerQuestion: z.number().int().positive().default(DEFAULT_TECH_CHECK_SECONDS),
+  passScore: z.number().min(0).max(1).default(DEFAULT_PASS_SCORE),
+  questions: z.array(techCheckQuestionSchema).min(1),
+});
+
 export const taskSchema = z.discriminatedUnion('type', [
   quizTaskSchema,
   codeTaskSchema,
@@ -387,6 +421,7 @@ export const taskSchema = z.discriminatedUnion('type', [
   sqlTaskSchema,
   playwrightTaskSchema,
   pythonTaskSchema,
+  techCheckTaskSchema,
 ]);
 
 export type Resource = z.infer<typeof resourceSchema>;
@@ -413,6 +448,8 @@ export type SqlTask = z.infer<typeof sqlTaskSchema>;
 export type SqlChallenge = z.infer<typeof sqlChallengeSchema>;
 export type PlaywrightTask = z.infer<typeof playwrightTaskSchema>;
 export type PythonTask = z.infer<typeof pythonTaskSchema>;
+export type TechCheckTask = z.infer<typeof techCheckTaskSchema>;
+export type TechCheckQuestion = z.infer<typeof techCheckQuestionSchema>;
 
 export const TASK_TYPE_LABEL: Record<Task['type'], string> = {
   quiz: 'Quiz',
@@ -428,6 +465,7 @@ export const TASK_TYPE_LABEL: Record<Task['type'], string> = {
   sql: 'SQL',
   playwright: 'Playwright',
   python: 'Python',
+  'tech-check': 'Tech check',
 };
 
 export function formatZodError(err: z.ZodError): string {

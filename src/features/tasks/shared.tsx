@@ -149,25 +149,38 @@ export function SelfReviewChecklist({ items }: { items: string[] }) {
   );
 }
 
-/** Builds a Markdown bundle the learner can paste into a chat with Claude for a detailed review. */
-export function CopyForReview({ build }: { build: () => string }) {
+const COPIED_FEEDBACK_MS = 2000;
+
+/** Copies text built on click to the clipboard and briefly confirms it. */
+export function CopyButton({ label, build, title, className = 'btn btn-ghost btn-sm' }: { label: string; build: () => string; title?: string; className?: string }) {
   const [copied, setCopied] = useState(false);
   return (
     <button
-      className="btn btn-ghost btn-sm"
+      className={className}
       onClick={async () => {
         try {
           await navigator.clipboard.writeText(build());
           setCopied(true);
-          setTimeout(() => setCopied(false), 2000);
+          setTimeout(() => setCopied(false), COPIED_FEEDBACK_MS);
         } catch {
           setCopied(false);
         }
       }}
-      title="Copies the task, your answer, the model answer and the criteria — paste it into a chat with Claude for detailed feedback"
+      title={title}
     >
-      {copied ? '✓ Copied' : '📋 Copy for review'}
+      {copied ? '✓ Copied' : label}
     </button>
+  );
+}
+
+/** Builds a Markdown bundle the learner can paste into a chat with Claude for a detailed review. */
+export function CopyForReview({ build }: { build: () => string }) {
+  return (
+    <CopyButton
+      label="📋 Copy for review"
+      build={build}
+      title="Copies the task, your answer, the model answer and the criteria — paste it into a chat with Claude for detailed feedback"
+    />
   );
 }
 

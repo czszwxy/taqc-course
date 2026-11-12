@@ -76,7 +76,8 @@
             "Bug lifecycle",
             "Evidence: screenshots, video, logs, environment",
             "Jira-style workflow & JQL basics",
-            "Working with developers"
+            "Working with developers",
+            "Tech check: QA fundamentals"
           ]
         }
       ]
@@ -98,7 +99,8 @@
             "Search & filters: exploratory session",
             "Order status flow: state transitions",
             "Regression run & test report",
-            "Mini-project: full test documentation for a Todo app"
+            "Mini-project: full test documentation for a Todo app",
+            "Tech check: practical QA"
           ]
         }
       ]
@@ -158,7 +160,8 @@
             "Aggregates & GROUP BY",
             "JOINs",
             "INSERT, UPDATE, DELETE",
-            "Verifying test results with SQL"
+            "Verifying test results with SQL",
+            "Tech check: web, HTTP, Git & SQL"
           ]
         }
       ]
@@ -222,7 +225,8 @@
             "describe / it / expect & matchers",
             "Testing functions with test design techniques",
             "Hooks, test data & test independence",
-            "Mini-project: tests for a validator library"
+            "Mini-project: tests for a validator library",
+            "Tech check: TypeScript & first tests"
           ]
         }
       ]
@@ -282,7 +286,8 @@
             "CI/CD concepts",
             "GitHub Actions for Playwright",
             "Artifacts, reports & sharding",
-            "Flaky tests & test maintenance"
+            "Flaky tests & test maintenance",
+            "Tech check: test automation"
           ]
         }
       ]
