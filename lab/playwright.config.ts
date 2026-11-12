@@ -22,6 +22,13 @@ interface RunPlan {
   reportFile: string;
 }
 
+/**
+ * Browsers installed into the project (`npm run lab:setup` → lab/.browsers) win over the default per-user folder.
+ * Test workers inherit process.env, so setting it here applies to every browser this run launches.
+ */
+const localBrowsers = fileURLToPath(new URL('./.browsers', import.meta.url));
+if (!process.env['PLAYWRIGHT_BROWSERS_PATH'] && fs.existsSync(localBrowsers)) process.env['PLAYWRIGHT_BROWSERS_PATH'] = localBrowsers;
+
 const runDir = process.env['QA_LAB_RUN_DIR'];
 const plan: RunPlan | null = runDir ? (JSON.parse(fs.readFileSync(path.join(runDir, 'plan.json'), 'utf8')) as RunPlan) : null;
 const chrome = devices['Desktop Chrome'];

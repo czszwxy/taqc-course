@@ -13,7 +13,7 @@
     "validate:lab": "tsx scripts/validate-lab.ts",
     "lab": "playwright test -c lab",
     "lab:report": "playwright show-report lab/playwright-report",
-    "lab:setup": "playwright install chromium"
+    "lab:setup": "tsx scripts/lab-setup.ts"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",

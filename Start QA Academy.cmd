@@ -28,9 +28,9 @@ if not exist "node_modules\" (
   )
 )
 
-rem Playwright browser for the automation labs (module 15+). Quick no-op when it is already installed.
+rem Playwright browser for the automation labs (module 15+), kept in lab\.browsers. Quick no-op when it is already there.
 echo Checking the Playwright browser (the first time it downloads about 150 MB)...
-call npx playwright install chromium
+call npm run lab:setup --silent
 if errorlevel 1 echo Could not install the Playwright browser now. The course still works; Playwright tasks will show how to install it.
 
 echo.

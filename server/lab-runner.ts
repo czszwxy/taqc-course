@@ -44,7 +44,17 @@ const HTTP_SERVER_ERROR = 500;
 const MS_PER_SECOND = 1000;
 
 export const LAB_SETUP_MESSAGE =
-  'Chromium for Playwright is not installed yet. Run this once in a terminal in the project folder: npx playwright install chromium — then press Check again.';
+  'Chromium for Playwright is not installed yet. Run this once in a terminal in the project folder: npm run lab:setup — then press Check again.';
+
+/** Project-local browser folder (installed by `npm run lab:setup`); lab/playwright.config.ts prefers it. */
+export function labBrowsersDir(root: string): string {
+  return path.join(root, LAB_DIR, '.browsers');
+}
+
+function hasLocalChromium(root: string): boolean {
+  const dir = labBrowsersDir(root);
+  return fs.existsSync(dir) && fs.readdirSync(dir).some((name) => name.startsWith('chromium'));
+}
 
 interface PlanProject {
   name: string;
@@ -210,7 +220,8 @@ export async function runLab(root: string, request: LabRunRequest): Promise<LabR
   }
 }
 
-export async function labStatus(): Promise<LabStatus> {
+export async function labStatus(root: string): Promise<LabStatus> {
+  if (hasLocalChromium(root)) return { ready: true, message: 'Playwright and Chromium (lab/.browsers) are installed.' };
   try {
     const { chromium } = await import('@playwright/test');
     const executable = chromium.executablePath();
@@ -296,7 +307,7 @@ async function handle(root: string, req: IncomingMessage, res: ServerResponse, n
     return;
   }
   if (req.method === 'GET' && url.startsWith('/status')) {
-    sendJson(res, HTTP_OK, await labStatus());
+    sendJson(res, HTTP_OK, await labStatus(root));
     return;
   }
   if (req.method === 'POST' && url.startsWith('/run') && (req.headers['content-type'] ?? '').startsWith('application/json')) {

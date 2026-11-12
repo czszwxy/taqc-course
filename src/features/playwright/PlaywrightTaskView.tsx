@@ -214,7 +214,7 @@ function SetupCallout({ status, onRecheck }: { status: LabStatus; onRecheck: () 
       <p className="mt-2 text-sm">
         Open a terminal <b>outside</b> this app (Windows Terminal, cmd or the VS Code terminal) in the project folder and run:
       </p>
-      <CodeBlock code="npx playwright install chromium" />
+      <CodeBlock code="npm run lab:setup" />
       <button className="btn btn-secondary btn-sm mt-2" onClick={onRecheck}>
         ↻ Check again
       </button>
@@ -257,7 +257,7 @@ function ResultsPanel({
     return (
       <Callout tone={run.reason === 'busy' ? 'warn' : 'bad'} title={run.reason === 'setup' ? 'Playwright browser is not installed' : 'The run did not complete'}>
         <pre className="whitespace-pre-wrap font-mono text-[13px]">{run.message}</pre>
-        {run.reason === 'setup' && <CodeBlock code="npx playwright install chromium" />}
+        {run.reason === 'setup' && <CodeBlock code="npm run lab:setup" />}
       </Callout>
     );
   }

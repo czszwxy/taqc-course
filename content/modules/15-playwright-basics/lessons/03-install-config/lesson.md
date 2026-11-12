@@ -90,11 +90,13 @@ export default defineConfig({
 
 У проєкті QA Academy вже є Playwright: папка `lab/` з конфігом `lab/playwright.config.ts`. Його `baseURL` — сам застосунок (`http://localhost:5173`), тож тести відкривають сторінки Bug Playground: `page.goto('/playground/login')`.
 
-Один раз встанови браузер. Відкрий **свій** термінал (Windows Terminal, cmd або термінал VS Code) у папці проєкту й виконай:
+Браузер для лабораторії лежить у самому проєкті, у папці `lab/.browsers` (вона в `.gitignore`). Лаунчер QA Academy перевіряє його при кожному старті. Якщо колись знадобиться встановити його вручну (наприклад, після оновлення Playwright), виконай у терміналі в папці проєкту:
 
 ```bash
-npx playwright install chromium
+npm run lab:setup
 ```
+
+Це та сама `npx playwright install chromium`, тільки браузер кладеться в `lab/.browsers`, а не в папку користувача Windows. Конфіг лабораторії шукає його спершу там.
 
 Далі:
 

@@ -19,9 +19,11 @@ npm run build      # typecheck + production build
 
 Windows note: Node is installed at `C:\Program Files\nodejs` — if `node` is not on PATH in a shell, prefix with `$env:Path = "C:\Program Files\nodejs;" + $env:Path`.
 
-Launcher: `Start QA Academy.cmd` (CRLF line endings, ASCII only) + desktop shortcut `QA Academy.lnk` with icon `launcher/qa-academy.ico`. It opens http://localhost:5173 if a server is already listening, otherwise runs `npm install` (first time), `npx playwright install chromium` (no-op when present) and `npm run dev -- --open`.
+Launcher: `Start QA Academy.cmd` (CRLF line endings, ASCII only) + desktop shortcut `QA Academy.lnk` with icon `launcher/qa-academy.ico`. It opens http://localhost:5173 if a server is already listening, otherwise runs `npm install` (first time), `npm run lab:setup` (Chromium into lab/.browsers, no-op when present) and `npm run dev -- --open`.
 
-**Playwright browsers and the Claude app:** Claude's shell runs inside the Claude desktop app package, so `npx playwright install` run by Claude lands in a *virtualized* `%LOCALAPPDATA%` (`…\Packages\Claude_*\LocalCache\Local\ms-playwright`) that the owner's own processes (the dev server started by the launcher) cannot see. Claude's own Playwright runs (`npm run validate:lab`, `npm run lab`) work; the owner installs Chromium from their own terminal or via the launcher. The dev port is pinned (`strictPort`, `DEV_PORT` in vite.config.ts) because localStorage progress is tied to that origin — never change the port.
+**Playwright browsers and the Claude app:** Claude's shell runs inside the Claude desktop app package, so anything it writes to `%LOCALAPPDATA%` (e.g. the default `ms-playwright` folder) lands in a *virtualized* copy (`…\Packages\Claude_*\LocalCache\Local\…`) that the owner's own processes cannot see. That is why the lab keeps its browser in the project: `npm run lab:setup` (scripts/lab-setup.ts) installs Chromium into `lab/.browsers` (gitignored), `lab/playwright.config.ts` sets PLAYWRIGHT_BROWSERS_PATH to it when it exists (workers inherit it), and `/__lab/status` checks it first. The project drive (D:\) is not virtualized, so installs done by Claude are visible to the owner's dev server.
+
+The dev port is pinned (`strictPort`, `DEV_PORT` in vite.config.ts) because localStorage progress is tied to that origin — never change the port.
 
 ## Code style (enforced by a TS-patterns hook on edits)
 No nested ternaries (use a small function or a Record lookup), no magic numbers (named consts, e.g. `formatModuleNumber` in `src/lib/format.ts`), prefer `map/filter/reduce` over raw loops in app code. Content task files (`content/**`) are learner exercises and intentionally use loops.
