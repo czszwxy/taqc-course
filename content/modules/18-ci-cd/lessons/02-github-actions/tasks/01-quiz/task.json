@@ -1,0 +1,71 @@
+{
+  "type": "quiz",
+  "title": "Quiz: GitHub Actions",
+  "show": 5,
+  "hints": ["Workflow живе в .github/workflows/*.yml. npm ci, потім playwright install, потім test."],
+  "questions": [
+    {
+      "id": "where",
+      "kind": "single",
+      "text": "Де мають лежати файли workflow GitHub Actions?",
+      "options": [
+        { "text": "У папці `.github/workflows/` репозиторію", "correct": true },
+        { "text": "У корені проєкту з будь-якою назвою" },
+        { "text": "Лише в налаштуваннях GitHub, не в репозиторії" }
+      ]
+    },
+    {
+      "id": "npm-ci",
+      "kind": "single",
+      "text": "Чому на CI пишуть `npm ci`, а не `npm install`?",
+      "options": [
+        { "text": "Встановлює точно версії з package-lock.json, чисто й відтворювано", "correct": true },
+        { "text": "Це те саме, просто коротше" }
+      ]
+    },
+    {
+      "id": "browsers",
+      "kind": "text",
+      "text": "Яка команда на CI (Linux) ставить браузери Playwright разом із системними бібліотеками?",
+      "accept": ["npx playwright install --with-deps", "playwright install --with-deps"]
+    },
+    {
+      "id": "secret",
+      "kind": "single",
+      "text": "Як передати пароль тестового акаунта в тести на GitHub Actions?",
+      "options": [
+        { "text": "Додати секрет у налаштуваннях репозиторію і передати `env: QA_PASSWORD: ${{ secrets.QA_PASSWORD }}`", "correct": true },
+        { "text": "Записати пароль прямо в YAML" },
+        { "text": "Закомітити файл .env" }
+      ]
+    },
+    {
+      "id": "schedule",
+      "kind": "single",
+      "text": "Який тригер запускає workflow щоночі?",
+      "options": [
+        { "text": "`schedule` з `cron`", "correct": true },
+        { "text": "`push`" },
+        { "text": "`workflow_dispatch`", "explain": "Це ручний запуск кнопкою." }
+      ]
+    },
+    {
+      "id": "uses-run",
+      "kind": "single",
+      "text": "Чим `uses:` відрізняється від `run:` у кроці?",
+      "options": [
+        { "text": "`uses` запускає готову action (наприклад, actions/checkout), `run` — shell-команду", "correct": true },
+        { "text": "Нічим" }
+      ]
+    },
+    {
+      "id": "protection",
+      "kind": "single",
+      "text": "Як зробити, щоб PR з червоними тестами не можна було злити?",
+      "options": [
+        { "text": "Позначити check з тестами обов'язковим у branch protection для main", "correct": true },
+        { "text": "Попросити всіх уважно дивитися на статус" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "title": "Artifacts, reports & sharding",
+  "minutes": 50,
+  "summary": "Що таке артефакти CI і як зберегти HTML-звіт, trace, скріншоти й відео (upload-artifact), як розібрати впалий прогін за логом і артефактами, шардинг набору через matrix і об'єднання blob-звітів (merge-reports), час і вартість прогону",
+  "resources": [
+    {
+      "title": "Playwright: Sharding",
+      "url": "https://playwright.dev/docs/test-sharding",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Setting up CI — HTML report",
+      "url": "https://playwright.dev/docs/ci-intro",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "GitHub Docs: Storing workflow data as artifacts",
+      "url": "https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

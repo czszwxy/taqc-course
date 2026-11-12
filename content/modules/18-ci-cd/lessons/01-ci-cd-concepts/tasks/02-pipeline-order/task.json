@@ -1,0 +1,18 @@
+{
+  "type": "order",
+  "title": "Order the stages of a delivery pipeline",
+  "statement": "Розробник відкрив pull request з виправленням кошика Gadgetly. Розстав етапи конвеєра, через які пройде зміна до продакшну, у правильному порядку.",
+  "items": [
+    "Pull request opened: CI starts",
+    "Install dependencies and build the app (npm ci, build)",
+    "Lint and unit tests",
+    "API tests and UI smoke tests (@smoke) against a preview environment",
+    "Code review approved and the PR merged into main",
+    "Deploy main to staging",
+    "Full regression (UI + API, several browsers) on staging",
+    "Release to production (a person clicks the button — continuous delivery)",
+    "Production smoke check (read-only)"
+  ],
+  "hints": ["Від найшвидшого й найдешевшого до найповільнішого; злиття — після зелених перевірок PR."],
+  "explanation": "Зміна проходить ворота від дешевих до дорогих: збірка → швидкі статичні перевірки й unit → API й UI smoke → рев'ю і злиття → деплой на staging → повна регресія → реліз → короткий smoke на продакшні. Кожен етап може зупинити зміну, і що раніше, то дешевше виправлення."
+}

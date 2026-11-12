@@ -1,0 +1,60 @@
+{
+  "type": "quiz",
+  "title": "Quiz: artifacts, reports, sharding",
+  "show": 5,
+  "hints": ["Звіт зберігають з `if: !cancelled()`. Шарди пишуть blob, окремий job зводить їх через merge-reports."],
+  "questions": [
+    {
+      "id": "artifact",
+      "kind": "single",
+      "text": "Що таке артефакт у GitHub Actions?",
+      "options": [
+        { "text": "Файли, які workflow зберігає після прогону (звіт, trace, скріншоти) і які можна завантажити", "correct": true },
+        { "text": "Помилка у workflow" },
+        { "text": "Секрет репозиторію" }
+      ]
+    },
+    {
+      "id": "always",
+      "kind": "single",
+      "text": "Крок upload-artifact без умови стоїть після кроку тестів. Тести впали. Що буде зі звітом?",
+      "options": [
+        { "text": "Крок пропуститься, і звіту не буде саме тоді, коли він потрібен — треба `if: ${{ !cancelled() }}`", "correct": true },
+        { "text": "Звіт збережеться в будь-якому разі" }
+      ]
+    },
+    {
+      "id": "shard",
+      "kind": "single",
+      "text": "Що робить `strategy.matrix.shardIndex: [1, 2, 3, 4]` разом із `--shard=${{ matrix.shardIndex }}/4`?",
+      "options": [
+        { "text": "Запускає 4 копії job, кожна виконує свою чверть набору", "correct": true },
+        { "text": "Запускає кожен тест 4 рази" }
+      ]
+    },
+    {
+      "id": "fail-fast",
+      "kind": "single",
+      "text": "Навіщо `fail-fast: false` у matrix-шардингу?",
+      "options": [
+        { "text": "Щоб падіння одного шарда не скасувало інші й звіт містив результати всього набору", "correct": true },
+        { "text": "Щоб тести падали швидше" }
+      ]
+    },
+    {
+      "id": "merge",
+      "kind": "text",
+      "text": "Яка команда об'єднує blob-звіти шардів в один HTML-звіт? (npx playwright …)",
+      "accept": ["npx playwright merge-reports --reporter html ./all-blob-reports", "npx playwright merge-reports", "merge-reports", "npx playwright merge-reports --reporter html"]
+    },
+    {
+      "id": "before-tests",
+      "kind": "single",
+      "text": "Job упав на кроці тестів з `browserType.launch: Executable doesn't exist`. Де шукати причину?",
+      "options": [
+        { "text": "У workflow: не встановлено браузери (`npx playwright install --with-deps`) або змінилась версія", "correct": true },
+        { "text": "У продукті: сторінка логіну зламана" }
+      ]
+    }
+  ]
+}

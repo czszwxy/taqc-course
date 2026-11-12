@@ -1,0 +1,35 @@
+{
+  "title": "CI/CD concepts",
+  "minutes": 40,
+  "summary": "Що таке Continuous Integration, Continuous Delivery і Continuous Deployment, конвеєр (pipeline) і його етапи, де і які тести запускаються (PR, після деплою, щоночі), quality gates і швидкий фідбек",
+  "resources": [
+    {
+      "title": "GitHub Docs: Understanding GitHub Actions (CI/CD)",
+      "url": "https://docs.github.com/en/actions/about-github-actions/understanding-github-actions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Martin Fowler: Continuous Integration",
+      "url": "https://martinfowler.com/articles/continuousIntegration.html",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Continuous Integration",
+      "url": "https://playwright.dev/docs/ci",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: CI/CD простими словами",
+      "url": "https://www.youtube.com/results?search_query=CI+CD+простими+словами",
+      "kind": "video",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

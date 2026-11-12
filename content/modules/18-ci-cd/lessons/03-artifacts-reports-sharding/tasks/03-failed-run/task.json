@@ -1,0 +1,37 @@
+{
+  "type": "written",
+  "title": "Investigate a failed CI run",
+  "statement": "Нічний workflow Gadgetly на GitHub Actions червоний. Ось що ти бачиш:\n\n**Job `test (2/4)`** — failed. Фрагмент логу:\n\n```text\n  ✘ [webkit] › checkout.spec.ts:41:5 › checkout › pays with a saved card (12.4s)\n    Error: expect(locator).toHaveText(expected) failed\n    Locator: getByTestId('order-status')\n    Expected: \"Paid\"\n    Received: \"Payment pending\"\n  ✘ [chromium] › checkout.spec.ts:41:5 › checkout › pays with a saved card (11.9s)\n    (та сама помилка)\n  2 failed, 61 passed\n```\n\n**Jobs `test (1/4)`, `test (3/4)`, `test (4/4)`** — green. **Артефакт** `html-report` є: у trace впалого тесту видно, що `POST /api/payments` повернув **504 Gateway Timeout** через 10 с.\n\nОпиши, як ти розбереш цей прогін і що повідомиш команді.",
+  "fields": [
+    { "id": "diagnosis", "label": "Most likely cause and why", "kind": "textarea" },
+    { "id": "steps", "label": "Your next steps (one per line)", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "diagnosis", "check": "mentionsAny", "value": ["504|gateway|timeout|payment|платіж|оплат"], "message": "Diagnosis: ключовий факт — у trace `POST /api/payments` → 504 Gateway Timeout." },
+    { "field": "diagnosis", "check": "mentionsAny", "value": ["both|обох|chromium.*webkit|webkit.*chromium|same|однаков|той самий"], "message": "Diagnosis: зверни увагу, що падіння однакове в обох браузерах — це не баг одного браузера." },
+    { "field": "steps", "check": "minItems", "value": 3, "message": "Steps: щонайменше 3 кроки: перевірити сервіс оплати / середовище, перезапустити або відтворити, баг-репорт чи повідомлення з доказами." },
+    { "field": "steps", "check": "mentionsAny", "value": ["trace|artifact|артефакт|report|звіт"], "message": "Steps: прикріпи докази з артефактів (trace, звіт)." },
+    { "field": "steps", "check": "mentionsAny", "value": ["rerun|re-run|перезапуст|reproduce|відтвор|locally|локально"], "message": "Steps: спробуй перезапустити або відтворити, щоб відрізнити разовий збій від стабільної проблеми." }
+  ],
+  "model": {
+    "diagnosis": "The same test fails in both chromium and webkit with the same symptom, and the trace shows POST /api/payments answered 504 Gateway Timeout after 10 s. The page correctly shows \"Payment pending\" because the payment service did not answer, so the most likely cause is the payment service / staging environment (a timeout behind the gateway), not the UI and not a single browser. It still needs confirmation: if it repeats, it can also be a real backend regression in payments.",
+    "steps": [
+      "Open the trace from the html-report artifact and save the failing request/response as evidence.",
+      "Check the payment service health on staging (and ask DevOps whether the payment sandbox was down around the nightly run).",
+      "Re-run the failed shard / reproduce locally against staging: if it passes, record it as an environment incident; if it fails again, report a bug.",
+      "Report in the team channel with the run link, test name, trace and the 504 response.",
+      "If timeouts happen often, propose a health check before the suite or a clearer error in the UI for 504 (bug/improvement)."
+    ]
+  },
+  "hints": [
+    "Подивись на факти: скільки тестів, у яких браузерах, яка відповідь сервера в trace.",
+    "504 — це «шлюз не дочекався відповіді сервісу за ним». Проблема у фронтенді, браузері чи сервісі оплати?"
+  ],
+  "explanation": "Розбір CI — це робота з фактами з логу й артефактів. Однакове падіння в обох браузерах прибирає гіпотезу «баг WebKit». Відповідь 504 у trace показує, що UI поводиться правильно (показує pending), а не відповів сервіс оплати. Далі — відрізнити разовий збій середовища від стабільної регресії (перезапуск, перевірка сервісу) і повідомити з доказами: посилання на прогін, trace, відповідь сервера.",
+  "checklist": [
+    "Висновок спирається на факти з логу і trace",
+    "Розглянуто і середовище, і можливий баг бекенду",
+    "Є крок для розрізнення разового збою і стабільної проблеми",
+    "Повідомлення містить докази (посилання, trace, відповідь)"
+  ]
+}

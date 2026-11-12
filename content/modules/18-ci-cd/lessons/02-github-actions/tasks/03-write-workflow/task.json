@@ -1,0 +1,34 @@
+{
+  "type": "written",
+  "title": "Write a Playwright workflow",
+  "statement": "Напиши `.github/workflows/playwright.yml` для проєкту автотестів Gadgetly (Node.js + `@playwright/test`).\n\nВимоги:\n\n- запуск на кожен **pull request** у `main` і **щоночі** о 02:00 UTC, плюс **ручний** запуск;\n- машина Ubuntu, ліміт 30 хвилин;\n- точні залежності з lock-файлу, браузери із системними бібліотеками;\n- адреса staging зі змінної репозиторію `STAGING_URL`, пароль із секрету `QA_PASSWORD`;\n- HTML-звіт (`playwright-report/`) зберігається як артефакт **навіть якщо тести впали**.\n\nДругим полем коротко поясни, що зробив і чому.",
+  "fields": [
+    { "id": "yaml", "label": "playwright.yml", "kind": "textarea", "placeholder": "name: Playwright Tests\non:\n  …" },
+    { "id": "notes", "label": "Notes for the reviewer", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "yaml", "check": "mentionsAll", "value": ["pull_request", "schedule", "cron", "workflow_dispatch"], "message": "Тригери: `pull_request`, `schedule` з `cron` і `workflow_dispatch`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["runs-on", "ubuntu", "timeout-minutes"], "message": "Машина й ліміт: `runs-on: ubuntu-latest`, `timeout-minutes: 30`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["actions/checkout", "actions/setup-node", "npm ci", "playwright install --with-deps", "playwright test"], "message": "Кроки: checkout → setup-node → `npm ci` → `npx playwright install --with-deps` → `npx playwright test`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["secrets\\.QA_PASSWORD", "vars\\.STAGING_URL|STAGING_URL"], "message": "Передай `${{ secrets.QA_PASSWORD }}` і `${{ vars.STAGING_URL }}` через `env` кроку з тестами." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["upload-artifact", "playwright-report", "cancelled\\(\\)|always\\(\\)"], "message": "Звіт: `actions/upload-artifact` для `playwright-report/` з умовою `if: ${{ !cancelled() }}` (або `always()`)." },
+    { "field": "yaml", "check": "notMentions", "value": ["npm install(?! -)"], "message": "На CI — `npm ci`, а не `npm install`." },
+    { "field": "notes", "check": "minLength", "value": 40, "message": "Notes: коротко поясни рішення: тригери, npm ci, секрети, звіт після падіння." }
+  ],
+  "model": {
+    "yaml": "name: Playwright Tests\n\non:\n  pull_request:\n    branches: [main]\n  schedule:\n    - cron: '0 2 * * *'\n  workflow_dispatch:\n\njobs:\n  test:\n    timeout-minutes: 30\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with:\n          node-version: lts/*\n          cache: npm\n      - run: npm ci\n      - run: npx playwright install --with-deps\n      - name: Run Playwright tests\n        run: npx playwright test\n        env:\n          BASE_URL: ${{ vars.STAGING_URL }}\n          QA_PASSWORD: ${{ secrets.QA_PASSWORD }}\n      - uses: actions/upload-artifact@v4\n        if: ${{ !cancelled() }}\n        with:\n          name: playwright-report\n          path: playwright-report/\n          retention-days: 14",
+    "notes": "Runs on every PR to main (fast feedback), nightly at 02:00 UTC (full regression) and manually. npm ci installs the exact versions from package-lock.json; --with-deps adds the Linux libraries the browsers need. The staging URL comes from a repository variable and the password from a secret, so nothing sensitive is in the repo. The report is uploaded with !cancelled(), so it exists exactly when tests fail and we need it."
+  },
+  "hints": [
+    "Почни з шаблону з уроку і додай тригери `schedule` і `workflow_dispatch`.",
+    "`env:` став на кроці з тестами: `BASE_URL: ${{ vars.STAGING_URL }}` і `QA_PASSWORD: ${{ secrets.QA_PASSWORD }}`."
+  ],
+  "explanation": "Робочий workflow для Playwright — це завжди та сама послідовність: код → Node.js з кешем → `npm ci` → браузери → тести з потрібними змінними → збереження звіту з умовою, яка спрацьовує й після падіння. Тригери відповідають стратегії з уроку 1: PR — швидкий фідбек, ніч — повна регресія, ручний запуск — для перевірок «на вимогу». Секрети й адреси живуть у налаштуваннях репозиторію, а не в YAML.",
+  "checklist": [
+    "Є всі три тригери: PR, розклад, ручний запуск",
+    "npm ci і playwright install --with-deps",
+    "Секрет і змінна передаються через env, у YAML немає паролів",
+    "Звіт зберігається навіть при падінні тестів",
+    "Є timeout-minutes, щоб завислий прогін не тривав годинами"
+  ]
+}

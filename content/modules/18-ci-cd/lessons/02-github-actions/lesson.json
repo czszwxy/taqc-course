@@ -1,0 +1,35 @@
+{
+  "title": "GitHub Actions for Playwright",
+  "minutes": 55,
+  "summary": "Будова workflow GitHub Actions (on, jobs, runs-on, steps, uses, run), workflow для Playwright, тригери (push, pull_request, schedule, workflow_dispatch), секрети і змінні, кеш, Docker-образ Playwright, статус-перевірки в pull request",
+  "resources": [
+    {
+      "title": "Playwright: Setting up CI (GitHub Actions)",
+      "url": "https://playwright.dev/docs/ci-intro",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "GitHub Docs: Workflow syntax for GitHub Actions",
+      "url": "https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "GitHub Docs: Using secrets in GitHub Actions",
+      "url": "https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: GitHub Actions Playwright tutorial",
+      "url": "https://www.youtube.com/results?search_query=GitHub+Actions+Playwright+tutorial",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

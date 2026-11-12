@@ -1,0 +1,28 @@
+{
+  "title": "Flaky tests & test maintenance",
+  "minutes": 50,
+  "summary": "Як виявляти flaky-тести (retries, repeat-each, історія прогонів), розбирати причину з trace, карантин з тегом і задачею, типові виправлення, метрики стабільності, підтримка набору: прибирання застарілих тестів, оновлення локаторів, рев'ю, власник падінь",
+  "resources": [
+    {
+      "title": "Playwright: Retries (flaky tests)",
+      "url": "https://playwright.dev/docs/test-retries",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Best Practices",
+      "url": "https://playwright.dev/docs/best-practices",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Trace viewer",
+      "url": "https://playwright.dev/docs/trace-viewer",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

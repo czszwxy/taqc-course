@@ -1,0 +1,17 @@
+{
+  "type": "order",
+  "title": "Order a sharded run with one merged report",
+  "statement": "Набір Gadgetly розбили на 4 шарди. Розстав, що відбувається під час прогону, у правильному порядку.",
+  "items": [
+    "The workflow starts 4 copies of the test job from the matrix (shardIndex 1–4)",
+    "Each copy installs dependencies and browsers",
+    "Each copy runs its part: npx playwright test --shard=i/4 with the blob reporter",
+    "Each copy uploads its blob-report-i artifact (even if its tests failed)",
+    "The merge-reports job starts after all shards (needs: [test])",
+    "It downloads all blob-report-* artifacts into one folder",
+    "npx playwright merge-reports --reporter html builds one HTML report",
+    "The merged HTML report is uploaded as the html-report artifact"
+  ],
+  "hints": ["Шарди працюють паралельно і кожен зберігає свій шматок. Зведення — окремий job, що чекає на всі шарди."],
+  "explanation": "Matrix створює кілька однакових jobs. Кожен ставить залежності й браузери, проганяє свою частину набору і зберігає blob-звіт навіть після падіння. Після всіх шардів окремий job (`needs`) завантажує всі blob-артефакти, об'єднує їх командою `merge-reports` і зберігає один HTML-звіт, який команда відкриває замість чотирьох."
+}

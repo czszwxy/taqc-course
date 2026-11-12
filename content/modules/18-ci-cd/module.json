@@ -1,0 +1,12 @@
+{
+  "title": "CI/CD for Test Automation",
+  "description": "Як автотести працюють без людини: концепції CI/CD і місце тестів у конвеєрі, GitHub Actions для Playwright (тригери, jobs, кроки, секрети, кеш), артефакти, HTML-звіти й шардинг, а також боротьба з flaky-тестами й підтримка набору. Практика — послідовності, таблиці, рев'ю workflow, розбір впалого прогону і план стабілізації набору.",
+  "goals": [
+    "Explain CI, continuous delivery and continuous deployment and where tests run in a pipeline",
+    "Read and write a GitHub Actions workflow that runs Playwright tests",
+    "Use secrets, variables, caching and the right triggers (PR, push, schedule, manual)",
+    "Keep reports and traces as artifacts and shard a suite across machines",
+    "Investigate a failed CI run from its logs and artifacts",
+    "Detect, triage and fix flaky tests and keep a suite healthy over time"
+  ]
+}

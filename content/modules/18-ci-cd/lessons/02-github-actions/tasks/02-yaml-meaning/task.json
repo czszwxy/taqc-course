@@ -1,0 +1,36 @@
+{
+  "type": "table",
+  "title": "What does each workflow line do?",
+  "statement": "Фрагменти workflow `.github/workflows/playwright.yml`. Що робить кожен?",
+  "givenColumns": ["YAML"],
+  "answerColumns": [
+    {
+      "id": "meaning",
+      "label": "Meaning",
+      "options": [
+        "Run on every pull request",
+        "Run every night",
+        "Add a manual \"Run workflow\" button",
+        "Choose the machine",
+        "Get the repository code",
+        "Install exact dependency versions",
+        "Install browsers and system libraries",
+        "Pass a secret to the tests",
+        "Keep the report even if tests failed"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`on: pull_request`"], "answers": { "meaning": "Run on every pull request" } },
+    { "given": ["`schedule: - cron: '0 2 * * *'`"], "answers": { "meaning": "Run every night" } },
+    { "given": ["`workflow_dispatch:`"], "answers": { "meaning": "Add a manual \"Run workflow\" button" } },
+    { "given": ["`runs-on: ubuntu-latest`"], "answers": { "meaning": "Choose the machine" } },
+    { "given": ["`uses: actions/checkout@v4`"], "answers": { "meaning": "Get the repository code" } },
+    { "given": ["`run: npm ci`"], "answers": { "meaning": "Install exact dependency versions" } },
+    { "given": ["`run: npx playwright install --with-deps`"], "answers": { "meaning": "Install browsers and system libraries" } },
+    { "given": ["`env: QA_PASSWORD: ${{ secrets.QA_PASSWORD }}`"], "answers": { "meaning": "Pass a secret to the tests" } },
+    { "given": ["`if: ${{ !cancelled() }}` on the upload-artifact step"], "answers": { "meaning": "Keep the report even if tests failed" }, "explain": "Без цієї умови крок пропускається після впалого кроку тестів, і звіту якраз тоді не буде." }
+  ],
+  "hints": ["`on` — коли, `runs-on` — де, `uses` / `run` — що, `env` — з якими змінними, `if` — за якої умови."],
+  "explanation": "Workflow читається зверху вниз: тригери (`on`: PR, розклад, ручний запуск), машина (`runs-on`), кроки: код (`checkout`), залежності (`npm ci`), браузери (`playwright install --with-deps`), тести з секретами (`env`), збереження звіту навіть після падіння (`if: !cancelled()`)."
+}

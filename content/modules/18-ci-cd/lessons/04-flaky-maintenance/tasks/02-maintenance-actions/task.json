@@ -1,0 +1,25 @@
+{
+  "type": "classify",
+  "title": "Healthy fix or hiding the problem?",
+  "statement": "У команді обговорюють, що робити з нестабільними й застарілими тестами. Які дії справді лікують набір, а які лише ховають проблему?",
+  "categories": [
+    { "id": "fix", "label": "Real fix / healthy maintenance" },
+    { "id": "hide", "label": "Hides the problem" }
+  ],
+  "items": [
+    { "id": "web-first", "text": "Replace textContent() + toBe with a web-first toHaveText", "category": "fix" },
+    { "id": "own-data", "text": "Make each test create its own user instead of sharing one", "category": "fix" },
+    { "id": "quarantine", "text": "Move a flaky test to @quarantine with a ticket, an owner and a 2-week limit", "category": "fix", "explain": "Тимчасовий захід з планом виправлення — нормальна практика." },
+    { "id": "delete-old", "text": "Delete tests of a feature that was removed from the product", "category": "fix" },
+    { "id": "pom-fix", "text": "Update one locator in the Page Object after a redesign", "category": "fix" },
+    { "id": "retries", "text": "Raise retries from 2 to 6 because CI is \"sometimes red\"", "category": "hide" },
+    { "id": "timeout", "text": "Raise the test timeout to 5 minutes", "category": "hide" },
+    { "id": "sleep", "text": "Add waitForTimeout(3000) before the failing assertion", "category": "hide" },
+    { "id": "skip-forever", "text": "Mark the test test.skip without a ticket \"for now\"", "category": "hide" },
+    { "id": "force", "text": "Use click({ force: true }) because the button is sometimes covered by a toast", "category": "hide", "explain": "Тест більше не помічає, що користувач не може натиснути кнопку." }
+  ],
+  "show": 8,
+  "hints": ["Чи знаходить дія причину? Чи залишиться тест здатним упасти, коли продукт справді зламається?"],
+  "explanation": "Справжнє виправлення усуває причину (гонка, спільні дані, крихкий локатор) або прибирає непотрібне. Тимчасовий карантин з задачею і терміном теж здоровий. Збільшені повтори й таймаути, паузи, безстрокові skip і `force: true` роблять CI зеленим ціною того, що тест перестає ловити справжні проблеми.",
+  "passScore": 0.85
+}

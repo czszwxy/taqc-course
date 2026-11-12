@@ -1,0 +1,48 @@
+{
+  "type": "written",
+  "title": "Make a plan to stabilize a flaky suite",
+  "statement": "Ти щойно прийшов у команду Gadgetly. За останні 2 тижні:\n\n- `main` зелений лише в **70%** прогонів, хоча код між прогонами не змінювався;\n- у CI `retries: 4`, а в 18 тестах є `waitForTimeout`;\n- 6 тестів кошика використовують одного спільного користувача `cart@gadgetly.test`;\n- розробники кажуть: «Червоний CI — це нормально, перезапусти і все»;\n- ніхто не відповідає за розбір падінь.\n\nСклади план стабілізації на перший місяць для тех-ліда.",
+  "fields": [
+    { "id": "now", "label": "First week: what you do right away (one per line)", "kind": "list" },
+    { "id": "fixes", "label": "Root-cause fixes (one per line)", "kind": "list" },
+    { "id": "process", "label": "Process and metrics to keep it healthy", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "now", "check": "minItems", "value": 3, "message": "First week: щонайменше 3 кроки: зібрати список flaky, карантин із задачами, призначити відповідального." },
+    { "field": "now", "check": "mentionsAny", "value": ["quarantine|карантин"], "message": "First week: тимчасовий карантин для найгірших тестів (з задачами), щоб main знову став надійним." },
+    { "field": "now", "check": "mentionsAny", "value": ["list|список|history|історі|repeat-each|identify|виявит|зібрат"], "message": "First week: спершу виміряй — зібери список flaky-тестів (звіти, історія, `--repeat-each`)." },
+    { "field": "fixes", "check": "minItems", "value": 3, "message": "Fixes: щонайменше 3 виправлення причин." },
+    { "field": "fixes", "check": "mentionsAny", "value": ["waitForTimeout|web-first|пауз|sleep"], "message": "Fixes: прибери 18 `waitForTimeout`, заміни їх на очікування подій / web-first перевірки." },
+    { "field": "fixes", "check": "mentionsAny", "value": ["user|користувач|data|дан"], "message": "Fixes: спільний користувач кошика — кожен тест має створювати свого." },
+    { "field": "fixes", "check": "mentionsAny", "value": ["retries|повтор"], "message": "Fixes: поверни `retries` до 1–2 на CI, коли причини виправлено." },
+    { "field": "process", "check": "mentionsAny", "value": ["owner|власник|rotation|черг|duty|відповідальн"], "message": "Process: призначте власника падінь (наприклад, по черзі щотижня)." },
+    { "field": "process", "check": "mentionsAny", "value": ["metric|метрик|%|green|зелен|flaky rate|частк"], "message": "Process: назви метрики, за якими видно прогрес (частка зелених прогонів main, flaky за тиждень)." }
+  ],
+  "model": {
+    "now": [
+      "Collect the list of flaky tests from the last 2 weeks of reports (flaky status, history) and confirm with --repeat-each=30.",
+      "Move the worst offenders to @quarantine, each with a ticket, an owner and a 2-week limit, so main becomes trustworthy again.",
+      "Agree on a failure owner rotation: every red run on main is triaged the same day.",
+      "Explain to the team why \"just re-run\" is dangerous: real bugs hide behind flaky reds."
+    ],
+    "fixes": [
+      "Replace the 18 waitForTimeout calls with web-first assertions or waits for the real event (response, URL, enabled button).",
+      "Give every cart test its own user created through the API (unique email) and clean it up in a fixture.",
+      "Use trace on first retry to find the remaining causes (races, fragile locators, external services) and fix them one by one.",
+      "Lower retries from 4 to 1–2 on CI once the causes are fixed, and return quarantined tests only after a green --repeat-each run."
+    ],
+    "process": "Owner rotation for failures, quarantine with tickets and a time limit, test code reviewed like product code (no sleeps, no force). Weekly metrics: share of green main runs on unchanged code (target 98%+), number of flaky tests per week (trend down), PR suite duration. Review the quarantine every sprint; an empty quarantine is the goal."
+  },
+  "hints": [
+    "Почни з вимірювання і повернення довіри (карантин), потім лікуй причини, потім закріпи процесом.",
+    "Кожна проблема з умови — окремий пункт плану: паузи, спільний користувач, retries: 4, «перезапусти», немає відповідального."
+  ],
+  "explanation": "Стабілізація йде в три кроки. **Виміряти й повернути довіру**: список flaky, карантин із задачами, відповідальний. **Лікувати причини**: паузи → події, спільні дані → власні дані, trace для решти, потім зменшити retries. **Закріпити процесом**: ротація розбору падінь, рев'ю тестів, метрики стабільності. Без процесу набір знову зіпсується за кілька місяців.",
+  "checklist": [
+    "План починається з вимірювання, а не з «перезапусків»",
+    "Карантин має задачі, власників і термін",
+    "Кожна причина з умови має конкретне виправлення",
+    "Retries зменшуються лише після виправлень",
+    "Є власник падінь і метрики прогресу"
+  ]
+}

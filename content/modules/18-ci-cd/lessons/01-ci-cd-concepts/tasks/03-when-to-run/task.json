@@ -1,0 +1,24 @@
+{
+  "type": "table",
+  "title": "When should these tests run?",
+  "statement": "Команда Gadgetly розкладає тести по конвеєру. Коли запускати кожен набір?",
+  "givenColumns": ["Test set"],
+  "answerColumns": [
+    {
+      "id": "when",
+      "label": "When",
+      "options": ["Every pull request", "After deploy to staging", "Nightly (schedule)", "After a production release"]
+    }
+  ],
+  "rows": [
+    { "given": ["Unit tests of the discount calculator (40 s)"], "answers": { "when": "Every pull request" } },
+    { "given": ["UI smoke: login, add to cart, checkout (@smoke, 4 min)"], "answers": { "when": "Every pull request" } },
+    { "given": ["API contract tests for orders and auth (1 min)"], "answers": { "when": "Every pull request" } },
+    { "given": ["Integration of the real payment sandbox and email service on the shared environment"], "answers": { "when": "After deploy to staging" } },
+    { "given": ["Full UI regression on Chromium, Firefox and WebKit (1 h 20 min)"], "answers": { "when": "Nightly (schedule)" } },
+    { "given": ["Visual comparisons of 60 pages at 3 screen sizes"], "answers": { "when": "Nightly (schedule)" } },
+    { "given": ["Open the home page and search for a product — read-only (1 min)"], "answers": { "when": "After a production release" }, "explain": "На продакшні — лише безпечні перевірки, що нічого не створюють." }
+  ],
+  "hints": ["Чим швидший і важливіший для щоденної роботи набір, тим раніше в конвеєрі."],
+  "explanation": "На кожен PR запускають усе швидке, що ловить більшість регресій: unit, API, UI smoke. Перевірки, які потребують спільного середовища з реальними інтеграціями, — після деплою на staging. Довгі набори (повна регресія, кілька браузерів, візуальні) — щоночі. На продакшні — короткий smoke, що лише читає дані."
+}
