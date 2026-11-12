@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Top-rated products first",
+  "variantOf": "03-sort-products",
+  "statement": "Тест перевіряє сортування «за рейтингом». Напиши `top_rated(products)` — назви товарів за рейтингом **від найвищого**; при однаковому рейтингу — за назвою за алфавітом без урахування регістру.\n\n```python\nproducts = [\n    {\"name\": \"mouse\", \"rating\": 4.5},\n    {\"name\": \"Cable\", \"rating\": 4.8},\n    {\"name\": \"Adapter\", \"rating\": 4.5},\n]\ntop_rated(products)   # ['Cable', 'Adapter', 'mouse']\n```",
+  "hints": [
+    "Рейтинг за спаданням — мінус у ключі: `-p[\"rating\"]`.",
+    "Ключ-кортеж: `key=lambda p: (-p[\"rating\"], p[\"name\"].lower())`, потім comprehension бере назви."
+  ],
+  "explanation": "Мінус перед числом розвертає порядок лише рейтингу, а назва в нижньому регістрі сортується за зростанням. Якщо замість мінуса використати `reverse=True`, назви при рівному рейтингу теж підуть у зворотному порядку — тест на рівні рейтинги це покаже.",
+  "codeRules": [
+    { "kind": "require", "pattern": "lambda", "message": "Передай у `sorted` ключ через `lambda`." }
+  ]
+}

@@ -15,6 +15,25 @@ slow = [t for t in times if t > 100]    # те саме одним рядком
 
 Читається зліва направо: «`t` для кожного `t` у `times`, якщо `t > 100`».
 
+## Розбір: від циклу до comprehension
+
+Перетворимо цикл, що збирає коди помилок у вигляді рядків, крок за кроком:
+
+```python
+codes = [200, 404, 500, 201]
+
+errors = []
+for code in codes:
+    if code >= 400:
+        errors.append(str(code))
+```
+
+1. Що додаємо — `str(code)` — ставимо **на початок**: `[str(code) ...]`.
+2. Рядок циклу без двокрапки — посередині: `[str(code) for code in codes ...]`.
+3. Умову без двокрапки — **в кінець**: `[str(code) for code in codes if code >= 400]`.
+
+Результат обох варіантів: `['404', '500']`.
+
 ## Перетворення і фільтр
 
 Перша частина — **що** покласти в новий список, `if` наприкінці — **фільтр** (необов'язковий):
@@ -38,13 +57,13 @@ failed = [name for name, status in results if status == "failed"]   # ['cart']
 Фігурні дужки — і отримуєш словник або множину:
 
 ```python
-users = [{"id": 42, "email": "qa@gadgetly.test"}, {"id": 17, "email": "dev@gadgetly.test"}]
+users = [{"id": 42, "email": "qa@example.test"}, {"id": 17, "email": "dev@example.test"}]
 
 emails_by_id = {u["id"]: u["email"] for u in users}
-# {42: 'qa@gadgetly.test', 17: 'dev@gadgetly.test'}
+# {42: 'qa@example.test', 17: 'dev@example.test'}
 
 domains = {u["email"].split("@")[1] for u in users}
-# {'gadgetly.test'}
+# {'example.test'}
 ```
 
 Словник: `{ключ: значення for ...}`. Множина: `{значення for ...}` — дублікати зникнуть.
@@ -75,9 +94,16 @@ Comprehension — для простих випадків: одне перетв�
 labels = [("slow" if t > 1000 else "ok") if t >= 0 else "invalid" for t in times]
 ```
 
+## Типові помилки
+
+- `[t for t in times if t > 100 else 0]` — `SyntaxError`. Фільтр `if` (без `else`) іде **в кінець**; вибір «одне або інше» — **на початок**: `[t if t > 100 else 0 for t in times]`.
+- Круглі дужки замість квадратних дають не список, а генератор: `(t for t in times)`.
+- `print` чи `append` усередині comprehension — ознака, що потрібен звичайний цикл.
+
 ## Підсумок
 
 - `[вираз for x in колекція if умова]` — новий список; `if` — необов'язковий фільтр.
+- Перехід від циклу: що додаємо → на початок, `for` → посередині, `if` → у кінець.
 - `{k: v for ...}` — словник, `{v for ...}` — множина.
 - `any(...)` — хоч один, `all(...)` — усі; `all` на порожньому — `True`, тому перевіряй, що дані є.
 - Складна логіка — звичайним циклом.

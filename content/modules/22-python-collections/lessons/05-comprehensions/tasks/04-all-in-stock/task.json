@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "Every product in stock — but not an empty list",
+  "statement": "Тест каталогу перевіряє: «усі показані товари є в наявності». Напиши `all_in_stock(products)` з `all()`. Але пам'ятай пастку: порожній каталог — це **не** успіх, тоді результат `False`.\n\n```python\nall_in_stock([{\"name\": \"Mouse\", \"in_stock\": True}, {\"name\": \"Cable\", \"in_stock\": True}])   # True\nall_in_stock([{\"name\": \"Mouse\", \"in_stock\": True}, {\"name\": \"Hub\", \"in_stock\": False}])    # False\nall_in_stock([])                                                                              # False\n```",
+  "hints": [
+    "`all(p[\"in_stock\"] for p in products)` — чи всі в наявності.",
+    "`all` на порожньому списку дає `True` — додай перевірку, що список не порожній: `len(products) > 0 and all(...)`."
+  ],
+  "explanation": "`all()` для порожньої колекції повертає `True` (немає жодного елемента, що порушив би умову). Для тесту це небезпечно: каталог, який нічого не показав, «пройшов би» перевірку. Тому умова складається з двох частин: дані є **і** всі вони відповідають вимозі.",
+  "codeRules": [
+    { "kind": "require", "pattern": "all\\s*\\(", "message": "Використай `all(...)`." }
+  ]
+}

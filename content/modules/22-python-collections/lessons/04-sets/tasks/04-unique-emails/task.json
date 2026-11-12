@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "Count unique emails",
+  "statement": "Тест перевіряє, скільки **різних** користувачів зареєструвалося. Email-и з форми можуть відрізнятися регістром і пробілами по краях — це той самий користувач. Напиши `count_unique_emails(emails)` через множину.\n\n```python\ncount_unique_emails([\"qa@example.test\", \" QA@Example.test\", \"dev@example.test\"])   # 2\ncount_unique_emails([])                                                            # 0\n```",
+  "hints": [
+    "Спершу нормалізуй кожен email: `email.strip().lower()`.",
+    "Додавай нормалізовані значення в множину (`set()` і `add`), а наприкінці поверни `len(...)`."
+  ],
+  "explanation": "Множина сама прибирає повтори, але лише **однакових** значень: `\"qa@example.test\"` і `\" QA@Example.test\"` для неї різні. Тому спершу нормалізація (`strip().lower()`), потім множина. Це той самий принцип, що й при пошуку користувача за email у реальній системі.",
+  "codeRules": [
+    { "kind": "require", "pattern": "set\\s*\\(", "message": "Порахуй унікальні значення через множину: `set()`." }
+  ]
+}

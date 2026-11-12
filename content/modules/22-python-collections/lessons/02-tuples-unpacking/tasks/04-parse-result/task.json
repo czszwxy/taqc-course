@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Parse a result line into a record",
+  "statement": "Тест-раннер пише результати рядками `name;status;duration`. Напиши `parse_result(line)` — кортеж `(name, status, duration)`: пробіли навколо частин прибрані, `duration` — `float`. Використай **розпакування**.\n\n```python\nparse_result(\"test_login;passed;1.25\")        # ('test_login', 'passed', 1.25)\nparse_result(\" test_cart ; failed ; 3.4 \")    # ('test_cart', 'failed', 3.4)\nparse_result(\"broken line\")                   # ValueError — не три частини\n```",
+  "hints": [
+    "`line.split(\";\")` дає список частин; розпакуй його одразу: `name, status, duration = line.split(\";\")`.",
+    "Кожну частину очисти через `strip()`, тривалість перетвори на `float`, поверни `name, status, duration`.",
+    "Окремо обробляти неправильний рядок не потрібно: розпакування саме підніме `ValueError`, якщо частин не три."
+  ],
+  "explanation": "Розпакування результату `split` — короткий і безпечний спосіб розібрати запис: якщо частин більше чи менше, Python одразу піднімає `ValueError: not enough values to unpack` (або `too many values`) — тест упаде на зіпсованому рядку, а не мовчки візьме не те поле.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\w+\\s*,\\s*\\w+\\s*,\\s*\\w+\\s*=", "message": "Розпакуй частини в три змінні: `name, status, duration = ...`." }
+  ]
+}

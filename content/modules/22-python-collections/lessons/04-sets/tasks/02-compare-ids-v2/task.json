@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "What changed between two runs",
+  "variantOf": "02-compare-ids",
+  "statement": "Є списки назв упалих тестів у вчорашньому і сьогоднішньому прогонах. Напиши `added_removed(before, after)` — кортеж з двох **відсортованих списків**: `(нові падіння, виправлені)`.\n\n```python\nbefore = [\"test_cart\", \"test_login\"]\nafter = [\"test_login\", \"test_search\", \"test_checkout\"]\nadded_removed(before, after)\n# (['test_checkout', 'test_search'], ['test_cart'])\n```",
+  "hints": [
+    "Нові падіння — є в `after`, але немає в `before`: `set(after) - set(before)`.",
+    "Множина не має порядку — перетвори результат у відсортований список: `sorted(...)`."
+  ],
+  "explanation": "Різниця множин відповідає на обидва питання: що з'явилося (`after - before`) і що зникло (`before - after`). `sorted()` повертає список у стабільному порядку, тож звіт не змінюється від запуску до запуску — на відміну від друку множини.",
+  "codeRules": []
+}

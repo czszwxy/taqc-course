@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "Remove a value without side effects",
+  "variantOf": "02-add-unique",
+  "statement": "Напиши `remove_value(items, value)` — **новий** список без **усіх** входжень `value`. Вхідний список змінювати не можна.\n\n```python\ntags = [\"smoke\", \"flaky\", \"login\", \"flaky\"]\nremove_value(tags, \"flaky\")   # ['smoke', 'login']\nprint(tags)                   # ['smoke', 'flaky', 'login', 'flaky'] — без змін\n```",
+  "hints": [
+    "Новий порожній список до циклу і `append` для кожного елемента, що **не** дорівнює `value`.",
+    "`remove()` прибирає лише перше входження і змінює вхідний список — тут він не підходить."
+  ],
+  "explanation": "Збирати результат у новий список — найпростіший спосіб не змінити вхідні дані й прибрати всі входження. Спроба викликати `items.remove(...)` у циклі по тому самому списку пропускає елементи (список зсувається під циклом) і псує дані, які передав тест.",
+  "codeRules": []
+}

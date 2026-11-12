@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "Find unexpected fields in a response",
+  "variantOf": "03-missing-fields",
+  "statement": "Друга половина перевірки контракту: у відповіді не має бути **зайвих** полів — особливо таких, як `password_hash`. Напиши `unexpected_fields(allowed, response)` — список ключів `response`, яких немає в `allowed`, у порядку відповіді.\n\n```python\nresponse = {\"id\": 42, \"email\": \"qa@example.test\", \"password_hash\": \"x9f…\"}\nunexpected_fields([\"id\", \"email\", \"name\"], response)   # ['password_hash']\n```",
+  "hints": [
+    "Перебирай ключі відповіді: `for key in response:`.",
+    "Якщо `key not in allowed` — додай його до результату."
+  ],
+  "explanation": "Зайве поле у відповіді — не дрібниця: так витікають внутрішні дані (хеші паролів, службові поля). Перебір ключів словника дає їх у порядку відповіді, а `in` перевіряє, чи дозволений ключ. Значення полів тут неважливі — лише їхні назви.",
+  "codeRules": []
+}

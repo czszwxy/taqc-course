@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Find the fastest passed test",
+  "variantOf": "02-slowest-test",
+  "statement": "Результати — список кортежів `(name, status, duration)`. Напиши `fastest_passed(results)` — назва **найшвидшого** тесту серед тих, що мають статус `\"passed\"`. Якщо таких немає — `\"\"`. При однаковій тривалості — перший.\n\n```python\nresults = [\n    (\"test_login\", \"passed\", 1.25),\n    (\"test_cart\", \"failed\", 0.3),\n    (\"test_search\", \"passed\", 0.8),\n]\nfastest_passed(results)   # 'test_search' — test_cart швидший, але впав\n```",
+  "hints": [
+    "Розпаковуй у циклі: `for name, status, duration in results:` і пропускай усе, що не `\"passed\"`.",
+    "Тримай найменшу тривалість і назву. Початкове «найменше» — `None`: перший пройдений тест завжди стає лідером."
+  ],
+  "explanation": "Дві умови разом: статус і тривалість. Зручний старт — `best_name = \"\"` і `best_time = None`: якщо `best_time is None or duration < best_time` — оновлюємо лідера. Строге `<` залишає першого серед рівних. Помилка — шукати мінімум серед усіх тестів, забувши про статус.",
+  "codeRules": [
+    { "kind": "require", "pattern": "for\\s+\\w+\\s*,\\s*\\w+\\s*,\\s*\\w+\\s+in", "message": "Розпакуй кортеж прямо в циклі: `for name, status, duration in results:`." }
+  ]
+}

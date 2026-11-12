@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "First item title from a response",
+  "variantOf": "03-user-city",
+  "statement": "Напиши `first_item_title(response)` — назва першої позиції з `response[\"data\"][\"items\"][0][\"title\"]`, або `None`, якщо будь-якої ланки немає, вона `None`, або список позицій порожній. Без помилок.\n\n```python\nfirst_item_title({\"data\": {\"items\": [{\"title\": \"Mouse\"}, {\"title\": \"Cable\"}]}})   # 'Mouse'\nfirst_item_title({\"data\": {\"items\": []}})                                       # None\nfirst_item_title({\"data\": None})                                                 # None\n```",
+  "hints": [
+    "Словники — через `(d.get(\"key\") or {})`, а для списку — `or []`: `items = data.get(\"items\") or []`.",
+    "Перед `items[0]` перевір, що список не порожній: `if not items: return None`."
+  ],
+  "explanation": "Ланцюжок змішує словники й списки: у словника безпечно читаємо через `get`, а до списку звертаємося за індексом лише після перевірки, що він не порожній — інакше `IndexError`. `or {}` і `or []` замінюють і відсутнє значення, і явний `None` порожнім контейнером відповідного типу.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "except", "message": "Розв'яжи без try/except — через get() і перевірки." }
+  ]
+}
