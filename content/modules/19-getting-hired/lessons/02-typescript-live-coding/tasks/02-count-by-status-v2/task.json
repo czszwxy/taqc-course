@@ -1,0 +1,12 @@
+{
+  "type": "code",
+  "title": "Live coding: the slowest tests",
+  "variantOf": "02-count-by-status",
+  "statement": "Ще одне класичне завдання: знайти **найповільніші** тести прогону.\n\n```ts\nexport interface TestResult {\n  title: string;\n  durationMs: number;\n}\n```\n\nНапиши `slowestTests(results, n)`, що повертає **назви** `n` найдовших тестів від найдовшого до найкоротшого. При однаковій тривалості — за назвою від A до Z. Якщо `n` більше за кількість тестів, повертаються всі. Вхідний масив **не змінюється**.\n\n```ts\nslowestTests([\n  { title: 'login', durationMs: 900 },\n  { title: 'checkout', durationMs: 4200 },\n  { title: 'search', durationMs: 1500 },\n], 2);\n// ['checkout', 'search']\n```",
+  "hints": [
+    "`sort` змінює масив, тож спершу зроби копію: `[...results].sort(…)`.",
+    "Компаратор: `(a, b) => b.durationMs - a.durationMs || a.title.localeCompare(b.title)`.",
+    "Далі `.slice(0, n).map((r) => r.title)`."
+  ],
+  "explanation": "Сортування з двома ключами (спершу тривалість за спаданням, потім назва) і обрізання до `n`. Дві типові помилки: `sort` без копії змінює вхідний масив (на співбесіді це питають окремо), і забутий другий ключ, через що порядок тестів з однаковою тривалістю стає непередбачуваним."
+}

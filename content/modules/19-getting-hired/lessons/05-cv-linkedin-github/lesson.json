@@ -1,0 +1,36 @@
+{
+  "title": "CV, LinkedIn & GitHub profile",
+  "minutes": 60,
+  "summary": "Резюме Trainee QA Automation без комерційного досвіду (структура, сильні пункти «дія + інструмент + результат», навички, проєкти), профіль LinkedIn і GitHub як портфоліо",
+  "resources": [
+    {
+      "title": "LinkedIn Help",
+      "url": "https://www.linkedin.com/help/linkedin",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Знайди тут статті про профіль, Open to work і навички.",
+      "needsVerification": true
+    },
+    {
+      "title": "GitHub Docs — Managing your profile README",
+      "url": "https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "GitHub Docs — Pinning items to your profile",
+      "url": "https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/pinning-items-to-your-profile",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: QA resume no experience",
+      "url": "https://www.youtube.com/results?search_query=QA+engineer+resume+no+experience",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

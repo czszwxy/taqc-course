@@ -1,0 +1,37 @@
+{
+  "type": "written",
+  "title": "\"Tell me about your test framework\"",
+  "statement": "Підготуй відповідь на питання **«Розкажи про свій фреймворк автотестів»** на 2–3 хвилини. Спирайся на те, що ти зробив у модулях 15–18 (і що зробиш у фінальному проєкті модуля 20). Пиши англійською або українською, так, як говоритимеш.",
+  "fields": [
+    { "id": "context", "label": "Context and stack", "kind": "textarea", "placeholder": "Educational project: UI + API tests for a demo shop, TypeScript + Playwright…" },
+    { "id": "structure", "label": "Structure (folders, page objects, fixtures, clients)", "kind": "textarea" },
+    { "id": "stability", "label": "How you keep tests stable", "kind": "textarea" },
+    { "id": "ci", "label": "CI and reports", "kind": "textarea" },
+    { "id": "next", "label": "What you would improve next", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "context", "check": "mentionsAll", "value": ["playwright", "typescript|\\bts\\b"], "message": "Context: назви стек — TypeScript і Playwright." },
+    { "field": "structure", "check": "mentionsAny", "value": ["page object|pom"], "message": "Structure: згадай Page Objects." },
+    { "field": "structure", "check": "mentionsAny", "value": ["fixture|фікстур"], "message": "Structure: згадай фікстури (дані, авторизація, прибирання)." },
+    { "field": "stability", "check": "mentionsAny", "value": ["getByRole|locator|локатор|web-first|auto-?wait|автоочікуван"], "message": "Stability: локатори і web-first перевірки / автоочікування." },
+    { "field": "stability", "check": "mentionsAny", "value": ["independent|незалежн|own data|свої дані|cleanup|прибиран|parallel|паралел"], "message": "Stability: незалежні тести зі своїми даними і прибиранням." },
+    { "field": "ci", "check": "mentionsAny", "value": ["github actions|ci"], "message": "CI: де запускаються тести (GitHub Actions)." },
+    { "field": "next", "check": "minLength", "value": 30, "message": "Next: що покращив би — це показує зрілість." }
+  ],
+  "model": {
+    "context": "It is an educational project that tests a demo online shop (Gadgetly) on UI and API level: about 30 tests. Stack: TypeScript, Playwright Test, GitHub Actions.",
+    "structure": "Tests are split into ui/ and api/ folders. Page objects (AccountPage, CartPage) keep locators and actions; API clients (OrdersApi) wrap the endpoints. Fixtures create the data a test needs through the API, give the test a signed-in page via storageState and delete the data in teardown. Tests import `test` from our fixtures file.",
+    "stability": "User-facing locators (getByRole, getByLabel, test ids by agreement), web-first assertions and auto-waiting — no waitForTimeout. Every test is independent: it creates its own data with unique values and cleans up, so tests run fully parallel. Retries are 2 only on CI, with a trace on the first retry, and every flaky test gets a ticket.",
+    "ci": "GitHub Actions runs the @smoke tests on every pull request and the full suite every night; the HTML report with traces is uploaded as an artifact, and the PR check is required before merging.",
+    "next": "Add visual comparisons for key pages, shard the nightly run, add JSON-schema validation for API responses and run against a second browser (WebKit)."
+  },
+  "hints": ["Говори про **рішення і причини**: чому storageState, чому getByRole, чому прибирання у фікстурах."],
+  "explanation": "Добра розповідь про фреймворк коротка і структурована: контекст і стек → шари (тести, Page Objects, клієнти, фікстури) → як забезпечено стабільність → CI і звіти → що далі. Чесно називай проєкт навчальним. Інтерв'юер оцінює рішення і розуміння, а не масштаб.",
+  "checklist": [
+    "Названо стек і масштаб (без перебільшень)",
+    "Пояснено шари: Page Objects, клієнти, фікстури",
+    "Є конкретика про стабільність (локатори, перевірки, дані)",
+    "Описано CI і звіти",
+    "Є план покращень"
+  ]
+}

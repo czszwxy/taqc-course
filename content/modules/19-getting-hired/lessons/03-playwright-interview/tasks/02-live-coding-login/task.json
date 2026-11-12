@@ -1,0 +1,23 @@
+{
+  "type": "playwright",
+  "title": "Live coding: test the login page in 20 minutes",
+  "playground": "login",
+  "statement": "Симуляція технічної співбесіди: «Ось сторінка логіну. За 20 хвилин напиши автотести на ключові вимоги». Засічи час!\n\nСторінка: `/playground/login` (вимоги в жовтій панелі). Тестові акаунти: `demo@taskly.test` / `Demo1234`, заблокований `locked@taskly.test` / `Locked123`.\n\nЩонайменше **4** тести, які покривають:\n\n- успішний вхід;\n- блокування після **3** невдалих спроб (і правильний пароль після цього не приймається);\n- email з **пробілами** навколо приймається;\n- **Forgot password?** без email показує `Enter your email first`;\n- без **Remember me** email не зберігається після Log out.\n\nПиши так, як писав би перед інтерв'юером: хелпер для логіну, зрозумілі назви тестів, user-facing локатори, web-first перевірки.",
+  "mutants": [
+    { "id": "lockout", "description": "the account was locked only after 5 failed attempts.", "hint": "Three wrong passwords in a row must show \"Too many failed attempts…\"." },
+    { "id": "emailSpaces", "description": "spaces around the email were not trimmed.", "hint": "Sign in with spaces before and after the demo email." },
+    { "id": "forgotEmpty", "description": "\"Forgot password?\" with an empty email showed the success message.", "hint": "Click \"Forgot password?\" without an email." },
+    { "id": "rememberMe", "description": "the email was remembered without \"Remember me\".", "hint": "Log in without Remember me, log out, check that Email is empty." }
+  ],
+  "minTests": 4,
+  "codeRules": [
+    { "kind": "forbid", "pattern": "waitForTimeout\\(", "message": "На співбесіді пауза в тесті — червоний прапорець. Використай web-first перевірки." },
+    { "kind": "require", "pattern": "getByRole\\(|getByLabel\\(", "message": "Покажи user-facing локатори: `getByRole`, `getByLabel`." }
+  ],
+  "hints": [
+    "Хелпер: `async function logIn(page, email, password) { await page.getByLabel('Email').fill(email); await page.getByLabel('Password', { exact: true }).fill(password); await page.getByRole('button', { name: 'Log in' }).click(); }`",
+    "Повідомлення про помилки мають `role=\"alert\"`: `await expect(page.getByRole('alert')).toHaveText(…)`.",
+    "Log out — кнопка `Log out`; поле Email після виходу перевіряй через `toHaveValue('')`."
+  ],
+  "explanation": "На live coding оцінюють не лише результат, а й підхід: чи почав ти з хелпера, чи назви тестів читаються як вимоги, чи локатори стійкі, чи немає пауз, чи перевіряєш ти межі (рівно 3 спроби) і негативні гілки (без email, без Remember me). Говори вголос: «спершу позитивний сценарій, потім межа блокування, потім нормалізація email»."
+}

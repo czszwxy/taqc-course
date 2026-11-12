@@ -1,0 +1,12 @@
+{
+  "title": "Getting Hired",
+  "description": "Підготовка до пошуку першої роботи QA Automation: типові питання з теорії тестування, TypeScript і live coding, Playwright і автоматизація, симуляція тестового завдання (план, баг-репорти, автотести, README), резюме, LinkedIn і GitHub, поведінкові питання за методом STAR. Практика — справжні live-coding завдання, тестове завдання на сторінці My account і письмові відповіді, які можна скопіювати на рев'ю.",
+  "goals": [
+    "Answer classic QA theory questions clearly, with an example",
+    "Solve typical TypeScript live-coding tasks and talk through the solution",
+    "Answer Playwright and automation questions and write tests under time pressure",
+    "Complete a take-home assignment: plan, bug reports, automation and a README",
+    "Write a CV, LinkedIn profile and GitHub portfolio for a trainee QA Automation role",
+    "Answer behavioral questions with the STAR method"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "title": "Take-home test assignment simulation",
+  "minutes": 120,
+  "summary": "Що таке тестове завдання, як його читати й планувати час, що здавати (план або чекліст, баг-репорти, автотести, README) і що оцінює рев'юер; повна симуляція на сторінці My account у чотири частини",
+  "resources": [
+    {
+      "title": "GitHub Docs — About READMEs",
+      "url": "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Annotations (test.fail, test.fixme)",
+      "url": "https://playwright.dev/docs/test-annotations",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Як позначити тест, що падає через відомий баг.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: QA automation take home assignment",
+      "url": "https://www.youtube.com/results?search_query=QA+automation+take+home+assignment",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

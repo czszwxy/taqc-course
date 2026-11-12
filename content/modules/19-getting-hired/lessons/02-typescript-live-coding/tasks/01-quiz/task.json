@@ -1,0 +1,80 @@
+{
+  "type": "quiz",
+  "title": "Mock interview: TypeScript & JavaScript",
+  "show": 7,
+  "hints": ["`===` без приведення типів; `unknown` безпечніший за `any`; `Promise.all` — паралельно і падає при першій помилці."],
+  "questions": [
+    {
+      "id": "triple",
+      "kind": "single",
+      "text": "Що поверне `'5' == 5` і `'5' === 5`?",
+      "options": [
+        { "text": "`true` і `false`", "correct": true },
+        { "text": "`true` і `true`" },
+        { "text": "`false` і `false`" }
+      ]
+    },
+    {
+      "id": "unknown",
+      "kind": "single",
+      "text": "Чим `unknown` кращий за `any` для відповіді API?",
+      "options": [
+        { "text": "Перед використанням значення TypeScript змусить перевірити його тип", "correct": true },
+        { "text": "Нічим, це синоніми" },
+        { "text": "`unknown` працює швидше" }
+      ]
+    },
+    {
+      "id": "promise-all",
+      "kind": "single",
+      "text": "Що робить `await Promise.all([a(), b(), c()])`?",
+      "options": [
+        { "text": "Запускає всі три паралельно і чекає на всі; якщо один упаде — упаде весь вираз", "correct": true },
+        { "text": "Виконує їх строго по черзі" },
+        { "text": "Повертає результат першого, що завершився" }
+      ]
+    },
+    {
+      "id": "sort",
+      "kind": "single",
+      "text": "Що поверне `[10, 9, 1].sort()`?",
+      "options": [
+        { "text": "`[1, 10, 9]` — без компаратора числа сортуються як рядки", "correct": true },
+        { "text": "`[1, 9, 10]`" }
+      ]
+    },
+    {
+      "id": "const",
+      "kind": "single",
+      "text": "`const user = { name: 'Olena' }; user.name = 'Taras';` — що станеться?",
+      "options": [
+        { "text": "Спрацює: `const` забороняє перевизначити змінну, але не змінювати об'єкт", "correct": true },
+        { "text": "Помилка: const не можна змінювати" }
+      ]
+    },
+    {
+      "id": "await",
+      "kind": "single",
+      "text": "Що буде, якщо забути `await` перед `page.click()` у тесті?",
+      "options": [
+        { "text": "Тест піде далі, не дочекавшись кліку: наступні кроки можуть виконатися раніше, тест стане нестабільним", "correct": true },
+        { "text": "Нічого, Playwright дочекається сам" }
+      ]
+    },
+    {
+      "id": "reduce",
+      "kind": "text",
+      "text": "Який метод масиву «згортає» масив в одне значення (наприклад, суму)? (назва)",
+      "accept": ["reduce", "reduce()", ".reduce"]
+    },
+    {
+      "id": "live-first",
+      "kind": "single",
+      "text": "Тобі дали задачу на live coding. Що зробити ПЕРШИМ?",
+      "options": [
+        { "text": "Повторити задачу своїми словами, уточнити крайні випадки, записати приклади", "correct": true },
+        { "text": "Одразу писати код, щоб встигнути" }
+      ]
+    }
+  ]
+}

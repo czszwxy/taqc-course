@@ -1,0 +1,84 @@
+{
+  "type": "quiz",
+  "title": "CV, LinkedIn & GitHub basics",
+  "show": 6,
+  "hints": ["Рекрутер дивиться 15–30 секунд: посада, навички, проєкти з посиланнями."],
+  "questions": [
+    {
+      "id": "length",
+      "kind": "single",
+      "text": "Яка довжина резюме для Trainee QA найкраща?",
+      "options": [{ "text": "1 сторінка", "correct": true }, { "text": "3–4 сторінки, щоб показати старанність" }]
+    },
+    {
+      "id": "experience",
+      "kind": "single",
+      "text": "Комерційного досвіду в IT немає. Що поставити на видне місце?",
+      "options": [
+        { "text": "Проєкти з посиланнями на GitHub і конкретними результатами", "correct": true },
+        { "text": "Вигадану стажировку в компанії", "explain": "Перша ж детальна розмова це викриє." },
+        { "text": "Нічого, лише освіту" }
+      ]
+    },
+    {
+      "id": "bullet",
+      "kind": "single",
+      "text": "Який пункт резюме найсильніший?",
+      "options": [
+        { "text": "Automated 25 UI and API tests with Playwright + TypeScript using Page Objects and fixtures", "correct": true },
+        { "text": "Familiar with automation" },
+        { "text": "Responsible, hardworking, team player" }
+      ]
+    },
+    {
+      "id": "personal",
+      "kind": "multiple",
+      "text": "Що краще НЕ додавати в резюме? (кілька відповідей)",
+      "options": [
+        { "text": "Дату народження і сімейний стан", "correct": true },
+        { "text": "Фото", "correct": true },
+        { "text": "Посилання на GitHub" },
+        { "text": "Рівень англійської" }
+      ]
+    },
+    {
+      "id": "headline",
+      "kind": "single",
+      "text": "Найкращий headline у LinkedIn:",
+      "options": [
+        { "text": "Trainee QA Automation Engineer | TypeScript · Playwright · API testing", "correct": true },
+        { "text": "Looking for any job" },
+        { "text": "Student" }
+      ]
+    },
+    {
+      "id": "github",
+      "kind": "multiple",
+      "text": "Що робить репозиторій сильним портфоліо? (кілька відповідей)",
+      "options": [
+        { "text": "README з описом і командами запуску", "correct": true },
+        { "text": "Зелений бейдж CI", "correct": true },
+        { "text": "Осмислені коміти і `.gitignore`", "correct": true },
+        { "text": "Закомічені `node_modules` і `.env` з токенами", "explain": "Це червоний прапорець — особливо секрети." }
+      ]
+    },
+    {
+      "id": "ats",
+      "kind": "single",
+      "text": "У вакансії «API testing, SQL, Playwright». Ти це вмієш. Що зробити з резюме?",
+      "options": [
+        { "text": "Переконатися, що ці ключові слова є в Skills і в описах проєктів", "correct": true },
+        { "text": "Нічого, рекрутер сам здогадається" }
+      ]
+    },
+    {
+      "id": "typo",
+      "kind": "single",
+      "text": "Чому друкарські помилки в резюме QA особливо шкодять?",
+      "options": [
+        { "text": "Бо уважність до деталей — ключова навичка тестувальника, і помилки її спростовують", "correct": true },
+        { "text": "Не шкодять, ніхто не читає уважно" }
+      ]
+    }
+  ]
+}

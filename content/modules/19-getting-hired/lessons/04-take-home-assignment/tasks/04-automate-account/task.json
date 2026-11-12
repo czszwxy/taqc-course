@@ -1,0 +1,24 @@
+{
+  "type": "playwright",
+  "title": "Take-home part 3: automate the key scenarios",
+  "playground": "account",
+  "statement": "Частина 3 тестового завдання: автоматизуй ключові сценарії сторінки **My account** (`/playground/account`). У тестовому завданні важливі **вибір** сценаріїв і якість коду, а не кількість.\n\nАвтоматизуй щонайменше **5** сценаріїв:\n\n1. Сесія переживає перезавантаження. *Уже є.*\n2. Sign out забуває сесію (і після reload).\n3. Cancel у **Delete account** нічого не видаляє.\n4. Порожнє ім'я в **Rename** відхиляється (`Display name cannot be empty`).\n5. Якщо `GET /api/orders` повертає **500** (мок через `page.route`), показується `Could not load your orders.`.\n\nКод має бути охайним: хелпер входу, зрозумілі назви, без пауз.",
+  "mutants": [
+    { "id": "sessionLost", "description": "the session was lost after a reload.", "hint": "Sign in, reload, expect My account." },
+    { "id": "signOutKeepsToken", "description": "Sign out kept the session.", "hint": "Sign out, reload, expect the sign-in form." },
+    { "id": "deleteIgnoresCancel", "description": "Delete account ignored Cancel.", "hint": "Dismiss the confirmation and check the account is still there." },
+    { "id": "renameEmpty", "description": "Rename accepted an empty name.", "hint": "Accept the prompt with '' and expect the alert and the old name." },
+    { "id": "ordersErrorAsEmpty", "description": "a failed orders request looked like \"No orders yet\".", "hint": "Mock GET /api/orders with status 500 before signing in." }
+  ],
+  "minTests": 5,
+  "codeRules": [
+    { "kind": "forbid", "pattern": "waitForTimeout\\(", "message": "Без пауз: використовуй web-first перевірки." },
+    { "kind": "require", "pattern": "page\\.route\\(", "message": "Сценарій 5: змоделюй помилку API через `page.route('**/api/orders', …)`." },
+    { "kind": "require", "pattern": "\\.(on|once)\\(\\s*['\"]dialog['\"]", "message": "Сценарії 3–4: обробляй діалоги через `page.on/once('dialog', …)`." }
+  ],
+  "hints": [
+    "Усе це ти вже робив у модулі 16: сесія (урок 7), діалоги (урок 3), мок мережі (урок 8). Тут — зібрати в один охайний файл.",
+    "Маршрут для 500 реєструй до входу: замовлення вантажаться одразу після нього."
+  ],
+  "explanation": "Добре тестове завдання показує, що ти вмієш **вибирати**: автоматизуєш сценарії з найбільшим ризиком (безпека сесії, незворотне видалення, валідація, обробка помилок сервера), а не все підряд. Код читається як специфікація: хелпер входу, одна поведінка на тест, назви-вимоги, жодних пауз. Мок 500 показує, що ти вмієш тестувати стани, які на живому сервері не відтворити."
+}

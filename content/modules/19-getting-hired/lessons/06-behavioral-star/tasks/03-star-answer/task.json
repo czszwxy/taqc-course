@@ -1,0 +1,40 @@
+{
+  "type": "written",
+  "title": "Write your own STAR answer",
+  "statement": "Обери **одне** питання і напиши відповідь за STAR на основі **реальної** історії: з цього курсу, тестового завдання, попередньої роботи, навчання чи волонтерства.\n\n- Tell me about a time you disagreed with someone.\n- Tell me about a time you made a mistake.\n- Tell me about a time you had to learn something new quickly.\n- Tell me about a time you worked under pressure.\n\nПиши англійською (для практики) або українською. Потім **Copy for review** і попроси Claude поставити тобі уточнювальні питання, як на співбесіді.",
+  "fields": [
+    { "id": "question", "label": "Question", "kind": "text" },
+    { "id": "situation", "label": "Situation", "kind": "textarea" },
+    { "id": "task", "label": "Task", "kind": "textarea" },
+    { "id": "action", "label": "Action (what YOU did)", "kind": "textarea" },
+    { "id": "result", "label": "Result + what you learned", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "question", "check": "minLength", "value": 10, "message": "Question: скопіюй обране питання." },
+    { "field": "situation", "check": "minLength", "value": 40, "message": "Situation: 1–2 речення контексту: де, коли, що сталося." },
+    { "field": "task", "check": "minLength", "value": 25, "message": "Task: яке завдання або проблема стояли саме перед тобою." },
+    { "field": "action", "check": "minLength", "value": 120, "message": "Action: найбільша частина: 2–4 конкретні кроки." },
+    { "field": "action", "check": "mentionsAny", "value": ["(^|\\s)i\\s|(^|\\s)я\\s|my |мій|моя|мої"], "message": "Action: розповідай від першої особи — що зробив **ти** (I / я)." },
+    { "field": "result", "check": "minLength", "value": 50, "message": "Result: результат і висновок, чого навчився." },
+    { "field": "result", "check": "mentionsAny", "value": ["learn|навчив|зрозумів|висновок|lesson|since then|відтоді|now i|тепер"], "message": "Result: додай висновок: чого навчився або що змінив." }
+  ],
+  "model": {
+    "question": "Tell me about a time you had to learn something new quickly.",
+    "situation": "Three months ago I decided to move into QA automation, but I had never written code. I gave myself the goal of automating real tests for a demo shop within six weeks.",
+    "task": "I had to learn TypeScript basics and Playwright well enough to write stable UI and API tests on my own, while working full time.",
+    "action": "I made a plan: one hour every weekday and three hours on weekends. I learned TypeScript through small coding tasks with tests, then moved to Playwright and wrote a test after every lesson. When a test was flaky I opened the trace instead of adding waits, and I wrote down every mistake in a notes file. At the end I put everything into a GitHub repository with a README and a CI pipeline.",
+    "result": "In six weeks I had about 30 UI and API tests running on GitHub Actions. I learned that small daily practice works better for me than long weekend sessions, and that reading the error and the trace saves more time than trying random fixes."
+  },
+  "hints": [
+    "Action — найбільша частина: 2–4 конкретні кроки, від першої особи.",
+    "Result: що вийшло (краще з числом) + що ти з цього виніс."
+  ],
+  "explanation": "Сильна STAR-відповідь коротка (1,5–2 хвилини), правдива і зосереджена на твоїх діях. Situation і Task — лише для контексту. Action — конкретні кроки від першої особи. Result — факт і висновок. Типові помилки: довгий контекст без дій, «ми зробили» замість «я зробив», результат без висновку.",
+  "checklist": [
+    "Історія реальна, і ти зможеш відповісти на уточнення",
+    "Action — найбільша частина, від першої особи",
+    "Є результат (краще з числом) і висновок",
+    "Нікого не звинувачено",
+    "Відповідь вкладається в 2 хвилини вголос"
+  ]
+}

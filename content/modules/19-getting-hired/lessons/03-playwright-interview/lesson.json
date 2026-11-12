@@ -1,0 +1,28 @@
+{
+  "title": "Playwright & automation questions",
+  "minutes": 50,
+  "summary": "Питання про автоматизацію і Playwright на співбесіді: що автоматизувати, піраміда, локатори, автоочікування, flaky, POM, фікстури, storageState, мок мережі, паралельність, CI — з короткими відповідями, live coding тестів і розповідь про свій фреймворк",
+  "resources": [
+    {
+      "title": "Playwright: Best Practices",
+      "url": "https://playwright.dev/docs/best-practices",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright documentation",
+      "url": "https://playwright.dev/docs/intro",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Playwright interview questions",
+      "url": "https://www.youtube.com/results?search_query=Playwright+interview+questions",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

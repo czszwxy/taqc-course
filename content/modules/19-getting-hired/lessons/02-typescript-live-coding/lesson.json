@@ -1,0 +1,29 @@
+{
+  "title": "TypeScript questions & live coding",
+  "minutes": 55,
+  "summary": "Типові питання з TypeScript/JavaScript на співбесіді QA Automation (типи, any vs unknown, interface vs type, == vs ===, let/const, async/await, Promise.all) і алгоритм live coding: уточнити, приклади, крайні випадки, рішення, перевірка, говорити вголос",
+  "resources": [
+    {
+      "title": "TypeScript Handbook",
+      "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "uk.javascript.info — підручник українською",
+      "url": "https://uk.javascript.info/",
+      "kind": "course",
+      "lang": "uk",
+      "note": "Повтори масиви, об'єкти, async/await.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: JavaScript interview questions for QA automation",
+      "url": "https://www.youtube.com/results?search_query=JavaScript+TypeScript+interview+questions+QA+automation",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

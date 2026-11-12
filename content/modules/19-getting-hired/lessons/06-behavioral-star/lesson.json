@@ -1,0 +1,21 @@
+{
+  "title": "Behavioral questions (STAR)",
+  "minutes": 50,
+  "summary": "Поведінкові питання («розкажи про випадок, коли…») і метод STAR, «Tell me about yourself», чому QA, конфлікт з розробником, помилка, питання до інтерв'юера і розмова про зарплату",
+  "resources": [
+    {
+      "title": "YouTube: STAR method interview answers",
+      "url": "https://www.youtube.com/results?search_query=STAR+method+interview+answers",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: tell me about yourself QA engineer",
+      "url": "https://www.youtube.com/results?search_query=tell+me+about+yourself+QA+engineer+interview",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

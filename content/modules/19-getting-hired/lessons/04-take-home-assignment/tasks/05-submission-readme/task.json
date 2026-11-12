@@ -1,0 +1,46 @@
+{
+  "type": "written",
+  "title": "Take-home part 4: the README",
+  "statement": "Частина 4 — **README** репозиторію з тестовим завданням. Його рев'юер відкриє першим. Напиши розділи README для свого рішення частин 1–3 (сторінка My account). Markdown вітається.",
+  "fields": [
+    { "id": "run", "label": "How to run", "kind": "textarea", "placeholder": "npm ci\nnpx playwright install chromium\nnpx playwright test" },
+    { "id": "covered", "label": "What is covered (and why)", "kind": "textarea" },
+    { "id": "bugs", "label": "Bugs found (one per line: title + severity)", "kind": "list" },
+    { "id": "assumptions", "label": "Assumptions", "kind": "textarea" },
+    { "id": "next", "label": "Not covered / next steps", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "run", "check": "mentionsAny", "value": ["npm (ci|install|i)"], "message": "How to run: почни з встановлення залежностей (`npm ci`)." },
+    { "field": "run", "check": "mentionsAny", "value": ["playwright install"], "message": "How to run: не забудь встановлення браузерів (`npx playwright install`)." },
+    { "field": "run", "check": "mentionsAny", "value": ["playwright test|npm (run )?test"], "message": "How to run: команда запуску тестів." },
+    { "field": "covered", "check": "minLength", "value": 60, "message": "Covered: перелічи сценарії і коротко поясни вибір." },
+    { "field": "bugs", "check": "minItems", "value": 3, "message": "Bugs: щонайменше 3 знайдені баги (з частини 2)." },
+    { "field": "bugs", "check": "mentionsAny", "value": ["critical|major|minor|trivial|blocker"], "message": "Bugs: додай severity до кожного бага." },
+    { "field": "assumptions", "check": "minLength", "value": 30, "message": "Assumptions: що було незрозуміло і що ти припустив." },
+    { "field": "next", "check": "minLength", "value": 30, "message": "Next steps: що б ти зробив, маючи більше часу." }
+  ],
+  "model": {
+    "run": "Requirements: Node.js 20+.\n\n```bash\nnpm ci\nnpx playwright install chromium\nnpx playwright test\nnpx playwright show-report\n```\n\nThe app must be running at http://localhost:5173 (see `baseURL` in playwright.config.ts).",
+    "covered": "6 automated scenarios in `tests/account.spec.ts`: session after reload, sign out (also after a reload), Delete account Cancel and OK, Rename with an empty name, and the orders error state with a mocked 500. I chose them because they are critical for every user (session) or risky (a destructive action), and the error state is hard to reproduce by hand. Manual checks are in `checklist.md`.",
+    "bugs": [
+      "<bug 1 title> — Critical (test marked test.fail, see bugs/01.md)",
+      "<bug 2 title> — Major",
+      "<bug 3 title> — Minor"
+    ],
+    "assumptions": "Only desktop Chromium is required. The test account may be renamed during tests; every test signs in fresh. Network mocking is allowed for error states. Bug reports are kept as Markdown files in `bugs/` because no tracker was provided.",
+    "next": "Run against Firefox and WebKit, add a Page Object for the account page, run the tests on GitHub Actions with the HTML report as an artifact, add visual checks of the orders list and API tests for GET /api/orders."
+  },
+  "hints": [
+    "Уяви, що рев'юер нічого про проєкт не знає і має 2 хвилини: як запустити, що зроблено, що знайдено.",
+    "Баги з частини 2 — коротко: заголовок + severity, деталі в окремих файлах або issues."
+  ],
+  "explanation": "README — обличчя тестового. Рев'юер має за 2 хвилини зрозуміти, як запустити (команди копіюються як є), що покрито і **чому**, які баги знайдено і з якою severity, які були припущення і що лишилося. Типові помилки: немає `playwright install`, не сказано, що застосунок має працювати, баги без severity, відсутній розділ «next steps».",
+  "checklist": [
+    "Команди запуску можна скопіювати і виконати по черзі",
+    "Пояснено вибір сценаріїв",
+    "Баги з severity і посиланнями на деталі",
+    "Записано припущення",
+    "Є чесний розділ «not covered / next steps»",
+    "Перевірено: склонував у нову папку і запустив за README"
+  ]
+}

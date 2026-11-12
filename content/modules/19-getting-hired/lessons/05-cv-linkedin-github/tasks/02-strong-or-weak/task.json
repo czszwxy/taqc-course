@@ -1,0 +1,32 @@
+{
+  "type": "classify",
+  "title": "Strong, vague or remove? CV lines",
+  "statement": "Ти рев'юер резюме Trainee QA Automation. Для кожного рядка вирішіть: **сильний** (лишити), **розмитий** (переписати конкретно) чи **прибрати** (недоречний, ризикований або неправдивий).",
+  "show": 10,
+  "passScore": 0.8,
+  "categories": [
+    { "id": "strong", "label": "Strong — keep", "description": "Конкретна дія, інструмент, результат" },
+    { "id": "vague", "label": "Vague — rewrite", "description": "Правильна ідея, але без конкретики" },
+    { "id": "remove", "label": "Remove", "description": "Недоречне, ризиковане або неправда" }
+  ],
+  "items": [
+    { "id": "pw-30", "text": "Automated 30 UI and API tests with Playwright + TypeScript (Page Objects, fixtures, storageState)", "category": "strong" },
+    { "id": "ci", "text": "Set up a GitHub Actions workflow: smoke tests on every pull request, full run nightly, HTML report as an artifact", "category": "strong" },
+    { "id": "bugs-15", "text": "Reported 15 bugs with steps, evidence and severity on a demo shop; 3 critical", "category": "strong" },
+    { "id": "design", "text": "Designed 40 test cases for checkout using equivalence partitioning and boundary values", "category": "strong" },
+    { "id": "sql", "text": "Wrote SQL queries (JOIN, GROUP BY) to verify orders data after UI actions", "category": "strong" },
+    { "id": "responsible", "text": "Responsible for testing", "category": "vague", "explain": "Що саме тестував, чим, з яким результатом?" },
+    { "id": "knowledge", "text": "Knowledge of automation tools", "category": "vague", "explain": "Які інструменти і що ти ними зробив?" },
+    { "id": "team-player", "text": "Hardworking, stress-resistant team player", "category": "vague", "explain": "Слова без доказів. Краще показати командну роботу прикладом у проєкті або досвіді." },
+    { "id": "worked-api", "text": "Worked with APIs", "category": "vague", "explain": "Як саме: тестував CRUD, статус-коди, контракти, через Playwright request?" },
+    { "id": "birth", "text": "Date of birth: 12.03.2001, married, two kids", "category": "remove", "explain": "Персональні дані, що не стосуються роботи." },
+    { "id": "fake-job", "text": "QA Automation Engineer at a big company, 2 years (it was a self-study course)", "category": "remove", "explain": "Неправда. Курс чесно вказують у розділі Projects або Education." },
+    { "id": "selenium", "text": "Expert in Selenium, Cypress, Appium, JMeter, k6, Cucumber (watched tutorials)", "category": "remove", "explain": "Рівень «Expert» без досвіду — перебільшення, яке викриють. Залиш те, з чим справді працював." },
+    { "id": "hobby", "text": "Hobbies: watching TV series", "category": "remove", "explain": "Нічого не говорить про тебе як про фахівця і займає місце." }
+  ],
+  "hints": [
+    "Сильний пункт = дія + що + інструмент + результат (часто з числом).",
+    "Неправда і зайві персональні дані — завжди «прибрати»."
+  ],
+  "explanation": "Резюме без досвіду тримається на конкретиці: що ти зробив, яким інструментом, з яким результатом. Розмиті фрази («responsible for testing») не дають рекрутеру жодного доказу — їх переписують з конкретною дією. Неправду, «експертність» після туторіалів і персональні дані прибирають: вони або нічого не додають, або шкодять на співбесіді."
+}

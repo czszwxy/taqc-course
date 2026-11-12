@@ -1,0 +1,59 @@
+{
+  "type": "written",
+  "title": "\"How would you test an elevator?\"",
+  "statement": "Класичне питання на мислення. Інтерв'юер каже: **«Як би ви протестували ліфт у 9-поверховому житловому будинку?»**\n\nПокажи структуру: спершу питання до «замовника», потім групи перевірок.",
+  "fields": [
+    { "id": "questions", "label": "Clarifying questions you would ask first (one per line)", "kind": "list" },
+    { "id": "functional", "label": "Functional and boundary checks (one per line)", "kind": "list" },
+    { "id": "negative", "label": "Negative / unusual scenarios (one per line)", "kind": "list" },
+    { "id": "nonfunctional", "label": "Non-functional checks (safety, performance, accessibility…)", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "questions", "check": "minItems", "value": 3, "message": "Questions: почни з 3+ уточнень: поверхи (є підвал?), вантажопідйомність, доступ, вимоги безпеки." },
+    { "field": "functional", "check": "minItems", "value": 4, "message": "Functional: щонайменше 4 перевірки: виклик, вибір поверху, двері, кнопки…" },
+    { "field": "functional", "check": "mentionsAny", "value": ["1(st)?\\b|9|first|last|перш|останн|top|bottom|ground|межа|boundar|максимальн|max"], "message": "Functional: додай межі: перший і останній поверх, вантаж рівно на максимумі." },
+    { "field": "negative", "check": "minItems", "value": 3, "message": "Negative: щонайменше 3 незвичні сценарії: усі кнопки одразу, перевантаження, перешкода в дверях…" },
+    { "field": "nonfunctional", "check": "minItems", "value": 3, "message": "Non-functional: щонайменше 3 — безпека, швидкість/навантаження, доступність." },
+    { "field": "nonfunctional", "check": "mentionsAny", "value": ["safe|безпек|emergency|аварій|alarm|тривог|power|світл|електр"], "message": "Non-functional: обов'язково безпека — аварійна кнопка, зв'язок, відключення електрики." }
+  ],
+  "model": {
+    "questions": [
+      "Is there a basement or a parking level, or only floors 1–9?",
+      "What is the maximum load (kg / people)?",
+      "Is access restricted (key card for some floors)?",
+      "Which safety standards and emergency features are required?",
+      "How many people use it at peak time?"
+    ],
+    "functional": [
+      "Call the elevator from every floor; it arrives and opens the doors",
+      "Select each floor inside; it goes there and stops level with the floor",
+      "Boundaries: floor 1 and floor 9 (top), no movement beyond them",
+      "Load exactly at the maximum moves; maximum + 1 kg shows an overload signal and does not move",
+      "Doors: open, close, the Open button keeps them open, the Close button closes them",
+      "Several calls are served in a sensible order (direction of travel)"
+    ],
+    "negative": [
+      "Press all floor buttons at once",
+      "Block the doors with an object or a hand — they reopen",
+      "Try to open the doors between floors",
+      "Press the current floor's button while standing on it"
+    ],
+    "nonfunctional": [
+      "Safety: emergency button and voice connection to the dispatcher work; brakes hold on power failure; doors cannot open while moving",
+      "Performance: waiting and travel time at peak load (morning rush)",
+      "Accessibility: Braille on buttons, voice announcements of floors, button height for wheelchair users",
+      "Usability and comfort: smooth start/stop, noise, lighting, clear floor display"
+    ]
+  },
+  "hints": [
+    "Почни не з тестів, а з питань: що саме ми тестуємо і за якими вимогами?",
+    "Пройди групами: функціональні → межі → негативні → нефункціональні (безпека завжди окремим пунктом)."
+  ],
+  "explanation": "«Протестуй предмет» перевіряє не знання ліфтів, а **підхід**: уточнити вимоги, систематично покрити функції, подумати про межі (перший/останній поверх, вантаж на межі) і негативні сценарії, не забути нефункціональне, особливо безпеку. Та сама структура працює для будь-якої фічі продукту.",
+  "checklist": [
+    "Відповідь починається з уточнювальних питань",
+    "Є межі (поверхи, вантаж) і негативні сценарії",
+    "Безпека згадана окремо",
+    "Перевірки згруповані, а не перелічені хаотично"
+  ]
+}

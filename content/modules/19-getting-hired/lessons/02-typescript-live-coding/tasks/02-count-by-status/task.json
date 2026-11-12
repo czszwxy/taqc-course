@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "Live coding: count test results by status",
+  "statement": "Типове завдання на live coding для QA Automation: є результати прогону, треба порахувати, скільки тестів у кожному статусі.\n\n```ts\nexport type Status = 'passed' | 'failed' | 'skipped' | 'flaky';\n\nexport interface TestResult {\n  title: string;\n  status: Status;\n  durationMs: number;\n}\n```\n\nНапиши `countByStatus(results)`, яка повертає об'єкт з **усіма чотирма** статусами, навіть якщо якогось немає (тоді 0):\n\n```ts\ncountByStatus([\n  { title: 'login', status: 'passed', durationMs: 900 },\n  { title: 'cart', status: 'failed', durationMs: 1200 },\n  { title: 'search', status: 'passed', durationMs: 700 },\n]);\n// { passed: 2, failed: 1, skipped: 0, flaky: 0 }\n```\n\nНа співбесіді проговорюй уголос, що робиш, і не забудь крайній випадок: порожній масив.",
+  "hints": [
+    "Почни з об'єкта, де всі лічильники 0: `const counts: Record<Status, number> = { passed: 0, failed: 0, skipped: 0, flaky: 0 };`",
+    "Пройди масив (`for…of` або `reduce`) і збільш `counts[result.status]`.",
+    "Не змінюй вхідний масив — лише читай його."
+  ],
+  "explanation": "Задача перевіряє базу: тип `Record<Status, number>`, ініціалізацію всіх ключів і прохід масивом. Часта помилка — створювати ключі лише для статусів, що зустрілися: тоді для порожнього масиву повертається `{}`, а не нулі. На співбесіді плюсом буде одразу назвати крайні випадки (порожній масив, лише один статус) і показати тест на них."
+}

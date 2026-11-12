@@ -1,0 +1,71 @@
+{
+  "type": "written",
+  "title": "Take-home part 1: plan before you test",
+  "playground": "account",
+  "statement": "Тестове завдання від компанії Gadgetly:\n\n> Test our **My account** page (`/playground/account`, account `qa@gadgetly.test` / `Test1234`). 1) Write a short plan or checklist. 2) Report the bugs you find. 3) Automate the most important scenarios with Playwright + TypeScript. 4) Add a README. Expected effort: 4–6 hours.\n\nЧастина 1 — **план**. Відкрий сторінку, прочитай вимоги в жовтій панелі, пройдися по ній 10 хвилин. Потім заповни план. Баги поки не шукай — це частина 2.",
+  "fields": [
+    { "id": "questions", "label": "Questions to the company (one per line)", "kind": "list", "placeholder": "Which browsers must be supported?" },
+    { "id": "scope", "label": "Scope: in scope / out of scope", "kind": "textarea", "placeholder": "In scope: … Out of scope: …" },
+    { "id": "checklist", "label": "Checklist (one check per line)", "kind": "list" },
+    { "id": "automation", "label": "What you will automate and why (one per line)", "kind": "list" },
+    { "id": "timebox", "label": "Time plan (one step per line)", "kind": "list", "placeholder": "1 h — explore and write the checklist" }
+  ],
+  "rules": [
+    { "field": "questions", "check": "minItems", "value": 2, "message": "Questions: щонайменше 2 питання (браузери, формат здачі баг-репортів, чи можна мокати мережу…)." },
+    { "field": "scope", "check": "mentionsAny", "value": ["out of scope|не тестую|не входить|поза|not in scope|excluded"], "message": "Scope: явно напиши, що **не** входить (out of scope)." },
+    { "field": "checklist", "check": "minItems", "value": 8, "message": "Checklist: щонайменше 8 перевірок — по всіх пунктах вимог, з негативними й межовими." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["sign.?out|log.?out|вих"], "message": "Checklist: покрий вихід з акаунта." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["order|замовлен"], "message": "Checklist: покрий список замовлень (зокрема стан помилки)." },
+    { "field": "checklist", "check": "mentionsAny", "value": ["cancel|скасу|відмін"], "message": "Checklist: перевір діалоги в обидва боки — OK і Cancel." },
+    { "field": "automation", "check": "minItems", "value": 3, "message": "Automation: щонайменше 3 сценарії." },
+    { "field": "automation", "check": "mentionsAny", "value": ["because|бо |оскільки|критичн|critical|risk|ризик|часто|often|stable|стабільн|regression|регрес"], "message": "Automation: поясни **чому** саме ці (критичність, ризик, стабільність)." },
+    { "field": "timebox", "check": "mentionsAny", "value": ["\\d"], "message": "Time plan: розпиши кроки з орієнтовним часом (години / хвилини)." }
+  ],
+  "model": {
+    "questions": [
+      "Which browsers and screen sizes must be supported?",
+      "Should bug reports go into the README or a separate file / issues?",
+      "May I mock network responses in the automated tests?",
+      "Is the test account safe to change (rename, delete) or should I restore it?"
+    ],
+    "scope": "In scope: everything in the requirements panel — sign-in, session after reload, sign out, My orders (loading, list, empty, error + Try again), Rename, Export my data, Delete account, Terms of Service link, Help chat. Functional testing in Chromium on desktop. Out of scope: performance and load testing, security testing beyond session handling, the API itself (only as the source of orders), other browsers and mobile layouts.",
+    "checklist": [
+      "Sign in with valid credentials shows My account with the email",
+      "Wrong password shows \"Invalid email or password\"",
+      "Reload after sign-in keeps the session",
+      "Sign out returns to the sign-in form; after a reload still signed out",
+      "My orders: loading text, then the list with totals",
+      "My orders: error state shows \"Could not load your orders.\" and Try again loads them",
+      "Rename: new name is shown; empty name is rejected; Cancel changes nothing",
+      "Export my data: started message, then \"Export requested\"",
+      "Delete account: Cancel keeps the account; OK shows the deleted message",
+      "Terms of Service opens in a new tab",
+      "Help chat: empty question is rejected; a filled question shows the thanks message"
+    ],
+    "automation": [
+      "Session after reload and Sign out — critical (security and every user signs in), stable to automate",
+      "Delete account Cancel / OK — destructive action, high risk if Cancel fails",
+      "Rename validation (empty name) — cheap regression check of a validation rule",
+      "Orders error state with a mocked 500 — hard to reproduce by hand, easy with page.route"
+    ],
+    "timebox": [
+      "0.5 h — read the task, explore the page, send questions",
+      "0.5 h — this plan and the checklist",
+      "1 h — run the checklist, write bug reports",
+      "1.5 h — set up Playwright and automate the scenarios",
+      "0.5 h — README, .gitignore, clone-and-run check"
+    ]
+  },
+  "hints": [
+    "Пройди вимоги з жовтої панелі пункт за пунктом — кожен дає 1–2 перевірки (позитивну і негативну).",
+    "Для автоматизації обирай критичне, ризиковане і стабільне; важко відтворюване вручну (помилка сервера) — добрий кандидат для моку."
+  ],
+  "explanation": "План показує рев'юеру, що ти думаєш до того, як клікаєш: уточнюєш, обмежуєш scope, покриваєш вимоги позитивними й негативними перевірками і **обґрунтовуєш** вибір автотестів. Timebox захищає від того, щоб витратити 5 годин на одну частину. Типова помилка — чекліст тільки з «щасливих» шляхів, без Cancel, порожніх значень і перезавантаження.",
+  "checklist": [
+    "Є питання до компанії або записані припущення",
+    "Out of scope названо явно",
+    "Чекліст покриває всі пункти вимог, з негативними перевірками",
+    "Вибір автотестів обґрунтовано",
+    "Час розподілено між усіма частинами, з запасом на README"
+  ]
+}

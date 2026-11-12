@@ -1,0 +1,44 @@
+{
+  "type": "written",
+  "title": "\"Tell me about yourself\" + your questions",
+  "statement": "Підготуй відповідь на перше питання майже кожної співбесіди — **«Tell me about yourself»** (1–2 хвилини), відповідь на **«Why QA?»** і 3 питання до інтерв'юера.\n\nСтруктура «Tell me about yourself»: **теперішнє** (хто я і що вмію) → **минуле** (як прийшов у QA) → **майбутнє** (чого хочу і чому ця компанія).",
+  "fields": [
+    { "id": "present", "label": "Present: who you are and what you can do", "kind": "textarea" },
+    { "id": "past", "label": "Past: how you came to QA", "kind": "textarea" },
+    { "id": "future", "label": "Future: what you are looking for", "kind": "textarea" },
+    { "id": "whyQa", "label": "Why QA?", "kind": "textarea" },
+    { "id": "questions", "label": "Your questions to the interviewer (one per line)", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "present", "check": "minLength", "value": 80, "message": "Present: хто ти зараз і що вмієш (з конкретикою: інструменти, проєкт)." },
+    { "field": "present", "check": "mentionsAny", "value": ["playwright|typescript|automation|автоматиз|test|тест"], "message": "Present: назви свої QA-навички й інструменти." },
+    { "field": "past", "check": "minLength", "value": 50, "message": "Past: коротко, як ти прийшов у тестування (1–3 речення)." },
+    { "field": "future", "check": "minLength", "value": 40, "message": "Future: яку роль шукаєш і чому саме в цій компанії." },
+    { "field": "whyQa", "check": "minLength", "value": 60, "message": "Why QA: чесна мотивація + приклад." },
+    { "field": "questions", "check": "minItems", "value": 3, "message": "Questions: щонайменше 3 питання до інтерв'юера." }
+  ],
+  "model": {
+    "present": "I'm a trainee QA automation engineer. I know manual testing and test design — checklists, test cases, bug reports — and I automate UI and API tests with Playwright and TypeScript. My main project is a test framework for a demo online shop with page objects, fixtures and a GitHub Actions pipeline.",
+    "past": "Before that I worked for three years in customer support, where I reproduced users' problems and described them for developers. I noticed that this was the part of the job I enjoyed most, so I took a structured course in QA and automation.",
+    "future": "Now I'm looking for a trainee or junior QA automation role in a team where I can learn from experienced engineers. I'm interested in your company because you build a product with a lot of user flows and you have automated tests in CI.",
+    "whyQa": "I like understanding how things work and finding where they break, and I like that a good bug report saves real users from a problem. In support I saw how much one unclear bug costs everyone, and I want to be the person who finds it before release.",
+    "questions": [
+      "How is testing organized in the team, and who writes the automated tests?",
+      "What would my first three months look like? Will I have a mentor?",
+      "Which tools and CI do you use, and how often do you release?",
+      "What does a successful trainee look like after one year?"
+    ]
+  },
+  "hints": [
+    "Не переказуй резюме і біографію з дитинства: 3 частини по 2–3 речення.",
+    "Попередній досвід (навіть не з IT) пов'яжи з QA: уважність, комунікація, відтворення проблем."
+  ],
+  "explanation": "«Tell me about yourself» — твій 1–2-хвилинний пітч, з якого інтерв'юер обере теми для наступних питань. Тому згадай саме те, про що готовий говорити: навички, проєкт, мотивацію. «Why QA» має бути чесним і з прикладом. Питання до інтерв'юера показують інтерес до команди і процесів, а не лише до умов.",
+  "checklist": [
+    "Відповідь вкладається в 1–2 хвилини вголос",
+    "Є конкретика: інструменти, проєкт",
+    "Попередній досвід пов'язано з QA",
+    "Пояснено, чому саме ця компанія (адаптуй під кожну)",
+    "Питання до інтерв'юера про роботу і розвиток, а не лише про умови"
+  ]
+}

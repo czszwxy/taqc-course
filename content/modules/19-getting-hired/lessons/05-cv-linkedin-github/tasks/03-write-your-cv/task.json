@@ -1,0 +1,49 @@
+{
+  "type": "written",
+  "title": "Write your CV summary, project bullets and LinkedIn headline",
+  "statement": "Напиши основу свого резюме **англійською** на базі того, що ти зробив у цьому курсі. Без вигадок: тільки те, що реально вмієш.\n\nПотім натисни **Copy for review** і попроси Claude прорецензувати (можна разом з текстом вакансії, під яку адаптуєш резюме).",
+  "fields": [
+    { "id": "headline", "label": "Title / LinkedIn headline", "kind": "text", "placeholder": "Trainee QA Automation Engineer | TypeScript · Playwright · API testing" },
+    { "id": "summary", "label": "Summary (2–3 sentences)", "kind": "textarea" },
+    { "id": "skills", "label": "Skills (grouped, one group per line)", "kind": "list", "placeholder": "Testing: test design (EP, BVA, decision tables), test cases, bug reports" },
+    { "id": "project", "label": "One project: name + 3–4 bullets (one per line)", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "headline", "check": "mentionsAny", "value": ["qa|test"], "message": "Headline: назви роль — QA Automation / Test Automation." },
+    { "field": "summary", "check": "minLength", "value": 120, "message": "Summary: 2–3 речення: хто ти, що вмієш, що шукаєш." },
+    { "field": "summary", "check": "notMentions", "value": "expert|guru|ninja|senior", "message": "Summary: без «expert / senior» — для Trainee це звучить неправдоподібно." },
+    { "field": "skills", "check": "minItems", "value": 3, "message": "Skills: щонайменше 3 групи (Testing, Automation, Tools)." },
+    { "field": "skills", "check": "mentionsAll", "value": ["playwright", "typescript"], "message": "Skills: Playwright і TypeScript — твоя основа, вони мають бути." },
+    { "field": "project", "check": "minItems", "value": 3, "message": "Project: назва + щонайменше 3 пункти." },
+    { "field": "project", "check": "mentionsAny", "value": ["\\d"], "message": "Project: додай числа (кількість тестів, багів, сценаріїв)." },
+    { "field": "project", "check": "mentionsAny", "value": ["automated|designed|wrote|built|set up|created|reported|implemented|tested"], "message": "Project: починай пункти з дієслова дії (Automated, Designed, Reported, Set up…)." }
+  ],
+  "model": {
+    "headline": "Trainee QA Automation Engineer | TypeScript · Playwright · API testing",
+    "summary": "Trainee QA Automation Engineer with a solid base in manual testing and test design and hands-on experience automating UI and API tests with Playwright and TypeScript. I built a test framework with Page Objects, fixtures and a GitHub Actions pipeline for a demo shop. Looking for a trainee or junior QA automation role where I can grow in a team.",
+    "skills": [
+      "Testing: test design (EP, BVA, decision tables, state transitions), checklists, test cases, bug reports, exploratory testing",
+      "Automation: TypeScript, Playwright Test (locators, fixtures, Page Object, API testing, network mocking)",
+      "Tools: Git, GitHub, GitHub Actions, Chrome DevTools, SQL (SQLite), REST APIs and JSON",
+      "Languages: Ukrainian (native), English (B1)"
+    ],
+    "project": [
+      "Gadgetly test framework — github.com/<you>/gadgetly-tests",
+      "Automated 30 UI and API tests with Playwright + TypeScript using Page Objects and custom fixtures",
+      "Designed a test plan, a 40-item checklist and 15 test cases; reported 12 bugs with severity and evidence",
+      "Set up GitHub Actions: smoke tests on every pull request and a nightly full run with an HTML report artifact"
+    ]
+  },
+  "hints": [
+    "Пункт проєкту: дієслово дії + що + інструмент + результат з числом.",
+    "Summary: «хто я → що вмію (з доказом) → що шукаю»."
+  ],
+  "explanation": "Сильне резюме Trainee — це конкретика і докази: посада в заголовку, коротке summary, згруповані навички, проєкт з посиланням і пунктами «дія + інструмент + результат». Не перебільшуй: рівень і досвід мають витримати детальні питання на співбесіді. Адаптуй ключові слова під кожну вакансію.",
+  "checklist": [
+    "Усе написане — правда, і про кожен пункт ти можеш розповісти детальніше",
+    "Пункти починаються з дієслова дії і містять числа",
+    "Є посилання на GitHub-проєкт",
+    "Навички згруповані і збігаються з вакансією, під яку подаєшся",
+    "Немає друкарських помилок (прочитай уголос або попроси перевірити)"
+  ]
+}

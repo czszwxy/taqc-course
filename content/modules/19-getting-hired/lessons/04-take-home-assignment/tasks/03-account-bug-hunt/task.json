@@ -1,0 +1,155 @@
+{
+  "type": "bug-report",
+  "title": "Take-home part 2: find and report bugs on My account",
+  "playground": "account",
+  "minBugs": 3,
+  "statement": "Частина 2 тестового завдання. Сторінка **My account** (`/playground/account`), акаунт `qa@gadgetly.test` / `Test1234`. Вимоги — у жовтій панелі на сторінці.\n\nЗнайди й оформи щонайменше **3** баг-репорти. На сторінці є баги, які видно звичайним користуванням, і такі, що потребують невеликого трюку:\n\n- перевір кожну дію в **обидва** боки: OK і Cancel, з даними і без;\n- перезавантажуй сторінку після входу й після виходу;\n- *(бонус)* у DevTools → Network можна **заблокувати запит** `/api/orders` (Block request URL) і подивитися, як сторінка поводиться при помилці.\n\nНа кожен баг — окремий репорт і **Submit**.",
+  "hints": [
+    "Delete account, Rename, Help chat: що буде, якщо натиснути Cancel або залишити поле порожнім?",
+    "Увійди і натисни F5. Потім Sign out і знову F5.",
+    "Terms of Service: де саме він відкрився?"
+  ],
+  "explanation": "Баги цієї сторінки — у межових діях: Cancel, що не скасовує; порожнє значення в prompt і в чаті; стан після перезавантаження (сесія губиться, а після виходу навпаки лишається); посилання не в новій вкладці; помилка мережі, показана як «немає замовлень». Добрий репорт називає точну дію (Cancel у confirm), дані (порожнє ім'я) і що бачить користувач.",
+  "bugs": [
+    {
+      "id": "sign-out-keeps-session",
+      "title": "After Sign out and a reload the user is signed in again",
+      "match": ["sign.?out|log.?out|вийти", "reload|refresh|f5|онов|перезавантаж", "signed in|my account|still|знову|залогін|кабінет|акаунт"],
+      "severity": ["Critical", "Major"],
+      "severityWhy": "Вихід не видаляє сесію: на спільному комп'ютері наступна людина після оновлення сторінки опиниться в чужому акаунті. Це проблема безпеки — Critical або щонайменше Major.",
+      "model": {
+        "title": "My account: after Sign out and a page reload the user is signed in again",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "Signed in as qa@gadgetly.test on /playground/account",
+        "steps": ["Click \"Sign out\"", "Check that the sign-in form is shown", "Reload the page (F5)"],
+        "testData": "qa@gadgetly.test / Test1234",
+        "actualResult": "After the reload My account opens again: the user is still signed in (the token stays in localStorage).",
+        "expectedResult": "After Sign out the session is forgotten: the sign-in form is shown after a reload too.",
+        "severity": "Critical",
+        "priority": "High",
+        "attachments": "video-sign-out-reload.mp4"
+      }
+    },
+    {
+      "id": "session-lost-on-reload",
+      "title": "The session is lost after a page reload",
+      "match": ["reload|refresh|f5|онов|перезавантаж", "sign.?in form|log.?in form|форм\\S* вход|sign in again|log in again|знову\\S* (вх|увій|логін)|session|сесі|signed out|logged out|розлогін|вилогін"],
+      "severity": ["Major", "Minor"],
+      "severityWhy": "Користувач мусить входити знову після кожного оновлення сторінки. Дуже незручно, але дані не втрачаються — Major (або Minor).",
+      "model": {
+        "title": "Account page: the session is lost after a page reload — the sign-in form is shown again",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/account is open with the sign-in form",
+        "steps": ["Sign in as qa@gadgetly.test / Test1234", "Check that My account is shown", "Reload the page (F5)"],
+        "testData": "qa@gadgetly.test / Test1234",
+        "actualResult": "After the reload the sign-in form is shown again; the user has to sign in again.",
+        "expectedResult": "The session is remembered: My account stays open after a reload.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": "video-reload.mp4"
+      }
+    },
+    {
+      "id": "delete-ignores-cancel",
+      "title": "Delete account deletes the account even after Cancel",
+      "match": ["delete|видал", "cancel|скасув|відмін"],
+      "severity": ["Critical", "Blocker"],
+      "severityWhy": "Незворотна дія виконується всупереч явному «ні» користувача — втрата акаунта і даних. Critical.",
+      "model": {
+        "title": "My account: Delete account deletes the account even when the confirmation is cancelled",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "Signed in as qa@gadgetly.test on /playground/account",
+        "steps": ["Click \"Delete account\"", "In the confirmation dialog click \"Cancel\""],
+        "testData": "qa@gadgetly.test / Test1234",
+        "actualResult": "\"Your account has been deleted\" is shown although Cancel was clicked.",
+        "expectedResult": "Cancel keeps the account: My account stays open and nothing is deleted.",
+        "severity": "Critical",
+        "priority": "High",
+        "attachments": "video-delete-cancel.mp4"
+      }
+    },
+    {
+      "id": "rename-empty",
+      "title": "Rename accepts an empty display name",
+      "match": ["rename|display.?name|ім['’]я|імені|перейменув", "empty|blank|порожн|пуст"],
+      "severity": ["Minor", "Major"],
+      "severityWhy": "У профілі зникає ім'я, але це легко виправити повторним перейменуванням — Minor (Major, якщо ім'я використовується далі, наприклад у листах).",
+      "model": {
+        "title": "My account: Rename accepts an empty display name — the name disappears",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "Signed in as qa@gadgetly.test on /playground/account",
+        "steps": ["Click \"Rename\"", "Clear the text in the dialog", "Click OK"],
+        "testData": "New display name: empty string",
+        "actualResult": "The display name becomes empty; no message is shown.",
+        "expectedResult": "\"Display name cannot be empty\" is shown and the name stays \"Olena Tester\".",
+        "severity": "Minor",
+        "priority": "Medium",
+        "attachments": "screenshot-empty-name.png"
+      }
+    },
+    {
+      "id": "help-empty-question",
+      "title": "Help chat sends an empty question",
+      "match": ["help|chat|чат|підтримк", "empty|blank|without|порожн|пуст|без питан|без текст"],
+      "severity": ["Minor", "Trivial"],
+      "severityWhy": "Підтримка отримує порожні звернення, користувач думає, що надіслав питання. Незручно, але не ламає основні функції — Minor.",
+      "model": {
+        "title": "My account: Help chat sends an empty question and shows \"Thanks!\"",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "Signed in as qa@gadgetly.test on /playground/account",
+        "steps": ["Scroll to the Help chat at the bottom", "Leave \"Your question\" empty", "Click \"Send\""],
+        "testData": "Question: empty",
+        "actualResult": "\"Thanks! We'll reply within 24 hours.\" is shown for an empty question.",
+        "expectedResult": "\"Please type your question\" is shown and nothing is sent.",
+        "severity": "Minor",
+        "priority": "Low",
+        "attachments": "screenshot-help-empty.png"
+      }
+    },
+    {
+      "id": "terms-same-tab",
+      "title": "Terms of Service opens in the same tab",
+      "match": ["terms|умов", "same tab|current tab|new tab|той сам\\S* вкладц|тій самій вкладц|нов\\S* вкладц|вкладк|tab"],
+      "severity": ["Minor", "Trivial"],
+      "severityWhy": "Користувач іде з кабінету і мусить повертатися назад — незручно, але функції не втрачено. Minor.",
+      "model": {
+        "title": "My account: Terms of Service opens in the same tab instead of a new tab",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "Signed in as qa@gadgetly.test on /playground/account",
+        "steps": ["Find the text \"By using Gadgetly you agree to the Terms of Service\"", "Click \"Terms of Service\""],
+        "testData": "—",
+        "actualResult": "The Terms page replaces My account in the same tab.",
+        "expectedResult": "Terms of Service opens in a new tab; My account stays open.",
+        "severity": "Minor",
+        "priority": "Low",
+        "attachments": "video-terms.mp4"
+      }
+    },
+    {
+      "id": "orders-error-as-empty",
+      "title": "A failed orders request is shown as \"No orders yet\"",
+      "match": ["order|замовлен", "block|fail|error|500|offline|network|мереж|помилк|збій|недоступ", "no orders|немає замовлень|empty|порожн"],
+      "severity": ["Major", "Minor"],
+      "severityWhy": "Користувач бачить «замовлень немає», хоча вони є, — може подумати, що замовлення загубилися, і писати в підтримку. Major.",
+      "model": {
+        "title": "My account: when GET /api/orders fails, the page says \"No orders yet\" instead of an error",
+        "environment": "Chrome 131, Windows 11, QA Academy local, DevTools request blocking",
+        "preconditions": "Signed in as qa@gadgetly.test; in DevTools → Network the URL /api/orders is blocked",
+        "steps": ["Block the request URL /api/orders in DevTools", "Reload /playground/account", "Look at the My orders section"],
+        "testData": "Blocked request: GET /api/orders",
+        "actualResult": "\"No orders yet\" is shown, as if the user had no orders.",
+        "expectedResult": "\"Could not load your orders.\" with a Try again button is shown (requirement for a failed request).",
+        "severity": "Major",
+        "priority": "Medium",
+        "attachments": "screenshot-orders-blocked.png"
+      }
+    }
+  ],
+  "checklist": [
+    "У заголовку — що саме і де не так",
+    "Кроки відтворення починаються з відомого стану (увійшов / вийшов)",
+    "Actual і expected точні, з текстом повідомлень",
+    "Severity обґрунтована впливом на користувача (безпека, втрата даних, незручність)",
+    "Кожен баг — окремий репорт"
+  ]
+}

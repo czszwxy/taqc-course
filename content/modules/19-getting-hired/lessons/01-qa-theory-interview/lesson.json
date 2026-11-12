@@ -1,0 +1,29 @@
+{
+  "title": "QA theory interview questions",
+  "minutes": 45,
+  "summary": "Як відповідати на питання з теорії тестування (визначення + приклад + зв'язок з практикою), найчастіші питання з короткими відповідями і класика «протестуй предмет» на прикладі ліфта",
+  "resources": [
+    {
+      "title": "ISTQB Glossary",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Перевір формулювання термінів, які ти використовуєш у відповідях.",
+      "needsVerification": true
+    },
+    {
+      "title": "ISTQB — Certified Tester Foundation Level",
+      "url": "https://www.istqb.org/certifications/certified-tester-foundation-level",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: співбесіда QA питання й відповіді",
+      "url": "https://www.youtube.com/results?search_query=співбесіда+QA+junior+питання+відповіді",
+      "kind": "video",
+      "lang": "uk",
+      "needsVerification": true
+    }
+  ]
+}

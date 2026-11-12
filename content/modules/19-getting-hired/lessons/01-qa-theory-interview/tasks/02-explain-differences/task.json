@@ -1,0 +1,32 @@
+{
+  "type": "written",
+  "title": "Answer three classic questions",
+  "statement": "Відповідай так, як говорив би на співбесіді: **визначення + приклад + навіщо це QA**. 3–5 речень на кожну відповідь. Можна українською або англійською.\n\n1. Чим **severity** відрізняється від **priority**?\n2. Чим **smoke**, **sanity** і **regression** відрізняються одне від одного?\n3. Що таке **граничні значення** і навіщо вони?",
+  "fields": [
+    { "id": "severity", "label": "1. Severity vs priority", "kind": "textarea" },
+    { "id": "smoke", "label": "2. Smoke vs sanity vs regression", "kind": "textarea" },
+    { "id": "bva", "label": "3. Boundary values", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "severity", "check": "minLength", "value": 120, "message": "1: дай визначення обох і приклад, де вони не збігаються (3–5 речень)." },
+    { "field": "severity", "check": "mentionsAny", "value": ["impact|affect|вплив|наскільки серйозн|how serious|how bad"], "message": "1: severity — це **вплив** дефекту на систему." },
+    { "field": "severity", "check": "mentionsAny", "value": ["urgen|терміново|how soon|order|черг|first|спершу"], "message": "1: priority — **терміновість** виправлення." },
+    { "field": "smoke", "check": "mentionsAll", "value": ["smoke", "sanity", "regression|регрес"], "message": "2: поясни всі три." },
+    { "field": "smoke", "check": "minLength", "value": 120, "message": "2: кожному виду — по реченню і, бажано, приклад." },
+    { "field": "bva", "check": "mentionsAny", "value": ["межі|меж|boundar|edge"], "message": "3: граничні значення — це значення **на межах** діапазону і поряд з ними." },
+    { "field": "bva", "check": "mentionsAny", "value": ["\\d+"], "message": "3: додай конкретний приклад з числами (наприклад, 18–65 → 17, 18, 65, 66)." }
+  ],
+  "model": {
+    "severity": "Severity is how much a defect affects the system; priority is how urgently it should be fixed. They often match, but not always: a typo in the company name on the home page has low severity but high priority, while a crash in a rarely used admin report has high severity but maybe medium priority. Usually QA sets severity and the product owner or team lead sets priority.",
+    "smoke": "Smoke testing quickly checks that a new build works at all (the app starts, login works, the main flow opens) — if it fails, we stop and return the build. Sanity is a quick, narrow check of a specific change or fix, for example only the promo-code fix. Regression testing checks that existing functionality still works after changes; it is wide and usually automated.",
+    "bva": "Boundary value analysis tests values at the edges of a range and right next to them, because off-by-one bugs live there. For an age field of 18–65 I test 17, 18, 65 and 66 (or 17, 18, 19 and 64, 65, 66 with three values per boundary). For example, in Gadgetly shipping became free at 3,000 UAH, and exactly 3,000 is the case where a > instead of >= bug shows up."
+  },
+  "hints": ["Для кожної відповіді: 1 речення визначення, 1–2 речення прикладу, 1 речення «навіщо»."],
+  "explanation": "На співбесіді добре звучить відповідь, у якій поряд з визначенням є приклад. Саме приклад показує розуміння, а не завчений текст. Для пар понять обов'язково наведи випадок, де вони **розходяться** (низька severity + високий priority). Для технік тест-дизайну наведи конкретні числа.",
+  "checklist": [
+    "Кожна відповідь має визначення своїми словами",
+    "Є конкретний приклад (краще з власного навчального проєкту)",
+    "Пояснено, як це використовується в роботі QA",
+    "Відповіді короткі: 3–5 речень, без води"
+  ]
+}

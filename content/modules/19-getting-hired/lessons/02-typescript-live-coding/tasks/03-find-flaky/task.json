@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "Live coding: find flaky tests in the run history",
+  "statement": "Є історія кількох прогонів на **однаковому коді**: кожен запис — назва тесту і результат.\n\n```ts\nexport interface RunRecord {\n  test: string;\n  status: 'passed' | 'failed';\n}\n```\n\nНапиши `findFlaky(history)`: повертає назви тестів, які в історії **і проходили, і падали** (тобто flaky). Кожна назва — **один раз**, відсортовано від A до Z.\n\n```ts\nfindFlaky([\n  { test: 'search', status: 'passed' },\n  { test: 'cart', status: 'failed' },\n  { test: 'search', status: 'failed' },\n  { test: 'cart', status: 'failed' },\n  { test: 'login', status: 'passed' },\n]);\n// ['search']  — cart падає завжди (стабільно червоний), login завжди зелений\n```",
+  "hints": [
+    "Збери два набори назв: `const passed = new Set<string>()` і `const failed = new Set<string>()`.",
+    "Flaky — ті, що є в обох наборах: `[...passed].filter((name) => failed.has(name))`.",
+    "Не забудь `.sort()` наприкінці."
+  ],
+  "explanation": "Flaky-тест — той, що на тому самому коді має обидва результати. Тому достатньо двох множин (`Set`) і перетину. `Set` одразу прибирає дублікати. Типові помилки: повертати тест, який упав хоч раз (тоді стабільно червоні тести теж потраплять у список), або забути прибрати дублікати й відсортувати."
+}
