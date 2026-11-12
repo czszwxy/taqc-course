@@ -1,0 +1,24 @@
+{
+  "type": "playwright",
+  "title": "Handle dialogs, a frame and a new tab on the account page",
+  "playground": "account",
+  "statement": "Сторінка **My account** Gadgetly (`/playground/account`). Увійди як `qa@gadgetly.test` / `Test1234` (хелпер `signIn` уже є) і перевір:\n\n1. **Export my data** → alert `Your data export has started. We will email you a link.`, потім статус `Export requested`. *Уже є.*\n2. **Delete account** → у confirm натисни **Cancel** → акаунт лишається (видно `My account` і кнопку Delete account).\n3. **Rename** → у prompt введи **порожній** рядок → alert `Display name cannot be empty`, ім'я лишається `Olena Tester`.\n4. **Terms of Service** відкривається в **новій вкладці** із заголовком `Gadgetly Terms of Service`, а акаунт лишається відкритим у першій.\n5. **Help chat** (iframe з `title=\"Help chat\"` унизу): Send без питання → `Please type your question`; з питанням → `Thanks! We'll reply within 24 hours.`\n\nДіалоги: обробник `page.on('dialog', …)` / `page.once('dialog', …)` **до** кліку. Нова вкладка: `page.waitForEvent('popup')`. Фрейм: `page.frameLocator('iframe[title=\"Help chat\"]')`.",
+  "mutants": [
+    { "id": "deleteIgnoresCancel", "description": "the account was deleted even when the confirmation was cancelled.", "hint": "Dismiss the Delete confirmation and check that the account is still there." },
+    { "id": "renameEmpty", "description": "Rename accepted an empty display name.", "hint": "Accept the Rename prompt with an empty string and check the name." },
+    { "id": "termsSameTab", "description": "Terms of Service opened in the same tab.", "hint": "Wait for a popup when you click Terms of Service." },
+    { "id": "helpEmpty", "description": "the help chat sent an empty question.", "hint": "Inside the Help chat frame, press Send without typing a question." }
+  ],
+  "minTests": 5,
+  "codeRules": [
+    { "kind": "require", "pattern": "\\.(on|once)\\(\\s*['\"]dialog['\"]", "message": "Діалоги обробляй через `page.on('dialog', …)` або `page.once('dialog', …)`." },
+    { "kind": "require", "pattern": "waitForEvent\\(\\s*['\"](popup|page)['\"]", "message": "Нову вкладку чекай через `page.waitForEvent('popup')`." },
+    { "kind": "require", "pattern": "frameLocator\\(|contentFrame\\(", "message": "Елементи всередині iframe шукай через `page.frameLocator(…)`." }
+  ],
+  "hints": [
+    "Cancel у confirm: `page.once('dialog', (dialog) => dialog.dismiss());` перед кліком на Delete account.",
+    "Два діалоги поспіль (prompt, потім alert): один `page.on('dialog', …)`, всередині `dialog.type() === 'prompt' ? accept('') : accept()`. Повідомлення збирай у масив і перевір `await expect.poll(() => messages).toEqual([...])`.",
+    "`const popupPromise = page.waitForEvent('popup'); await page.getByRole('link', { name: 'Terms of Service' }).click(); const terms = await popupPromise;`"
+  ],
+  "explanation": "Діалоги (`alert`, `confirm`, `prompt`) блокують сторінку, тож Playwright за замовчуванням їх **закриває** (dismiss). Щоб вирішити самому, підпишись на подію `dialog` до кліку і виклич `accept()` / `accept('текст')` / `dismiss()`. Нова вкладка — це подія `popup` (або `page` у контексту), тож очікування треба почати **до** кліку. Iframe — окремий документ: звичайні локатори сторінки в нього не заходять, потрібен `frameLocator`. Баги тут класичні: Cancel, що не скасовує, порожнє значення в prompt, посилання не в новій вкладці, валідація всередині вбудованого віджета."
+}

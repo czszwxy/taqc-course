@@ -1,0 +1,21 @@
+{
+  "title": "Visual comparisons basics",
+  "minutes": 45,
+  "summary": "Візуальне регресійне тестування: toHaveScreenshot для сторінки й елемента, еталони та --update-snapshots, допустима різниця (maxDiffPixels, threshold), маскування динамічного, стабільне середовище, коли візуальні тести доречні",
+  "resources": [
+    {
+      "title": "Playwright: Visual comparisons",
+      "url": "https://playwright.dev/docs/test-snapshots",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Emulation (viewport, devices)",
+      "url": "https://playwright.dev/docs/emulation",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

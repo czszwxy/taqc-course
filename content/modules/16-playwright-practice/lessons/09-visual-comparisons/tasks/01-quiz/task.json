@@ -1,0 +1,60 @@
+{
+  "type": "quiz",
+  "title": "Quiz: visual comparisons",
+  "show": 5,
+  "hints": ["Перший запуск записує еталон. Навмисні зміни — --update-snapshots. Динамічне — mask."],
+  "questions": [
+    {
+      "id": "first-run",
+      "kind": "single",
+      "text": "Що відбувається, коли `toHaveScreenshot` запускається вперше і еталону ще немає?",
+      "options": [
+        { "text": "Тест падає і записує фактичний знімок як еталон, який треба переглянути й закомітити", "correct": true },
+        { "text": "Тест проходить без перевірки" },
+        { "text": "Playwright завантажує еталон з інтернету" }
+      ]
+    },
+    {
+      "id": "update",
+      "kind": "text",
+      "text": "Дизайн кнопок навмисно змінили. Який прапорець оновлює еталонні знімки?",
+      "accept": ["--update-snapshots", "-u", "update-snapshots"]
+    },
+    {
+      "id": "mask",
+      "kind": "single",
+      "text": "На сторінці показано поточний час, і знімок щоразу інший. Що зробити?",
+      "options": [
+        { "text": "Закрити цей елемент через `mask: [page.getByTestId('current-time')]`", "correct": true },
+        { "text": "Поставити `maxDiffPixels: 100000`", "explain": "Тоді тест не помітить і справжніх змін." }
+      ]
+    },
+    {
+      "id": "os",
+      "kind": "single",
+      "text": "Еталони зняли на Windows, а на CI (Linux) тести падають на кожному знімку. Чому?",
+      "options": [
+        { "text": "Шрифти й згладжування на різних ОС відрізняються; еталони треба знімати в тому ж середовищі, що й CI", "correct": true },
+        { "text": "На Linux Playwright не вміє робити знімки" }
+      ]
+    },
+    {
+      "id": "when",
+      "kind": "single",
+      "text": "Що краще ловити візуальним порівнянням, ніж функціональною перевіркою?",
+      "options": [
+        { "text": "Обрізаний заголовок і таблицю, що вилазить за край екрана на телефоні", "correct": true },
+        { "text": "Що сума замовлення дорівнює 2 350 UAH", "explain": "Це точніше перевіряє `toHaveText`." }
+      ]
+    },
+    {
+      "id": "element",
+      "kind": "single",
+      "text": "Як зробити знімок лише блоку підсумку кошика?",
+      "options": [
+        { "text": "`await expect(page.getByTestId('cart-summary')).toHaveScreenshot('summary.png')`", "correct": true },
+        { "text": "Неможливо, лише вся сторінка" }
+      ]
+    }
+  ]
+}

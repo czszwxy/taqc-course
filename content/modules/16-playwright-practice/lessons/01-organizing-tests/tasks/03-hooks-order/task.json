@@ -1,0 +1,16 @@
+{
+  "type": "order",
+  "title": "In which order do hooks run?",
+  "statement": "Файл містить `beforeAll` / `afterAll` на верхньому рівні, зовнішній `describe('Cart')` з `beforeEach` / `afterEach` і вкладений `describe('promo codes')` зі своїм `beforeEach` / `afterEach` та **одним** тестом. Розстав, що виконується, у правильному порядку.",
+  "items": [
+    "beforeAll (top level)",
+    "beforeEach of 'Cart'",
+    "beforeEach of 'promo codes'",
+    "the test itself",
+    "afterEach of 'promo codes'",
+    "afterEach of 'Cart'",
+    "afterAll (top level)"
+  ],
+  "hints": ["Підготовка йде ззовні всередину, прибирання — зсередини назовні."],
+  "explanation": "Хуки вкладаються як дужки: `beforeAll` відкриває весь файл, далі `beforeEach` від зовнішньої групи до внутрішньої, тест, потім `afterEach` у зворотному порядку (внутрішній, зовнішній) і наприкінці `afterAll`. Тому зовнішній `beforeEach` (наприклад, `goto`) завжди виконується до внутрішнього (наприклад, «оплатити замовлення»)."
+}

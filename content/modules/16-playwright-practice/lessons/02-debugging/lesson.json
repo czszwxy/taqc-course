@@ -1,0 +1,35 @@
+{
+  "title": "Debugging: Inspector, trace viewer, screenshots, video",
+  "minutes": 50,
+  "summary": "Як розібрати падіння: читаємо повідомлення про помилку, Playwright Inspector і --debug, UI mode, Trace Viewer (кроки, DOM, мережа, консоль), скріншоти й відео у звіті, page.pause() і типові причини падінь",
+  "resources": [
+    {
+      "title": "Playwright: Debugging tests",
+      "url": "https://playwright.dev/docs/debug",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Trace viewer",
+      "url": "https://playwright.dev/docs/trace-viewer",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Screenshots",
+      "url": "https://playwright.dev/docs/screenshots",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Videos",
+      "url": "https://playwright.dev/docs/videos",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

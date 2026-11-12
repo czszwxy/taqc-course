@@ -1,0 +1,64 @@
+{
+  "type": "quiz",
+  "title": "Quiz: debugging",
+  "show": 5,
+  "hints": ["Trace = кроки + DOM до/після + мережа + консоль. Не підганяй тест під поведінку сторінки."],
+  "questions": [
+    {
+      "id": "trace",
+      "kind": "single",
+      "text": "Що показує Trace Viewer?",
+      "options": [
+        { "text": "Кожен крок тесту зі знімками DOM до і після, мережеві запити, консоль і код тесту", "correct": true },
+        { "text": "Лише відео прогону" },
+        { "text": "Лише список тестів, що впали" }
+      ]
+    },
+    {
+      "id": "trace-config",
+      "kind": "single",
+      "text": "Яке налаштування записує trace лише тоді, коли тест повторюють після падіння?",
+      "options": [{ "text": "`trace: 'on-first-retry'`", "correct": true }, { "text": "`trace: 'off'`" }, { "text": "`trace: 'always-all'`" }]
+    },
+    {
+      "id": "pause",
+      "kind": "text",
+      "text": "Який виклик у коді тесту зупиняє виконання і відкриває Playwright Inspector? (з await)",
+      "accept": ["await page.pause()", "await page.pause();", "page.pause()"]
+    },
+    {
+      "id": "refused",
+      "kind": "single",
+      "text": "Усі тести падають з `net::ERR_CONNECTION_REFUSED at http://localhost:5173/…`. Найімовірніша причина?",
+      "options": [
+        { "text": "Застосунок не запущено (або неправильний baseURL)", "correct": true },
+        { "text": "Помилка в локаторах" },
+        { "text": "Баг у формі логіну" }
+      ]
+    },
+    {
+      "id": "expected-received",
+      "kind": "single",
+      "text": "Тест: `Expected \"2,350 UAH\", Received \"2,600 UAH\"`. Вимога каже, що має бути 2 350. Що робиш?",
+      "options": [
+        { "text": "Тест правий: заводжу баг і додаю trace та скріншот зі звіту", "correct": true },
+        { "text": "Міняю очікування на 2,600, щоб тест позеленів", "explain": "Тоді тест закріпить баг як «норму»." }
+      ]
+    },
+    {
+      "id": "strict",
+      "kind": "single",
+      "text": "`strict mode violation: getByRole('button', { name: 'Remove' }) resolved to 3 elements`. Найкраще виправлення?",
+      "options": [
+        { "text": "Шукати кнопку всередині потрібного рядка: `row.getByRole('button', { name: 'Remove' })`", "correct": true },
+        { "text": "Додати `.first()` навмання", "explain": "Тест натисне першу кнопку, можливо не ту, і перестане перевіряти потрібне." }
+      ]
+    },
+    {
+      "id": "video",
+      "kind": "single",
+      "text": "Як зберігати відео лише для тестів, що впали?",
+      "options": [{ "text": "`use: { video: 'retain-on-failure' }`", "correct": true }, { "text": "`use: { video: 'on' }`", "explain": "Записує й зберігає відео всіх тестів." }]
+    }
+  ]
+}

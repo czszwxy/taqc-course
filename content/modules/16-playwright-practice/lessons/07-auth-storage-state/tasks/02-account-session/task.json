@@ -1,0 +1,22 @@
+{
+  "type": "playwright",
+  "title": "Test the session and skip the login form with storageState",
+  "playground": "account",
+  "statement": "Сторінка **My account** (`/playground/account`) зберігає сесію в localStorage під ключем `gadgetly:token`.\n\n1. Після входу через форму сесія **переживає перезавантаження**. *Уже є (хелпер `signInViaUi`).*\n2. **Sign out** забуває сесію: одразу форма входу (`Sign in to your account`), і **після перезавантаження** теж.\n3. **Вхід без форми**: отримай токен через API (`request.post('/api/auth/login', { data: USER })`), створи **новий контекст** браузера з `storageState`, у якому вже лежить токен, і перевір, що `My account` відкривається одразу, без форми входу.\n\n```ts\nconst context = await browser.newContext({\n  storageState: {\n    cookies: [],\n    origins: [{ origin: 'http://localhost:5173', localStorage: [{ name: 'gadgetly:token', value: token }] }],\n  },\n});\n```",
+  "mutants": [
+    { "id": "sessionLost", "description": "the saved session was not restored after a reload.", "hint": "Sign in, reload the page, and check that you are still in My account." },
+    { "id": "signOutKeepsToken", "description": "Sign out left the token in localStorage — after a reload the user was signed in again.", "hint": "Sign out, then RELOAD and check that the login form is still shown." }
+  ],
+  "minTests": 3,
+  "codeRules": [
+    { "kind": "require", "pattern": "storageState", "message": "Третій тест: створи контекст з `storageState`, у якому вже є токен." },
+    { "kind": "require", "pattern": "request\\.(post|newContext)\\(", "message": "Отримай токен через API: `request.post('/api/auth/login', { data: USER })`." },
+    { "kind": "require", "pattern": "reload\\(", "message": "Перевірка сесії потребує `await page.reload()`." }
+  ],
+  "hints": [
+    "Sign out → `await page.getByRole('button', { name: 'Sign out' }).click();`, потім `await page.reload();` і знову перевір заголовок форми входу.",
+    "Токен: `const response = await request.post('/api/auth/login', { data: USER }); const { token } = await response.json();` (фікстура `request` знає baseURL).",
+    "Новий контекст: `const context = await browser.newContext({ storageState: … }); const page2 = await context.newPage(); await page2.goto('/playground/account');` і не забудь `await context.close()`."
+  ],
+  "explanation": "Логін через форму в кожному тесті повільний і робить усі тести залежними від однієї сторінки. Тому в реальних проєктах входять **один раз** (часто через API), зберігають стан браузера (cookies + localStorage) у `storageState` і перевикористовують його: через `test.use({ storageState: 'auth.json' })` або окремий setup-проєкт. Але сам логін і вихід усе одно треба протестувати окремо: сесія після reload і справжній вихід — класичні місця багів (токен лишився в сховищі — це ще й проблема безпеки)."
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Network interception & mocking",
+  "minutes": 55,
+  "summary": "Що сторінка відправляє і отримує: waitForRequest / waitForResponse, перевірка методу, URL, заголовків і тіла, перехоплення через page.route (fulfill, abort, continue, зміна відповіді), моки для порожніх станів і помилок, межі моків",
+  "resources": [
+    {
+      "title": "Playwright: Network",
+      "url": "https://playwright.dev/docs/network",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Mock APIs",
+      "url": "https://playwright.dev/docs/mock",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

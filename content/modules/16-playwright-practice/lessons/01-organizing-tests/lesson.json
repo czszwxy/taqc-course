@@ -1,0 +1,28 @@
+{
+  "title": "Organizing tests: describe, hooks, tags",
+  "minutes": 45,
+  "summary": "Групування тестів через test.describe, хуки beforeEach / afterEach / beforeAll / afterAll і порядок їх виконання, теги (@smoke, @regression) і запуск частини набору (--grep), анотації skip / fixme / only",
+  "resources": [
+    {
+      "title": "Playwright: Annotations and tags",
+      "url": "https://playwright.dev/docs/test-annotations",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright API: class Test (describe, hooks)",
+      "url": "https://playwright.dev/docs/api/class-test",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Writing tests — hooks",
+      "url": "https://playwright.dev/docs/writing-tests",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

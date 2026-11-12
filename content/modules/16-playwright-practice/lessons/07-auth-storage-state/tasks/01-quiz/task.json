@@ -1,0 +1,70 @@
+{
+  "type": "quiz",
+  "title": "Quiz: authentication & storageState",
+  "show": 5,
+  "playground": "account",
+  "hints": ["storageState = cookies + localStorage. Setup-проєкт логіниться один раз; решта залежить від нього."],
+  "questions": [
+    {
+      "id": "what",
+      "kind": "single",
+      "text": "Що зберігає storageState?",
+      "options": [
+        { "text": "Cookies і localStorage для кожного origin", "correct": true },
+        { "text": "Скріншот сторінки" },
+        { "text": "Логін і пароль у відкритому вигляді" }
+      ]
+    },
+    {
+      "id": "why",
+      "kind": "single",
+      "text": "Навіщо використовувати storageState замість логіну через форму в кожному тесті?",
+      "options": [
+        { "text": "Тести швидші й не падають усі разом, коли зламалась лише форма логіну", "correct": true },
+        { "text": "Щоб не тестувати логін узагалі", "explain": "Логін тестують окремими тестами." }
+      ]
+    },
+    {
+      "id": "deps",
+      "kind": "single",
+      "text": "Що робить `dependencies: ['setup']` у project?",
+      "options": [
+        { "text": "Спершу виконує проєкт setup (наприклад, логін і збереження стану), потім тести цього проєкту", "correct": true },
+        { "text": "Встановлює npm-залежності" }
+      ]
+    },
+    {
+      "id": "guest",
+      "kind": "single",
+      "text": "У проєкті всі тести залогінені через storageState. Як написати тест для гостя?",
+      "options": [
+        { "text": "`test.use({ storageState: { cookies: [], origins: [] } })` для цього файлу чи групи", "correct": true },
+        { "text": "Ніяк, треба окремий репозиторій" }
+      ]
+    },
+    {
+      "id": "git",
+      "kind": "single",
+      "text": "Чи комітити `playwright/.auth/user.json`?",
+      "options": [
+        { "text": "Ні: там жива сесія. Додати в .gitignore", "correct": true },
+        { "text": "Так, щоб колегам не треба було логінитись" }
+      ]
+    },
+    {
+      "id": "logout-bug",
+      "kind": "single",
+      "text": "Після Sign out користувач бачить форму входу, але після оновлення сторінки знову в акаунті. Що це?",
+      "options": [
+        { "text": "Баг: вихід не видалив сесію (токен лишився в сховищі). Це ще й проблема безпеки", "correct": true },
+        { "text": "Нормальна поведінка «запам'ятати мене»" }
+      ]
+    },
+    {
+      "id": "api-login",
+      "kind": "single",
+      "text": "Яка фікстура дозволяє залогінитись через API без браузера?",
+      "options": [{ "text": "`request`", "correct": true }, { "text": "`page`" }, { "text": "`browserName`" }]
+    }
+  ]
+}

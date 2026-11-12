@@ -1,0 +1,15 @@
+{
+  "title": "Playwright in Practice",
+  "description": "Від окремих тестів до робочого набору: структура (describe, хуки, теги), налагодження (Inspector, trace, скріншоти, відео), діалоги, фрейми й нові вкладки, Page Object Model, власні фікстури, параметризовані тести й тестові дані, авторизація через storageState, перехоплення й мокання мережі, візуальні порівняння. Практика — справжні Playwright-тести на сторінках Bug Playground, зокрема на новій сторінці «My account».",
+  "goals": [
+    "Structure a suite with describe, hooks and tags and run subsets of it",
+    "Debug failing tests with error messages, Inspector, trace, screenshots and video",
+    "Handle alert/confirm/prompt dialogs, iframes and new tabs",
+    "Build Page Objects that keep locators and actions in one place",
+    "Write custom fixtures with setup and teardown",
+    "Generate data-driven tests and manage test data",
+    "Reuse an authenticated state with storageState and test the session itself",
+    "Inspect requests and mock API responses with page.route",
+    "Catch layout bugs with screenshot comparisons"
+  ]
+}

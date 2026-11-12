@@ -4,9 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import {
-  LAB_BASE_URL,
   LAB_BUG_PREFIX,
-  LAB_BUGS_KEY,
   LAB_CORRECT_PROJECT,
   LAB_NO_BUGS,
   type LabProjectResult,
@@ -19,8 +17,9 @@ import {
 
 /**
  * Runs a learner's Playwright spec with the REAL @playwright/test runner (Chromium) against the Bug Playground:
- * once on the correct page and once per requested bug (each bug = its own Playwright project whose storageState
- * sets LAB_BUGS_KEY). Used by the dev server (POST /__lab/run) and by scripts/validate-lab.ts.
+ * once on the correct page and once per requested bug (each bug = its own Playwright project whose browser user agent
+ * carries the bug marker, see lab/playwright.config.ts). Specs with toHaveScreenshot first record a baseline on the
+ * correct page. Used by the dev server (POST /__lab/run) and by scripts/validate-lab.ts.
  */
 
 const LAB_DIR = 'lab';
@@ -56,9 +55,10 @@ function hasLocalChromium(root: string): boolean {
   return fs.existsSync(dir) && fs.readdirSync(dir).some((name) => name.startsWith('chromium'));
 }
 
+/** One page variant: the config appends `qa-lab-bugs=<bugs>` to the browser's user agent. */
 interface PlanProject {
   name: string;
-  storageState: string;
+  bugs: string;
 }
 
 /** Contract with lab/playwright.config.ts (read via QA_LAB_RUN_DIR). */
@@ -67,19 +67,10 @@ export interface LabPlan {
   reportFile: string;
 }
 
-function storageState(bugs: string): object {
-  return { cookies: [], origins: [{ origin: LAB_BASE_URL, localStorage: [{ name: LAB_BUGS_KEY, value: bugs }] }] };
-}
-
 function writeRun(runDir: string, request: LabRunRequest): LabPlan {
   fs.mkdirSync(runDir, { recursive: true });
   fs.writeFileSync(path.join(runDir, SPEC_FILE), request.code);
-  const variants = [{ name: LAB_CORRECT_PROJECT, bugs: LAB_NO_BUGS }, ...request.bugs.map((bug) => ({ name: LAB_BUG_PREFIX + bug, bugs: bug }))];
-  const projects = variants.map((v, i) => {
-    const file = path.join(runDir, `state-${i}.json`);
-    fs.writeFileSync(file, JSON.stringify(storageState(v.bugs)));
-    return { name: v.name, storageState: file };
-  });
+  const projects = [{ name: LAB_CORRECT_PROJECT, bugs: LAB_NO_BUGS }, ...request.bugs.map((bug) => ({ name: LAB_BUG_PREFIX + bug, bugs: bug }))];
   const plan: LabPlan = { projects, reportFile: path.join(runDir, REPORT_FILE) };
   fs.writeFileSync(path.join(runDir, PLAN_FILE), JSON.stringify(plan));
   return plan;
@@ -90,9 +81,18 @@ interface ProcessOutcome {
   timedOut: boolean;
 }
 
-function runPlaywright(root: string, runDir: string): Promise<ProcessOutcome> {
+/*
+ * Visual tests need a baseline first: matches "await expect(page).toHaveScreenshot('home.png')",
+ * rejects "await page.screenshot()". https://regex101.com/?regex=toHaveScreenshot%5Cs*%5C(
+ */
+const VISUAL_ASSERTION = /toHaveScreenshot\s*\(/;
+
+/** Phase 1 of a visual run: the correct page writes the baseline screenshots the real run compares against. */
+const BASELINE_ARGS = ['--project', LAB_CORRECT_PROJECT, '--update-snapshots'];
+
+function runPlaywright(root: string, runDir: string, extraArgs: string[] = []): Promise<ProcessOutcome> {
   const cli = path.join(root, 'node_modules', '@playwright', 'test', 'cli.js');
-  const args = [cli, 'test', '--config', path.join(root, LAB_DIR, CONFIG_FILE)];
+  const args = [cli, 'test', '--config', path.join(root, LAB_DIR, CONFIG_FILE), ...extraArgs];
   return new Promise((resolve) => {
     const child = spawn(process.execPath, args, {
       cwd: root,
@@ -201,7 +201,10 @@ export async function runLab(root: string, request: LabRunRequest): Promise<LabR
   const runDir = path.join(root, LAB_DIR, RUNS_DIR, randomUUID());
   try {
     const plan = writeRun(runDir, request);
-    const { output, timedOut } = await runPlaywright(root, runDir);
+    const baseline = VISUAL_ASSERTION.test(request.code) ? await runPlaywright(root, runDir, BASELINE_ARGS) : null;
+    const run = baseline?.timedOut ? baseline : await runPlaywright(root, runDir);
+    const output = `${baseline?.output ?? ''}${run.output}`;
+    const { timedOut } = run;
     if (timedOut) return { ok: false, reason: 'error', message: `The run took longer than ${RUN_TIMEOUT_MS / MS_PER_SECOND} s and was stopped. Look for a test that waits forever.` };
     if (needsSetup(output)) {
       const detail = output.split('\n').find((line) => line.includes("Executable doesn't exist")) ?? '';

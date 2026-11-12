@@ -1,0 +1,28 @@
+{
+  "title": "Dialogs, frames & new tabs",
+  "minutes": 50,
+  "summary": "Діалоги alert / confirm / prompt (page.on('dialog'), accept, dismiss), елементи всередині iframe (frameLocator, contentFrame), нові вкладки й вікна (waitForEvent('popup'), context.pages()) і сторінка «My account» для практики",
+  "resources": [
+    {
+      "title": "Playwright: Dialogs",
+      "url": "https://playwright.dev/docs/dialogs",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Frames",
+      "url": "https://playwright.dev/docs/frames",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Pages (new tabs, popups)",
+      "url": "https://playwright.dev/docs/pages",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

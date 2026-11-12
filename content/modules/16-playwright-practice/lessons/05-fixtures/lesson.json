@@ -1,0 +1,21 @@
+{
+  "title": "Fixtures: built-in & custom",
+  "minutes": 55,
+  "summary": "Вбудовані фікстури (page, context, browser, request, browserName), власні фікстури через test.extend: підготовка й прибирання навколо await use(), залежності, worker-scope, auto-фікстури і фікстури з Page Objects",
+  "resources": [
+    {
+      "title": "Playwright: Fixtures",
+      "url": "https://playwright.dev/docs/test-fixtures",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Test use options",
+      "url": "https://playwright.dev/docs/test-use-options",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

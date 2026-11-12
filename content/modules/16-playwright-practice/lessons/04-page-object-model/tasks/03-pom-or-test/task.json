@@ -1,0 +1,24 @@
+{
+  "type": "classify",
+  "title": "Page Object or test?",
+  "statement": "Ти розкладаєш код тестів кошика по місцях. Що з цього належить у клас `CartPage` (Page Object), а що в самі тести?",
+  "categories": [
+    { "id": "pom", "label": "CartPage (Page Object)", "description": "Locators and user actions of the page" },
+    { "id": "test", "label": "Test", "description": "Test data, scenario and assertions" }
+  ],
+  "items": [
+    { "id": "loc-total", "text": "`readonly total = page.getByTestId('total')`", "category": "pom" },
+    { "id": "goto", "text": "`async goto() { await this.page.goto('/playground/cart'); }`", "category": "pom" },
+    { "id": "apply", "text": "`async applyPromo(code: string)` — fills the field and clicks Apply", "category": "pom" },
+    { "id": "set-qty", "text": "`async setQuantity(item: string, qty: string)`", "category": "pom" },
+    { "id": "row", "text": "`row(name: string): Locator` — a cart row filtered by product name", "category": "pom" },
+    { "id": "expect-total", "text": "`await expect(cart.total).toHaveText('2,350 UAH')`", "category": "test" },
+    { "id": "data", "text": "The promo code `'save10'` used in a case-insensitivity test", "category": "test" },
+    { "id": "scenario", "text": "\"Apply SAVE10 twice and check the discount does not stack\"", "category": "test" },
+    { "id": "expect-error", "text": "`await expect(page.getByRole('alert')).toHaveText('Quantity must be from 1 to 10')`", "category": "test" }
+  ],
+  "show": 8,
+  "hints": ["Як знайти і що зробити зі сторінкою — Page Object. Що перевірити і з якими даними — тест."],
+  "explanation": "Page Object відповідає на питання «**як** працювати зі сторінкою»: локатори, навігація, дії (`applyPromo`, `setQuantity`, `row(name)`). Тест відповідає на «**що** перевіряємо»: сценарій, конкретні дані, очікувані результати (`expect`). Такий поділ дозволяє перевикористати одні й ті самі дії в позитивних і негативних тестах.",
+  "passScore": 0.85
+}

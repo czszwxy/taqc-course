@@ -9,7 +9,7 @@ export const LAB_ROUTE = '/__lab';
 /** The app's own origin: the Bug Playground pages the tests open. Same fixed port as DEV_PORT in vite.config.ts. */
 export const LAB_BASE_URL = 'http://localhost:5173';
 
-/** localStorage key read by withLabMode() in the playground pages: "none" or a bug id. */
+/** Legacy localStorage fallback for withLabMode(); graded runs put "qa-lab-bugs=<none|bugId>" into the user agent instead. */
 export const LAB_BUGS_KEY = 'qa-lab:bugs';
 export const LAB_NO_BUGS = 'none';
 

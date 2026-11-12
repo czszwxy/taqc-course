@@ -1,0 +1,42 @@
+{
+  "type": "playwright",
+  "title": "Data-driven tests for the cart",
+  "playground": "cart",
+  "statement": "Кошик Gadgetly (`/playground/cart`) стартує з `Wireless mouse M2` 500 × 1, `Mechanical keyboard K8` 1 500 × 1, `USB-C cable 1 m` 250 × 2.\n\nЗамість копіювання тестів опиши **дані** таблицями і згенеруй тести циклом `for (const … of …)` з назвою через шаблонний рядок.\n\n1. **Кількість мишки** (межі 1–10): `0` і `11` → `Quantity must be from 1 to 10`; `1` і `10` → без помилки, рядок мишки коштує `500 UAH` / `5,000 UAH`. *Уже є.*\n2. **Промокоди**: `SAVE10`, `save10`, `  Save10  ` — кожен дає знижку `250 UAH`.\n3. **Доставка** залежно від кількості кабелів: 3 → Subtotal `2,750 UAH`, Shipping `100 UAH`; 4 → `3,000 UAH`, `Free`; 5 → `3,250 UAH`, `Free`.\n\nПоле кількості: `page.getByLabel('Quantity of USB-C cable 1 m')`. Рядок суми мишки: `page.getByTestId('line-total-mouse')`.",
+  "mutants": [
+    {
+      "id": "qtyZero",
+      "description": "quantity 0 was accepted.",
+      "hint": "Your quantity table must include 0 (just below the minimum)."
+    },
+    {
+      "id": "promoCase",
+      "description": "promo codes were case-sensitive.",
+      "hint": "Your promo table must include a lowercase code."
+    },
+    {
+      "id": "shippingBoundary",
+      "description": "a subtotal of exactly 3,000 UAH still paid for shipping.",
+      "hint": "Your shipping table must include the boundary: exactly 3,000 UAH (4 cables)."
+    }
+  ],
+  "minTests": 10,
+  "codeRules": [
+    {
+      "kind": "require",
+      "pattern": "for\\s*\\(\\s*const\\s+[\\s\\S]*for\\s*\\(\\s*const\\s+[\\s\\S]*for\\s*\\(\\s*const\\s+",
+      "message": "Потрібні три таблиці даних і три цикли `for (const … of …)`: кількість, промокоди, доставка."
+    },
+    {
+      "kind": "require",
+      "pattern": "test\\(\\s*`",
+      "message": "Назва згенерованого тесту має містити дані: `` test(`promo ${code} gives 10% off`, …) ``."
+    }
+  ],
+  "hints": [
+    "Таблиця: `const PROMO_CODES = ['SAVE10', 'save10', '  Save10  '];` і цикл `` for (const code of PROMO_CODES) { test(`promo ${code} gives 10% off`, async ({ page }) => { … }); } ``.",
+    "Назви тестів мають бути **унікальні**, тож вставляй у них дані: `quantity ${qty} …`, `${cables} cables → shipping ${shipping}`.",
+    "Знижка: `await expect(page.getByTestId('discount')).toContainText('250 UAH');`"
+  ],
+  "explanation": "Параметризовані (data-driven) тести відокремлюють **дані** від **логіки**: один шаблон тесту і таблиця випадків. Додати новий випадок означає додати рядок, а не копіювати тест. Назва з даними (`quantity 0 is rejected`) одразу каже у звіті, який випадок упав, і робить назви унікальними (Playwright вимагає унікальних назв). Добра таблиця — це техніки тест-дизайну з модуля 03: межі (0, 1, 10, 11; рівно 3 000) і класи еквівалентності (різний регістр промокоду)."
+}

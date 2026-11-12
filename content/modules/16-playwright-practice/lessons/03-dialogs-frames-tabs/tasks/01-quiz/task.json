@@ -1,0 +1,71 @@
+{
+  "type": "quiz",
+  "title": "Quiz: dialogs, frames, tabs",
+  "show": 5,
+  "playground": "account",
+  "hints": ["Підписуйся на подію ДО дії. Iframe — через frameLocator. Нова вкладка — подія popup."],
+  "questions": [
+    {
+      "id": "default",
+      "kind": "single",
+      "text": "Що Playwright робить з `confirm`, якщо в тесті немає обробника `dialog`?",
+      "options": [
+        { "text": "Автоматично закриває його (як Cancel)", "correct": true },
+        { "text": "Натискає OK" },
+        { "text": "Тест зависає назавжди" }
+      ]
+    },
+    {
+      "id": "prompt",
+      "kind": "single",
+      "text": "Як ввести текст «Nova» у `prompt` і натиснути OK?",
+      "options": [
+        { "text": "`await dialog.accept('Nova')`", "correct": true },
+        { "text": "`await page.fill('prompt', 'Nova')`" },
+        { "text": "`await dialog.dismiss('Nova')`" }
+      ]
+    },
+    {
+      "id": "when",
+      "kind": "single",
+      "text": "Коли треба реєструвати `page.once('dialog', …)`?",
+      "options": [
+        { "text": "До кліку, який відкриває діалог", "correct": true },
+        { "text": "Після кліку", "explain": "Діалог з'являється під час кліку. Якщо обробника ще немає, Playwright закриє вікно сам." }
+      ]
+    },
+    {
+      "id": "frame",
+      "kind": "single",
+      "text": "Кнопка Send знаходиться всередині iframe чату. Чому `page.getByRole('button', { name: 'Send' })` її не знаходить?",
+      "options": [
+        { "text": "Iframe — окремий документ; потрібен `page.frameLocator('iframe[title=\"Help chat\"]').getByRole(…)`", "correct": true },
+        { "text": "Бо кнопки в iframe не мають ролі" }
+      ]
+    },
+    {
+      "id": "popup",
+      "kind": "single",
+      "text": "Яка послідовність правильна для посилання, що відкривається в новій вкладці?",
+      "options": [
+        { "text": "`const p = page.waitForEvent('popup');` → клік → `const tab = await p;`", "correct": true },
+        { "text": "клік → `const tab = await page.waitForEvent('popup');`", "explain": "Вкладка може відкритися ще до того, як ти почав чекати." }
+      ]
+    },
+    {
+      "id": "cancel-bug",
+      "kind": "single",
+      "text": "Як перевірити, що Cancel у «Delete account» справді нічого не видаляє?",
+      "options": [
+        { "text": "`dialog.dismiss()` і перевірити, що акаунт і кнопка Delete на місці", "correct": true },
+        { "text": "Лише натиснути OK і перевірити повідомлення про видалення", "explain": "Так перевіряється тільки одна гілка." }
+      ]
+    },
+    {
+      "id": "pages",
+      "kind": "text",
+      "text": "Який метод контексту повертає всі відкриті вкладки? (context.____())",
+      "accept": ["pages", "pages()", "context.pages()"]
+    }
+  ]
+}

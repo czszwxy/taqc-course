@@ -1,0 +1,66 @@
+{
+  "type": "quiz",
+  "title": "Quiz: network interception & mocking",
+  "show": 5,
+  "hints": ["fulfill — своя відповідь, abort — обрив, continue — далі на сервер. Маршрут — до запиту."],
+  "questions": [
+    {
+      "id": "fulfill",
+      "kind": "single",
+      "text": "Що робить `route.fulfill({ status: 500 })`?",
+      "options": [
+        { "text": "Сторінка отримує відповідь 500 від Playwright, справжній сервер не викликається", "correct": true },
+        { "text": "Ламає справжній сервер" },
+        { "text": "Пропускає запит на сервер" }
+      ]
+    },
+    {
+      "id": "abort",
+      "kind": "single",
+      "text": "Як змоделювати обрив мережі для запиту?",
+      "options": [{ "text": "`route.abort()`", "correct": true }, { "text": "`route.fulfill({ status: 404 })`", "explain": "404 — це відповідь сервера, а не обрив." }, { "text": "`route.continue()`" }]
+    },
+    {
+      "id": "when",
+      "kind": "single",
+      "text": "Замовлення вантажаться одразу після входу. Коли реєструвати `page.route('**/api/orders', …)`?",
+      "options": [
+        { "text": "До входу (до дії, що викликає запит)", "correct": true },
+        { "text": "Після появи списку замовлень" }
+      ]
+    },
+    {
+      "id": "body",
+      "kind": "text",
+      "text": "Яким методом прочитати JSON-тіло перехопленого запиту? (request.____())",
+      "accept": ["postDataJSON", "postDataJSON()", "request.postDataJSON()"]
+    },
+    {
+      "id": "limits",
+      "kind": "single",
+      "text": "Усі UI-тести використовують моки для `/api/orders`. Який ризик?",
+      "options": [
+        { "text": "Якщо справжній API змінить формат, тести лишаться зеленими, а продукт зламається: потрібні ще тести справжнього API", "correct": true },
+        { "text": "Ризику немає: моки завжди кращі" }
+      ]
+    },
+    {
+      "id": "param",
+      "kind": "single",
+      "text": "Як перевірити, що запит пішов з параметром `status=shipped`?",
+      "options": [
+        { "text": "`new URL(request.url()).searchParams.get('status')` після `waitForRequest`", "correct": true },
+        { "text": "Подивитись на текст сторінки" }
+      ]
+    },
+    {
+      "id": "modify",
+      "kind": "single",
+      "text": "Треба взяти справжню відповідь сервера і додати в неї один елемент. Як?",
+      "options": [
+        { "text": "`const response = await route.fetch();` → змінити JSON → `route.fulfill({ response, json })`", "correct": true },
+        { "text": "Це неможливо в Playwright" }
+      ]
+    }
+  ]
+}

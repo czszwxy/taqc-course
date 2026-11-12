@@ -1,0 +1,22 @@
+{
+  "title": "Test data & parameterized tests",
+  "minutes": 50,
+  "summary": "Параметризовані (data-driven) тести циклом по таблиці даних, унікальні назви, дані з JSON, генерація унікальних даних, ізоляція даних між паралельними тестами, створення й прибирання даних через API, параметризація проєктів",
+  "resources": [
+    {
+      "title": "Playwright: Parameterize tests",
+      "url": "https://playwright.dev/docs/test-parameterize",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Parallelism",
+      "url": "https://playwright.dev/docs/test-parallel",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Чому тестам потрібні незалежні дані.",
+      "needsVerification": true
+    }
+  ]
+}

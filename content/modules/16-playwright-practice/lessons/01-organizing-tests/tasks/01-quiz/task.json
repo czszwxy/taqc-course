@@ -1,0 +1,72 @@
+{
+  "type": "quiz",
+  "title": "Quiz: describe, hooks, tags",
+  "show": 5,
+  "hints": ["Зовнішні хуки виконуються раніше за внутрішні. `--grep @smoke` запускає тести з тегом."],
+  "questions": [
+    {
+      "id": "order",
+      "kind": "single",
+      "text": "Є зовнішній `describe` з `beforeEach` A і вкладений `describe` з `beforeEach` B. Який порядок для тесту у вкладеній групі?",
+      "options": [
+        { "text": "A → B → тест", "correct": true },
+        { "text": "B → A → тест" },
+        { "text": "Лише B → тест", "explain": "Зовнішні хуки теж діють для вкладених груп." }
+      ]
+    },
+    {
+      "id": "grep",
+      "kind": "text",
+      "text": "Яка команда запускає лише тести з тегом `@smoke`?",
+      "accept": ["npx playwright test --grep @smoke", "npx playwright test -g @smoke", "npx playwright test --grep \"@smoke\""]
+    },
+    {
+      "id": "beforeall-page",
+      "kind": "single",
+      "text": "Чому в `test.beforeAll` не можна отримати фікстуру `page`?",
+      "options": [
+        { "text": "Кожен тест отримує власну сторінку, а beforeAll виконується один раз для групи", "correct": true },
+        { "text": "Можна, це звичайна практика" }
+      ]
+    },
+    {
+      "id": "independent",
+      "kind": "single",
+      "text": "Тест «can be delivered» проходить лише після тесту «can be shipped». Що не так?",
+      "options": [
+        { "text": "Тести залежать один від одного: «can be delivered» має сам підготувати статус (beforeEach)", "correct": true },
+        { "text": "Нічого: тести завжди йдуть по порядку", "explain": "Тести можуть іти паралельно й у різному порядку, окремо через -g тощо." }
+      ]
+    },
+    {
+      "id": "only",
+      "kind": "single",
+      "text": "Чим небезпечний закомічений `test.only`?",
+      "options": [
+        { "text": "На CI запуститься лише цей тест, решта набору тихо не перевіряється", "correct": true },
+        { "text": "Тест запуститься двічі" },
+        { "text": "Нічим" }
+      ]
+    },
+    {
+      "id": "fixme",
+      "kind": "single",
+      "text": "Тест падає через відомий баг, що буде виправлений наступного спринту (QA-310). Що краще?",
+      "options": [
+        { "text": "Позначити `test.fixme` з посиланням на задачу або залишити червоним, якщо команда так домовилась", "correct": true },
+        { "text": "Видалити тест" },
+        { "text": "Змінити очікування під баг, щоб тест став зеленим", "explain": "Тоді тест захищатиме баг, а не вимогу." }
+      ]
+    },
+    {
+      "id": "tag-syntax",
+      "kind": "single",
+      "text": "Як правильно додати тег тесту в сучасному Playwright?",
+      "options": [
+        { "text": "`test('checkout', { tag: '@smoke' }, async ({ page }) => { … })`", "correct": true },
+        { "text": "`test.tag('@smoke', 'checkout', …)`" },
+        { "text": "Тільки в окремому файлі smoke.json" }
+      ]
+    }
+  ]
+}

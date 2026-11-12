@@ -1,0 +1,33 @@
+{
+  "type": "table",
+  "title": "What does this failure most likely mean?",
+  "statement": "Ось повідомлення з упалих тестів. Що найімовірніше сталося?",
+  "givenColumns": ["Error message (shortened)"],
+  "answerColumns": [
+    {
+      "id": "cause",
+      "label": "Most likely cause",
+      "options": [
+        "The locator matches several elements",
+        "No element with this name appeared",
+        "The page shows a different value than expected",
+        "The button is disabled or covered",
+        "The app is not running / wrong baseURL",
+        "A missing await or the test ended too early",
+        "Browsers are not installed"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`strict mode violation: getByLabel('Password') resolved to 2 elements`"], "answers": { "cause": "The locator matches several elements" } },
+    { "given": ["`Timeout 15000ms exceeded … waiting for getByRole('button', { name: 'Logout' })`"], "answers": { "cause": "No element with this name appeared" } },
+    { "given": ["`Expected: \"1 item left\"  Received: \"1 items left\"`"], "answers": { "cause": "The page shows a different value than expected" }, "explain": "Порівняй з вимогою: тут правий тест, це баг продукту." },
+    { "given": ["`element is not enabled … retrying click action`"], "answers": { "cause": "The button is disabled or covered" } },
+    { "given": ["`<div class=\"modal\"> intercepts pointer events`"], "answers": { "cause": "The button is disabled or covered" } },
+    { "given": ["`page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:5173/playground/cart`"], "answers": { "cause": "The app is not running / wrong baseURL" } },
+    { "given": ["`Target page, context or browser has been closed`"], "answers": { "cause": "A missing await or the test ended too early" } },
+    { "given": ["`browserType.launch: Executable doesn't exist at …/chromium-1254/…`"], "answers": { "cause": "Browsers are not installed" } }
+  ],
+  "hints": ["`resolved to N elements` — неточний локатор; `waiting for …` — немає елемента; `Expected/Received` — значення не те."],
+  "explanation": "Повідомлення Playwright — структурований факт. Кілька елементів — уточни локатор. Очікування елемента до таймауту — неправильна назва або елемент не з'явився. Expected/Received — розбіжність значень, яку треба звірити з вимогою. Неактивна чи перекрита кнопка, недоступний сервер, закрита сторінка, відсутні браузери — окремі класи проблем з окремими рішеннями. Що швидше ти їх розпізнаєш, то менше часу йде на кожне падіння."
+}

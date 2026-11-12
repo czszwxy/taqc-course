@@ -1,0 +1,28 @@
+{
+  "title": "Authentication & storageState",
+  "minutes": 55,
+  "summary": "Чому не логінитись через форму в кожному тесті, що таке storageState (cookies + localStorage), setup-проєкт із залежністю, test.use({ storageState }), логін через API, кілька ролей, безпека файлів сесії і що все одно треба тестувати в самому логіні",
+  "resources": [
+    {
+      "title": "Playwright: Authentication",
+      "url": "https://playwright.dev/docs/auth",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: API testing (request fixture)",
+      "url": "https://playwright.dev/docs/api-testing",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Test projects — dependencies",
+      "url": "https://playwright.dev/docs/test-projects",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

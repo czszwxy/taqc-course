@@ -1,0 +1,25 @@
+{
+  "type": "classify",
+  "title": "Good or risky test-data practice?",
+  "statement": "Команда обговорює, як працювати з тестовими даними в автотестах Gadgetly. Що з цього — добра практика, а що ризикована?",
+  "categories": [
+    { "id": "good", "label": "Good practice", "description": "Independent, repeatable, cleans up" },
+    { "id": "risky", "label": "Risky", "description": "Shared, order-dependent or leaves garbage" }
+  ],
+  "items": [
+    { "id": "api-create", "text": "Each test creates its own order through the API and deletes it in teardown", "category": "good" },
+    { "id": "unique-email", "text": "Registration tests use `qa+${Date.now()}@gadgetly.test`", "category": "good" },
+    { "id": "table", "text": "Boundary values for quantity live in one data table used by a loop", "category": "good" },
+    { "id": "mock-rare", "text": "The \"server error\" state is produced with page.route instead of breaking the real server", "category": "good" },
+    { "id": "seed-readonly", "text": "Tests only READ the shared product catalogue seeded in the test database", "category": "good" },
+    { "id": "shared-1002", "text": "Several tests edit and delete the same order 1002 on staging", "category": "risky", "explain": "Паралельні тести й колеги змінюють ті самі дані: результати непередбачувані." },
+    { "id": "order", "text": "Test B uses the user created by test A in the same file", "category": "risky" },
+    { "id": "no-cleanup", "text": "Tests create 200 users a day and never delete them", "category": "risky", "explain": "Сміття накопичується, звіти й пошук на staging стають непридатними." },
+    { "id": "prod", "text": "Tests run against production with real customer accounts", "category": "risky" },
+    { "id": "copy-paste", "text": "Twenty copy-pasted tests differ only in one promo code", "category": "risky", "explain": "Це має бути одна таблиця + цикл." }
+  ],
+  "show": 8,
+  "hints": ["Чи може тест пройти сам, у будь-якому порядку, паралельно з іншими і щодня знову?"],
+  "explanation": "Добрі дані — **власні** (створені тестом), **унікальні** (не конфліктують паралельно), **прибрані** (не засмічують середовище) і **описані таблицею** (легко додати випадок). Ризики — спільні змінювані дані, залежність від іншого тесту, сміття і робота з production.",
+  "passScore": 0.85
+}

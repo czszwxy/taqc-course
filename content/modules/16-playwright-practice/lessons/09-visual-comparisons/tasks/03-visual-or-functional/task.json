@@ -1,0 +1,24 @@
+{
+  "type": "classify",
+  "title": "Visual comparison or functional assertion?",
+  "statement": "Для кожної перевірки вибери, що підходить краще: **візуальне порівняння** (`toHaveScreenshot`) чи **функціональна перевірка** (`toHaveText`, `toBeVisible`, `toHaveCount`…).",
+  "categories": [
+    { "id": "visual", "label": "Visual comparison", "description": "How it looks: layout, overlap, cut-off, styling" },
+    { "id": "functional", "label": "Functional assertion", "description": "What it is: text, value, state, count" }
+  ],
+  "items": [
+    { "id": "title-cut", "text": "On phones the long product title is not cut off", "category": "visual" },
+    { "id": "table-overflow", "text": "The specs table does not stick out beyond the screen at 375 px", "category": "visual" },
+    { "id": "button-style", "text": "Primary buttons keep the new brand colour and rounded corners", "category": "visual" },
+    { "id": "overlap", "text": "The cookie banner does not overlap the checkout button on tablets", "category": "visual" },
+    { "id": "total", "text": "The order total equals 2,350 UAH after SAVE10", "category": "functional" },
+    { "id": "count", "text": "Searching \"mouse\" shows exactly 2 products", "category": "functional" },
+    { "id": "error", "text": "An empty email shows \"Email is required\"", "category": "functional" },
+    { "id": "disabled", "text": "\"Add to cart\" is disabled for out-of-stock products", "category": "functional" },
+    { "id": "checked", "text": "The completed task is still checked after a reload", "category": "functional" }
+  ],
+  "show": 8,
+  "hints": ["Чи можна це описати текстом, значенням чи станом елемента? Тоді функціональна перевірка. Якщо йдеться про вигляд і розташування — знімок."],
+  "explanation": "Функціональні перевірки точні й стабільні: вони кажуть, **яке саме** значення неправильне. Візуальні порівняння ловлять те, що локаторами описати важко: обрізання, накладання, вихід за межі, стиль. Добрий набір поєднує обидва підходи, і кожен застосовується там, де він сильніший.",
+  "passScore": 0.85
+}

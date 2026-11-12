@@ -1,0 +1,22 @@
+{
+  "type": "playwright",
+  "title": "Inspect the requests a page sends",
+  "variantOf": "02-mock-orders",
+  "playground": "devtools",
+  "statement": "Друга сторона роботи з мережею: перевірити, **що саме** сторінка відправляє на сервер. Сторінка **DevTools Lab** (`/playground/devtools`), розділ **3. Network**:\n\n1. **Save profile** надсилає `POST …/lab/profile` з тілом `{ name: 'Olena', newsletter: true, language: 'uk' }` (галочка newsletter стоїть за замовчуванням). *Уже є.*\n2. Якщо зняти галочку newsletter, у тілі `newsletter: false`.\n3. **Load orders** зі статусом **Shipped** надсилає запит з параметром `status=shipped`.\n4. Якщо сервер на Save profile відповів **500** (`page.route`), сторінка пише `Could not save the profile`.",
+  "mutants": [
+    { "id": "newsletterFalse", "description": "Save profile always sent newsletter: false.", "hint": "Check request.postDataJSON() of the profile request with the box CHECKED." },
+    { "id": "ordersFilter", "description": "Load orders sent status=all instead of the selected status.", "hint": "Select Shipped, click Load orders and check the status query parameter of the request." }
+  ],
+  "minTests": 3,
+  "codeRules": [
+    { "kind": "require", "pattern": "waitForRequest\\(", "message": "Перехоплюй запит через `page.waitForRequest(…)`." },
+    { "kind": "require", "pattern": "postDataJSON\\(\\)", "message": "Тіло запиту читай через `request.postDataJSON()`." },
+    { "kind": "require", "pattern": "searchParams", "message": "Параметр запиту читай через `new URL(request.url()).searchParams.get('status')`." }
+  ],
+  "hints": [
+    "`const requestPromise = page.waitForRequest((r) => r.url().includes('/lab/orders'));` — очікування починай ДО кліку.",
+    "`expect(new URL(request.url()).searchParams.get('status')).toBe('shipped');`"
+  ],
+  "explanation": "Фронтенд може показувати «все збережено», а відправити на сервер не те: старе значення галочки, неправильний фільтр. `waitForRequest` дає сам запит: метод, URL з параметрами, заголовки, тіло (`postDataJSON`). Такі перевірки ловлять баги, які видно лише в DevTools → Network (модуль 07), але тепер — автоматично."
+}

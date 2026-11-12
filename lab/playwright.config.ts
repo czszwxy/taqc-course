@@ -18,7 +18,8 @@ const EXPECT_TIMEOUT_MS = 3_000;
 const ACTION_TIMEOUT_MS = 5_000;
 
 interface RunPlan {
-  projects: { name: string; storageState: string }[];
+  /** bugs = "none" or one bug id; the playground pages read it from the user agent (withLabMode). */
+  projects: { name: string; bugs: string }[];
   reportFile: string;
 }
 
@@ -54,7 +55,11 @@ export default defineConfig({
     trace: plan ? 'off' : 'retain-on-failure',
     screenshot: plan ? 'off' : 'only-on-failure',
   },
-  projects: plan ? plan.projects.map((p) => ({ name: p.name, use: { ...chrome, storageState: p.storageState } })) : [{ name: 'chromium', use: { ...chrome } }],
+  // Graded runs: every page variant shares one baseline folder, so screenshots of the correct page are the reference.
+  ...(plan ? { snapshotPathTemplate: '{testDir}/__screenshots__/{arg}{ext}' } : {}),
+  projects: plan
+    ? plan.projects.map((p) => ({ name: p.name, use: { ...chrome, userAgent: `${chrome.userAgent} qa-lab-bugs=${p.bugs}` } }))
+    : [{ name: 'chromium', use: { ...chrome } }],
   webServer: {
     command: 'npm run dev',
     url: LAB_BASE_URL,

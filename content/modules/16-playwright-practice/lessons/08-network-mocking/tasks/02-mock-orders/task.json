@@ -1,0 +1,42 @@
+{
+  "type": "playwright",
+  "title": "Mock the orders API",
+  "playground": "account",
+  "statement": "Після входу сторінка **My account** (`/playground/account`) завантажує замовлення запитом `GET /api/orders`. Справжні дані на сервері можуть змінюватися, а помилку сервера руками не відтвориш. Тому **підміни відповіді** через `page.route`:\n\n1. Відповідь з одним замовленням → видно `Order #2001` і `3 pcs · paid`. *Уже є.*\n2. Порожній список `{ items: [] }` → `No orders yet`.\n3. Помилка **500** → `Could not load your orders.` (`role=\"alert\"`).\n4. Спершу 500, а після **Try again** — нормальна відповідь → видно замовлення.\n5. Справжній запит (без моку) іде з заголовком `Authorization: Bearer …` (`page.waitForRequest`).\n\nМаршрут треба зареєструвати **до** входу: замовлення вантажаться одразу після нього.",
+  "mutants": [
+    {
+      "id": "ordersErrorAsEmpty",
+      "description": "a failed orders request was shown as \"No orders yet\".",
+      "hint": "Mock a 500 response and check for the error message (not the empty state)."
+    },
+    {
+      "id": "retryNoop",
+      "description": "\"Try again\" after an error did nothing.",
+      "hint": "First answer 500, then a real list: click Try again and expect the order to appear."
+    }
+  ],
+  "minTests": 5,
+  "codeRules": [
+    {
+      "kind": "require",
+      "pattern": "page\\.route\\(",
+      "message": "Підміняй відповіді через `await page.route('**/api/orders', …)`."
+    },
+    {
+      "kind": "require",
+      "pattern": "status:\\s*500",
+      "message": "Змоделюй помилку сервера: `route.fulfill({ status: 500, … })`."
+    },
+    {
+      "kind": "require",
+      "pattern": "waitForRequest\\(",
+      "message": "П'ятий тест: перехопи справжній запит через `page.waitForRequest(…)`."
+    }
+  ],
+  "hints": [
+    "Помилка: `await page.route('**/api/orders', (route) => route.fulfill({ status: 500, json: { error: 'Server error' } }));`",
+    "Різні відповіді: прапорець `let serverIsDown = true;` і в обробнику маршруту `if (serverIsDown) … 500 … else … список …`. Після того як побачиш помилку, постав `serverIsDown = false` і натисни Try again. (Лічильник викликів ненадійний: сторінка може запитати замовлення двічі.)",
+    "`const requestPromise = page.waitForRequest('**/api/orders'); await signIn(page); const request = await requestPromise; expect(request.headers()['authorization']).toMatch(/^Bearer /);`"
+  ],
+  "explanation": "`page.route` перехоплює запити сторінки, а `route.fulfill` віддає підготовлену відповідь замість сервера. Так легко перевірити стани, які на справжньому середовищі майже не відтворити: порожньо, помилка 500, помилка, а потім успіх. Але мок перевіряє **фронтенд**, а не сервер: тому окремо варто перевірити справжній запит (`waitForRequest`) — що він взагалі йде і з правильними заголовками. Типові баги тут: помилку показано як «порожньо» (користувач думає, що замовлень немає) і кнопка повтору, яка нічого не робить."
+}

@@ -17,6 +17,9 @@ import { TodoPage } from './playground/TodoPage';
 import { DevToolsLabPage } from './playground/DevToolsLabPage';
 import { ResponsivePage } from './playground/ResponsivePage';
 import { ApiConsolePage } from './playground/ApiConsolePage';
+import { AccountPage } from './playground/AccountPage';
+import { HelpWidgetPage } from './playground/HelpWidgetPage';
+import { TermsPage } from './playground/TermsPage';
 import { useSettings } from './features/progress/store';
 
 export default function App() {
@@ -37,6 +40,9 @@ export default function App() {
       <Route path="/playground/devtools" element={<DevToolsLabPage />} />
       <Route path="/playground/responsive" element={<ResponsivePage />} />
       <Route path="/playground/api" element={<ApiConsolePage />} />
+      <Route path="/playground/account" element={<AccountPage />} />
+      <Route path="/playground/help-widget" element={<HelpWidgetPage />} />
+      <Route path="/playground/terms" element={<TermsPage />} />
       <Route element={<Layout />}>
         <Route index element={<Dashboard />} />
         <Route path="module/:moduleSlug" element={<ModulePage />} />

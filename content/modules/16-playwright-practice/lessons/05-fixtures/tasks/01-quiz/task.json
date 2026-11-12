@@ -1,0 +1,66 @@
+{
+  "type": "quiz",
+  "title": "Quiz: fixtures",
+  "show": 5,
+  "hints": ["До `await use()` — setup, після — teardown. Фікстура створюється, лише якщо тест її попросив."],
+  "questions": [
+    {
+      "id": "use",
+      "kind": "single",
+      "text": "Коли виконується код фікстури, написаний ПІСЛЯ `await use(value)`?",
+      "options": [
+        { "text": "Після тесту (teardown), навіть якщо тест упав", "correct": true },
+        { "text": "Ніколи" },
+        { "text": "До тесту" }
+      ]
+    },
+    {
+      "id": "extend",
+      "kind": "text",
+      "text": "Який метод базового `test` створює власні фікстури? (test.____)",
+      "accept": ["extend", "extend()", "test.extend", "base.extend"]
+    },
+    {
+      "id": "lazy",
+      "kind": "single",
+      "text": "Тест `async ({ page }) => …` у файлі, де є фікстура `cart`. Чи створиться `cart`?",
+      "options": [
+        { "text": "Ні: фікстури створюються лише тоді, коли тест їх просить", "correct": true },
+        { "text": "Так, усі фікстури створюються для кожного тесту" }
+      ]
+    },
+    {
+      "id": "deps",
+      "kind": "single",
+      "text": "Фікстура `cart: async ({ page }, use) => …`. Що означає `{ page }` тут?",
+      "options": [
+        { "text": "`cart` залежить від `page`, тож Playwright спершу створить сторінку", "correct": true },
+        { "text": "Фікстура буде доступна лише на сторінці page" }
+      ]
+    },
+    {
+      "id": "worker",
+      "kind": "single",
+      "text": "Створення тестового користувача через API займає 2 с, і його можна ділити між тестами. Яка область дії фікстури доречна?",
+      "options": [
+        { "text": "`scope: 'worker'` — один раз на воркер", "correct": true },
+        { "text": "`scope: 'test'` — для кожного тесту окремо", "explain": "Працює, але дорого. Перевикористання між тестами одного воркера тут безпечне." }
+      ]
+    },
+    {
+      "id": "vs-hooks",
+      "kind": "single",
+      "text": "Чим фікстура краща за `beforeEach` для створення Page Object?",
+      "options": [
+        { "text": "Перевикористовується в усіх файлах, приходить параметром, setup і teardown в одному місці", "correct": true },
+        { "text": "Нічим, це те саме" }
+      ]
+    },
+    {
+      "id": "request",
+      "kind": "single",
+      "text": "Яка вбудована фікстура дає API-клієнт з baseURL з конфігу?",
+      "options": [{ "text": "`request`", "correct": true }, { "text": "`fetch`" }, { "text": "`api`" }]
+    }
+  ]
+}

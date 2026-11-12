@@ -1,0 +1,22 @@
+{
+  "type": "playwright",
+  "title": "Debug three broken login tests",
+  "playground": "login",
+  "statement": "Колега написав три тести для логіну Taskly (`/playground/login`), і **всі три червоні** на правильній сторінці. Сторінка тут ні до чого: помилки в самих тестах.\n\n1. Натисни **▶ Run** і уважно прочитай повідомлення Playwright: `strict mode violation`, `Expected / Received`, `waiting for getByRole(…)`.\n2. Виправ **тести** (не вимоги!) один за одним, щоразу перезапускаючи Run.\n3. Коли все зелене на правильній сторінці, натисни **✓ Check**: виправлені тести мають ловити баги блокування після 3 спроб і «Remember me».\n\nВимоги (жовта панель на сторінці): після **3** невдалих спроб поспіль — `Too many failed attempts. Try again in 15 minutes.`, і навіть правильний пароль не приймається. **Remember me** не відмічено → після Log out поле Email порожнє; відмічено → email заповнений.\n\nЛокально ти міг би запустити `npx playwright test --debug` або відкрити trace. Тут повідомлення про помилку — твій головний інструмент.",
+  "mutants": [
+    { "id": "lockout", "description": "the account was locked after 5 failed attempts instead of 3.", "hint": "The lockout test must check the message right after the THIRD wrong password." },
+    { "id": "rememberMe", "description": "the email was remembered even with \"Remember me\" unchecked.", "hint": "Log in WITHOUT Remember me, log out and check that Email is empty." }
+  ],
+  "minTests": 3,
+  "codeRules": [
+    { "kind": "forbid", "pattern": "waitForTimeout\\(", "message": "Паузи не лагодять тести: знайди справжню причину в повідомленні про помилку." },
+    { "kind": "forbid", "pattern": "force:\\s*true", "message": "`force: true` ховає проблему замість того, щоб її виправити." },
+    { "kind": "forbid", "pattern": "\\.(skip|fixme)\\(", "message": "Не вимикай тести: їх треба виправити." }
+  ],
+  "hints": [
+    "`strict mode violation: getByLabel('Password') resolved to 2 elements` — підпис «Password» має і поле, і чекбокс «Show password». Допоможе `{ exact: true }`.",
+    "`Expected … Received …` — порівняй очікуваний текст з тим, що пише сторінка, до літери.",
+    "`waiting for getByRole('button', { name: 'Logout' })` — такої кнопки немає. Подивись на сторінці, як вона називається насправді."
+  ],
+  "explanation": "Налагодження — це читання фактів. Playwright пише, **який** локатор, **що** очікувалось і **що** отримано. `strict mode violation` означає, що локатор неточний. `Expected/Received` — що очікування не збігається зі сторінкою (одрук або неправильна вимога). `waiting for …` до таймауту — що елемента з такою назвою немає. Виправляй тест під **вимогу**, а не під поточну поведінку сторінки: інакше тест «позеленіє» разом із багом."
+}

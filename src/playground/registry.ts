@@ -67,6 +67,7 @@ export const PLAYGROUND_PAGES: PlaygroundPage[] = [
     path: '/playground/devtools',
     description: 'Practice page for the Elements, Console, Network and Application panels: hidden values, console errors, requests and storage.',
     bugs: 6,
+    bugIds: ['totalCrash', 'promoClientOnly', 'newsletterFalse', 'ordersFilter', 'avatar404', 'logoutKeepsCart'],
   },
   {
     id: 'responsive',
@@ -74,6 +75,7 @@ export const PLAYGROUND_PAGES: PlaygroundPage[] = [
     path: '/playground/responsive',
     description: 'A product page to test at different screen widths with the DevTools device toolbar.',
     bugs: 4,
+    bugIds: ['navGap', 'titleNoWrap', 'cartHiddenMobile', 'tableOverflow'],
   },
   {
     id: 'api',
@@ -81,5 +83,13 @@ export const PLAYGROUND_PAGES: PlaygroundPage[] = [
     path: '/playground/api',
     description: 'A mini Postman inside the app for the local Gadgetly REST API: products, login with a token, orders CRUD.',
     bugs: 6,
+  },
+  {
+    id: 'account',
+    title: 'My account',
+    path: '/playground/account',
+    description: 'Signed-in area: session in localStorage, orders from the API, confirm/prompt/alert dialogs, a help chat in an iframe and a link that opens a new tab.',
+    bugs: 8,
+    bugIds: ['sessionLost', 'signOutKeepsToken', 'renameEmpty', 'deleteIgnoresCancel', 'termsSameTab', 'ordersErrorAsEmpty', 'retryNoop', 'helpEmpty'],
   },
 ];

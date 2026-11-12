@@ -1,0 +1,23 @@
+{
+  "type": "playwright",
+  "title": "Build a SignupPage page object",
+  "playground": "signup",
+  "statement": "Перепиши тести форми реєстрації (`/playground/signup`) через **Page Object**. У стартовому файлі вже є клас `SignupPage` з `goto()` і `register(data)` та перший тест.\n\n1. Додай у клас метод `error(field)`, який повертає локатор помилки поля. Помилки під полями мають `data-testid` вигляду `error-fullName`, `error-email`, `error-password`…\n2. Допиши тести **лише через методи класу** (без `page.getBy…` у самих тестах):\n   - ім'я з одних пробілів (`'   '`) → `Full name is required`;\n   - email без крапки в домені (`olena@example`) → `Enter a valid email address`;\n   - пароль рівно **20** символів (`Abcdefghij1234567890`) приймається.\n\nУ реальному проєкті клас лежав би в `pages/SignupPage.ts`, а тести імпортували б його. Тут усе в одному файлі.",
+  "mutants": [
+    { "id": "nameSpaces", "description": "a full name made only of spaces was accepted.", "hint": "Register with a full name of spaces only — it must be treated as empty." },
+    { "id": "emailDot", "description": "an email without a dot in the domain was accepted.", "hint": "Try an email like olena@example (no dot after @)." },
+    { "id": "pwdMax", "description": "a password of exactly 20 characters was rejected (max off by one).", "hint": "The password limit is 8–20: test exactly 20 characters." }
+  ],
+  "minTests": 4,
+  "codeRules": [
+    { "kind": "require", "pattern": "class\\s+SignupPage", "message": "Залиш клас `SignupPage`: це і є Page Object." },
+    { "kind": "require", "pattern": "\\berror\\s*\\(\\s*field", "message": "Додай у клас метод `error(field)`, що повертає локатор помилки." },
+    { "kind": "require", "pattern": "new\\s+SignupPage\\(", "message": "У тестах створюй об'єкт сторінки: `const signup = new SignupPage(page);`." }
+  ],
+  "hints": [
+    "Метод з шаблонним рядком: `error(field: string): Locator { return this.page.getByTestId('error-' + field); }`",
+    "Тест через Page Object: `await signup.register({ ...VALID, fullName: '   ' }); await expect(signup.error('fullName')).toHaveText('Full name is required');`",
+    "Для 20 символів: `{ ...VALID, password: 'Abcdefghij1234567890', confirm: 'Abcdefghij1234567890' }` і перевір `signup.welcome`."
+  ],
+  "explanation": "Page Object збирає локатори й дії однієї сторінки в класі: тести читаються як сценарій (`signup.register(...)`, `signup.error('email')`), а коли зміниться верстка, виправляти доведеться одне місце — клас, а не 20 тестів. Перевірки (`expect`) лишаються в тестах: Page Object знає, **як** працювати зі сторінкою, а тест вирішує, **що** перевірити. Баги тут — межі й формат: ім'я з пробілів, email без крапки, пароль рівно на верхній межі."
+}

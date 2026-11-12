@@ -1,0 +1,29 @@
+{
+  "title": "Page Object Model",
+  "minutes": 55,
+  "summary": "Навіщо Page Object, як влаштований клас сторінки (constructor, локатори, методи-дії), що лишається в тестах (перевірки), компоненти, структура папок і типові помилки",
+  "resources": [
+    {
+      "title": "Playwright: Page object models",
+      "url": "https://playwright.dev/docs/pom",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "TypeScript Handbook: Classes",
+      "url": "https://www.typescriptlang.org/docs/handbook/2/classes.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Пригадай класи з модуля 13.",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Playwright Page Object Model",
+      "url": "https://www.youtube.com/results?search_query=Playwright+Page+Object+Model+TypeScript",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

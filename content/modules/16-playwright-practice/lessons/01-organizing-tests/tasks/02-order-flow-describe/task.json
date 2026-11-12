@@ -1,0 +1,25 @@
+{
+  "type": "playwright",
+  "title": "Organize order-status tests with describe, hooks and tags",
+  "playground": "order",
+  "statement": "Сторінка статусів замовлення (`/playground/order`): замовлення `#1042` стартує в статусі `Created`, кнопки **Pay / Ship / Deliver / Cancel / Return** переводять його між статусами. Недозволена дія показує `<Action> is not allowed for an order in status <Status>` (`role=\"alert\"`), статус не змінюється.\n\nЗгрупуй тести за **станом замовлення**: у кожного `test.describe` свій `beforeEach`, який доводить замовлення до потрібного статусу.\n\n| Група | Вимога |\n|---|---|\n| Created | можна оплатити *(уже є)*; **не можна відправити** без оплати |\n| Paid | скасування оформлює повернення коштів: у історії `Refund of 2,749 UAH issued` |\n| Shipped | **не можна скасувати** |\n| Delivered | можна повернути (`Returned`) |\n| Cancelled | **не можна оплатити** знову |\n\nПозначте 1–2 найважливіші тести тегом `@smoke`: `test('…', { tag: '@smoke' }, async ({ page }) => …)`.",
+  "mutants": [
+    { "id": "shipBeforePay", "description": "an unpaid (Created) order could be shipped.", "hint": "Try Ship on a Created order — it must be refused." },
+    { "id": "cancelAfterShip", "description": "a Shipped order could be cancelled.", "hint": "Bring the order to Shipped (Pay, Ship) and try Cancel." },
+    { "id": "payAfterCancel", "description": "a Cancelled order could be paid again.", "hint": "Cancel the order, then try Pay." },
+    { "id": "returnRejected", "description": "Return was refused for a Delivered order.", "hint": "Bring the order to Delivered (Pay, Ship, Deliver) and Return it." },
+    { "id": "refundNote", "description": "cancelling a Paid order did not record the refund.", "hint": "Pay, then Cancel — check the history note about the refund." }
+  ],
+  "minTests": 6,
+  "codeRules": [
+    { "kind": "require", "pattern": "test\\.describe\\(", "message": "Згрупуй тести через `test.describe('…', () => { … })`." },
+    { "kind": "require", "pattern": "beforeEach\\([\\s\\S]*beforeEach\\(", "message": "Потрібні `beforeEach` у групах: кожна доводить замовлення до свого статусу." },
+    { "kind": "require", "pattern": "tag:\\s*['\"\\[]", "message": "Познач найважливіші тести тегом: `{ tag: '@smoke' }`." }
+  ],
+  "hints": [
+    "Хелпер для кількох дій поспіль: `async function act(page, ...actions) { for (const a of actions) await page.getByRole('button', { name: a, exact: true }).click(); }`",
+    "У групі «Shipped order»: `test.beforeEach(async ({ page }) => { await act(page, 'Pay', 'Ship'); });` — зовнішній beforeEach (goto) виконається раніше.",
+    "Повернення коштів: `await expect(page.getByTestId('history-note')).toHaveText('Refund of 2,749 UAH issued');`"
+  ],
+  "explanation": "`test.describe` групує тести, а `beforeEach` всередині групи готує саме той стан, який потрібен її тестам. Зовнішні хуки виконуються раніше за внутрішні, тож кожен тест стартує з чистої сторінки, а потім доводиться до свого статусу. Так тести залишаються незалежними, і в звіті видно структуру «Shipped order › cannot be cancelled». Негативні переходи (Ship для Created, Cancel для Shipped, Pay для Cancelled) — саме там ховаються баги state transition з модуля 03."
+}

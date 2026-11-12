@@ -1,0 +1,61 @@
+{
+  "type": "quiz",
+  "title": "Quiz: Page Object Model",
+  "show": 5,
+  "hints": ["Page Object = локатори + дії однієї сторінки. Перевірки — у тестах."],
+  "questions": [
+    {
+      "id": "why",
+      "kind": "single",
+      "text": "Головна вигода Page Object Model?",
+      "options": [
+        { "text": "Локатори й дії сторінки в одному місці: зміна верстки виправляється в класі, а не в кожному тесті", "correct": true },
+        { "text": "Тести виконуються швидше" },
+        { "text": "Не треба писати перевірки" }
+      ]
+    },
+    {
+      "id": "expect-where",
+      "kind": "single",
+      "text": "Де зазвичай мають бути перевірки (`expect`)?",
+      "options": [
+        { "text": "У тестах; Page Object дає локатори й дії", "correct": true },
+        { "text": "Усі всередині методів Page Object", "explain": "Тоді методи не годяться для негативних сценаріїв, а звіт менш зрозумілий." }
+      ]
+    },
+    {
+      "id": "constructor",
+      "kind": "single",
+      "text": "Що зазвичай отримує конструктор Page Object?",
+      "options": [{ "text": "Об'єкт `page`", "correct": true }, { "text": "Масив тестів" }, { "text": "Шлях до конфігу" }]
+    },
+    {
+      "id": "method-name",
+      "kind": "single",
+      "text": "Яка назва методу Page Object найкраща?",
+      "options": [
+        { "text": "`applyPromo(code)`", "correct": true },
+        { "text": "`clickSecondButtonInForm()`", "explain": "Назва описує реалізацію, а не дію користувача." },
+        { "text": "`test1()`" }
+      ]
+    },
+    {
+      "id": "lazy",
+      "kind": "single",
+      "text": "Чому можна створювати локатори в конструкторі, ще до `goto`?",
+      "options": [
+        { "text": "Локатори ліниві: елементи шукаються під час дії чи перевірки", "correct": true },
+        { "text": "Не можна, це завжди помилка" }
+      ]
+    },
+    {
+      "id": "component",
+      "kind": "single",
+      "text": "Картка товару повторюється на трьох сторінках. Як краще?",
+      "options": [
+        { "text": "Окремий клас-компонент `ProductCard`, який використовують Page Objects цих сторінок", "correct": true },
+        { "text": "Скопіювати локатори картки в кожен Page Object" }
+      ]
+    }
+  ]
+}

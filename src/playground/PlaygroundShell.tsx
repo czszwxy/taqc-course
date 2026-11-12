@@ -13,11 +13,18 @@ export function isFixedMode(): boolean {
 }
 
 /*
- * Automation labs (module 15+): the Playwright lab runner puts LAB_BUGS_KEY into the localStorage of each
- * test's browser context — "none" turns every bug off, "<bugId>" (or a comma list) turns on only those.
- * It wins over `?fixed`. Never shown to the learner.
+ * Automation labs (module 15+): the Playwright lab runner appends "qa-lab-bugs=<value>" to the browser's user agent
+ * (a learner's own storageState or new tabs can't drop it) — "none" turns every bug off, "<bugId>" (or a comma list)
+ * turns on only those. It wins over `?fixed`. LAB_BUGS_KEY in localStorage is an older fallback. Never shown to the learner.
+ *
+ * Matches "Mozilla/5.0 … Chrome/158 qa-lab-bugs=emailCase" (captures "emailCase"), rejects a user agent without the marker.
+ * https://regex101.com/?regex=qa-lab-bugs%3D(%5BA-Za-z0-9%2C%5D%2B)
  */
+const LAB_AGENT_MARKER = /qa-lab-bugs=([A-Za-z0-9,]+)/;
+
 function readLabBugs(): string | null {
+  const fromAgent = LAB_AGENT_MARKER.exec(navigator.userAgent)?.[1];
+  if (fromAgent) return fromAgent;
   try {
     return window.localStorage.getItem(LAB_BUGS_KEY);
   } catch {

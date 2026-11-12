@@ -1,0 +1,23 @@
+{
+  "type": "playwright",
+  "title": "Write custom fixtures for the DevTools Lab",
+  "playground": "devtools",
+  "statement": "Сторінка **DevTools Lab** (`/playground/devtools`). У стартовому файлі вже є власний `test` з фікстурою `lab`: вона відкриває сторінку і віддає `page` у тест.\n\n1. Додай фікстуру **`consoleErrors`**: масив, куди збираються всі `console.error` і необроблені помилки сторінки (`page.on('console')`, `page.on('pageerror')`). Зроби так, щоб `lab` **залежала** від `consoleErrors`: тоді слухачі підключаються **до** відкриття сторінки.\n2. Тести:\n   - **Apply** для промокоду неактивна. Якщо ввімкнути її через DOM і натиснути, сервер має **відмовити**: `Server rejected the request (403)…`. *Уже є.*\n   - **Calculate total** показує `Total: …` і **не пише помилок у консоль** (`expect(consoleErrors).toEqual([])`).\n   - **Log out** видаляє кошик з localStorage (ключ `lab:cart`).",
+  "mutants": [
+    { "id": "totalCrash", "description": "\"Calculate total\" crashed with a TypeError (logged to the console).", "hint": "Click Calculate total, check the message AND that consoleErrors stayed empty." },
+    { "id": "promoClientOnly", "description": "enabling the disabled Apply button in the DOM gave a 50% discount (no server check).", "hint": "Remove the disabled attribute, click Apply and check the server's answer." },
+    { "id": "logoutKeepsCart", "description": "Log out left lab:cart in localStorage.", "hint": "After Log out read localStorage.getItem('lab:cart') with page.evaluate — it must be null." }
+  ],
+  "minTests": 3,
+  "codeRules": [
+    { "kind": "require", "pattern": "\\.extend\\s*[<(]", "message": "Власні фікстури створюються через `base.extend<…>({ … })`." },
+    { "kind": "require", "pattern": "consoleErrors\\s*:\\s*async", "message": "Додай фікстуру `consoleErrors: async ({ page }, use) => { … }`." },
+    { "kind": "require", "pattern": "await\\s+use\\(", "message": "Фікстура віддає значення в тест через `await use(value)`." }
+  ],
+  "hints": [
+    "`consoleErrors: async ({ page }, use) => { const errors: string[] = []; page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); }); page.on('pageerror', (e) => errors.push(e.message)); await use(errors); }`",
+    "Залежність: `lab: async ({ page, consoleErrors }, use) => { … }` — Playwright спершу створить consoleErrors.",
+    "localStorage: `await expect.poll(() => lab.evaluate(() => localStorage.getItem('lab:cart'))).toBeNull();`"
+  ],
+  "explanation": "Фікстура — це «підготовка + прибирання», яку тест отримує в параметрах. Код до `await use(…)` виконується перед тестом, код після — після нього. Фікстури можуть залежати одна від одної, і Playwright створює їх у правильному порядку. Фікстура `consoleErrors` — популярний прийом: тест падає, якщо сторінка тихо пише помилки в консоль, хоча на екрані «все працює». А перевірка, що сервер відхиляє дію, коли кнопку ввімкнули через DOM, — це перевірка безпеки: клієнтським обмеженням довіряти не можна."
+}

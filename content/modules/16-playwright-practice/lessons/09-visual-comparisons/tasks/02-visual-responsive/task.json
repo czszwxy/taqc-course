@@ -1,0 +1,46 @@
+{
+  "type": "playwright",
+  "title": "Catch layout bugs with screenshot comparisons",
+  "playground": "responsive",
+  "statement": "Сторінка товару (`/playground/responsive`) ламається лише на певній ширині екрана: щось зникає, обрізається або вилазить за край. Функціональні перевірки таке часто пропускають, а **візуальне порівняння** помітить.\n\nДля кожного розміру екрана зроби знімок усієї сторінки і порівняй його з еталоном: `await expect(page).toHaveScreenshot('product-mobile.png', { fullPage: true })`.\n\n- desktop `1280 × 900` *(уже є)*;\n- **tablet** `900 × 900`;\n- **mobile** `375 × 800`.\n\n**Як тут з'являються еталони.** У справжньому проєкті перший прогін записує еталонні знімки, людина їх переглядає і комітить. Тут ✓ Check спершу знімає еталони з **правильної** сторінки, а потім порівнює з ними кожну версію з багом.",
+  "mutants": [
+    {
+      "id": "navGap",
+      "description": "at tablet width (768–1023 px) neither the nav links nor the ☰ button were shown.",
+      "hint": "Compare a screenshot at a tablet width (e.g. 900 px)."
+    },
+    {
+      "id": "titleNoWrap",
+      "description": "on phones the long product title did not wrap and was cut off.",
+      "hint": "Compare a screenshot at a phone width (e.g. 375 px)."
+    },
+    {
+      "id": "cartHiddenMobile",
+      "description": "on phones the Add to cart button was hidden.",
+      "hint": "Compare a screenshot at a phone width (e.g. 375 px)."
+    },
+    {
+      "id": "tableOverflow",
+      "description": "on phones the specs table was wider than the screen.",
+      "hint": "Compare a FULL-page screenshot at a phone width."
+    }
+  ],
+  "minTests": 3,
+  "codeRules": [
+    {
+      "kind": "require",
+      "pattern": "toHaveScreenshot\\(",
+      "message": "Візуальна перевірка: `await expect(page).toHaveScreenshot('name.png', { fullPage: true })`."
+    },
+    {
+      "kind": "require",
+      "pattern": "setViewportSize\\(",
+      "message": "Задай розмір екрана: `await page.setViewportSize({ width: 375, height: 800 })`."
+    }
+  ],
+  "hints": [
+    "Таблиця розмірів і цикл: `const VIEWPORTS = [{ name: 'tablet', width: 900, height: 900 }, …]; for (const vp of VIEWPORTS) { test(…) }`.",
+    "Розмір задавай ДО `page.goto`, а ім'я знімка роби унікальним: `product-${vp.name}.png`."
+  ],
+  "explanation": "`toHaveScreenshot` робить знімок і порівнює його попіксельно з еталоном. Якщо різниця більша за допустиму, тест падає, а у звіті є три картинки: еталон, фактичний знімок і різниця. Візуальні тести ловлять те, що важко описати локаторами: зниклу кнопку, обрізаний текст, вилізлу таблицю. Їх ціна — чутливість: шрифти, анімації, дати, різні ОС дають «шум». Тому знімки роблять у стабільному середовищі (часто в Docker на CI), ховають динамічне (`mask`) і оновлюють еталони свідомо (`--update-snapshots`) після перегляду."
+}
