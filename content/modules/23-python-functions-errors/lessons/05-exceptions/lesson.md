@@ -6,9 +6,9 @@
 
 ```python
 try:
-    price = int(text)
+    quantity = int(text)
 except ValueError:
-    price = 0
+    quantity = 1
 ```
 
 Якщо в блоці `try` стався `ValueError`, Python переходить у `except`, а програма продовжує роботу. Інші винятки (наприклад, `TypeError`) летять далі.
@@ -40,26 +40,49 @@ finally:
 
 `finally` — місце для прибирання: закрити з'єднання, браузер, видалити тестові дані. Він виконується навіть тоді, коли в `try` або `except` спрацював `return`.
 
+## Розбір: який блок виконається
+
+```python
+def to_quantity(text):
+    try:
+        value = int(text)
+    except ValueError:
+        print("not a number")
+        return None
+    else:
+        print("parsed")
+        return value
+    finally:
+        print("done")
+```
+
+| Виклик | Що надрукується | Що поверне |
+|---|---|---|
+| `to_quantity("3")` | `parsed`, потім `done` | `3` |
+| `to_quantity("abc")` | `not a number`, потім `done` | `None` |
+
+`finally` друкує `done` в обох випадках — і саме **перед** тим, як функція поверне значення.
+
 ## raise — підняти виняток
 
 ```python
-def parse_price(text):
-    cleaned = text.replace("грн", "").strip()
-    if not cleaned.isdigit():
-        raise ValueError(f"Invalid price: '{text}'")
+def parse_quantity(text):
+    cleaned = text.strip()
+    if not cleaned.isdigit() or int(cleaned) < 1:
+        raise ValueError(f"Invalid quantity: '{text}'")
     return int(cleaned)
 ```
 
-Добре повідомлення відповідає на два питання: **що** не так і **яке значення** прийшло. `Invalid price: '12,50 грн'` економить хвилини дебагу порівняно з `invalid literal for int()`.
+Добре повідомлення відповідає на два питання: **що** не так і **яке значення** прийшло. `Invalid quantity: '0'` економить хвилини дебагу порівняно з голим `ValueError`.
 
 ## Власні винятки
 
 ```python
-class ApiError(Exception):
-    """API повернуло щось, з чим тести не можуть працювати."""
+class ConfigError(Exception):
+    """Налаштування тестового прогону неповні або неправильні."""
 ```
 
-Класи детально — у модулі OOP, Files & Project Setup; тут достатньо одного рядка `class ...(Exception)`. Власний тип дозволяє ловити саме «помилки API» окремо від інших.
+Класи детально — у модулі OOP, Files & Project Setup; тут достатньо одного рядка `class ...(Exception)`. Власний тип дозволяє ловити саме «помилки конфігурації» окремо від інших.
 
 ## raise … from e
 
@@ -67,9 +90,9 @@ class ApiError(Exception):
 
 ```python
 try:
-    data = json.loads(text)
-except json.JSONDecodeError as e:
-    raise ApiError(f"Response is not JSON: {text[:30]}") from e
+    base_url = settings["base_url"]
+except KeyError as e:
+    raise ConfigError("Missing setting: base_url") from e
 ```
 
 У traceback будуть обидві помилки з фразою *The above exception was the direct cause of the following exception*.
@@ -83,15 +106,22 @@ except json.JSONDecodeError as e:
 ```python
 import pytest
 
-def test_rejects_text():
-    with pytest.raises(ValueError, match="Invalid price"):
-        parse_price("abc")
+def test_rejects_zero():
+    with pytest.raises(ValueError, match="Invalid quantity"):
+        parse_quantity("0")
 ```
 
 Тест проходить, якщо код усередині підняв `ValueError` з повідомленням, що відповідає `match` (це регулярний вираз). Якщо винятку не було — тест падає з `DID NOT RAISE`.
 
 > [!QA]
 > Негативні тести («система правильно відмовляє») так само важливі, як позитивні. `pytest.raises` з `match` перевіряє не лише сам факт помилки, а й **повідомлення** — саме його побачить колега, який дебажить упалий тест.
+
+## Типові помилки
+
+- `except:` без типу — ловить навіть `KeyboardInterrupt` і помилки в самому тесті.
+- `raise ValueError` без повідомлення — потім ніхто не зрозуміє, яке значення було погане.
+- `except Exception` перед `except ValueError` — друга гілка ніколи не спрацює.
+- Перехопили і нічого не зробили (`pass`) — помилка зникла, а баг лишився.
 
 ## Підсумок
 

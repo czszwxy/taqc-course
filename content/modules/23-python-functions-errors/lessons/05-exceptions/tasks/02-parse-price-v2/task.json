@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Parse a discount percent or fail clearly",
+  "variantOf": "02-parse-price",
+  "statement": "Поле знижки приходить як `15%`. Напиши `parse_percent(text)` → ціле число від 0 до 100. Прибери `%` і пробіли. Якщо лишилось не ціле число або воно більше за 100 — підніми `ValueError` з повідомленням `Invalid percent: '<початковий текст>'`.\n\n```python\nparse_percent(\"15%\")      # 15\nparse_percent(\" 7 % \")    # 7\nparse_percent(\"150%\")     # ValueError: Invalid percent: '150%'\nparse_percent(\"ten\")      # ValueError: Invalid percent: 'ten'\n```",
+  "hints": [
+    "`text.replace(\"%\", \"\").strip()` — залишиться саме число.",
+    "Перевір `isdigit()` і межу 100 до перетворення результату; при помилці — `raise ValueError(f\"Invalid percent: '{text}'\")`."
+  ],
+  "explanation": "Дві перевірки — формат і діапазон — дають одне зрозуміле повідомлення з початковим текстом. Від'ємні значення відсіює `isdigit()` (мінус — не цифра), а межа 100 — окрема умова. 0 і 100 — допустимі межі.",
+  "codeRules": [
+    { "kind": "require", "pattern": "raise\\s+ValueError", "message": "Підніми `ValueError` зі своїм повідомленням." }
+  ]
+}

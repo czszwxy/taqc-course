@@ -36,25 +36,25 @@ def increment():
 ## Функція всередині функції
 
 ```python
-def make_limit_check(limit):
-    def check(value):
-        return value <= limit       # limit — з зовнішньої функції (Enclosing)
-    return check                    # повертаємо саму функцію, без ()
+def make_prefix_check(prefix):
+    def check(name):
+        return name.startswith(prefix)     # prefix — з зовнішньої функції (Enclosing)
+    return check                           # повертаємо саму функцію, без ()
 
-fast_enough = make_limit_check(500)
-fast_enough(320)                    # True
-fast_enough(800)                    # False
+is_api_test = make_prefix_check("test_api_")
+is_api_test("test_api_orders")     # True
+is_api_test("test_ui_login")       # False
 ```
 
-`make_limit_check` — **фабрика функцій**: створює нові функції з налаштуванням.
+`make_prefix_check` — **фабрика функцій**: створює нові функції з налаштуванням.
 
 ## Замикання (closure)
 
-Функція `check` «пам'ятає» `limit` навіть після того, як `make_limit_check` завершилась. Таку функцію разом із запам'ятованими змінними називають **замиканням**. Кожен виклик фабрики створює окреме замикання:
+Функція `check` «пам'ятає» `prefix` навіть після того, як `make_prefix_check` завершилась. Таку функцію разом із запам'ятованими змінними називають **замиканням**. Кожен виклик фабрики створює окреме замикання:
 
 ```python
-api_check = make_limit_check(500)
-page_check = make_limit_check(3000)    # свій limit, незалежний від api_check
+is_api_test = make_prefix_check("test_api_")
+is_ui_test = make_prefix_check("test_ui_")     # свій prefix, незалежний від is_api_test
 ```
 
 ## nonlocal — змінити змінну зовнішньої функції
@@ -62,20 +62,38 @@ page_check = make_limit_check(3000)    # свій limit, незалежний в
 Читати змінну з Enclosing можна просто так, а **змінити** — лише після `nonlocal`:
 
 ```python
-def make_counter():
-    count = 0
-    def next_number():
-        nonlocal count
-        count += 1
-        return count
-    return next_number
-
-next_id = make_counter()
-next_id(), next_id(), next_id()        # (1, 2, 3)
+def make_attempt_tracker(max_attempts):
+    used = 0
+    def can_retry():
+        nonlocal used
+        used += 1
+        return used <= max_attempts
+    return can_retry
 ```
+
+## Розбір: що пам'ятає замикання між викликами
+
+```python
+can_retry = make_attempt_tracker(2)
+```
+
+| Виклик | `used` до | `used` після | Повертає |
+|---|---|---|---|
+| `can_retry()` | `0` | `1` | `True` — 1 ≤ 2 |
+| `can_retry()` | `1` | `2` | `True` — 2 ≤ 2 |
+| `can_retry()` | `2` | `3` | `False` — спроби вичерпано |
+
+`used` живе не в глобальній області і не всередині одного виклику, а в замиканні — між викликами `can_retry`. Новий трекер, створений фабрикою, почне з нуля.
 
 > [!QA]
 > Замикання з лічильником — простий генератор **унікальних тестових даних**: `user1@test.dev`, `user2@test.dev`… Тести, що реєструють користувачів, не конфліктують між собою, а кожна фабрика має свій лічильник — без глобальних змінних.
+
+## Типові помилки
+
+- `return check()` замість `return check` — фабрика повертає результат одного виклику, а не функцію.
+- `used += 1` без `nonlocal` — `UnboundLocalError`.
+- **Пізнє зв'язування в циклі:** `checks = [lambda x: x > limit for limit in (100, 500)]` — обидві функції бачать **останнє** значення `limit` (500), бо замикання пам'ятає змінну, а не її значення в момент створення. Фабрика (`make_limit(limit)`) створює окрему змінну для кожної функції.
+- `global` замість замикання — один лічильник на всі тести.
 
 ## Підсумок
 
@@ -83,4 +101,4 @@ next_id(), next_id(), next_id()        # (1, 2, 3)
 - LEGB: Local → Enclosing → Global → Built-in. Не перекривай `list`, `max`, `id`.
 - Присвоєння всередині функції робить змінну локальною; `global` — краще уникати.
 - Функція може повертати функцію — фабрика функцій.
-- Замикання пам'ятає змінні зовнішньої функції; `nonlocal` — щоб їх змінювати.
+- Замикання пам'ятає змінні зовнішньої функції між викликами; `nonlocal` — щоб їх змінювати.

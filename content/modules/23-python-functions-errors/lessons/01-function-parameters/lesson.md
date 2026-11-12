@@ -20,28 +20,28 @@ login("qa@example.test", "Secret123", remember=True)        # змішано: с
 `remember=False` — параметр зі значенням за замовчуванням: його можна не передавати. Параметри з default ідуть **після** обов'язкових.
 
 > [!WARNING]
-> Значення за замовчуванням обчислюється **один раз** — коли Python читає `def`. Якщо це змінюваний об'єкт (`[]`, `{}`), усі виклики ділять **один і той самий** список:
+> Значення за замовчуванням обчислюється **один раз** — коли Python читає `def`. Якщо це змінюваний об'єкт (`[]`, `{}`), усі виклики ділять **один і той самий** об'єкт:
 >
 > ```python
-> def add_tag(tag, tags=[]):
->     tags.append(tag)
->     return tags
+> def with_header(name, value, headers={}):
+>     headers[name] = value
+>     return headers
 >
-> add_tag("smoke")    # ['smoke']
-> add_tag("login")    # ['smoke', 'login'] — «пам'ять» з минулого виклику!
+> with_header("Accept", "json")        # {'Accept': 'json'}
+> with_header("X-Trace", "1")          # {'Accept': 'json', 'X-Trace': '1'} — «пам'ять» з минулого виклику!
 > ```
 >
-> Правильно — `None` за замовчуванням і новий список усередині:
+> Правильно — `None` за замовчуванням і новий об'єкт усередині:
 >
 > ```python
-> def add_tag(tag, tags=None):
->     if tags is None:
->         tags = []
+> def with_header(name, value, headers=None):
+>     if headers is None:
+>         headers = {}
 >     ...
 > ```
 
 > [!QA]
-> Пастка змінюваного default — класичне джерело **нестабільних тестів**: тест проходить окремо, але падає, коли перед ним запустився інший тест, який «наповнив» спільний список. Якщо тест падає лише в повному прогоні — шукай спільний змінюваний стан.
+> Пастка змінюваного default — класичне джерело **нестабільних тестів**: тест проходить окремо, але падає, коли перед ним запустився інший тест, який «наповнив» спільний об'єкт. Якщо тест падає лише в повному прогоні — шукай спільний змінюваний стан.
 
 ## Keyword-only параметри
 
@@ -70,16 +70,32 @@ total_ms()                         # 0
 ## **kwargs — довільні іменовані
 
 ```python
-def make_user(**overrides):
-    user = {"email": "user@example.test", "role": "customer", "active": True}
-    user.update(overrides)         # overrides — словник
-    return user
+def make_product(**overrides):
+    product = {"name": "Mouse", "price": 450, "in_stock": True}
+    product.update(overrides)      # overrides — словник
+    return product
 
-make_user(role="admin")
-# {'email': 'user@example.test', 'role': 'admin', 'active': True}
+make_product(price=0)
+# {'name': 'Mouse', 'price': 0, 'in_stock': True}
 ```
 
-Це шаблон **білдера тестових даних**: розумні значення за замовчуванням, а тест перевизначає лише те, що для нього важливо. Тест «адмін бачить панель» пише `make_user(role="admin")` і не повторює всі інші поля.
+Це шаблон **білдера тестових даних**: розумні значення за замовчуванням, а тест перевизначає лише те, що для нього важливо. Тест «безкоштовний товар не можна купити» пише `make_product(price=0)` і не повторює всі інші поля.
+
+## Розбір: куди потрапляє кожен аргумент
+
+```python
+def log(level, *parts, sep=" ", **extra):
+    ...
+
+log("info", "user", 42, sep=" | ", request_id="a1")
+```
+
+| Параметр | Що отримає | Чому |
+|---|---|---|
+| `level` | `"info"` | перший позиційний аргумент |
+| `parts` | `("user", 42)` | решта позиційних — у кортеж |
+| `sep` | `" \| "` | keyword-only: стоїть після `*parts` |
+| `extra` | `{"request_id": "a1"}` | іменовані, для яких немає параметра, — у словник |
 
 ## Розпакування при виклику
 
@@ -97,6 +113,13 @@ login(**creds)                     # login(email=..., password=...)
 
 `def f(обов'язкові, з_default, *args, keyword_only, **kwargs)` — наприклад `def log(level, *parts, sep=" ", **extra)`.
 
+## Типові помилки
+
+- `total_ms(times)` замість `total_ms(*times)` — у `durations` потрапить кортеж з одного **списку**, і `sum` впаде з `TypeError`.
+- Позиційний аргумент після іменованого: `login(email="qa@example.test", "Secret123")` — `SyntaxError`.
+- Змінюваний default (`[]`, `{}`) — спільний для всіх викликів.
+- Неглибока копія: `dict(DEFAULTS)` копіює словник, але вкладений список у ньому лишається **спільним** — створюй вкладені списки заново на кожен виклик.
+
 ## Підсумок
 
 - Іменовані аргументи роблять виклик зрозумілим; позиційні — спершу.
@@ -104,4 +127,4 @@ login(**creds)                     # login(email=..., password=...)
 - Після `*` — тільки іменовані параметри.
 - `*args` збирає позиційні в кортеж, `**kwargs` — іменовані в словник.
 - `f(*list)` і `f(**dict)` розпаковують колекції в аргументи.
-- Білдер тестових даних: `make_user(**overrides)` з defaults.
+- Білдер тестових даних: `make_product(**overrides)` з defaults.

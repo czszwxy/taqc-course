@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "A factory of range checks",
+  "variantOf": "02-limit-check",
+  "statement": "Напиши фабрику `make_range_check(low, high)`. Вона повертає функцію `check(value)`, яка повертає `True`, якщо `value` між `low` і `high` **включно**.\n\n```python\nvalid_age = make_range_check(18, 120)\nvalid_age(18)     # True\nvalid_age(121)    # False\n\nvalid_qty = make_range_check(1, 99)\nvalid_qty(0)      # False — своя межа\n```",
+  "hints": [
+    "Усередині фабрики — `def check(value): return low <= value <= high`.",
+    "Поверни саму функцію: `return check`."
+  ],
+  "explanation": "Замикання пам'ятає обидва параметри фабрики. Кожен виклик `make_range_check` створює окрему функцію зі своїми межами — так одна фабрика обслуговує всі поля форми з діапазонами.",
+  "codeRules": []
+}

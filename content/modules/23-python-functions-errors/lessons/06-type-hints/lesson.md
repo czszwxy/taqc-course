@@ -30,25 +30,35 @@ retries: int = 3                                      # змінна
 
 Вкладеність читається зсередини назовні: `list[dict[str, int]]` — «список, елементи якого — словники з ключами-рядками і значеннями-числами».
 
-## Значення, якого може не бути
+## Розбір: читаємо сигнатуру вголос
 
 ```python
-def full_name(first: str, last: str, middle: str | None = None) -> str:
-    ...
+def find_user(users: list[dict], email: str, active_only: bool = True) -> dict | None:
 ```
 
-`middle: str = None` — помилка для type checker: `None` — не рядок. Якщо параметр може бути `None`, це треба сказати явно.
+| Частина | Як прочитати |
+|---|---|
+| `users: list[dict]` | список словників-користувачів |
+| `email: str` | рядок |
+| `active_only: bool = True` | прапорець, за замовчуванням `True` |
+| `-> dict \| None` | повертає словник користувача **або** `None`, якщо не знайдено |
+
+З такою сигнатурою не треба відкривати код функції, щоб правильно її викликати, — і редактор попередить, якщо після виклику забути перевірити результат на `None`.
+
+## Значення, якого може не бути
+
+`def send(report: str, cc: str = None)` — помилка для type checker: `None` — не рядок. Якщо параметр може бути `None`, це треба сказати явно: `cc: str | None = None`.
 
 ## Функції як параметри
 
 ```python
 from collections.abc import Callable
 
-def failed_checks(value: str, checks: dict[str, Callable[[str], bool]]) -> list[str]:
+def count_matching(values: list[int], condition: Callable[[int], bool]) -> int:
     ...
 ```
 
-`Callable[[str], bool]` — «функція, що приймає рядок і повертає bool».
+`Callable[[int], bool]` — «функція, що приймає число і повертає bool».
 
 ## Any
 
@@ -71,6 +81,13 @@ def failed_checks(value: str, checks: dict[str, Callable[[str], bool]]) -> list[
 from typing import get_type_hints
 get_type_hints(discount)    # {'price': int, 'percent': float, 'return': int}
 ```
+
+## Типові помилки
+
+- `x: str = None` — для type checker це суперечність; правильно `x: str | None = None`.
+- `def f(limit: 5)` — в анотації пишуть **тип**, а не значення: `limit: int = 5`.
+- Анотація є, але не відповідає коду (`-> int`, а функція повертає рядок) — Python мовчить, але type checker і колеги будуть введені в оману.
+- `list` без типу елементів працює, але каже менше, ніж `list[str]`.
 
 ## Підсумок
 
