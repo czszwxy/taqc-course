@@ -1,0 +1,10 @@
+{
+  "type": "python",
+  "title": "Find slow requests",
+  "statement": "Напиши `slow_requests(times, limit)` — новий список із тих значень часу відповіді (мс), які **більші** за `limit`, у тому ж порядку.\n\n```python\nslow_requests([120, 85, 340, 95, 101], 100)   # [120, 340, 101]\nslow_requests([50, 60], 100)                  # []\n```",
+  "hints": ["Порожній список до циклу, `append` за умовою `t > limit`."],
+  "explanation": "Класичний шаблон фільтрації: новий список → цикл → `append`, якщо елемент проходить умову. Межа «більші за» — це `>`: значення, рівне `limit`, не потрапляє в результат.",
+  "codeRules": [
+    { "kind": "require", "pattern": "append\\s*\\(", "message": "Збирай результат через `append` у циклі (comprehensions — в уроці 5)." }
+  ]
+}

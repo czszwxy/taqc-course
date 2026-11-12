@@ -1,0 +1,11 @@
+{
+  "type": "python",
+  "title": "Recalculate an order total",
+  "statement": "Тест перераховує суму замовлення, щоб порівняти її з полем `total` з API. Напиши `order_total(order)`: сума `price * qty` по всіх позиціях `order[\"items\"]` мінус знижка `order[\"discount\"]`. Ключа `discount` може не бути — тоді знижка 0. Сума не може бути меншою за 0.\n\n```python\norder_total({\"items\": [{\"price\": 450, \"qty\": 2}, {\"price\": 150, \"qty\": 1}], \"discount\": 100})   # 950\norder_total({\"items\": [{\"price\": 450, \"qty\": 2}]})                                            # 900\norder_total({\"items\": [{\"price\": 100, \"qty\": 1}], \"discount\": 500})                             # 0\n```",
+  "hints": [
+    "Пройди циклом `for item in order[\"items\"]:` і накопичуй `item[\"price\"] * item[\"qty\"]`.",
+    "Знижка — `order.get(\"discount\", 0)`; мінімум 0 — `max(сума, 0)`."
+  ],
+  "explanation": "Ланцюжок `order[\"items\"]` → кожна позиція → `price * qty`. Необов'язкове поле читається через `get(\"discount\", 0)`, а `max(..., 0)` не дає сумі стати від'ємною. Найчастіша помилка — забути помножити на `qty` або читати `order[\"discount\"]` і падати з `KeyError`.",
+  "codeRules": []
+}

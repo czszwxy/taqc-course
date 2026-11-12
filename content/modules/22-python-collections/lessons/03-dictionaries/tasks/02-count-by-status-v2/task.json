@@ -1,0 +1,9 @@
+{
+  "type": "python",
+  "title": "Group test names by status",
+  "variantOf": "02-count-by-status",
+  "statement": "Результати — список пар `(name, status)`. Напиши `group_by_status(results)` — словник «статус → список назв» (назви у порядку появи).\n\n```python\ngroup_by_status([(\"login\", \"passed\"), (\"cart\", \"failed\"), (\"search\", \"passed\")])\n# {'passed': ['login', 'search'], 'failed': ['cart']}\n```",
+  "hints": ["`groups.setdefault(status, []).append(name)` — створить порожній список для нового статусу."],
+  "explanation": "Групування — родич підрахунку: замість числа значенням є список. `setdefault(key, [])` повертає наявний список або створює новий, тож одразу можна робити `append`.",
+  "codeRules": []
+}

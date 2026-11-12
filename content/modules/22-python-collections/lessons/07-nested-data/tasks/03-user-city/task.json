@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "Read a deeply nested field safely",
+  "statement": "Місто користувача лежить у відповіді API глибоко: `response[\"data\"][\"user\"][\"address\"][\"city\"]`. Але будь-якого рівня може не бути, або там може бути `None`. Напиши `user_city(response)` — місто або `None`, без жодних помилок.\n\n```python\nuser_city({\"data\": {\"user\": {\"address\": {\"city\": \"Kyiv\"}}}})   # 'Kyiv'\nuser_city({\"data\": {\"user\": {\"address\": None}}})              # None\nuser_city({\"data\": {\"user\": {}}})                             # None\nuser_city({})                                                # None\n```",
+  "hints": [
+    "Іди по рівнях: `data = response.get(\"data\") or {}`, далі `user`, `address`.",
+    "Останній рівень — `address.get(\"city\")`: поверне `None`, якщо міста немає."
+  ],
+  "explanation": "`x.get(\"key\") or {}` на кожному рівні замінює і відсутній ключ, і явний `None` порожнім словником, тож наступний `.get` не падає. Варіант `response.get(\"data\", {})` захищає лише від відсутнього ключа: на `{\"address\": None}` він впаде з `AttributeError: 'NoneType' object has no attribute 'get'`.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "except", "message": "Розв'яжи без try/except — через get() на кожному рівні." }
+  ]
+}

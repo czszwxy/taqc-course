@@ -1,0 +1,28 @@
+{
+  "title": "Comprehensions",
+  "minutes": 45,
+  "summary": "List, dict і set comprehensions — короткий запис шаблону «новий список у циклі», фільтр через if, any() і all() для перевірок «хоч один» / «усі» (і пастка all() на порожньому списку), і коли звичайний цикл читається краще",
+  "resources": [
+    {
+      "title": "Python Tutorial: List Comprehensions",
+      "url": "https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Built-in functions all() and any()",
+      "url": "https://docs.python.org/3/library/functions.html#all",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Python list comprehension",
+      "url": "https://www.youtube.com/results?search_query=python+list+comprehension+tutorial",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

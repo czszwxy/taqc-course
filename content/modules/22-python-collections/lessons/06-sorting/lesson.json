@@ -1,0 +1,28 @@
+{
+  "title": "Sorting and key functions",
+  "minutes": 45,
+  "summary": "sorted() проти list.sort(), reverse=True, key=str.lower і key=len, короткі функції lambda, сортування за кількома ключами через кортеж, min / max з key — щоб знаходити найповільніші тести й перевіряти сортування в UI",
+  "resources": [
+    {
+      "title": "Python Sorting Techniques (HOWTO)",
+      "url": "https://docs.python.org/3/howto/sorting.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Built-in function sorted()",
+      "url": "https://docs.python.org/3/library/functions.html#sorted",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python Tutorial: Lambda Expressions",
+      "url": "https://docs.python.org/3/tutorial/controlflow.html#lambda-expressions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

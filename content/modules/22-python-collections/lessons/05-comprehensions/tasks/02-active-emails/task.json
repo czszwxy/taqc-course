@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Emails of active users",
+  "statement": "Відповідь API — список користувачів-словників. Напиши `active_emails(users)` — список email-ів **активних** користувачів у нижньому регістрі (порядок як у вхідному списку). Використай **list comprehension**.\n\n```python\nusers = [\n    {\"email\": \"QA@Gadgetly.test\", \"active\": True},\n    {\"email\": \"old@gadgetly.test\", \"active\": False},\n    {\"email\": \"dev@gadgetly.test\", \"active\": True},\n]\nactive_emails(users)   # ['qa@gadgetly.test', 'dev@gadgetly.test']\n```",
+  "hints": [
+    "Шаблон: `[вираз for u in users if умова]`.",
+    "Вираз — `u[\"email\"].lower()`, умова — `u[\"active\"]`."
+  ],
+  "explanation": "Comprehension поєднує перетворення (`.lower()`) і фільтр (`if u[\"active\"]`) в одному виразі: `[u[\"email\"].lower() for u in users if u[\"active\"]]`. Часта помилка — забути `.lower()` або поставити умову не туди: `if` іде **після** `for`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\[\\s*[^\\n]*\\s+for\\s", "message": "Збери результат через list comprehension: `[... for u in users if ...]`." },
+    { "kind": "forbid", "pattern": "\\.append\\s*\\(", "message": "Без `append` — тут потрібен comprehension." }
+  ]
+}

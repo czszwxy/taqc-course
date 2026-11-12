@@ -1,0 +1,11 @@
+{
+  "type": "python",
+  "title": "Select tests by name prefix",
+  "variantOf": "03-slow-requests",
+  "statement": "Напиши `with_prefix(names, prefix)` — новий список назв тестів, які **починаються** з `prefix`, у тому ж порядку.\n\n```python\nnames = [\"test_login_ok\", \"test_cart_add\", \"test_login_locked\"]\nwith_prefix(names, \"test_login\")   # ['test_login_ok', 'test_login_locked']\nwith_prefix(names, \"test_search\")  # []\n```",
+  "hints": ["`name.startswith(prefix)` — умова для `append`."],
+  "explanation": "Той самий шаблон фільтрації, що й у задачі про повільні запити: новий список → цикл → `append` за умовою. Тут умова — `startswith`, а не порівняння чисел.",
+  "codeRules": [
+    { "kind": "require", "pattern": "append\\s*\\(", "message": "Збирай результат через `append` у циклі." }
+  ]
+}

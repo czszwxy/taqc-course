@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "Build a price lookup",
+  "statement": "Щоб швидко перевіряти ціни в кошику, тесту потрібен словник «id товару → ціна». Напиши `price_index(products)` за допомогою **dict comprehension**; товари, яких немає в наявності (`in_stock` — `False`), не включай.\n\n```python\nproducts = [\n    {\"id\": 1, \"name\": \"Mouse\", \"price\": 450, \"in_stock\": True},\n    {\"id\": 2, \"name\": \"Keyboard\", \"price\": 1200, \"in_stock\": False},\n    {\"id\": 3, \"name\": \"Cable\", \"price\": 150, \"in_stock\": True},\n]\nprice_index(products)   # {1: 450, 3: 150}\n```",
+  "hints": [
+    "Dict comprehension: `{ключ: значення for p in products if умова}`.",
+    "Ключ — `p[\"id\"]`, значення — `p[\"price\"]`, умова — `p[\"in_stock\"]`."
+  ],
+  "explanation": "`{p[\"id\"]: p[\"price\"] for p in products if p[\"in_stock\"]}` — фігурні дужки і двокрапка між ключем і значенням дають словник. Тепер ціну будь-якого товару в наявності можна взяти за `index[product_id]` без циклу.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\{[^}]*\\sfor\\s", "message": "Побудуй словник через dict comprehension: `{p[\"id\"]: p[\"price\"] for p in ...}`." }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "title": "Nested data (JSON-like structures)",
+  "minutes": 55,
+  "summary": "Вкладені словники і списки як у JSON-відповідях API: доступ ланцюжком ключів та індексів, безпечне читання через get() і «or {}», цикли по вкладених списках, модуль json (loads / dumps) і відповідність типів JSON ↔ Python",
+  "resources": [
+    {
+      "title": "json — JSON encoder and decoder",
+      "url": "https://docs.python.org/3/library/json.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python Tutorial: Saving structured data with json",
+      "url": "https://docs.python.org/3/tutorial/inputoutput.html#saving-structured-data-with-json",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Working with JSON",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/JSON",
+      "kind": "article",
+      "lang": "en",
+      "note": "Про сам формат JSON (приклади на JavaScript, але формат той самий).",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "title": "Lists",
+  "minutes": 50,
+  "summary": "Список (list): створення, індекси й зрізи, append / insert / extend / remove / pop, in, sum / min / max, цикл по списку і найпідступніше — посилання на той самий список замість копії",
+  "resources": [
+    {
+      "title": "Python Tutorial: More on Lists",
+      "url": "https://docs.python.org/3/tutorial/datastructures.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "uk.javascript.info — масиви (для порівняння з JS)",
+      "url": "https://uk.javascript.info/array",
+      "kind": "course",
+      "lang": "uk",
+      "note": "Якщо знаєш масиви з TypeScript — list у Python дуже схожий.",
+      "needsVerification": true
+    }
+  ]
+}

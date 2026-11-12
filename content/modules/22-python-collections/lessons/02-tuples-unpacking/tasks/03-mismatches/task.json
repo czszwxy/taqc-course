@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "Compare expected and actual columns",
+  "statement": "Тест порівнює колонку таблиці в UI з очікуваними значеннями. Напиши `mismatches(expected, actual)` — список кортежів `(row, expected_value, actual_value)` для рядків, де значення різняться. Рядки нумеруються **з 1**. Списки однакової довжини.\n\n```python\nexpected = [\"paid\", \"shipped\", \"delivered\"]\nactual   = [\"paid\", \"created\", \"delivered\"]\nmismatches(expected, actual)   # [(2, 'shipped', 'created')]\n```",
+  "hints": [
+    "`zip(expected, actual)` дає пари значень, `enumerate(..., start=1)` — номер рядка.",
+    "Разом: `for row, (exp, act) in enumerate(zip(expected, actual), start=1):`."
+  ],
+  "explanation": "`zip` іде двома списками паралельно, `enumerate(..., start=1)` додає номер рядка, а розпакування `row, (exp, act)` розкладає вкладений кортеж. Так виглядає типова перевірка таблиці «рядок за рядком» в автотесті.",
+  "codeRules": [
+    { "kind": "require", "pattern": "zip\\s*\\(", "message": "Іди двома списками паралельно через `zip`." }
+  ]
+}

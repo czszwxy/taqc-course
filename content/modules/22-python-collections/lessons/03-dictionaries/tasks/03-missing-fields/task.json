@@ -1,0 +1,8 @@
+{
+  "type": "python",
+  "title": "Check required fields in an API response",
+  "statement": "Перевірка контракту API: усі обов'язкові поля мають бути у відповіді. Напиши `missing_fields(required, response)` — список полів з `required`, яких **немає** серед ключів словника `response` (у порядку `required`).\n\n```python\nresponse = {\"id\": 42, \"email\": \"qa@gadgetly.test\", \"phone\": None}\nmissing_fields([\"id\", \"email\", \"name\"], response)    # ['name']\nmissing_fields([\"id\", \"phone\"], response)             # [] — phone є, хоч і None\n```",
+  "hints": ["`field in response` перевіряє наявність ключа (значення може бути навіть `None`)."],
+  "explanation": "Поле зі значенням `None` — **присутнє** (ключ є), а відсутнє поле — це відсутній ключ. Тому перевірка — `field in response`, а не `response.get(field)` (для `None` вона хибно скаже «немає»). Розрізняти «поля немає» і «поле порожнє» важливо для перевірки контракту.",
+  "codeRules": []
+}

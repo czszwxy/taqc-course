@@ -1,0 +1,13 @@
+{
+  "title": "Python Collections",
+  "description": "Колекції — основа роботи з тестовими даними: списки результатів, кортежі-записи, словники як JSON-відповіді API, множини для порівняння «очікуване vs фактичне», comprehensions, сортування за кількома ключами і вкладені структури даних з модулем json.",
+  "goals": [
+    "Work with lists: indexing, slicing, adding and removing items, copying without side effects",
+    "Use tuples as records and unpack them in loops (enumerate, zip)",
+    "Use dictionaries for lookups, counting and grouping, and access keys safely with get()",
+    "Compare collections with sets: missing, unexpected and duplicate values",
+    "Write list, dict and set comprehensions — and know when a loop is clearer",
+    "Sort data with sorted(), key functions and several sort keys",
+    "Navigate nested JSON-like data and parse JSON with the json module"
+  ]
+}

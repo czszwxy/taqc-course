@@ -195,7 +195,8 @@ Pages in `src/playground/`, registered in `registry.ts`, routed standalone (no a
 - Course outline complete (modules 01–20). Next: owner feedback and polish.
 - ✅ Python engine: `python` task type (Pyodide worker, pytest-like runner, tests mode with mutants, Node validation).
 - ✅ Module 21 "Python Basics" (Python QA course; shared with Python Developer) — 8 lessons, 26 tasks (17 Python code tasks, quizzes, an error-type classification): first program, variables/types, operators, strings & f-strings, conditions, loops (polling with while), functions, tracebacks & debugging.
-- Next (Python QA course): 22 Python Collections, 23 Functions/Modules/Errors, 24 OOP/Files/Project setup, then 25–26 pytest (tests-mode tasks with mutants), 27–28 Playwright for Python (needs a local Python lab like the Node one: venv + pytest-playwright, browsers in lab/.browsers), 29 API testing with Python, 30 CI, 31 interview, 32 final project.
+- ✅ Module 22 "Python Collections" — 7 lessons, 25 tasks (18 Python code tasks incl. 4 variants, 7 quizzes): lists (copy vs alias), tuples & unpacking (enumerate/zip), dictionaries (count/group, missing contract fields), sets (missing/unexpected ids, duplicates), comprehensions + any/all (empty-list trap), sorting with key/lambda/tuple keys, nested JSON-like data + the json module.
+- Next (Python QA course): 23 Functions/Modules/Errors, 24 OOP/Files/Project setup, then 25–26 pytest (tests-mode tasks with mutants), 27–28 Playwright for Python (needs a local Python lab like the Node one: venv + pytest-playwright, browsers in lab/.browsers), 29 API testing with Python, 30 CI, 31 interview, 32 final project.
 - Outlines live in `content/courses/*.json` (status `available` / `in-progress` / `planned`, `order` in the catalog).
 
 ## Git

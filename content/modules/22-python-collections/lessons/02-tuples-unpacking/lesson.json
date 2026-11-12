@@ -1,0 +1,21 @@
+{
+  "title": "Tuples and unpacking",
+  "minutes": 40,
+  "summary": "Кортеж (tuple) як незмінний запис, розпакування (a, b = …, first, *rest = …), цикли з розпакуванням, enumerate і zip, обмін значень і повернення кількох значень з функції",
+  "resources": [
+    {
+      "title": "Python Tutorial: Tuples and Sequences",
+      "url": "https://docs.python.org/3/tutorial/datastructures.html#tuples-and-sequences",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Built-in function zip()",
+      "url": "https://docs.python.org/3/library/functions.html#zip",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

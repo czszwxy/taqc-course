@@ -1,0 +1,11 @@
+{
+  "type": "python",
+  "title": "Find duplicated values",
+  "statement": "Напиши `duplicates(items)` — **множину** значень, які трапляються у списку більше одного разу. Корисно для перевірки, що email-и чи id у відповіді унікальні.\n\n```python\nduplicates([\"a@x.com\", \"b@x.com\", \"a@x.com\", \"c@x.com\", \"b@x.com\"])\n# {'a@x.com', 'b@x.com'}\nduplicates([\"one\", \"two\"])\n# set()\n```",
+  "hints": [
+    "Дві множини: `seen` (уже бачили) і `dups` (бачили більше одного разу).",
+    "У циклі: якщо `item in seen` — додай у `dups`; потім додай `item` у `seen`."
+  ],
+  "explanation": "Перевірка `item in seen` для множини швидка навіть на великих списках. Множина `dups` сама прибирає повтори, тож значення, що трапилося тричі, в результаті буде один раз.",
+  "codeRules": []
+}

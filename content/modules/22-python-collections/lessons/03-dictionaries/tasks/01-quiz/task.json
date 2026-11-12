@@ -1,0 +1,62 @@
+{
+  "type": "quiz",
+  "title": "Dictionaries",
+  "show": 6,
+  "hints": ["`d[key]` падає з KeyError, `d.get(key)` повертає None. `in` перевіряє ключі."],
+  "questions": [
+    {
+      "id": "get",
+      "kind": "single",
+      "text": "`user = {\"id\": 42}`. Що поверне `user.get(\"email\", \"\")`?",
+      "options": [{ "text": "`\"\"`", "correct": true }, { "text": "`KeyError`" }, { "text": "`None`" }]
+    },
+    {
+      "id": "keyerror",
+      "kind": "single",
+      "text": "Що поверне `user[\"email\"]` для `user = {\"id\": 42}`?",
+      "options": [{ "text": "`KeyError: 'email'`", "correct": true }, { "text": "`None`" }]
+    },
+    {
+      "id": "in",
+      "kind": "single",
+      "text": "`\"active\" in {\"active\": False}` дорівнює…",
+      "options": [
+        { "text": "`True` — `in` перевіряє наявність ключа, а не значення", "correct": true },
+        { "text": "`False` — бо значення False" }
+      ]
+    },
+    {
+      "id": "count",
+      "kind": "single",
+      "text": "Який рядок правильно рахує статуси в словнику `counts`?",
+      "options": [
+        { "text": "`counts[status] = counts.get(status, 0) + 1`", "correct": true },
+        { "text": "`counts[status] += 1`", "explain": "Для нового статусу — KeyError, бо ключа ще немає." }
+      ]
+    },
+    {
+      "id": "items",
+      "kind": "single",
+      "text": "Як перебрати і ключі, і значення словника?",
+      "options": [{ "text": "`for key, value in d.items():`", "correct": true }, { "text": "`for key, value in d:`" }]
+    },
+    {
+      "id": "lookup",
+      "kind": "single",
+      "text": "Як замінити довгий `if/elif` для «спосіб доставки → ціна»?",
+      "options": [
+        { "text": "Словник `{\"pickup\": 0, \"post\": 70, \"courier\": 150}` і `.get(method)`", "correct": true },
+        { "text": "Список `[0, 70, 150]`" }
+      ]
+    },
+    {
+      "id": "contract",
+      "kind": "single",
+      "text": "API-тест упав з `KeyError: 'email'` на відповіді сервера. Найімовірніше…",
+      "options": [
+        { "text": "Поле прибрали або перейменували — змінився контракт API", "correct": true },
+        { "text": "Python не вміє читати JSON" }
+      ]
+    }
+  ]
+}

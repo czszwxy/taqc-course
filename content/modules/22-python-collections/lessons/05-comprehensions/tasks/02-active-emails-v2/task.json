@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "Names of failed tests",
+  "variantOf": "02-active-emails",
+  "statement": "Результати прогону — список словників `{\"name\": ..., \"status\": ...}`. Напиши `failed_names(results)` — список назв тестів зі статусом `\"failed\"` у тому ж порядку. Використай **list comprehension**.\n\n```python\nresults = [\n    {\"name\": \"test_login\", \"status\": \"passed\"},\n    {\"name\": \"test_cart\", \"status\": \"failed\"},\n    {\"name\": \"test_logout\", \"status\": \"skipped\"},\n]\nfailed_names(results)   # ['test_cart']\n```",
+  "hints": ["`[r[\"name\"] for r in results if r[\"status\"] == \"failed\"]`"],
+  "explanation": "Той самий шаблон, що й з активними email-ами: беремо одне поле (`r[\"name\"]`) з тих елементів, які проходять фільтр. Порівнюй статус з рядком через `==`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\[\\s*[^\\n]*\\s+for\\s", "message": "Збери результат через list comprehension." },
+    { "kind": "forbid", "pattern": "\\.append\\s*\\(", "message": "Без `append` — тут потрібен comprehension." }
+  ]
+}

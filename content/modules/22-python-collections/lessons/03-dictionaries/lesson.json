@@ -1,0 +1,21 @@
+{
+  "title": "Dictionaries",
+  "minutes": 55,
+  "summary": "Словник (dict): ключі й значення, get() з типовим значенням, додавання і видалення, перебір keys / values / items, підрахунок і групування в словнику, KeyError — і чому словник у Python виглядає точно як JSON-відповідь API",
+  "resources": [
+    {
+      "title": "Python Tutorial: Dictionaries",
+      "url": "https://docs.python.org/3/tutorial/datastructures.html#dictionaries",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Mapping types — dict",
+      "url": "https://docs.python.org/3/library/stdtypes.html#typesmapping",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

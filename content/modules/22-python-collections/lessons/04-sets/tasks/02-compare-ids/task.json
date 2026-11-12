@@ -1,0 +1,8 @@
+{
+  "type": "python",
+  "title": "Missing and unexpected orders",
+  "statement": "API повернуло список id замовлень, а тест знає, які мали бути. Порядок не важливий. Напиши `compare_ids(expected, actual)` — кортеж з двох **множин**: `(missing, unexpected)`.\n\n```python\ncompare_ids([1001, 1002, 1003], [1002, 1003, 1004])\n# ({1001}, {1004})\ncompare_ids([1, 2], [2, 1])\n# (set(), set())\n```",
+  "hints": ["Перетвори списки на множини, далі — різниці: `set(expected) - set(actual)` і навпаки."],
+  "explanation": "Різниця множин відповідає на два питання тесту: чого бракує (`expected - actual`) і що зайве (`actual - expected`). Порядок елементів не впливає на результат. Порожня множина пишеться `set()`, а не `{}`.",
+  "codeRules": []
+}

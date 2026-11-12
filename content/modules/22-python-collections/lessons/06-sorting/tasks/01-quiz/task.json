@@ -1,0 +1,63 @@
+{
+  "type": "quiz",
+  "title": "Sorting",
+  "show": 6,
+  "hints": ["sorted() повертає новий список, sort() — None. Великі літери сортуються перед малими."],
+  "questions": [
+    {
+      "id": "sorted-vs-sort",
+      "kind": "single",
+      "text": "Чим `sorted(items)` відрізняється від `items.sort()`?",
+      "options": [
+        { "text": "`sorted` повертає новий список, `sort` змінює список на місці і повертає `None`", "correct": true },
+        { "text": "Нічим" },
+        { "text": "`sort` працює швидше і повертає новий список" }
+      ]
+    },
+    {
+      "id": "case",
+      "kind": "single",
+      "text": "Що дасть `sorted([\"banana\", \"apple\", \"Cherry\"])`?",
+      "options": [
+        { "text": "`['Cherry', 'apple', 'banana']` — великі літери перед малими", "correct": true },
+        { "text": "`['apple', 'banana', 'Cherry']`" }
+      ]
+    },
+    {
+      "id": "reverse",
+      "kind": "single",
+      "text": "Як відсортувати час відповідей від найбільшого до найменшого?",
+      "options": [{ "text": "`sorted(times, reverse=True)`", "correct": true }, { "text": "`sorted(times, key=-1)`" }, { "text": "`sorted(-times)`" }]
+    },
+    {
+      "id": "lambda",
+      "kind": "single",
+      "text": "`results = [(\"login\", 1.2), (\"cart\", 0.5)]`. За чим сортує `sorted(results, key=lambda r: r[1])`?",
+      "options": [{ "text": "За другим елементом кортежу — тривалістю", "correct": true }, { "text": "За назвою" }, { "text": "За довжиною кортежу" }]
+    },
+    {
+      "id": "tuple-key",
+      "kind": "single",
+      "text": "Що означає `key=lambda r: (-r[1], r[0])`?",
+      "options": [
+        { "text": "Спершу за `r[1]` за спаданням, при рівності — за `r[0]` за зростанням", "correct": true },
+        { "text": "Спершу за `r[0]`, потім за `r[1]`" }
+      ]
+    },
+    {
+      "id": "max-key",
+      "kind": "single",
+      "text": "Що поверне `max([(\"login\", 1.2), (\"cart\", 3.4)], key=lambda r: r[1])`?",
+      "options": [{ "text": "`('cart', 3.4)` — увесь елемент", "correct": true }, { "text": "`3.4`" }, { "text": "`'login'`" }]
+    },
+    {
+      "id": "ui-check",
+      "kind": "single",
+      "text": "Ти зібрав ціни з таблиці в `prices` після кліку «Сортувати за ціною ↑». Яка перевірка правильна?",
+      "options": [
+        { "text": "`assert prices == sorted(prices)`", "correct": true },
+        { "text": "`assert prices.sort()`", "explain": "`sort()` повертає None — assert завжди впаде, і ще й змінить список." }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "Expected order of a product list",
+  "statement": "Тест перевіряє сортування каталогу «від дешевших». Напиши `sort_products(products)` — список **назв** товарів, відсортованих за ціною за зростанням; при однаковій ціні — за назвою **без урахування регістру**.\n\n```python\nproducts = [\n    {\"name\": \"mouse\", \"price\": 450},\n    {\"name\": \"Cable\", \"price\": 150},\n    {\"name\": \"Adapter\", \"price\": 450},\n    {\"name\": \"keyboard\", \"price\": 1200},\n]\nsort_products(products)   # ['Cable', 'Adapter', 'mouse', 'keyboard']\n```",
+  "hints": [
+    "Спершу відсортуй словники: `sorted(products, key=lambda p: (...))`.",
+    "Ключ — `(p[\"price\"], p[\"name\"].lower())`; потім comprehension бере назви."
+  ],
+  "explanation": "Ключ-кортеж `(p[\"price\"], p[\"name\"].lower())` порівнює спершу ціну, при рівності — назву в нижньому регістрі (`\"apple\"` перед `\"Banana\"`, хоча `\"B\"` має менший код за `\"a\"`). Потім comprehension дістає з відсортованих словників лише назви.",
+  "codeRules": [
+    { "kind": "require", "pattern": "lambda", "message": "Передай у `sorted` ключ через `lambda`." }
+  ]
+}

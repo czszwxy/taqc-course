@@ -1,0 +1,68 @@
+{
+  "type": "quiz",
+  "title": "Nested data and JSON",
+  "show": 6,
+  "hints": ["json.loads: текст → Python, json.dumps: Python → текст. null → None."],
+  "questions": [
+    {
+      "id": "chain",
+      "kind": "single",
+      "text": "`order = {\"items\": [{\"title\": \"Mouse\"}, {\"title\": \"Cable\"}]}`. Як отримати `\"Cable\"`?",
+      "options": [
+        { "text": "`order[\"items\"][1][\"title\"]`", "correct": true },
+        { "text": "`order[\"items\"][\"title\"][1]`" },
+        { "text": "`order[1][\"title\"]`" }
+      ]
+    },
+    {
+      "id": "null",
+      "kind": "single",
+      "text": "На що перетвориться JSON `null` після `json.loads`?",
+      "options": [{ "text": "`None`", "correct": true }, { "text": "`\"null\"`" }, { "text": "`0`" }]
+    },
+    {
+      "id": "loads",
+      "kind": "single",
+      "text": "Що робить `json.loads(text)`?",
+      "options": [
+        { "text": "Перетворює рядок з JSON у Python-об'єкти (dict, list…)", "correct": true },
+        { "text": "Перетворює словник у рядок" },
+        { "text": "Завантажує файл з інтернету" }
+      ]
+    },
+    {
+      "id": "none-error",
+      "kind": "single",
+      "text": "`user = {\"address\": None}`. Що буде при `user[\"address\"][\"city\"]`?",
+      "options": [
+        { "text": "`TypeError: 'NoneType' object is not subscriptable`", "correct": true },
+        { "text": "`KeyError: 'city'`" },
+        { "text": "`None`" }
+      ]
+    },
+    {
+      "id": "safe",
+      "kind": "single",
+      "text": "Який рядок не впаде і тоді, коли ключа `address` немає, і коли там `None`?",
+      "options": [
+        { "text": "`(user.get(\"address\") or {}).get(\"city\")`", "correct": true },
+        { "text": "`user.get(\"address\", {}).get(\"city\")`", "explain": "Якщо ключ є зі значенням None, get поверне None, і .get(\"city\") впаде." }
+      ]
+    },
+    {
+      "id": "keys",
+      "kind": "single",
+      "text": "`data = json.loads('{\"1\": \"a\"}')`. Як правильно дістати `\"a\"`?",
+      "options": [{ "text": "`data[\"1\"]` — ключі JSON завжди рядки", "correct": true }, { "text": "`data[1]`" }]
+    },
+    {
+      "id": "required",
+      "kind": "single",
+      "text": "Поле `email` обов'язкове за контрактом API. Як краще його читати в тесті?",
+      "options": [
+        { "text": "Явно перевірити `\"email\" in user` (або читати `user[\"email\"]`), щоб відсутність поля провалила тест", "correct": true },
+        { "text": "`user.get(\"email\")` — щоб тест ніколи не падав" }
+      ]
+    }
+  ]
+}

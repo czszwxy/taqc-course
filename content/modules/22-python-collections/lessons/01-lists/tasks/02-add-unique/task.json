@@ -1,0 +1,11 @@
+{
+  "type": "python",
+  "title": "Add an item without side effects",
+  "statement": "Хелпер для тестових даних: `add_unique(items, item)` повертає **новий** список — копію `items`, у кінець якої доданий `item`, але лише якщо його там ще немає. Вхідний список змінювати **не можна**.\n\n```python\ntags = [\"smoke\", \"login\"]\nadd_unique(tags, \"cart\")    # ['smoke', 'login', 'cart']\nadd_unique(tags, \"smoke\")   # ['smoke', 'login']\nprint(tags)                 # ['smoke', 'login'] — оригінал без змін\n```",
+  "hints": [
+    "Почни з копії: `result = items.copy()` (або `list(items)`).",
+    "`if item not in result: result.append(item)` — і поверни `result`."
+  ],
+  "explanation": "Головне тут — не змінювати вхідні дані: `items.append(...)` змінив би список, який передав тест, і зіпсував дані для наступних перевірок. Спершу копія, потім зміни копії. Тест `test_does_not_change_input` ловить саме цю помилку.",
+  "codeRules": []
+}

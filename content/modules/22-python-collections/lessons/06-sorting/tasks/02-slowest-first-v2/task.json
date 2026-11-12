@@ -1,0 +1,11 @@
+{
+  "type": "python",
+  "title": "Top N slowest response times",
+  "variantOf": "02-slowest-first",
+  "statement": "Напиши `top_slowest(times, n)` — `n` найбільших значень часу відповіді (мс) за спаданням. Якщо значень менше за `n` — усі. Вхідний список не змінюй.\n\n```python\ntop_slowest([120, 85, 340, 95], 2)   # [340, 120]\ntop_slowest([120, 85], 5)            # [120, 85]\ntop_slowest([120, 85], 0)            # []\n```",
+  "hints": ["`sorted(times, reverse=True)` і зріз `[:n]`."],
+  "explanation": "Відсортуй за спаданням і візьми перші `n` зрізом. Зріз не падає, якщо `n` більше за довжину, — просто поверне все. `sorted` не змінює вхідний список.",
+  "codeRules": [
+    { "kind": "require", "pattern": "sorted\\s*\\(", "message": "Використай `sorted(...)` — він не змінює вхідний список." }
+  ]
+}

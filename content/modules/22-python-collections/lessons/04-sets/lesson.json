@@ -1,0 +1,14 @@
+{
+  "title": "Sets",
+  "minutes": 40,
+  "summary": "Множина (set): лише унікальні значення, швидка перевірка in, операції об'єднання, перетину й різниці — найпростіший спосіб порівняти очікувані й фактичні значення без урахування порядку і знайти дублікати",
+  "resources": [
+    {
+      "title": "Python Tutorial: Sets",
+      "url": "https://docs.python.org/3/tutorial/datastructures.html#sets",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

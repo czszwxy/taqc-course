@@ -1,0 +1,53 @@
+{
+  "type": "quiz",
+  "title": "Sets",
+  "show": 6,
+  "hints": ["`a - b` — те, що є в a, але немає в b. Порожня множина — set()."],
+  "questions": [
+    {
+      "id": "unique",
+      "kind": "single",
+      "text": "Що дасть `len({\"smoke\", \"login\", \"smoke\"})`?",
+      "options": [{ "text": "`2`", "correct": true }, { "text": "`3`" }]
+    },
+    {
+      "id": "empty",
+      "kind": "single",
+      "text": "Як створити порожню множину?",
+      "options": [{ "text": "`set()`", "correct": true }, { "text": "`{}`", "explain": "`{}` — порожній словник." }]
+    },
+    {
+      "id": "difference",
+      "kind": "single",
+      "text": "`expected = {1, 2, 3}`, `actual = {2, 3, 4}`. Що таке `expected - actual`?",
+      "options": [{ "text": "`{1}` — очікувані, яких бракує", "correct": true }, { "text": "`{4}`" }, { "text": "`{2, 3}`" }]
+    },
+    {
+      "id": "intersection",
+      "kind": "single",
+      "text": "Який оператор дає спільні елементи двох множин?",
+      "options": [{ "text": "`&`", "correct": true }, { "text": "`|`" }, { "text": "`-`" }]
+    },
+    {
+      "id": "order",
+      "kind": "single",
+      "text": "Тест перевіряє «у списку ті самі товари, порядок не важливий». Найкоротша перевірка:",
+      "options": [{ "text": "`set(actual) == set(expected)`", "correct": true }, { "text": "`actual == expected`", "explain": "Для списків порядок важливий." }]
+    },
+    {
+      "id": "dups",
+      "kind": "single",
+      "text": "Як найпростіше перевірити, що у списку `ids` немає дублікатів?",
+      "options": [{ "text": "`len(ids) == len(set(ids))`", "correct": true }, { "text": "`ids == set(ids)`" }]
+    },
+    {
+      "id": "list-in-set",
+      "kind": "single",
+      "text": "Чи можна покласти список у множину: `{[1, 2]}`?",
+      "options": [
+        { "text": "Ні — елементи множини мають бути незмінними (`TypeError: unhashable type: 'list'`)", "correct": true },
+        { "text": "Так" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Failed tests from a JSON report",
+  "statement": "Тест-раннер зберіг спрощений звіт у JSON (текст). Напиши `failed_tests(report_json)` — список рядків `\"<suite> > <test>\"` для тестів зі статусом `\"failed\"`, у порядку звіту. Розбери текст модулем `json`.\n\n```python\nreport = '''{\n  \"suites\": [\n    {\"name\": \"Login\", \"tests\": [\n      {\"title\": \"valid login\", \"status\": \"passed\"},\n      {\"title\": \"locked user\", \"status\": \"failed\"}\n    ]},\n    {\"name\": \"Cart\", \"tests\": [\n      {\"title\": \"add item\", \"status\": \"failed\"}\n    ]}\n  ]\n}'''\nfailed_tests(report)   # ['Login > locked user', 'Cart > add item']\n```",
+  "hints": [
+    "`import json` на початку файлу, далі `report = json.loads(report_json)`.",
+    "Два вкладені цикли: `for suite in report[\"suites\"]:` і `for test in suite[\"tests\"]:`.",
+    "Рядок результату: ``f\"{suite['name']} > {test['title']}\"`` (всередині f-рядка з подвійними лапками — одинарні)."
+  ],
+  "explanation": "Спершу `json.loads` перетворює текст на словник. Далі два рівні вкладеності — набори (suites) і тести в кожному наборі — два вкладені цикли. У f-рядку в подвійних лапках ключі словника пиши в одинарних: `suite['name']`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "json\\.loads\\s*\\(", "message": "Розбери текст звіту через `json.loads(...)`." }
+  ]
+}

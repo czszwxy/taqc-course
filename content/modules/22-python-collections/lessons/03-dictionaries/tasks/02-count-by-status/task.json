@@ -1,0 +1,10 @@
+{
+  "type": "python",
+  "title": "Count results by status",
+  "statement": "Напиши `count_by_status(results)` — словник «статус → кількість». Ключі — у порядку першої появи.\n\n```python\ncount_by_status([\"passed\", \"failed\", \"passed\", \"skipped\"])\n# {'passed': 2, 'failed': 1, 'skipped': 1}\ncount_by_status([])\n# {}\n```",
+  "hints": ["Порожній словник до циклу; у циклі `counts[status] = counts.get(status, 0) + 1`."],
+  "explanation": "`get(status, 0)` повертає поточну кількість або 0 для нового ключа, тому новий статус не дає `KeyError`. Словник зберігає порядок, у якому ключі вперше з'явилися.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "Counter", "message": "Розв'яжи без `collections.Counter` — потренуй шаблон підрахунку зі словником." }
+  ]
+}

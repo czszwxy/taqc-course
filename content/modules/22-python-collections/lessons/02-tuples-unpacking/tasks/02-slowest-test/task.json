@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "Find the slowest test",
+  "statement": "Результати прогону — список кортежів `(name, status, duration)`. Напиши `slowest(results)`, яка повертає **назву** найповільнішого тесту. Для порожнього списку — порожній рядок `\"\"`. Якщо кілька тестів однаково повільні — перший з них.\n\n```python\nresults = [\n    (\"test_login\", \"passed\", 1.25),\n    (\"test_cart\", \"failed\", 3.4),\n    (\"test_search\", \"passed\", 0.8),\n]\nslowest(results)   # \"test_cart\"\nslowest([])        # \"\"\n```",
+  "hints": [
+    "Розпаковуй у циклі: `for name, status, duration in results:`.",
+    "Тримай дві змінні: найбільша тривалість і назва. Оновлюй лише при **строго більшій** тривалості."
+  ],
+  "explanation": "Розпакування в `for` робить код читабельним: замість `r[2]` — `duration`. Для «першого серед рівних» оновлюй лідера лише при `>`, не `>=`. Порожній список — окремий випадок на початку.",
+  "codeRules": [
+    { "kind": "require", "pattern": "for\\s+\\w+\\s*,\\s*\\w+\\s*,\\s*\\w+\\s+in", "message": "Розпакуй кортеж прямо в циклі: `for name, status, duration in results:`." }
+  ]
+}

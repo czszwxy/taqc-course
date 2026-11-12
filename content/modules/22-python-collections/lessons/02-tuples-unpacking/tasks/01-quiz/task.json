@@ -1,0 +1,50 @@
+{
+  "type": "quiz",
+  "title": "Tuples and unpacking",
+  "show": 6,
+  "hints": ["Кортеж незмінний. zip зупиняється на найкоротшому списку."],
+  "questions": [
+    {
+      "id": "immutable",
+      "kind": "single",
+      "text": "Що станеться при `result = (\"login\", \"passed\"); result[1] = \"failed\"`?",
+      "options": [{ "text": "`TypeError` — кортеж не можна змінити", "correct": true }, { "text": "Статус зміниться на failed" }]
+    },
+    {
+      "id": "single",
+      "kind": "single",
+      "text": "Як записати кортеж з одного елемента?",
+      "options": [{ "text": "`(\"smoke\",)`", "correct": true }, { "text": "`(\"smoke\")`", "explain": "Це просто рядок у дужках." }]
+    },
+    {
+      "id": "star",
+      "kind": "single",
+      "text": "`first, *rest = [\"a\", \"b\", \"c\"]`. Чому дорівнює `rest`?",
+      "options": [{ "text": "`['b', 'c']`", "correct": true }, { "text": "`'b'`" }, { "text": "`('b', 'c')`" }]
+    },
+    {
+      "id": "zip",
+      "kind": "single",
+      "text": "Скільки пар дасть `zip([1, 2, 3], [\"a\", \"b\"])`?",
+      "options": [{ "text": "2 — до найкоротшого списку", "correct": true }, { "text": "3" }, { "text": "Помилку" }]
+    },
+    {
+      "id": "enumerate-start",
+      "kind": "single",
+      "text": "Що дасть перша ітерація `enumerate([\"login\"], start=1)`?",
+      "options": [{ "text": "`(1, 'login')`", "correct": true }, { "text": "`(0, 'login')`" }]
+    },
+    {
+      "id": "swap",
+      "kind": "single",
+      "text": "Як поміняти значення `a` і `b` місцями?",
+      "options": [{ "text": "`a, b = b, a`", "correct": true }, { "text": "`a = b; b = a`", "explain": "Тоді обидві змінні отримають старе значення b." }]
+    },
+    {
+      "id": "unpack-error",
+      "kind": "single",
+      "text": "`name, status = (\"login\", \"passed\", 1.2)` — що буде?",
+      "options": [{ "text": "`ValueError: too many values to unpack`", "correct": true }, { "text": "`status` отримає `('passed', 1.2)`" }]
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "type": "quiz",
+  "title": "Comprehensions",
+  "show": 6,
+  "hints": ["Читай comprehension зліва направо: що беремо → звідки → за якою умовою. all() на порожньому списку — True."],
+  "questions": [
+    {
+      "id": "basic",
+      "kind": "single",
+      "text": "Що дасть `[x * 2 for x in [1, 2, 3]]`?",
+      "options": [{ "text": "`[2, 4, 6]`", "correct": true }, { "text": "`[1, 2, 3, 1, 2, 3]`" }, { "text": "`12`" }]
+    },
+    {
+      "id": "filter",
+      "kind": "single",
+      "text": "`times = [120, 85, 340]`. Що дасть `[t for t in times if t > 100]`?",
+      "options": [{ "text": "`[120, 340]`", "correct": true }, { "text": "`[True, False, True]`" }, { "text": "`[85]`" }]
+    },
+    {
+      "id": "dict",
+      "kind": "single",
+      "text": "Що створить `{u[\"id\"]: u[\"email\"] for u in users}`?",
+      "options": [
+        { "text": "Словник «id → email»", "correct": true },
+        { "text": "Множину пар" },
+        { "text": "Список email-ів" }
+      ]
+    },
+    {
+      "id": "set",
+      "kind": "single",
+      "text": "Що дасть `{s for s in [\"passed\", \"failed\", \"passed\"]}`?",
+      "options": [{ "text": "Множину `{'passed', 'failed'}`", "correct": true }, { "text": "Список з трьох рядків" }, { "text": "Словник" }]
+    },
+    {
+      "id": "all-empty",
+      "kind": "single",
+      "text": "API повернуло `products = []`. Чому дорівнює `all(p[\"price\"] > 0 for p in products)`?",
+      "options": [
+        { "text": "`True` — тому тест треба доповнити перевіркою, що список не порожній", "correct": true },
+        { "text": "`False`" },
+        { "text": "Буде помилка" }
+      ]
+    },
+    {
+      "id": "any",
+      "kind": "single",
+      "text": "Як перевірити, що **хоч один** тест упав?",
+      "options": [
+        { "text": "`any(s == \"failed\" for s in statuses)`", "correct": true },
+        { "text": "`all(s == \"failed\" for s in statuses)`" }
+      ]
+    },
+    {
+      "id": "when-loop",
+      "kind": "single",
+      "text": "Коли краще написати звичайний цикл замість comprehension?",
+      "options": [
+        { "text": "Коли потрібно кілька кроків, print або try/except — comprehension стане важким для читання", "correct": true },
+        { "text": "Ніколи — comprehension завжди кращий" }
+      ]
+    }
+  ]
+}
