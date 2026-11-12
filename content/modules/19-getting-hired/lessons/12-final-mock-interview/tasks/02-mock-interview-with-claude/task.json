@@ -1,0 +1,35 @@
+{
+  "type": "written",
+  "title": "Mock interview with Claude",
+  "statement": "Підготуй дані для повної пробної співбесіди. Заповни поля, натисни **Copy for review**, встав у чат з Claude і **додай одним рядком**: *«Run the mock interview as described in the instructions.»*\n\n**Instructions for Claude (mock interview):**\n\n1. Act as a technical interviewer for the vacancy below. Ask **one question at a time** and wait for my answer.\n2. Follow this plan (about 20 questions): introduction → QA theory and a situational question → an on-the-spot task (checklist or test data) → web/HTTP/API and DevTools → one SQL query → JavaScript/TypeScript basics and a small live-coding task → Playwright and my framework → a behavioral STAR question → my questions to you.\n3. Use the interview language I chose. Adjust the difficulty to a **trainee/junior** level. Ask a follow-up question when my answer is vague.\n4. Don't give me the right answer right away; after each answer give a one-line hint only if I ask.\n5. At the end, give me a score from 1 to 5 for each block, the 3 weakest topics, and what exactly to repeat.",
+  "fields": [
+    { "id": "vacancy", "label": "Vacancy text (paste a real one or describe it)", "kind": "textarea" },
+    { "id": "me", "label": "About me: my CV summary and projects", "kind": "textarea" },
+    { "id": "focus", "label": "Topics I want extra practice on", "kind": "textarea" },
+    { "id": "language", "label": "Interview language (Ukrainian / English / mixed)", "kind": "text" }
+  ],
+  "rules": [
+    { "field": "vacancy", "check": "minLength", "value": 100, "message": "Vacancy: встав текст реальної вакансії або опиши її (посада, стек, вимоги)." },
+    { "field": "me", "check": "minLength", "value": 100, "message": "About me: summary з резюме і 1–2 проєкти з посиланнями." },
+    { "field": "focus", "check": "minLength", "value": 20, "message": "Focus: які теми хочеш потренувати найбільше." },
+    { "field": "language", "check": "required", "message": "Language: обери мову співбесіди." }
+  ],
+  "model": {
+    "vacancy": "Trainee QA Automation Engineer at Gadgetly (e-commerce). Test new features, write UI and API tests with TypeScript + Playwright, work with a mentor. Requirements: test design, HTTP/REST, basic SQL, Git, English B1+. Nice to have: GitHub Actions, a portfolio on GitHub.",
+    "me": "Trainee QA automation engineer: test design, bug reports, UI + API tests with Playwright and TypeScript. Projects: gadgetly-tests (30 tests, page objects, fixtures, GitHub Actions), a take-home on an account page (plan, bug reports, automated tests, README).",
+    "focus": "SQL with GROUP BY / HAVING, the event loop and Promises, explaining my framework in English.",
+    "language": "Mixed: technical part in Ukrainian, introduction and the behavioral question in English"
+  },
+  "hints": [
+    "Встав справжню вакансію, на яку хочеш подаватися: так питання будуть максимально близькими до реальних.",
+    "Відповідай Claude так, як говорив би вголос: коротко і з прикладом. Можна відповідати голосом через диктування."
+  ],
+  "explanation": "Пробна співбесіда з Claude за реальною вакансією — найближче до справжньої співбесіди, що можна зробити самостійно. Головне — відповідати без підглядання, по одному питанню, і наприкінці отримати оцінку по блоках. Повтори співбесіду щонайменше тричі (одну англійською) і щоразу записуй 3 найслабші теми.",
+  "checklist": [
+    "Вакансія і дані про себе заповнені конкретно",
+    "Під час співбесіди не підглядав у матеріали",
+    "Отримав оцінку по блоках і список слабких тем",
+    "Записав 3 теми для повторення і повторив відповідні уроки",
+    "Запланував наступну пробну співбесіду"
+  ]
+}

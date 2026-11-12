@@ -1,0 +1,70 @@
+{
+  "type": "written",
+  "title": "Write a checklist for a payment card form",
+  "statement": "Задача зі співбесіди: **«Напишіть чекліст для форми оплати карткою»**. У тебе 10 хвилин.\n\n```text\nCard number   [________________]\nName on card  [________________]\nExpiry (MM/YY)[_____]   CVV [___]\n              [ Pay 1 299 UAH ]\n```\n\nВимоги: Visa і Mastercard, номер — 16 цифр (пробіли між групами дозволені), термін дії — не в минулому, CVV — 3 цифри, ім'я — латиницею. Після успішної оплати — сторінка «Payment successful».",
+  "fields": [
+    { "id": "positive", "label": "Positive checks (one per line)", "kind": "list" },
+    { "id": "validation", "label": "Validation and boundaries for each field (one per line)", "kind": "list" },
+    { "id": "ux", "label": "UI / UX and error handling (one per line)", "kind": "list" },
+    { "id": "security", "label": "Security (one per line)", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "positive", "check": "minItems", "value": 2, "message": "Positive: щонайменше 2 (Visa, Mastercard, номер з пробілами)." },
+    { "field": "validation", "check": "minItems", "value": 8, "message": "Validation: щонайменше 8 перевірок — по кожному полю, з межами." },
+    { "field": "validation", "check": "mentionsAll", "value": ["15|17", "cvv"], "message": "Validation: межі довжини номера (15 і 17 цифр) і перевірки CVV." },
+    { "field": "validation", "check": "mentionsAny", "value": ["past|минул|expired|прострочен|current month|поточн"], "message": "Validation: термін дії в минулому і поточний місяць (межа)." },
+    { "field": "validation", "check": "mentionsAny", "value": ["letter|літер|symbol|символ|cyrillic|кирилиц|abc"], "message": "Validation: недопустимі символи (літери в номері, кирилиця в імені)." },
+    { "field": "validation", "check": "mentionsAny", "value": ["empty|порожн|blank"], "message": "Validation: порожні обов'язкові поля." },
+    { "field": "ux", "check": "minItems", "value": 3, "message": "UI/UX: щонайменше 3: повідомлення про помилки, подвійний клік Pay, відмова банку, мобільна клавіатура…" },
+    { "field": "ux", "check": "mentionsAny", "value": ["twice|двічі|double|подвійн|повторн"], "message": "UI/UX: подвійне натискання Pay — чи не спишеться двічі?" },
+    { "field": "security", "check": "minItems", "value": 3, "message": "Security: щонайменше 3 перевірки." },
+    { "field": "security", "check": "mentionsAny", "value": ["https"], "message": "Security: форма оплати — лише через HTTPS." },
+    { "field": "security", "check": "mentionsAny", "value": ["cvv.*(stor|log|save|зберіг|лог|url|mask|маск)|(stor|log|save|зберіг|лог|mask|маск).*cvv"], "message": "Security: CVV не зберігається, не логується, маскується." }
+  ],
+  "model": {
+    "positive": [
+      "Valid Visa card, valid expiry, CVV, name → \"Payment successful\" and the amount 1 299 UAH is charged once",
+      "Valid Mastercard → payment succeeds",
+      "Card number with spaces between groups (4111 1111 1111 1111) is accepted",
+      "Expiry in the current month is accepted"
+    ],
+    "validation": [
+      "Card number with 15 and 17 digits → error; 16 digits → OK",
+      "Card number with letters or symbols → error; paste with dashes → handled or a clear error",
+      "Unsupported card type (e.g. not Visa/Mastercard) → clear error",
+      "Expiry in the past (last month) → error; current month → OK",
+      "Expiry with month 00 or 13 and wrong formats (1/2, 2026) → error",
+      "CVV with 2 or 4 digits → error; letters in CVV → error",
+      "Name in Cyrillic or with digits → error; very long name → limited or a clear error",
+      "Each field empty → error next to the field; Pay does not submit",
+      "Leading/trailing spaces in name are trimmed"
+    ],
+    "ux": [
+      "Error messages are next to the field and say how to fix it",
+      "Double click on Pay → only one payment; the button is disabled while processing",
+      "Bank declines the card (insufficient funds) → clear message, the form keeps entered data except CVV",
+      "Numeric keyboard on mobile for card number and CVV; Tab order is logical",
+      "Slow network → loading state, no duplicate request"
+    ],
+    "security": [
+      "The page and the request use HTTPS only",
+      "CVV is masked, never stored and never appears in logs, URL or localStorage",
+      "Full card number is not returned by the API or shown after payment (only the last 4 digits)",
+      "Network: card data goes only to the payment provider, not in a GET query string",
+      "Many failed attempts in a row → limited or blocked"
+    ]
+  },
+  "hints": [
+    "Пройди кожне поле: валідне значення, межі довжини, недопустимі символи, порожньо.",
+    "Гроші: що буде при подвійному кліку, відмові банку, повільній мережі?",
+    "Безпека карткових даних: HTTPS, CVV ніде не зберігається, повний номер не повертається."
+  ],
+  "explanation": "Сильний чекліст форми оплати покриває кожне поле межами (15/16/17 цифр, CVV 2/3/4, поточний і минулий місяць), недопустимими символами і порожніми значеннями; обробку помилок і **подвійне списання**; і безпеку карткових даних. Типові помилки: перелік лише «щасливого шляху» і повна відсутність безпеки — а саме вона робить відповідь сильною.",
+  "checklist": [
+    "Кожне поле має межі, недопустимі символи і порожнє значення",
+    "Є поточний місяць і минулий місяць для терміну дії",
+    "Перевірено подвійний клік і відмову банку",
+    "Є HTTPS і захист CVV та номера картки",
+    "Перевірки конкретні: значення + очікуваний результат"
+  ]
+}

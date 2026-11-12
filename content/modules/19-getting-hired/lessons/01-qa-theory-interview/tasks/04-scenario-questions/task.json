@@ -1,0 +1,42 @@
+{
+  "type": "written",
+  "title": "Answer four situational questions",
+  "statement": "Ситуаційні питання перевіряють, як ти поводишся в реальній роботі. Відповідай як на співбесіді: **уточню → зберу факти → дію → повідомлю**. 3–6 речень на кожну.\n\n1. Ти знайшов баг, але він відтворюється лише іноді. Що робиш?\n2. Розробник закрив твій баг як «not a bug». Ти впевнений, що це баг.\n3. Реліз завтра зранку, а ти щойно знайшов критичний баг в оплаті.\n4. Тобі дали фічу без жодних вимог.",
+  "fields": [
+    { "id": "intermittent", "label": "1. Intermittent bug", "kind": "textarea" },
+    { "id": "notABug", "label": "2. \"Not a bug\"", "kind": "textarea" },
+    { "id": "release", "label": "3. Critical bug before the release", "kind": "textarea" },
+    { "id": "noReqs", "label": "4. No requirements", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "intermittent", "check": "minLength", "value": 100, "message": "1: опиши кілька конкретних кроків (3–6 речень)." },
+    { "field": "intermittent", "check": "mentionsAny", "value": ["log|лог|console|консол|network|devtools|video|відео|record|запис|screenshot|скрін"], "message": "1: які факти збереш: логи, консоль, Network, відео." },
+    { "field": "intermittent", "check": "mentionsAny", "value": ["environment|середовищ|browser|браузер|device|пристр|account|акаунт|дані|data|frequen|частот|intermittent|раз із"], "message": "1: уточни умови відтворення (середовище, дані) і частоту." },
+    { "field": "notABug", "check": "mentionsAny", "value": ["requirement|вимог|spec|специфікац|acceptance|критері"], "message": "2: аргумент №1 — вимога або критерії приймання." },
+    { "field": "notABug", "check": "mentionsAny", "value": ["user|користувач|impact|вплив|customer|клієнт"], "message": "2: поясни вплив на користувача." },
+    { "field": "notABug", "check": "mentionsAny", "value": ["product|продакт|po\\b|owner|аналітик|analyst|lead|лід|discuss|обговор|call|дзвін|зустр"], "message": "2: якщо згоди немає — хто приймає рішення (продакт / тімлід)?" },
+    { "field": "release", "check": "mentionsAny", "value": ["immediately|одразу|негайно|right away|asap|зараз же|відразу"], "message": "3: повідомити треба **одразу**, а не вранці." },
+    { "field": "release", "check": "mentionsAny", "value": ["lead|лід|product|продакт|manager|менеджер|team|команд"], "message": "3: кому повідомиш (тімлід, продакт, команда)?" },
+    { "field": "release", "check": "mentionsAny", "value": ["decid|decision|рішен|виріш"], "message": "3: хто приймає рішення про реліз? (Не QA одноосібно — команда / продакт.)" },
+    { "field": "noReqs", "check": "mentionsAny", "value": ["ask|спита|запита|уточн|clarif"], "message": "4: першим кроком — спитати (продакта, розробника, аналітика)." },
+    { "field": "noReqs", "check": "mentionsAny", "value": ["assum|припущ|document|задокумент|запиш|записа|write down"], "message": "4: зафіксуй свої припущення і узгодь їх." }
+  ],
+  "model": {
+    "intermittent": "First I collect everything I know: environment, browser, account, test data, time, and I keep DevTools open (Console and Network) while I try again. I try variations — another browser, a fresh session, slower network, different data, a different order of steps — to find the condition. If it still happens only sometimes, I report it anyway with the frequency (for example 2 of 10 attempts), logs, a video and everything I tried, and mark it as intermittent. Then I discuss it with the developer, because they can add logging or check the server side.",
+    "notABug": "I don't argue about who is right. I check the requirement or acceptance criteria and add the exact quote to the report, plus the user impact — what the user sees and why it hurts them. If the requirement is missing or unclear, I ask for a short call with the developer and the product owner, because the product owner decides what is expected. If they decide it's expected behaviour, I accept it and suggest updating the requirement.",
+    "release": "I report it immediately, not in the morning: to the team lead and the product owner, with exact steps, environment, user impact and how many users it affects. I attach evidence and check whether there is a workaround and whether it is a regression. The decision to release, postpone or ship with a feature flag is made by the team and the product owner — my job is to give clear facts quickly. After the fix I retest it and run a quick regression of payments.",
+    "noReqs": "I ask first: the product owner, the developer or the analyst — what problem the feature solves and for whom. I look at similar features in our product, older versions and competitors. Then I write down my assumptions as a short list of expected behaviour and send it for confirmation, so it becomes the requirement. While waiting I do exploratory testing and report questions, not only bugs."
+  },
+  "hints": [
+    "Для кожної ситуації: що уточню, які факти зберу, що зроблю, кому і як повідомлю.",
+    "Рішення про реліз чи «баг / не баг» приймає не QA одноосібно. Твоя роль — дати факти."
+  ],
+  "explanation": "Ситуаційні питання оцінюють професійну поведінку: ти збираєш факти, спираєшся на вимоги і вплив на користувача, комунікуєш вчасно і не перекладаєш відповідальність. Типові помилки: «закрию баг, раз не відтворюється», «буду сперечатися, доки не погодиться», «сам вирішу не випускати реліз», «без вимог не тестую».",
+  "checklist": [
+    "У кожній відповіді є конкретні дії, а не загальні слова",
+    "Згадано факти: логи, Network, відео, частота",
+    "Аргументи — вимоги і вплив на користувача, а не емоції",
+    "Комунікація вчасна і з правильними людьми",
+    "Немає звинувачень і «я сам вирішу за команду»"
+  ]
+}

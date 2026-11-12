@@ -1,0 +1,133 @@
+{
+  "type": "quiz",
+  "title": "English for QA: vocabulary and phrases",
+  "show": 8,
+  "intro": "Банк із 14 питань: щоразу випадкові 8.",
+  "hints": ["Expected / actual result, to reproduce a bug, flaky test, edge case."],
+  "questions": [
+    {
+      "id": "reproduce",
+      "kind": "single",
+      "text": "Як англійською «відтворити баг»?",
+      "options": [{ "text": "to reproduce a bug", "correct": true }, { "text": "to repeat a bug" }, { "text": "to copy a bug" }]
+    },
+    {
+      "id": "flaky",
+      "kind": "single",
+      "text": "Тест іноді проходить, іноді падає без змін у коді. Як це англійською?",
+      "options": [{ "text": "a flaky test", "correct": true }, { "text": "a broken test" }, { "text": "a lazy test" }]
+    },
+    {
+      "id": "edge",
+      "kind": "single",
+      "text": "«Крайній випадок» (порожній список, максимальна довжина) англійською:",
+      "options": [{ "text": "an edge case", "correct": true }, { "text": "a border situation" }, { "text": "a last case" }]
+    },
+    {
+      "id": "workaround",
+      "kind": "single",
+      "text": "«Є обхідний шлях: можна оплатити з мобільного застосунку» — яке слово для «обхідний шлях»?",
+      "options": [{ "text": "workaround", "correct": true }, { "text": "roundabout" }, { "text": "bypass road" }]
+    },
+    {
+      "id": "experience",
+      "kind": "single",
+      "text": "Яке речення правильне?",
+      "options": [
+        { "text": "I have two years of experience in customer support.", "correct": true },
+        { "text": "I have 2 years experiences in customer support." },
+        { "text": "I am 2 years in customer support." }
+      ]
+    },
+    {
+      "id": "since",
+      "kind": "single",
+      "text": "Як правильно сказати, що ти вчиш автоматизацію з березня і досі?",
+      "options": [
+        { "text": "I have been learning test automation since March.", "correct": true },
+        { "text": "I am learning test automation since March." },
+        { "text": "I learn test automation from March." }
+      ]
+    },
+    {
+      "id": "depends",
+      "kind": "single",
+      "text": "Правильний варіант:",
+      "options": [
+        { "text": "It depends on the requirements.", "correct": true },
+        { "text": "It depends of the requirements." },
+        { "text": "It depends from the requirements." }
+      ]
+    },
+    {
+      "id": "explain",
+      "kind": "single",
+      "text": "Як ввічливо попросити пояснити питання?",
+      "options": [
+        { "text": "Could you explain what you mean by that?", "correct": true },
+        { "text": "Explain me, please." },
+        { "text": "Say again, I don't understand you." }
+      ]
+    },
+    {
+      "id": "not-heard",
+      "kind": "single",
+      "text": "Ти не розчув питання інтерв'юера. Найкраща реакція:",
+      "options": [
+        { "text": "Sorry, could you repeat the question, please?", "correct": true },
+        { "text": "Мовчки відповісти на те, що, як тобі здалося, спитали" },
+        { "text": "What?" }
+      ]
+    },
+    {
+      "id": "dont-know",
+      "kind": "single",
+      "text": "Ти не працював з інструментом, про який питають. Що сказати?",
+      "options": [
+        { "text": "I haven't worked with it yet, but I know it is used for … and I would learn it quickly.", "correct": true },
+        { "text": "Yes, I know it very well." },
+        { "text": "No." }
+      ]
+    },
+    {
+      "id": "report-bug",
+      "kind": "single",
+      "text": "Як природніше сказати «я завів баг»?",
+      "options": [
+        { "text": "I reported a bug in Jira.", "correct": true },
+        { "text": "I did a bug in Jira." },
+        { "text": "I made a bug in Jira." }
+      ]
+    },
+    {
+      "id": "how-works",
+      "kind": "single",
+      "text": "Правильне питання:",
+      "options": [
+        { "text": "How does the login flow work?", "correct": true },
+        { "text": "How the login flow works?" },
+        { "text": "How works the login flow?" }
+      ]
+    },
+    {
+      "id": "expected-actual",
+      "kind": "single",
+      "text": "Як у баг-репорті називаються «очікуваний» і «фактичний» результат?",
+      "options": [
+        { "text": "Expected result / Actual result", "correct": true },
+        { "text": "Waited result / Real result" },
+        { "text": "Planned result / Fact result" }
+      ]
+    },
+    {
+      "id": "time",
+      "kind": "single",
+      "text": "Тобі потрібно кілька секунд подумати над відповіддю. Що сказати?",
+      "options": [
+        { "text": "That's a good question, let me think for a second.", "correct": true },
+        { "text": "Wait." },
+        { "text": "Нічого — просто помовчати хвилину" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "type": "written",
+  "title": "Your interview answers in English",
+  "statement": "Напиши **англійською** три відповіді, які найімовірніше попросять сказати англійською. Пиши простими реченнями, як говоритимеш. Потім натисни **Copy for review** і попроси Claude виправити помилки й поставити 2–3 уточнювальні питання англійською.\n\n1. **Tell me about yourself** (present → past → future).\n2. **Tell me about your project**.\n3. **Why QA?**",
+  "fields": [
+    { "id": "about", "label": "1. Tell me about yourself", "kind": "textarea" },
+    { "id": "project", "label": "2. Tell me about your project", "kind": "textarea" },
+    { "id": "whyQa", "label": "3. Why QA?", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "any", "check": "notMentions", "value": ["[а-яґєії]"], "message": "Пиши англійською — без кирилиці." },
+    { "field": "about", "check": "minLength", "value": 200, "message": "About: 5–8 речень: хто ти зараз, як прийшов у QA, що шукаєш." },
+    { "field": "about", "check": "mentionsAny", "value": ["i'm|i am"], "message": "About: почни з себе: «I'm a trainee QA automation engineer…»." },
+    { "field": "project", "check": "minLength", "value": 150, "message": "Project: що тестує, стек, твоя роль, результат." },
+    { "field": "project", "check": "mentionsAny", "value": ["playwright|typescript|test"], "message": "Project: назви стек і що саме тестується." },
+    { "field": "whyQa", "check": "minLength", "value": 100, "message": "Why QA: чесна мотивація + приклад." }
+  ],
+  "model": {
+    "about": "I'm a trainee QA automation engineer. I know manual testing and test design, and I automate UI and API tests with Playwright and TypeScript. Before IT, I worked in customer support for three years. My job was to reproduce customers' problems and describe them for developers, and I realised that this was the part I enjoyed most. So I took a structured course in QA and automation. Now I'm looking for a trainee or junior role in a team where I can learn from experienced engineers.",
+    "project": "My main project is a test framework for a demo online shop. It has about thirty UI and API tests written in TypeScript with Playwright. I used page objects for the pages and fixtures for test data and authentication. The tests run on GitHub Actions on every pull request, and the HTML report is saved as an artifact. I also wrote a test plan, a checklist and twelve bug reports for this shop.",
+    "whyQa": "I like finding out how things work and where they break. In customer support I saw how much one unclear bug costs users and the team, and I want to be the person who finds it before the release. I also enjoy the technical side — writing automated tests feels like building a safety net for the whole team."
+  },
+  "hints": [
+    "Короткі прості речення звучать краще за довгі складні.",
+    "Використай фрази з уроку: *Before IT, I worked…*, *Now I'm looking for…*, *For example, in my project I…*"
+  ],
+  "explanation": "Ці три відповіді просять англійською найчастіше, тому їх варто підготувати заздалегідь і проговорити вголос кілька разів. Критерії: прості речення, правильні часи (*I worked* — минуле, *I have been learning* — досі триває), конкретика (стек, числа) і жодного завченого дослівно тексту — лише ключові фрази.",
+  "checklist": [
+    "Усе англійською, прості речення",
+    "Правильні часи: past simple для минулого, present perfect для «досі»",
+    "Є конкретика: стек, числа, приклад",
+    "Прочитав уголос — укладається в 1–2 хвилини на відповідь",
+    "Попросив Claude перевірити і поставити уточнювальні питання"
+  ]
+}

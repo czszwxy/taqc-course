@@ -1,0 +1,55 @@
+{
+  "type": "written",
+  "title": "Your two-week interview preparation plan",
+  "statement": "Склади **свій** план на останні 2 тижні перед активними співбесідами (зразок — у теорії уроку). Врахуй свої слабкі теми з квізів і пробних співбесід.",
+  "fields": [
+    { "id": "weak", "label": "My weakest topics now (one per line)", "kind": "list" },
+    { "id": "days", "label": "Plan by days (one line per day or block: days — focus)", "kind": "list" },
+    { "id": "mocks", "label": "Mock interviews: when, with whom, which language", "kind": "textarea" },
+    { "id": "ready", "label": "What must be ready before the first real interview (one per line)", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "weak", "check": "minItems", "value": 3, "message": "Weak: назви щонайменше 3 конкретні слабкі теми." },
+    { "field": "days", "check": "minItems", "value": 5, "message": "Days: щонайменше 5 рядків-блоків на 14 днів." },
+    { "field": "days", "check": "mentionsAny", "value": ["\\d"], "message": "Days: познач дні або блоки днів (1–3, 4–5…)." },
+    { "field": "mocks", "check": "mentionsAny", "value": ["english|англ"], "message": "Mocks: одна з пробних співбесід — англійською." },
+    { "field": "mocks", "check": "mentionsAny", "value": ["[2-9]|three|two|три|дві|два"], "message": "Mocks: щонайменше 2–3 пробні співбесіди." },
+    { "field": "ready", "check": "minItems", "value": 4, "message": "Ready: щонайменше 4 пункти (резюме, LinkedIn, GitHub, відповіді…)." },
+    { "field": "ready", "check": "mentionsAny", "value": ["cv|resume|резюме"], "message": "Ready: резюме." },
+    { "field": "ready", "check": "mentionsAny", "value": ["github"], "message": "Ready: GitHub з проєктами." }
+  ],
+  "model": {
+    "weak": [
+      "SQL: HAVING and LEFT JOIN without looking at notes",
+      "Event loop and Promise.all vs allSettled",
+      "Explaining my framework in English",
+      "Security checks for a login page"
+    ],
+    "days": [
+      "1–3 — question banks of lessons 1–3 every day until 90 %+",
+      "4–5 — lessons 7–8: HTTP and DevTools, live SQL with a 20-minute timer",
+      "6–7 — practical tasks of lesson 9, one live-coding task a day",
+      "8–9 — mock interview #1 with Claude, review, repeat the weak topics",
+      "10–11 — English answers out loud; mock interview #2 in English",
+      "12–13 — polish CV, LinkedIn and GitHub; first 10 applications",
+      "14 — mock interview #3 and rest"
+    ],
+    "mocks": "Three mock interviews: day 8 with Claude in Ukrainian, day 11 with Claude in English, day 14 with a friend who works as a QA engineer (mixed).",
+    "ready": [
+      "CV in English, one page, PDF named with my name and role",
+      "LinkedIn: headline, About, Experience with my project, Open to work",
+      "GitHub: final project and take-home pinned, README and green CI",
+      "Prepared answers: about me, why QA, my framework, 5 STAR stories",
+      "Job search tracker with 30 target companies"
+    ]
+  },
+  "hints": ["Почни зі слабких тем: саме вони мають займати більшість днів плану."],
+  "explanation": "План на два тижні перетворює «треба готуватися» на конкретні дні: слабкі теми першими, банки питань по колу, live coding щодня, 2–3 пробні співбесіди (одна англійською), доведене до ладу портфоліо і перші відгуки. Головне — почати відгукуватися, не чекаючи «ідеальної готовності»: перші реальні співбесіди теж є тренуванням.",
+  "checklist": [
+    "Слабкі теми названі конкретно",
+    "Кожен день плану має фокус",
+    "Є 2–3 пробні співбесіди, одна англійською",
+    "Резюме, LinkedIn і GitHub готові до першої співбесіди",
+    "Відгуки починаються ще в межах цих двох тижнів"
+  ]
+}

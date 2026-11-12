@@ -1,0 +1,60 @@
+{
+  "type": "sql",
+  "title": "Live SQL: five classic interview queries",
+  "statement": "П'ять запитів, які найчастіше просять написати на співбесіді. База — навчальний магазин Gadgetly (`users`, `products`, `orders`, `order_items`). Засічи **20 хвилин** на всі п'ять і проговорюй логіку вголос.",
+  "database": "gadgetly",
+  "challenges": [
+    {
+      "id": "no-orders",
+      "prompt": "Користувачі, які **жодного разу** не замовляли: `email`.",
+      "model": "SELECT u.email FROM users u LEFT JOIN orders o ON o.user_id = u.id WHERE o.id IS NULL;",
+      "rules": [
+        { "kind": "require", "pattern": "left\\s+join|not\\s+(in|exists)", "message": "Знайди рядки без пари через `LEFT JOIN … WHERE … IS NULL` (або `NOT IN` / `NOT EXISTS`), а не вписуй email вручну." }
+      ],
+      "explain": "`LEFT JOIN` залишає всіх користувачів; у тих, хто не замовляв, колонки `orders` — `NULL`."
+    },
+    {
+      "id": "top-customers",
+      "prompt": "Топ-3 клієнти за загальною сумою замовлень: `name`, сума `total`. Від найбільшої суми.",
+      "model": "SELECT u.name, SUM(o.total) AS spent FROM users u JOIN orders o ON o.user_id = u.id GROUP BY u.id, u.name ORDER BY spent DESC LIMIT 3;",
+      "orderMatters": true,
+      "rules": [
+        { "kind": "require", "pattern": "sum\\s*\\(", "message": "Порахуй суму через `SUM(o.total)`." },
+        { "kind": "require", "pattern": "limit\\s+3", "message": "Лише перші три: `LIMIT 3`." }
+      ],
+      "explain": "З'єднати, згрупувати за користувачем, `SUM`, відсортувати за сумою за спаданням і взяти 3."
+    },
+    {
+      "id": "statuses-having",
+      "prompt": "Статуси замовлень, у яких **щонайменше 2** замовлення: `status`, кількість.",
+      "model": "SELECT status, COUNT(*) FROM orders GROUP BY status HAVING COUNT(*) >= 2;",
+      "rules": [
+        { "kind": "require", "pattern": "having", "message": "Фільтр за кількістю в групі — через `HAVING`, а не `WHERE`." }
+      ],
+      "explain": "`WHERE` не бачить `COUNT(*)` — групи фільтрує `HAVING`."
+    },
+    {
+      "id": "second-price",
+      "prompt": "**Другий** за ціною найдорожчий товар: `name`, `price`.",
+      "model": "SELECT name, price FROM products ORDER BY price DESC LIMIT 1 OFFSET 1;",
+      "rules": [
+        { "kind": "forbid", "pattern": "54999|41999", "message": "Не вписуй ціни вручну — запит має працювати й на інших даних." }
+      ],
+      "explain": "`ORDER BY price DESC LIMIT 1 OFFSET 1` або підзапит `WHERE price < (SELECT MAX(price) FROM products)` з `ORDER BY … LIMIT 1`."
+    },
+    {
+      "id": "users-per-city",
+      "prompt": "Кількість користувачів у кожному місті, **без** користувачів, у яких місто не вказане: `city`, кількість.",
+      "model": "SELECT city, COUNT(*) FROM users WHERE city IS NOT NULL GROUP BY city;",
+      "rules": [
+        { "kind": "require", "pattern": "is\\s+not\\s+null|count\\s*\\(\\s*(u\\.)?city\\s*\\)", "message": "Відкинь порожні міста: `WHERE city IS NOT NULL`." }
+      ],
+      "explain": "Без умови з'явиться група `NULL`. `city != NULL` не працює — потрібне `IS NOT NULL`."
+    }
+  ],
+  "hints": [
+    "Без пари — `LEFT JOIN` + `IS NULL`. Фільтр за агрегатом — `HAVING`.",
+    "Другий за ціною — сортування за спаданням і `OFFSET 1`."
+  ],
+  "explanation": "Ці п'ять запитів покривають «обов'язковий мінімум» SQL для Junior QA: `LEFT JOIN` для пошуку записів без пари, агрегати з `GROUP BY`, `HAVING` для фільтра груп, сортування з `LIMIT/OFFSET` і роботу з `NULL`. Типові помилки на співбесіді: `WHERE COUNT(*) >= 2`, `= NULL`, `INNER JOIN` там, де потрібні всі рядки, і вписані вручну значення замість логіки."
+}

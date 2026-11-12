@@ -1,0 +1,73 @@
+{
+  "type": "written",
+  "title": "Fix a weak CV",
+  "statement": "Твій знайомий просить допомогти з резюме. Ось воно (без змін):\n\n```text\nANDRII MELNYK\nResume\nDate of birth: 03.05.1999. Married.\n\nAbout me: I am a responsible, communicative, stress-resistant person\nlooking for any job in IT. Fast learner!!!\n\nSkills: Selenium (expert), Playwright, Java, JavaScript, Python, C#,\nPostman, Jira, Figma, Photoshop, Excel, Word, SQL, Docker, Kubernetes\n\nExperience:\nSales manager, electronics store, 2020–2024: worked with clients,\nwas responsible for sales.\n\nCourses: QA course (2024), certificate.\n\nProjects: did some tests on GitHub.\n```\n\nЩо він реально зробив (з розмови): автоматизував **18 UI-тестів** на Playwright + TypeScript для демо-магазину з Page Objects, написав **25 тест-кейсів**, знайшов і оформив **9 багів**, налаштував запуск на **GitHub Actions**. У магазині вів облік повернень і помічав повторювані дефекти товарів. Англійська — **B1**.\n\nПерепиши ключові частини резюме **англійською**.",
+  "fields": [
+    { "id": "problems", "label": "What is wrong with the original (one per line)", "kind": "list" },
+    { "id": "headline", "label": "Name line + target title", "kind": "text" },
+    { "id": "summary", "label": "Summary (2–3 sentences)", "kind": "textarea" },
+    { "id": "skills", "label": "Skills (grouped, one group per line)", "kind": "list" },
+    { "id": "project", "label": "Project: name + 3–4 bullets (one per line)", "kind": "list" },
+    { "id": "experience", "label": "Sales manager experience: 1–2 bullets (one per line)", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "problems", "check": "minItems", "value": 5, "message": "Problems: знайди щонайменше 5 проблем (персональні дані, «any job», 15 технологій, «expert», порожні проєкти…)." },
+    { "field": "problems", "check": "mentionsAny", "value": ["birth|married|age|вік|народж|сімейн|personal|персональн"], "message": "Problems: зайві персональні дані." },
+    { "field": "problems", "check": "mentionsAny", "value": ["expert|selenium|too many|забагато|список|list of|technolog|технолог"], "message": "Problems: «Selenium (expert)» і 15 технологій без доказів." },
+    { "field": "problems", "check": "mentionsAny", "value": ["project|проєкт|github|link|посилан"], "message": "Problems: проєкт без опису і посилання." },
+    { "field": "headline", "check": "mentionsAny", "value": ["qa|test"], "message": "Headline: конкретна роль (Trainee QA Automation Engineer), а не «Resume»." },
+    { "field": "summary", "check": "minLength", "value": 120, "message": "Summary: 2–3 речення: хто, що вміє з доказом, що шукає." },
+    { "field": "summary", "check": "notMentions", "value": ["any job", "stress.?resistant", "expert"], "message": "Summary: без «any job», «stress-resistant» і «expert»." },
+    { "field": "skills", "check": "minItems", "value": 3, "message": "Skills: щонайменше 3 групи (Testing, Automation, Tools)." },
+    { "field": "skills", "check": "mentionsAll", "value": ["playwright", "typescript"], "message": "Skills: те, що він реально використовував, — Playwright і TypeScript." },
+    { "field": "skills", "check": "notMentions", "value": ["kubernetes", "photoshop", "c#", "expert"], "message": "Skills: прибери те, з чим він не працював, і «expert»." },
+    { "field": "project", "check": "minItems", "value": 4, "message": "Project: назва + щонайменше 3 пункти." },
+    { "field": "project", "check": "mentionsAll", "value": ["18", "25|9"], "message": "Project: використай реальні числа (18 тестів, 25 кейсів, 9 багів)." },
+    { "field": "project", "check": "mentionsAny", "value": ["github actions|ci"], "message": "Project: CI — це сильний пункт, не загуби його." },
+    { "field": "experience", "check": "mentionsAny", "value": ["return|повернен|defect|дефект|issue|pattern|recurring|повторюван"], "message": "Experience: перетвори продажі на переносну навичку — облік повернень і повторюваних дефектів." }
+  ],
+  "model": {
+    "problems": [
+      "\"Resume\" instead of a target title — the reader does not see the role",
+      "Date of birth and marital status — personal data that is not needed",
+      "\"Looking for any job in IT\" — no focus; the CV must target QA automation",
+      "\"Responsible, stress-resistant\" — adjectives without evidence",
+      "15 technologies in one line, \"Selenium (expert)\" without any proof — will fall apart in the interview",
+      "\"Did some tests on GitHub\" — the strongest evidence is hidden: no project name, link or results",
+      "Sales experience is described as duties, not achievements",
+      "No English level, no GitHub/LinkedIn links, no contacts"
+    ],
+    "headline": "ANDRII MELNYK — Trainee QA Automation Engineer · Kyiv, Ukraine · github.com/<andrii>",
+    "summary": "Trainee QA automation engineer who automated 18 UI tests with Playwright and TypeScript for a demo shop and runs them on GitHub Actions. Strong attention to detail from four years in retail, where I tracked returns and recurring product defects. Looking for a trainee QA automation role where I can grow in a team.",
+    "skills": [
+      "Testing: test design, test cases, checklists, bug reports",
+      "Automation: TypeScript, Playwright Test (Page Objects)",
+      "Tools: Git, GitHub Actions, Chrome DevTools, Jira, Postman (basic)",
+      "Languages: English (B1), Ukrainian (native)"
+    ],
+    "project": [
+      "Demo shop UI tests — github.com/<andrii>/demo-shop-tests",
+      "Automated 18 UI tests with Playwright + TypeScript using Page Objects",
+      "Wrote 25 test cases and reported 9 bugs with steps, severity and evidence",
+      "Set up GitHub Actions to run the tests on every push with an HTML report"
+    ],
+    "experience": [
+      "Tracked product returns and reported recurring defects to suppliers, which helped remove two faulty models from sale",
+      "Explained technical issues to customers clearly and documented them for the service team"
+    ]
+  },
+  "hints": [
+    "Почни з того, що рекрутер побачить за 15 секунд: роль, стек, проєкт з посиланням.",
+    "Залиш у Skills лише те, що є в проєкті або досвіді. Решту прибери.",
+    "Продажі → переносні навички: уважність до дефектів, комунікація, документування."
+  ],
+  "explanation": "Слабке резюме ховає головне (реальний проєкт з автотестами) за зайвим: персональними даними, прикметниками, списком із 15 технологій і «expert». Виправлення: конкретна роль у шапці, summary з доказом, навички лише з досвіду, проєкт з посиланням і числами, попередній досвід як переносні досягнення. Типова помилка під час переписування — додати нові вигадані досягнення: використовуй лише факти.",
+  "checklist": [
+    "У шапці видно роль і посилання на GitHub",
+    "Немає персональних даних і прикметників без доказів",
+    "Навички збігаються з тим, що він реально робив",
+    "Проєкт має назву, посилання і числа",
+    "Попередній досвід описано як переносні досягнення",
+    "Нічого не вигадано"
+  ]
+}

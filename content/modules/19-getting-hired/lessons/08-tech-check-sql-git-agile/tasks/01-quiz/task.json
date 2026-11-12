@@ -1,0 +1,202 @@
+{
+  "type": "quiz",
+  "title": "Mock tech check: SQL, Git & Agile (question bank)",
+  "show": 10,
+  "intro": "Банк із 22 питань: щоразу випадкові 10.",
+  "hints": ["WHERE — до групування, HAVING — після. fetch не змінює твою гілку. QA — частина Developers у Scrum."],
+  "questions": [
+    {
+      "id": "where-having",
+      "kind": "single",
+      "text": "Чим `WHERE` відрізняється від `HAVING`?",
+      "options": [
+        { "text": "`WHERE` фільтрує рядки до групування, `HAVING` — групи після `GROUP BY`", "correct": true },
+        { "text": "Нічим, це синоніми" },
+        { "text": "`HAVING` працює лише з JOIN" }
+      ]
+    },
+    {
+      "id": "left-join",
+      "kind": "single",
+      "text": "Потрібні **всі** користувачі, навіть без замовлень, з кількістю замовлень. Який JOIN?",
+      "options": [{ "text": "`LEFT JOIN orders`", "correct": true }, { "text": "`INNER JOIN orders`" }]
+    },
+    {
+      "id": "null-compare",
+      "kind": "single",
+      "text": "Як знайти користувачів без міста?",
+      "options": [
+        { "text": "`WHERE city IS NULL`", "correct": true },
+        { "text": "`WHERE city = NULL`", "explain": "Порівняння з NULL через `=` завжди «невідомо», рядків не буде." },
+        { "text": "`WHERE city = ''`" }
+      ]
+    },
+    {
+      "id": "count-star",
+      "kind": "single",
+      "text": "Чим `COUNT(*)` відрізняється від `COUNT(city)`?",
+      "options": [
+        { "text": "`COUNT(*)` рахує всі рядки, `COUNT(city)` — лише ті, де city не NULL", "correct": true },
+        { "text": "Нічим" }
+      ]
+    },
+    {
+      "id": "duplicates",
+      "kind": "single",
+      "text": "Як знайти email, що трапляються в таблиці більше одного разу?",
+      "options": [
+        { "text": "`SELECT email, COUNT(*) FROM users GROUP BY email HAVING COUNT(*) > 1`", "correct": true },
+        { "text": "`SELECT DISTINCT email FROM users`" },
+        { "text": "`SELECT email FROM users WHERE COUNT(*) > 1`" }
+      ]
+    },
+    {
+      "id": "fk",
+      "kind": "single",
+      "text": "`orders.user_id` посилається на `users.id`. Як називається `orders.user_id`?",
+      "options": [{ "text": "Foreign key", "correct": true }, { "text": "Primary key" }, { "text": "Index" }]
+    },
+    {
+      "id": "delete-truncate-drop",
+      "kind": "single",
+      "text": "Що видаляє таблицю разом зі структурою?",
+      "options": [{ "text": "`DROP TABLE`", "correct": true }, { "text": "`TRUNCATE`" }, { "text": "`DELETE FROM`" }]
+    },
+    {
+      "id": "order-of-execution",
+      "kind": "single",
+      "text": "Що виконується раніше логічно?",
+      "options": [
+        { "text": "`WHERE` раніше за `GROUP BY`, а `ORDER BY` — майже наприкінці", "correct": true },
+        { "text": "`SELECT` найпершим" }
+      ]
+    },
+    {
+      "id": "second-price",
+      "kind": "single",
+      "text": "Як отримати другий за ціною товар (без однакових цін)?",
+      "options": [
+        { "text": "`SELECT name, price FROM products ORDER BY price DESC LIMIT 1 OFFSET 1`", "correct": true },
+        { "text": "`SELECT MAX(price) - 1 FROM products`" }
+      ]
+    },
+    {
+      "id": "qa-sql",
+      "kind": "single",
+      "text": "Навіщо QA SQL на роботі?",
+      "options": [
+        { "text": "Перевірити дані після дій у UI/API, підготувати тестові дані, знайти аномалії в базі", "correct": true },
+        { "text": "Щоб писати бекенд замість розробників" }
+      ]
+    },
+    {
+      "id": "fetch-pull",
+      "kind": "single",
+      "text": "Чим `git fetch` відрізняється від `git pull`?",
+      "options": [
+        { "text": "`fetch` лише завантажує зміни з remote; `pull` ще й вливає їх у поточну гілку", "correct": true },
+        { "text": "`fetch` надсилає твої коміти на сервер" }
+      ]
+    },
+    {
+      "id": "merge-rebase",
+      "kind": "single",
+      "text": "Що робить `rebase` на відміну від `merge`?",
+      "options": [
+        { "text": "Переносить твої коміти поверх іншої гілки, роблячи історію лінійною (без коміту злиття)", "correct": true },
+        { "text": "Видаляє гілку" }
+      ]
+    },
+    {
+      "id": "revert",
+      "kind": "single",
+      "text": "Зламаний коміт уже в `main`, і з ним працює вся команда. Як скасувати його безпечно?",
+      "options": [
+        { "text": "`git revert <commit>` — новий коміт, що скасовує зміни", "correct": true },
+        { "text": "`git reset --hard` і force push", "explain": "Це переписує спільну історію — колеги отримають проблеми." }
+      ]
+    },
+    {
+      "id": "conflict",
+      "kind": "single",
+      "text": "Що означає конфлікт злиття?",
+      "options": [
+        { "text": "Обидві гілки змінили ті самі рядки, і Git не може сам вирішити, що залишити", "correct": true },
+        { "text": "Хтось видалив репозиторій" }
+      ]
+    },
+    {
+      "id": "gitignore",
+      "kind": "multiple",
+      "text": "Що має бути в `.gitignore` проєкту з Playwright? (кілька відповідей)",
+      "options": [
+        { "text": "`node_modules/`", "correct": true },
+        { "text": "`playwright-report/` і `test-results/`", "correct": true },
+        { "text": "`.env` із секретами", "correct": true },
+        { "text": "`playwright.config.ts`", "explain": "Конфіг — частина проєкту, його комітять." }
+      ]
+    },
+    {
+      "id": "scrum-roles",
+      "kind": "single",
+      "text": "До якої ролі Scrum належить QA-інженер?",
+      "options": [
+        { "text": "Developers — уся команда, що створює інкремент", "correct": true },
+        { "text": "Окрема роль «Tester»" },
+        { "text": "Scrum Master" }
+      ]
+    },
+    {
+      "id": "po",
+      "kind": "single",
+      "text": "Хто визначає пріоритети в Product Backlog?",
+      "options": [{ "text": "Product Owner", "correct": true }, { "text": "Scrum Master" }, { "text": "QA" }]
+    },
+    {
+      "id": "daily",
+      "kind": "single",
+      "text": "Мета Daily Scrum:",
+      "options": [
+        { "text": "За 15 хвилин звірити прогрес до цілі спринту і назвати блокери", "correct": true },
+        { "text": "Детально розібрати всі баги" },
+        { "text": "Звіт менеджеру про кожну годину роботи" }
+      ]
+    },
+    {
+      "id": "retro",
+      "kind": "single",
+      "text": "Що відбувається на Sprint Retrospective?",
+      "options": [
+        { "text": "Команда обговорює, як покращити свою роботу і процес", "correct": true },
+        { "text": "Показують результат замовнику", "explain": "Це Sprint Review." }
+      ]
+    },
+    {
+      "id": "dod",
+      "kind": "single",
+      "text": "Що таке Definition of Done?",
+      "options": [
+        { "text": "Спільні критерії, коли робота вважається завершеною (тести пройдені, код у main, документація…)", "correct": true },
+        { "text": "Дата завершення проєкту" }
+      ]
+    },
+    {
+      "id": "user-story",
+      "kind": "single",
+      "text": "Який формат user story класичний?",
+      "options": [
+        { "text": "As a <user>, I want <goal>, so that <benefit> + acceptance criteria", "correct": true },
+        { "text": "Steps to reproduce / Expected / Actual" }
+      ]
+    },
+    {
+      "id": "qa-sprint",
+      "kind": "single",
+      "text": "Коли QA починає працювати над user story у спринті?",
+      "options": [
+        { "text": "З refinement/planning: уточнює acceptance criteria і готує тести, поки фіча в розробці", "correct": true },
+        { "text": "Лише коли розробник передав готову фічу" }
+      ]
+    }
+  ]
+}

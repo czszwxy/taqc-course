@@ -3,11 +3,11 @@
   "title": "Put a STAR answer in order",
   "statement": "Питання інтерв'юера: **«Tell me about a time you missed a bug.»** Розстав речення відповіді в правильному порядку STAR: Situation → Task → Action → Result.",
   "items": [
-    "Situation: on my training project I tested the sign-up form, and after my run a reviewer found that an email with a trailing space was rejected.",
-    "Situation: I had checked many invalid emails but not valid ones with extra spaces.",
+    "Situation: on my training project I tested a delivery form, and after my run a reviewer found that phone numbers in the international format (+380…) were rejected.",
+    "Situation: I had checked many invalid phone numbers but not valid ones in other formats.",
     "Task: I had to fix my mistake quickly and make sure the same kind of gap would not happen again.",
     "Action: I reported the bug with exact steps and the requirement it breaks, and retested it after the fix.",
-    "Action: I added \"leading/trailing spaces\" and \"letter case\" to my checklist template for every text field.",
+    "Action: I added \"valid formats and variations\" (international codes, spaces, brackets) to my checklist template for every input field.",
     "Result: the bug was fixed the same day, and with the new checklist I found two similar bugs on other forms.",
     "Result: my lesson — I test valid variations, not only invalid values."
   ],

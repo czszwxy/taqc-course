@@ -1,0 +1,36 @@
+{
+  "title": "English for QA interviews",
+  "minutes": 60,
+  "summary": "Як виглядає перевірка англійської (HR-дзвінок, частина технічної співбесіди англійською, читання тексту), які відповіді підготувати англійською, корисні фрази для уточнення і «виграти час», словник QA і типові помилки українськомовних кандидатів",
+  "resources": [
+    {
+      "title": "DOU: Як знайти роботу початківцям-тестувальникам — досвід Trainee та Junior QA",
+      "url": "https://dou.ua/lenta/articles/job-search-for-juniors-qa/",
+      "kind": "article",
+      "lang": "uk",
+      "note": "Кандидати розповідають, як слабка англійська зупиняла їх навіть після технічної співбесіди.",
+      "needsVerification": true
+    },
+    {
+      "title": "ISTQB Glossary (English terms)",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: QA interview in English mock",
+      "url": "https://www.youtube.com/results?search_query=QA+engineer+mock+interview+in+English",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: tell me about yourself software tester",
+      "url": "https://www.youtube.com/results?search_query=tell+me+about+yourself+software+tester+answer",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

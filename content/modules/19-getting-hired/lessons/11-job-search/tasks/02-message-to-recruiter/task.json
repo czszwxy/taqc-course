@@ -1,0 +1,35 @@
+{
+  "type": "written",
+  "title": "Write a cover message for a real-looking vacancy",
+  "statement": "Вакансія (навчальна):\n\n> **Trainee QA Automation Engineer** — *Gadgetly*, Kyiv / remote.\n> We build an online electronics store. You'll test new features with the team, write automated UI and API tests (**TypeScript, Playwright**), and grow with a mentor.\n> Requirements: test design basics, understanding of HTTP/REST, basic SQL, Git, English B1+.\n> Nice to have: CI (GitHub Actions), a GitHub portfolio.\n\nНапиши **англійською**:\n\n1. Супровідне повідомлення (4–6 речень) рекрутерці на ім'я Olena.\n2. Коротке повідомлення-**follow-up** через тиждень без відповіді (2–3 речення).",
+  "fields": [
+    { "id": "cover", "label": "1. Cover message", "kind": "textarea" },
+    { "id": "followUp", "label": "2. Follow-up after a week", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "any", "check": "notMentions", "value": ["[а-яґєії]"], "message": "Пиши англійською — без кирилиці." },
+    { "field": "cover", "check": "minLength", "value": 250, "message": "Cover: 4–6 речень: посада, доказ, чому компанія, доступність." },
+    { "field": "cover", "check": "mentionsAll", "value": ["trainee qa automation|qa automation", "gadgetly"], "message": "Cover: назви посаду і компанію." },
+    { "field": "cover", "check": "mentionsAny", "value": ["github"], "message": "Cover: посилання на проєкт на GitHub — твій головний доказ." },
+    { "field": "cover", "check": "mentionsAny", "value": ["playwright|typescript"], "message": "Cover: збіг зі стеком вакансії (Playwright, TypeScript)." },
+    { "field": "cover", "check": "notMentions", "value": ["any job", "dear sir or madam"], "message": "Cover: без «any job» і «Dear Sir or Madam» — ти знаєш ім'я рекрутерки." },
+    { "field": "followUp", "check": "minLength", "value": 80, "message": "Follow-up: 2–3 речення: нагадування, посилання, готовність до наступного кроку." },
+    { "field": "followUp", "check": "notMentions", "value": ["why (didn.?t|haven.?t) you|ignore"], "message": "Follow-up: без докорів — коротко і ввічливо." }
+  ],
+  "model": {
+    "cover": "Hi Olena,\n\nI'm applying for the Trainee QA Automation Engineer position at Gadgetly. I know test design and HTTP/REST, write basic SQL and automate UI and API tests with Playwright and TypeScript — for example, my demo-shop test framework with page objects runs on GitHub Actions: github.com/<you>/gadgetly-tests. I'd love to grow with a mentor in a team that builds an online store, because e-commerce is exactly what I practised on. My English is B1+, and I can start two weeks after an offer. I'm happy to do a test assignment.\n\nBest regards,\n<Name> · linkedin.com/in/<you>",
+    "followUp": "Hi Olena, I hope you're doing well. I applied for the Trainee QA Automation Engineer position last week and wanted to check whether it is still open. I'm still very interested and happy to do a test assignment or a short call — my projects are here: github.com/<you>."
+  },
+  "hints": [
+    "Пройдися по вимогах вакансії і покажи збіг: Playwright, TypeScript, HTTP, SQL, Git, English, GitHub Actions.",
+    "Follow-up — нагадування з користю: посилання і готовність до наступного кроку, без докорів."
+  ],
+  "explanation": "Добрий лист короткий і конкретний: звертання на ім'я, посада, **доказ** (проєкт з посиланням і стеком з вакансії), чому саме ця компанія, доступність і готовність до наступного кроку. Follow-up — одне ввічливе нагадування через 5–7 робочих днів. Типові помилки: переказ резюме, «шукаю будь-яку роботу», лист без посилань.",
+  "checklist": [
+    "Звертання на ім'я, посада і компанія названі",
+    "Є посилання на проєкт і збіг зі стеком вакансії",
+    "Пояснено, чому саме ця компанія",
+    "4–6 речень, без помилок",
+    "Follow-up ввічливий, короткий, з посиланням"
+  ]
+}

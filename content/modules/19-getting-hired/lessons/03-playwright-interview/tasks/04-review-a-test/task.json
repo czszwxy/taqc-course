@@ -1,0 +1,51 @@
+{
+  "type": "written",
+  "title": "Code review: what is wrong with this test?",
+  "statement": "Поширений формат співбесіди: тобі показують тест і питають **«що тут не так?»**. Знайди якомога більше проблем і перепиши тест правильно.\n\n```ts\nimport { test, expect } from '@playwright/test';\n\nlet orderId;\n\ntest('test1', async ({ page }) => {\n  await page.goto('http://localhost:5173/playground/login');\n  await page.fill('#root > div > div:nth-child(2) > form > input:nth-child(1)', 'qa@gadgetly.test');\n  await page.fill('input[type=password]', 'Test1234');\n  page.click('.btn-primary');\n  await page.waitForTimeout(3000);\n  const visible = await page.locator('text=Welcome').isVisible();\n  expect(visible).toBe(true);\n  orderId = await page.locator('.order-id').textContent();\n});\n\ntest('test2', async ({ page }) => {\n  await page.goto('http://localhost:5173/orders/' + orderId);\n  await page.locator('.cancel').click({ force: true });\n  expect(await page.locator('.status').textContent()).toBe('Cancelled');\n});\n```",
+  "fields": [
+    { "id": "problems", "label": "Problems (one per line: what is wrong and why)", "kind": "list" },
+    { "id": "fixed", "label": "Your rewritten version (code or a clear outline)", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "problems", "check": "minItems", "value": 6, "message": "Problems: тут щонайменше 6–8 проблем. Пройди кожен рядок." },
+    { "field": "problems", "check": "mentionsAny", "value": ["await"], "message": "Problems: є рядок без `await`. Знайди його." },
+    { "field": "problems", "check": "mentionsAny", "value": ["waitForTimeout|timeout|пауз|sleep|hard.?coded wait|fixed wait"], "message": "Problems: фіксована пауза." },
+    { "field": "problems", "check": "mentionsAny", "value": ["css|nth-child|selector|селектор|локатор|locator|getByRole|getByLabel|brittle|крихк"], "message": "Problems: локатори (довгий CSS-шлях, класи стилів)." },
+    { "field": "problems", "check": "mentionsAny", "value": ["isVisible|web-first|toBeVisible|toHaveText|textContent|retry|повторю|не чека|doesn.?t wait"], "message": "Problems: перевірки не web-first (`isVisible()`, `textContent()` не чекають)." },
+    { "field": "problems", "check": "mentionsAny", "value": ["depend|залеж|independent|незалеж|order|порядок|shared|спільн|global|глобальн|orderId"], "message": "Problems: тест 2 залежить від тесту 1 через спільну змінну." },
+    { "field": "problems", "check": "mentionsAny", "value": ["force"], "message": "Problems: `force: true`." },
+    { "field": "problems", "check": "mentionsAny", "value": ["name|назв|test1|test2"], "message": "Problems: назви тестів нічого не кажуть." },
+    { "field": "fixed", "check": "mentionsAny", "value": ["getBy(Role|Label|Text|TestId)"], "message": "Fixed: використай user-facing локатори (`getByLabel`, `getByRole`)." },
+    { "field": "fixed", "check": "mentionsAny", "value": ["toBeVisible|toHaveText|toHaveURL|toContainText"], "message": "Fixed: web-first перевірки (`toBeVisible`, `toHaveText`)." },
+    { "field": "fixed", "check": "notMentions", "value": ["waitForTimeout", "force:\\s*true"], "message": "Fixed: без `waitForTimeout` і `force: true`." }
+  ],
+  "model": {
+    "problems": [
+      "Test names test1 / test2 say nothing — the name should describe the behaviour (\"signs in with valid credentials\")",
+      "Full URL http://localhost:5173 is hard-coded — use baseURL from the config and relative paths",
+      "A long CSS path (#root > div > … nth-child) breaks on any layout change — use getByLabel('Email')",
+      "Class selectors (.btn-primary, .cancel, .status) are tied to styling — use getByRole / getByTestId",
+      "page.click(...) has no await — the next steps run before the click finishes (flaky)",
+      "waitForTimeout(3000) — a fixed pause: slow when the app is fast, flaky when it is slow; web-first assertions wait by themselves",
+      "isVisible() + toBe(true) does not wait or retry — use await expect(locator).toBeVisible()",
+      "textContent() + toBe() does not retry either — use await expect(locator).toHaveText('Cancelled')",
+      "test2 depends on test1 through the module variable orderId — it fails when run alone, in parallel or in another order; each test must create its own data",
+      "click({ force: true }) skips the actionability checks and can hide a real bug (a covered or disabled button)",
+      "Credentials are hard-coded in the test — keep test data in one place (fixture, env or a data file)",
+      "The first test does two things (login and reading an order) — one test, one behaviour"
+    ],
+    "fixed": "```ts\nimport { test, expect } from '@playwright/test';\n\nasync function signIn(page: Page) {\n  await page.goto('/playground/login');\n  await page.getByLabel('Email').fill(USER.email);\n  await page.getByLabel('Password', { exact: true }).fill(USER.password);\n  await page.getByRole('button', { name: 'Sign in' }).click();\n}\n\ntest('signs in with valid credentials', async ({ page }) => {\n  await signIn(page);\n  await expect(page.getByText('Welcome')).toBeVisible();\n});\n\ntest('a cancelled order shows the Cancelled status', async ({ page, request }) => {\n  const order = await (await request.post('/api/orders', { data: NEW_ORDER })).json(); // own data\n  await signIn(page);\n  await page.goto(`/orders/${order.id}`);\n  await page.getByRole('button', { name: 'Cancel order' }).click();\n  await expect(page.getByTestId('order-status')).toHaveText('Cancelled');\n});\n```"
+  },
+  "hints": [
+    "Пройди тест рядок за рядком і для кожного спитай: «що буде, якщо сторінка трохи повільніша / верстка зміниться / тест запуститься сам?»",
+    "Категорії проблем: назви, URL, локатори, await, паузи, перевірки, залежність між тестами, force, тестові дані."
+  ],
+  "explanation": "Code review тесту перевіряє, чи розумієш ти, **чому** тести стають нестабільними. У цьому прикладі зібрано найчастіші проблеми: забутий `await`, фіксована пауза, крихкі CSS-шляхи і класи, перевірки без очікування (`isVisible`, `textContent`), залежність тестів через спільну змінну, `force: true`, беззмістовні назви і захардкоджені URL та дані. На співбесіді називай проблему **і наслідок**: «без await клік може не завершитися до перевірки, тест стане flaky».",
+  "checklist": [
+    "Знайдено забутий await і фіксовану паузу",
+    "Пояснено, чому CSS-шляхи і класи погані, і запропоновано getByRole / getByLabel",
+    "Перевірки замінено на web-first (toBeVisible, toHaveText)",
+    "Тести незалежні: кожен готує свої дані",
+    "Для кожної проблеми названо наслідок, а не лише «так не можна»"
+  ]
+}

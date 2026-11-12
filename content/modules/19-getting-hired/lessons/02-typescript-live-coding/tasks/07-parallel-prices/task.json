@@ -1,0 +1,14 @@
+{
+  "type": "code",
+  "title": "Live coding: fetch prices in parallel",
+  "statement": "Асинхронна задача з тестовим API Gadgetly (офлайн-фейк `fetch` за адресою `https://api.gadgetly.test`).\n\n`GET /api/products/:id` повертає товар (`{ id, name, price, … }`), **404** — якщо товару немає, **400** — якщо id не ціле число.\n\nНапиши `getPrices(ids)`:\n\n- запити виконуються **паралельно** (`Promise.all`);\n- повертає `{ prices, notFound }`: `prices` — об'єкт `id → price`, `notFound` — id з відповіддю 404 (у порядку вхідного списку);\n- будь-який інший неуспішний статус (наприклад, 400) → функція кидає `Error`.\n\n```ts\nawait getPrices([1, 999, 3]);\n// { prices: { 1: 499, 3: 2199 }, notFound: [999] }\n```",
+  "hints": [
+    "`` const responses = await Promise.all(ids.map((id) => fetch(`${BASE}/${id}`))); `` — масив відповідей у тому ж порядку, що й `ids`.",
+    "Пройди відповіді з індексом: `responses[i]` належить `ids[i]`. Спершу перевір `status === 404`, потім `!res.ok` → `throw new Error(...)`.",
+    "`(await res.json()) as Product` — тіло відповіді; потрібне лише поле `price`."
+  ],
+  "explanation": "`Promise.all` запускає всі запити одночасно і повертає відповіді в порядку вхідного масиву, тому індекс з'єднує id і відповідь. Важливо розрізняти «очікувану» відмову (404 — товару немає, це дані для звіту) і неочікувану (400, 500 — помилка, тест має впасти). Типові помилки: `await` всередині циклу (запити йдуть по черзі), забутий `await` перед `res.json()`, `forEach` з `async` колбеком (функція повертається, не дочекавшись).",
+  "codeRules": [
+    { "kind": "require", "pattern": "Promise\\.(all|allSettled)\\(", "message": "Запити мають іти паралельно: використай `Promise.all` (або `Promise.allSettled`)." }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "type": "written",
+  "title": "\"How would you test this endpoint?\"",
+  "statement": "Питання з технічної співбесіди: **«Як би ви протестували цей ендпоінт?»**\n\n```text\nPOST /api/orders\nAuthorization: Bearer <token>\nContent-Type: application/json\n\n{ \"productId\": 3, \"quantity\": 2 }\n```\n\nВимоги: тільки для залогінених; `productId` — існуючий товар; `quantity` — ціле від **1 до 10**; успіх → **201**, тіло — створене замовлення (`id`, `productId`, `quantity`, `status: \"created\"`, `total`), заголовок `Location`; помилки валідації → **400** з полем `error`.\n\nРозпиши перевірки групами.",
+  "fields": [
+    { "id": "positive", "label": "Positive checks (one per line)", "kind": "list" },
+    { "id": "validation", "label": "Validation and boundaries (one per line)", "kind": "list" },
+    { "id": "auth", "label": "Authentication and access (one per line)", "kind": "list" },
+    { "id": "other", "label": "Other: duplicates, contract, persistence, performance (one per line)", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "positive", "check": "minItems", "value": 2, "message": "Positive: щонайменше 2 перевірки (статус + тіло, заголовок Location)." },
+    { "field": "positive", "check": "mentionsAny", "value": ["201"], "message": "Positive: очікуваний статус — 201." },
+    { "field": "validation", "check": "minItems", "value": 5, "message": "Validation: щонайменше 5 перевірок: межі quantity, відсутні поля, типи, неіснуючий товар, зламаний JSON." },
+    { "field": "validation", "check": "mentionsAll", "value": ["(^|\\D)0(\\D|$)", "11"], "message": "Validation: граничні значення quantity — 0 і 11 (і 1, 10 як валідні)." },
+    { "field": "validation", "check": "mentionsAny", "value": ["missing|without|відсутн|без |empty|порожн"], "message": "Validation: відсутні обов'язкові поля / порожнє тіло." },
+    { "field": "validation", "check": "mentionsAny", "value": ["string|рядок|type|тип|\"abc\"|abc|decimal|дробов|1\\.5|null"], "message": "Validation: неправильні типи (рядок, дробове число, null)." },
+    { "field": "auth", "check": "mentionsAll", "value": ["401"], "message": "Auth: без токена / з недійсним токеном → 401." },
+    { "field": "auth", "check": "mentionsAny", "value": ["expired|протух|invalid|недійсн|wrong token|malformed"], "message": "Auth: недійсний або протухлий токен." },
+    { "field": "other", "check": "minItems", "value": 3, "message": "Other: щонайменше 3: повторний запит, перевірка через GET, схема відповіді, час відповіді…" },
+    { "field": "other", "check": "mentionsAny", "value": ["get "], "message": "Other: перевір, що замовлення справді збереглося (`GET` за id / у списку)." },
+    { "field": "other", "check": "mentionsAny", "value": ["twice|двічі|duplicate|дублік|repeat|повтор|idempot|ідемпот"], "message": "Other: що буде при повторному однаковому запиті (дублікати)?" }
+  ],
+  "model": {
+    "positive": [
+      "Valid body {productId: 3, quantity: 2} → 201; body has id, productId 3, quantity 2, status \"created\", total = price × 2",
+      "Location header points to /api/orders/<new id>",
+      "quantity 1 and quantity 10 (boundaries inside the range) → 201"
+    ],
+    "validation": [
+      "quantity 0 and 11 → 400 with a clear error message",
+      "quantity -1, 1.5, \"abc\", null → 400",
+      "productId that does not exist (999) → 404 (or 400, as documented)",
+      "missing productId / missing quantity / empty body {} → 400",
+      "broken JSON or Content-Type: text/plain → 400 / 415, never 500",
+      "extra unknown fields (e.g. \"total\": 1) are ignored — the client cannot set the price"
+    ],
+    "auth": [
+      "No Authorization header → 401",
+      "Invalid, malformed or expired token → 401",
+      "The order is created for the user from the token, not for a userId sent in the body",
+      "Another user cannot read the new order: GET /api/orders/<id> with their token → 403/404"
+    ],
+    "other": [
+      "GET /api/orders/<id> and GET /api/orders return the new order with the same data",
+      "Sending the same request twice creates two separate orders (POST is not idempotent) — check that this is expected and the UI protects from double clicks",
+      "Response matches the contract: field names, types, no extra sensitive fields",
+      "Response time is acceptable (e.g. under 500 ms) and the server never returns 5xx on bad input",
+      "Clean up: delete the created orders after the test"
+    ]
+  },
+  "hints": [
+    "Групи: успіх → валідація (межі 0/1/10/11, типи, відсутні поля) → доступ (401, чуже) → інше (повтор, GET після створення, контракт, час).",
+    "Для числових меж використай BVA з модуля 03: 0, 1, 10, 11."
+  ],
+  "explanation": "Структурована відповідь показує, що ти тестуєш API так само системно, як UI: позитивні сценарії з перевіркою тіла і заголовків; валідацію з граничними значеннями і типами; доступ (немає токена, недійсний токен, чужі дані); і те, що часто забувають — збереження даних (перевірка через `GET`), повторні запити, контракт відповіді, відсутність 5xx на сміття і прибирання тестових даних.",
+  "checklist": [
+    "Перевірки згруповані: позитивні, валідація, доступ, інше",
+    "Граничні значення quantity: 0, 1, 10, 11",
+    "Є неправильні типи і відсутні поля",
+    "Є 401 і доступ до чужого замовлення",
+    "Перевірено, що дані збереглися (GET), і що буде при повторі"
+  ]
+}

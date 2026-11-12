@@ -1,0 +1,51 @@
+{
+  "title": "Tech check: web, HTTP & APIs",
+  "minutes": 75,
+  "summary": "Технічні питання про веб, які ставлять джунам майже завжди: що відбувається, коли вводиш URL, HTTP-методи й ідемпотентність, статус-коди (401 vs 403), заголовки, cookies vs localStorage, авторизація і JWT, DevTools і як зрозуміти, фронтенд чи бекенд винен, як протестувати ендпоінт",
+  "resources": [
+    {
+      "title": "MDN: An overview of HTTP",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: HTTP response status codes",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: HTTP request methods",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "DOU: Планка для джуна-QA за 12 років — що змінилося і навіщо все це питають",
+      "url": "https://dou.ua/goto/fYRh",
+      "kind": "article",
+      "lang": "uk",
+      "note": "Чому від джуна чекають HTTP, DevTools, Postman і SQL.",
+      "needsVerification": true
+    },
+    {
+      "title": "Chrome DevTools: Network features reference",
+      "url": "https://developer.chrome.com/docs/devtools/network/reference",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Postman Learning Center",
+      "url": "https://learning.postman.com/docs/introduction/overview/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "У багатьох вакансіях є Postman: колекції, змінні середовища, тести у вкладці Scripts.",
+      "needsVerification": true
+    }
+  ]
+}

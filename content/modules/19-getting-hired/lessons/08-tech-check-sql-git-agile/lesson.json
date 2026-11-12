@@ -1,0 +1,37 @@
+{
+  "title": "Tech check: SQL, Git & Agile",
+  "minutes": 70,
+  "summary": "Що питають про SQL (SELECT, WHERE, ORDER BY, JOIN, GROUP BY/HAVING, NULL, ключі, DELETE/TRUNCATE/DROP) і live SQL на співбесіді, базові питання про Git і про роботу QA в Scrum-команді; практика — SQL-запити з таймером, терміни Scrum і «опиши свій спринт»",
+  "resources": [
+    {
+      "title": "SQLite: SELECT",
+      "url": "https://www.sqlite.org/lang_select.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Pro Git book",
+      "url": "https://git-scm.com/book/en/v2",
+      "kind": "book",
+      "lang": "en",
+      "note": "Розділи 2 і 3: основи і гілки.",
+      "needsVerification": true
+    },
+    {
+      "title": "The Scrum Guide",
+      "url": "https://scrumguides.org/scrum-guide.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Офіційний опис ролей, подій і артефактів Scrum (коротко, ~15 сторінок).",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: SQL interview questions for QA",
+      "url": "https://www.youtube.com/results?search_query=SQL+interview+questions+for+QA+testers",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

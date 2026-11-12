@@ -1,0 +1,226 @@
+{
+  "type": "quiz",
+  "title": "Final exam: mixed interview question bank",
+  "show": 15,
+  "intro": "Змішаний банк з усіх тем співбесіди: щоразу випадкові 15. Ціль — 90 %+ кілька разів поспіль.",
+  "passScore": 0.85,
+  "hints": ["Якщо помиляєшся в темі — повтори відповідний урок цього модуля."],
+  "questions": [
+    {
+      "id": "t-sev",
+      "kind": "single",
+      "text": "Падіння застосунку на сторінці налаштувань, якою користуються рідко. Severity і priority найімовірніше:",
+      "options": [
+        { "text": "Висока severity, середній priority", "correct": true },
+        { "text": "Низька severity, високий priority" }
+      ]
+    },
+    {
+      "id": "t-regression",
+      "kind": "single",
+      "text": "Після фіксу знижок перевіряють, чи не зламався кошик, оплата і листи. Це…",
+      "options": [{ "text": "Регресійне тестування", "correct": true }, { "text": "Re-testing" }, { "text": "Smoke" }]
+    },
+    {
+      "id": "t-bva",
+      "kind": "single",
+      "text": "Пароль 8–64 символи. Граничні значення (2 на межу):",
+      "options": [{ "text": "7, 8, 64, 65", "correct": true }, { "text": "8, 36, 64" }, { "text": "0, 8, 64, 100" }]
+    },
+    {
+      "id": "t-intermittent",
+      "kind": "single",
+      "text": "Баг відтворюється 1 раз із 10. Оформлювати?",
+      "options": [
+        { "text": "Так: з частотою, середовищем, логами і відео", "correct": true },
+        { "text": "Ні, поки не відтвориться стабільно" }
+      ]
+    },
+    {
+      "id": "w-401",
+      "kind": "single",
+      "text": "Запит із протухлим токеном. Очікуваний код:",
+      "options": [{ "text": "401", "correct": true }, { "text": "403" }, { "text": "500" }]
+    },
+    {
+      "id": "w-post",
+      "kind": "single",
+      "text": "Який із методів може створити дублікат при повторі?",
+      "options": [{ "text": "POST", "correct": true }, { "text": "PUT" }, { "text": "DELETE" }]
+    },
+    {
+      "id": "w-devtools",
+      "kind": "single",
+      "text": "Сторінка показує неправильну ціну. Що перевірити першим у DevTools?",
+      "options": [
+        { "text": "Network: що прийшло у відповіді API — так зрозумієш, фронтенд чи бекенд", "correct": true },
+        { "text": "Elements: колір ціни" }
+      ]
+    },
+    {
+      "id": "w-storage",
+      "kind": "single",
+      "text": "Де зберігаються дані, що зникають після закриття вкладки?",
+      "options": [{ "text": "sessionStorage", "correct": true }, { "text": "localStorage" }, { "text": "Cookie з терміном 1 рік" }]
+    },
+    {
+      "id": "s-left",
+      "kind": "single",
+      "text": "Товари, які ніхто не замовляв, — який запит?",
+      "options": [
+        { "text": "`products LEFT JOIN order_items … WHERE order_items.id IS NULL`", "correct": true },
+        { "text": "`products INNER JOIN order_items`" }
+      ]
+    },
+    {
+      "id": "s-having",
+      "kind": "single",
+      "text": "Міста, де більше 2 користувачів:",
+      "options": [
+        { "text": "`GROUP BY city HAVING COUNT(*) > 2`", "correct": true },
+        { "text": "`WHERE COUNT(*) > 2 GROUP BY city`" }
+      ]
+    },
+    {
+      "id": "g-revert",
+      "kind": "single",
+      "text": "Як безпечно скасувати коміт, який уже в спільній гілці?",
+      "options": [{ "text": "`git revert`", "correct": true }, { "text": "`git reset --hard` + force push" }]
+    },
+    {
+      "id": "a-po",
+      "kind": "single",
+      "text": "Хто вирішує, чи випускати фічу з відомим багом середньої важливості?",
+      "options": [
+        { "text": "Product Owner разом з командою, на основі інформації від QA", "correct": true },
+        { "text": "QA одноосібно" }
+      ]
+    },
+    {
+      "id": "j-closure",
+      "kind": "single",
+      "text": "Як називається функція, що «пам'ятає» змінні з області, де її створили?",
+      "options": [{ "text": "Замикання (closure)", "correct": true }, { "text": "Hoisting" }, { "text": "Callback hell" }]
+    },
+    {
+      "id": "j-microtask",
+      "kind": "single",
+      "text": "Що виконається раніше: колбек `Promise.then` чи `setTimeout(…, 0)`?",
+      "options": [{ "text": "`Promise.then` (мікрозадача)", "correct": true }, { "text": "`setTimeout`" }]
+    },
+    {
+      "id": "j-allsettled",
+      "kind": "single",
+      "text": "Потрібні результати всіх запитів, навіть якщо частина впаде:",
+      "options": [{ "text": "`Promise.allSettled`", "correct": true }, { "text": "`Promise.all`" }, { "text": "`Promise.race`" }]
+    },
+    {
+      "id": "j-unknown",
+      "kind": "single",
+      "text": "Який тип найбезпечніше дати відповіді API, якій ти не довіряєш?",
+      "options": [{ "text": "`unknown` + перевірка типу (guard)", "correct": true }, { "text": "`any`" }]
+    },
+    {
+      "id": "p-locator",
+      "kind": "single",
+      "text": "Найстійкіший локатор для поля Email з підписом:",
+      "options": [{ "text": "`getByLabel('Email')`", "correct": true }, { "text": "`locator('form > div:nth-child(2) > input')`" }]
+    },
+    {
+      "id": "p-strict",
+      "kind": "single",
+      "text": "«strict mode violation: resolved to 2 elements». Правильна реакція:",
+      "options": [
+        { "text": "Уточнити локатор (контейнер, filter, exact), щоб він знаходив один елемент", "correct": true },
+        { "text": "Додати `.first()` без роздумів" }
+      ]
+    },
+    {
+      "id": "p-flaky",
+      "kind": "single",
+      "text": "Тест іноді падає на CI. Перший крок?",
+      "options": [
+        { "text": "Відкрити trace падіння і знайти причину", "correct": true },
+        { "text": "Додати `waitForTimeout(5000)`" }
+      ]
+    },
+    {
+      "id": "p-auth",
+      "kind": "single",
+      "text": "Як прискорити 50 тестів, кожен з яких логіниться через форму?",
+      "options": [
+        { "text": "Setup-проєкт логіниться раз і зберігає storageState для всіх тестів", "correct": true },
+        { "text": "Запускати тести рідше" }
+      ]
+    },
+    {
+      "id": "p-independent",
+      "kind": "single",
+      "text": "Чому тести мають створювати свої дані?",
+      "options": [
+        { "text": "Щоб бути незалежними: працювати паралельно, в будь-якому порядку і поодинці", "correct": true },
+        { "text": "Щоб довше виконуватися" }
+      ]
+    },
+    {
+      "id": "x-security",
+      "kind": "single",
+      "text": "Ти бачиш чуже замовлення, змінивши id в URL. Що це і яка severity?",
+      "options": [
+        { "text": "IDOR / broken access control — Critical", "correct": true },
+        { "text": "Косметичний баг — Minor" }
+      ]
+    },
+    {
+      "id": "h-salary",
+      "kind": "single",
+      "text": "Зарплатні очікування на HR-скринінгу:",
+      "options": [
+        { "text": "Ринковий діапазон для Trainee/Junior у твоєму місті", "correct": true },
+        { "text": "«Скільки дасте»" }
+      ]
+    },
+    {
+      "id": "h-star",
+      "kind": "single",
+      "text": "Найбільша частина відповіді STAR:",
+      "options": [{ "text": "Action — що зробив саме ти", "correct": true }, { "text": "Situation" }]
+    },
+    {
+      "id": "e-phrase",
+      "kind": "single",
+      "text": "Правильно англійською:",
+      "options": [
+        { "text": "I have been learning test automation since March.", "correct": true },
+        { "text": "I learn test automation since March." }
+      ]
+    },
+    {
+      "id": "c-cv",
+      "kind": "single",
+      "text": "Найсильніший рядок резюме Trainee:",
+      "options": [
+        { "text": "Automated 30 UI and API tests with Playwright + TypeScript; CI on GitHub Actions", "correct": true },
+        { "text": "Expert in automation, fast learner" }
+      ]
+    },
+    {
+      "id": "c-take-home",
+      "kind": "single",
+      "text": "Тест у тестовому завданні падає через справжній баг застосунку. Що робити?",
+      "options": [
+        { "text": "Лишити перевірку правильної поведінки, позначити `test.fail()` з посиланням на баг-репорт", "correct": true },
+        { "text": "Змінити перевірку під баг, щоб тест був зеленим" }
+      ]
+    },
+    {
+      "id": "c-unknown",
+      "kind": "single",
+      "text": "Ти не знаєш відповіді на питання. Найкраща реакція:",
+      "options": [
+        { "text": "Чесно сказати і поміркувати вголос на прикладі", "correct": true },
+        { "text": "Упевнено вигадати" }
+      ]
+    }
+  ]
+}

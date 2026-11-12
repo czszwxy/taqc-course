@@ -1,0 +1,45 @@
+{
+  "title": "Job search: from application to offer",
+  "minutes": 70,
+  "summary": "Реальність ринку для Trainee/Junior QA, де шукати (DOU, Djinni, LinkedIn, trainee-програми, рекомендації), як відгукуватися і вести трекер, супровідний лист, етапи найму і HR-скринінг, зарплатні очікування, як оцінити офер і червоні прапорці",
+  "resources": [
+    {
+      "title": "DOU: Як знайти роботу початківцям-тестувальникам під час війни — досвід Trainee та Junior QA і поради сеньйорів",
+      "url": "https://dou.ua/lenta/articles/job-search-for-juniors-qa/",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    },
+    {
+      "title": "DOU: Культура співбесід тестувальників в українському IT",
+      "url": "https://dou.ua/lenta/articles/qa-interview/",
+      "kind": "article",
+      "lang": "uk",
+      "note": "Етапи співбесід і червоні прапорці з боку компанії.",
+      "needsVerification": true
+    },
+    {
+      "title": "DOU — вакансії",
+      "url": "https://jobs.dou.ua/",
+      "kind": "tool",
+      "lang": "uk",
+      "note": "Також тут є зарплатна статистика за посадами — подивись вилку для Trainee/Junior QA.",
+      "needsVerification": true
+    },
+    {
+      "title": "Djinni",
+      "url": "https://djinni.co/",
+      "kind": "tool",
+      "lang": "en",
+      "note": "Анонімний профіль кандидата: рекрутери пишуть першими.",
+      "needsVerification": true
+    },
+    {
+      "title": "LinkedIn Jobs",
+      "url": "https://www.linkedin.com/jobs/",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

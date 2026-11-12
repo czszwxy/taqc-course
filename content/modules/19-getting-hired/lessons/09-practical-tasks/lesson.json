@@ -1,0 +1,30 @@
+{
+  "title": "On-the-spot practical tasks",
+  "minutes": 80,
+  "summary": "Практичні задачі, які дають просто на співбесіді: чекліст для форми оплати, кошика чи логіну, тестові дані для поля віку і дати народження, «протестуй чайник» з баг-репортом, smoke для месенджера, мінімальний чекліст безпеки (XSS, SQL-ін'єкції, доступ до чужих даних)",
+  "resources": [
+    {
+      "title": "DOU: Співбесіда з QA. 250+ запитань — розділ практичних завдань",
+      "url": "https://dou.ua/lenta/articles/interview-qa/",
+      "kind": "article",
+      "lang": "uk",
+      "note": "Наприкінці статті — список практичних задач: чеклісти, тестові дані, «протестуй предмет».",
+      "needsVerification": true
+    },
+    {
+      "title": "OWASP Top Ten",
+      "url": "https://owasp.org/www-project-top-ten/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Найпоширеніші вразливості вебзастосунків — щоб знати назви і суть.",
+      "needsVerification": true
+    },
+    {
+      "title": "OWASP Web Security Testing Guide",
+      "url": "https://owasp.org/www-project-web-security-testing-guide/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

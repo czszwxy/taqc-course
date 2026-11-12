@@ -1,0 +1,39 @@
+{
+  "type": "written",
+  "title": "\"Describe your work as a QA during a sprint\"",
+  "statement": "Часте питання: **«Опишіть свою роботу як QA протягом двотижневого спринту»**. Відповідай за етапами — так, ніби вже працюєш у Scrum-команді (можна спиратися на модуль 01 і цей урок).",
+  "fields": [
+    { "id": "start", "label": "Refinement and Sprint Planning", "kind": "textarea" },
+    { "id": "during", "label": "During the sprint", "kind": "textarea" },
+    { "id": "end", "label": "End of the sprint: regression, Review, Retrospective", "kind": "textarea" },
+    { "id": "team", "label": "How you work with developers and the Product Owner", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "start", "check": "mentionsAny", "value": ["acceptance|критері|requirement|вимог|clarif|уточн|question|питан"], "message": "Start: на refinement QA уточнює вимоги й acceptance criteria." },
+    { "field": "start", "check": "mentionsAny", "value": ["estimat|оцін|scope|обсяг|risk|ризик"], "message": "Start: оцінка обсягу тестування і ризиків." },
+    { "field": "during", "check": "minLength", "value": 100, "message": "During: що робиш, поки фіча в розробці і коли вона готова." },
+    { "field": "during", "check": "mentionsAny", "value": ["test case|тест-кейс|checklist|чекліст|automat|автотест|автоматиз"], "message": "During: готуєш тест-кейси / чекліст / автотести." },
+    { "field": "during", "check": "mentionsAny", "value": ["bug|баг|defect|дефект|retest|ретест"], "message": "During: заводиш баги і перевіряєш фікси." },
+    { "field": "end", "check": "mentionsAny", "value": ["regression|регрес"], "message": "End: регресія перед завершенням спринту / релізом." },
+    { "field": "end", "check": "mentionsAny", "value": ["retro|improv|покращ"], "message": "End: на ретро пропонуєш покращення." },
+    { "field": "team", "check": "minLength", "value": 60, "message": "Team: як і коли комунікуєш (daily, швидкі дзвінки, коментарі в задачах)." }
+  ],
+  "model": {
+    "start": "On refinement I read the user stories before the meeting and ask questions: unclear acceptance criteria, edge cases, error messages, what happens on mobile. I suggest adding missing criteria. On planning I estimate the testing effort and risks for each story, so the team includes testing time in the estimate.",
+    "during": "While a story is in development I write a checklist or test cases from the acceptance criteria, prepare test data and start automated tests for the main flow. When the story is ready I test it on the test environment: positive and negative scenarios, boundaries, API responses in DevTools. I report bugs with clear steps and evidence, retest the fixes and update the automated tests. On the daily I say what I tested, what is blocked and which bugs are critical.",
+    "end": "Before the end of the sprint I run the regression: the automated suite on CI plus manual checks for risky areas. I make sure there are no open blocker or critical bugs for the stories we want to close (Definition of Done). On the Sprint Review I can help demo the features. On the Retrospective I suggest improvements, for example getting designs earlier or adding API tests for a flaky area.",
+    "team": "I talk to developers early and often: a quick call when a bug is unclear, comments in the ticket, pairing on how to reproduce a problem. With the Product Owner I clarify expected behaviour and agree on bug priorities. I focus on facts and user impact, not on blame."
+  },
+  "hints": [
+    "Пройди спринт хронологічно: refinement/planning → розробка → тестування фічі → регресія → review/retro.",
+    "Головна думка: QA бере участь з першого дня, а не лише в кінці."
+  ],
+  "explanation": "Добра відповідь показує, що QA — частина команди з першого дня: уточнює вимоги і ризики на refinement, готує тести паралельно з розробкою, тестує і веде баги, робить регресію перед завершенням, допомагає на review і пропонує покращення на ретро. Типова помилка — описати лише «отримую фічу → тестую → заводжу баги».",
+  "checklist": [
+    "Описано всі етапи спринту",
+    "QA бере участь із refinement, а не лише наприкінці",
+    "Є і ручне тестування, і автотести",
+    "Згадано регресію і Definition of Done",
+    "Комунікація з розробниками і PO — на фактах"
+  ]
+}

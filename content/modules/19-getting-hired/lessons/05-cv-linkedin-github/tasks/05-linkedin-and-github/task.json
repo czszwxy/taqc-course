@@ -1,0 +1,43 @@
+{
+  "type": "written",
+  "title": "Set up your LinkedIn and GitHub profiles",
+  "statement": "Підготуй тексти для профілів **англійською**, потім внеси їх у LinkedIn і GitHub.\n\n- **LinkedIn About** — 3–5 речень + посилання на GitHub.\n- **LinkedIn Experience** — пункт для навчального проєкту (назва, період, 2–3 рядки опису).\n- **GitHub pinned repositories** — які 2–3 репозиторії закріпиш і однорядковий опис кожного.\n- **GitHub profile README** — 3–5 рядків про тебе.",
+  "fields": [
+    { "id": "about", "label": "LinkedIn About", "kind": "textarea" },
+    { "id": "experience", "label": "LinkedIn Experience entry for your project", "kind": "textarea" },
+    { "id": "pinned", "label": "Pinned repositories (one per line: name — description)", "kind": "list" },
+    { "id": "profileReadme", "label": "GitHub profile README", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "about", "check": "minLength", "value": 150, "message": "About: 3–5 речень: хто ти, що вмієш, проєкт, що шукаєш." },
+    { "field": "about", "check": "mentionsAny", "value": ["github"], "message": "About: додай посилання на GitHub." },
+    { "field": "about", "check": "mentionsAll", "value": ["playwright", "typescript"], "message": "About: назви свій стек — Playwright і TypeScript." },
+    { "field": "experience", "check": "minLength", "value": 80, "message": "Experience: назва, період і 2–3 рядки, що зроблено." },
+    { "field": "experience", "check": "mentionsAny", "value": ["\\d"], "message": "Experience: додай числа (тести, баги) або період." },
+    { "field": "pinned", "check": "minItems", "value": 2, "message": "Pinned: 2–3 репозиторії з описом." },
+    { "field": "pinned", "check": "mentionsAny", "value": ["—|-|:"], "message": "Pinned: формат «назва — опис»." },
+    { "field": "profileReadme", "check": "minLength", "value": 80, "message": "Profile README: 3–5 рядків про тебе і посилання." }
+  ],
+  "model": {
+    "about": "I'm a trainee QA automation engineer. I design tests (equivalence partitioning, boundary values, decision tables), write clear bug reports and automate UI and API tests with Playwright and TypeScript. My main project is a test framework for a demo online shop with Page Objects, fixtures and a GitHub Actions pipeline: github.com/<you>/gadgetly-tests. Before QA I worked in customer support, so I'm good at reproducing problems and explaining them. I'm looking for a trainee or junior QA automation role.",
+    "experience": "QA Automation Engineer (training project) · Gadgetly test framework · Sep 2025 – Nov 2025\nBuilt a UI + API test framework for a demo online shop: 30 Playwright + TypeScript tests with Page Objects and fixtures, a test plan and 15 test cases, 12 bug reports. Tests run on GitHub Actions on every pull request.",
+    "pinned": [
+      "gadgetly-tests — UI + API test framework for a demo shop (Playwright, TypeScript, GitHub Actions)",
+      "account-page-take-home — take-home assignment: plan, bug reports, automated tests, README",
+      "ts-practice — TypeScript live-coding exercises with tests"
+    ],
+    "profileReadme": "### Hi, I'm Olena 👋\nTrainee QA Automation Engineer · TypeScript · Playwright · API testing\n- 🔧 Main project: [gadgetly-tests](https://github.com/<you>/gadgetly-tests) — UI + API tests with CI\n- 📚 Learning: visual testing and test reporting\n- 💬 LinkedIn: linkedin.com/in/<you>"
+  },
+  "hints": [
+    "About — це розширене summary з резюме, але від першої особи.",
+    "Закріплюй лише репозиторії, якими пишаєшся: з README і зеленим CI."
+  ],
+  "explanation": "LinkedIn і GitHub — продовження резюме: рекрутер переходить за посиланням і має побачити те саме, але детальніше. About — від першої особи, зі стеком і посиланням на проєкт; Experience не порожній (навчальний проєкт чесно позначений як training project); на GitHub закріплено 2–3 найкращі репозиторії з однорядковими описами, а profile README коротко каже, хто ти і що подивитися першим.",
+  "checklist": [
+    "Тексти англійською, без помилок",
+    "Навчальний проєкт позначено чесно (training project)",
+    "Є посилання між LinkedIn і GitHub в обидва боки",
+    "Закріплені репозиторії мають README і зелений CI",
+    "Profile README займає 3–5 рядків, без «стіни тексту»"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "title": "Final mock interview",
+  "minutes": 90,
+  "summary": "Фінальна перевірка готовності: змішаний банк питань з усіх тем, повна пробна співбесіда з Claude за реальною вакансією, чекліст дня співбесіди і план останніх двох тижнів підготовки",
+  "resources": [
+    {
+      "title": "DOU: Співбесіда з QA. 250+ запитань для Junior, Middle, Senior",
+      "url": "https://dou.ua/lenta/articles/interview-qa/",
+      "kind": "article",
+      "lang": "uk",
+      "note": "Пройдись по списку: позначай питання, на які не можеш відповісти за 30 секунд, і повтори їх.",
+      "needsVerification": true
+    },
+    {
+      "title": "DOU: Планка для джуна-QA за 12 років",
+      "url": "https://dou.ua/goto/fYRh",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: QA mock interview junior",
+      "url": "https://www.youtube.com/results?search_query=QA+automation+junior+mock+interview",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

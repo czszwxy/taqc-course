@@ -1,0 +1,30 @@
+{
+  "type": "classify",
+  "title": "Frontend or backend bug?",
+  "statement": "Тобі описують симптом і те, що видно в DevTools. Визнач, де найімовірніше дефект: на **фронтенді** (сторінка, JS у браузері) чи на **бекенді** (сервер / API).",
+  "show": 10,
+  "passScore": 0.8,
+  "categories": [
+    { "id": "frontend", "label": "Frontend", "description": "Браузер надіслав не те, неправильно показав або впав JS" },
+    { "id": "backend", "label": "Backend / API", "description": "Сервер прийняв правильний запит, але відповів неправильно" }
+  ],
+  "items": [
+    { "id": "total-0", "text": "`POST /api/orders` → 201, у відповіді `total: 1500`, а на сторінці «Total: 0 UAH»", "category": "frontend", "explain": "Відповідь правильна — неправильно відображено." },
+    { "id": "qty-response", "text": "У Payload `quantity: 2`, у відповіді сервера `quantity: 1`", "category": "backend", "explain": "Надіслано правильно — сервер зберіг інше." },
+    { "id": "no-request", "text": "Усі поля заповнено, кнопка Submit натискається, але в Network не з'являється жодного запиту", "category": "frontend", "explain": "Запит навіть не відправлено — обробник або валідація на сторінці." },
+    { "id": "wrong-category", "text": "`GET /api/products?category=phones` повертає в JSON ноутбуки", "category": "backend" },
+    { "id": "500", "text": "`GET /api/orders` з валідним токеном повертає 500 Internal Server Error", "category": "backend" },
+    { "id": "nan-date", "text": "У відповіді `\"createdAt\": \"2024-09-20\"`, а на сторінці дата «NaN.NaN.2024»", "category": "frontend", "explain": "Дата прийшла правильна — зламано форматування на сторінці." },
+    { "id": "type-error", "text": "Відповідь 200 з правильним JSON, а в Console: `TypeError: Cannot read properties of undefined (reading 'map')`, список порожній", "category": "frontend" },
+    { "id": "reverse-sort", "text": "Обрано «від дешевих», у запиті `sort=price_asc`, відповідь відсортована правильно, а на сторінці список у зворотному порядку", "category": "frontend" },
+    { "id": "wrong-param", "text": "Обрано «від дешевих», але в запиті надіслано `sort=price_desc`", "category": "frontend", "explain": "Сторінка надіслала неправильний параметр." },
+    { "id": "password-field", "text": "`GET /api/users/42` повертає в JSON поле `password`", "category": "backend", "explain": "Сервер віддає секретні дані — бекенд (і безпека)." },
+    { "id": "idor", "text": "`GET /api/invoices/501` з токеном іншого клієнта повертає 200 і чужий рахунок", "category": "backend", "explain": "Перевірка доступу — на сервері; фронтенд її не замінює." },
+    { "id": "error-hidden", "text": "Сервер відповідає 400 `{\"error\": \"Email is already taken\"}`, а сторінка нічого не показує", "category": "frontend", "explain": "Сервер повідомив правильно — сторінка не показала помилку." }
+  ],
+  "hints": [
+    "Подивись на Payload: чи надіслала сторінка правильні дані?",
+    "Подивись на Response: чи правильно відповів сервер? Якщо так, а на екрані не те — це фронтенд."
+  ],
+  "explanation": "Алгоритм простий: **Payload** неправильний або запиту немає → фронтенд; **Response** неправильний (дані, статус, зайві поля, доступ до чужого) → бекенд; відповідь правильна, а на екрані не те або помилка в Console → фронтенд. Перевірки доступу (чуже замовлення) і секрети у відповідях — завжди відповідальність сервера, навіть якщо сторінка їх «ховає»."
+}

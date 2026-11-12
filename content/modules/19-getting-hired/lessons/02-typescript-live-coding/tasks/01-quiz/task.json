@@ -1,8 +1,9 @@
 {
   "type": "quiz",
-  "title": "Mock interview: TypeScript & JavaScript",
-  "show": 7,
-  "hints": ["`===` без приведення типів; `unknown` безпечніший за `any`; `Promise.all` — паралельно і падає при першій помилці."],
+  "title": "Mock interview: TypeScript & JavaScript (question bank)",
+  "show": 10,
+  "intro": "Банк із 24 питань: щоразу випадкові 10.",
+  "hints": ["`===` без приведення типів; `unknown` безпечніший за `any`; мікрозадачі (Promise) виконуються раніше за `setTimeout`."],
   "questions": [
     {
       "id": "triple",
@@ -12,6 +13,16 @@
         { "text": "`true` і `false`", "correct": true },
         { "text": "`true` і `true`" },
         { "text": "`false` і `false`" }
+      ]
+    },
+    {
+      "id": "typeof-null",
+      "kind": "single",
+      "text": "Що поверне `typeof null`?",
+      "options": [
+        { "text": "`'object'` — відома історична особливість мови", "correct": true },
+        { "text": "`'null'`" },
+        { "text": "`'undefined'`" }
       ]
     },
     {
@@ -35,6 +46,27 @@
       ]
     },
     {
+      "id": "all-settled",
+      "kind": "single",
+      "text": "Треба перевірити 20 посилань і отримати звіт по кожному, навіть якщо частина запитів упаде. Що використати?",
+      "options": [
+        { "text": "`Promise.allSettled` — повертає статус кожного Promise", "correct": true },
+        { "text": "`Promise.all`", "explain": "Він «падає» на першій помилці, і решту результатів ти не отримаєш." },
+        { "text": "`Promise.race`" }
+      ]
+    },
+    {
+      "id": "event-loop",
+      "kind": "single",
+      "text": "У якому порядку виведеться: `setTimeout(() => console.log('A'), 0); Promise.resolve().then(() => console.log('B')); console.log('C');`",
+      "options": [
+        { "text": "C, B, A", "correct": true },
+        { "text": "A, B, C" },
+        { "text": "C, A, B" }
+      ],
+      "explanation": "Спершу синхронний код (C), потім мікрозадачі — колбеки Promise (B), потім макрозадачі — таймери (A)."
+    },
+    {
       "id": "sort",
       "kind": "single",
       "text": "Що поверне `[10, 9, 1].sort()`?",
@@ -53,6 +85,53 @@
       ]
     },
     {
+      "id": "hoisting",
+      "kind": "single",
+      "text": "`console.log(total); let total = 5;` — що буде?",
+      "options": [
+        { "text": "ReferenceError: до рядка оголошення `let` ще недоступна (temporal dead zone)", "correct": true },
+        { "text": "Виведе `undefined`", "explain": "Так було б з `var`." },
+        { "text": "Виведе `5`" }
+      ]
+    },
+    {
+      "id": "closure",
+      "kind": "single",
+      "text": "`function makeCounter() { let n = 0; return () => ++n; } const next = makeCounter(); next(); next();` — що поверне другий виклик і чому?",
+      "options": [
+        { "text": "`2`: стрілкова функція — замикання, вона пам'ятає змінну `n` між викликами", "correct": true },
+        { "text": "`1`: `n` щоразу створюється заново" },
+        { "text": "Помилку: `n` недоступна поза `makeCounter`" }
+      ]
+    },
+    {
+      "id": "shallow",
+      "kind": "single",
+      "text": "`const copy = { ...user }; copy.address.city = 'Lviv';` — чи зміниться `user.address.city`?",
+      "options": [
+        { "text": "Так: spread робить поверхневу копію, вкладений об'єкт `address` спільний", "correct": true },
+        { "text": "Ні: spread копіює все глибоко" }
+      ]
+    },
+    {
+      "id": "map-foreach",
+      "kind": "single",
+      "text": "Чим `map` відрізняється від `forEach`?",
+      "options": [
+        { "text": "`map` повертає новий масив з результатами, `forEach` нічого не повертає (`undefined`)", "correct": true },
+        { "text": "`forEach` швидший і повертає масив" }
+      ]
+    },
+    {
+      "id": "arrow-this",
+      "kind": "single",
+      "text": "Чому в колбеках усередині методів класу часто пишуть стрілкові функції?",
+      "options": [
+        { "text": "Стрілкова функція не має власного `this` і бере його з методу, тож `this` вказує на об'єкт класу", "correct": true },
+        { "text": "Вони виконуються швидше" }
+      ]
+    },
+    {
       "id": "await",
       "kind": "single",
       "text": "Що буде, якщо забути `await` перед `page.click()` у тесті?",
@@ -62,10 +141,80 @@
       ]
     },
     {
+      "id": "sequential",
+      "kind": "single",
+      "text": "Треба створити користувача, потім замовлення для нього, потім оплатити замовлення. Як виконати ці запити?",
+      "options": [
+        { "text": "Послідовно через `await` один за одним: кожен крок залежить від попереднього", "correct": true },
+        { "text": "Паралельно через `Promise.all`, так швидше" }
+      ]
+    },
+    {
       "id": "reduce",
       "kind": "text",
       "text": "Який метод масиву «згортає» масив в одне значення (наприклад, суму)? (назва)",
       "accept": ["reduce", "reduce()", ".reduce"]
+    },
+    {
+      "id": "interface-type",
+      "kind": "single",
+      "text": "Що вміє `type`, але не вміє `interface`?",
+      "options": [
+        { "text": "Описати union: `type Status = 'passed' | 'failed'`", "correct": true },
+        { "text": "Описати форму об'єкта" },
+        { "text": "Мати необов'язкові поля" }
+      ]
+    },
+    {
+      "id": "generics",
+      "kind": "single",
+      "text": "Навіщо generic у `function first<T>(items: T[]): T | undefined`?",
+      "options": [
+        { "text": "Одна функція працює з масивом будь-якого типу і повертає значення того самого типу", "correct": true },
+        { "text": "Щоб вимкнути перевірку типів" }
+      ]
+    },
+    {
+      "id": "partial",
+      "kind": "single",
+      "text": "Тип для тіла PATCH-запиту, де всі поля `User` необов'язкові:",
+      "options": [{ "text": "`Partial<User>`", "correct": true }, { "text": "`Required<User>`" }, { "text": "`Readonly<User>`" }]
+    },
+    {
+      "id": "oop-pillars",
+      "kind": "multiple",
+      "text": "Які з цього — 4 принципи ООП? (кілька відповідей)",
+      "options": [
+        { "text": "Інкапсуляція", "correct": true },
+        { "text": "Наслідування", "correct": true },
+        { "text": "Поліморфізм", "correct": true },
+        { "text": "Абстракція", "correct": true },
+        { "text": "Асинхронність" }
+      ]
+    },
+    {
+      "id": "encapsulation-pom",
+      "kind": "single",
+      "text": "Page Object приховує локатори всередині і дає тестам методи `login(email, password)`. Який принцип ООП це ілюструє найкраще?",
+      "options": [{ "text": "Інкапсуляція", "correct": true }, { "text": "Наслідування" }, { "text": "Поліморфізм" }]
+    },
+    {
+      "id": "abstract",
+      "kind": "single",
+      "text": "Чим абстрактний клас `BasePage` відрізняється від інтерфейсу?",
+      "options": [
+        { "text": "Може містити спільну реалізацію (наприклад, метод `open()`), а інтерфейс — лише контракт", "correct": true },
+        { "text": "Нічим" }
+      ]
+    },
+    {
+      "id": "why-ts",
+      "kind": "single",
+      "text": "«Навіщо TypeScript, якщо є JavaScript?» — найкраща відповідь для QA Automation:",
+      "options": [
+        { "text": "Помилки типів видно до запуску тестів, є автодоповнення, Page Objects і дані API мають зрозумілі контракти", "correct": true },
+        { "text": "TypeScript виконується швидше за JavaScript" }
+      ]
     },
     {
       "id": "live-first",

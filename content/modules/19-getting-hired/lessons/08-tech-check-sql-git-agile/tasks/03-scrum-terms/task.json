@@ -1,0 +1,26 @@
+{
+  "type": "classify",
+  "title": "Scrum: role, event or artifact?",
+  "statement": "Класичне питання «назви ролі, події й артефакти Scrum». Розклади терміни за категоріями.",
+  "passScore": 0.8,
+  "categories": [
+    { "id": "role", "label": "Role (accountability)" },
+    { "id": "event", "label": "Event" },
+    { "id": "artifact", "label": "Artifact" }
+  ],
+  "items": [
+    { "id": "po", "text": "Product Owner", "category": "role" },
+    { "id": "sm", "text": "Scrum Master", "category": "role" },
+    { "id": "devs", "text": "Developers (включно з QA)", "category": "role", "explain": "У Scrum немає окремої ролі тестувальника: QA входить до Developers." },
+    { "id": "sprint", "text": "Sprint", "category": "event", "explain": "Спринт — подія-контейнер для всіх інших подій." },
+    { "id": "planning", "text": "Sprint Planning", "category": "event" },
+    { "id": "daily", "text": "Daily Scrum", "category": "event" },
+    { "id": "review", "text": "Sprint Review", "category": "event" },
+    { "id": "retro", "text": "Sprint Retrospective", "category": "event" },
+    { "id": "pb", "text": "Product Backlog", "category": "artifact" },
+    { "id": "sb", "text": "Sprint Backlog", "category": "artifact" },
+    { "id": "increment", "text": "Increment", "category": "artifact", "explain": "Готовий результат спринту, що відповідає Definition of Done." }
+  ],
+  "hints": ["Ролей — 3, подій — 5 (разом зі Sprint), артефактів — 3."],
+  "explanation": "Scrum Guide описує 3 ролі (Product Owner, Scrum Master, Developers), 5 подій (Sprint як контейнер, Planning, Daily, Review, Retrospective) і 3 артефакти (Product Backlog, Sprint Backlog, Increment). Часта помилка — назвати «Tester» окремою роллю або плутати Review (показ результату) з Retrospective (покращення процесу)."
+}

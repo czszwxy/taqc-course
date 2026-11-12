@@ -1,0 +1,33 @@
+{
+  "type": "written",
+  "title": "Describe a bug and explain a concept in English",
+  "statement": "Ще два питання, які часто ставлять англійською на технічній співбесіді:\n\n1. **Describe an interesting bug you found.** Візьми справжній баг з курсу (модулі 05–06, тестове завдання) або з попередньої роботи.\n2. **Explain regression testing** так, ніби пояснюєш новому колезі, з прикладом.",
+  "fields": [
+    { "id": "bug", "label": "1. Describe an interesting bug you found", "kind": "textarea" },
+    { "id": "regression", "label": "2. What is regression testing?", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "any", "check": "notMentions", "value": ["[а-яґєії]"], "message": "Пиши англійською — без кирилиці." },
+    { "field": "bug", "check": "minLength", "value": 200, "message": "Bug: де знайшов, як, що відбувалося, чому це важливо, що було далі." },
+    { "field": "bug", "check": "mentionsAny", "value": ["expected|should|instead"], "message": "Bug: поясни, що мало статися (expected / should / instead of)." },
+    { "field": "bug", "check": "mentionsAny", "value": ["report|fixed|developer|severity|critical|major"], "message": "Bug: що далі — як оформив, severity, виправили?" },
+    { "field": "regression", "check": "minLength", "value": 120, "message": "Regression: визначення + навіщо + приклад." },
+    { "field": "regression", "check": "mentionsAny", "value": ["change|fix|new feature|update"], "message": "Regression: перевірка **після змін** (фікс, нова фіча)." },
+    { "field": "regression", "check": "mentionsAny", "value": ["automat|example|for instance"], "message": "Regression: приклад і/або зв'язок з автоматизацією." }
+  ],
+  "model": {
+    "bug": "In my training project I was testing a shop's cart. I noticed that when I changed the quantity very quickly several times, the total sometimes did not match the items. It happened only when I clicked fast, so I opened DevTools and saw that two requests were sent and the older response arrived last and overwrote the newer one. The total should always match the latest quantity, but instead it showed the previous value. I reported it as Major with a video and the network details, and the developer fixed it by ignoring outdated responses. Since then I always test fast repeated actions.",
+    "regression": "Regression testing means checking that existing features still work after a change — a bug fix, a new feature or a library update. Changes can break things that look unrelated. For example, a developer fixes the discount calculation, and suddenly the order total in emails is wrong. That's why we usually automate the regression suite and run it on every pull request, so the team gets feedback quickly."
+  },
+  "hints": [
+    "Bug: context → what happened → how you found the cause → expected vs actual → what you did → result.",
+    "Concept: definition → why it matters → example → how it is done in practice."
+  ],
+  "explanation": "Опис бага англійською — це маленька STAR-історія: контекст, що сталося, як ти дослідив (DevTools!), що мало бути (*should / expected*), що ти зробив і чим закінчилося. Пояснення поняття — визначення, навіщо, приклад, практика. Не ускладнюй граматику: короткі речення в past simple для історії і present simple для пояснення.",
+  "checklist": [
+    "Історія бага має контекст, дослідження, expected vs actual і результат",
+    "Пояснення регресії має визначення і приклад",
+    "Прості речення, правильні часи",
+    "Прочитав уголос і попросив Claude виправити помилки"
+  ]
+}

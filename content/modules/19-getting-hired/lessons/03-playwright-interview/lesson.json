@@ -1,7 +1,7 @@
 {
   "title": "Playwright & automation questions",
-  "minutes": 50,
-  "summary": "Питання про автоматизацію і Playwright на співбесіді: що автоматизувати, піраміда, локатори, автоочікування, flaky, POM, фікстури, storageState, мок мережі, паралельність, CI — з короткими відповідями, live coding тестів і розповідь про свій фреймворк",
+  "minutes": 70,
+  "summary": "Банк питань про автоматизацію і Playwright (що автоматизувати, browser/context/page, локатори і strict mode, автоочікування, flaky, POM і фікстури, storageState, моки, проєкти, паралельність, trace viewer, CI, AI-інструменти), live coding тестів, code review поганого тесту і розповідь про свій фреймворк",
   "resources": [
     {
       "title": "Playwright: Best Practices",
@@ -11,8 +11,22 @@
       "needsVerification": true
     },
     {
-      "title": "Playwright documentation",
-      "url": "https://playwright.dev/docs/intro",
+      "title": "Playwright: Browser contexts (isolation)",
+      "url": "https://playwright.dev/docs/browser-contexts",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Fixtures (test and worker scope)",
+      "url": "https://playwright.dev/docs/test-fixtures",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Trace viewer",
+      "url": "https://playwright.dev/docs/trace-viewer",
       "kind": "docs",
       "lang": "en",
       "needsVerification": true

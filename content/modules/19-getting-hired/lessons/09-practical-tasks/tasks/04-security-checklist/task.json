@@ -1,0 +1,56 @@
+{
+  "type": "written",
+  "title": "Basic security checks for login and profile",
+  "statement": "Інтерв'юер: **«Які базові перевірки безпеки ти зробиш для сторінок логіну і профілю користувача?»**\n\nСтранички: вхід (email + пароль), профіль (`/profile/42` — ім'я, email, адреса доставки, кнопка Save), вихід. Напиши 8–12 конкретних перевірок: **що робиш** і **чого очікуєш**.",
+  "fields": [
+    { "id": "login", "label": "Login page checks (one per line: action → expected)", "kind": "list" },
+    { "id": "profile", "label": "Profile page checks (one per line: action → expected)", "kind": "list" },
+    { "id": "session", "label": "Session and logout checks (one per line)", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "login", "check": "minItems", "value": 4, "message": "Login: щонайменше 4 перевірки." },
+    { "field": "login", "check": "mentionsAny", "value": ["mask|маск|hidden|прихов|dots|крапк|•"], "message": "Login: пароль замаскований." },
+    { "field": "login", "check": "mentionsAny", "value": ["same message|однаков|generic|загальн|enumerat|перебір email|doesn.?t reveal|не розкрива|invalid email or password"], "message": "Login: однакове повідомлення для неправильного email і пароля (не розкривати, хто зареєстрований)." },
+    { "field": "login", "check": "mentionsAny", "value": ["brute|перебор|перебір|lock|блок|attempt|спроб|rate|captcha"], "message": "Login: захист від перебору паролів (блокування, затримка)." },
+    { "field": "login", "check": "mentionsAny", "value": ["' or|or '1'|sql"], "message": "Login: SQL-ін'єкція в полях." },
+    { "field": "profile", "check": "minItems", "value": 3, "message": "Profile: щонайменше 3 перевірки." },
+    { "field": "profile", "check": "mentionsAny", "value": ["<script|xss|html"], "message": "Profile: XSS — HTML/скрипт у полі імені чи адреси." },
+    { "field": "profile", "check": "mentionsAny", "value": ["/profile/\\d|other user|інш(ого|ий) користувач|чуж|idor|change.*id|змін.*id"], "message": "Profile: доступ до чужого профілю зміною id (IDOR)." },
+    { "field": "session", "check": "minItems", "value": 2, "message": "Session: щонайменше 2 перевірки." },
+    { "field": "session", "check": "mentionsAny", "value": ["back|назад|token|токен|cookie|expire|протух|timeout"], "message": "Session: після виходу «Назад» / старий токен не дають доступу; сесія спливає." }
+  ],
+  "model": {
+    "login": [
+      "Password field → characters are masked; the value is not visible in the URL or page source",
+      "Wrong email and wrong password → the same \"Invalid email or password\" message (no hint which one is wrong)",
+      "10 failed attempts in a row → account or IP is temporarily locked / slowed down / CAPTCHA",
+      "' OR '1'='1 in email and password → a normal validation error, no login, no 500",
+      "Login request goes over HTTPS as POST with the password in the body, not in the URL"
+    ],
+    "profile": [
+      "Save <script>alert(1)</script> as the name → shown as plain text, no alert on any page",
+      "Open /profile/43 while signed in as user 42 → 403/404, not another user's data",
+      "Send PUT/PATCH for user 43 with my token via DevTools or Postman → rejected",
+      "API response of the profile does not contain the password hash or other users' data"
+    ],
+    "session": [
+      "After logout press Back → protected data is not shown; reload asks to sign in",
+      "Reuse the old token after logout → 401",
+      "Session expires after the agreed inactivity time",
+      "The session cookie has HttpOnly and Secure flags"
+    ]
+  },
+  "hints": [
+    "Login: маска пароля, однакове повідомлення, перебір, SQL-ін'єкція, HTTPS.",
+    "Profile: XSS у полях, чужий id в URL або запиті (IDOR), зайві дані у відповіді API.",
+    "Session: «Назад» після виходу, старий токен, тайм-аут, прапорці cookie."
+  ],
+  "explanation": "Для Junior досить знати десяток базових перевірок і **як їх виконати**: маскування пароля, однакові повідомлення про помилку (захист від перебору email), блокування після N спроб, SQL-ін'єкція і XSS у полях, IDOR (чужий id в URL чи запиті), коректне завершення сесії і прапорці cookie. Кожна перевірка — дія + очікуваний результат. Глибокий пентест — робота спеціалістів, але ці речі QA перевіряє в кожному релізі.",
+  "checklist": [
+    "Кожна перевірка — дія → очікуваний результат",
+    "Є маска пароля, однакове повідомлення, захист від перебору",
+    "Є SQL-ін'єкція і XSS",
+    "Є доступ до чужих даних (IDOR) через URL і через API",
+    "Є перевірки завершення сесії"
+  ]
+}

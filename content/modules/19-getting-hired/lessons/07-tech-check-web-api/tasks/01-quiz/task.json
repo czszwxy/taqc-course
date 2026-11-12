@@ -1,0 +1,229 @@
+{
+  "type": "quiz",
+  "title": "Mock tech check: web, HTTP & APIs (question bank)",
+  "show": 10,
+  "intro": "Банк із 24 питань: щоразу випадкові 10.",
+  "hints": ["401 — «не знаю, хто ти», 403 — «знаю, але не можна». POST не ідемпотентний."],
+  "questions": [
+    {
+      "id": "dns",
+      "kind": "single",
+      "text": "Що робить DNS, коли ти вводиш `gadgetly.test` у браузері?",
+      "options": [
+        { "text": "Перетворює доменне ім'я на IP-адресу сервера", "correct": true },
+        { "text": "Шифрує з'єднання" },
+        { "text": "Відмальовує сторінку" }
+      ]
+    },
+    {
+      "id": "https",
+      "kind": "single",
+      "text": "Чим HTTPS відрізняється від HTTP?",
+      "options": [
+        { "text": "Дані шифруються (TLS), а сервер підтверджує свою справжність сертифікатом", "correct": true },
+        { "text": "HTTPS швидший" },
+        { "text": "HTTPS працює лише для API" }
+      ]
+    },
+    {
+      "id": "idempotent",
+      "kind": "single",
+      "text": "Який метод НЕ ідемпотентний (повтор може змінити стан ще раз)?",
+      "options": [{ "text": "POST", "correct": true }, { "text": "GET" }, { "text": "PUT" }, { "text": "DELETE" }]
+    },
+    {
+      "id": "double-click",
+      "kind": "single",
+      "text": "Користувач двічі швидко натиснув «Оплатити». Яку проблему ти перевіриш і чому?",
+      "options": [
+        { "text": "Чи не створилося два замовлення / дві оплати: POST не ідемпотентний", "correct": true },
+        { "text": "Нічого, браузер сам ігнорує другий клік" }
+      ]
+    },
+    {
+      "id": "put-patch",
+      "kind": "single",
+      "text": "Чим PUT відрізняється від PATCH?",
+      "options": [
+        { "text": "PUT замінює ресурс повністю, PATCH змінює лише передані поля", "correct": true },
+        { "text": "PUT створює, PATCH видаляє" },
+        { "text": "Нічим" }
+      ]
+    },
+    {
+      "id": "401-403",
+      "kind": "single",
+      "text": "Звичайний користувач з валідним токеном викликає `DELETE /api/users/7` (дозволено лише адміну). Правильна відповідь сервера?",
+      "options": [
+        { "text": "403 Forbidden", "correct": true },
+        { "text": "401 Unauthorized", "explain": "401 — коли сервер не знає, хто ти (немає токена або він недійсний)." },
+        { "text": "404 Not Found" }
+      ]
+    },
+    {
+      "id": "no-token",
+      "kind": "single",
+      "text": "`GET /api/orders` без заголовка Authorization. Очікуваний код?",
+      "options": [{ "text": "401", "correct": true }, { "text": "403" }, { "text": "200 з порожнім списком" }]
+    },
+    {
+      "id": "5xx-on-bad-input",
+      "kind": "single",
+      "text": "На `POST /api/orders` з `quantity: \"abc\"` сервер відповідає 500. Це баг?",
+      "options": [
+        { "text": "Так: на некоректні дані сервер має відповісти 4xx зі зрозумілим повідомленням, а не падати", "correct": true },
+        { "text": "Ні, дані ж некоректні — будь-яка помилка підходить" }
+      ]
+    },
+    {
+      "id": "2xx",
+      "kind": "single",
+      "text": "Що означає 204 No Content?",
+      "options": [
+        { "text": "Успіх, але тіла відповіді немає (часто після DELETE)", "correct": true },
+        { "text": "Ресурс не знайдено" },
+        { "text": "Сервер не відповів" }
+      ]
+    },
+    {
+      "id": "path-query",
+      "kind": "single",
+      "text": "У `GET /api/products/5?currency=usd` що таке `5` і `currency=usd`?",
+      "options": [
+        { "text": "`5` — path-параметр (який ресурс), `currency=usd` — query-параметр (як його віддати)", "correct": true },
+        { "text": "Обидва — заголовки" }
+      ]
+    },
+    {
+      "id": "content-type",
+      "kind": "single",
+      "text": "Який заголовок каже серверу, що тіло запиту — JSON?",
+      "options": [
+        { "text": "`Content-Type: application/json`", "correct": true },
+        { "text": "`Accept-Language: json`" },
+        { "text": "`Authorization: json`" }
+      ]
+    },
+    {
+      "id": "stateless",
+      "kind": "single",
+      "text": "Що означає, що REST API stateless?",
+      "options": [
+        { "text": "Сервер не пам'ятає попередні запити клієнта: кожен запит несе все потрібне (наприклад, токен)", "correct": true },
+        { "text": "API не має бази даних" }
+      ]
+    },
+    {
+      "id": "authn-authz",
+      "kind": "single",
+      "text": "Authentication vs authorization:",
+      "options": [
+        { "text": "Автентифікація — перевірка, хто ти; авторизація — перевірка, що тобі дозволено", "correct": true },
+        { "text": "Це синоніми" }
+      ]
+    },
+    {
+      "id": "storage",
+      "kind": "single",
+      "text": "Які дані автоматично надсилаються на сервер з кожним запитом до того ж домену?",
+      "options": [
+        { "text": "Cookies", "correct": true },
+        { "text": "localStorage" },
+        { "text": "sessionStorage" }
+      ]
+    },
+    {
+      "id": "session-storage",
+      "kind": "single",
+      "text": "Скільки живуть дані в sessionStorage?",
+      "options": [
+        { "text": "До закриття вкладки", "correct": true },
+        { "text": "Назавжди, поки не очистиш" },
+        { "text": "До перезавантаження сторінки" }
+      ]
+    },
+    {
+      "id": "httponly",
+      "kind": "single",
+      "text": "Навіщо cookie з сесією прапорець `HttpOnly`?",
+      "options": [
+        { "text": "JavaScript на сторінці не може її прочитати, тож XSS-атака не вкраде сесію", "correct": true },
+        { "text": "Cookie надсилається лише по HTTP, без HTTPS" }
+      ]
+    },
+    {
+      "id": "jwt",
+      "kind": "single",
+      "text": "Що правда про JWT?",
+      "options": [
+        { "text": "Payload можна декодувати без ключа, тому там не має бути паролів і секретів; підпис захищає від підробки", "correct": true },
+        { "text": "JWT зашифрований, його вміст ніхто не прочитає" }
+      ]
+    },
+    {
+      "id": "cors",
+      "kind": "single",
+      "text": "У консолі: «blocked by CORS policy». Що це означає?",
+      "options": [
+        { "text": "Браузер не дає сторінці читати відповідь з іншого домену, бо сервер цього не дозволив заголовками", "correct": true },
+        { "text": "Сервер упав" },
+        { "text": "Немає інтернету" }
+      ]
+    },
+    {
+      "id": "cache",
+      "kind": "single",
+      "text": "Розробник каже «виправлено», а ти бачиш стару поведінку. Перший крок?",
+      "options": [
+        { "text": "Перевірити кеш: жорстке оновлення, інкогніто або Disable cache у DevTools; перевірити версію білда", "correct": true },
+        { "text": "Одразу перевідкрити баг" }
+      ]
+    },
+    {
+      "id": "frontend-backend",
+      "kind": "single",
+      "text": "Network: `GET /api/cart` повертає `total: 1500`, а на сторінці «Total: 0». Де найімовірніше баг?",
+      "options": [
+        { "text": "На фронтенді: дані прийшли правильні, але відображаються неправильно", "correct": true },
+        { "text": "На бекенді" }
+      ]
+    },
+    {
+      "id": "payload",
+      "kind": "single",
+      "text": "Обрано кількість 3, але в Network у Payload запиту `quantity: 1`. Де баг?",
+      "options": [
+        { "text": "На фронтенді: він надіслав неправильні дані", "correct": true },
+        { "text": "На бекенді" }
+      ]
+    },
+    {
+      "id": "preserve-log",
+      "kind": "single",
+      "text": "Після кліку сторінка перезавантажується, і запит зникає з Network. Що увімкнути?",
+      "options": [
+        { "text": "Preserve log", "correct": true },
+        { "text": "Disable cache" },
+        { "text": "Dark mode" }
+      ]
+    },
+    {
+      "id": "throttling",
+      "kind": "single",
+      "text": "Як у DevTools перевірити поведінку сторінки на повільному мобільному інтернеті?",
+      "options": [
+        { "text": "Network → Throttling (наприклад, Slow 4G)", "correct": true },
+        { "text": "Ніяк, треба справжній телефон" }
+      ]
+    },
+    {
+      "id": "postman-env",
+      "kind": "single",
+      "text": "У Postman ти хочеш запускати ту саму колекцію на staging і на dev. Що використати?",
+      "options": [
+        { "text": "Environments зі змінними (`{{baseUrl}}`, `{{token}}`)", "correct": true },
+        { "text": "Дві копії колекції з різними URL" }
+      ]
+    }
+  ]
+}

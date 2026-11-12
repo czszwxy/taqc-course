@@ -1,0 +1,54 @@
+{
+  "type": "written",
+  "title": "Your job search plan",
+  "statement": "Склади план пошуку роботи на найближчий місяць — як тест-план для власного проєкту. Потім створи таблицю-трекер і почни.",
+  "fields": [
+    { "id": "roles", "label": "Target roles and filters (titles, city/remote, company types)", "kind": "textarea" },
+    { "id": "channels", "label": "Channels you will use (one per line)", "kind": "list" },
+    { "id": "weekly", "label": "Weekly routine (one activity per line, with numbers)", "kind": "list" },
+    { "id": "tracker", "label": "Tracker columns (one per line)", "kind": "list" },
+    { "id": "metrics", "label": "What you will measure and when you will change the approach", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "roles", "check": "mentionsAny", "value": ["trainee|intern|junior"], "message": "Roles: Trainee / Intern / Junior QA (Automation)." },
+    { "field": "channels", "check": "minItems", "value": 4, "message": "Channels: щонайменше 4 (DOU, Djinni, LinkedIn, trainee-програми, рекомендації…)." },
+    { "field": "channels", "check": "mentionsAny", "value": ["referr|рекоменд|friend|знайом|network|мереж|community|спільнот|meetup|мітап"], "message": "Channels: додай рекомендації / знайомства — часто найефективніший канал." },
+    { "field": "weekly", "check": "minItems", "value": 3, "message": "Weekly: щонайменше 3 активності (відгуки, портфоліо, практика співбесід)." },
+    { "field": "weekly", "check": "mentionsAny", "value": ["\\d"], "message": "Weekly: з числами (скільки відгуків, скільки тренувальних співбесід)." },
+    { "field": "tracker", "check": "minItems", "value": 5, "message": "Tracker: щонайменше 5 колонок (компанія, посада, дата, етап, наступний крок…)." },
+    { "field": "tracker", "check": "mentionsAny", "value": ["next|наступн|follow"], "message": "Tracker: колонка «наступний крок / follow-up»." },
+    { "field": "metrics", "check": "minLength", "value": 60, "message": "Metrics: що рахуєш (відсоток відповідей, етапи) і що зміниш, якщо не працює." }
+  ],
+  "model": {
+    "roles": "Trainee / Intern QA, Junior QA Automation, Junior QA (manual + automation). Kyiv (office or hybrid) or remote in Ukraine. Product companies and outsourcing companies with trainee programs; e-commerce and fintech are a plus.",
+    "channels": [
+      "DOU jobs — filter by experience, check salary statistics",
+      "Djinni — anonymous profile with my stack and GitHub links",
+      "LinkedIn — jobs, messages to QA leads and recruiters, a post about my project",
+      "Career pages and trainee / internship programs of 15 target companies",
+      "Referrals: ex-colleagues and course mates working in IT",
+      "QA communities and one meetup a month"
+    ],
+    "weekly": [
+      "12 tailored applications with a short cover message",
+      "Follow-ups for applications older than 5 working days",
+      "1 improvement of my portfolio (tests, README, CI)",
+      "2 mock interviews (with Claude or a friend), one of them in English",
+      "1 LinkedIn post or 5 new connections with QA engineers"
+    ],
+    "tracker": ["Company", "Role + link", "Date applied", "Channel", "Contact", "Stage", "Next step + date", "Questions asked / notes"],
+    "metrics": "Every two weeks I check the response rate (replies / applications) and how far I get. If fewer than 1 in 10 applications gets a reply, I rewrite the CV summary and keywords and ask someone to review it. If I fail at the technical stage, I repeat the questions I answered badly and do more mock interviews."
+  },
+  "hints": [
+    "Опиши пошук як проєкт: ціль, канали, щотижневі дії з числами, трекер, метрики й момент перегляду підходу.",
+    "Рекомендації і trainee-програми часто працюють краще за масові відгуки."
+  ],
+  "explanation": "Пошук роботи — це процес, який можна вимірювати і покращувати. План з цільовими посадами, кількома каналами (включно з рекомендаціями), тижневим ритмом з числами, трекером з колонкою «наступний крок» і метриками допомагає не вигоріти і бачити, що змінити: резюме, канали чи підготовку до технічної частини.",
+  "checklist": [
+    "Цілі реалістичні: Trainee / Junior",
+    "Є 4+ канали, зокрема рекомендації",
+    "Тижневий ритм з конкретними числами",
+    "Трекер має колонку «наступний крок»",
+    "Є метрика і правило, коли змінити підхід"
+  ]
+}

@@ -1,7 +1,8 @@
 {
   "type": "quiz",
-  "title": "Mock interview: Playwright & automation",
-  "show": 7,
+  "title": "Mock interview: Playwright & automation (question bank)",
+  "show": 10,
+  "intro": "Банк із 24 питань: щоразу випадкові 10.",
   "hints": ["Відповідай так, ніби пояснюєш колезі: суть + приклад."],
   "questions": [
     {
@@ -15,12 +16,69 @@
       ]
     },
     {
+      "id": "context",
+      "kind": "single",
+      "text": "Що таке BrowserContext?",
+      "options": [
+        { "text": "Ізольована сесія браузера зі своїми cookies і storage, як окремий профіль; у ній відкриваються сторінки (page)", "correct": true },
+        { "text": "Те саме, що вкладка" },
+        { "text": "Окремий процес браузера на кожен тест" }
+      ]
+    },
+    {
+      "id": "isolation",
+      "kind": "single",
+      "text": "Чому тест A, що залогінився, не впливає на тест B у Playwright Test?",
+      "options": [
+        { "text": "Кожен тест отримує новий context з порожніми cookies і storage", "correct": true },
+        { "text": "Бо Playwright після кожного тесту перезапускає комп'ютер" },
+        { "text": "Він впливає, тому треба логаутитись в afterEach" }
+      ]
+    },
+    {
+      "id": "strict",
+      "kind": "single",
+      "text": "Тест падає з «strict mode violation: getByRole('button', { name: 'Delete' }) resolved to 3 elements». Як виправити правильно?",
+      "options": [
+        { "text": "Уточнити локатор: знайти потрібний рядок (`filter({ hasText })`) і шукати кнопку всередині нього", "correct": true },
+        { "text": "Завжди додавати `.first()`", "explain": "Так тест може натиснути не той елемент і «пройти» помилково." },
+        { "text": "Додати `force: true`" }
+      ]
+    },
+    {
       "id": "wait",
       "kind": "single",
       "text": "«Чому в твоїх тестах немає `waitForTimeout`?»",
       "options": [
         { "text": "Playwright сам чекає перед діями, а web-first перевірки повторюються до таймауту; фіксовані паузи роблять тести повільними й нестабільними", "correct": true },
         { "text": "Бо я забув їх додати" }
+      ]
+    },
+    {
+      "id": "is-visible",
+      "kind": "single",
+      "text": "Чим `expect(await locator.isVisible()).toBe(true)` гірший за `await expect(locator).toBeVisible()`?",
+      "options": [
+        { "text": "`isVisible()` відповідає миттєво і не чекає, тому перевірка нестабільна; `toBeVisible()` повторює до таймауту", "correct": true },
+        { "text": "Нічим, це однаково" }
+      ]
+    },
+    {
+      "id": "poll",
+      "kind": "single",
+      "text": "Після оплати статус замовлення в API змінюється на `paid` за кілька секунд. Як це перевірити без пауз?",
+      "options": [
+        { "text": "`await expect.poll(async () => (await getOrder(id)).status).toBe('paid')`", "correct": true },
+        { "text": "`await page.waitForTimeout(5000)`, потім один запит" }
+      ]
+    },
+    {
+      "id": "soft",
+      "kind": "single",
+      "text": "Що робить `expect.soft(...)`?",
+      "options": [
+        { "text": "Записує невдалу перевірку, але тест продовжує виконання; наприкінці тест буде червоним", "correct": true },
+        { "text": "Робить перевірку необов'язковою — тест завжди зелений" }
       ]
     },
     {
@@ -33,6 +91,15 @@
       ]
     },
     {
+      "id": "trace",
+      "kind": "single",
+      "text": "Тест упав на CI, локально проходить. Що найкорисніше подивитися першим?",
+      "options": [
+        { "text": "Trace з CI в trace viewer: кроки, знімки DOM, мережа, консоль у момент падіння", "correct": true },
+        { "text": "Перезапустити, доки не пройде" }
+      ]
+    },
+    {
       "id": "pom",
       "kind": "single",
       "text": "«Де в Page Object мають бути перевірки expect?»",
@@ -42,12 +109,30 @@
       ]
     },
     {
+      "id": "fixture-scope",
+      "kind": "single",
+      "text": "Створення тестового акаунта займає 3 секунди, і його можна безпечно ділити між тестами одного воркера. Який скоуп фікстури?",
+      "options": [
+        { "text": "`{ scope: 'worker' }` — один раз на воркер", "correct": true },
+        { "text": "`test` (за замовчуванням) — для кожного тесту заново" }
+      ]
+    },
+    {
       "id": "auth",
       "kind": "single",
       "text": "«Як ти уникаєш логіну через форму в кожному тесті?»",
       "options": [
         { "text": "storageState: логін один раз (setup-проєкт або API), тести стартують з цим станом", "correct": true },
         { "text": "Ніяк, кожен тест логіниться через форму" }
+      ]
+    },
+    {
+      "id": "two-roles",
+      "kind": "single",
+      "text": "Тест: адмін блокує користувача, а користувач бачить повідомлення про блокування. Як це зробити в одному тесті?",
+      "options": [
+        { "text": "Два контексти (`browser.newContext`) з різним storageState — адміна і користувача", "correct": true },
+        { "text": "Неможливо, треба два окремі тести з порядком" }
       ]
     },
     {
@@ -66,6 +151,70 @@
       "options": [
         { "text": "Щоб відтворити рідкісні стани (500, порожній список) і не залежати від даних сервера; справжній API тестую окремо", "correct": true },
         { "text": "Щоб не тестувати бекенд узагалі" }
+      ]
+    },
+    {
+      "id": "api-request",
+      "kind": "single",
+      "text": "Як у Playwright Test створити замовлення через API перед UI-перевіркою?",
+      "options": [
+        { "text": "Через фікстуру `request`: `await request.post('/api/orders', { data })` і перевірити статус", "correct": true },
+        { "text": "Лише через UI-форму, API в Playwright недоступне" }
+      ]
+    },
+    {
+      "id": "popup",
+      "kind": "single",
+      "text": "Посилання відкриває нову вкладку. Як отримати її в тесті?",
+      "options": [
+        { "text": "`const popupPromise = page.waitForEvent('popup')` до кліку, потім `await popupPromise`", "correct": true },
+        { "text": "`page.goto` на ту саму адресу в поточній вкладці" }
+      ]
+    },
+    {
+      "id": "iframe",
+      "kind": "single",
+      "text": "Поле введення знаходиться в iframe. Як до нього дістатися?",
+      "options": [
+        { "text": "`page.frameLocator('iframe[title=\"Help chat\"]').getByLabel('Question')`", "correct": true },
+        { "text": "Звичайний `page.getByLabel('Question')` знайде його сам" }
+      ]
+    },
+    {
+      "id": "projects",
+      "kind": "single",
+      "text": "Для чого `projects` у `playwright.config.ts`?",
+      "options": [
+        { "text": "Запускати ті самі тести з різними налаштуваннями: браузери, пристрої, setup-проєкт як залежність", "correct": true },
+        { "text": "Для різних Git-репозиторіїв" }
+      ]
+    },
+    {
+      "id": "serial",
+      "kind": "single",
+      "text": "Колега пише тести, де другий використовує замовлення, створене першим. Що порадиш?",
+      "options": [
+        { "text": "Зробити тести незалежними: кожен створює свої дані (через API або фікстуру)", "correct": true },
+        { "text": "Нічого, порядок тестів у файлі завжди однаковий" }
+      ]
+    },
+    {
+      "id": "ai",
+      "kind": "single",
+      "text": "«Чи користуєшся AI-помічниками для автотестів?» Найкраща відповідь:",
+      "options": [
+        { "text": "Так, для чернеток і пояснень, але запускаю і читаю кожен рядок, перевіряю локатори і не передаю секрети", "correct": true },
+        { "text": "Так, AI пише тести, я їх одразу комічу" },
+        { "text": "Ні, AI заборонено всюди" }
+      ]
+    },
+    {
+      "id": "selenium",
+      "kind": "single",
+      "text": "«Чому Playwright, а не Selenium?» Найзріліша відповідь:",
+      "options": [
+        { "text": "Автоочікування, вбудований раннер з паралельністю, trace viewer, API-тести і моки з коробки; але вибір залежить від проєкту і команди", "correct": true },
+        { "text": "Selenium застарів і ніде не використовується" }
       ]
     },
     {

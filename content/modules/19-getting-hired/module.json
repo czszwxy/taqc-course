@@ -1,12 +1,15 @@
 {
   "title": "Getting Hired",
-  "description": "Підготовка до пошуку першої роботи QA Automation: типові питання з теорії тестування, TypeScript і live coding, Playwright і автоматизація, симуляція тестового завдання (план, баг-репорти, автотести, README), резюме, LinkedIn і GitHub, поведінкові питання за методом STAR. Практика — справжні live-coding завдання, тестове завдання на сторінці My account і письмові відповіді, які можна скопіювати на рев'ю.",
+  "description": "Повна підготовка до першої роботи QA Automation на основі того, що реально питають на співбесідах Junior QA: банки питань з теорії тестування, JavaScript/TypeScript, Playwright, вебу/HTTP/API, SQL, Git і Agile; live coding і code review тестів; практичні задачі «на місці» (чеклісти, тестові дані, безпека); тестове завдання на сторінці My account; резюме, LinkedIn і GitHub; англійська на співбесіді; поведінкові питання STAR; стратегія пошуку роботи від відгуку до оферу і фінальна пробна співбесіда з Claude.",
   "goals": [
-    "Answer classic QA theory questions clearly, with an example",
-    "Solve typical TypeScript live-coding tasks and talk through the solution",
-    "Answer Playwright and automation questions and write tests under time pressure",
+    "Answer classic QA theory and situational questions clearly, with an example",
+    "Answer JavaScript/TypeScript questions and solve live-coding tasks out loud",
+    "Answer Playwright and automation questions, review a bad test and write tests under time pressure",
+    "Pass the web, HTTP, API, SQL, Git and Agile part of a technical interview",
+    "Solve on-the-spot tasks: checklists, test data, \"test this object\", basic security checks",
     "Complete a take-home assignment: plan, bug reports, automation and a README",
     "Write a CV, LinkedIn profile and GitHub portfolio for a trainee QA Automation role",
-    "Answer behavioral questions with the STAR method"
+    "Answer the common questions in English and behavioral questions with STAR",
+    "Run a job search with a plan, a tracker and a cover message, and evaluate an offer"
   ]
 }

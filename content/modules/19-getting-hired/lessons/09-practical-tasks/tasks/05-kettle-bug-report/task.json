@@ -1,0 +1,62 @@
+{
+  "type": "written",
+  "title": "\"Test a kettle\" — then report a bug",
+  "statement": "Дві частини, як на співбесіді.\n\n**1.** «Як би ви протестували **електричний чайник**?» — коротко за групами.\n\n**2.** Інтерв'юер продовжує: «Ти увімкнув чайник, налитий до позначки MAX, індикатор загорівся, але через 10 хвилин вода холодна. Напиши баг-репорт». Модель — **Gadgetly Kettle K2**, 1,7 л, 2200 Вт; за інструкцією 1,7 л закипає за 4–5 хвилин.",
+  "fields": [
+    { "id": "checks", "label": "Part 1: how you would test the kettle (one check per line)", "kind": "list" },
+    { "id": "title", "label": "Part 2: bug title", "kind": "text" },
+    { "id": "environment", "label": "Environment / preconditions", "kind": "textarea" },
+    { "id": "steps", "label": "Steps to reproduce (one per line)", "kind": "list" },
+    { "id": "expected", "label": "Expected result", "kind": "textarea" },
+    { "id": "actual", "label": "Actual result", "kind": "textarea" },
+    { "id": "severity", "label": "Severity + why", "kind": "text" }
+  ],
+  "rules": [
+    { "field": "checks", "check": "minItems", "value": 6, "message": "Part 1: щонайменше 6 перевірок: функції, межі (MIN/MAX), негативні, безпека." },
+    { "field": "checks", "check": "mentionsAny", "value": ["min|max|рівн|level|об'єм|1[.,]7|empty|порожн"], "message": "Part 1: межі рівня води (MIN, MAX, порожній)." },
+    { "field": "checks", "check": "mentionsAny", "value": ["auto.?off|автовимк|switch(es)? off|вимика|overheat|перегр|dry|без води|safety|безпек"], "message": "Part 1: безпека — автовимкнення, захист від увімкнення без води." },
+    { "field": "title", "check": "minLength", "value": 25, "message": "Title: що, де, за яких умов (наприклад, «Kettle K2 does not heat water: indicator is on, water stays cold»)." },
+    { "field": "title", "check": "mentionsAny", "value": ["heat|нагрів|гріє|boil|кип|cold|холодн"], "message": "Title: суть проблеми — не нагріває воду." },
+    { "field": "environment", "check": "mentionsAny", "value": ["k2|2200|1[.,]7|model|модел|230|220|socket|розетк|power|мереж"], "message": "Environment: модель, потужність, розетка / напруга мережі." },
+    { "field": "steps", "check": "minItems", "value": 3, "message": "Steps: щонайменше 3 кроки." },
+    { "field": "expected", "check": "mentionsAny", "value": ["4|5|boil|кип|switch(es)? off|вимик"], "message": "Expected: за інструкцією вода закипає за 4–5 хв і чайник вимикається." },
+    { "field": "actual", "check": "mentionsAny", "value": ["10|cold|холодн|indicator|індикатор"], "message": "Actual: що саме бачиш (індикатор горить, через 10 хв вода холодна)." },
+    { "field": "severity", "check": "mentionsAny", "value": ["critical|blocker|major|крити"], "message": "Severity: основна функція не працює — Critical (або Blocker)." }
+  ],
+  "model": {
+    "checks": [
+      "Clarify: capacity, power, functions (temperature modes, keep warm), safety requirements",
+      "Water at MIN, MAX and above MAX: boils, does not spill when boiling",
+      "1.7 l boils in 4–5 minutes as stated; switches off automatically when boiling",
+      "Switching on without water → does not heat (dry-boil protection) or switches off",
+      "Lifting the kettle off the base while on → stops heating",
+      "Handle and body stay safe to touch; lid opens and locks; no water leaks",
+      "Indicator and button work; cable length and plug fit the socket",
+      "Non-functional: noise, time to boil, energy use, scale filter, ease of cleaning"
+    ],
+    "title": "Kettle K2 does not heat water: the indicator is on, water stays cold after 10 minutes",
+    "environment": "Gadgetly Kettle K2, 1.7 l, 2200 W, new unit from the box. Home power socket 230 V that works with other devices. Tap water at room temperature.",
+    "steps": [
+      "Fill the kettle with 1.7 l of water (up to MAX)",
+      "Put the kettle on the base and plug the base into a working socket",
+      "Press the power button",
+      "Wait 10 minutes"
+    ],
+    "expected": "According to the manual the water boils in 4–5 minutes and the kettle switches off automatically.",
+    "actual": "The power indicator turns on, but after 10 minutes the water is cold. No sound of heating. Reproduced 3 of 3 times; the same socket works with another kettle.",
+    "severity": "Critical — the main function does not work at all, there is no workaround."
+  },
+  "hints": [
+    "Part 1: уточнення → функції → межі рівня води → негативні → безпека → нефункціональні.",
+    "Part 2: виключи «зовнішні» причини в репорті: розетка працює з іншим пристроєм, перевірено кілька разів."
+  ],
+  "explanation": "«Протестуй чайник» перевіряє структуру мислення, а баг-репорт — точність. У репорті головне: заголовок з суттю і умовами, середовище (модель, розетка), відтворювані кроки, очікуваний результат з вимоги (інструкції) і фактичний — з фактами (індикатор горить, 10 хвилин, 3 з 3 разів, розетка перевірена). Severity — Critical: основна функція не працює. Типова помилка — заголовок «Чайник не працює» без умов і без виключення інших причин.",
+  "checklist": [
+    "Перевірки чайника згруповані, є межі і безпека",
+    "Заголовок містить суть і умови",
+    "Є середовище: модель, розетка",
+    "Expected спирається на вимогу (інструкцію)",
+    "Actual містить факти і частоту відтворення",
+    "Severity обґрунтована"
+  ]
+}

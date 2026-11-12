@@ -1,0 +1,29 @@
+{
+  "type": "classify",
+  "title": "Natural English or a typical mistake?",
+  "statement": "Ці речення почуті на співбесідах. Визнач, яке звучить **природно**, а яке містить **типову помилку**. У поясненні до помилок — правильний варіант.",
+  "show": 10,
+  "passScore": 0.8,
+  "categories": [
+    { "id": "ok", "label": "Natural English" },
+    { "id": "mistake", "label": "Typical mistake" }
+  ],
+  "items": [
+    { "id": "ok-1", "text": "I reported twelve bugs and wrote fifteen test cases.", "category": "ok" },
+    { "id": "ok-2", "text": "I have been learning Playwright for three months.", "category": "ok" },
+    { "id": "ok-3", "text": "Could you clarify which browsers you support?", "category": "ok" },
+    { "id": "ok-4", "text": "In my project, the tests run on GitHub Actions on every pull request.", "category": "ok" },
+    { "id": "ok-5", "text": "It depends on the risk and the release date.", "category": "ok" },
+    { "id": "ok-6", "text": "I'm not sure, but I think it's related to caching.", "category": "ok" },
+    { "id": "m-1", "text": "I have 3 years experience in sales.", "category": "mistake", "explain": "I have three years of experience in sales." },
+    { "id": "m-2", "text": "I am studying QA since January.", "category": "mistake", "explain": "I have been studying QA since January." },
+    { "id": "m-3", "text": "Can you explain me the task?", "category": "mistake", "explain": "Can you explain the task to me?" },
+    { "id": "m-4", "text": "We discussed about this bug with the developer.", "category": "mistake", "explain": "We discussed this bug with the developer." },
+    { "id": "m-5", "text": "How it works in your team?", "category": "mistake", "explain": "How does it work in your team?" },
+    { "id": "m-6", "text": "On the screenshot you can see the error.", "category": "mistake", "explain": "In the screenshot you can see the error." },
+    { "id": "m-7", "text": "I passed a QA course last year.", "category": "mistake", "explain": "I completed (took) a QA course last year." },
+    { "id": "m-8", "text": "It depends of the project.", "category": "mistake", "explain": "It depends on the project." }
+  ],
+  "hints": ["Перевір прийменники (depends on, in the screenshot), часи (have been … since) і конструкцію «years of experience»."],
+  "explanation": "Більшість помилок українськомовних кандидатів — це кальки: «досвід 3 роки» → *3 years experience* (правильно *three years of experience*), «вчу з січня» → *I am studying since* (правильно *I have been studying since*), «поясни мені» → *explain me* (правильно *explain to me*), «залежить від» → *depends of* (правильно *depends on*). Вивчи ці 8 конструкцій — і половина помилок зникне."
+}

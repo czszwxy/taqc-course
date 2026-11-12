@@ -1,7 +1,7 @@
 {
   "title": "TypeScript questions & live coding",
-  "minutes": 55,
-  "summary": "Типові питання з TypeScript/JavaScript на співбесіді QA Automation (типи, any vs unknown, interface vs type, == vs ===, let/const, async/await, Promise.all) і алгоритм live coding: уточнити, приклади, крайні випадки, рішення, перевірка, говорити вголос",
+  "minutes": 75,
+  "summary": "Банк питань з JavaScript/TypeScript для QA Automation (типи, ===, let/const, hoisting, замикання, this, event loop, Promise.all / allSettled, async/await, ООП, generics) і алгоритм live coding; 6 типових задач з таймером",
   "resources": [
     {
       "title": "TypeScript Handbook",
@@ -15,7 +15,14 @@
       "url": "https://uk.javascript.info/",
       "kind": "course",
       "lang": "uk",
-      "note": "Повтори масиви, об'єкти, async/await.",
+      "note": "Повтори замикання, this, Promise, async/await і цикл подій (event loop).",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Promise.allSettled()",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled",
+      "kind": "docs",
+      "lang": "en",
       "needsVerification": true
     },
     {

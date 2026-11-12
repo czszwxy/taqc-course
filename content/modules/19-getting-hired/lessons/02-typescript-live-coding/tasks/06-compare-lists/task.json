@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "title": "Live coding: compare expected and actual lists",
+  "statement": "Типова задача для QA: порівняти **очікувані** значення (з вимог або тестових даних) з **фактичними** (з UI чи API) і показати різницю.\n\nНапиши `compareLists(expected, actual)`, що повертає:\n\n- `missing` — значення, які є в `expected`, але відсутні в `actual`;\n- `unexpected` — значення, які є в `actual`, але відсутні в `expected`.\n\nКожне значення — **один раз**, у порядку першої появи. Порівняння чутливе до регістру.\n\n```ts\ncompareLists(['Mouse', 'Keyboard', 'Cable'], ['Keyboard', 'Monitor', 'Mouse', 'Monitor']);\n// { missing: ['Cable'], unexpected: ['Monitor'] }\n```",
+  "hints": [
+    "Зроби `Set` з кожного списку: перевірка `set.has(x)` швидка і проста.",
+    "`missing` — пройди `expected` і залиш те, чого немає в `actualSet`; дублікати прибере ще один `Set` (`[...new Set(list)]`)."
+  ],
+  "explanation": "Різниця двох списків — це два фільтри з `Set`: `expected` без `actual` і `actual` без `expected`. `[...new Set(list)]` прибирає дублікати і зберігає порядок першої появи. На співбесіді добре спитати: «А дублікати важливі? Якщо в UI товар показано двічі — це баг?». Якщо так, треба рахувати кількість (`Map`), а не лише наявність.",
+  "codeRules": []
+}

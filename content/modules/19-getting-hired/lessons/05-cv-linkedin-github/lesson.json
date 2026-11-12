@@ -1,8 +1,23 @@
 {
   "title": "CV, LinkedIn & GitHub profile",
-  "minutes": 60,
-  "summary": "Резюме Trainee QA Automation без комерційного досвіду (структура, сильні пункти «дія + інструмент + результат», навички, проєкти), профіль LinkedIn і GitHub як портфоліо",
+  "minutes": 90,
+  "summary": "Резюме Trainee QA Automation без комерційного досвіду: шапка, summary, навички, проєкти перед досвідом, пункти «дія + що + інструмент + результат», повний зразок; профіль LinkedIn і GitHub як портфоліо; практика — оцінити рядки, переписати слабке резюме, написати своє",
   "resources": [
+    {
+      "title": "DOU: Як оформити резюме, щоб конкурувати з найкращими кандидатами",
+      "url": "https://dou.ua/lenta/columns/perfect-resume-for-developer/",
+      "kind": "article",
+      "lang": "uk",
+      "note": "Розбір структури резюме на реальному прикладі (для розробника, але правила ті самі).",
+      "needsVerification": true
+    },
+    {
+      "title": "DOU: Кар'єра джуніора в IT — некомерційний досвід у резюме, менторство, пошук вакансій",
+      "url": "https://dou.ua/lenta/articles/junior-career-dou-live/",
+      "kind": "article",
+      "lang": "uk",
+      "needsVerification": true
+    },
     {
       "title": "LinkedIn Help",
       "url": "https://www.linkedin.com/help/linkedin",
