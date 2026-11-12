@@ -2,8 +2,13 @@ import { Link, useParams } from 'react-router-dom';
 import { course, lessonPath } from '../content/loader';
 import { useProgress } from '../features/progress/store';
 import { lessonStats, moduleStats } from '../features/progress/selectors';
-import { ProgressBar, StatusIcon } from '../components/ui';
+import { ProgressBar, StatusIcon, TrackTab, lessonIconStatus } from '../components/ui';
+import { formatModuleNumber } from '../lib/format';
+import { trackIndexOf } from '../app/tracks';
 import { NotFound } from './NotFound';
+
+const FULL_PERCENT = 100;
+const ROW_ICON_SIZE = 18;
 
 export function ModulePage() {
   const { moduleSlug } = useParams();
@@ -15,43 +20,52 @@ export function ModulePage() {
   const ms = moduleStats(m, data);
 
   return (
-    <div className="mx-auto max-w-4xl px-5 py-8 lg:px-8">
-      <div className="text-xs font-semibold uppercase tracking-wider text-faint">
-        {m.trackTitle} · Module {String(m.number).padStart(2, '0')}
+    <div className="mx-auto max-w-4xl px-4 py-8 lg:px-8">
+      <Link to="/" className="text-xs font-bold text-muted hover:text-fg">
+        ← Course map
+      </Link>
+      <div className="mt-4">
+        <TrackTab index={trackIndexOf(m.slug)}>
+          {m.trackTitle} · Module {formatModuleNumber(m.number)}
+        </TrackTab>
       </div>
-      <h1 className="mt-1 text-2xl font-bold tracking-tight">{m.title}</h1>
-      {m.description && <p className="mt-2 text-muted">{m.description}</p>}
+      <section className="page rounded-tl-none px-6 py-6 lg:px-8">
+        <h1 className="font-display text-[1.9rem] font-bold leading-tight">{m.title}</h1>
+        {m.description && <p className="mt-2 text-muted">{m.description}</p>}
 
-      {m.available && (
-        <div className="mt-4 flex max-w-md items-center gap-3 text-sm text-muted">
-          <ProgressBar percent={ms.percent} tone={ms.percent === 100 ? 'ok' : 'accent'} />
-          <span className="shrink-0 tabular-nums">
-            {ms.completed}/{ms.total} lessons
-          </span>
-        </div>
-      )}
+        {m.available && (
+          <div className="mt-4 flex max-w-md items-center gap-3 text-sm text-muted">
+            <ProgressBar percent={ms.percent} tone={ms.percent === FULL_PERCENT ? 'ok' : 'accent'} />
+            <span className="shrink-0 tabular-nums">
+              {ms.completed}/{ms.total} lessons
+            </span>
+          </div>
+        )}
 
-      {m.goals.length > 0 && (
-        <div className="card mt-6 p-5">
-          <h2 className="text-sm font-semibold">After this module you will be able to</h2>
-          <ul className="mt-2 space-y-1.5 text-sm text-muted">
-            {m.goals.map((g) => (
-              <li key={g} className="flex gap-2">
-                <span className="text-ok">✓</span>
-                <span>{g}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+        {m.goals.length > 0 && (
+          <div className="mt-6 rounded-lg border border-line bg-sunken p-5">
+            <h2 className="font-hand text-[1.5rem] font-bold leading-none text-pen">After this module you will be able to</h2>
+            <ul className="mt-3 space-y-1.5 text-[15px]">
+              {m.goals.map((g) => (
+                <li key={g} className="flex gap-2">
+                  <span className="font-bold text-ok">☑</span>
+                  <span>{g}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </section>
 
-      <h2 className="mt-8 text-sm font-semibold uppercase tracking-wider text-faint">Lessons</h2>
-      <div className="mt-3 space-y-2">
+      <h2 className="mt-9 font-display text-xl font-bold">
+        <span className="marker">Lessons</span>
+      </h2>
+      <div className="page mt-3 divide-y divide-dashed divide-line">
         {m.planned.map((p) => {
           if (!p.lesson) {
             return (
-              <div key={p.number} className="flex items-center gap-3 rounded-xl border border-dashed border-line px-4 py-3 text-sm text-faint">
-                <span className="w-6 tabular-nums">{p.number}</span>
+              <div key={p.number} className="flex items-center gap-3 px-4 py-3 text-sm text-faint">
+                <span className="w-6 font-display font-bold tabular-nums">{p.number}</span>
                 <span className="flex-1">{p.title}</span>
                 <span className="chip">Coming soon</span>
               </div>
@@ -59,10 +73,11 @@ export function ModulePage() {
           }
           const s = lessonStats(p.lesson, data);
           return (
-            <Link key={p.number} to={lessonPath(p.lesson)} className="card flex items-center gap-3 px-4 py-3 transition-colors hover:border-accent/60">
-              <span className="w-6 text-sm tabular-nums text-faint">{p.number}</span>
+            <Link key={p.number} to={lessonPath(p.lesson)} className="group flex items-center gap-3 px-4 py-3 transition-colors hover:bg-hover">
+              <StatusIcon status={lessonIconStatus(s)} size={ROW_ICON_SIZE} />
+              <span className="w-6 font-display font-bold tabular-nums text-faint">{p.number}</span>
               <div className="min-w-0 flex-1">
-                <div className="font-medium">{p.lesson.title}</div>
+                <div className="font-bold group-hover:text-accent-fg">{p.lesson.title}</div>
                 <div className="mt-0.5 truncate text-xs text-muted">{p.lesson.summary}</div>
               </div>
               <div className="hidden shrink-0 text-right text-xs text-muted sm:block">
@@ -71,7 +86,6 @@ export function ModulePage() {
                   {s.solved}/{s.required} tasks
                 </div>
               </div>
-              <StatusIcon status={s.complete ? 'complete' : s.started ? 'started' : 'new'} size={18} />
             </Link>
           );
         })}

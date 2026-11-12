@@ -29,7 +29,7 @@ const EDITOR_PADDING_TOP = 12;
 const EDITOR_OPTIONS = {
   minimap: { enabled: false },
   fontSize: EDITOR_FONT_SIZE,
-  fontFamily: '"JetBrains Mono", "Cascadia Code", Consolas, monospace',
+  fontFamily: '"JetBrains Mono Variable", "JetBrains Mono", "Cascadia Code", Consolas, monospace',
   scrollBeyondLastLine: false,
   tabSize: EDITOR_TAB_SIZE,
   automaticLayout: true,

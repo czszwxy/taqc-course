@@ -40,21 +40,21 @@ export function SettingsPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-5 py-8 lg:px-8">
-      <h1 className="text-2xl font-bold tracking-tight">Settings & progress</h1>
+      <h1 className="font-display text-[1.9rem] font-bold">Settings &amp; progress</h1>
 
       <section className="card mt-6 p-5">
-        <h2 className="font-semibold">Appearance</h2>
+        <h2 className="font-display text-lg font-bold">Appearance</h2>
         <div className="mt-3 flex gap-2">
           {(['dark', 'light'] as const).map((t) => (
             <button key={t} className={`btn ${theme === t ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setTheme(t)}>
-              {t === 'dark' ? '🌙 Dark' : '☀️ Light'}
+              {t === 'dark' ? '🌙 Blueprint (dark)' : '☀️ Paper (light)'}
             </button>
           ))}
         </div>
       </section>
 
       <section className="card mt-4 p-5">
-        <h2 className="font-semibold">Your progress</h2>
+        <h2 className="font-display text-lg font-bold">Your progress</h2>
         <p className="mt-1 text-sm text-muted">
           {stats.lessonsCompleted}/{stats.lessonsTotal} lessons completed · {stats.tasksSolved}/{stats.tasksTotal} tasks solved. Progress is
           stored only in this browser (localStorage). Export it regularly as a backup or to move to another computer.
@@ -97,7 +97,7 @@ export function SettingsPage() {
       </section>
 
       <section className="card mt-4 p-5">
-        <h2 className="font-semibold">Content status</h2>
+        <h2 className="font-display text-lg font-bold">Content status</h2>
         <p className="mt-1 text-sm text-muted">
           {course.modules.filter((m) => m.available).length} of {course.modules.length} modules available, {course.lessons.length} lessons,{' '}
           {course.tasksById.size} task files (including similar tasks).

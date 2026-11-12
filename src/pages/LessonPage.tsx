@@ -8,6 +8,7 @@ import { Markdown } from '../components/Markdown';
 import { Empty, ProgressBar, StatusIcon } from '../components/ui';
 import { useAsync } from '../lib/useAsync';
 import { formatModuleNumber } from '../lib/format';
+import { LessonMenu } from '../app/LessonMenu';
 import { NotFound } from './NotFound';
 
 type Tab = 'theory' | 'resources' | 'practice';
@@ -32,26 +33,41 @@ export function LessonPage() {
   const m = course.modulesBySlug.get(lesson.moduleSlug)!;
 
   return (
-    <div className="mx-auto max-w-[50rem] px-5 py-8 lg:px-8">
-      <div className="text-xs font-semibold uppercase tracking-wider text-faint">
-        <Link to={`/module/${m.slug}`} className="hover:text-accent-fg">
-          Module {formatModuleNumber(m.number)} · {m.title}
-        </Link>
+    <div className="mx-auto flex max-w-6xl gap-8 px-4 py-6 lg:px-8 lg:py-8">
+      <aside className="hidden w-64 shrink-0 lg:block">
+        <div className="sticky top-6">
+          <LessonMenu module={m} />
+        </div>
+      </aside>
+
+      <div className="min-w-0 max-w-[50rem] flex-1">
+        <details className="mb-5 lg:hidden">
+          <summary className="btn btn-secondary btn-sm cursor-pointer list-none">☰ Lessons in this module</summary>
+          <div className="mt-3">
+            <LessonMenu module={m} />
+          </div>
+        </details>
+
+        <div className="text-xs font-bold text-muted">
+          <Link to={`/module/${m.slug}`} className="hover:text-accent-fg">
+            Module {formatModuleNumber(m.number)} · {m.title}
+          </Link>
+        </div>
+        <h1 className="mt-1 font-display text-[1.75rem] font-bold leading-tight lg:text-[2rem]">{lesson.title}</h1>
+        <p className="mt-1.5 text-sm text-muted">
+          {lesson.summary} · <span className="whitespace-nowrap">~{lesson.minutes} min</span>
+        </p>
+
+        <LessonTabs lesson={lesson} tab={tab} onChange={(t) => setParams(t === 'theory' ? {} : { tab: t })} />
+
+        <div className="mt-6">
+          {tab === 'theory' && <TheoryTab lesson={lesson} onPractice={() => setParams({ tab: 'practice' })} />}
+          {tab === 'resources' && <ResourcesTab lesson={lesson} />}
+          {tab === 'practice' && <PracticeTab lesson={lesson} />}
+        </div>
+
+        <LessonFooter lesson={lesson} />
       </div>
-      <h1 className="mt-1 text-2xl font-bold tracking-tight lg:text-[1.7rem]">{lesson.title}</h1>
-      <p className="mt-1.5 text-sm text-muted">
-        {lesson.summary} · <span className="whitespace-nowrap">~{lesson.minutes} min</span>
-      </p>
-
-      <LessonTabs lesson={lesson} tab={tab} onChange={(t) => setParams(t === 'theory' ? {} : { tab: t })} />
-
-      <div className="mt-6">
-        {tab === 'theory' && <TheoryTab lesson={lesson} onPractice={() => setParams({ tab: 'practice' })} />}
-        {tab === 'resources' && <ResourcesTab lesson={lesson} />}
-        {tab === 'practice' && <PracticeTab lesson={lesson} />}
-      </div>
-
-      <LessonFooter lesson={lesson} />
     </div>
   );
 }
@@ -66,13 +82,13 @@ function LessonTabs({ lesson, tab, onChange }: { lesson: CourseLesson; tab: Tab;
     { id: 'practice', label: 'Practice', badge: `${s.solved}/${s.required}` },
   ];
   return (
-    <div className="mt-5 flex items-end gap-1 border-b border-line">
+    <div className="mt-5 flex items-end gap-1 border-b-2 border-line">
       {items.map((it) => (
         <button
           key={it.id}
           onClick={() => onChange(it.id)}
-          className={`-mb-px flex items-center gap-2 border-b-2 px-3.5 py-2 text-sm font-semibold transition-colors ${
-            tab === it.id ? 'border-accent text-fg' : 'border-transparent text-muted hover:text-fg'
+          className={`-mb-0.5 flex items-center gap-1.5 rounded-t-lg border-2 px-2.5 py-2 sm:gap-2 sm:px-3.5 text-sm font-bold transition-colors ${
+            tab === it.id ? 'border-line border-b-surface bg-surface text-fg' : 'border-transparent text-muted hover:text-fg'
           }`}
         >
           {it.label}
@@ -97,9 +113,9 @@ function TheoryTab({ lesson, onPractice }: { lesson: CourseLesson; onPractice: (
   if (md.error) return <Empty>Could not load theory: {md.error}</Empty>;
 
   return (
-    <div>
+    <div className="page px-5 py-6 sm:px-8 sm:py-8">
       <Markdown>{md.data ?? ''}</Markdown>
-      <div className="mt-10 flex flex-wrap items-center gap-3 border-t border-line pt-6">
+      <div className="mt-10 flex flex-wrap items-center gap-3 border-t-2 border-dashed border-line pt-6">
         <button
           className={`btn ${read ? 'btn-secondary' : 'btn-ok'}`}
           onClick={() => {
@@ -197,14 +213,14 @@ function LessonFooter({ lesson }: { lesson: CourseLesson }) {
   return (
     <div className="mt-12 flex items-center justify-between gap-3 border-t border-line pt-5 text-sm">
       {prev ? (
-        <Link to={lessonPath(prev)} className="btn btn-ghost">
+        <Link to={lessonPath(prev)} className="btn btn-ghost min-w-0 whitespace-normal text-left">
           ← {prev.title}
         </Link>
       ) : (
         <span />
       )}
       {next && (
-        <Link to={lessonPath(next)} className="btn btn-ghost">
+        <Link to={lessonPath(next)} className="btn btn-ghost ml-auto min-w-0 whitespace-normal text-right">
           {next.title} →
         </Link>
       )}

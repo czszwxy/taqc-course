@@ -20,7 +20,7 @@ function pickItems(task: ClassifyTask, id: string, seed: number): Item[] {
 }
 
 function optionTone(isChosen: boolean, isCorrect: boolean, submitted: boolean): string {
-  if (!submitted) return isChosen ? 'border-accent bg-accent text-white' : 'border-line bg-surface text-fg hover:border-accent/60';
+  if (!submitted) return isChosen ? 'border-accent bg-accent text-accent-on' : 'border-line bg-surface text-fg hover:border-accent/60';
   if (isCorrect) return 'border-ok/60 bg-ok-soft text-ok';
   if (isChosen) return 'border-bad/60 bg-bad-soft text-bad line-through';
   return 'border-line bg-surface text-faint';

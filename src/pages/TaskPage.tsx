@@ -98,7 +98,7 @@ export function TaskPage() {
       </div>
       <div className="mt-2 flex items-start gap-2.5">
         <StatusIcon status={status} size={20} />
-        <h1 className="text-xl font-bold leading-tight tracking-tight">{active.task.title}</h1>
+        <h1 className="font-display text-[1.5rem] font-bold leading-tight">{active.task.title}</h1>
       </div>
       <div className="mt-2 flex flex-wrap gap-1.5">
         <span className="chip chip-accent">{TASK_TYPE_LABEL[active.task.type]}</span>

@@ -189,7 +189,7 @@ export default function CodeTaskView({ ct, header, onSimilar, next }: TaskViewPr
               options={{
                 minimap: { enabled: false },
                 fontSize: 14,
-                fontFamily: '"JetBrains Mono", "Cascadia Code", Consolas, monospace',
+                fontFamily: '"JetBrains Mono Variable", "JetBrains Mono", "Cascadia Code", Consolas, monospace',
                 scrollBeyondLastLine: false,
                 tabSize: 2,
                 automaticLayout: true,

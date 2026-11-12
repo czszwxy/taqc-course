@@ -26,16 +26,18 @@ ts.typescriptDefaults.setEagerModelSync(true);
 // describe / it / expect for tasks where the learner writes tests.
 ts.typescriptDefaults.addExtraLib(TEST_GLOBALS_DTS, 'file:///qa-academy/test-globals.d.ts');
 
+// Mirror the "QA Notebook" palette in src/index.css: blueprint navy (dark) and warm paper (light).
 monaco.editor.defineTheme('qa-dark', {
   base: 'vs-dark',
   inherit: true,
   rules: [],
   colors: {
-    'editor.background': '#15181d',
-    'editorGutter.background': '#15181d',
-    'editor.lineHighlightBackground': '#1f232b',
-    'editorLineNumber.foreground': '#5d6577',
-    'editorLineNumber.activeForeground': '#adb5c3',
+    'editor.background': '#0b1628',
+    'editorGutter.background': '#0b1628',
+    'editor.lineHighlightBackground': '#13243f',
+    'editorLineNumber.foreground': '#5b6f96',
+    'editorLineNumber.activeForeground': '#b1c0dd',
+    'editor.selectionBackground': '#2b4672',
   },
 });
 monaco.editor.defineTheme('qa-light', {
@@ -43,10 +45,12 @@ monaco.editor.defineTheme('qa-light', {
   inherit: true,
   rules: [],
   colors: {
-    'editor.background': '#ffffff',
-    'editor.lineHighlightBackground': '#f4f5f8',
-    'editorLineNumber.foreground': '#9aa1b0',
-    'editorLineNumber.activeForeground': '#4b5466',
+    'editor.background': '#fffdf7',
+    'editorGutter.background': '#fffdf7',
+    'editor.lineHighlightBackground': '#f5f0e3',
+    'editorLineNumber.foreground': '#a79f8c',
+    'editorLineNumber.activeForeground': '#48546d',
+    'editor.selectionBackground': '#ffe9a3',
   },
 });
 
