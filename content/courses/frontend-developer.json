@@ -1,0 +1,64 @@
+{
+  "title": "Frontend Developer",
+  "subtitle": "HTML + CSS + TypeScript + React",
+  "tagline": "Zero → Junior Frontend Developer",
+  "description": "HTML and accessibility, CSS layout and responsive design, TypeScript, the DOM, React, working with APIs, frontend testing and deployment. The web, HTTP, Git and TypeScript modules are shared with the other courses.",
+  "icon": "🎨",
+  "status": "planned",
+  "order": 5,
+  "tracks": [
+    {
+      "id": "web-basics",
+      "title": "Web Basics",
+      "description": "How the web works, HTML, CSS and responsive layouts.",
+      "modules": [
+        { "slug": "07-how-the-web-works", "title": "How the Web Works" },
+        { "slug": "48-html", "title": "HTML & Accessibility" },
+        { "slug": "49-css", "title": "CSS & Layout" },
+        { "slug": "50-responsive", "title": "Responsive Design" }
+      ]
+    },
+    {
+      "id": "typescript",
+      "title": "TypeScript from Zero",
+      "description": "Programming basics, types and data, OOP and async code.",
+      "modules": [
+        { "slug": "11-ts-basics", "title": "Programming Basics with TypeScript" },
+        { "slug": "12-ts-types-data", "title": "TypeScript: Types & Working with Data" },
+        { "slug": "13-ts-oop-async", "title": "TypeScript: OOP, Modules & Async" },
+        { "slug": "51-dom-browser", "title": "DOM & Browser APIs" }
+      ]
+    },
+    {
+      "id": "react",
+      "title": "React",
+      "description": "Components, state, effects, forms, routing and data from APIs.",
+      "modules": [
+        { "slug": "52-react-basics", "title": "React Basics" },
+        { "slug": "53-react-practice", "title": "React in Practice" },
+        { "slug": "08-http-apis-json", "title": "HTTP, REST APIs & JSON" },
+        { "slug": "54-frontend-data", "title": "Working with APIs in the Frontend" }
+      ]
+    },
+    {
+      "id": "quality-tools",
+      "title": "Quality & Tools",
+      "description": "Git, testing, tooling and deployment.",
+      "modules": [
+        { "slug": "09-cli-git-github", "title": "Command Line, Git & GitHub" },
+        { "slug": "55-frontend-testing", "title": "Frontend Testing" },
+        { "slug": "56-frontend-tooling", "title": "Tooling, Build & Deploy" }
+      ]
+    },
+    {
+      "id": "job-prep",
+      "title": "Job Preparation",
+      "description": "Interviews, CV, job search and a portfolio project.",
+      "modules": [
+        { "slug": "57-frontend-interview", "title": "Frontend Interview" },
+        { "slug": "19-getting-hired", "title": "Getting Hired" },
+        { "slug": "58-frontend-final-project", "title": "Final Project: Frontend" }
+      ]
+    }
+  ]
+}

@@ -1,10 +1,11 @@
 import { Link, useParams } from 'react-router-dom';
-import { course, lessonPath } from '../content/loader';
+import { coursePath, lessonPath } from '../content/loader';
 import { useProgress } from '../features/progress/store';
 import { lessonStats, moduleStats } from '../features/progress/selectors';
 import { ProgressBar, StatusIcon, TrackTab, lessonIconStatus } from '../components/ui';
 import { formatModuleNumber } from '../lib/format';
 import { trackIndexOf } from '../app/tracks';
+import { useCourseForModule } from '../app/currentCourse';
 import { NotFound } from './NotFound';
 
 const FULL_PERCENT = 100;
@@ -14,18 +15,19 @@ export function ModulePage() {
   const { moduleSlug } = useParams();
   const tasks = useProgress((s) => s.tasks);
   const theoryRead = useProgress((s) => s.theoryRead);
-  const m = moduleSlug ? course.modulesBySlug.get(moduleSlug) : undefined;
-  if (!m) return <NotFound />;
+  const course = useCourseForModule(moduleSlug);
+  const m = moduleSlug ? course?.modulesBySlug.get(moduleSlug) : undefined;
+  if (!course || !m) return <NotFound />;
   const data = { tasks, theoryRead };
   const ms = moduleStats(m, data);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 lg:px-8">
-      <Link to="/" className="text-xs font-bold text-muted hover:text-fg">
-        ← Course map
+      <Link to={coursePath(course)} className="text-xs font-bold text-muted hover:text-fg">
+        ← {course.icon} {course.title} map
       </Link>
       <div className="mt-4">
-        <TrackTab index={trackIndexOf(m.slug)}>
+        <TrackTab index={trackIndexOf(course, m.slug)}>
           {m.trackTitle} · Module {formatModuleNumber(m.number)}
         </TrackTab>
       </div>

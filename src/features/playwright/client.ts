@@ -4,7 +4,7 @@ import { LAB_ROUTE, type LabRunResult, type LabStatus } from '../../../server/la
 
 const NOT_AVAILABLE: LabStatus = {
   ready: false,
-  message: 'The Playwright lab runs inside the local QA Academy server. Start the app with the QA Academy launcher (or npm run dev) and reload this page.',
+  message: 'The Playwright lab runs inside the local my-university server. Start the app with the launcher (or npm run dev) and reload this page.',
 };
 
 export async function fetchLabStatus(): Promise<LabStatus> {

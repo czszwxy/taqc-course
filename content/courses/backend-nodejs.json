@@ -1,0 +1,62 @@
+{
+  "title": "Backend Developer",
+  "subtitle": "Node.js + TypeScript",
+  "tagline": "Zero → Junior Node.js Developer",
+  "description": "HTTP, Git and SQL, TypeScript from zero, Node.js, REST APIs, databases with an ORM, authentication and security, backend testing, Docker and CI/CD. The HTTP, Git, SQL and TypeScript modules are shared with the other courses.",
+  "icon": "🗄️",
+  "status": "planned",
+  "order": 6,
+  "tracks": [
+    {
+      "id": "foundations",
+      "title": "Foundations",
+      "description": "HTTP and APIs, the command line and Git, SQL.",
+      "modules": [
+        { "slug": "08-http-apis-json", "title": "HTTP, REST APIs & JSON" },
+        { "slug": "09-cli-git-github", "title": "Command Line, Git & GitHub" },
+        { "slug": "10-sql-for-testers", "title": "SQL for Testers" }
+      ]
+    },
+    {
+      "id": "typescript",
+      "title": "TypeScript from Zero",
+      "description": "Programming basics, types and data, OOP and async code.",
+      "modules": [
+        { "slug": "11-ts-basics", "title": "Programming Basics with TypeScript" },
+        { "slug": "12-ts-types-data", "title": "TypeScript: Types & Working with Data" },
+        { "slug": "13-ts-oop-async", "title": "TypeScript: OOP, Modules & Async" }
+      ]
+    },
+    {
+      "id": "node",
+      "title": "Node.js Backend",
+      "description": "Node.js, REST APIs, databases, authentication and security.",
+      "modules": [
+        { "slug": "59-node-fundamentals", "title": "Node.js Fundamentals" },
+        { "slug": "60-rest-api", "title": "REST APIs with Express" },
+        { "slug": "61-databases-prisma", "title": "Databases & Prisma" },
+        { "slug": "62-auth-security", "title": "Authentication & Security" }
+      ]
+    },
+    {
+      "id": "quality-ops",
+      "title": "Testing & Delivery",
+      "description": "Automated tests, containers and CI/CD.",
+      "modules": [
+        { "slug": "14-first-automated-tests", "title": "Your First Automated Tests" },
+        { "slug": "63-backend-testing", "title": "Backend Testing" },
+        { "slug": "64-docker-ci", "title": "Docker & CI/CD" }
+      ]
+    },
+    {
+      "id": "job-prep",
+      "title": "Job Preparation",
+      "description": "Interviews, CV, job search and a portfolio project.",
+      "modules": [
+        { "slug": "65-backend-interview", "title": "Backend Developer Interview" },
+        { "slug": "19-getting-hired", "title": "Getting Hired" },
+        { "slug": "66-backend-final-project", "title": "Final Project: Node.js API" }
+      ]
+    }
+  ]
+}

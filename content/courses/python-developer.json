@@ -1,0 +1,65 @@
+{
+  "title": "Python Developer",
+  "subtitle": "Python + FastAPI + Django",
+  "tagline": "Zero → Junior Python Developer",
+  "description": "Python from zero and in depth, algorithms, databases and ORMs, REST APIs with FastAPI, Django, async code, testing with pytest, Docker and deployment. Python basics, pytest, Git, HTTP and SQL modules are shared with the other courses.",
+  "icon": "🧩",
+  "status": "planned",
+  "order": 4,
+  "tracks": [
+    {
+      "id": "python-from-zero",
+      "title": "Python from Zero",
+      "description": "The language, collections, functions, errors, classes and files.",
+      "modules": [
+        { "slug": "21-python-basics", "title": "Python Basics" },
+        { "slug": "22-python-collections", "title": "Python Collections" },
+        { "slug": "23-python-functions-errors", "title": "Functions, Modules & Errors" },
+        { "slug": "24-python-oop-files", "title": "OOP, Files & Project Setup" }
+      ]
+    },
+    {
+      "id": "developer-foundations",
+      "title": "Developer Foundations",
+      "description": "Tools and thinking every developer needs.",
+      "modules": [
+        { "slug": "09-cli-git-github", "title": "Command Line, Git & GitHub" },
+        { "slug": "39-python-in-depth", "title": "Python in Depth" },
+        { "slug": "40-algorithms", "title": "Algorithms & Data Structures" }
+      ]
+    },
+    {
+      "id": "web-backend",
+      "title": "Web Backend",
+      "description": "HTTP, databases, REST APIs and web frameworks.",
+      "modules": [
+        { "slug": "08-http-apis-json", "title": "HTTP, REST APIs & JSON" },
+        { "slug": "10-sql-for-testers", "title": "SQL for Testers" },
+        { "slug": "41-databases-orm", "title": "Databases & SQLAlchemy" },
+        { "slug": "42-fastapi", "title": "REST APIs with FastAPI" },
+        { "slug": "43-django", "title": "Django Basics" },
+        { "slug": "44-async-python", "title": "Async Python" }
+      ]
+    },
+    {
+      "id": "quality-ops",
+      "title": "Testing & Delivery",
+      "description": "Testing your code, containers and deployment.",
+      "modules": [
+        { "slug": "25-pytest-basics", "title": "pytest Basics" },
+        { "slug": "26-pytest-in-depth", "title": "pytest in Depth" },
+        { "slug": "45-docker-deploy", "title": "Docker & Deployment" }
+      ]
+    },
+    {
+      "id": "job-prep",
+      "title": "Job Preparation",
+      "description": "Interviews, CV, job search and a portfolio project.",
+      "modules": [
+        { "slug": "46-python-dev-interview", "title": "Python Developer Interview" },
+        { "slug": "19-getting-hired", "title": "Getting Hired" },
+        { "slug": "47-python-dev-final-project", "title": "Final Project: Python Backend" }
+      ]
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import { course, lessonPath, type CourseModule } from '../content/loader';
+import { coursePath, lessonPath, type Course, type CourseModule } from '../content/loader';
 import { useProgress } from '../features/progress/store';
 import { lessonStats } from '../features/progress/selectors';
 import { StatusIcon, TrackTab, lessonIconStatus } from '../components/ui';
@@ -14,14 +14,14 @@ function lessonLinkClass({ isActive }: { isActive: boolean }): string {
 }
 
 /** The current module's lessons — a notebook tab with a checklist. Shown next to lesson pages. */
-export function LessonMenu({ module: m }: { module: CourseModule }) {
+export function LessonMenu({ course, module: m }: { course: Course; module: CourseModule }) {
   const tasks = useProgress((s) => s.tasks);
   const theoryRead = useProgress((s) => s.theoryRead);
   const data = { tasks, theoryRead };
 
   return (
     <nav aria-label="Lessons in this module" className="text-[14px]">
-      <TrackTab index={trackIndexOf(m.slug)}>Module {formatModuleNumber(m.number)}</TrackTab>
+      <TrackTab index={trackIndexOf(course, m.slug)}>Module {formatModuleNumber(m.number)}</TrackTab>
       <div className="page rounded-tl-none p-3">
         <Link to={`/module/${m.slug}`} className="block px-2 font-display text-[1.05rem] font-bold leading-snug hover:text-accent-fg">
           {m.title}
@@ -47,16 +47,10 @@ export function LessonMenu({ module: m }: { module: CourseModule }) {
             );
           })}
         </ol>
-        <Link to="/" className="mt-3 block border-t border-dashed border-line px-2 pt-2 text-xs font-bold text-muted hover:text-fg">
-          ← Course map
+        <Link to={coursePath(course)} className="mt-3 block border-t border-dashed border-line px-2 pt-2 text-xs font-bold text-muted hover:text-fg">
+          ← {course.icon} {course.title} map
         </Link>
       </div>
     </nav>
   );
-}
-
-/** Module of a lesson id (`<module>/<lesson>`). */
-export function moduleOfLesson(lessonId: string): CourseModule | undefined {
-  const lesson = course.lessonsById.get(lessonId);
-  return lesson ? course.modulesBySlug.get(lesson.moduleSlug) : undefined;
 }

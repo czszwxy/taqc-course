@@ -40,6 +40,7 @@ const GENERATOR_SEEDS = Array.from({ length: GENERATOR_SEED_COUNT }, (_, i) => i
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const contentDir = path.join(root, 'content');
 const modulesDir = path.join(contentDir, 'modules');
+const coursesDir = path.join(contentDir, 'courses');
 const errors: string[] = [];
 const warnings: string[] = [];
 
@@ -371,7 +372,7 @@ interface FoundTask {
 
 function checkModuleFolder(moduleSlug: string, listed: Set<string>): void {
   const mDir = path.join(modulesDir, moduleSlug);
-  if (!listed.has(moduleSlug)) fail(mDir, 'not listed in content/course.json');
+  if (!listed.has(moduleSlug)) fail(mDir, 'not listed in any content/courses/*.json');
   const moduleFile = path.join(mDir, 'module.json');
   if (!fs.existsSync(moduleFile)) {
     fail(moduleFile, 'missing');
@@ -421,10 +422,26 @@ function checkLessonFolder(lDir: string): FoundTask[] {
   return found;
 }
 
+/** Validates every course outline and returns all module slugs the courses list. */
+function checkCourses(): Set<string> {
+  const files = fs.existsSync(coursesDir) ? fs.readdirSync(coursesDir).filter((f) => f.endsWith('.json')) : [];
+  if (files.length === 0) fail(coursesDir, 'no course outlines found');
+  const slugs = files.flatMap((f) => {
+    const file = path.join(coursesDir, f);
+    const r = courseSchema.safeParse(readJson(file));
+    if (!r.success) {
+      fail(file, formatZodError(r.error));
+      return [];
+    }
+    const own = r.data.tracks.flatMap((t) => t.modules.map((m) => m.slug));
+    duplicates(own).forEach((slug) => fail(file, `module "${slug}" is listed twice in this course`));
+    return own;
+  });
+  return new Set(slugs);
+}
+
 async function main(): Promise<void> {
-  const course = courseSchema.safeParse(readJson(path.join(contentDir, 'course.json')));
-  if (!course.success) fail(path.join(contentDir, 'course.json'), formatZodError(course.error));
-  const listed = new Set(course.success ? course.data.tracks.flatMap((t) => t.modules.map((m) => m.slug)) : []);
+  const listed = checkCourses();
 
   const moduleSlugs = dirs(modulesDir);
   moduleSlugs.forEach((m) => checkModuleFolder(m, listed));

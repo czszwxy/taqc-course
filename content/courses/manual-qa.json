@@ -1,0 +1,63 @@
+{
+  "title": "Manual QA Engineer",
+  "subtitle": "Testing without code",
+  "tagline": "Zero → Junior Manual QA",
+  "description": "Testing theory, test design and documentation, bug hunting on real pages, the web, APIs and SQL for testers, plus test management tools, mobile, accessibility and performance basics. Most modules are shared with the QA Automation courses and ready today.",
+  "icon": "🔍",
+  "status": "in-progress",
+  "order": 3,
+  "tracks": [
+    {
+      "id": "qa-fundamentals",
+      "title": "QA Fundamentals",
+      "description": "How testing works: principles, process, test design, documentation and bugs.",
+      "modules": [
+        { "slug": "01-intro-to-testing", "title": "Introduction to Testing" },
+        { "slug": "02-testing-types-levels", "title": "Testing Types & Levels" },
+        { "slug": "03-test-design", "title": "Test Design Techniques" },
+        { "slug": "04-test-documentation", "title": "Test Documentation" },
+        { "slug": "05-bugs-tracking", "title": "Bugs & Bug Tracking" }
+      ]
+    },
+    {
+      "id": "practical-qa",
+      "title": "Practical QA",
+      "description": "Hands-on testing and the tools of a working QA team.",
+      "modules": [
+        { "slug": "06-qa-practice-lab", "title": "QA Practice Lab" },
+        { "slug": "33-test-management", "title": "Test Management: Jira & TestRail" }
+      ]
+    },
+    {
+      "id": "tech-basics",
+      "title": "Tech Basics for Testers",
+      "description": "The web, APIs, SQL and the command line.",
+      "modules": [
+        { "slug": "07-how-the-web-works", "title": "How the Web Works" },
+        { "slug": "08-http-apis-json", "title": "HTTP, REST APIs & JSON" },
+        { "slug": "34-postman", "title": "API Testing with Postman" },
+        { "slug": "10-sql-for-testers", "title": "SQL for Testers" },
+        { "slug": "09-cli-git-github", "title": "Command Line, Git & GitHub" }
+      ]
+    },
+    {
+      "id": "specialized-testing",
+      "title": "Specialized Testing",
+      "description": "Mobile apps, accessibility and usability, performance and security basics.",
+      "modules": [
+        { "slug": "35-mobile-testing", "title": "Mobile Testing" },
+        { "slug": "36-accessibility-usability", "title": "Accessibility & Usability Testing" },
+        { "slug": "37-performance-security-basics", "title": "Performance & Security Basics" }
+      ]
+    },
+    {
+      "id": "job-prep",
+      "title": "Job Preparation",
+      "description": "Interviews, CV, job search and a portfolio project.",
+      "modules": [
+        { "slug": "19-getting-hired", "title": "Getting Hired" },
+        { "slug": "38-manual-qa-final-project", "title": "Final Project: Manual QA" }
+      ]
+    }
+  ]
+}

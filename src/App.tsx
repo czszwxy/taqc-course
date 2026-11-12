@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Layout } from './app/Layout';
-import { Dashboard } from './pages/Dashboard';
+import { CatalogPage } from './pages/CatalogPage';
+import { CoursePage } from './pages/CoursePage';
 import { ModulePage } from './pages/ModulePage';
 import { LessonPage } from './pages/LessonPage';
 import { TaskPage } from './pages/TaskPage';
@@ -46,7 +47,8 @@ export default function App() {
       <Route path="/playground/help-widget" element={<HelpWidgetPage />} />
       <Route path="/playground/terms" element={<TermsPage />} />
       <Route element={<Layout />}>
-        <Route index element={<Dashboard />} />
+        <Route index element={<CatalogPage />} />
+        <Route path="course/:courseId" element={<CoursePage />} />
         <Route path="module/:moduleSlug" element={<ModulePage />} />
         <Route path="learn/:moduleSlug/:lessonSlug" element={<LessonPage />} />
         <Route path="learn/:moduleSlug/:lessonSlug/:taskSlug" element={<TaskPage />} />

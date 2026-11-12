@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, type ComponentType } from 'react';
 import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
-import { course, lessonPath, neighbourLessons, taskPath, type CourseLesson, type CourseTask } from '../content/loader';
+import { lessonPath, lessonsById, neighbourLessons, taskPath, tasksById, type Course, type CourseLesson, type CourseTask } from '../content/loader';
+import { useCourseForModule } from '../app/currentCourse';
 import { TASK_TYPE_LABEL, type Task } from '../content/schema';
 import { useProgress } from '../features/progress/store';
 import { taskStatus } from '../features/progress/selectors';
@@ -39,10 +40,10 @@ const TASK_VIEWS: Record<Task['type'], ComponentType<TaskViewProps>> = {
 /** Task types whose "similar task" is generated from a new seed (re-sampled / re-shuffled) instead of a variant folder. */
 const SEEDED_TYPES: ReadonlySet<Task['type']> = new Set<Task['type']>(['quiz', 'value-set', 'classify', 'order']);
 
-function nextTarget(lesson: CourseLesson, main: CourseTask): { to: string; label: string } | undefined {
+function nextTarget(lesson: CourseLesson, main: CourseTask, course: Course | undefined): { to: string; label: string } | undefined {
   const nextTask = lesson.tasks[lesson.tasks.indexOf(main) + 1];
   if (nextTask) return { to: taskPath(nextTask), label: 'Next task' };
-  const { next: nextLesson } = neighbourLessons(lesson.id);
+  const { next: nextLesson } = neighbourLessons(lesson.id, course);
   if (nextLesson) return { to: lessonPath(nextLesson), label: 'Next lesson' };
   return undefined;
 }
@@ -54,8 +55,9 @@ export function TaskPage() {
   const setLast = useProgress((s) => s.setLast);
   const tasks = useProgress((s) => s.tasks);
 
-  const main = course.tasksById.get(`${moduleSlug}/${lessonSlug}/${taskSlug}`);
-  const lesson = main ? course.lessonsById.get(main.lessonId) : undefined;
+  const main = tasksById.get(`${moduleSlug}/${lessonSlug}/${taskSlug}`);
+  const lesson = main ? lessonsById.get(main.lessonId) : undefined;
+  const course = useCourseForModule(lesson?.moduleSlug);
   const vSlug = params.get('v');
   const seed = Number(params.get('seed') ?? '0') || 0;
   const active = main && vSlug ? (main.variants.find((v) => v.slug === vSlug) ?? main) : main;
@@ -80,7 +82,7 @@ export function TaskPage() {
   }
 
   const idx = lesson.tasks.indexOf(main);
-  const next = nextTarget(lesson, main);
+  const next = nextTarget(lesson, main, course);
 
   const status = taskStatus(main, tasks);
   const variantIndex = group.indexOf(active);

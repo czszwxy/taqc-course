@@ -1,6 +1,6 @@
-# QA Academy — project guide for Claude
+# my-university — project guide for Claude
 
-Self-study web app that takes a learner from zero to **Trainee QA Automation Engineer** (manual QA → tech basics → TypeScript → Playwright → job prep). Single learner, runs locally, no backend, no accounts, no paid APIs.
+Self-study web app (formerly "QA Academy") with a **catalog of IT professions**: the learner picks a course on the main menu (`/`) and goes from zero to their first job. Courses: QA Automation Engineer — TypeScript + Playwright (complete, 20 modules), QA Automation Engineer — Python + pytest + Playwright (being written, Python modules first), Manual QA Engineer, Python Developer, Frontend Developer, Backend Developer (Node.js). Single learner, runs locally, no backend, no accounts, no paid APIs. The owner may sell the courses later: write all content from official docs and own knowledge — **never** copy or paraphrase other course providers' materials (e.g. Mate Academy).
 
 - **UI language:** English. **Lesson content:** Ukrainian, with English technical terms (`string`, test case, severity…). Code identifiers, test names and model answers for QA artifacts in English.
 - Owner is a beginner: explanations must assume zero background, be concrete, QA-flavoured.
@@ -44,7 +44,7 @@ Vite 6 + React 19 + TypeScript, React Router 7, Tailwind CSS v4 (CSS-variable to
 ```
 content/                     ← ALL course content (data only, no code changes needed to add lessons)
   databases/<name>.sql       ← SQLite setup scripts for sql tasks (gadgetly.sql = clean shop data; gadgetly-anomalies.sql = defects applied on top)
-  course.json                ← tracks → modules (slug, title, planned lesson titles). Modules without a folder show as "coming soon".
+  courses/<id>.json          ← one profession each (catalog fields + tracks → modules). Modules are a SHARED POOL: a course lists module slugs; one module (Git, SQL, testing theory, Getting Hired, Python basics…) can be in several courses and its progress counts in all. A module entry needs `lessons` (planned titles) only when the module is not built yet. Modules without a folder show as "coming soon". Module numbers shown in the UI are positions inside the course; folder prefixes (`21-…`) are pool ids (unique, two digits).
   modules/<NN-slug>/module.json
   modules/<NN-slug>/lessons/<NN-slug>/lesson.json   ← title, minutes, summary, resources[]
   modules/<NN-slug>/lessons/<NN-slug>/lesson.md     ← theory (Markdown, callouts)
@@ -75,7 +75,7 @@ scripts/validate-content.ts  ← Node; reuses compiler/harness/mutation/forms/ge
 lab/                         ← real Playwright: playwright.config.ts, tests/ (learner practice, example.spec.ts), .runs/ (temporary graded runs, gitignored)
 ```
 
-IDs come from folder names: lesson id `11-ts-basics/02-variables-and-types`, task id `<lessonId>/<task-folder>`. **Never rename content folders after release** — progress in localStorage is keyed by these ids. Numeric prefixes (`01-`, `02-`) define order; lesson number N maps to `course.json` planned lesson N.
+IDs come from folder names: lesson id `11-ts-basics/02-variables-and-types`, task id `<lessonId>/<task-folder>`. **Never rename content folders after release** — progress in localStorage is keyed by these ids. Numeric prefixes (`01-`, `02-`) define order; lesson number N maps to planned lesson N of the module in the course outline.
 
 ## Content format
 
@@ -152,7 +152,8 @@ Pages in `src/playground/`, registered in `registry.ts`, routed standalone (no a
 - Table/given cells and other Markdown fields: wrap emails in backticks, otherwise they render as mailto links.
 
 ## Progress & UX rules
-- Progress in localStorage (`qa-academy:progress`, `qa-academy:settings`); export/import JSON on Settings page.
+- Progress in localStorage (`my-university:progress`, `my-university:settings` — copied once from the old `qa-academy:*` keys, which stay as a backup; settings also hold `currentCourseId`); export/import JSON on Settings page (imports old `qa-academy` files too).
+- Routes: `/` catalog (main menu), `/course/:id` course map (sets the current course), `/module/:slug`, `/learn/:module/:lesson[/:task]` (module-centric; pages use `useCourseForModule` — the current course if it lists the module, otherwise the first course that does).
 - Lesson complete = theory marked read + all non-optional main tasks solved (solving any variant counts for the group).
 - Solution reveal: code after 3 failed attempts (or confirm), test-case model after 2 (or confirm); bug-report "reveal remaining bugs" with confirm.
 - "Copy for review" button builds a Markdown bundle the learner can paste to Claude for detailed feedback (no API calls from the app).
@@ -181,13 +182,13 @@ Pages in `src/playground/`, registered in `registry.ts`, routed standalone (no a
 - ✅ Module 19 "Getting Hired" — 12 lessons (expanded from research of real junior QA interviews: DOU 250+ questions, junior bar, job-search articles): question banks per topic (theory, JS/TS, Playwright, web/HTTP/API, SQL/Git/Agile, final mixed exam), practical on-the-spot tasks, English, job search, Claude mock interview. Original 6 lessons: mock-interview quizzes per lesson, written answers (theory differences, "test an elevator", your framework, CV, STAR, tell me about yourself), 3 TypeScript live-coding tasks, a Playwright live-coding task on login, and a 4-part take-home simulation on the account page (plan → bug hunt with a 7-bug catalog → graded automation → README). The account-page bug answers live only in lesson 04 — keep them out of other modules.
 - ✅ Module 20 "Final Portfolio Project" — 5 lessons, 18 tasks on the new Gadgetly Checkout page + checkout API (12 bugs): brief/requirements review/test plan, checklist, decision table (fee × discount), boundary test case, a 12-bug hunt (UI + API), then 5 graded Playwright milestones (page object, fixtures, quote API tests, API + UI flows with cleanup, an 8-mutant regression suite), and the portfolio track: own repo on the public Toolshop demo (practicesoftwaretesting.com + API/Swagger) with CI, README, final review. Checkout bug answers live only in module 20 lesson 02.
 - Course outline complete (modules 01–20). Next: owner feedback and polish.
-- Full outline lives in `content/course.json`.
+- Outlines live in `content/courses/*.json` (status `available` / `in-progress` / `planned`, `order` in the catalog).
 
 ## Git
 Repository on branch `main`, remote `origin` = https://github.com/czszwxy/taqc-course.git (push after each committed batch). Commit after every validated batch (`npm run validate` green) with a message like `Add module 03 Test Design Techniques`, so the owner can always roll back. Never rewrite history (no reset --hard / force) without the owner's explicit request. `.gitattributes` keeps `*.cmd` in CRLF.
 
 ## Workflow for a new content batch
 1. Read this file and `src/content/schema.ts`; look at one existing lesson as a template.
-2. Create `module.json`, lessons, tasks. Keep the course.json lesson titles in sync (lesson number = position).
+2. Create `module.json`, lessons, tasks. Keep the course outline(s) in `content/courses/` in sync (lesson number = position; add the module to every course that should include it).
 3. `npm run validate` until green; `npm run typecheck` if code changed.
 4. Spot-check in the browser (`npm run dev`).

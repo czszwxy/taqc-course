@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
-import { course, lessonPath, loadLessonMarkdown, neighbourLessons, taskPath, type CourseLesson } from '../content/loader';
+import { lessonPath, lessonsById, loadLessonMarkdown, neighbourLessons, taskPath, type Course, type CourseLesson } from '../content/loader';
 import { TASK_TYPE_LABEL } from '../content/schema';
 import { useProgress } from '../features/progress/store';
 import { lessonStats, taskStatus } from '../features/progress/selectors';
@@ -9,6 +9,7 @@ import { Empty, ProgressBar, StatusIcon } from '../components/ui';
 import { useAsync } from '../lib/useAsync';
 import { formatModuleNumber } from '../lib/format';
 import { LessonMenu } from '../app/LessonMenu';
+import { useCourseForModule } from '../app/currentCourse';
 import { NotFound } from './NotFound';
 
 type Tab = 'theory' | 'resources' | 'practice';
@@ -18,7 +19,8 @@ export function LessonPage() {
   const [params, setParams] = useSearchParams();
   const location = useLocation();
   const setLast = useProgress((s) => s.setLast);
-  const lesson = course.lessonsById.get(`${moduleSlug}/${lessonSlug}`);
+  const lesson = lessonsById.get(`${moduleSlug}/${lessonSlug}`);
+  const course = useCourseForModule(lesson?.moduleSlug);
   const tab = (['theory', 'resources', 'practice'].includes(params.get('tab') ?? '') ? params.get('tab') : 'theory') as Tab;
 
   useEffect(() => {
@@ -30,13 +32,14 @@ export function LessonPage() {
   }, [lesson?.id, tab]);
 
   if (!lesson) return <NotFound />;
-  const m = course.modulesBySlug.get(lesson.moduleSlug)!;
+  const m = course?.modulesBySlug.get(lesson.moduleSlug);
+  if (!course || !m) return <NotFound />;
 
   return (
     <div className="mx-auto flex max-w-6xl gap-8 px-4 py-6 lg:px-8 lg:py-8">
       <aside className="hidden w-64 shrink-0 lg:block">
         <div className="sticky top-6">
-          <LessonMenu module={m} />
+          <LessonMenu course={course} module={m} />
         </div>
       </aside>
 
@@ -44,7 +47,7 @@ export function LessonPage() {
         <details className="mb-5 lg:hidden">
           <summary className="btn btn-secondary btn-sm cursor-pointer list-none">☰ Lessons in this module</summary>
           <div className="mt-3">
-            <LessonMenu module={m} />
+            <LessonMenu course={course} module={m} />
           </div>
         </details>
 
@@ -66,7 +69,7 @@ export function LessonPage() {
           {tab === 'practice' && <PracticeTab lesson={lesson} />}
         </div>
 
-        <LessonFooter lesson={lesson} />
+        <LessonFooter lesson={lesson} course={course} />
       </div>
     </div>
   );
@@ -208,8 +211,8 @@ function PracticeTab({ lesson }: { lesson: CourseLesson }) {
   );
 }
 
-function LessonFooter({ lesson }: { lesson: CourseLesson }) {
-  const { prev, next } = neighbourLessons(lesson.id);
+function LessonFooter({ lesson, course }: { lesson: CourseLesson; course: Course }) {
+  const { prev, next } = neighbourLessons(lesson.id, course);
   return (
     <div className="mt-12 flex items-center justify-between gap-3 border-t border-line pt-5 text-sm">
       {prev ? (

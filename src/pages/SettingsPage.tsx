@@ -1,8 +1,21 @@
 import { useRef, useState } from 'react';
-import { course } from '../content/loader';
+import { catalog } from '../content/loader';
+import { useCurrentCourse } from '../app/currentCourse';
 import { snapshotProgress, useProgress, useSettings, type ProgressData } from '../features/progress/store';
 import { courseStats } from '../features/progress/selectors';
 import { Callout } from '../components/ui';
+
+/** Progress files carry the app id; files exported before the rename say qa-academy. */
+const APP_ID = 'my-university';
+const IMPORTABLE_APPS = new Set([APP_ID, 'qa-academy']);
+const JSON_INDENT = 2;
+/** Length of the date part of an ISO timestamp: "2026-11-12". */
+const ISO_DATE_LENGTH = 10;
+
+/** Lets the same file be chosen again after an import (the input keeps its last value otherwise). */
+function clearFileInput(input: HTMLInputElement): void {
+  input.value = '';
+}
 
 export function SettingsPage() {
   const { theme, setTheme } = useSettings();
@@ -12,16 +25,18 @@ export function SettingsPage() {
   const reset = useProgress((s) => s.reset);
   const fileRef = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState<{ tone: 'ok' | 'bad'; text: string } | null>(null);
-  const stats = courseStats(course, { tasks, theoryRead });
+  const current = useCurrentCourse();
+  const stats = current ? courseStats(current, { tasks, theoryRead }) : undefined;
+  const availableModules = new Set(catalog.courses.flatMap((c) => c.modules.filter((m) => m.available).map((m) => m.slug))).size;
 
   const exportProgress = () => {
-    const blob = new Blob([JSON.stringify({ app: 'qa-academy', version: 1, exportedAt: new Date().toISOString(), data: snapshotProgress() }, null, 2)], {
+    const blob = new Blob([JSON.stringify({ app: APP_ID, version: 1, exportedAt: new Date().toISOString(), data: snapshotProgress() }, null, JSON_INDENT)], {
       type: 'application/json',
     });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `qa-academy-progress-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = `my-university-progress-${new Date().toISOString().slice(0, ISO_DATE_LENGTH)}.json`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -29,7 +44,7 @@ export function SettingsPage() {
   const onImport = async (file: File) => {
     try {
       const parsed = JSON.parse(await file.text()) as { app?: string; data?: ProgressData };
-      if (parsed.app !== 'qa-academy' || !parsed.data || typeof parsed.data.tasks !== 'object') throw new Error('This is not a QA Academy progress file.');
+      if (!IMPORTABLE_APPS.has(parsed.app ?? '') || !parsed.data || typeof parsed.data.tasks !== 'object') throw new Error('This is not a my-university progress file.');
       if (!confirm('Replace your current progress with the imported file?')) return;
       importData(parsed.data);
       setMessage({ tone: 'ok', text: 'Progress imported.' });
@@ -56,8 +71,13 @@ export function SettingsPage() {
       <section className="card mt-4 p-5">
         <h2 className="font-display text-lg font-bold">Your progress</h2>
         <p className="mt-1 text-sm text-muted">
-          {stats.lessonsCompleted}/{stats.lessonsTotal} lessons completed · {stats.tasksSolved}/{stats.tasksTotal} tasks solved. Progress is
-          stored only in this browser (localStorage). Export it regularly as a backup or to move to another computer.
+          {current && stats && (
+            <>
+              {current.icon} {current.title} ({current.subtitle}): {stats.lessonsCompleted}/{stats.lessonsTotal} lessons completed ·{' '}
+              {stats.tasksSolved}/{stats.tasksTotal} tasks solved.{' '}
+            </>
+          )}
+          Progress of all courses is stored only in this browser (localStorage). Export it regularly as a backup or to move to another computer.
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
           <button className="btn btn-primary" onClick={exportProgress}>
@@ -74,7 +94,7 @@ export function SettingsPage() {
             onChange={(e) => {
               const f = e.target.files?.[0];
               if (f) void onImport(f);
-              e.target.value = '';
+              clearFileInput(e.currentTarget);
             }}
           />
           <button
@@ -99,12 +119,12 @@ export function SettingsPage() {
       <section className="card mt-4 p-5">
         <h2 className="font-display text-lg font-bold">Content status</h2>
         <p className="mt-1 text-sm text-muted">
-          {course.modules.filter((m) => m.available).length} of {course.modules.length} modules available, {course.lessons.length} lessons,{' '}
-          {course.tasksById.size} task files (including similar tasks).
+          {catalog.courses.length} courses, {availableModules} modules ready, {catalog.lessonsById.size} lessons, {catalog.tasksById.size} task files (including similar
+          tasks).
         </p>
-        {course.errors.length > 0 ? (
+        {catalog.errors.length > 0 ? (
           <ul className="mt-3 list-disc space-y-1 pl-5 font-mono text-xs text-bad">
-            {course.errors.map((e) => (
+            {catalog.errors.map((e) => (
               <li key={e}>{e}</li>
             ))}
           </ul>

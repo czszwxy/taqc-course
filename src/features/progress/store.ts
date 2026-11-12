@@ -1,6 +1,28 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+/** localStorage keys. The app was called "QA Academy" before it became my-university. */
+export const STORAGE_KEYS = { progress: 'my-university:progress', settings: 'my-university:settings' } as const;
+const LEGACY_STORAGE_KEYS: Record<string, string> = {
+  'qa-academy:progress': STORAGE_KEYS.progress,
+  'qa-academy:settings': STORAGE_KEYS.settings,
+};
+
+/** Copies progress saved under the old QA Academy keys once (the old keys stay as a backup). */
+function migrateLegacyStorage(): void {
+  try {
+    Object.entries(LEGACY_STORAGE_KEYS)
+      .filter(([, to]) => localStorage.getItem(to) === null)
+      .forEach(([from, to]) => {
+        const saved = localStorage.getItem(from);
+        if (saved !== null) localStorage.setItem(to, saved);
+      });
+  } catch {
+    /* storage unavailable — nothing to migrate */
+  }
+}
+migrateLegacyStorage();
+
 export interface TaskProgress {
   status: 'attempted' | 'solved';
   attempts: number;
@@ -95,7 +117,7 @@ export const useProgress = create<ProgressData & ProgressActions>()(
 
       reset: () => set({ ...emptyProgress(), last: undefined }),
     }),
-    { name: 'qa-academy:progress', version: 1 },
+    { name: STORAGE_KEYS.progress, version: 1 },
   ),
 );
 
@@ -110,8 +132,11 @@ export type Theme = 'dark' | 'light';
 
 interface SettingsState {
   theme: Theme;
+  /** The course (profession) the learner is studying: course maps, lesson menus and "next lesson" follow it. */
+  currentCourseId?: string;
   setTheme: (t: Theme) => void;
   toggleTheme: () => void;
+  setCurrentCourse: (id: string) => void;
 }
 
 export const useSettings = create<SettingsState>()(
@@ -120,7 +145,8 @@ export const useSettings = create<SettingsState>()(
       theme: 'dark',
       setTheme: (theme) => set({ theme }),
       toggleTheme: () => set((s) => ({ theme: s.theme === 'dark' ? 'light' : 'dark' })),
+      setCurrentCourse: (currentCourseId) => set({ currentCourseId }),
     }),
-    { name: 'qa-academy:settings', version: 1 },
+    { name: STORAGE_KEYS.settings, version: 1 },
   ),
 );

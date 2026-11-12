@@ -1,0 +1,211 @@
+{
+  "title": "QA Automation Engineer",
+  "subtitle": "Python + pytest + Playwright",
+  "tagline": "Zero → Trainee QA Automation (Python)",
+  "description": "The same QA foundation as the TypeScript track, then Python from zero, pytest, Playwright for Python, API testing with requests, CI and a Python portfolio project. Shared modules (testing theory, web, HTTP, Git, SQL, getting hired) count in both QA courses.",
+  "icon": "🐍",
+  "status": "in-progress",
+  "order": 2,
+  "tracks": [
+    {
+      "id": "qa-fundamentals",
+      "title": "QA Fundamentals",
+      "description": "How testing works: principles, process, test design, documentation and bugs.",
+      "modules": [
+        { "slug": "01-intro-to-testing", "title": "Introduction to Testing" },
+        { "slug": "02-testing-types-levels", "title": "Testing Types & Levels" },
+        { "slug": "03-test-design", "title": "Test Design Techniques" },
+        { "slug": "04-test-documentation", "title": "Test Documentation" },
+        { "slug": "05-bugs-tracking", "title": "Bugs & Bug Tracking" }
+      ]
+    },
+    {
+      "id": "practical-qa",
+      "title": "Practical QA",
+      "description": "Hands-on testing of real pages with intentional bugs.",
+      "modules": [{ "slug": "06-qa-practice-lab", "title": "QA Practice Lab" }]
+    },
+    {
+      "id": "tech-basics",
+      "title": "Tech Basics for Testers",
+      "description": "The web, HTTP and APIs, the command line, Git and SQL.",
+      "modules": [
+        { "slug": "07-how-the-web-works", "title": "How the Web Works" },
+        { "slug": "08-http-apis-json", "title": "HTTP, REST APIs & JSON" },
+        { "slug": "09-cli-git-github", "title": "Command Line, Git & GitHub" },
+        { "slug": "10-sql-for-testers", "title": "SQL for Testers" }
+      ]
+    },
+    {
+      "id": "python-from-zero",
+      "title": "Python from Zero",
+      "description": "Python for test automation: the language, collections, functions, errors, classes and files.",
+      "modules": [
+        {
+          "slug": "21-python-basics",
+          "title": "Python Basics",
+          "lessons": [
+            "Python for testers & your first program",
+            "Variables and data types",
+            "Operators and expressions",
+            "Strings and f-strings",
+            "Conditions",
+            "Loops: for and while",
+            "Functions",
+            "Reading tracebacks & debugging"
+          ]
+        },
+        {
+          "slug": "22-python-collections",
+          "title": "Python Collections",
+          "lessons": [
+            "Lists",
+            "Tuples and unpacking",
+            "Dictionaries",
+            "Sets",
+            "Comprehensions",
+            "Sorting and key functions",
+            "Nested data (JSON-like structures)"
+          ]
+        },
+        {
+          "slug": "23-python-functions-errors",
+          "title": "Functions, Modules & Errors",
+          "lessons": [
+            "Function parameters: defaults, *args, **kwargs",
+            "Scope and closures",
+            "Lambdas and built-in helpers (map, filter, any, all)",
+            "Modules, imports and the standard library",
+            "Exceptions: try, except, raise",
+            "Type hints",
+            "Iterators and generators"
+          ]
+        },
+        {
+          "slug": "24-python-oop-files",
+          "title": "OOP, Files & Project Setup",
+          "lessons": [
+            "Classes and objects",
+            "Inheritance and composition",
+            "Dataclasses",
+            "Special methods (__eq__, __repr__, __str__)",
+            "Files and pathlib",
+            "JSON and CSV",
+            "Virtual environments, pip and project structure"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "automation-python",
+      "title": "Test Automation with Python",
+      "description": "pytest, Playwright for Python, API testing and CI.",
+      "modules": [
+        {
+          "slug": "25-pytest-basics",
+          "title": "pytest Basics",
+          "lessons": [
+            "Why pytest",
+            "Your first tests with assert",
+            "Running pytest and reading the output",
+            "Organizing tests",
+            "Testing exceptions and floats (pytest.raises, approx)",
+            "Tests that catch bugs"
+          ]
+        },
+        {
+          "slug": "26-pytest-in-depth",
+          "title": "pytest in Depth",
+          "lessons": [
+            "Fixtures",
+            "Fixture scopes and teardown with yield",
+            "conftest.py and sharing fixtures",
+            "Parametrization",
+            "Markers and selecting tests",
+            "Mocking with monkeypatch and unittest.mock",
+            "Plugins and reports (pytest-html, xdist)"
+          ]
+        },
+        {
+          "slug": "27-playwright-python-basics",
+          "title": "Playwright for Python: Basics",
+          "lessons": [
+            "Setting up pytest-playwright",
+            "Your first UI test with the page fixture",
+            "Locators",
+            "Actions",
+            "Assertions with expect",
+            "Auto-waiting and flaky tests",
+            "Codegen, trace viewer and debugging"
+          ]
+        },
+        {
+          "slug": "28-playwright-python-practice",
+          "title": "Playwright for Python in Practice",
+          "lessons": [
+            "Page Object Model in Python",
+            "Fixtures for pages and test data",
+            "Authentication and storage state",
+            "Network mocking with page.route",
+            "Dialogs, frames and new tabs",
+            "Data-driven tests with parametrize",
+            "Parallel runs and configuration"
+          ]
+        },
+        {
+          "slug": "29-api-testing-python",
+          "title": "API Testing with Python",
+          "lessons": [
+            "HTTP requests with requests",
+            "Checking status, headers and JSON",
+            "Schema validation with pydantic",
+            "CRUD tests with fixtures and cleanup",
+            "API testing with Playwright APIRequestContext",
+            "Combining API and UI"
+          ]
+        },
+        {
+          "slug": "30-ci-python-tests",
+          "title": "CI & Framework for Python Tests",
+          "lessons": [
+            "Project structure and pytest configuration",
+            "Settings and environment variables",
+            "Reports: HTML and Allure",
+            "GitHub Actions for pytest and Playwright",
+            "Flaky tests and retries"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "job-prep",
+      "title": "Job Preparation",
+      "description": "Python interview practice, CV, job search and a Python portfolio project.",
+      "modules": [
+        {
+          "slug": "31-python-qa-interview",
+          "title": "Python QA Interview",
+          "lessons": [
+            "Python interview questions",
+            "Python live coding",
+            "pytest and Playwright interview questions",
+            "A Python take-home assignment",
+            "Telling about your Python framework"
+          ]
+        },
+        { "slug": "19-getting-hired", "title": "Getting Hired" },
+        {
+          "slug": "32-python-final-project",
+          "title": "Final Project: Python",
+          "lessons": [
+            "Project brief and test plan",
+            "Checklist, test cases and bug reports",
+            "UI framework with pytest and Playwright",
+            "API tests with Python",
+            "CI, README and publishing"
+          ]
+        }
+      ]
+    }
+  ]
+}

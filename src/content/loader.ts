@@ -1,15 +1,21 @@
-import courseJson from '../../content/course.json';
 import {
   courseSchema,
   formatZodError,
   lessonSchema,
   moduleSchema,
   taskSchema,
+  type CourseFile,
+  type CourseStatus,
   type Resource,
   type Task,
 } from './schema';
 
-/* Content is discovered from the file system: adding a folder is enough, no registry edits. */
+/*
+ * The loader reads all content from these folders — adding a folder is enough, no registry edits.
+ * content/modules/   — the shared module pool (lessons, tasks)
+ * content/courses/   — one JSON outline per profession; a course lists the module slugs it uses
+ */
+const courseFiles = import.meta.glob<unknown>('/content/courses/*.json', { eager: true, import: 'default' });
 const moduleFiles = import.meta.glob<unknown>('/content/modules/*/module.json', { eager: true, import: 'default' });
 const lessonFiles = import.meta.glob<unknown>('/content/modules/*/lessons/*/lesson.json', { eager: true, import: 'default' });
 const taskFiles = import.meta.glob<unknown>('/content/modules/*/lessons/*/tasks/*/task.json', {
@@ -67,6 +73,7 @@ export interface PlannedLesson {
   lesson?: CourseLesson;
 }
 
+/** A module as it appears in one course (its number is the position in that course). */
 export interface CourseModule {
   slug: string;
   number: number;
@@ -88,63 +95,84 @@ export interface CourseTrack {
 }
 
 export interface Course {
+  /** File name of content/courses/<id>.json — stable, used in URLs (/course/<id>). */
+  id: string;
   title: string;
+  subtitle: string;
+  tagline: string;
+  description: string;
+  icon: string;
+  status: CourseStatus;
+  order: number;
   tracks: CourseTrack[];
   modules: CourseModule[];
   /** All available lessons in course order. */
   lessons: CourseLesson[];
+  modulesBySlug: Map<string, CourseModule>;
+}
+
+export interface Catalog {
+  /** Courses in catalog order. */
+  courses: Course[];
+  coursesById: Map<string, Course>;
   lessonsById: Map<string, CourseLesson>;
   tasksById: Map<string, CourseTask>;
-  modulesBySlug: Map<string, CourseModule>;
   errors: string[];
+}
+
+interface ModuleMeta {
+  title: string;
+  description: string;
+  goals: string[];
+}
+
+interface ContentIndex {
+  moduleMeta: Map<string, ModuleMeta>;
+  lessonsByModule: Map<string, CourseLesson[]>;
+  lessonsById: Map<string, CourseLesson>;
+  tasksById: Map<string, CourseTask>;
 }
 
 const leadingNumber = (slug: string) => parseInt(slug, 10) || 0;
 const bySlug = <T extends { slug: string }>(a: T, b: T) => a.slug.localeCompare(b.slug);
+const JSON_EXT = '.json';
+const TS_EXT = '.ts';
+/** "/content/courses/manual-qa.json" → "manual-qa" (the glob only returns .json files). */
+const fileName = (path: string) => path.slice(path.lastIndexOf('/') + 1, -JSON_EXT.length);
 
-function buildCourse(): Course {
-  const errors: string[] = [];
+/** The course shown first and used when nothing else is selected. */
+export const DEFAULT_COURSE_ID = 'qa-automation-ts';
 
-  const parsedCourse = courseSchema.safeParse(courseJson);
-  if (!parsedCourse.success) errors.push(`content/course.json: ${formatZodError(parsedCourse.error)}`);
-  const courseData = parsedCourse.success ? parsedCourse.data : { title: 'QA Academy', tracks: [] };
-
-  const moduleMeta = new Map<string, { title: string; description: string; goals: string[] }>();
-  for (const [path, raw] of Object.entries(moduleFiles)) {
-    const slug = path.split('/')[3];
+function indexContent(errors: string[]): ContentIndex {
+  const moduleMeta = new Map<string, ModuleMeta>();
+  Object.entries(moduleFiles).forEach(([path, raw]) => {
     const r = moduleSchema.safeParse(raw);
-    if (r.success) moduleMeta.set(slug, r.data);
+    if (r.success) moduleMeta.set(path.split('/')[3] ?? '', r.data);
     else errors.push(`${path}: ${formatZodError(r.error)}`);
-  }
+  });
 
   const lessonsByModule = new Map<string, CourseLesson[]>();
   const lessonsById = new Map<string, CourseLesson>();
-  for (const [path, raw] of Object.entries(lessonFiles)) {
-    const parts = path.split('/');
-    const m = parts[3];
-    const l = parts[5];
+  Object.entries(lessonFiles).forEach(([path, raw]) => {
+    const [, , , m = '', , l = ''] = path.split('/');
     const r = lessonSchema.safeParse(raw);
     if (!r.success) {
       errors.push(`${path}: ${formatZodError(r.error)}`);
-      continue;
+      return;
     }
     const lesson: CourseLesson = { id: `${m}/${l}`, moduleSlug: m, slug: l, number: leadingNumber(l), ...r.data, tasks: [] };
     lessonsById.set(lesson.id, lesson);
-    const list = lessonsByModule.get(m) ?? [];
-    list.push(lesson);
-    lessonsByModule.set(m, list);
-  }
+    lessonsByModule.set(m, [...(lessonsByModule.get(m) ?? []), lesson]);
+  });
+  lessonsByModule.forEach((list) => list.sort(bySlug));
 
   const tasksById = new Map<string, CourseTask>();
-  for (const [path, raw] of Object.entries(taskFiles)) {
-    const parts = path.split('/');
-    const m = parts[3];
-    const l = parts[5];
-    const t = parts[7];
+  Object.entries(taskFiles).forEach(([path, raw]) => {
+    const [, , , m = '', , l = '', , t = ''] = path.split('/');
     const r = taskSchema.safeParse(raw);
     if (!r.success) {
       errors.push(`${path}: ${formatZodError(r.error)}`);
-      continue;
+      return;
     }
     const lessonId = `${m}/${l}`;
     const id = `${lessonId}/${t}`;
@@ -160,45 +188,52 @@ function buildCourse(): Course {
       mainId: r.data.variantOf ? `${lessonId}/${r.data.variantOf}` : id,
       variants: [],
     });
-  }
+  });
 
-  for (const ct of tasksById.values()) {
-    if (!ct.isVariant) continue;
-    const main = tasksById.get(ct.mainId);
-    if (!main || main.isVariant) errors.push(`${ct.id}: variantOf "${ct.task.variantOf}" does not point to a main task`);
-    else main.variants.push(ct);
-  }
+  const all = [...tasksById.values()];
+  all
+    .filter((ct) => ct.isVariant)
+    .forEach((ct) => {
+      const main = tasksById.get(ct.mainId);
+      if (!main || main.isVariant) errors.push(`${ct.id}: variantOf "${ct.task.variantOf}" does not point to a main task`);
+      else main.variants.push(ct);
+    });
+  all.forEach((ct) => ct.variants.sort(bySlug));
+  all
+    .filter((ct) => !ct.isVariant)
+    .forEach((ct) => {
+      const lesson = lessonsById.get(ct.lessonId);
+      if (lesson) lesson.tasks.push(ct);
+      else errors.push(`${ct.id}: task folder has no lesson.json in its lesson`);
+    });
+  lessonsById.forEach((lesson) => lesson.tasks.sort(bySlug));
 
-  for (const ct of tasksById.values()) {
-    ct.variants.sort(bySlug);
-    if (ct.isVariant) continue;
-    const lesson = lessonsById.get(ct.lessonId);
-    if (lesson) lesson.tasks.push(ct);
-    else errors.push(`${ct.id}: task folder has no lesson.json in its lesson`);
-  }
-  for (const lesson of lessonsById.values()) lesson.tasks.sort(bySlug);
+  return { moduleMeta, lessonsByModule, lessonsById, tasksById };
+}
 
-  const listed = new Set<string>();
-  const tracks: CourseTrack[] = courseData.tracks.map((track) => ({
+function plannedLessons(titles: string[] | undefined, lessons: CourseLesson[]): PlannedLesson[] {
+  const fromTitles: PlannedLesson[] = (titles ?? []).map((title, i) => ({
+    number: i + 1,
+    title,
+    lesson: lessons.find((x) => x.number === i + 1),
+  }));
+  const extra = lessons.filter((ls) => !fromTitles.some((p) => p.lesson === ls)).map((ls) => ({ number: ls.number, title: ls.title, lesson: ls }));
+  return [...fromTitles, ...extra].sort((a, b) => a.number - b.number);
+}
+
+function buildCourse(id: string, data: CourseFile, index: ContentIndex): Course {
+  let position = 0;
+  const tracks: CourseTrack[] = data.tracks.map((track) => ({
     id: track.id,
     title: track.title,
     description: track.description,
-    modules: track.modules.map((mm) => {
-      listed.add(mm.slug);
-      const meta = moduleMeta.get(mm.slug);
-      const lessons = (lessonsByModule.get(mm.slug) ?? []).sort(bySlug);
-      const planned: PlannedLesson[] = mm.lessons.map((title, i) => ({
-        number: i + 1,
-        title,
-        lesson: lessons.find((x) => x.number === i + 1),
-      }));
-      for (const ls of lessons) {
-        if (!planned.some((p) => p.lesson === ls)) planned.push({ number: ls.number, title: ls.title, lesson: ls });
-      }
-      planned.sort((a, b) => a.number - b.number);
+    modules: track.modules.map((mm): CourseModule => {
+      position += 1;
+      const meta = index.moduleMeta.get(mm.slug);
+      const lessons = index.lessonsByModule.get(mm.slug) ?? [];
       return {
         slug: mm.slug,
-        number: leadingNumber(mm.slug),
+        number: position,
         title: meta?.title ?? mm.title,
         description: meta?.description ?? '',
         goals: meta?.goals ?? [],
@@ -206,29 +241,71 @@ function buildCourse(): Course {
         trackTitle: track.title,
         available: Boolean(meta) && lessons.length > 0,
         lessons,
-        planned,
+        planned: plannedLessons(mm.lessons, lessons),
       };
     }),
   }));
-
-  for (const slug of moduleMeta.keys()) {
-    if (!listed.has(slug)) errors.push(`content/modules/${slug}: module is not listed in content/course.json`);
-  }
-
   const modules = tracks.flatMap((t) => t.modules);
   return {
-    title: courseData.title,
+    id,
+    title: data.title,
+    subtitle: data.subtitle,
+    tagline: data.tagline,
+    description: data.description,
+    icon: data.icon,
+    status: data.status,
+    order: data.order,
     tracks,
     modules,
     lessons: modules.flatMap((m) => m.lessons),
-    lessonsById,
-    tasksById,
     modulesBySlug: new Map(modules.map((m) => [m.slug, m])),
+  };
+}
+
+function buildCatalog(): Catalog {
+  const errors: string[] = [];
+  const index = indexContent(errors);
+
+  const courses = Object.entries(courseFiles)
+    .flatMap(([path, raw]) => {
+      const r = courseSchema.safeParse(raw);
+      if (r.success) return [buildCourse(fileName(path), r.data, index)];
+      errors.push(`${path}: ${formatZodError(r.error)}`);
+      return [];
+    })
+    .sort((a, b) => a.order - b.order || a.id.localeCompare(b.id));
+
+  const listed = new Set(courses.flatMap((c) => c.modules.map((m) => m.slug)));
+  [...index.moduleMeta.keys()]
+    .filter((slug) => !listed.has(slug))
+    .forEach((slug) => errors.push(`content/modules/${slug}: module is not listed in any content/courses/*.json`));
+
+  return {
+    courses,
+    coursesById: new Map(courses.map((c) => [c.id, c])),
+    lessonsById: index.lessonsById,
+    tasksById: index.tasksById,
     errors,
   };
 }
 
-export const course = buildCourse();
+export const catalog = buildCatalog();
+export const lessonsById = catalog.lessonsById;
+export const tasksById = catalog.tasksById;
+
+export function getCourse(id: string | null | undefined): Course | undefined {
+  return id ? catalog.coursesById.get(id) : undefined;
+}
+
+/**
+ * The course a module (or one of its lessons) is shown in: the preferred course (the one the learner is
+ * studying) when it lists the module, otherwise the first course that does.
+ */
+export function courseForModule(moduleSlug: string, preferredId?: string): Course | undefined {
+  const preferred = getCourse(preferredId);
+  if (preferred?.modulesBySlug.has(moduleSlug)) return preferred;
+  return catalog.courses.find((c) => c.modulesBySlug.has(moduleSlug));
+}
 
 export async function loadLessonMarkdown(lessonId: string): Promise<string> {
   const [m, l] = lessonId.split('/');
@@ -266,18 +343,23 @@ export async function loadTaskCode(taskId: string): Promise<TaskCode> {
     Promise.all(mutantPaths.map((p) => mutantFiles[p]?.() ?? Promise.resolve(''))),
   ]);
   const support = Object.fromEntries(supportNames.map((name, i) => [name, supportCode[i] ?? '']));
-  const mutants = Object.fromEntries(mutantPaths.map((p, i) => [p.slice(base.length + 'mutants/'.length).replace(/\.ts$/, ''), mutantCode[i] ?? '']));
+  const mutants = Object.fromEntries(mutantPaths.map((p, i) => [p.slice(base.length + 'mutants/'.length, -TS_EXT.length), mutantCode[i] ?? '']));
   return { starter, solution, tests, support, mutants };
 }
 
 /* ---------- Navigation helpers ---------- */
+
+export const coursePath = (course: { id: string }) => `/course/${course.id}`;
 
 export const lessonPath = (lesson: { moduleSlug: string; slug: string }, tab?: string) =>
   `/learn/${lesson.moduleSlug}/${lesson.slug}${tab ? `?tab=${tab}` : ''}`;
 
 export const taskPath = (t: CourseTask) => `/learn/${t.moduleSlug}/${t.lessonSlug}/${t.slug}`;
 
-export function neighbourLessons(lessonId: string): { prev?: CourseLesson; next?: CourseLesson } {
-  const i = course.lessons.findIndex((l) => l.id === lessonId);
-  return { prev: i > 0 ? course.lessons[i - 1] : undefined, next: i >= 0 ? course.lessons[i + 1] : undefined };
+/** Previous / next lesson in the given course's order. */
+export function neighbourLessons(lessonId: string, course: Course | undefined): { prev?: CourseLesson; next?: CourseLesson } {
+  const lessons = course?.lessons ?? [];
+  const i = lessons.findIndex((l) => l.id === lessonId);
+  if (i < 0) return {};
+  return { prev: i > 0 ? lessons[i - 1] : undefined, next: lessons[i + 1] };
 }

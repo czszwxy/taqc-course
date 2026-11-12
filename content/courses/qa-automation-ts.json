@@ -1,5 +1,11 @@
 {
-  "title": "QA Automation Academy",
+  "title": "QA Automation Engineer",
+  "subtitle": "TypeScript + Playwright",
+  "tagline": "Zero → Trainee QA Automation",
+  "description": "Manual testing fundamentals, tech basics, TypeScript and Playwright — theory, curated resources and practice tasks that are checked automatically. Ends with job preparation and a portfolio project on GitHub.",
+  "icon": "🧪",
+  "status": "available",
+  "order": 1,
   "tracks": [
     {
       "id": "qa-fundamentals",

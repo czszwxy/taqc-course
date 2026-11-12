@@ -10,7 +10,7 @@ export function TermsPage() {
           Last updated: 1 March 2026
         </p>
         <p className="mt-4">
-          These demo terms belong to the Gadgetly training shop of QA Academy. Nothing here is a real agreement: the page exists so that you can practise
+          These demo terms belong to the Gadgetly training shop of my-university. Nothing here is a real agreement: the page exists so that you can practise
           testing links that open in a new browser tab.
         </p>
         <h2 className="mt-6 text-lg font-semibold">1. Orders</h2>

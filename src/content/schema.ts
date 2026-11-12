@@ -25,8 +25,26 @@ export const resourceSchema = z.object({
   needsVerification: z.boolean().default(true),
 });
 
+/** available = ready to learn; in-progress = some modules ready, more coming; planned = outline only. */
+export const COURSE_STATUSES = ['available', 'in-progress', 'planned'] as const;
+export type CourseStatus = (typeof COURSE_STATUSES)[number];
+
+/**
+ * One profession (course) of the catalog: content/courses/<id>.json. Modules are a shared pool in
+ * content/modules/ — a course lists the module slugs it uses, so one module (Git, SQL…) can be part of
+ * several courses and its progress counts in all of them.
+ */
 export const courseSchema = z.object({
   title: z.string(),
+  /** Stack or flavour shown under the title, e.g. "TypeScript + Playwright". */
+  subtitle: z.string().default(''),
+  /** Short handwritten-style line, e.g. "Zero → Trainee QA Automation". */
+  tagline: z.string().default(''),
+  description: z.string().default(''),
+  icon: z.string().default('🎓'),
+  status: z.enum(COURSE_STATUSES).default('planned'),
+  /** Position in the catalog (ascending). */
+  order: z.number().int().default(0),
   tracks: z.array(
     z.object({
       id: z.string(),
@@ -36,12 +54,14 @@ export const courseSchema = z.object({
         z.object({
           slug: z.string().regex(MODULE_SLUG_RE),
           title: z.string(),
-          lessons: z.array(z.string()),
+          /** Planned lesson titles in order. Omit for an existing shared module: its real lessons are used. */
+          lessons: z.array(z.string()).optional(),
         }),
       ),
     }),
   ),
 });
+export type CourseFile = z.infer<typeof courseSchema>;
 
 export const moduleSchema = z.object({
   title: z.string(),

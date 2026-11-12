@@ -1,7 +1,8 @@
 import { Link, NavLink, Outlet } from 'react-router-dom';
-import { course } from '../content/loader';
+import { catalog, coursePath } from '../content/loader';
 import { useProgress, useSettings } from '../features/progress/store';
 import { courseStats } from '../features/progress/selectors';
+import { useCurrentCourse } from './currentCourse';
 
 const MAX_SHOWN_ERRORS = 8;
 
@@ -15,32 +16,42 @@ export function Layout() {
   const { theme, toggleTheme } = useSettings();
   const tasks = useProgress((s) => s.tasks);
   const theoryRead = useProgress((s) => s.theoryRead);
-  const stats = courseStats(course, { tasks, theoryRead });
+  const current = useCurrentCourse();
+  const stats = current ? courseStats(current, { tasks, theoryRead }) : undefined;
 
   return (
     <div className="flex h-full flex-col">
       <header className="shrink-0 border-b-2 border-line bg-surface">
         <div className="mx-auto flex h-14 max-w-6xl items-center gap-1 px-4 lg:px-8">
-          <Link to="/" className="mr-2 shrink-0 font-display text-[1.3rem] font-bold leading-none sm:mr-4">
-            QA <span className="marker">Academy</span>
+          <Link to="/" className="mr-2 shrink-0 font-display text-[1.25rem] font-bold leading-none sm:mr-4" title="All professions">
+            my-<span className="marker">university</span>
           </Link>
-          <nav className="flex items-center gap-1" aria-label="Main">
-            <NavLink to="/" end className={navClass}>
-              <span className="sm:hidden">Map</span>
-              <span className="hidden sm:inline">Course map</span>
+          <nav className="flex min-w-0 items-center gap-1" aria-label="Main">
+            <NavLink to="/" end className={navClass} title="All professions">
+              <span aria-hidden="true">🎓</span>
+              <span className="hidden md:inline">Courses</span>
             </NavLink>
+            {current && (
+              <NavLink to={coursePath(current)} className={navClass} title={`${current.title} (${current.subtitle}) — course map`}>
+                <span aria-hidden="true">{current.icon}</span>
+                <span className="hidden truncate lg:inline">{current.title}</span>
+                <span className="lg:hidden">Map</span>
+              </NavLink>
+            )}
             <NavLink to="/playground" className={navClass} title="Bug Playground">
               <span aria-hidden="true">🐞</span>
-              <span className="hidden sm:inline">Bug Playground</span>
+              <span className="hidden xl:inline">Bug Playground</span>
             </NavLink>
           </nav>
           <div className="flex-1" />
-          <span className="mr-2 hidden text-sm text-muted md:inline" title="Lessons completed">
-            <span className="font-bold tabular-nums text-fg">
-              {stats.lessonsCompleted}/{stats.lessonsTotal}
-            </span>{' '}
-            lessons
-          </span>
+          {stats && (
+            <span className="mr-2 hidden text-sm text-muted lg:inline" title={`Lessons completed in ${current?.title}`}>
+              <span className="font-bold tabular-nums text-fg">
+                {stats.lessonsCompleted}/{stats.lessonsTotal}
+              </span>{' '}
+              lessons
+            </span>
+          )}
           <button
             className="btn btn-ghost btn-sm"
             onClick={toggleTheme}
@@ -55,11 +66,11 @@ export function Layout() {
         </div>
       </header>
 
-      {course.errors.length > 0 && (
+      {catalog.errors.length > 0 && (
         <div className="border-b border-bad/30 bg-bad-soft px-4 py-2 text-xs text-bad">
-          <strong>Content errors ({course.errors.length}):</strong>
+          <strong>Content errors ({catalog.errors.length}):</strong>
           <ul className="mt-1 list-disc pl-5">
-            {course.errors.slice(0, MAX_SHOWN_ERRORS).map((e) => (
+            {catalog.errors.slice(0, MAX_SHOWN_ERRORS).map((e) => (
               <li key={e} className="font-mono">
                 {e}
               </li>

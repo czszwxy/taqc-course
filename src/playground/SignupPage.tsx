@@ -103,7 +103,7 @@ export function SignupPage() {
             <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-amber-800">demo app</span>
           </div>
           <Link to="/playground" className="text-sm text-slate-500 hover:text-slate-800">
-            ← Back to QA Academy
+            ← Back to my-university
           </Link>
         </div>
       </header>
