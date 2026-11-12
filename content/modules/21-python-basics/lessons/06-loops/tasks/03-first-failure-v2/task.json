@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Find the first slow response",
+  "variantOf": "03-first-failure",
+  "statement": "Напиши `first_slow_index(times, limit)` — індекс **першого** значення, більшого за `limit`, або `-1`, якщо таких немає.\n\n```python\nfirst_slow_index([120, 850, 300, 1200], 500)   # 1\nfirst_slow_index([100, 200], 500)              # -1\n```",
+  "hints": [
+    "`for index, t in enumerate(times):` дає і номер, і значення.",
+    "Знайшов — одразу `return index`. Після циклу — `return -1`."
+  ],
+  "explanation": "`return` всередині циклу зупиняє пошук на першому збігу — саме те, що потрібно. `return -1` стоїть **після** циклу: він спрацює, лише якщо цикл пройшов усі елементи й нічого не знайшов. Якщо поставити його всередині циклу, функція завершиться вже на першому елементі.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "\\.index\\s*\\(", "message": "Без `.index()` — знайди сам у циклі з `enumerate`." }
+  ]
+}

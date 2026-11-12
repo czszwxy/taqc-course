@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Format a price with thousands",
+  "variantOf": "03-format-result",
+  "statement": "Ціни в інтерфейсі показують з пробілом між тисячами. Напиши `format_price(amount)` через f-string.\n\n```python\nformat_price(5570)      # '5 570 UAH'\nformat_price(1234567)   # '1 234 567 UAH'\nformat_price(999)       # '999 UAH'\n```",
+  "hints": [
+    "Формат `:,` у f-string ставить кому між тисячами: `f\"{5570:,}\"` → `'5,570'`.",
+    "Заміни кому на пробіл: `.replace(\",\", \" \")`, і додай ` UAH`."
+  ],
+  "explanation": "Формат `:,` вставляє розділювач тисяч, але це кома — тому її замінюємо на пробіл. Межові значення: числа менше 1000 (без розділювача) і 0.",
+  "codeRules": [
+    { "kind": "require", "pattern": "f[\"']", "message": "Склади рядок через f-string." }
+  ]
+}

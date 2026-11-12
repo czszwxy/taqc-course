@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "Login form validation messages",
+  "statement": "Напиши `login_error(email, password)` — повідомлення про **першу** помилку у формі логіну, або порожній рядок, якщо помилок немає. Перевіряй у такому порядку:\n\n| Умова | Повідомлення |\n|---|---|\n| email порожній або лише з пробілів | `Email is required` |\n| в email немає `@` | `Invalid email` |\n| пароль порожній | `Password is required` |\n| пароль коротший за 8 символів | `Password must be at least 8 characters` |\n\n```python\nlogin_error(\"\", \"secret123\")                  # 'Email is required'\nlogin_error(\"qa@example.test\", \"short\")       # 'Password must be at least 8 characters'\nlogin_error(\"qa@example.test\", \"secret123\")   # ''\n```",
+  "hints": [
+    "Перевіряй згори донизу і повертай повідомлення одразу (`return`), щойно знайшов помилку.",
+    "Email лише з пробілів: `not email.strip()`. Довжина пароля — `len(password) < 8`.",
+    "Якщо жодна перевірка не спрацювала — `return \"\"`."
+  ],
+  "explanation": "Порядок перевірок — це вимога: форма показує першу помилку. Ранній `return` робить код плоским: кожна перевірка — окремий `if`. Межа пароля — 8 символів: 7 — помилка, 8 — уже ні. Рядок з пробілів для email — класичний баг, тому перевіряємо `strip()`.",
+  "codeRules": []
+}

@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "Run totals as a tuple",
+  "variantOf": "03-min-max-avg",
+  "statement": "Напиши `run_totals(results)` — повертає **кортеж** `(усього, passed, failed)`. Інші статуси (наприклад, `skipped`) входять лише в «усього».\n\n```python\nrun_totals([\"passed\", \"failed\", \"skipped\", \"passed\"])   # (4, 2, 1)\nrun_totals([])                                          # (0, 0, 0)\n```",
+  "hints": [
+    "Два лічильники до циклу, у циклі — `if / elif` за статусом.",
+    "Кілька значень повертаються через кому: `return len(results), passed, failed`."
+  ],
+  "explanation": "`return a, b, c` повертає кортеж, який той, хто викликає, може одразу розпакувати: `total, ok, bad = run_totals(...)`. Пропущені тести — окремий статус: вони не passed і не failed, але входять у загальну кількість.",
+  "codeRules": []
+}

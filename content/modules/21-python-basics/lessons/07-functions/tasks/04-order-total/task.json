@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Split the work into two functions",
+  "statement": "Напиши дві функції:\n\n- `line_total(price, qty)` — сума одного рядка кошика;\n- `order_total(prices, quantities, discount=0)` — сума всього замовлення мінус знижка, але не менше 0. `prices` і `quantities` — списки однакової довжини (`prices[i]` відповідає `quantities[i]`). **Використай** `line_total` для кожного рядка.\n\n```python\nline_total(450, 2)                          # 900\norder_total([450, 150], [2, 1])             # 1050\norder_total([450, 150], [2, 1], discount=100)   # 950\norder_total([100], [1], discount=500)       # 0\n```",
+  "hints": [
+    "`line_total` — один рядок: `return price * qty`.",
+    "В `order_total` пройди індексами: `for i in range(len(prices)):` і додавай `line_total(prices[i], quantities[i])`.",
+    "Мінімум 0: `if total < 0: return 0` або `max(total, 0)`."
+  ],
+  "explanation": "Маленька функція `line_total` робить одну річ і перевіряється окремо, а `order_total` збирає з неї результат. Якщо правило розрахунку рядка зміниться (наприклад, додасться ПДВ), правка буде в одному місці. Знижка за замовчуванням — 0, тож її можна не передавати.",
+  "codeRules": [
+    { "kind": "require", "pattern": "[=+]\\s*line_total\\s*\\(", "message": "Використай `line_total(...)` всередині `order_total`." }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "Build a search URL",
+  "variantOf": "02-build-url",
+  "statement": "Напиши `search_url(base, query, page=1, sort=\"relevance\")`. Зайвий `/` у кінці `base` прибери, пробіли по краях запиту — теж, а пробіли всередині заміни на `+`.\n\n```python\nsearch_url(\"https://shop.test\", \"usb cable\")\n# 'https://shop.test/search?q=usb+cable&page=1&sort=relevance'\nsearch_url(\"https://shop.test/\", \" mouse \", sort=\"price\")\n# 'https://shop.test/search?q=mouse&page=1&sort=price'\n```",
+  "hints": [
+    "`base.rstrip(\"/\")` прибирає `/` справа, `query.strip().replace(\" \", \"+\")` готує запит.",
+    "Значення за замовчуванням задаються в сигнатурі: `page=1, sort=\"relevance\"`."
+  ],
+  "explanation": "Параметри за замовчуванням роблять типовий виклик коротким, а іменовані аргументи (`sort=\"price\"`) дозволяють змінити лише потрібне. Підготуй частини окремими змінними, а потім збери URL однією f-string.",
+  "codeRules": []
+}

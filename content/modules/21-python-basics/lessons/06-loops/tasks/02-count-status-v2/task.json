@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Count slow responses",
+  "variantOf": "02-count-status",
+  "statement": "Напиши `count_slow(times, limit)` — скільки значень часу відповіді (мс) **більші** за `limit`. Розв'яжи циклом `for`.\n\n```python\ncount_slow([120, 850, 300, 1200], 500)   # 2\ncount_slow([100, 200], 500)              # 0\n```",
+  "hints": [
+    "Лічильник `count = 0` — до циклу.",
+    "У циклі: `if t > limit: count += 1`; після циклу — `return count`."
+  ],
+  "explanation": "Той самий шаблон лічильника: змінна до циклу, оновлення в циклі за умовою, результат після. Значення, рівне `limit`, не рахується — умова строго `>`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "for\\s+\\w+\\s+in", "message": "Розв'яжи циклом `for … in …`." }
+  ]
+}

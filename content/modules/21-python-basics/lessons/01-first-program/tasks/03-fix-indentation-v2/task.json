@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "Fix another broken function",
+  "variantOf": "03-fix-indentation",
+  "statement": "Функція `is_failed(status)` має повертати `True`, якщо статус — `\"failed\"`, інакше `False`. У ній **дві** помилки. Натисни **Run**, виправ першу, потім знову **Run** — Python покаже наступну.\n\n```python\nis_failed(\"failed\")   # True\nis_failed(\"passed\")   # False\n```",
+  "hints": [
+    "Перша помилка — `IndentationError`: тіло функції має бути з відступом у 4 пробіли.",
+    "Друга — `SyntaxError` на рядку з `return`: для порівняння потрібно `==`, а `=` — це присвоєння."
+  ],
+  "explanation": "Python показує помилки по одній: спершу ту, що зустрів першою. Після виправлення відступу він доходить до рядка з `return` і бачить `=` там, де має бути порівняння `==`. Виправляй по одній помилці й щоразу запускай знову.",
+  "codeRules": []
+}

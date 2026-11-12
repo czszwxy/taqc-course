@@ -1,0 +1,11 @@
+{
+  "type": "python",
+  "title": "Order line with numbers",
+  "statement": "Напиши `summary_line(product, qty, price)` — рядок для кошика. `qty` і `price` — **цілі числа**, сума — `qty * price`.\n\n```python\nsummary_line(\"Mouse\", 2, 450)      # 'Mouse x2 = 900 UAH'\nsummary_line(\"Monitor\", 3, 7500)   # 'Monitor x3 = 22500 UAH'\n```",
+  "hints": [
+    "Рядок і число не склеюються через `+` — буде `TypeError`. Перетвори число: `str(qty)`.",
+    "Порахуй суму окремо: `total = qty * price`, а потім склей `product + \" x\" + str(qty) + ...`."
+  ],
+  "explanation": "`\"x\" + 2` дає `TypeError: can only concatenate str (not \"int\") to str`. Тому кожне число перед склеюванням перетворюємо через `str()`. Окрема змінна `total` робить код читабельнішим і легшим для перевірки.",
+  "codeRules": []
+}

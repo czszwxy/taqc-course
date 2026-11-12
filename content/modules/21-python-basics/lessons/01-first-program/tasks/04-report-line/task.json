@@ -1,0 +1,11 @@
+{
+  "type": "python",
+  "title": "Build a report line",
+  "statement": "Напиши функцію `report_line(name, status)`, яка **повертає** рядок для звіту у форматі `Test <name>: <status>`.\n\n```python\nreport_line(\"login\", \"passed\")      # 'Test login: passed'\nreport_line(\"checkout\", \"failed\")   # 'Test checkout: failed'\n```",
+  "hints": [
+    "Рядки склеюються через `+`: `\"Test \" + name`.",
+    "Не забудь пробіл після `Test` і двокрапку з пробілом перед статусом. Результат — через `return`, а не `print`."
+  ],
+  "explanation": "Функція збирає рядок з кількох частин через `+` і повертає його через `return`. Тести порівнюють рядок посимвольно, тому важливий кожен пробіл і двокрапка. Якщо написати `print(...)` замість `return`, функція поверне `None` — і тест упаде, хоча на екрані текст правильний.",
+  "codeRules": []
+}
