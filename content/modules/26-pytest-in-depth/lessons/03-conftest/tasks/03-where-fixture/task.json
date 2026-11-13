@@ -1,0 +1,25 @@
+{
+  "type": "classify",
+  "title": "Where should this fixture live?",
+  "statement": "Структура проєкту:\n\n```text\ntests/\n├── conftest.py\n├── ui/\n│   ├── conftest.py\n│   └── test_checkout.py, test_login.py …\n└── api/\n    ├── conftest.py\n    └── test_orders.py, test_users.py …\n```\n\nДля кожної фікстури обери найкраще місце.",
+  "categories": [
+    { "id": "test-file", "label": "In the test file", "description": "потрібна лише одному файлу" },
+    { "id": "root", "label": "tests/conftest.py", "description": "потрібна і UI-, і API-тестам" },
+    { "id": "api", "label": "tests/api/conftest.py", "description": "лише API-тестам" },
+    { "id": "ui", "label": "tests/ui/conftest.py", "description": "лише UI-тестам" }
+  ],
+  "items": [
+    { "id": "base-url", "text": "`base_url` — адреса тестового середовища", "category": "root", "explain": "Потрібна і UI, і API." },
+    { "id": "api-client", "text": "`api_client` з токеном авторизації", "category": "api" },
+    { "id": "logged-in-page", "text": "`logged_in_page` — сторінка браузера з виконаним логіном", "category": "ui" },
+    { "id": "make-user", "text": "`make_user` — фабрика тестових користувачів для UI- і API-тестів", "category": "root" },
+    { "id": "coupon", "text": "`expired_coupon` — потрібен лише в `test_checkout.py`", "category": "test-file" },
+    { "id": "browser-size", "text": "`mobile_viewport` — налаштування розміру вікна браузера", "category": "ui" },
+    { "id": "order-cleanup", "text": "`created_order` з видаленням через API, використовують лише API-тести замовлень і користувачів", "category": "api" },
+    { "id": "csv-file", "text": "`users_csv` — тимчасовий CSV лише для `test_users.py`", "category": "test-file" }
+  ],
+  "show": 8,
+  "passScore": 0.8,
+  "hints": ["Фікстуру кладуть так низько, як можливо, але так високо, як потрібно: у спільну папку всіх тестів, що її використовують."],
+  "explanation": "Місце фікстури визначає, хто її бачить. Найнижче місце, яке охоплює всіх споживачів: один файл — сам файл; лише UI або лише API — conftest своєї підпапки; обидві групи — кореневий `tests/conftest.py`. Так кореневий conftest не розростається, а фікстура не видна там, де вона не має сенсу."
+}

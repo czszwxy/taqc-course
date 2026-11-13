@@ -1,0 +1,72 @@
+{
+  "type": "quiz",
+  "title": "Plugins and reports",
+  "show": 6,
+  "hints": ["Плагіни — pip-пакети. -n auto — xdist, --html — pytest-html, --reruns — pytest-rerunfailures."],
+  "questions": [
+    {
+      "id": "install",
+      "kind": "single",
+      "text": "Як увімкнути плагін pytest-html у проєкті?",
+      "options": [
+        { "text": "Встановити `python -m pip install pytest-html` (і додати в requirements.txt) — далі опції доступні самі", "correct": true },
+        { "text": "Імпортувати його в кожному файлі тестів" }
+      ]
+    },
+    {
+      "id": "xdist",
+      "kind": "single",
+      "text": "Що робить `python -m pytest -n auto`?",
+      "options": [
+        { "text": "Запускає тести паралельно на кількох процесах (pytest-xdist)", "correct": true },
+        { "text": "Запускає лише нові тести" },
+        { "text": "Обирає тести автоматично за назвою" }
+      ]
+    },
+    {
+      "id": "parallel-risk",
+      "kind": "single",
+      "text": "Що найчастіше ламається при паралельному запуску?",
+      "options": [
+        { "text": "Тести зі спільним станом: той самий файл, користувач чи глобальна змінна", "correct": true },
+        { "text": "Тести з assert" }
+      ]
+    },
+    {
+      "id": "reruns",
+      "kind": "single",
+      "text": "У чому ризик `--reruns 2`?",
+      "options": [
+        { "text": "Повтори ховають нестабільні тести і баги, що проявляються не щоразу", "correct": true },
+        { "text": "Тести стають повільнішими вдвічі завжди" }
+      ]
+    },
+    {
+      "id": "addopts",
+      "kind": "single",
+      "text": "Для чого `addopts` у конфігурації pytest?",
+      "options": [
+        { "text": "Опції, які додаються до кожного запуску, — однаково для всіх і в CI", "correct": true },
+        { "text": "Список плагінів для встановлення" }
+      ]
+    },
+    {
+      "id": "junit",
+      "kind": "single",
+      "text": "Навіщо `--junitxml=report.xml`?",
+      "options": [
+        { "text": "Звіт у форматі, який розуміють CI-системи, — результати тестів видно прямо в CI", "correct": true },
+        { "text": "Щоб запускати тести JUnit на Java" }
+      ]
+    },
+    {
+      "id": "session-xdist",
+      "kind": "single",
+      "text": "Фікстура з `scope=\"session\"` при запуску з `-n 4`. Скільки разів вона створиться?",
+      "options": [
+        { "text": "До 4 разів — по одному на кожен процес", "correct": true },
+        { "text": "Рівно один раз" }
+      ]
+    }
+  ]
+}

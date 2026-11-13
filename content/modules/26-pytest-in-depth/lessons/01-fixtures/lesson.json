@@ -1,0 +1,28 @@
+{
+  "title": "Fixtures",
+  "minutes": 55,
+  "summary": "Фікстури pytest: @pytest.fixture, тест отримує дані через параметр з тим самим іменем, фікстури, що використовують інші фікстури, вбудовані tmp_path, capsys і monkeypatch; чим фікстура відрізняється від хелпера і типові помилки — виклик фікстури напряму, забутий декоратор",
+  "resources": [
+    {
+      "title": "pytest: About fixtures",
+      "url": "https://docs.pytest.org/en/stable/explanation/fixtures.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: How to use fixtures",
+      "url": "https://docs.pytest.org/en/stable/how-to/fixtures.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: How to capture stdout/stderr output (capsys)",
+      "url": "https://docs.pytest.org/en/stable/how-to/capture-stdout-stderr.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

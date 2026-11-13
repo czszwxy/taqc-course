@@ -1,0 +1,41 @@
+{
+  "type": "written",
+  "title": "Configure pytest for the team",
+  "statement": "Ти налаштовуєш pytest для тестового проєкту команди: тести лежать у `tests/`, є швидкі критичні перевірки для кожного pull request і довгі — для нічного прогону, а опечатки в маркерах мають ловитися одразу. Заповни поля для розділу `[tool.pytest.ini_options]` у `pyproject.toml` і поясни вибір.",
+  "fields": [
+    { "id": "testpaths", "label": "testpaths (where pytest looks for tests)", "kind": "text", "placeholder": "[\"tests\"]" },
+    { "id": "markers", "label": "markers (one per line: name: description)", "kind": "list" },
+    { "id": "addopts", "label": "addopts (options added to every run)", "kind": "text" },
+    { "id": "why", "label": "Why this setup (2–4 sentences)", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "testpaths", "check": "mentionsAny", "value": ["tests"], "message": "testpaths: вкажи папку tests." },
+    { "field": "markers", "check": "minItems", "value": 2, "message": "markers: щонайменше два маркери — для pull request і для нічного прогону." },
+    { "field": "markers", "check": "mentionsAny", "value": ["smoke"], "message": "markers: маркер для швидких критичних перевірок (smoke)." },
+    { "field": "markers", "check": "mentionsAny", "value": ["slow|nightly|regression"], "message": "markers: маркер для довгих тестів (slow)." },
+    { "field": "addopts", "check": "mentionsAny", "value": ["strict-markers"], "message": "addopts: --strict-markers, щоб опечатки в маркерах ловилися одразу." },
+    { "field": "why", "check": "minLength", "value": 60, "message": "Why: поясни вибір 2–4 реченнями." }
+  ],
+  "model": {
+    "testpaths": "[\"tests\"]",
+    "markers": [
+      "smoke: fast critical checks for every pull request",
+      "slow: long tests for the nightly run",
+      "api: tests that call the HTTP API"
+    ],
+    "addopts": "-ra --strict-markers",
+    "why": "testpaths keeps collection fast and predictable. Registered markers let CI run `-m smoke` on every pull request and `-m slow` at night, and --strict-markers turns a typo like `smok` into an error instead of a test that silently drops out of the selection. -ra prints a short summary of skipped and failed tests, so nothing hides at the bottom of the log."
+  },
+  "checklist": [
+    "Тести шукаються лише в tests/",
+    "Є маркери для швидкого і для довгого прогонів, з описами",
+    "Увімкнено --strict-markers",
+    "Опцій у addopts мінімум, і кожна має пояснення",
+    "Пояснено, як маркери використовуються в CI"
+  ],
+  "hints": [
+    "Подумай, які прогони потрібні команді: на кожен pull request і вночі. Кожному — свій маркер.",
+    "Що станеться з тестом, якщо в маркері опечатка, а --strict-markers вимкнено?"
+  ],
+  "explanation": "Конфігурація робить запуск однаковим для всіх: `testpaths` обмежує пошук, зареєстровані маркери дозволяють CI обирати потрібні тести, `--strict-markers` ловить опечатки, а `-ra` не дає пропущеним і упалим тестам загубитися в довгому лозі."
+}

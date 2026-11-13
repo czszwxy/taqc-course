@@ -1,0 +1,72 @@
+{
+  "type": "quiz",
+  "title": "Mocking",
+  "show": 6,
+  "hints": ["Підміняй ім'я там, де його шукають. Виняток — через side_effect. Перевірки Mock починаються з assert_."],
+  "questions": [
+    {
+      "id": "where",
+      "kind": "single",
+      "text": "`shop.py` містить `from api import fetch_status`. Що підмінити, щоб `shop.order_label` отримав заглушку?",
+      "options": [
+        { "text": "`monkeypatch.setattr(shop, \"fetch_status\", fake)`", "correct": true },
+        { "text": "`monkeypatch.setattr(api, \"fetch_status\", fake)`", "explain": "shop уже тримає своє посилання на справжню функцію." }
+      ]
+    },
+    {
+      "id": "undo",
+      "kind": "single",
+      "text": "Що відбувається з підміною monkeypatch після тесту?",
+      "options": [
+        { "text": "Вона автоматично відкочується", "correct": true },
+        { "text": "Лишається до кінця прогону" },
+        { "text": "Її треба прибрати вручну" }
+      ]
+    },
+    {
+      "id": "side-effect",
+      "kind": "single",
+      "text": "Як змусити Mock підняти `ConnectionError` при виклику?",
+      "options": [
+        { "text": "`Mock(side_effect=ConnectionError())`", "correct": true },
+        { "text": "`Mock(return_value=ConnectionError())`", "explain": "Так виклик поверне об'єкт винятку, а не підніме його." }
+      ]
+    },
+    {
+      "id": "sequence",
+      "kind": "single",
+      "text": "Що робить `Mock(side_effect=[ConnectionError(), {\"ok\": True}])`?",
+      "options": [
+        { "text": "Перший виклик піднімає ConnectionError, другий повертає {\"ok\": True}", "correct": true },
+        { "text": "Повертає список" }
+      ]
+    },
+    {
+      "id": "fake-assert",
+      "kind": "single",
+      "text": "У тесті написано `send.called_once_with(\"x\")` без `assert_`. Що це перевіряє?",
+      "options": [
+        { "text": "Нічого — це новий атрибут Mock, тест пройде за будь-яких викликів", "correct": true },
+        { "text": "Що send викликали один раз з \"x\"" }
+      ]
+    },
+    {
+      "id": "di",
+      "kind": "single",
+      "text": "Який код найпростіше тестувати з моками?",
+      "options": [
+        { "text": "Код, що отримує залежність параметром: `notify(results, send)` — у тесті передаємо Mock()", "correct": true },
+        { "text": "Код, що сам імпортує й викликає HTTP-клієнт глибоко всередині" }
+      ]
+    },
+    {
+      "id": "limits",
+      "kind": "single",
+      "text": "Чому моки не замінюють API-тестів?",
+      "options": [
+        { "text": "Mock відповідає так, як його налаштували, — зміна справжнього API не зламає тест", "correct": true },
+        { "text": "Моки працюють повільніше за мережу" }
+      ]
+    }
+  ]
+}

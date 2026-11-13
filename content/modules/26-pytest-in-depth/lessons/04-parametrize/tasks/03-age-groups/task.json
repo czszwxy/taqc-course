@@ -1,0 +1,23 @@
+{
+  "type": "python",
+  "mode": "tests",
+  "title": "Readable ids for boundary cases",
+  "statement": "`age_group(age)` повертає `child` (0–12), `teen` (13–17), `adult` (18–64), `senior` (65+); для від'ємного віку — `ValueError`.\n\nНапиши параметризований тест для меж груп із **зрозумілими назвами випадків** (`ids=` або `pytest.param(..., id=...)`) і окремий тест на від'ємний вік. Потрібно щонайменше 8 тестів (кожен рядок параметрів — тест).",
+  "hints": [
+    "Межі: 0, 12 / 13, 17 / 18, 64 / 65.",
+    "Назва випадку: `pytest.param(12, \"child\", id=\"last-child-year\")`.",
+    "Від'ємний вік — `with pytest.raises(ValueError):` в окремому тесті."
+  ],
+  "explanation": "Межі груп — пари сусідніх значень з обох боків кожної межі. Зрозумілі назви роблять звіт самодокументованим: `test_age_group[first-senior-year]` одразу каже, що зламалося. Нуль — теж межа: від'ємні значення відхиляються, а 0 — це ще дитина.",
+  "codeRules": [
+    { "kind": "require", "pattern": "ids\\s*=|pytest\\.param\\s*\\(", "message": "Дай випадкам зрозумілі назви через `ids=` або `pytest.param(..., id=...)`." }
+  ],
+  "minTests": 8,
+  "mutants": [
+    { "id": "child-to-thirteen", "description": "13 років вважались дитиною.", "hint": "Є версія зі зсунутою межею child/teen. Перевір 13." },
+    { "id": "teen-to-eighteen", "description": "18 років вважались підлітком.", "hint": "Є версія зі зсунутою межею teen/adult. Перевір 18." },
+    { "id": "senior-from-sixty-four", "description": "64 роки вважались senior.", "hint": "Є версія зі зсунутою межею adult/senior. Перевір 64." },
+    { "id": "negative-allowed", "description": "Від'ємний вік не відхилявся.", "hint": "Є версія без перевірки від'ємних значень. Додай тест з pytest.raises." },
+    { "id": "zero-rejected", "description": "Вік 0 відхилявся як некоректний.", "hint": "Є версія, що вважає 0 помилкою. Перевір 0." }
+  ]
+}

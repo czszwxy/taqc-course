@@ -131,8 +131,13 @@ def _param_id(value):
     return type(value).__name__
 
 
+def _is_param(value):
+    """A case created by pytest.param (strict check — parameter values may be Mock objects)."""
+    return getattr(type(value), "_qa_param", False) is True
+
+
 def _case_id(value, row, index, ids):
-    if getattr(value, "_qa_param", False) and value.id is not None:
+    if _is_param(value) and value.id is not None:
         return str(value.id)
     if isinstance(ids, (list, tuple)) and index < len(ids):
         return str(ids[index])
@@ -152,7 +157,7 @@ def _expand(name, fn):
         expanded = []
         for args, id_parts, marks in combos:
             for index, value in enumerate(values):
-                is_param = getattr(value, "_qa_param", False)
+                is_param = _is_param(value)
                 raw = value.values if is_param else value
                 row = tuple(raw) if (is_param or len(names) > 1) else (raw,)
                 case_marks = value.marks if is_param else []
@@ -347,12 +352,18 @@ class _Fixtures:
                 next(generator)
 
 
+def _is_fixture(value):
+    """A function decorated with @pytest.fixture. Strict check: Mock-like objects (unittest.mock.call, Mock())
+    answer any attribute with a truthy object and must not be mistaken for fixtures."""
+    return inspect.isfunction(value) and value.__dict__.get("_qa_fixture") is True
+
+
 def _fixture_definitions(*modules):
     found = {}
     for module in modules:
         for name, value in vars(module).items():
-            if callable(value) and getattr(value, "_qa_fixture", False):
-                found[getattr(value, "_qa_name", None) or name] = value
+            if _is_fixture(value):
+                found[value.__dict__.get("_qa_name") or name] = value
     return found
 
 
@@ -439,7 +450,7 @@ def run_tests(files_json, test_file="tests.py"):
                     result["tests"].append(_case(case_name, False, f"Fixture error: {exc}", hint))
                 except BaseException as exc:  # noqa: BLE001 — a crashing test is a failed test
                     expected = xfail is not None and (xfail.get("raises") is None or isinstance(exc, xfail["raises"]))
-                    if getattr(exc, "_qa_skip", False):
+                    if getattr(type(exc), "_qa_skip", False) is True:
                         result["tests"].append(_case(f"{case_name} (skipped: {exc})"))
                     elif expected:
                         result["tests"].append(_case(f"{case_name} (xfail)"))

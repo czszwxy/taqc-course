@@ -1,0 +1,73 @@
+{
+  "type": "quiz",
+  "title": "Markers",
+  "show": 6,
+  "hints": ["skip — не запускати; xfail — запустити й очікувати падіння; strict=True робить XPASS падінням."],
+  "questions": [
+    {
+      "id": "skipif",
+      "kind": "single",
+      "text": "Тест неможливий на Windows. Який маркер доречний?",
+      "options": [
+        { "text": "`@pytest.mark.skipif(sys.platform == \"win32\", reason=...)`", "correct": true },
+        { "text": "`@pytest.mark.xfail`" },
+        { "text": "`@pytest.mark.slow`" }
+      ]
+    },
+    {
+      "id": "xfail-runs",
+      "kind": "single",
+      "text": "Чи виконується тест з `@pytest.mark.xfail`?",
+      "options": [
+        { "text": "Так — його падіння очікуване й не робить прогін червоним", "correct": true },
+        { "text": "Ні, як і skip" }
+      ]
+    },
+    {
+      "id": "strict",
+      "kind": "single",
+      "text": "Тест з `xfail(strict=True)` раптом пройшов. Що буде?",
+      "options": [
+        { "text": "Тест вважається упалим — це сигнал, що баг виправили і позначку треба зняти", "correct": true },
+        { "text": "Тест позначиться XPASS, прогін зелений" }
+      ]
+    },
+    {
+      "id": "m-expression",
+      "kind": "single",
+      "text": "Що запустить `python -m pytest -m \"smoke and not slow\"`?",
+      "options": [
+        { "text": "Тести з маркером smoke, які не мають маркера slow", "correct": true },
+        { "text": "Усі smoke і всі slow" },
+        { "text": "Усі тести, крім smoke" }
+      ]
+    },
+    {
+      "id": "strict-markers",
+      "kind": "single",
+      "text": "Навіщо `--strict-markers`?",
+      "options": [
+        { "text": "Незареєстрований маркер (наприклад, опечатка smok) стає помилкою, а не тихим новим маркером", "correct": true },
+        { "text": "Щоб маркери працювали швидше" }
+      ]
+    },
+    {
+      "id": "reason",
+      "kind": "single",
+      "text": "Чому `skip` завжди пишуть з причиною (і номером тікета)?",
+      "options": [
+        { "text": "Щоб через місяць було зрозуміло, чому тест вимкнено і коли його повернути", "correct": true },
+        { "text": "Без причини pytest не запуститься" }
+      ]
+    },
+    {
+      "id": "pytestmark",
+      "kind": "single",
+      "text": "Як позначити маркером `api` усі тести файлу?",
+      "options": [
+        { "text": "`pytestmark = pytest.mark.api` на початку модуля", "correct": true },
+        { "text": "Перейменувати файл на test_api.py" }
+      ]
+    }
+  ]
+}

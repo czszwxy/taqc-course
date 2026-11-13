@@ -1,0 +1,28 @@
+{
+  "title": "Fixture scopes and teardown with yield",
+  "minutes": 50,
+  "summary": "Область дії фікстур — function, class, module, session: коли спільна дорога підготовка виправдана, а коли ламає незалежність; прибирання через yield, яке виконується навіть після упалого тесту; порядок підготовки й прибирання; autouse-фікстури",
+  "resources": [
+    {
+      "title": "pytest: Fixture scopes",
+      "url": "https://docs.pytest.org/en/stable/how-to/fixtures.html#fixture-scopes",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: Teardown/Cleanup (yield fixtures)",
+      "url": "https://docs.pytest.org/en/stable/how-to/fixtures.html#teardown-cleanup-aka-fixture-finalization",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: Autouse fixtures",
+      "url": "https://docs.pytest.org/en/stable/how-to/fixtures.html#autouse-fixtures-fixtures-you-don-t-have-to-request",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

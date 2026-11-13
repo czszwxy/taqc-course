@@ -1,0 +1,22 @@
+{
+  "type": "python",
+  "mode": "tests",
+  "title": "Test a retry helper with side_effect",
+  "statement": "`get_with_retry(get, url, attempts=3)` викликає `get(url)` і повертає відповідь. Якщо `get` підняв `ConnectionError`, пробує знову — усього до `attempts` разів; після останньої невдачі піднімає цю саму `ConnectionError`. **Інші** винятки не повторюються, а одразу пролітають далі.\n\nПеревір це з `Mock(side_effect=...)`: послідовність відповідей, постійна помилка, інший тип винятку — і кількість викликів. Потрібно щонайменше 4 тести.",
+  "hints": [
+    "`get = Mock(side_effect=[ConnectionError(), ConnectionError(), {\"ok\": True}])` — дві невдачі, потім успіх.",
+    "Перевіряй і результат, і `get.call_count`.",
+    "Інший виняток: `Mock(side_effect=ValueError(\"bad json\"))` — має пролетіти одразу, `call_count == 1`."
+  ],
+  "explanation": "`side_effect` зі списком відтворює сценарій «сервер двічі не відповів, а потім відповів» — без справжньої мережі й очікування. `call_count` показує, скільки спроб зробив код: так ловляться і відсутність повторів, і одна зайва чи недостатня спроба, і повтори там, де їх бути не повинно (помилка в даних не стане кращою від повтору).",
+  "codeRules": [
+    { "kind": "require", "pattern": "side_effect", "message": "Задай сценарій відповідей через `Mock(side_effect=...)`." }
+  ],
+  "minTests": 4,
+  "mutants": [
+    { "id": "no-retry", "description": "Повторів не було — перша ConnectionError пролітала одразу.", "hint": "Є версія без повторів. Нехай перший виклик підніме ConnectionError, а наступний поверне відповідь." },
+    { "id": "one-attempt-less", "description": "Робилось на одну спробу менше.", "hint": "Є версія з меншою кількістю спроб. Дві невдачі й успіх на третій спробі при attempts=3 — і перевір call_count." },
+    { "id": "retries-any-error", "description": "Повторювались будь-які винятки, не лише ConnectionError.", "hint": "Є версія, що повторює всі помилки. Перевір ValueError: має пролетіти одразу, з одним викликом." },
+    { "id": "swallows-last-error", "description": "Після останньої невдачі повертався None замість винятку.", "hint": "Є версія, що «ковтає» останню помилку. Постійна ConnectionError має закінчитися pytest.raises(ConnectionError)." }
+  ]
+}

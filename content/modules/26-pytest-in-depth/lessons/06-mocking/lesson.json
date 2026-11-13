@@ -1,0 +1,28 @@
+{
+  "title": "Mocking with monkeypatch and unittest.mock",
+  "minutes": 60,
+  "summary": "Ізоляція коду від мережі, часу й оточення: monkeypatch.setattr / setenv / setitem з автоматичним відкатом, головне правило «підміняй там, де шукають», фейки, що записують виклики, unittest.mock — Mock, return_value, side_effect, перевірка викликів, patch як контекст і декоратор — і чому не варто мокати все підряд",
+  "resources": [
+    {
+      "title": "pytest: How to monkeypatch/mock modules and environments",
+      "url": "https://docs.pytest.org/en/stable/how-to/monkeypatch.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "unittest.mock — mock object library",
+      "url": "https://docs.python.org/3/library/unittest.mock.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "unittest.mock: Where to patch",
+      "url": "https://docs.python.org/3/library/unittest.mock.html#where-to-patch",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

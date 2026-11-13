@@ -1,0 +1,20 @@
+{
+  "type": "order",
+  "title": "Predict setup and teardown order",
+  "statement": "Розстав рядки виводу в тому порядку, в якому їх надрукує запуск цього файлу тестів.\n\n```python\n@pytest.fixture(scope=\"module\")\ndef api():\n    print(\"connect\")\n    yield\n    print(\"disconnect\")\n\n\n@pytest.fixture\ndef admin(api):\n    print(\"create admin\")\n    yield\n    print(\"delete admin\")\n\n\n@pytest.fixture\ndef customer(api):\n    print(\"create customer\")\n    yield\n    print(\"delete customer\")\n\n\ndef test_admin_panel(admin):\n    print(\"test_admin_panel\")\n\n\ndef test_checkout(customer):\n    print(\"test_checkout\")\n```",
+  "hints": [
+    "`api` має scope module: підключення — один раз перед першим тестом, відключення — після останнього.",
+    "Function-фікстури прибираються одразу після свого тесту."
+  ],
+  "explanation": "Module-фікстура `api` створюється один раз і живе до кінця файлу, тому `connect` — першим, а `disconnect` — останнім. Function-фікстури `admin` і `customer` створюються для свого тесту й прибираються одразу після нього. Прибирання завжди йде у зворотному порядку до підготовки.",
+  "items": [
+    "`connect`",
+    "`create admin`",
+    "`test_admin_panel`",
+    "`delete admin`",
+    "`create customer`",
+    "`test_checkout`",
+    "`delete customer`",
+    "`disconnect`"
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "type": "quiz",
+  "title": "conftest.py",
+  "show": 6,
+  "hints": ["conftest.py підключається сам для своєї папки й підпапок. Його не імпортують."],
+  "questions": [
+    {
+      "id": "what",
+      "kind": "single",
+      "text": "Для чого `conftest.py`?",
+      "options": [
+        { "text": "Спільні фікстури для всіх тестів своєї папки й підпапок без імпорту", "correct": true },
+        { "text": "Налаштування версії Python" },
+        { "text": "Список тестів для запуску" }
+      ]
+    },
+    {
+      "id": "import",
+      "kind": "single",
+      "text": "Як тест у `tests/test_cart.py` отримує фікстуру з `tests/conftest.py`?",
+      "options": [
+        { "text": "Просто просить її параметром — імпорт не потрібен", "correct": true },
+        { "text": "`from conftest import fixture_name`" }
+      ]
+    },
+    {
+      "id": "nearest",
+      "kind": "single",
+      "text": "Фікстура `base_url` є і в `tests/conftest.py`, і в `tests/api/conftest.py`. Яку отримає тест з `tests/api/`?",
+      "options": [
+        { "text": "З `tests/api/conftest.py` — найближчу", "correct": true },
+        { "text": "З `tests/conftest.py`" },
+        { "text": "pytest видасть помилку" }
+      ]
+    },
+    {
+      "id": "factory",
+      "kind": "single",
+      "text": "Що повертає фікстура-фабрика `make_product`?",
+      "options": [
+        { "text": "Функцію, яка будує продукт з потрібними полями", "correct": true },
+        { "text": "Один готовий продукт" },
+        { "text": "Список усіх продуктів" }
+      ]
+    },
+    {
+      "id": "list",
+      "kind": "single",
+      "text": "Як побачити всі фікстури, доступні тестам?",
+      "options": [{ "text": "`python -m pytest --fixtures`", "correct": true }, { "text": "`python -m pytest -v`" }, { "text": "Відкрити conftest.py" }]
+    },
+    {
+      "id": "where",
+      "kind": "single",
+      "text": "Фікстура потрібна лише тестам одного файлу. Де її тримати?",
+      "options": [
+        { "text": "У цьому файлі тестів", "correct": true },
+        { "text": "У кореневому conftest.py — про всяк випадок" }
+      ]
+    },
+    {
+      "id": "helpers",
+      "kind": "single",
+      "text": "Куди покласти звичайну функцію-хелпер (не фікстуру), яку використовують кілька файлів?",
+      "options": [
+        { "text": "В окремий модуль, наприклад `helpers.py`, і імпортувати", "correct": true },
+        { "text": "У conftest.py і імпортувати звідти" }
+      ]
+    }
+  ]
+}

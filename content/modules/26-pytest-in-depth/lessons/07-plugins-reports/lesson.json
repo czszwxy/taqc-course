@@ -1,0 +1,35 @@
+{
+  "title": "Plugins and reports (pytest-html, xdist)",
+  "minutes": 45,
+  "summary": "Плагіни pytest як pip-пакети: HTML-звіт (pytest-html), паралельний запуск (pytest-xdist), покриття (pytest-cov), повтори (pytest-rerunfailures), таймаути, JUnit XML для CI; налаштування в pyproject.toml — testpaths, addopts, markers — і чому паралельний запуск вимагає незалежних тестів",
+  "resources": [
+    {
+      "title": "pytest: Plugin list",
+      "url": "https://docs.pytest.org/en/stable/reference/plugin_list.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest-html documentation",
+      "url": "https://pytest-html.readthedocs.io/",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest-xdist documentation",
+      "url": "https://pytest-xdist.readthedocs.io/",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest-rerunfailures",
+      "url": "https://github.com/pytest-dev/pytest-rerunfailures",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

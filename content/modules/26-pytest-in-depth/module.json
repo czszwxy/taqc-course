@@ -1,0 +1,13 @@
+{
+  "title": "pytest in Depth",
+  "description": "Інструменти, з яких складається справжній тестовий фреймворк на pytest: фікстури та їхні області дії, прибирання через yield, conftest.py, параметризація, маркери й вибір тестів, підміна залежностей через monkeypatch і unittest.mock, плагіни й налаштування. Кожна задача з кодом перевіряє твої тести на навмисно зламаних версіях коду.",
+  "goals": [
+    "Prepare test data with fixtures, chain fixtures and use the built-in ones (tmp_path, capsys, monkeypatch)",
+    "Choose fixture scopes and clean up created data with yield",
+    "Share fixtures through conftest.py and factory fixtures",
+    "Turn test design tables into parametrized tests with readable ids",
+    "Use skip, skipif, xfail and custom markers, and select tests with -m",
+    "Isolate code from the network with monkeypatch and unittest.mock (return_value, side_effect, call assertions)",
+    "Configure pytest and use plugins: reports, parallel runs, coverage"
+  ]
+}

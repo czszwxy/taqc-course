@@ -1,0 +1,22 @@
+{
+  "type": "python",
+  "mode": "tests",
+  "title": "Test printed output with capsys",
+  "statement": "`print_summary(results)` друкує звіт прогону:\n\n```text\nTotal: 4\nPassed: 3\nFailed: 1\n```\n\nРядок `Failed:` друкується **лише** тоді, коли є упалі тести. Перевір вивід за допомогою вбудованої фікстури `capsys`. Потрібно щонайменше 3 тести.",
+  "hints": [
+    "`def test_...(capsys):` → виклич функцію → `out = capsys.readouterr().out`.",
+    "Найсильніше — порівняти весь вивід: `assert out == \"Total: 2\\nPassed: 2\\n\"`.",
+    "Окремо: є упалі тести і немає упалих."
+  ],
+  "explanation": "`capsys` перехоплює все, що код надрукував, і `readouterr().out` повертає це рядком. Порівняння всього виводу з очікуваним текстом — сильна перевірка: вона ловить і неправильні числа, і зайвий рядок `Failed: 0`, і відсутній рядок.",
+  "codeRules": [
+    { "kind": "require", "pattern": "capsys", "message": "Перехопи вивід вбудованою фікстурою `capsys`." }
+  ],
+  "minTests": 3,
+  "mutants": [
+    { "id": "total-is-passed", "description": "Total показував лише пройдені тести.", "hint": "Є версія, де Total рахує не всі результати. Перевір звіт з упалими тестами." },
+    { "id": "failed-always-printed", "description": "Рядок Failed: 0 друкувався навіть без падінь.", "hint": "Є версія, що завжди друкує рядок Failed. Перевір звіт, де всі тести пройшли." },
+    { "id": "passed-line-missing", "description": "Рядок Passed не друкувався.", "hint": "Є версія без рядка Passed. Перевір повний вивід, а не лише його частину." },
+    { "id": "skipped-counted-as-passed", "description": "Пропущені тести рахувались як пройдені.", "hint": "Є версія, що рахує skipped як passed. Додай у результати \"skipped\"." }
+  ]
+}

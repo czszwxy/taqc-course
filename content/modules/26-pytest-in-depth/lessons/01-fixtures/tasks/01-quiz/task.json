@@ -1,0 +1,75 @@
+{
+  "type": "quiz",
+  "title": "Fixtures",
+  "show": 6,
+  "hints": ["Тест просить фікстуру параметром з тим самим іменем. Фікстура викликається для кожного тесту."],
+  "questions": [
+    {
+      "id": "request",
+      "kind": "single",
+      "text": "Як тест отримує фікстуру `checklist`?",
+      "options": [
+        { "text": "Через параметр з тим самим іменем: `def test_x(checklist):`", "correct": true },
+        { "text": "Викликає `checklist()` у тілі тесту" },
+        { "text": "Імпортує `from fixtures import checklist`" }
+      ]
+    },
+    {
+      "id": "fresh",
+      "kind": "single",
+      "text": "Два тести просять одну фікстуру (scope за замовчуванням). Чи бачить другий тест зміни першого?",
+      "options": [
+        { "text": "Ні — фікстура викликається для кожного тесту окремо", "correct": true },
+        { "text": "Так — фікстура створюється один раз" }
+      ]
+    },
+    {
+      "id": "chain",
+      "kind": "single",
+      "text": "Фікстура `cart_with_mouse(empty_cart)` просить `empty_cart`. Хто викликає `empty_cart`?",
+      "options": [
+        { "text": "pytest — він сам будує ланцюжок фікстур", "correct": true },
+        { "text": "Тест має викликати її вручну" }
+      ]
+    },
+    {
+      "id": "capsys",
+      "kind": "single",
+      "text": "Як перевірити, що функція надрукувала рядок `Failed: 1`?",
+      "options": [
+        { "text": "Попросити `capsys` і перевірити `capsys.readouterr().out`", "correct": true },
+        { "text": "Подивитися вивід у терміналі" },
+        { "text": "Через `tmp_path`" }
+      ]
+    },
+    {
+      "id": "not-found",
+      "kind": "single",
+      "text": "pytest пише `fixture 'cheklist' not found`. Найімовірніша причина?",
+      "options": [
+        { "text": "Опечатка: назва параметра не збігається з назвою фікстури", "correct": true },
+        { "text": "Фікстура повертає None" }
+      ]
+    },
+    {
+      "id": "helper-vs-fixture",
+      "kind": "single",
+      "text": "Тесту потрібні три різні замовлення з різними параметрами. Що зручніше?",
+      "options": [
+        { "text": "Хелпер-фабрика `make_order(**overrides)` (або фікстура, що її повертає)", "correct": true },
+        { "text": "Три окремі фікстури з однаковим кодом" }
+      ]
+    },
+    {
+      "id": "builtin",
+      "kind": "multiple",
+      "text": "Які фікстури вбудовані в pytest? (кілька відповідей)",
+      "options": [
+        { "text": "`tmp_path`", "correct": true },
+        { "text": "`capsys`", "correct": true },
+        { "text": "`monkeypatch`", "correct": true },
+        { "text": "`cart`" }
+      ]
+    }
+  ]
+}

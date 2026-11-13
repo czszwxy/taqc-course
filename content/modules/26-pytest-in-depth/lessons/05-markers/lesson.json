@@ -1,0 +1,21 @@
+{
+  "title": "Markers and selecting tests",
+  "minutes": 45,
+  "summary": "Вбудовані маркери skip, skipif і xfail (зокрема strict=True для відомих багів), власні маркери smoke / slow / api з реєстрацією і --strict-markers, вибір тестів через -m \"smoke and not slow\", маркування класів і цілих файлів (pytestmark) — і як маркери використовують у CI",
+  "resources": [
+    {
+      "title": "pytest: How to mark test functions with attributes",
+      "url": "https://docs.pytest.org/en/stable/how-to/mark.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: How to use skip and xfail",
+      "url": "https://docs.pytest.org/en/stable/how-to/skipping.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

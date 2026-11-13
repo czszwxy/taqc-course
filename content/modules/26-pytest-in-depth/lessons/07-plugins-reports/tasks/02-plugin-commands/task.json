@@ -1,0 +1,37 @@
+{
+  "type": "table",
+  "title": "Which plugin or option does it?",
+  "statement": "Для кожної команди обери, що вона дає.",
+  "hints": [
+    "`-n` — xdist, `--html` — pytest-html, `--cov` — pytest-cov, `--reruns` — pytest-rerunfailures.",
+    "`--junitxml` і `-ra` вбудовані в pytest."
+  ],
+  "explanation": "Кожна опція — окремий інструмент: звіти для людей (`--html`) і для CI (`--junitxml`), швидкість (`-n auto`), якість тестів (`--cov`), стабільність (`--reruns`, `--timeout`), видимість пропущених і упалих (`-ra`).",
+  "givenColumns": ["Команда"],
+  "answerColumns": [
+    {
+      "id": "purpose",
+      "label": "Що дає",
+      "options": [
+        "HTML-звіт для людей",
+        "Паралельний запуск на кількох процесах",
+        "Звіт про покриття коду",
+        "Повтор упалих тестів",
+        "Обмеження часу на тест",
+        "Звіт для CI у форматі JUnit XML",
+        "Короткий підсумок про пропущені й упалі тести",
+        "Запуск Playwright-тестів з видимим браузером"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`python -m pytest --html=report.html --self-contained-html`"], "answers": { "purpose": "HTML-звіт для людей" } },
+    { "given": ["`python -m pytest -n auto`"], "answers": { "purpose": "Паралельний запуск на кількох процесах" } },
+    { "given": ["`python -m pytest --cov=shop --cov-report=term-missing`"], "answers": { "purpose": "Звіт про покриття коду" } },
+    { "given": ["`python -m pytest --reruns 2`"], "answers": { "purpose": "Повтор упалих тестів" } },
+    { "given": ["`python -m pytest --timeout=30`"], "answers": { "purpose": "Обмеження часу на тест" } },
+    { "given": ["`python -m pytest --junitxml=report.xml`"], "answers": { "purpose": "Звіт для CI у форматі JUnit XML" } },
+    { "given": ["`python -m pytest -ra`"], "answers": { "purpose": "Короткий підсумок про пропущені й упалі тести" } },
+    { "given": ["`python -m pytest --headed`"], "answers": { "purpose": "Запуск Playwright-тестів з видимим браузером" }, "explain": "Опція плагіна pytest-playwright." }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "type": "python",
+  "mode": "tests",
+  "title": "Replace the network with monkeypatch",
+  "statement": "`order_status_text(order_id)` запитує `fetch_json(f\"{BASE_URL}/orders/{order_id}\")` і повертає:\n\n- `Order #<id> is <status>` — для знайденого замовлення;\n- `Order #<id> not found` — якщо `fetch_json` повернув `None`;\n- `Status is temporarily unavailable` — якщо виникла `ConnectionError`.\n\nСправжній `fetch_json` у тестах навмисно падає — мережі немає. Підміни його через `monkeypatch` фейками: з відповіддю, з `None`, з `ConnectionError` — і перевір, **яку адресу** запитує код. Потрібно щонайменше 4 тести.",
+  "hints": [
+    "`monkeypatch.setattr(subject, \"fetch_json\", fake)` — підміна в модулі `subject`, де функцію шукають.",
+    "Фейк, що записує адресу: функція, яка додає `url` у список і повертає відповідь.",
+    "Фейк з помилкою: `def offline(url): raise ConnectionError(\"no route\")`."
+  ],
+  "explanation": "Кожен фейк задає один сценарій відповіді сервера, який неможливо стабільно отримати від справжньої мережі: знайдено, не знайдено, мережа недоступна. Список запитаних адрес перевіряє ще й те, **куди** код звертається, — мутант з неправильною адресою ловиться лише так.",
+  "codeRules": [
+    { "kind": "require", "pattern": "monkeypatch", "message": "Підміни fetch_json через `monkeypatch`." }
+  ],
+  "minTests": 4,
+  "mutants": [
+    { "id": "wrong-url", "description": "Запит ішов на /order/ замість /orders/.", "hint": "Є версія, що звертається на неправильну адресу. Запиши, з якою адресою викликали фейк, і перевір її." },
+    { "id": "not-found-crash", "description": "Відповідь None призводила до TypeError.", "hint": "Є версія, що не обробляє відсутнє замовлення. Нехай фейк поверне None." },
+    { "id": "connection-error-unhandled", "description": "ConnectionError не оброблялась.", "hint": "Є версія без обробки мережевої помилки. Нехай фейк підніме ConnectionError." },
+    { "id": "missing-hash", "description": "У тексті не було символу #.", "hint": "Є версія з іншим форматом тексту. Порівнюй увесь рядок результату." }
+  ]
+}

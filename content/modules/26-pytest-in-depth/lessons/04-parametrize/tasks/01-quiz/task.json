@@ -1,0 +1,65 @@
+{
+  "type": "quiz",
+  "title": "Parametrization",
+  "show": 6,
+  "hints": ["Кожен рядок параметрів — окремий тест. Назви в рядку мають збігатися з параметрами функції."],
+  "questions": [
+    {
+      "id": "how-many",
+      "kind": "single",
+      "text": "`parametrize(\"x, expected\", [(1, 2), (2, 4), (3, 6)])` на одній функції. Скільки тестів запустить pytest?",
+      "options": [{ "text": "3", "correct": true }, { "text": "1" }, { "text": "6" }]
+    },
+    {
+      "id": "one-fails",
+      "kind": "single",
+      "text": "Один рядок параметрів упав. Що з рештою?",
+      "options": [
+        { "text": "Вони виконуються як окремі тести і показують свій результат", "correct": true },
+        { "text": "Решта не запускається" }
+      ]
+    },
+    {
+      "id": "stacked",
+      "kind": "single",
+      "text": "Два декоратори `parametrize`: браузери (3 значення) і сторінки (4 значення). Скільки тестів?",
+      "options": [{ "text": "12", "correct": true }, { "text": "7" }, { "text": "4" }]
+    },
+    {
+      "id": "ids",
+      "kind": "single",
+      "text": "Навіщо `ids` або `pytest.param(..., id=\"...\")`?",
+      "options": [
+        { "text": "Зрозумілі назви випадків у звіті: test_email[no-at] замість test_email[qa.example.test]", "correct": true },
+        { "text": "Щоб тести виконувались швидше" }
+      ]
+    },
+    {
+      "id": "names",
+      "kind": "single",
+      "text": "`parametrize(\"value, expected\", ...)` на функції `def test_x(val, expected)`. Що буде?",
+      "options": [
+        { "text": "Помилка: назви параметрів не збігаються з аргументами функції", "correct": true },
+        { "text": "pytest сам зіставить value і val" }
+      ]
+    },
+    {
+      "id": "when-not",
+      "kind": "single",
+      "text": "Коли параметризація — погана ідея?",
+      "options": [
+        { "text": "Коли для різних випадків потрібна різна логіка перевірки (if усередині тесту)", "correct": true },
+        { "text": "Коли випадків більше двох" }
+      ]
+    },
+    {
+      "id": "with-fixture",
+      "kind": "single",
+      "text": "Чи можна в одному тесті і параметри, і фікстуру: `def test_x(make_user, role, expected)`?",
+      "options": [
+        { "text": "Так — фікстуру дає pytest, а role і expected — з таблиці параметрів", "correct": true },
+        { "text": "Ні, треба обрати щось одне" }
+      ]
+    }
+  ]
+}

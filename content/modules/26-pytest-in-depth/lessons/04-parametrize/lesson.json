@@ -1,0 +1,21 @@
+{
+  "title": "Parametrization",
+  "minutes": 50,
+  "summary": "@pytest.mark.parametrize: одна функція — багато випадків, кілька параметрів і очікуваний результат у рядку таблиці, зрозумілі назви випадків через ids і pytest.param, декартів добуток зі складених декораторів, параметризація разом з фікстурами — і коли краще окремі тести",
+  "resources": [
+    {
+      "title": "pytest: How to parametrize fixtures and test functions",
+      "url": "https://docs.pytest.org/en/stable/how-to/parametrize.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest API: pytest.param",
+      "url": "https://docs.pytest.org/en/stable/reference/reference.html#pytest-param",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

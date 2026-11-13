@@ -1,0 +1,28 @@
+{
+  "title": "conftest.py and sharing fixtures",
+  "minutes": 45,
+  "summary": "conftest.py — спільні фікстури для всіх тестів папки й підпапок без імпорту, ієрархія conftest-файлів і перевизначення фікстур, фікстура-фабрика для тестових даних, python -m pytest --fixtures і чому conftest ніколи не імпортують",
+  "resources": [
+    {
+      "title": "pytest: Scope: sharing fixtures across classes, modules, packages or session (conftest.py)",
+      "url": "https://docs.pytest.org/en/stable/how-to/fixtures.html#scope-sharing-fixtures-across-classes-modules-packages-or-session",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: Factories as fixtures",
+      "url": "https://docs.pytest.org/en/stable/how-to/fixtures.html#factories-as-fixtures",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: Override a fixture on a folder (conftest) level",
+      "url": "https://docs.pytest.org/en/stable/how-to/fixtures.html#override-a-fixture-on-a-directory-conftest-level",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "type": "classify",
+  "title": "Which tests will -m select?",
+  "statement": "Команда: `python -m pytest -m \"smoke and not slow\"`. Для кожного тесту вирішіть, чи потрапить він у запуск.",
+  "categories": [
+    { "id": "runs", "label": "Selected" },
+    { "id": "not", "label": "Not selected" }
+  ],
+  "items": [
+    { "id": "login", "text": "`test_login` — `@pytest.mark.smoke`", "category": "runs" },
+    { "id": "regression", "text": "`test_full_regression` — `@pytest.mark.slow`", "category": "not" },
+    { "id": "checkout", "text": "`test_checkout` — `@pytest.mark.smoke` і `@pytest.mark.slow`", "category": "not", "explain": "smoke є, але `not slow` його виключає." },
+    { "id": "search", "text": "`test_search` — без маркерів", "category": "not", "explain": "Немає маркера smoke." },
+    { "id": "health", "text": "`test_api_health` — `@pytest.mark.smoke` і `@pytest.mark.api`", "category": "runs", "explain": "Маркер api не заважає: умова лише про smoke і slow." },
+    { "id": "export", "text": "`test_report_export` — `@pytest.mark.regression`", "category": "not" },
+    { "id": "class-mark", "text": "`TestCart::test_add` — клас позначено `@pytest.mark.smoke`", "category": "runs", "explain": "Маркер класу діє на всі його тести." },
+    { "id": "module-mark", "text": "`test_orders` у файлі з `pytestmark = [pytest.mark.smoke, pytest.mark.slow]`", "category": "not", "explain": "Маркери модуля діють на всі тести файлу — і slow теж." }
+  ],
+  "show": 8,
+  "passScore": 0.8,
+  "hints": ["Тест потрапляє в запуск, якщо має smoke (свій, класу чи модуля) і не має slow."],
+  "explanation": "Вираз `-m` перевіряє маркери тесту разом з маркерами класу й модуля. `smoke and not slow` — тест має smoke і не має slow; інші маркери (api, regression) на вибір не впливають, якщо вираз про них не згадує."
+}

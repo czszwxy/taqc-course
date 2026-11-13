@@ -1,0 +1,26 @@
+{
+  "type": "classify",
+  "title": "skip, skipif, xfail, a custom marker — or none?",
+  "statement": "Для кожної ситуації оберіть найкращий інструмент.",
+  "categories": [
+    { "id": "skip", "label": "skip" },
+    { "id": "skipif", "label": "skipif" },
+    { "id": "xfail", "label": "xfail" },
+    { "id": "custom", "label": "Custom marker" },
+    { "id": "raises", "label": "pytest.raises (not a marker)" }
+  ],
+  "items": [
+    { "id": "windows", "text": "Тест перевіряє функцію, якої немає на Windows", "category": "skipif" },
+    { "id": "known-bug", "text": "Відомий баг QA-17 ще не виправлено; хочемо дізнатися, коли його виправлять", "category": "xfail", "explain": "xfail(strict=True, reason=\"QA-17\")." },
+    { "id": "sandbox", "text": "Тест потребує платіжного sandbox, доступ до якого ще не видали (INFRA-9)", "category": "skip" },
+    { "id": "pr-checks", "text": "Позначити швидкі критичні тести для запуску на кожен pull request", "category": "custom", "explain": "Маркер smoke і `-m smoke` у CI." },
+    { "id": "python-version", "text": "Тест для можливості Python 3.13, а частина CI ще на 3.12", "category": "skipif" },
+    { "id": "nightly", "text": "Довгі тести, які запускають лише вночі", "category": "custom", "explain": "Маркер slow і `-m \"not slow\"` для швидких прогонів." },
+    { "id": "negative", "text": "Функція **має** піднімати `ValueError` на від'ємних числах — це вимога", "category": "raises", "explain": "Це очікувана поведінка, а не баг: перевіряється `pytest.raises`, тест звичайний і зелений." },
+    { "id": "tdd", "text": "Новий тест на вимогу, яку розробники ще реалізують у цьому спринті (QA-40)", "category": "xfail", "explain": "xfail(strict=True) — щойно реалізують, тест нагадає зняти позначку." }
+  ],
+  "show": 8,
+  "passScore": 0.8,
+  "hints": ["skip — тест неможливо виконати; skipif — неможливо за певної умови; xfail — тест можна виконати, але він поки має падати; маркер — для вибору тестів; очікуваний виняток — це pytest.raises."],
+  "explanation": "skip і skipif — коли тест неможливо виконати (немає доступу, інша платформа). xfail — коли тест виконується, але поки має падати через відомий баг чи нереалізовану вимогу; strict=True нагадає, коли це зміниться. Власні маркери — для вибору тестів у різних прогонах. А очікуваний виняток за вимогою — не маркер, а звичайна перевірка з pytest.raises."
+}
