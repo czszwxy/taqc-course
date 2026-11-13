@@ -1,9 +1,12 @@
 """A small, offline subset of pytest for my-university tasks (the real pytest is not loaded in the browser).
 
-Provides: raises, approx, fail, mark.parametrize, fixture (scopes: function, module, session).
-The runner (qa_runner.py) collects test_* functions, expands parametrize and resolves fixtures.
+Provides: raises, approx, fail, skip, param, mark.parametrize (ids), marks (skip, skipif, xfail, usefixtures,
+custom markers), fixture (scopes function / module / session, autouse).
+The runner (qa_runner.py) collects tests, expands parametrize, applies marks and resolves fixtures,
+including the built-in tmp_path, capsys and monkeypatch.
 """
 
+import inspect
 import math
 import re
 
@@ -65,32 +68,75 @@ def fail(reason=""):
     raise AssertionError(reason or "failed")
 
 
+class Skipped(Exception):
+    """Raised by pytest.skip(); the runner reports the test as skipped."""
+
+    _qa_skip = True
+
+
+def skip(reason=""):
+    """pytest.skip("reason") — stop the test here and report it as skipped."""
+    raise Skipped(reason or "skipped")
+
+
+class _MarkDecorator:
+    """@pytest.mark.<name>(...): records (name, args, kwargs) on a test function or class.
+
+    The runner understands skip, skipif, xfail and usefixtures; other names are custom markers.
+    """
+
+    def __init__(self, name, args=(), kwargs=None):
+        self.name = name
+        self.args = args
+        self.kwargs = kwargs or {}
+
+    def __call__(self, *args, **kwargs):
+        if len(args) == 1 and not kwargs and (inspect.isfunction(args[0]) or inspect.isclass(args[0])):
+            target = args[0]
+            target._qa_marks = list(getattr(target, "_qa_marks", [])) + [(self.name, self.args, self.kwargs)]
+            return target
+        return _MarkDecorator(self.name, self.args + args, {**self.kwargs, **kwargs})
+
+
+class _Param:
+    """One case of parametrize created by pytest.param(...)."""
+
+    _qa_param = True
+
+    def __init__(self, values, id=None, marks=()):
+        self.values = values
+        self.id = id
+        self.marks = list(marks) if isinstance(marks, (list, tuple)) else [marks]
+
+
+def param(*values, id=None, marks=()):
+    """pytest.param(1, 2, id="name", marks=pytest.mark.xfail) — a parametrize case with its own id or marks."""
+    return _Param(values, id, marks)
+
+
 class _Mark:
-    def parametrize(self, argnames, argvalues):
+    def parametrize(self, argnames, argvalues, ids=None):
         def decorate(fn):
-            fn._qa_params = getattr(fn, "_qa_params", []) + [(argnames, list(argvalues))]
+            fn._qa_params = getattr(fn, "_qa_params", []) + [(argnames, list(argvalues), ids)]
             return fn
 
         return decorate
 
     def __getattr__(self, name):
-        # Custom markers (@pytest.mark.smoke) are accepted and ignored.
-        def decorate(*args, **kwargs):
-            if len(args) == 1 and callable(args[0]) and not kwargs:
-                return args[0]
-            return lambda fn: fn
-
-        return decorate
+        if name.startswith("_"):
+            raise AttributeError(name)
+        return _MarkDecorator(name)
 
 
 mark = _Mark()
 
 
-def fixture(fn=None, *, scope="function", name=None):
+def fixture(fn=None, *, scope="function", name=None, autouse=False):
     def decorate(f):
         f._qa_fixture = True
         f._qa_scope = scope
         f._qa_name = name
+        f._qa_autouse = autouse
         return f
 
     return decorate(fn) if fn is not None else decorate
