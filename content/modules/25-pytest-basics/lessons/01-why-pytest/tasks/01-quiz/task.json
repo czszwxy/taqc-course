@@ -1,0 +1,76 @@
+{
+  "type": "quiz",
+  "title": "Why pytest",
+  "show": 6,
+  "hints": ["pytest шукає файли test_*.py / *_test.py, функції test_* і класи Test* без __init__."],
+  "questions": [
+    {
+      "id": "assert",
+      "kind": "single",
+      "text": "Як pytest вирішує, що тест упав?",
+      "options": [
+        { "text": "Тест підняв виняток — найчастіше AssertionError від хибного assert", "correct": true },
+        { "text": "Тест повернув False" },
+        { "text": "Тест надрукував слово FAILED" }
+      ]
+    },
+    {
+      "id": "vs-unittest",
+      "kind": "single",
+      "text": "У чому головна зручність pytest порівняно з unittest?",
+      "options": [
+        { "text": "Звичайні функції й assert замість класів і self.assertEqual, плюс зрозумілі повідомлення про падіння", "correct": true },
+        { "text": "pytest працює лише з Playwright" },
+        { "text": "unittest не вміє перевіряти рівність" }
+      ]
+    },
+    {
+      "id": "file-name",
+      "kind": "single",
+      "text": "Який файл pytest **не** підхопить за замовчуванням?",
+      "options": [
+        { "text": "`cart_tests.py`", "correct": true },
+        { "text": "`test_cart.py`" },
+        { "text": "`cart_test.py`" }
+      ]
+    },
+    {
+      "id": "class-init",
+      "kind": "single",
+      "text": "У файлі є `class TestCart:` з методом `__init__` і методами `test_*`. Що зробить pytest?",
+      "options": [
+        { "text": "Пропустить клас з попередженням — класи з __init__ не збираються", "correct": true },
+        { "text": "Запустить усі методи" }
+      ]
+    },
+    {
+      "id": "no-assert",
+      "kind": "single",
+      "text": "Тест викликає функцію, але не містить жодного `assert`. Що буде на зламаному коді?",
+      "options": [
+        { "text": "Тест, найімовірніше, лишиться зеленим — він нічого не перевіряє", "correct": true },
+        { "text": "pytest сам порівняє результат з очікуваним" }
+      ]
+    },
+    {
+      "id": "aaa",
+      "kind": "single",
+      "text": "Що означає Arrange — Act — Assert?",
+      "options": [
+        { "text": "Підготувати дані → виконати дію → перевірити результат", "correct": true },
+        { "text": "Запустити → зупинити → повторити" },
+        { "text": "Три обов'язкові файли тестового проєкту" }
+      ]
+    },
+    {
+      "id": "mutant",
+      "kind": "single",
+      "text": "У задачах курсу мутант «вижив». Що це означає?",
+      "options": [
+        { "text": "На версії коду з навмисним багом усі твої тести пройшли — цей баг вони не ловлять", "correct": true },
+        { "text": "Твої тести впали на правильному коді" },
+        { "text": "У тебе забагато тестів" }
+      ]
+    }
+  ]
+}

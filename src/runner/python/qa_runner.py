@@ -3,7 +3,7 @@
 run_tests(files_json, test_file)  -> JSON {"error", "tests": [{"name", "passed", "error", "hint"}], "stdout"}
 run_program(files_json, main_file) -> JSON {"error", "stdout"}
 
-Supports what the course teaches: test_* functions, plain assert with readable messages
+Supports what the course teaches: test_* functions and Test* classes, plain assert with readable messages
 ("assert 5 == 6"), the test docstring as a hint, and a pytest subset provided by pytest.py
 (raises, approx, fail, mark.parametrize, fixtures with yield, conftest.py, capsys, tmp_path).
 """
@@ -249,6 +249,24 @@ def _fixture_definitions(*modules):
     return found
 
 
+def _collect(module):
+    """Tests in file order, like pytest: test_* functions and test_* methods of Test* classes without __init__.
+
+    Returns (name, function, owner class or None).
+    """
+    found = []
+    for name, obj in vars(module).items():
+        if getattr(obj, "__module__", None) != module.__name__:
+            continue
+        if name.startswith("test") and inspect.isfunction(obj):
+            found.append((name, obj, None))
+        elif name.startswith("Test") and inspect.isclass(obj) and "__init__" not in vars(obj):
+            for attr, member in vars(obj).items():
+                if attr.startswith("test") and inspect.isfunction(member):
+                    found.append((f"{name}::{attr}", member, obj))
+    return found
+
+
 def run_tests(files_json, test_file="tests.py"):
     files = json.loads(files_json)
     result = {"error": None, "tests": [], "stdout": ""}
@@ -263,16 +281,12 @@ def run_tests(files_json, test_file="tests.py"):
             result["stdout"] = out.getvalue()
             return json.dumps(result)
         fixtures = _Fixtures(_fixture_definitions(*(m for m in (conftest, module) if m is not None)))
-        tests = [
-            (name, fn)
-            for name, fn in vars(module).items()
-            if name.startswith("test") and inspect.isfunction(fn) and fn.__module__ == module.__name__
-        ]
-        for name, fn in tests:
+        for name, fn, owner in _collect(module):
             hint = inspect.getdoc(fn) or ""
             for case_name, args in _expand(name, fn):
                 try:
-                    fixtures.call(fn, args)
+                    target = getattr(owner(), fn.__name__) if owner is not None else fn
+                    fixtures.call(target, args)
                     result["tests"].append({"name": case_name, "passed": True, "error": "", "hint": ""})
                 except _FixtureError as exc:
                     result["tests"].append({"name": case_name, "passed": False, "error": f"Fixture error: {exc}", "hint": hint})

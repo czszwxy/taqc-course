@@ -1,0 +1,21 @@
+{
+  "title": "Organizing tests",
+  "minutes": 45,
+  "summary": "Як організувати тести: папка tests/ і назви файлів, групування в класи Test* (новий об'єкт для кожного тесту), хелпери й білдери тестових даних, незалежність тестів і чому спільний змінюваний стан робить їх нестабільними; налаштування testpaths",
+  "resources": [
+    {
+      "title": "pytest: Good Integration Practices (test layout)",
+      "url": "https://docs.pytest.org/en/stable/explanation/goodpractices.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: Configuration (testpaths, pyproject.toml)",
+      "url": "https://docs.pytest.org/en/stable/reference/customize.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "type": "classify",
+  "title": "Will pytest run it?",
+  "statement": "Для кожного елемента вирішіть, чи pytest **збере і запустить** його як тест (з налаштуваннями за замовчуванням, файл лежить у папці, з якої запускають `python -m pytest`).",
+  "categories": [
+    { "id": "test", "label": "Runs as a test", "description": "pytest збере і запустить" },
+    { "id": "skip", "label": "Not a test", "description": "pytest не запустить як тест" }
+  ],
+  "items": [
+    { "id": "func", "text": "`def test_total_with_discount():` у файлі `test_cart.py`", "category": "test" },
+    { "id": "suffix-file", "text": "`def test_login():` у файлі `login_test.py`", "category": "test", "explain": "Файли `*_test.py` теж підхоплюються." },
+    { "id": "helper", "text": "`def make_user(**overrides):` у файлі `test_users.py`", "category": "skip", "explain": "Хелпер без префікса `test` — не тест." },
+    { "id": "check", "text": "`def check_total():` у файлі `test_cart.py`", "category": "skip", "explain": "Назва має починатися з `test`." },
+    { "id": "class-method", "text": "Метод `def test_add(self):` у `class TestCart:` без `__init__`", "category": "test" },
+    { "id": "class-init", "text": "Метод `def test_add(self):` у `class TestCart:`, де є `__init__`", "category": "skip", "explain": "Класи з `__init__` pytest не збирає (з попередженням)." },
+    { "id": "wrong-file", "text": "`def test_search():` у файлі `search_checks.py`", "category": "skip", "explain": "Файл не відповідає `test_*.py` / `*_test.py` — pytest його не відкриває." },
+    { "id": "helpers-file", "text": "`def build_order():` у файлі `helpers.py`", "category": "skip" },
+    { "id": "class-name", "text": "Метод `def test_add(self):` у `class CartTests:`", "category": "skip", "explain": "Клас має **починатися** з `Test`." },
+    { "id": "test-prefix", "text": "`def test_api_returns_404_for_missing_order():` у `tests/test_orders.py`", "category": "test", "explain": "pytest шукає і в підпапках." }
+  ],
+  "show": 8,
+  "passScore": 0.8,
+  "hints": ["Три умови: назва файлу (`test_*.py` / `*_test.py`), назва функції чи методу (`test*`), клас — `Test*` без `__init__`."],
+  "explanation": "pytest збирає тести за домовленостями про назви: файли `test_*.py` або `*_test.py`, функції `test*`, класи `Test*` без `__init__` і їхні методи `test*`. Хелпери, файли без префікса і класи з іншими назвами лишаються звичайним кодом — і це зручно: допоміжні функції живуть поруч із тестами, але не запускаються як тести."
+}

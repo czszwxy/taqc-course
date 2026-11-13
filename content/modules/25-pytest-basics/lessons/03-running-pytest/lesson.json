@@ -1,0 +1,21 @@
+{
+  "title": "Running pytest and reading the output",
+  "minutes": 45,
+  "summary": "Запуск pytest з терміналу: python -m pytest, -v, -q, -x, -k, --lf, -s, вибір файлу чи одного тесту; як читати вивід — позначки . F E s, блоки > і E, короткий підсумок і коди виходу; різниця між F і E і головне питання — баг у продукті чи в тесті",
+  "resources": [
+    {
+      "title": "pytest: How to invoke pytest",
+      "url": "https://docs.pytest.org/en/stable/how-to/usage.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: Managing pytest's output",
+      "url": "https://docs.pytest.org/en/stable/how-to/output.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

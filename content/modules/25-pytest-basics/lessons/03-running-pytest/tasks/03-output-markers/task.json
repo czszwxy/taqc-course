@@ -1,0 +1,25 @@
+{
+  "type": "classify",
+  "title": "What will pytest show: . F E or s?",
+  "statement": "Для кожної ситуації вирішіть, якою позначкою pytest покаже тест у рядку прогресу.",
+  "categories": [
+    { "id": "pass", "label": ". passed" },
+    { "id": "fail", "label": "F failed", "description": "упав сам тест" },
+    { "id": "error", "label": "E error", "description": "збій у підготовці чи прибиранні" },
+    { "id": "skip", "label": "s skipped" }
+  ],
+  "items": [
+    { "id": "assert-wrong", "text": "`assert cart.total() == 900`, а повернулось 850", "category": "fail" },
+    { "id": "fixture-crash", "text": "Фікстура `user` впала з `KeyError` ще до тіла тесту", "category": "error", "explain": "Збій у підготовці — тест навіть не почав виконуватись." },
+    { "id": "skip-mark", "text": "Тест позначено `@pytest.mark.skip(reason=\"bug 123\")`", "category": "skip" },
+    { "id": "all-ok", "text": "Усі перевірки тесту виконались успішно", "category": "pass" },
+    { "id": "type-error-in-test", "text": "У тілі тесту `TypeError: unsupported operand type(s)`", "category": "fail", "explain": "Виняток у тілі тесту — це теж падіння тесту (F)." },
+    { "id": "teardown-crash", "text": "Тест пройшов, але прибирання у фікстурі після `yield` кинуло помилку", "category": "error", "explain": "Збій у прибиранні pytest показує як помилку (E)." },
+    { "id": "raises-ok", "text": "`with pytest.raises(ValueError):` — код справді підняв `ValueError`", "category": "pass", "explain": "Очікуваний виняток — це успіх тесту." },
+    { "id": "skipif", "text": "`@pytest.mark.skipif(sys.platform == \"win32\", ...)`, запуск на Windows", "category": "skip" }
+  ],
+  "show": 8,
+  "passScore": 0.8,
+  "hints": ["E — лише коли зламалася підготовка або прибирання (фікстури, імпорт). Будь-який виняток у самому тілі тесту — F."],
+  "explanation": "F означає, що впав сам тест — хибний `assert` або несподіваний виняток у його тілі. E — що тест не зміг нормально стартувати чи завершитися: зламалася фікстура, імпорт або прибирання. Очікуваний виняток у `pytest.raises` — це успіх. Розрізняти F і E важливо: при E продукт може бути цілком справним."
+}

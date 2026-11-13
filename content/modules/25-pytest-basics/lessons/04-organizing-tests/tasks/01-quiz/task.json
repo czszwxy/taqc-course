@@ -1,0 +1,74 @@
+{
+  "type": "quiz",
+  "title": "Organizing tests",
+  "show": 6,
+  "hints": ["Кожен тест — новий об'єкт класу. Тест має проходити сам по собі і в будь-якому порядку."],
+  "questions": [
+    {
+      "id": "file-per-module",
+      "kind": "single",
+      "text": "Де розумно тримати тести для `shop/cart.py`?",
+      "options": [
+        { "text": "У `tests/test_cart.py`", "correct": true },
+        { "text": "У `shop/cart.py` під кодом" },
+        { "text": "У `tests/all_tests.py` разом з усіма іншими" }
+      ]
+    },
+    {
+      "id": "instance",
+      "kind": "single",
+      "text": "Тест №1 у класі `TestCart` виконав `self.items = [1]`. Що побачить тест №2 у `self.items`?",
+      "options": [
+        { "text": "Нічого — для кожного тесту pytest створює новий об'єкт класу", "correct": true },
+        { "text": "`[1]`" }
+      ]
+    },
+    {
+      "id": "class-attr",
+      "kind": "single",
+      "text": "Чому не варто класти змінюваний список в атрибут класу тестів (`items = []` у тілі класу)?",
+      "options": [
+        { "text": "Атрибут класу спільний для всіх тестів — дані протікатимуть між ними", "correct": true },
+        { "text": "pytest забороняє атрибути в класах" }
+      ]
+    },
+    {
+      "id": "helper-name",
+      "kind": "single",
+      "text": "Як назвати функцію, що будує тестового користувача, щоб pytest не вважав її тестом?",
+      "options": [
+        { "text": "`make_user()`", "correct": true },
+        { "text": "`test_user()`" },
+        { "text": "`test_make_user()`" }
+      ]
+    },
+    {
+      "id": "builder",
+      "kind": "single",
+      "text": "Навіщо білдер `make_user(**overrides)` зі значеннями за замовчуванням?",
+      "options": [
+        { "text": "Тест показує лише важливе для нього поле, а нове обов'язкове поле додається в одному місці", "correct": true },
+        { "text": "Так тести працюють швидше" }
+      ]
+    },
+    {
+      "id": "order",
+      "kind": "single",
+      "text": "Тест зелений при `-k test_total`, але червоний у повному прогоні. Найімовірніша причина?",
+      "options": [
+        { "text": "Залежність від спільного стану, який змінюють інші тести", "correct": true },
+        { "text": "Помилка в pytest" }
+      ]
+    },
+    {
+      "id": "testpaths",
+      "kind": "single",
+      "text": "Що дає `testpaths = [\"tests\"]` у налаштуваннях pytest?",
+      "options": [
+        { "text": "pytest шукає тести лише в папці tests", "correct": true },
+        { "text": "Створює папку tests" },
+        { "text": "Запускає тести паралельно" }
+      ]
+    }
+  ]
+}

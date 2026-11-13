@@ -1,0 +1,70 @@
+{
+  "type": "quiz",
+  "title": "Tests with assert",
+  "show": 6,
+  "hints": ["Перевіряй конкретні значення. assert (умова, \"msg\") у дужках ніколи не падає."],
+  "questions": [
+    {
+      "id": "output",
+      "kind": "single",
+      "text": "pytest показав `E   assert 1200 == 1250`. Що означає ліва частина?",
+      "options": [
+        { "text": "Значення, яке повернув код (фактичне)", "correct": true },
+        { "text": "Очікуване значення з вимог" },
+        { "text": "Номер рядка" }
+      ]
+    },
+    {
+      "id": "or-trap",
+      "kind": "single",
+      "text": "Чим небезпечний `assert result == 5 or 6`?",
+      "options": [
+        { "text": "Він завжди істинний — `or 6` дає truthy 6; правильно `result in (5, 6)`", "correct": true },
+        { "text": "Нічим, це звичайна перевірка двох варіантів" }
+      ]
+    },
+    {
+      "id": "tuple-trap",
+      "kind": "single",
+      "text": "Що не так з `assert (total == 900, \"wrong total\")`?",
+      "options": [
+        { "text": "Це кортеж — він завжди truthy, тест ніколи не впаде", "correct": true },
+        { "text": "Повідомлення має бути англійською" },
+        { "text": "Нічого" }
+      ]
+    },
+    {
+      "id": "is-true",
+      "kind": "single",
+      "text": "Функція має повертати саме `True`. Яка перевірка найточніша?",
+      "options": [
+        { "text": "`assert result is True`", "correct": true },
+        { "text": "`assert result`", "explain": "Пройде і для 1, і для непорожнього рядка." }
+      ]
+    },
+    {
+      "id": "one-behavior",
+      "kind": "single",
+      "text": "Чому краще кілька маленьких тестів, ніж один з десятьма assert?",
+      "options": [
+        { "text": "Перший невдалий assert зупиняє тест, і решта проблем не видно; назви маленьких тестів пояснюють, що зламалося", "correct": true },
+        { "text": "pytest не дозволяє більше одного assert" }
+      ]
+    },
+    {
+      "id": "boundary",
+      "kind": "single",
+      "text": "`is_adult(age)` повертає True від 18. Яка пара значень найкраще ловить помилку `>` замість `>=`?",
+      "options": [{ "text": "17 і 18", "correct": true }, { "text": "5 і 60" }, { "text": "0 і 100" }]
+    },
+    {
+      "id": "formula",
+      "kind": "single",
+      "text": "Чому погано писати `assert discount(x) == x * 85 // 100` замість конкретного числа?",
+      "options": [
+        { "text": "Тест повторює формулу коду — якщо вона хибна, тест помилиться так само", "correct": true },
+        { "text": "Так тест працює повільніше" }
+      ]
+    }
+  ]
+}

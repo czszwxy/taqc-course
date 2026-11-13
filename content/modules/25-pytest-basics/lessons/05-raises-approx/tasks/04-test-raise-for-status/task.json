@@ -1,0 +1,22 @@
+{
+  "type": "python",
+  "mode": "tests",
+  "title": "Test an API error hierarchy",
+  "statement": "`subject.py` містить ієрархію винятків API-клієнта і функцію `raise_for_status(status, url)`:\n\n- `ApiError(status, url)` — повідомлення `\"<status> for <url>\"`, атрибути `status` і `url`;\n- `AuthError` (401 і 403) і `NotFoundError` (404) — нащадки `ApiError`;\n- статус до 400 — нічого не відбувається; інші від 400 — `ApiError`.\n\nНапиши тести, що перевіряють **тип** винятку, його **повідомлення** й **атрибути**. Потрібно щонайменше 4 тести.",
+  "hints": [
+    "Тип: `with pytest.raises(AuthError):` для 401 і окремо для 403.",
+    "Атрибути й текст — через `as exc_info` і перевірки після блоку: `exc_info.value.url`, `str(exc_info.value)`.",
+    "Межа: 399 ще не помилка."
+  ],
+  "explanation": "`pytest.raises(AuthError)` падає, якщо піднято лише базовий `ApiError`, — так перевіряється точний тип. `exc_info.value` дає доступ до атрибутів і тексту, які тестам потрібні для зрозумілих повідомлень. А межа 399 / 400 — та сама історія граничних значень, тільки для винятків.",
+  "codeRules": [
+    { "kind": "require", "pattern": "pytest\\.raises", "message": "Перевір винятки через `pytest.raises`." }
+  ],
+  "minTests": 4,
+  "mutants": [
+    { "id": "forbidden-is-base", "description": "Для 403 піднімався базовий ApiError замість AuthError.", "hint": "Є версія, що правильно обробляє 401, але не 403. Перевір тип винятку для 403." },
+    { "id": "wrong-message", "description": "Повідомлення мало інший формат.", "hint": "Є версія з іншим текстом винятку. Перевір `str(exc_info.value)` або `match`." },
+    { "id": "raises-on-399", "description": "Статус 399 вважався помилкою.", "hint": "Є версія зі зсунутою межею. Перевір, що 399 нічого не піднімає." },
+    { "id": "url-not-saved", "description": "Атрибут url не зберігався.", "hint": "Є версія, у якої виняток не має атрибута `url`. Перевір `exc_info.value.url`." }
+  ]
+}

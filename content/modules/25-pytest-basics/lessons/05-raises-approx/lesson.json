@@ -1,0 +1,28 @@
+{
+  "title": "Testing exceptions and floats (pytest.raises, approx)",
+  "minutes": 50,
+  "summary": "Негативні тести з pytest.raises: тип винятку, match (це регулярний вираз), exc_info.value з атрибутами; три можливі результати блоку raises; дробові числа і pytest.approx замість ==; типові пастки — надто широкий Exception, кілька рядків у with, round у перевірках",
+  "resources": [
+    {
+      "title": "pytest: Assertions about expected exceptions",
+      "url": "https://docs.pytest.org/en/stable/how-to/assert.html#assertions-about-expected-exceptions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest API: pytest.approx",
+      "url": "https://docs.pytest.org/en/stable/reference/reference.html#pytest-approx",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python Tutorial: Floating-Point Arithmetic — Issues and Limitations",
+      "url": "https://docs.python.org/3/tutorial/floatingpoint.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

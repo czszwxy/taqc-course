@@ -1,0 +1,22 @@
+{
+  "title": "Tests that catch bugs",
+  "minutes": 55,
+  "summary": "Що робить тест цінним: він падає, коли поведінка ламається. «Перевір тест» — побач його червоним; покриття коду проти мутаційного тестування; сильні й слабкі перевірки; тести з вимог — класи, межі, таблиця рішень, негативні сценарії й повідомлення про помилки",
+  "resources": [
+    {
+      "title": "mutmut — mutation testing for Python",
+      "url": "https://mutmut.readthedocs.io/",
+      "kind": "tool",
+      "lang": "en",
+      "note": "Інструмент, який робить для твого коду те саме, що курс робить із задачами: створює мутантів і перевіряє, чи тести їх ловлять.",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest-cov — coverage reports for pytest",
+      "url": "https://pytest-cov.readthedocs.io/",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "type": "quiz",
+  "title": "pytest.raises and approx",
+  "show": 6,
+  "hints": ["raises перевіряє і факт, і тип винятку. match — регулярний вираз. Дробові — через approx."],
+  "questions": [
+    {
+      "id": "did-not-raise",
+      "kind": "single",
+      "text": "`with pytest.raises(ValueError): parse_quantity(\"5\")` — функція повернула 5 без помилки. Результат?",
+      "options": [
+        { "text": "Тест падає з DID NOT RAISE", "correct": true },
+        { "text": "Тест проходить" }
+      ]
+    },
+    {
+      "id": "other-type",
+      "kind": "single",
+      "text": "Блок очікує `ValueError`, а код підняв `KeyError`. Що буде?",
+      "options": [
+        { "text": "KeyError пролетить далі — тест упаде", "correct": true },
+        { "text": "Тест пройде — головне, що була помилка" }
+      ]
+    },
+    {
+      "id": "match-regex",
+      "kind": "single",
+      "text": "Чим є значення `match` у `pytest.raises`?",
+      "options": [
+        { "text": "Регулярним виразом, який шукають у тексті винятку", "correct": true },
+        { "text": "Точним текстом винятку, символ у символ" },
+        { "text": "Назвою типу винятку" }
+      ]
+    },
+    {
+      "id": "exc-info",
+      "kind": "single",
+      "text": "Як перевірити атрибут `status` піднятого винятку?",
+      "options": [
+        { "text": "`with pytest.raises(ApiError) as exc_info:` …, а після блоку `assert exc_info.value.status == 404`", "correct": true },
+        { "text": "`assert pytest.raises(ApiError).status == 404`" }
+      ]
+    },
+    {
+      "id": "broad",
+      "kind": "single",
+      "text": "Чим поганий `pytest.raises(Exception)`?",
+      "options": [
+        { "text": "Пройде на будь-якій помилці, навіть на опечатці в коді — не перевіряє правильну відмову", "correct": true },
+        { "text": "Нічим, так навіть надійніше" }
+      ]
+    },
+    {
+      "id": "float",
+      "kind": "single",
+      "text": "Як правильно перевірити, що `average([0.1, 0.2])` дорівнює 0.15?",
+      "options": [
+        { "text": "`assert average([0.1, 0.2]) == pytest.approx(0.15)`", "correct": true },
+        { "text": "`assert average([0.1, 0.2]) == 0.15`" },
+        { "text": "`assert round(average([0.1, 0.2]), 1) == 0.2`" }
+      ]
+    },
+    {
+      "id": "abs",
+      "kind": "single",
+      "text": "Що означає `pytest.approx(10.0, abs=0.01)`?",
+      "options": [
+        { "text": "Значення від 9.99 до 10.01 вважаються рівними", "correct": true },
+        { "text": "Значення за модулем" },
+        { "text": "±1 %" }
+      ]
+    }
+  ]
+}

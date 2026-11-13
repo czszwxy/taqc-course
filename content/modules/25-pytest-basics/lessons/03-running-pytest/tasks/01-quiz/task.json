@@ -1,0 +1,72 @@
+{
+  "type": "quiz",
+  "title": "Running pytest",
+  "show": 6,
+  "hints": [". — пройшов, F — упав тест, E — помилка підготовки, s — пропущений."],
+  "questions": [
+    {
+      "id": "k",
+      "kind": "single",
+      "text": "Що робить `python -m pytest -k checkout`?",
+      "options": [
+        { "text": "Запускає лише тести, у назві яких є `checkout`", "correct": true },
+        { "text": "Зупиняє запуск після першого падіння" },
+        { "text": "Запускає файл checkout.py" }
+      ]
+    },
+    {
+      "id": "x",
+      "kind": "single",
+      "text": "Навіщо прапорець `-x`?",
+      "options": [
+        { "text": "Зупинитися після першого падіння", "correct": true },
+        { "text": "Виключити повільні тести" },
+        { "text": "Показати print-и" }
+      ]
+    },
+    {
+      "id": "markers",
+      "kind": "single",
+      "text": "Рядок прогресу `..F.E`. Скільки тестів пройшло?",
+      "options": [{ "text": "3", "correct": true }, { "text": "4" }, { "text": "5" }]
+    },
+    {
+      "id": "e-vs-f",
+      "kind": "single",
+      "text": "Чим E відрізняється від F?",
+      "options": [
+        { "text": "E — збій у підготовці чи прибиранні (фікстура, імпорт), F — упав сам тест", "correct": true },
+        { "text": "E — помилка англійською, F — українською" },
+        { "text": "Нічим" }
+      ]
+    },
+    {
+      "id": "collected-zero",
+      "kind": "single",
+      "text": "pytest пише `collected 0 items`. Що перевірити першим?",
+      "options": [
+        { "text": "Назви файлів і функцій (test_*.py, test_*) і папку, з якої запускаєш", "correct": true },
+        { "text": "Версію Python" }
+      ]
+    },
+    {
+      "id": "one-test",
+      "kind": "single",
+      "text": "Як запустити лише тест `test_total` з файлу `tests/test_cart.py`?",
+      "options": [
+        { "text": "`python -m pytest tests/test_cart.py::test_total`", "correct": true },
+        { "text": "`python -m pytest test_total`" },
+        { "text": "`python tests/test_cart.py test_total`" }
+      ]
+    },
+    {
+      "id": "fix-test",
+      "kind": "single",
+      "text": "Тест очікує 1050, а код повертає 1150. Що робити першим?",
+      "options": [
+        { "text": "Звірити очікуване значення з вимогами — і лише тоді вирішити, чий це баг", "correct": true },
+        { "text": "Змінити в тесті 1050 на 1150, щоб він позеленів" }
+      ]
+    }
+  ]
+}

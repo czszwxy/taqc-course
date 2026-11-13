@@ -1,0 +1,28 @@
+{
+  "title": "Why pytest",
+  "minutes": 45,
+  "summary": "Що таке автотест у Python, чому pytest став стандартом (порівняно з unittest), як pytest знаходить тести — файли test_*.py, функції test_*, класи Test*, — патерн Arrange-Act-Assert і як курс перевіряє твої тести на зламаних версіях коду",
+  "resources": [
+    {
+      "title": "pytest: Get Started",
+      "url": "https://docs.pytest.org/en/stable/getting-started.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: Conventions for Python test discovery",
+      "url": "https://docs.pytest.org/en/stable/explanation/goodpractices.html#conventions-for-python-test-discovery",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: pytest tutorial for beginners",
+      "url": "https://www.youtube.com/results?search_query=pytest+tutorial+for+beginners",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

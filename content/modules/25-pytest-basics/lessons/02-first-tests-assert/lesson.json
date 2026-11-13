@@ -1,0 +1,21 @@
+{
+  "title": "Your first tests with assert",
+  "minutes": 50,
+  "summary": "assert і як pytest показує значення при падінні, що перевіряти (==, is None, in, isinstance), одна поведінка — один тест, назви test_<що>_<умова>_<результат>, вибір значень через класи еквівалентності й межі, і пастки assert з or та з дужками",
+  "resources": [
+    {
+      "title": "pytest: How to write and report assertions in tests",
+      "url": "https://docs.pytest.org/en/stable/how-to/assert.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python reference: the assert statement",
+      "url": "https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

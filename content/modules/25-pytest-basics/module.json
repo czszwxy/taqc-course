@@ -1,0 +1,12 @@
+{
+  "title": "pytest Basics",
+  "description": "Перший модуль автоматизації на Python: пишеш тести з pytest для готового коду. Як pytest знаходить і запускає тести, assert і читання результату, організація тестів у файли й класи, перевірка винятків і дробових чисел — і головне: тести, які справді ловлять баги (кожну задачу перевіряють на навмисно зламаних версіях коду).",
+  "goals": [
+    "Explain why pytest is the standard for Python tests and how it discovers tests",
+    "Write focused tests with plain assert, good names and boundary values",
+    "Run pytest from the command line, select tests and read the output (F vs E)",
+    "Organize tests in files and Test classes, keep them independent, use data builders",
+    "Test exceptions with pytest.raises and floats with pytest.approx",
+    "Write tests that catch bugs: strong assertions, test design techniques, mutation thinking"
+  ]
+}

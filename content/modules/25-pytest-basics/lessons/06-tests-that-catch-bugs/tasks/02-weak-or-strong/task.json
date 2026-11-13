@@ -1,0 +1,25 @@
+{
+  "type": "classify",
+  "title": "Weak or strong assertion?",
+  "statement": "Для кожної перевірки вирішіть: вона **сильна** (пройде лише на правильному результаті) чи **слабка** (пройде і на багатьох неправильних).",
+  "categories": [
+    { "id": "strong", "label": "Strong" },
+    { "id": "weak", "label": "Weak" }
+  ],
+  "items": [
+    { "id": "truthy", "text": "`assert total`", "category": "weak", "explain": "Пройде для будь-якого ненульового числа." },
+    { "id": "exact", "text": "`assert total == 850`", "category": "strong" },
+    { "id": "len", "text": "`assert len(items) > 0`, хоча відомо, що товарів має бути рівно два", "category": "weak", "explain": "Пройде і для одного, і для ста товарів." },
+    { "id": "list", "text": "`assert items == [\"Mouse\", \"Cable\"]`", "category": "strong" },
+    { "id": "contains", "text": "`assert \"error\" in message.lower()`", "category": "weak", "explain": "Будь-яке повідомлення зі словом error пройде." },
+    { "id": "message", "text": "`assert message == \"Invalid email\"`", "category": "strong" },
+    { "id": "broad-raises", "text": "`with pytest.raises(Exception):`", "category": "weak", "explain": "Пройде навіть на TypeError через опечатку." },
+    { "id": "exact-raises", "text": "`with pytest.raises(ValueError, match=\"Invalid price: 'abc'\"):`", "category": "strong" },
+    { "id": "not-none", "text": "`assert user is not None`", "category": "weak", "explain": "Пройде для будь-якого знайденого користувача — навіть не того." },
+    { "id": "model", "text": "`assert user == User(1, \"qa@example.test\")`", "category": "strong" }
+  ],
+  "show": 8,
+  "passScore": 0.8,
+  "hints": ["Уяви трохи неправильний результат (інше число, інший товар, інше повідомлення). Чи пройде перевірка? Якщо так — вона слабка."],
+  "explanation": "Сильна перевірка порівнює з конкретним очікуваним значенням: числом, списком, текстом, моделлю, точним типом винятку з повідомленням. Слабка перевіряє лише «щось є» — і пропускає неправильні результати. Слабкі перевірки доречні хіба що як доповнення, коли точне значення справді невідоме."
+}
