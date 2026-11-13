@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Count errors and warnings in a log",
+  "statement": "Рядки лога мають формат `<date> <time> <LEVEL> <message>`. Напиши `count_levels(path)` — словник `{\"ERROR\": n, \"WARN\": m}` (обидва ключі є завжди). Рівень — **третє слово** рядка; слова `ERROR` у тексті повідомлення не рахуються. Порожні рядки пропускай. Читай файл рядок за рядком.\n\n```text\n2026-11-13 10:00:01 INFO Test run started\n2026-11-13 10:00:05 ERROR Payment failed\n2026-11-13 10:00:06 WARN Slow response: 2300 ms\n2026-11-13 10:00:09 INFO Retry after ERROR\n```\n\n```python\ncount_levels(log)   # {'ERROR': 1, 'WARN': 1}\n```",
+  "hints": [
+    "`with open(path, encoding=\"utf-8\") as f:` і `for line in f:` — читання по рядку.",
+    "`parts = line.split()`; якщо слів менше трьох — пропусти рядок; рівень — `parts[2]`.",
+    "Почни з `counts = {\"ERROR\": 0, \"WARN\": 0}` і збільшуй, якщо рівень є серед ключів."
+  ],
+  "explanation": "Пошук `\"ERROR\" in line` порахував би й рядок `INFO Retry after ERROR` — тому рівень беремо з конкретної позиції (третє слово). Перевірка довжини `parts` захищає від порожніх рядків і обірваних записів. Читання `for line in f` не завантажує весь лог у пам'ять.",
+  "codeRules": [
+    { "kind": "require", "pattern": "encoding\\s*=", "message": "Вкажи `encoding=\"utf-8\"` під час читання." }
+  ]
+}

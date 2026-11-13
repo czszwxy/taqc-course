@@ -1,0 +1,28 @@
+{
+  "title": "Inheritance and composition",
+  "minutes": 50,
+  "summary": "Наслідування (is-a): підклас, super().__init__, перевизначення методів, isinstance з батьківським класом, ієрархії винятків; композиція (has-a): об'єкт містить інші об'єкти і отримує залежності ззовні — як API-клієнт, якому в тесті передають фейкову сесію",
+  "resources": [
+    {
+      "title": "Python Tutorial: Inheritance",
+      "url": "https://docs.python.org/3/tutorial/classes.html#inheritance",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Built-in function super()",
+      "url": "https://docs.python.org/3/library/functions.html#super",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python Tutorial: User-defined Exceptions",
+      "url": "https://docs.python.org/3/tutorial/errors.html#user-defined-exceptions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

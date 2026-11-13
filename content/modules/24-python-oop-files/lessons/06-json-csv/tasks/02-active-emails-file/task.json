@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "Load test users from a JSON file",
+  "statement": "Тестові користувачі лежать у JSON-файлі:\n\n```json\n{\"users\": [\n  {\"email\": \"QA@Example.test\", \"active\": true},\n  {\"email\": \"old@example.test\", \"active\": false}\n]}\n```\n\nНапиши `load_active_emails(path)` — список email-ів **активних** користувачів у нижньому регістрі, у порядку файлу. Прочитай файл через `json.load`.\n\n```python\nload_active_emails(path)   # ['qa@example.test']\n```",
+  "hints": [
+    "`with open(path, encoding=\"utf-8\") as f: data = json.load(f)`.",
+    "Далі — comprehension по `data[\"users\"]` з фільтром `if u[\"active\"]`."
+  ],
+  "explanation": "`json.load` приймає відкритий файл і повертає Python-об'єкт; `true` / `false` з JSON уже стають `True` / `False`. Решта — знайомий comprehension з фільтром. `json.loads` тут не підходить: він приймає рядок, а не файл.",
+  "codeRules": [
+    { "kind": "require", "pattern": "json\\.load\\s*\\(", "message": "Прочитай файл через `json.load(f)`." }
+  ]
+}

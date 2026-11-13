@@ -1,0 +1,75 @@
+{
+  "type": "quiz",
+  "title": "Project setup",
+  "show": 6,
+  "hints": ["venv — окремі пакети для кожного проєкту. requirements.txt — версії для колег і CI."],
+  "questions": [
+    {
+      "id": "why-venv",
+      "kind": "single",
+      "text": "Навіщо створювати віртуальне оточення для кожного проєкту?",
+      "options": [
+        { "text": "Щоб пакети й версії одного проєкту не конфліктували з іншими", "correct": true },
+        { "text": "Щоб Python працював швидше" },
+        { "text": "Без нього не можна писати код" }
+      ]
+    },
+    {
+      "id": "freeze",
+      "kind": "single",
+      "text": "Що робить `python -m pip freeze > requirements.txt`?",
+      "options": [
+        { "text": "Записує встановлені пакети з точними версіями у файл", "correct": true },
+        { "text": "Забороняє оновлювати пакети" },
+        { "text": "Встановлює пакети з файлу" }
+      ]
+    },
+    {
+      "id": "install-r",
+      "kind": "single",
+      "text": "Колега склонував проєкт і створив своє `.venv`. Яка команда встановить усі залежності?",
+      "options": [
+        { "text": "`python -m pip install -r requirements.txt`", "correct": true },
+        { "text": "`python -m pip freeze`" },
+        { "text": "`python requirements.txt`" }
+      ]
+    },
+    {
+      "id": "venv-in-git",
+      "kind": "single",
+      "text": "Чи потрібно комітити папку `.venv`?",
+      "options": [
+        { "text": "Ні — її додають у .gitignore і відтворюють з requirements.txt", "correct": true },
+        { "text": "Так, щоб колегам не встановлювати пакети" }
+      ]
+    },
+    {
+      "id": "python-m-pip",
+      "kind": "single",
+      "text": "Після `pip install pytest` команда `python -m pytest` каже `No module named 'pytest'`. Найімовірніша причина?",
+      "options": [
+        { "text": "pip встановив пакет в інший Python — оточення не активоване; надійніше `python -m pip install`", "correct": true },
+        { "text": "pytest не підтримує Windows" }
+      ]
+    },
+    {
+      "id": "activate",
+      "kind": "single",
+      "text": "Як активувати оточення `.venv` у Windows PowerShell?",
+      "options": [
+        { "text": "`.venv\\Scripts\\Activate.ps1`", "correct": true },
+        { "text": "`source .venv/bin/activate`", "explain": "Це команда для macOS / Linux." },
+        { "text": "`python .venv`" }
+      ]
+    },
+    {
+      "id": "secrets",
+      "kind": "single",
+      "text": "Де тримати токен API, потрібний тестам?",
+      "options": [
+        { "text": "У змінній оточення (.env у .gitignore або секрети CI), а не в коді", "correct": true },
+        { "text": "У conftest.py — він же в приватному репозиторії" }
+      ]
+    }
+  ]
+}

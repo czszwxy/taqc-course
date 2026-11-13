@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Step 1: user model with validation",
+  "statement": "Крок 1. Створи модель користувача і функцію, що будує її зі словника тестових даних.\n\n- `InvalidUserError` — уже оголошено в стартовому коді;\n- `User` — **dataclass** з полями `id` (int), `email` (str), `role` (str, за замовчуванням `\"customer\"`), `active` (bool, за замовчуванням `True`);\n- `user_from_dict(data)` повертає `User` або піднімає `InvalidUserError`:\n\n| Перевірка (по черзі) | Повідомлення |\n|---|---|\n| немає ключа `id` або `email` | `missing field: id` / `missing field: email` |\n| `id` — не `int` | `id must be an integer` |\n| у email (після `strip().lower()`) немає `@` | `invalid email: '<email>'` |\n| `role` не з `ROLES` | `unknown role: '<role>'` |\n\nEmail зберігається нормалізованим (без пробілів по краях, у нижньому регістрі). Зайві ключі ігноруються.\n\n```python\nuser_from_dict({\"id\": 1, \"email\": \" QA@Example.test \"})\n# User(id=1, email='qa@example.test', role='customer', active=True)\nuser_from_dict({\"id\": 2, \"email\": \"admin@example.test\", \"role\": \"root\"})\n# InvalidUserError: unknown role: 'root'\n```",
+  "hints": [
+    "`@dataclass` над `User`; поля з defaults — після обов'язкових.",
+    "Відсутні ключі: `for field in (\"id\", \"email\"): if field not in data: raise InvalidUserError(f\"missing field: {field}\")`.",
+    "Тип id: `isinstance(data[\"id\"], int)`; роль за замовчуванням — `data.get(\"role\", \"customer\")`."
+  ],
+  "explanation": "Перевірки йдуть у тому порядку, в якому їх описано, і кожна дає своє точне повідомлення — так людина, що готує тестові дані, одразу бачить проблему. Нормалізація email робить подальший пошук простим. Dataclass дає порівняння й читабельний `repr`, тож у тестах можна писати `assert user == User(...)`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "@dataclass", "message": "Оголоси `User` через `@dataclass`." },
+    { "kind": "require", "pattern": "raise\\s+InvalidUserError", "message": "Повідомляй про зламані дані через `raise InvalidUserError(...)`." }
+  ]
+}

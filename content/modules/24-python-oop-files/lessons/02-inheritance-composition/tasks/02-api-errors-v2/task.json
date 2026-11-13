@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Validation errors for form fields",
+  "variantOf": "02-api-errors",
+  "statement": "Побудуй ієрархію помилок валідації і функцію, що її використовує.\n\n- `ValidationError(field, message)` — нащадок `Exception`; повідомлення `\"<field>: <message>\"`, атрибут `field`;\n- `RequiredFieldError` і `FormatError` — нащадки `ValidationError`;\n- `validate_email(value)`: порожній або лише з пробілів — `RequiredFieldError(\"email\", \"is required\")`; без `@` — `FormatError(\"email\", \"must contain @\")`; інакше повертає email без пробілів по краях.\n\n```python\nvalidate_email(\" qa@example.test \")   # 'qa@example.test'\nvalidate_email(\"\")                    # RequiredFieldError: email: is required\nvalidate_email(\"qa.example.test\")     # FormatError: email: must contain @\n```",
+  "hints": [
+    "`ValidationError.__init__(self, field, message)`: `super().__init__(f\"{field}: {message}\")` і `self.field = field`.",
+    "Підкласам досить `pass`. У `validate_email` спершу перевір порожнє значення, потім `@`."
+  ],
+  "explanation": "Ієрархія дозволяє ловити помилки з потрібною точністю: форма може обробити будь-яку `ValidationError` однаково (показати повідомлення біля поля `e.field`), а тест — перевірити, що для порожнього значення піднімається саме `RequiredFieldError`. `super().__init__` робить повідомлення читабельним у traceback і в `str(e)`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "super\\(\\)\\s*\\.\\s*__init__", "message": "Передай повідомлення в Exception через `super().__init__(...)`." }
+  ]
+}

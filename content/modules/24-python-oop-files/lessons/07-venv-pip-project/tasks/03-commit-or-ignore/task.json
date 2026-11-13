@@ -1,0 +1,27 @@
+{
+  "type": "classify",
+  "title": "Commit it or ignore it?",
+  "statement": "Тестовий проєкт на Python. Для кожного файлу чи папки вирішіть: комітити в git чи додати в `.gitignore`?",
+  "categories": [
+    { "id": "commit", "label": "Commit", "description": "Частина проєкту — потрібна колегам і CI" },
+    { "id": "ignore", "label": ".gitignore", "description": "Генерується автоматично, локальне або секретне" }
+  ],
+  "items": [
+    { "id": "venv", "text": "`.venv/`", "category": "ignore", "explain": "Оточення відтворюють з requirements.txt; воно ще й не переноситься між комп'ютерами." },
+    { "id": "pycache", "text": "`__pycache__/`", "category": "ignore", "explain": "Скомпільований байткод, Python створює його сам." },
+    { "id": "requirements", "text": "`requirements.txt`", "category": "commit", "explain": "Без нього колега не відтворить оточення." },
+    { "id": "test-file", "text": "`tests/test_login.py`", "category": "commit" },
+    { "id": "pytest-cache", "text": "`.pytest_cache/`", "category": "ignore", "explain": "Службові дані pytest між запусками." },
+    { "id": "conftest", "text": "`tests/conftest.py`", "category": "commit", "explain": "Фікстури — частина тестового коду." },
+    { "id": "readme", "text": "`README.md`", "category": "commit" },
+    { "id": "results", "text": "`test-results/` (скріншоти упалих тестів)", "category": "ignore", "explain": "Генерується при кожному прогоні; у CI зберігається як артефакт." },
+    { "id": "env", "text": "`.env` з токеном API", "category": "ignore", "explain": "Секрети ніколи не потрапляють у git." },
+    { "id": "pytest-ini", "text": "`pytest.ini`", "category": "commit", "explain": "Спільні налаштування запуску тестів." },
+    { "id": "data", "text": "`data/users.json` (тестові користувачі, без реальних даних)", "category": "commit", "explain": "Тестові дані — частина проєкту." },
+    { "id": "report", "text": "`playwright-report/`", "category": "ignore", "explain": "HTML-звіт генерується після прогону." }
+  ],
+  "show": 8,
+  "passScore": 0.8,
+  "hints": ["Питання: «Колега чи CI можуть отримати це самі, запустивши команду?» Якщо так — у .gitignore. Секрети — завжди в .gitignore."],
+  "explanation": "У git — те, що описує проєкт і потрібне всім: код тестів, фікстури, тестові дані, налаштування, список залежностей, README. У `.gitignore` — те, що генерується автоматично (оточення, кеші, звіти) або є секретом. Оточення відтворюють з `requirements.txt`, звіти — новим прогоном."
+}

@@ -1,0 +1,45 @@
+{
+  "type": "table",
+  "title": "What does each command do?",
+  "statement": "Для кожної команди обери, що вона робить.",
+  "hints": [
+    "`freeze` — «заморозити» поточний стан у файл; `install -r` — встановити з файлу.",
+    "`-m` означає «запусти модуль цього Python»: `python -m pytest` — тести, `python -m venv` — оточення."
+  ],
+  "explanation": "Цикл роботи з оточенням: створити (`venv`), увімкнути (`Activate.ps1`), встановити пакети (`pip install`), зафіксувати версії (`pip freeze`), відтворити на іншому комп'ютері (`pip install -r`), запустити тести (`python -m pytest`), вимкнути (`deactivate`).",
+  "givenColumns": ["Команда"],
+  "answerColumns": [
+    {
+      "id": "purpose",
+      "label": "Що робить",
+      "options": [
+        "Створює віртуальне оточення",
+        "Активує оточення в PowerShell",
+        "Встановлює пакет в активне оточення",
+        "Встановлює всі залежності проєкту зі списку",
+        "Записує встановлені пакети з версіями у файл",
+        "Показує встановлені пакети",
+        "Запускає тести проєкту",
+        "Вимикає оточення"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`python -m venv .venv`"], "answers": { "purpose": "Створює віртуальне оточення" } },
+    { "given": ["`.venv\\Scripts\\Activate.ps1`"], "answers": { "purpose": "Активує оточення в PowerShell" } },
+    { "given": ["`python -m pip install pytest`"], "answers": { "purpose": "Встановлює пакет в активне оточення" } },
+    {
+      "given": ["`python -m pip install -r requirements.txt`"],
+      "answers": { "purpose": "Встановлює всі залежності проєкту зі списку" },
+      "explain": "`-r` — «з файлу»: встановлює все, що перелічено в requirements.txt."
+    },
+    {
+      "given": ["`python -m pip freeze > requirements.txt`"],
+      "answers": { "purpose": "Записує встановлені пакети з версіями у файл" },
+      "explain": "`freeze` друкує пакети з версіями, а `>` перенаправляє вивід у файл."
+    },
+    { "given": ["`python -m pip list`"], "answers": { "purpose": "Показує встановлені пакети" } },
+    { "given": ["`python -m pytest`"], "answers": { "purpose": "Запускає тести проєкту" } },
+    { "given": ["`deactivate`"], "answers": { "purpose": "Вимикає оточення" } }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "type": "quiz",
+  "title": "Dataclasses",
+  "show": 6,
+  "hints": ["@dataclass генерує __init__, __repr__, __eq__. Для списку за замовчуванням — default_factory."],
+  "questions": [
+    {
+      "id": "generated",
+      "kind": "multiple",
+      "text": "Які методи `@dataclass` генерує за замовчуванням? (кілька відповідей)",
+      "options": [
+        { "text": "`__init__`", "correct": true },
+        { "text": "`__repr__`", "correct": true },
+        { "text": "`__eq__`", "correct": true },
+        { "text": "`save_to_database`" }
+      ]
+    },
+    {
+      "id": "eq",
+      "kind": "single",
+      "text": "`Product(1, \"Mouse\", 450) == Product(1, \"Mouse\", 450)` для dataclass дорівнює…",
+      "options": [
+        { "text": "`True` — порівнюються значення полів", "correct": true },
+        { "text": "`False` — це різні об'єкти" }
+      ]
+    },
+    {
+      "id": "factory",
+      "kind": "single",
+      "text": "Як задати порожній список за замовчуванням у dataclass?",
+      "options": [
+        { "text": "`items: list = field(default_factory=list)`", "correct": true },
+        { "text": "`items: list = []`", "explain": "dataclass не дозволить: ValueError про mutable default." }
+      ]
+    },
+    {
+      "id": "frozen",
+      "kind": "single",
+      "text": "`settings = Settings(...)` з `@dataclass(frozen=True)`. Що буде при `settings.timeout = 30`?",
+      "options": [{ "text": "`FrozenInstanceError`", "correct": true }, { "text": "Таймаут зміниться" }]
+    },
+    {
+      "id": "replace",
+      "kind": "single",
+      "text": "Що повертає `replace(settings, timeout=30)`?",
+      "options": [
+        { "text": "Новий об'єкт з `timeout=30`; оригінал не змінюється", "correct": true },
+        { "text": "Змінює оригінал і повертає None" }
+      ]
+    },
+    {
+      "id": "annotations",
+      "kind": "single",
+      "text": "Чому в dataclass у полів обов'язково мають бути анотації типів?",
+      "options": [
+        { "text": "Саме за анотаціями `@dataclass` визначає поля", "correct": true },
+        { "text": "Бо Python перевіряє типи під час створення об'єкта" }
+      ]
+    },
+    {
+      "id": "asdict",
+      "kind": "single",
+      "text": "Як перетворити dataclass на словник, щоб надіслати його в JSON?",
+      "options": [{ "text": "`asdict(obj)`", "correct": true }, { "text": "`dict(obj)`" }, { "text": "`obj.to_json()`" }]
+    }
+  ]
+}

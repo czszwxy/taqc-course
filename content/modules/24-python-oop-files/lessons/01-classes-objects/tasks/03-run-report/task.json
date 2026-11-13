@@ -1,0 +1,11 @@
+{
+  "type": "python",
+  "title": "A test run report",
+  "statement": "Напиши клас `RunReport(name)` — звіт прогону тестів.\n\n- `record(test, status)` — запам'ятовує результат (`\"passed\"`, `\"failed\"`, `\"skipped\"`);\n- `count(status)` — скільки тестів з таким статусом;\n- `failed()` — список назв упалих тестів у порядку запису;\n- `summary()` — рядок `\"<name>: <усього> tests, <passed> passed, <failed> failed\"`.\n\n```python\nreport = RunReport(\"smoke\")\nreport.record(\"test_login\", \"passed\")\nreport.record(\"test_cart\", \"failed\")\nreport.record(\"test_search\", \"skipped\")\nreport.failed()     # ['test_cart']\nreport.summary()    # 'smoke: 3 tests, 1 passed, 1 failed'\n```",
+  "hints": [
+    "У `__init__` збережи `self.name = name` і `self.results = []` — список пар `(test, status)`.",
+    "`count` і `failed` — comprehensions по `self.results`; `summary` викликає `self.count(...)`."
+  ],
+  "explanation": "Об'єкт зберігає і назву прогону, і всі результати, а методи по-різному їх зчитують. `summary` використовує інший метод того самого об'єкта — `self.count(\"passed\")`. Пропущені (skipped) тести входять у загальну кількість, але не в passed чи failed.",
+  "codeRules": []
+}

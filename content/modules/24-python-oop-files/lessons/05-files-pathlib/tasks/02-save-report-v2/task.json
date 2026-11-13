@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Append to a test log",
+  "variantOf": "02-save-report",
+  "statement": "Напиши `append_log(path, message)`: дописує `message` окремим рядком у кінець файлу (UTF-8). Якщо файлу немає — створює його. Попередні рядки мають залишитися.\n\n```python\nappend_log(log, \"start\")\nappend_log(log, \"finish\")\nlog.read_text(encoding=\"utf-8\")   # 'start\\nfinish\\n'\n```",
+  "hints": [
+    "Режим `\"a\"` дописує в кінець і створює файл, якщо його немає.",
+    "`with open(path, \"a\", encoding=\"utf-8\") as f: f.write(message + \"\\n\")`."
+  ],
+  "explanation": "Режим `\"a\"` (append) не чіпає існуючий вміст — ідеально для логів. Режим `\"w\"` стер би попередні рядки, і тест з двома викликами це покаже.",
+  "codeRules": [
+    { "kind": "require", "pattern": "[\"']a[\"']", "message": "Відкрий файл у режимі дописування `\"a\"`." },
+    { "kind": "require", "pattern": "encoding\\s*=", "message": "Вкажи `encoding=\"utf-8\"`." }
+  ]
+}

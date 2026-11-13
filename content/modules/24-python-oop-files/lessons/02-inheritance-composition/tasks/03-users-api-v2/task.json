@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "A products client with an injected session",
+  "variantOf": "03-users-api",
+  "statement": "Напиши `ProductsApi(session, base_url)` з тією самою `FakeSession` (файл `session.py`).\n\n- `get_price(product_id)` — `GET <base_url>/products/<id>`; 200 → `body[\"price\"]`, 404 → `None`, інший статус → `RuntimeError(\"GET <url> failed: <status>\")`;\n- `total(product_ids)` — сума цін знайдених товарів (відсутні пропускає).\n\n```python\nsession = FakeSession({\"https://api.test/products/1\": (200, {\"id\": 1, \"price\": 450})})\napi = ProductsApi(session, \"https://api.test\")\napi.get_price(1)        # 450\napi.get_price(7)        # None\napi.total([1, 7, 1])    # 900\n```",
+  "hints": [
+    "`status, body = self.session.get(url)` і три гілки за статусом.",
+    "`total` викликає `self.get_price(...)` для кожного id і пропускає `None`."
+  ],
+  "explanation": "Клієнт не знає, звідки відповіді, — він лише використовує передану сесію. У тесті це дає контроль над відповідями й перевірку запитів (`session.requests`). Метод `total` побудований на `get_price`, тож правила обробки статусів живуть в одному місці.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "FakeSession", "message": "Не створюй сесію всередині класу — використовуй ту, що передали в `__init__`." }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "A wishlist class",
+  "variantOf": "02-cart",
+  "statement": "Напиши клас `Wishlist(owner)` — список бажань користувача.\n\n- `add(product)` — додає назву товару, дублікати ігнорує;\n- `remove(product)` — прибирає товар; якщо його немає — нічого не робить;\n- `count()` — кількість товарів;\n- `has(product)` — чи є товар, **без урахування регістру**.\n\n```python\nwishlist = Wishlist(\"olena\")\nwishlist.add(\"Mouse\")\nwishlist.add(\"Mouse\")\nwishlist.add(\"Cable\")\nwishlist.count()          # 2\nwishlist.has(\"mouse\")     # True\nwishlist.remove(\"Hub\")    # без помилки\n```",
+  "hints": [
+    "У `__init__`: `self.owner = owner` і `self.products = []`.",
+    "`has`: порівнюй у нижньому регістрі — `product.lower()` з кожним `p.lower()` у списку.",
+    "`remove` без помилки: перевір `if product in self.products:` перед `self.products.remove(product)`."
+  ],
+  "explanation": "Стан — у атрибуті `self.products`, створеному в `__init__`. Методи захищають від помилок самі: `add` не дублює, `remove` не падає на відсутньому товарі. Пошук без регістру — порівняння нормалізованих рядків.",
+  "codeRules": []
+}

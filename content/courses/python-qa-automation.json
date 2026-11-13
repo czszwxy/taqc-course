@@ -91,7 +91,9 @@
             "Special methods (__eq__, __repr__, __str__)",
             "Files and pathlib",
             "JSON and CSV",
-            "Virtual environments, pip and project structure"
+            "Virtual environments, pip and project structure",
+            "Mini-project: test data toolkit",
+            "Tech check: Python"
           ]
         }
       ]

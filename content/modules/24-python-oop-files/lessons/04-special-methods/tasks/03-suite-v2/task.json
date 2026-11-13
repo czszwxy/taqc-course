@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "Case-insensitive tags collection",
+  "variantOf": "03-suite",
+  "statement": "Напиши клас `Tags`, який поводиться як колекція тегів тесту, **без урахування регістру**: `Smoke` і `smoke` — той самий тег.\n\n- `add(tag)` — додає тег у нижньому регістрі (дублікати ігнорує);\n- `len(tags)`, `\"SMOKE\" in tags` (без регістру), `for tag in tags` — теги **за алфавітом**.\n\n```python\ntags = Tags()\ntags.add(\"Smoke\")\ntags.add(\"login\")\ntags.add(\"SMOKE\")\nlen(tags)          # 2\n\"smoke\" in tags    # True\nlist(tags)         # ['login', 'smoke']\n```",
+  "hints": [
+    "Зберігай теги в множині `self._tags = set()` у нижньому регістрі — дублікати зникнуть самі.",
+    "`__contains__` порівнює `tag.lower()`, а `__iter__` повертає `iter(sorted(self._tags))`."
+  ],
+  "explanation": "Нормалізація при додаванні (`lower()`) і множина роблять колекцію нечутливою до регістру. Множина не має порядку, тому `__iter__` сортує — і перебір завжди стабільний. `__contains__` теж нормалізує аргумент, інакше `\"SMOKE\" in tags` дало б `False`.",
+  "codeRules": []
+}

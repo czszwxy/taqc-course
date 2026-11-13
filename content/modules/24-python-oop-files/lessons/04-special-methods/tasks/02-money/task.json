@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "A Money value object",
+  "statement": "Напиши клас `Money(amount, currency=\"UAH\")` для перевірки цін у тестах.\n\n- `==` — рівні, якщо збігаються і сума, і валюта; порівняння з іншими типами не падає, а дає `False`;\n- `repr` — `Money(1200, 'UAH')`;\n- `str` — `1 200 UAH` (пробіл між тисячами);\n- `+` — сума в тій самій валюті; різні валюти — `ValueError(\"Cannot add USD to UAH\")`.\n\n```python\nMoney(1200) == Money(1200, \"UAH\")    # True\nMoney(1200) == 1200                  # False\nprint(Money(15000))                  # 15 000 UAH\nMoney(450) + Money(150)              # Money(600, 'UAH')\n```",
+  "hints": [
+    "`__eq__`: якщо `not isinstance(other, Money)` — `return NotImplemented`, інакше порівняй обидва атрибути.",
+    "`__repr__`: `f\"Money({self.amount}, {self.currency!r})\"` — `!r` додасть лапки.",
+    "`__str__`: `f\"{self.amount:,}\".replace(\",\", \" \")` + валюта; `__add__` повертає новий `Money`."
+  ],
+  "explanation": "Спеціальні методи роблять клас «природним»: `==`, `+`, `print` і повідомлення pytest працюють як з вбудованими типами. `NotImplemented` у `__eq__` дозволяє Python коректно відповісти `False` на порівняння з числом. Додавання різних валют — помилка в даних, тож краще впасти з чітким повідомленням, ніж мовчки отримати неправильну суму.",
+  "codeRules": []
+}

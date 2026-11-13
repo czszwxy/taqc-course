@@ -1,0 +1,28 @@
+{
+  "title": "Dataclasses",
+  "minutes": 50,
+  "summary": "@dataclass генерує __init__, __repr__ і __eq__ з анотованих полів: моделі тестових даних (Product, User, Order), значення за замовчуванням і field(default_factory=list), незмінні налаштування frozen=True і replace(), asdict() для JSON — і зрозумілі повідомлення assert при порівнянні об'єктів",
+  "resources": [
+    {
+      "title": "dataclasses — Data Classes",
+      "url": "https://docs.python.org/3/library/dataclasses.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "dataclasses: Mutable default values",
+      "url": "https://docs.python.org/3/library/dataclasses.html#mutable-default-values",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Python dataclasses tutorial",
+      "url": "https://www.youtube.com/results?search_query=python+dataclasses+tutorial",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

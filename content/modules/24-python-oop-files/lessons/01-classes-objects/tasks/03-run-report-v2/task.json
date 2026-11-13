@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "A request log",
+  "variantOf": "03-run-report",
+  "statement": "Напиши клас `RequestLog` — журнал HTTP-запитів тестового клієнта.\n\n- `log(method, url, status)` — записує запит (метод зберігай великими літерами);\n- `count(method)` — кількість запитів цим методом (регістр не важливий);\n- `errors()` — список рядків `\"<METHOD> <url> -> <status>\"` для статусів від 400.\n\n```python\nrequests = RequestLog()\nrequests.log(\"get\", \"/api/orders\", 200)\nrequests.log(\"POST\", \"/api/orders\", 500)\nrequests.count(\"GET\")    # 1\nrequests.errors()        # ['POST /api/orders -> 500']\n```",
+  "hints": [
+    "`self.entries = []` у `__init__`; `log` додає `(method.upper(), url, status)`.",
+    "`count` порівнює з `method.upper()`; `errors` — comprehension з умовою `status >= 400`."
+  ],
+  "explanation": "Нормалізуй дані під час запису (`upper()`), тоді методам читання не треба думати про регістр. Межа помилок — `>= 400`: статус 400 — уже помилка клієнта.",
+  "codeRules": []
+}

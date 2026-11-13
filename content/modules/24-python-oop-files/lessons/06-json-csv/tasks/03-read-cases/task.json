@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Read login test cases from CSV",
+  "statement": "Набір випадків для data-driven тесту логіну лежить у CSV з заголовками `email,password,should_pass`. Напиши `read_cases(path)` — список кортежів `(email, password, should_pass)`, де `should_pass` — `bool` (`yes` → `True`, `no` → `False`). Використай модуль `csv`.\n\n```text\nemail,password,should_pass\nqa@example.test,Secret123,yes\n,Secret123,no\nqa@example.test,\"Se,cret\",no\n```\n\n```python\nread_cases(path)\n# [('qa@example.test', 'Secret123', True), ('', 'Secret123', False), ('qa@example.test', 'Se,cret', False)]\n```",
+  "hints": [
+    "`with open(path, newline=\"\", encoding=\"utf-8\") as f:` і `csv.DictReader(f)`.",
+    "Для кожного рядка: `(row[\"email\"], row[\"password\"], row[\"should_pass\"] == \"yes\")`."
+  ],
+  "explanation": "`DictReader` бере назви стовпців із заголовка і правильно розбирає значення в лапках — пароль `Se,cret` лишається цілим, тоді як `split(\",\")` розірвав би рядок на чотири частини. Значення CSV — рядки, тому `should_pass` перетворюємо порівнянням `== \"yes\"`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "csv\\.", "message": "Прочитай файл модулем `csv`." },
+    { "kind": "forbid", "pattern": "split\\s*\\(\\s*[\"'],[\"']", "message": "Не розбирай CSV через `split(\",\")` — використай модуль `csv`." }
+  ]
+}

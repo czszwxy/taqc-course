@@ -1,0 +1,28 @@
+{
+  "title": "Classes and objects",
+  "minutes": 55,
+  "summary": "Клас як шаблон, об'єкт як екземпляр: __init__ і self, атрибути й методи, незалежний стан кожного об'єкта, пастка атрибута класу (спільний словник для всіх об'єктів) — і навіщо класи в автотестах: Page Object, API-клієнт, звіт прогону",
+  "resources": [
+    {
+      "title": "Python Tutorial: A First Look at Classes",
+      "url": "https://docs.python.org/3/tutorial/classes.html#a-first-look-at-classes",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python Tutorial: Class and Instance Variables",
+      "url": "https://docs.python.org/3/tutorial/classes.html#class-and-instance-variables",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Python classes and objects for beginners",
+      "url": "https://www.youtube.com/results?search_query=python+classes+and+objects+for+beginners",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "type": "written",
+  "title": "Write the \"How to run\" section of a README",
+  "statement": "Напиши розділ README для свого тестового проєкту на Python, за яким людина, що бачить проєкт уперше, запустить тести з нуля. Пиши англійською — так прийнято в портфоліо.",
+  "fields": [
+    { "id": "prerequisites", "label": "Prerequisites (what must be installed)", "kind": "text", "placeholder": "Python 3.12+, Git" },
+    { "id": "setup", "label": "Setup commands (one per line, in order)", "kind": "list" },
+    { "id": "run", "label": "How to run the tests (commands, one per line)", "kind": "list" },
+    { "id": "structure", "label": "Project structure (what is in each folder)", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "prerequisites", "check": "mentionsAny", "value": ["python"], "message": "Prerequisites: вкажи Python і його версію." },
+    { "field": "setup", "check": "minItems", "value": 3, "message": "Setup: щонайменше 3 кроки — оточення, активація, встановлення залежностей." },
+    { "field": "setup", "check": "mentionsAny", "value": ["venv"], "message": "Setup: створення віртуального оточення (`python -m venv .venv`)." },
+    { "field": "setup", "check": "mentionsAny", "value": ["activ|scripts|bin/"], "message": "Setup: як активувати оточення (Windows і macOS / Linux)." },
+    { "field": "setup", "check": "mentionsAny", "value": ["requirements"], "message": "Setup: встановлення залежностей з `requirements.txt`." },
+    { "field": "run", "check": "mentionsAny", "value": ["pytest"], "message": "Run: команда запуску тестів (`python -m pytest`)." },
+    { "field": "structure", "check": "mentionsAny", "value": ["tests"], "message": "Structure: де лежать тести." }
+  ],
+  "model": {
+    "prerequisites": "Python 3.12 or newer, Git",
+    "setup": [
+      "git clone <repository-url> && cd gadgetly-tests",
+      "python -m venv .venv",
+      "Windows: .venv\\Scripts\\Activate.ps1 — macOS / Linux: source .venv/bin/activate",
+      "python -m pip install -r requirements.txt"
+    ],
+    "run": [
+      "python -m pytest — all tests",
+      "python -m pytest tests/test_login.py — one file",
+      "python -m pytest -k login — tests whose names contain \"login\""
+    ],
+    "structure": "pages/ — page objects; api/ — API client; data/ — test data (no real personal data); tests/ — test files and conftest.py with fixtures; requirements.txt — pinned dependencies; pytest.ini — pytest settings."
+  },
+  "checklist": [
+    "Вказана версія Python",
+    "Команди можна скопіювати й виконати одна за одною",
+    "Є активація і для Windows, і для macOS / Linux",
+    "Є команда запуску всіх тестів і окремого файлу",
+    "Пояснено, що де лежить у проєкті",
+    "Немає паролів, токенів і реальних персональних даних"
+  ],
+  "hints": [
+    "Уяви людину з чистим комп'ютером і лише встановленим Python: які команди їй потрібні по черзі?",
+    "Активація відрізняється на Windows і macOS / Linux — дай обидва варіанти."
+  ],
+  "explanation": "Хороший розділ «How to run» — це послідовність команд, які можна скопіювати буквально: клон, оточення, активація, залежності, запуск. Різні ОС — різні команди активації. Опис структури допомагає рев'юверу швидко знайти тести й page objects. Перевір інструкцію на чистому клоні репозиторію."
+}

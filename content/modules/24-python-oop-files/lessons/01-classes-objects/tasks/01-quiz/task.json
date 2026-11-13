@@ -1,0 +1,64 @@
+{
+  "type": "quiz",
+  "title": "Classes and objects",
+  "show": 6,
+  "hints": ["self — сам об'єкт. Змінювані атрибути — у __init__ через self."],
+  "questions": [
+    {
+      "id": "init",
+      "kind": "single",
+      "text": "Коли викликається `__init__`?",
+      "options": [
+        { "text": "Автоматично при створенні об'єкта: `Cart()`", "correct": true },
+        { "text": "Лише якщо викликати `cart.__init__()` вручну" },
+        { "text": "Коли об'єкт видаляється" }
+      ]
+    },
+    {
+      "id": "self",
+      "kind": "single",
+      "text": "Що таке `self` у методі?",
+      "options": [
+        { "text": "Об'єкт, для якого викликали метод", "correct": true },
+        { "text": "Клас" },
+        { "text": "Перший аргумент, який треба передавати вручну" }
+      ]
+    },
+    {
+      "id": "independent",
+      "kind": "single",
+      "text": "`a = Cart(); b = Cart(); a.add(\"Mouse\", 450)`, де `items` створюється в `__init__`. Що в `b.items`?",
+      "options": [{ "text": "`{}` — у кожного об'єкта свій словник", "correct": true }, { "text": "`{'Mouse': [450, 1]}`" }]
+    },
+    {
+      "id": "class-attr",
+      "kind": "single",
+      "text": "`items = {}` оголошено просто в тілі класу (не в `__init__`). Що буде після `a.items[\"Mouse\"] = 1` для іншого об'єкта `b`?",
+      "options": [
+        { "text": "`b.items` теж міститиме Mouse — атрибут класу спільний", "correct": true },
+        { "text": "`b.items` порожній" }
+      ]
+    },
+    {
+      "id": "call",
+      "kind": "single",
+      "text": "Як правильно викликати метод `add(self, name, price)`?",
+      "options": [{ "text": "`cart.add(\"Mouse\", 450)`", "correct": true }, { "text": "`cart.add(cart, \"Mouse\", 450)`" }, { "text": "`Cart.add(\"Mouse\", 450)`" }]
+    },
+    {
+      "id": "naming",
+      "kind": "single",
+      "text": "Як за домовленістю (PEP 8) називають класи?",
+      "options": [{ "text": "`CamelCase`: `LoginPage`, `UsersApi`", "correct": true }, { "text": "`snake_case`: `login_page`" }]
+    },
+    {
+      "id": "page-object",
+      "kind": "single",
+      "text": "У чому головна перевага Page Object?",
+      "options": [
+        { "text": "Локатори й дії сторінки в одному класі: зміна верстки — правка в одному місці", "correct": true },
+        { "text": "Тести працюють швидше" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "title": "Virtual environments, pip and project structure",
+  "minutes": 50,
+  "summary": "Як підготувати Python-проєкт на своєму комп'ютері: встановлення Python, віртуальне оточення venv і активація на Windows та macOS / Linux, pip і requirements.txt, структура тестового проєкту, .gitignore для Python, секрети поза git і README «як запустити»",
+  "resources": [
+    {
+      "title": "Python downloads",
+      "url": "https://www.python.org/downloads/",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python Tutorial: Virtual Environments and Packages",
+      "url": "https://docs.python.org/3/tutorial/venv.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Using Python on Windows",
+      "url": "https://docs.python.org/3/using/windows.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pip User Guide",
+      "url": "https://pip.pypa.io/en/stable/user_guide/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "GitHub: Python.gitignore template",
+      "url": "https://github.com/github/gitignore/blob/main/Python.gitignore",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

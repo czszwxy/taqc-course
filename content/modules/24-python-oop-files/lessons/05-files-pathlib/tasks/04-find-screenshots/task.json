@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Find screenshots of failed tests",
+  "statement": "Після прогону в папці результатів лежать підпапки тестів зі скріншотами й іншими файлами. Напиши `failed_screenshots(folder)` — відсортований список шляхів **відносно `folder`** (через `/`) до всіх файлів `.png` у папці та підпапках, у назві яких є `failed`.\n\n```text\ntest-results/\n  login-chromium/test-failed-1.png\n  login-chromium/trace.zip\n  cart-chromium/test-finished-1.png\n  cart-chromium/test-failed-1.png\n```\n\n```python\nfailed_screenshots(Path(\"test-results\"))\n# ['cart-chromium/test-failed-1.png', 'login-chromium/test-failed-1.png']\n```",
+  "hints": [
+    "`folder.rglob(\"*.png\")` знайде PNG у всіх підпапках.",
+    "Перевір `\"failed\" in path.name`; відносний шлях — `path.relative_to(folder).as_posix()`.",
+    "Наприкінці — `sorted(...)`."
+  ],
+  "explanation": "`rglob` обходить усе дерево папок, `name` — лише назва файлу (без папок), тож перевірка не зачепить назву підпапки. `relative_to(folder)` прибирає спільний початок шляху, а `as_posix()` дає `/` навіть на Windows — результат однаковий на будь-якій ОС. `sorted` робить порядок стабільним.",
+  "codeRules": [
+    { "kind": "require", "pattern": "rglob\\s*\\(|glob\\s*\\(", "message": "Знайди файли через `rglob(...)`." }
+  ]
+}

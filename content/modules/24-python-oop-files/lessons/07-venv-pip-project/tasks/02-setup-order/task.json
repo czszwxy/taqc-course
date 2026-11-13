@@ -1,0 +1,21 @@
+{
+  "type": "order",
+  "title": "From an empty folder to a colleague running your tests",
+  "statement": "Розстав кроки в правильному порядку: від встановлення Python до запуску твоїх тестів на комп'ютері колеги.",
+  "hints": [
+    "Пакети встановлюють уже в **активоване** оточення, а версії записують після встановлення.",
+    "Колега повторює створення оточення у себе — `.venv` не потрапляє в git."
+  ],
+  "explanation": "Оточення створюють і активують до встановлення пакетів, інакше пакети потраплять у глобальний Python. `freeze` записує версії вже встановлених пакетів, і саме `requirements.txt` (а не `.venv`) іде в git. Колега відтворює оточення з цього файлу і лише потім запускає тести.",
+  "items": [
+    "Встановити Python з python.org і перевірити `python --version`",
+    "Створити оточення: `python -m venv .venv`",
+    "Активувати оточення: `.venv\\Scripts\\Activate.ps1`",
+    "Встановити пакети: `python -m pip install pytest requests`",
+    "Зберегти версії: `python -m pip freeze > requirements.txt`",
+    "Закомітити код і `requirements.txt` (без `.venv`) і запушити",
+    "Колега: `git clone`, створює й активує своє `.venv`",
+    "Колега: `python -m pip install -r requirements.txt`",
+    "Колега: `python -m pytest`"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "Frozen run settings",
+  "statement": "Налаштування прогону не повинні змінюватися посеред тестів. Створи **незмінний** dataclass `Settings` з полями `base_url` (str), `timeout` (int, за замовчуванням 5) і `headless` (bool, за замовчуванням `True`). І функцію `for_debug(settings)` — повертає **нові** налаштування для локального дебагу: `headless=False`, `timeout=30`, решта як було.\n\n```python\nci = Settings(\"https://staging.example.test\")\ndebug = for_debug(ci)\ndebug       # Settings(base_url='https://staging.example.test', timeout=30, headless=False)\nci.timeout  # 5 — оригінал не змінився\nci.timeout = 10   # FrozenInstanceError\n```",
+  "hints": [
+    "`@dataclass(frozen=True)` робить об'єкт незмінним.",
+    "`from dataclasses import replace`; `return replace(settings, headless=False, timeout=30)`."
+  ],
+  "explanation": "`frozen=True` забороняє змінювати поля після створення, тож жоден тест не «підкрутить» таймаут для інших. `replace` створює копію зі зміненими полями — так отримують варіанти налаштувань (CI, debug) з однієї бази.",
+  "codeRules": [
+    { "kind": "require", "pattern": "frozen\\s*=\\s*True", "message": "Зроби налаштування незмінними: `@dataclass(frozen=True)`." }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Save a report file",
+  "statement": "Напиши `save_report(folder, name, lines)`: записує рядки звіту у файл `<folder>/<name>.txt` (UTF-8), кожен рядок закінчується `\\n`, і повертає `Path` до файлу. Папки `folder` може ще не бути — створи її разом з батьківськими. Існуючий файл перезаписується.\n\n```python\npath = save_report(Path(\"reports/2026-11-13\"), \"smoke\", [\"login: passed\", \"вхід: OK\"])\npath.read_text(encoding=\"utf-8\")   # 'login: passed\\nвхід: OK\\n'\n```",
+  "hints": [
+    "`folder.mkdir(parents=True, exist_ok=True)` створить папку, навіть якщо немає батьківських.",
+    "Шлях до файлу — `folder / f\"{name}.txt\"`; текст — `\"\".join(line + \"\\n\" for line in lines)`.",
+    "`path.write_text(text, encoding=\"utf-8\")` і `return path`."
+  ],
+  "explanation": "`mkdir(parents=True, exist_ok=True)` робить функцію безпечною: вона не падає ні тоді, коли папки немає, ні тоді, коли вона вже є. `write_text` перезаписує файл, а явне `encoding=\"utf-8\"` гарантує, що кирилиця збережеться однаково на будь-якій ОС. Повернений `Path` дозволяє тесту одразу перевірити файл.",
+  "codeRules": [
+    { "kind": "require", "pattern": "encoding\\s*=", "message": "Вкажи `encoding=\"utf-8\"` під час запису." }
+  ]
+}

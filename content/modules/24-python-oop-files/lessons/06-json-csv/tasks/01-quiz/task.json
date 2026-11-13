@@ -1,0 +1,73 @@
+{
+  "type": "quiz",
+  "title": "JSON and CSV",
+  "show": 6,
+  "hints": ["load / dump — для файлів, loads / dumps — для рядків. Значення CSV завжди рядки."],
+  "questions": [
+    {
+      "id": "load-loads",
+      "kind": "single",
+      "text": "Чим `json.load` відрізняється від `json.loads`?",
+      "options": [
+        { "text": "`load` читає з відкритого файлу, `loads` — з рядка", "correct": true },
+        { "text": "`loads` завантажує кілька файлів" },
+        { "text": "Нічим" }
+      ]
+    },
+    {
+      "id": "csv-strings",
+      "kind": "single",
+      "text": "`row = next(csv.DictReader(f))` для рядка `Mouse,450`. Чому дорівнює `row[\"price\"] == 450`?",
+      "options": [
+        { "text": "`False` — усі значення CSV рядки, потрібно `int(row[\"price\"])`", "correct": true },
+        { "text": "`True`" }
+      ]
+    },
+    {
+      "id": "quoted-comma",
+      "kind": "single",
+      "text": "Чому для CSV не варто використовувати `line.split(\",\")`?",
+      "options": [
+        { "text": "Значення з комою береться в лапки (\"Cable, USB-C\") — split розірве його на частини", "correct": true },
+        { "text": "split не працює з кирилицею" }
+      ]
+    },
+    {
+      "id": "dictreader",
+      "kind": "single",
+      "text": "Що повертає `csv.DictReader` для кожного рядка даних?",
+      "options": [
+        { "text": "Словник, де ключі — назви стовпців із першого рядка", "correct": true },
+        { "text": "Список значень" },
+        { "text": "Рядок" }
+      ]
+    },
+    {
+      "id": "newline",
+      "kind": "single",
+      "text": "Навіщо `newline=\"\"` під час відкриття файлу для CSV?",
+      "options": [
+        { "text": "csv сам керує переносами; без цього на Windows з'являються порожні рядки", "correct": true },
+        { "text": "Щоб у файлі не було переносів рядків узагалі" }
+      ]
+    },
+    {
+      "id": "excel",
+      "kind": "single",
+      "text": "Ключ першого стовпця — `'\\ufeffemail'` замість `'email'`. Що це і як виправити?",
+      "options": [
+        { "text": "BOM на початку файлу з Excel — відкрити з `encoding=\"utf-8-sig\"`", "correct": true },
+        { "text": "Помилка в даних — видалити стовпець" }
+      ]
+    },
+    {
+      "id": "ensure-ascii",
+      "kind": "single",
+      "text": "Що дає `ensure_ascii=False` у `json.dump`?",
+      "options": [
+        { "text": "Кирилиця записується як є, а не послідовностями \\u0441...", "correct": true },
+        { "text": "Файл стає меншим за рахунок стиснення" }
+      ]
+    }
+  ]
+}

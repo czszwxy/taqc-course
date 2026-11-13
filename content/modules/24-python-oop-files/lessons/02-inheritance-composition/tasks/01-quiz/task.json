@@ -1,0 +1,60 @@
+{
+  "type": "quiz",
+  "title": "Inheritance and composition",
+  "show": 6,
+  "hints": ["is-a — наслідування, has-a — композиція. except Parent ловить і нащадків."],
+  "questions": [
+    {
+      "id": "inherit",
+      "kind": "single",
+      "text": "`class LoginPage(BasePage)`. Що отримує `LoginPage`?",
+      "options": [
+        { "text": "Усі атрибути й методи `BasePage`; може додавати й перевизначати свої", "correct": true },
+        { "text": "Лише `__init__`" },
+        { "text": "Нічого, це лише назва" }
+      ]
+    },
+    {
+      "id": "super",
+      "kind": "single",
+      "text": "Підклас має свій `__init__` без `super().__init__(base_url)`. Що буде з `self.base_url` з батьківського `__init__`?",
+      "options": [
+        { "text": "Його не буде — батьківський `__init__` не викликався", "correct": true },
+        { "text": "Python викличе батьківський `__init__` сам" }
+      ]
+    },
+    {
+      "id": "isinstance",
+      "kind": "single",
+      "text": "`page = LoginPage(...)`, де `LoginPage(BasePage)`. Чому дорівнює `isinstance(page, BasePage)`?",
+      "options": [{ "text": "`True`", "correct": true }, { "text": "`False`" }]
+    },
+    {
+      "id": "except-parent",
+      "kind": "single",
+      "text": "`class NotFoundError(ApiError)`. Чи зловить `except ApiError:` виняток `NotFoundError`?",
+      "options": [{ "text": "Так — це різновид ApiError", "correct": true }, { "text": "Ні, потрібен саме `except NotFoundError`" }]
+    },
+    {
+      "id": "composition",
+      "kind": "single",
+      "text": "`UsersApi` отримує `session` у `__init__` і використовує її для запитів. Це…",
+      "options": [{ "text": "Композиція (has-a)", "correct": true }, { "text": "Наслідування (is-a)" }]
+    },
+    {
+      "id": "injection",
+      "kind": "single",
+      "text": "Навіщо передавати сесію в `UsersApi(session, ...)`, а не створювати її всередині класу?",
+      "options": [
+        { "text": "У тесті можна передати фейкову сесію — без мережі й з контрольованими відповідями", "correct": true },
+        { "text": "Так код коротший" }
+      ]
+    },
+    {
+      "id": "override",
+      "kind": "single",
+      "text": "`BasePage.url()` повертає `self.base_url + self.PATH`. У `LoginPage` перевизначено лише `PATH = \"/login\"`. Що поверне `LoginPage(\"https://x.test\").url()`?",
+      "options": [{ "text": "`'https://x.test/login'`", "correct": true }, { "text": "`'https://x.test/'`" }]
+    }
+  ]
+}

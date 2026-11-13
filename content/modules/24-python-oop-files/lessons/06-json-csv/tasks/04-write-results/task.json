@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "Export run results to CSV",
+  "statement": "Напиши `write_results(path, results)`: `results` — список словників з ключами `name`, `status`, `duration`. Запиши CSV із заголовком `name,status,duration` через `csv.DictWriter`.\n\n```python\nwrite_results(path, [\n    {\"name\": \"test_login\", \"status\": \"passed\", \"duration\": 1.25},\n    {\"name\": \"test_cart, guest\", \"status\": \"failed\", \"duration\": 3.4},\n])\n```\n\nУ файлі:\n\n```text\nname,status,duration\ntest_login,passed,1.25\n\"test_cart, guest\",failed,3.4\n```",
+  "hints": [
+    "`with open(path, \"w\", newline=\"\", encoding=\"utf-8\") as f:`.",
+    "`writer = csv.DictWriter(f, fieldnames=[\"name\", \"status\", \"duration\"])`, потім `writer.writeheader()` і `writer.writerows(results)`."
+  ],
+  "explanation": "`DictWriter` бере значення зі словників за списком `fieldnames` — порядок стовпців визначаєш ти, а не порядок ключів у словнику. `writeheader()` пише рядок заголовків, без нього файл неможливо прочитати через `DictReader`. Значення з комами csv сам візьме в лапки.",
+  "codeRules": [
+    { "kind": "require", "pattern": "DictWriter", "message": "Запиши файл через `csv.DictWriter`." }
+  ]
+}

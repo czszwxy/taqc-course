@@ -5,7 +5,7 @@ run_program(files_json, main_file) -> JSON {"error", "stdout"}
 
 Supports what the course teaches: test_* functions, plain assert with readable messages
 ("assert 5 == 6"), the test docstring as a hint, and a pytest subset provided by pytest.py
-(raises, approx, fail, mark.parametrize, fixtures with yield, conftest.py, capsys).
+(raises, approx, fail, mark.parametrize, fixtures with yield, conftest.py, capsys, tmp_path).
 """
 
 import ast
@@ -16,11 +16,15 @@ import inspect
 import io
 import json
 import os
+import pathlib
+import shutil
 import sys
+import tempfile
 import traceback
 import types
 
 WORKDIR = "/home/pyodide/task"
+TMP_ROOT = "/tmp/qa-tmp"
 
 OPS = {
     ast.Eq: "==",
@@ -68,6 +72,7 @@ def _prepare(files):
     for name, code in files.items():
         with open(os.path.join(WORKDIR, name), "w", encoding="utf-8") as f:
             f.write(code)
+    shutil.rmtree(TMP_ROOT, ignore_errors=True)
     if WORKDIR not in sys.path:
         sys.path.insert(0, WORKDIR)
     for name in list(sys.modules):
@@ -167,6 +172,12 @@ class CapSys:
         return captured
 
 
+def _new_tmp_path():
+    """pytest's tmp_path: a fresh empty folder for every test that asks for it."""
+    os.makedirs(TMP_ROOT, exist_ok=True)
+    return pathlib.Path(tempfile.mkdtemp(dir=TMP_ROOT))
+
+
 class _FixtureError(Exception):
     pass
 
@@ -186,6 +197,9 @@ class _Fixtures:
 
         def resolve(name, chain):
             if name in values:
+                return values[name]
+            if name == "tmp_path" and name not in self.definitions:
+                values[name] = _new_tmp_path()
                 return values[name]
             if name not in self.definitions:
                 raise _FixtureError(f"fixture '{name}' not found")

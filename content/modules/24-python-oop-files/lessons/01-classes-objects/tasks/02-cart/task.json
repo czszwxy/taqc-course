@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "A shopping cart class",
+  "statement": "Напиши клас `Cart` — модель кошика для перевірки сум у тестах.\n\n- `add(name, price, qty=1)` — додає товар; якщо такий уже є, **збільшує** кількість (ціна лишається першою);\n- `remove(name)` — видаляє товар; якщо його немає — `KeyError`;\n- `count()` — загальна кількість одиниць;\n- `total()` — сума `price * qty`.\n\n```python\ncart = Cart()\ncart.add(\"Mouse\", 450)\ncart.add(\"Mouse\", 450, 2)\ncart.add(\"Cable\", 150)\ncart.count()     # 4\ncart.total()     # 1500\ncart.remove(\"Cable\")\ncart.total()     # 1350\n```",
+  "hints": [
+    "У `__init__`: `self.items = {}` — словник `name -> [price, qty]`.",
+    "У `add`: якщо `name in self.items` — збільш `self.items[name][1] += qty`, інакше створи `[price, qty]`.",
+    "`total`: `sum(price * qty for price, qty in self.items.values())`; `remove`: `del self.items[name]` сам підніме `KeyError`."
+  ],
+  "explanation": "Стан кошика живе в атрибуті `self.items`, створеному в `__init__`, тож кожен кошик незалежний. Методи читають і змінюють цей стан. Часта помилка — оголосити `items = {}` у тілі класу: тоді всі кошики ділять один словник, і тест `test_carts_are_independent` падає.",
+  "codeRules": []
+}

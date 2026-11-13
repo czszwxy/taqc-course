@@ -1,0 +1,23 @@
+{
+  "type": "classify",
+  "title": "Inheritance or composition?",
+  "statement": "Для кожної пари класів з тестового фреймворку обери зв'язок: **наслідування** (перший — різновид другого) чи **композиція** (перший містить або використовує другий).",
+  "categories": [
+    { "id": "inherit", "label": "Inheritance (is-a)", "description": "Перший клас — різновид другого" },
+    { "id": "compose", "label": "Composition (has-a)", "description": "Перший клас містить або використовує другий" }
+  ],
+  "items": [
+    { "id": "notfound", "text": "`NotFoundError` і `ApiError`", "category": "inherit", "explain": "Помилка «не знайдено» — різновид помилки API." },
+    { "id": "login-base", "text": "`LoginPage` і `BasePage`", "category": "inherit", "explain": "Сторінка логіну — різновид сторінки зі спільною базовою поведінкою." },
+    { "id": "page-header", "text": "`ProductPage` і `Header`", "category": "compose", "explain": "Сторінка **містить** хедер як компонент." },
+    { "id": "api-session", "text": "`UsersApi` і `Session`", "category": "compose", "explain": "Клієнт **використовує** сесію для запитів; її передають ззовні." },
+    { "id": "order-items", "text": "`Order` і `OrderItem`", "category": "compose", "explain": "Замовлення містить список позицій." },
+    { "id": "admin-user", "text": "`AdminUser` і `User`", "category": "inherit", "explain": "Адмін — різновид користувача з додатковими правами." },
+    { "id": "report-results", "text": "`RunReport` і `TestResult`", "category": "compose", "explain": "Звіт містить результати тестів." },
+    { "id": "timeout-error", "text": "`CheckoutTimeoutError` і `TimeoutError`", "category": "inherit", "explain": "Власний виняток — різновид вбудованого `TimeoutError`." }
+  ],
+  "show": 6,
+  "passScore": 0.8,
+  "hints": ["Спитай себе: «X — це різновид Y?» чи «X містить Y?»."],
+  "explanation": "Наслідування — для справжнього «є різновидом»: винятки, базова сторінка, ролі користувачів. Композиція — коли об'єкт складається з інших або користується ними: сторінка з компонентами, клієнт із сесією, замовлення з позиціями. Якщо сумніваєшся — обирай композицію."
+}

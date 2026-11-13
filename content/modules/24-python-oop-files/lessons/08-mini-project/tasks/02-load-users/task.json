@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Step 2: load users from a JSON file",
+  "statement": "Крок 2. Файл `models.py` (нижче, лише для читання) — еталон кроку 1. Напиши `load_users(path)`: JSON-файл містить **список** словників-користувачів. Поверни кортеж `(users, errors)`:\n\n- `users` — список `User` для коректних записів, у порядку файлу;\n- `errors` — рядки `record <номер>: <повідомлення InvalidUserError>`, номери з 1;\n- повторний email (після нормалізації) — помилка `record <номер>: duplicate email '<email>'`, перший користувач з цим email лишається.\n\n```json\n[\n  {\"id\": 1, \"email\": \"qa@example.test\"},\n  {\"id\": 2, \"email\": \"broken\"},\n  {\"id\": 3, \"email\": \" QA@example.test \"}\n]\n```\n\n```python\nusers, errors = load_users(path)\n# users  → [User(id=1, email='qa@example.test', role='customer', active=True)]\n# errors → [\"record 2: invalid email: 'broken'\", \"record 3: duplicate email 'qa@example.test'\"]\n```",
+  "hints": [
+    "`from models import InvalidUserError, User, user_from_dict`; файл читай через `json.load` з `encoding=\"utf-8\"`.",
+    "`for number, record in enumerate(records, start=1):` і `try: user = user_from_dict(record)` / `except InvalidUserError as e: errors.append(f\"record {number}: {e}\")`.",
+    "Для дублікатів тримай множину вже побачених email-ів."
+  ],
+  "explanation": "`try / except` усередині циклу перетворює виняток кожного запису на рядок звіту — і цикл іде далі, тож видно всі проблеми одразу. `str(e)` (у f-рядку — просто `{e}`) дає повідомлення, з яким виняток підняли в моделі. Множина `seen` робить перевірку дублікатів швидкою, а нормалізований email — нечутливою до регістру й пробілів.",
+  "codeRules": [
+    { "kind": "require", "pattern": "except\\s+InvalidUserError", "message": "Перехоплюй саме `InvalidUserError`." },
+    { "kind": "require", "pattern": "json\\.load\\s*\\(", "message": "Прочитай файл через `json.load(f)`." }
+  ]
+}

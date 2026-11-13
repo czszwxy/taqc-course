@@ -1,0 +1,28 @@
+{
+  "title": "Special methods (__eq__, __repr__, __str__)",
+  "minutes": 50,
+  "summary": "Dunder-методи, через які об'єкти працюють з операторами і вбудованими функціями: __repr__ для розробника і повідомлень pytest, __str__ для людей, __eq__ і NotImplemented, __lt__ для сортування, __add__, __len__ / __contains__ / __iter__ для колекцій, правдивість об'єкта і __hash__",
+  "resources": [
+    {
+      "title": "Data model: Special method names",
+      "url": "https://docs.python.org/3/reference/datamodel.html#special-method-names",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Data model: object.__repr__",
+      "url": "https://docs.python.org/3/reference/datamodel.html#object.__repr__",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Data model: rich comparison methods (object.__lt__)",
+      "url": "https://docs.python.org/3/reference/datamodel.html#object.__lt__",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

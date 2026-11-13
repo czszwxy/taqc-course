@@ -1,0 +1,28 @@
+{
+  "title": "JSON and CSV",
+  "minutes": 50,
+  "summary": "Тестові дані у файлах: json.load і json.dump (indent, ensure_ascii=False), модуль csv — reader і DictReader, writer і DictWriter, newline=\"\", значення CSV завжди рядки, коми в лапках, роздільник ; і BOM з Excel — основа data-driven тестів",
+  "resources": [
+    {
+      "title": "csv — CSV File Reading and Writing",
+      "url": "https://docs.python.org/3/library/csv.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "csv.DictReader",
+      "url": "https://docs.python.org/3/library/csv.html#csv.DictReader",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "json — JSON encoder and decoder",
+      "url": "https://docs.python.org/3/library/json.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

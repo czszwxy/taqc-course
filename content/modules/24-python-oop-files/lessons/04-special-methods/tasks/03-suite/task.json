@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "A collection-like test suite",
+  "statement": "Напиши клас `Suite(name)`, який поводиться як колекція назв тестів.\n\n- `add(test)` — додає назву (дублікати ігнорує);\n- `len(suite)` — кількість тестів;\n- `\"test_login\" in suite` — чи є тест;\n- `for test in suite` — перебір у порядку додавання;\n- `repr` — `Suite('smoke', 2 tests)`.\n\n```python\nsmoke = Suite(\"smoke\")\nsmoke.add(\"test_login\")\nsmoke.add(\"test_cart\")\nsmoke.add(\"test_login\")\nlen(smoke)              # 2\n\"test_cart\" in smoke    # True\nlist(smoke)             # ['test_login', 'test_cart']\n```",
+  "hints": [
+    "Зберігай назви у списку `self._tests`; `add` додає, лише якщо назви там немає.",
+    "`__len__` → `len(self._tests)`, `__contains__(self, test)` → `test in self._tests`, `__iter__` → `iter(self._tests)`.",
+    "`__repr__`: `f\"Suite({self.name!r}, {len(self)} tests)\"`."
+  ],
+  "explanation": "Три методи — `__len__`, `__contains__`, `__iter__` — роблять клас схожим на список: працюють `len()`, `in`, `for`, `list()`. Сам список захований у `_tests`, а зовнішній код спілкується з набором через звичні оператори. Бонус: порожній `Suite` хибний в умовах (`if suite:`), бо має довжину 0.",
+  "codeRules": []
+}

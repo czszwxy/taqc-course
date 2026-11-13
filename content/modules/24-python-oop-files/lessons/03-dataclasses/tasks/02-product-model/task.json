@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "A Product model",
+  "statement": "Створи dataclass `Product` з полями `id` (int), `name` (str), `price` (int) і `in_stock` (bool, за замовчуванням `True`), з методом `discounted(percent)` — ціна зі знижкою, округлена до цілого. І функцію `product_from_api(data)`, яка будує `Product` зі словника відповіді API: зайві ключі ігноруються, відсутній `in_stock` → `True`.\n\n```python\nmouse = Product(1, \"Mouse\", 450)\nmouse                      # Product(id=1, name='Mouse', price=450, in_stock=True)\nmouse.discounted(10)       # 405\nproduct_from_api({\"id\": 3, \"name\": \"Cable\", \"price\": 150, \"created_at\": \"2026-11-12\"})\n# Product(id=3, name='Cable', price=150, in_stock=True)\n```",
+  "hints": [
+    "`from dataclasses import dataclass`, над класом — `@dataclass`, поля — `id: int` тощо; `in_stock: bool = True` — останнім.",
+    "`discounted`: `round(self.price * (100 - percent) / 100)`.",
+    "`product_from_api`: `Product(id=data[\"id\"], ..., in_stock=data.get(\"in_stock\", True))`."
+  ],
+  "explanation": "Анотовані поля + `@dataclass` дають конструктор, читабельний `repr` і порівняння за значенням без жодного рядка шаблонного коду. Функція-перетворювач ізолює формат API: зайві поля не заважають, а відсутнє обов'язкове одразу дає `KeyError`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "@dataclass", "message": "Оголоси модель через `@dataclass`." }
+  ]
+}

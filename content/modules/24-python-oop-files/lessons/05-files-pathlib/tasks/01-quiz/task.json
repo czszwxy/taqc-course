@@ -1,0 +1,80 @@
+{
+  "type": "quiz",
+  "title": "Files and pathlib",
+  "show": 6,
+  "hints": ["with закриває файл сам. \"w\" стирає вміст, \"a\" дописує. encoding — завжди utf-8."],
+  "questions": [
+    {
+      "id": "with",
+      "kind": "single",
+      "text": "Навіщо відкривати файл через `with open(...) as f:`?",
+      "options": [
+        { "text": "Файл закриється автоматично наприкінці блоку, навіть якщо сталася помилка", "correct": true },
+        { "text": "Без with файл не можна прочитати" },
+        { "text": "with робить читання швидшим" }
+      ]
+    },
+    {
+      "id": "mode-w",
+      "kind": "single",
+      "text": "Файл `log.txt` уже має 100 рядків. Що станеться після `open(\"log.txt\", \"w\")` і запису одного рядка?",
+      "options": [
+        { "text": "У файлі залишиться лише новий рядок — режим \"w\" стирає вміст", "correct": true },
+        { "text": "Рядок додасться в кінець" },
+        { "text": "FileExistsError" }
+      ]
+    },
+    {
+      "id": "mode-a",
+      "kind": "single",
+      "text": "Який режим дописує в кінець файлу і створює файл, якщо його немає?",
+      "options": [{ "text": "`\"a\"`", "correct": true }, { "text": "`\"r\"`" }, { "text": "`\"w\"`" }]
+    },
+    {
+      "id": "encoding",
+      "kind": "single",
+      "text": "Чому варто завжди вказувати `encoding=\"utf-8\"`?",
+      "options": [
+        { "text": "Кодування за замовчуванням залежить від ОС — без нього кирилиця може зламатися на Windows", "correct": true },
+        { "text": "Без нього файл не відкриється" }
+      ]
+    },
+    {
+      "id": "path-join",
+      "kind": "single",
+      "text": "Що дає `Path(\"reports\") / \"smoke.txt\"`?",
+      "options": [
+        { "text": "Шлях reports/smoke.txt з правильним роздільником для поточної ОС", "correct": true },
+        { "text": "Ділення — помилку TypeError" },
+        { "text": "Рядок \"reports/smoke.txt\" лише для Linux" }
+      ]
+    },
+    {
+      "id": "mkdir",
+      "kind": "single",
+      "text": "Що означає `folder.mkdir(parents=True, exist_ok=True)`?",
+      "options": [
+        { "text": "Створити папку разом з відсутніми батьківськими і не падати, якщо вона вже є", "correct": true },
+        { "text": "Видалити й створити папку заново" }
+      ]
+    },
+    {
+      "id": "file-dir",
+      "kind": "single",
+      "text": "Навіщо шлях до тестових даних будують як `Path(__file__).parent / \"data\"`?",
+      "options": [
+        { "text": "Щоб шлях не залежав від папки, з якої запустили тести (IDE, термінал, CI)", "correct": true },
+        { "text": "Так файли читаються швидше" }
+      ]
+    },
+    {
+      "id": "newline",
+      "kind": "single",
+      "text": "`for line in f: if line == \"PASSED\": ...` — умова ніколи не спрацьовує. Чому?",
+      "options": [
+        { "text": "Кожен рядок закінчується \"\\n\" — потрібен line.strip()", "correct": true },
+        { "text": "Файл треба читати в режимі \"w\"" }
+      ]
+    }
+  ]
+}

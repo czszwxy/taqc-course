@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "An exception hierarchy for API errors",
+  "statement": "Побудуй ієрархію винятків API-клієнта і функцію, що її використовує.\n\n- `ApiError(status, url)` — нащадок `Exception`; повідомлення `\"<status> for <url>\"`, атрибути `status` і `url`;\n- `AuthError` і `NotFoundError` — нащадки `ApiError`;\n- `raise_for_status(status, url)`: статус до 400 — нічого не робить; 401 і 403 — `AuthError`; 404 — `NotFoundError`; інші від 400 — `ApiError`.\n\n```python\nraise_for_status(200, \"/api/users/42\")    # None\nraise_for_status(404, \"/api/users/7\")     # NotFoundError: 404 for /api/users/7\n\ntry:\n    raise_for_status(403, \"/api/admin\")\nexcept ApiError as e:                     # ловить і AuthError\n    print(e.status)                       # 403\n```",
+  "hints": [
+    "У `ApiError.__init__(self, status, url)`: `super().__init__(f\"{status} for {url}\")`, далі `self.status = status`, `self.url = url`.",
+    "Підкласам достатньо `pass` — вони успадковують `__init__`.",
+    "У `raise_for_status` спершу `if status < 400: return`, потім перевір 401/403 і 404, і наприкінці — `raise ApiError(status, url)`."
+  ],
+  "explanation": "`super().__init__(повідомлення)` передає текст у базовий `Exception`, тому `str(e)` і traceback показують `404 for /api/users/7`, а власні атрибути (`status`, `url`) дають тестам структуровані дані. Підкласи успадковують конструктор, а `except ApiError` ловить усіх нащадків — загальний код обробляє будь-яку помилку API, а тест може чекати конкретну.",
+  "codeRules": [
+    { "kind": "require", "pattern": "super\\(\\)\\s*\\.\\s*__init__", "message": "Передай повідомлення в Exception через `super().__init__(...)`." }
+  ]
+}

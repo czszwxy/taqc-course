@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "An API client built with composition",
+  "statement": "Напиши клас `UsersApi(session, base_url)`, який **отримує сесію ззовні** і робить через неї запити. У тестах передається `FakeSession` (файл `session.py` нижче): її `get(url)` повертає пару `(status, body)` і запам'ятовує запит.\n\n- `get_user(user_id)` — `GET <base_url>/users/<id>`; 200 → тіло (словник), 404 → `None`, інший статус → `RuntimeError(\"GET <url> failed: <status>\")`;\n- `emails(user_ids)` — список email-ів тих користувачів, які знайшлися (у порядку `user_ids`).\n\n```python\nsession = FakeSession({\"https://api.test/users/42\": (200, {\"id\": 42, \"email\": \"qa@example.test\"})})\napi = UsersApi(session, \"https://api.test\")\napi.get_user(42)          # {'id': 42, 'email': 'qa@example.test'}\napi.get_user(7)           # None\nsession.requests          # ['https://api.test/users/42', 'https://api.test/users/7']\napi.emails([42, 7])       # ['qa@example.test']\n```",
+  "hints": [
+    "У `__init__` збережи обидві залежності: `self.session = session`, `self.base_url = base_url`.",
+    "`status, body = self.session.get(url)` — розпакуй пару.",
+    "`emails` викликає `self.get_user(...)` для кожного id і пропускає `None`."
+  ],
+  "explanation": "`UsersApi` не знає, справжня сесія чи фейкова, — він лише викликає `session.get(...)`. Це композиція з впровадженням залежності: у тесті підставляємо `FakeSession` і перевіряємо і результат, і **які саме** запити зробив клієнт (`session.requests`). Неочікуваний статус краще перетворити на зрозумілу помилку, ніж повернути незрозуміле тіло.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "FakeSession", "message": "Не створюй сесію всередині класу — використовуй ту, що передали в `__init__`." }
+  ]
+}

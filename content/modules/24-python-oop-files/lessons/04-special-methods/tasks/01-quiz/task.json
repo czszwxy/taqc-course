@@ -1,0 +1,64 @@
+{
+  "type": "quiz",
+  "title": "Special methods",
+  "show": 6,
+  "hints": ["== без __eq__ порівнює ідентичність. print використовує __str__, pytest показує __repr__."],
+  "questions": [
+    {
+      "id": "default-eq",
+      "kind": "single",
+      "text": "Звичайний клас без `__eq__`. Чому дорівнює `Money(1200) == Money(1200)`?",
+      "options": [
+        { "text": "`False` — за замовчуванням порівнюється ідентичність об'єктів", "correct": true },
+        { "text": "`True` — однакові атрибути" }
+      ]
+    },
+    {
+      "id": "repr-str",
+      "kind": "single",
+      "text": "Що використовує `print(obj)`?",
+      "options": [
+        { "text": "`__str__` (а якщо його немає — `__repr__`)", "correct": true },
+        { "text": "Лише `__repr__`" },
+        { "text": "`__eq__`" }
+      ]
+    },
+    {
+      "id": "pytest-repr",
+      "kind": "single",
+      "text": "Навіщо гарний `__repr__` у моделях тестових даних?",
+      "options": [
+        { "text": "pytest показує repr при падінні assert — видно, що саме відрізняється", "correct": true },
+        { "text": "Без нього об'єкт не можна створити" }
+      ]
+    },
+    {
+      "id": "notimplemented",
+      "kind": "single",
+      "text": "Що має повернути `__eq__`, якщо `other` — об'єкт іншого типу?",
+      "options": [
+        { "text": "`NotImplemented`", "correct": true },
+        { "text": "Підняти `NotImplementedError`" },
+        { "text": "`None`" }
+      ]
+    },
+    {
+      "id": "len",
+      "kind": "single",
+      "text": "`len(suite)` викликає…",
+      "options": [{ "text": "`suite.__len__()`", "correct": true }, { "text": "`suite.len()`" }, { "text": "`suite.__iter__()`" }]
+    },
+    {
+      "id": "falsy",
+      "kind": "single",
+      "text": "Клас має `__len__`, і набір порожній. Що дасть `if suite:`?",
+      "options": [{ "text": "`False` — об'єкт з довжиною 0 хибний", "correct": true }, { "text": "`True` — об'єкт існує" }]
+    },
+    {
+      "id": "sorted",
+      "kind": "single",
+      "text": "Який метод потрібен, щоб `sorted(versions)` працював для власного класу?",
+      "options": [{ "text": "`__lt__`", "correct": true }, { "text": "`__str__`" }, { "text": "`__len__`" }]
+    }
+  ]
+}

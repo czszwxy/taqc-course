@@ -1,0 +1,13 @@
+{
+  "title": "OOP, Files & Project Setup",
+  "description": "Останній модуль основ Python перед pytest: класи й об'єкти (основа Page Object і API-клієнтів), наслідування і композиція, dataclasses для моделей тестових даних, спеціальні методи для зрозумілих порівнянь, файли і pathlib, JSON і CSV для data-driven тестів, а також віртуальні оточення, pip і структура тестового проєкту.",
+  "goals": [
+    "Write classes with __init__, attributes and methods; avoid shared class-level state",
+    "Use inheritance for exception hierarchies and base classes, and composition with injected dependencies",
+    "Model test data with dataclasses: defaults, default_factory, frozen settings, replace",
+    "Implement __eq__, __repr__, __str__, __len__, __contains__, __iter__ and comparison methods",
+    "Read and write files safely with with, encoding and pathlib",
+    "Load and save JSON files and read and write CSV test data",
+    "Set up a Python project: venv, pip, requirements.txt, folder structure and .gitignore"
+  ]
+}

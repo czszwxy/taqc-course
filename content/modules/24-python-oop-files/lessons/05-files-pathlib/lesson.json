@@ -1,0 +1,28 @@
+{
+  "title": "Files and pathlib",
+  "minutes": 55,
+  "summary": "Читання й запис файлів через with open і encoding=\"utf-8\", режими r / w / a, ліниве читання рядків, pathlib.Path: шляхи через /, mkdir, read_text / write_text, glob і rglob, Path(__file__).parent для тестових даних, а в тестах — тимчасова папка tmp_path",
+  "resources": [
+    {
+      "title": "pathlib — Object-oriented filesystem paths",
+      "url": "https://docs.python.org/3/library/pathlib.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python Tutorial: Reading and Writing Files",
+      "url": "https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: How to use temporary directories (tmp_path)",
+      "url": "https://docs.pytest.org/en/stable/how-to/tmp_path.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Map a camelCase API response to a model",
+  "variantOf": "02-product-model",
+  "statement": "API повертає користувача з ключами в `camelCase`. Створи dataclass `User` з полями `id` (int), `email` (str), `first_name` (str), `phone` (`str | None`, за замовчуванням `None`) і функцію `user_from_api(data)`.\n\n```python\nuser_from_api({\"id\": 42, \"email\": \"qa@example.test\", \"firstName\": \"Olena\", \"isAdmin\": False})\n# User(id=42, email='qa@example.test', first_name='Olena', phone=None)\n```",
+  "hints": [
+    "Поле в Python — `first_name`, ключ у JSON — `\"firstName\"`: зіставляй явно.",
+    "`phone=data.get(\"phone\")` — `None`, якщо ключа немає."
+  ],
+  "explanation": "Модель живе за правилами Python (`snake_case`), а API — за своїми (`camelCase`). Функція-перетворювач — єдине місце, яке знає про формат API. Якщо бекенд перейменує поле, тест упаде саме тут з `KeyError` і зрозуміло вкаже, що змінилось.",
+  "codeRules": [
+    { "kind": "require", "pattern": "@dataclass", "message": "Оголоси модель через `@dataclass`." }
+  ]
+}

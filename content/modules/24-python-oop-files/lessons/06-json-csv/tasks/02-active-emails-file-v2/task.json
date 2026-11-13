@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Save test data as readable JSON",
+  "variantOf": "02-active-emails-file",
+  "statement": "Напиши `save_json(path, data)` — записує `data` у файл як JSON з відступом у 2 пробіли, кирилиця — як є (не `\\u...`), кодування UTF-8.\n\n```python\nsave_json(path, {\"city\": \"Київ\", \"tags\": [\"smoke\"]})\nprint(path.read_text(encoding=\"utf-8\"))\n# {\n#   \"city\": \"Київ\",\n#   \"tags\": [\n#     \"smoke\"\n#   ]\n# }\n```",
+  "hints": [
+    "`with open(path, \"w\", encoding=\"utf-8\") as f:` і `json.dump(data, f, ...)`.",
+    "Параметри: `indent=2`, `ensure_ascii=False`."
+  ],
+  "explanation": "`json.dump` пише прямо у файл. `indent=2` робить тестові дані читабельними в рев'ю, а `ensure_ascii=False` залишає кирилицю зрозумілою людині. Без явного `encoding=\"utf-8\"` такий файл може зламатися на іншій ОС.",
+  "codeRules": [
+    { "kind": "require", "pattern": "json\\.dump\\s*\\(", "message": "Запиши файл через `json.dump(data, f, ...)`." }
+  ]
+}

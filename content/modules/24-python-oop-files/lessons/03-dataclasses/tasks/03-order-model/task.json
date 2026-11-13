@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "Order with items: default_factory",
+  "statement": "Створи дві dataclass-моделі:\n\n- `OrderItem`: `product_id` (int), `price` (int), `qty` (int, за замовчуванням 1);\n- `Order`: `id` (int), `items` (список `OrderItem`, за замовчуванням **новий порожній**), `discount` (int, за замовчуванням 0); методи `add(item)` і `total()` — сума `price * qty` мінус знижка, не менше 0.\n\n```python\norder = Order(2001)\norder.add(OrderItem(1, 450, 2))\norder.add(OrderItem(3, 150))\norder.total()                    # 1050\nOrder(2002, discount=100).total()  # 0\n```",
+  "hints": [
+    "`from dataclasses import dataclass, field`; `items: list[OrderItem] = field(default_factory=list)`.",
+    "`total`: `max(sum(i.price * i.qty for i in self.items) - self.discount, 0)`."
+  ],
+  "explanation": "`field(default_factory=list)` створює новий список для кожного замовлення. Простий `= []` dataclass не дозволить (ValueError), і правильно: інакше всі замовлення ділили б один список позицій. Моделі з вкладеними моделями теж порівнюються за значенням — зручно для `assert actual_order == expected_order`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "default_factory", "message": "Список за замовчуванням — через `field(default_factory=list)`." }
+  ]
+}

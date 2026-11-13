@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Step 3: a user repository for tests",
+  "statement": "Крок 3. Напиши клас `UserRepository(users)` — зручний доступ до тестових користувачів (`User` — з `models.py`).\n\n- `len(repo)` — кількість користувачів;\n- `\"QA@example.test \" in repo` — чи є користувач з таким email (без регістру й пробілів);\n- `find(email)` — `User` або `None` (так само без регістру й пробілів);\n- `active()` — список активних користувачів;\n- `count_by_role()` — словник «роль → кількість» у порядку першої появи;\n- `export_csv(path)` — CSV із заголовком `id,email,role,active`, де `active` — `yes` / `no`.\n\nРепозиторій зберігає **власну копію** списку: зміни вхідного списку після створення на нього не впливають.\n\n```python\nrepo = UserRepository([User(1, \"qa@example.test\"), User(2, \"boss@example.test\", \"admin\", False)])\nlen(repo)                          # 2\n\" QA@Example.test\" in repo         # True\nrepo.count_by_role()               # {'customer': 1, 'admin': 1}\n```",
+  "hints": [
+    "У `__init__`: `self._users = list(users)` — копія списку.",
+    "`find`: нормалізуй аргумент (`strip().lower()`) і шукай у циклі; `__contains__` може просто викликати `self.find(...)`.",
+    "`export_csv`: `open(path, \"w\", newline=\"\", encoding=\"utf-8\")`, `csv.writer`, рядок заголовка, потім рядок на кожного користувача."
+  ],
+  "explanation": "Клас ховає повторювану логіку за зрозумілими методами: тести пишуть `repo.find(...)` і `email in repo`, а нормалізація живе в одному місці. `__contains__`, побудований на `find`, гарантує однакову поведінку обох. Копія списку в `__init__` захищає від спільного стану — той самий принцип, що й у хелперах, які не змінюють вхідні дані.",
+  "codeRules": [
+    { "kind": "require", "pattern": "__len__", "message": "Реалізуй `__len__`, щоб працював `len(repo)`." },
+    { "kind": "require", "pattern": "__contains__", "message": "Реалізуй `__contains__`, щоб працював `email in repo`." }
+  ]
+}
