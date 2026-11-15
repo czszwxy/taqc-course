@@ -356,23 +356,31 @@ const checkSqlTask: Checker<'sql'> = async (dir, task) => {
  * Static checks only — the reference spec is run in real Playwright by `npm run validate:lab`
  * (scripts/validate-lab.ts), which needs Chromium and the dev server.
  */
+/** Per language: the spec files and the import every reference spec must have. */
+const PLAYWRIGHT_FILES = {
+  typescript: { ext: '.ts', requiredImport: "from '@playwright/test'", importHint: "import test/expect from '@playwright/test'" },
+  python: { ext: '.py', requiredImport: 'from playwright.sync_api import', importHint: 'import Page/expect from playwright.sync_api' },
+} as const;
+
 const checkPlaywrightTask: Checker<'playwright'> = (dir, task) => {
   const read = (file: string): string | null => (fs.existsSync(path.join(dir, file)) ? fs.readFileSync(path.join(dir, file), 'utf8') : null);
-  const starter = read('starter.ts');
-  const solution = read('solution.ts');
+  const files = PLAYWRIGHT_FILES[task.language];
+  const starter = read(`starter${files.ext}`);
+  const solution = read(`solution${files.ext}`);
   if (starter === null || solution === null) {
-    fail(dir, 'playwright tasks need starter.ts and solution.ts');
+    fail(dir, `${task.language} playwright tasks need starter${files.ext} and solution${files.ext}`);
     return;
   }
-  if (!solution.includes("from '@playwright/test'")) fail(dir, "solution.ts must import test/expect from '@playwright/test'");
-  if (starter.trim() === solution.trim()) fail(dir, 'starter.ts is identical to solution.ts');
+  if (!solution.includes(files.requiredImport)) fail(dir, `solution${files.ext} must ${files.importHint}`);
+  if (starter.trim() === solution.trim()) fail(dir, `starter${files.ext} is identical to solution${files.ext}`);
   // Mutants may come from any playground page or the mock API ("api"): API + UI tasks combine them.
   const bugIds = PLAYGROUND_PAGES.flatMap((p) => p.bugIds ?? []);
   duplicates(task.mutants.map((m) => m.id)).forEach((id) => fail(dir, `duplicate mutant id "${id}"`));
   task.mutants.filter((m) => !bugIds.includes(m.id)).forEach((m) => fail(dir, `mutant "${m.id}" is not a bug id of any playground page (registry.ts bugIds)`));
   const badRules = task.codeRules.filter((r) => !isValidPattern(r.pattern, r.flags ?? 'm'));
   badRules.forEach((r) => fail(dir, `invalid code rule regex /${r.pattern}/`));
-  if (badRules.length === 0) evaluateCodeRules(solution, task.codeRules).forEach((m) => fail(dir, `solution.ts breaks its own code rule: ${m}`));
+  const ruleFailures = task.language === 'python' ? evaluatePythonRules(solution, task.codeRules) : evaluateCodeRules(solution, task.codeRules);
+  if (badRules.length === 0) ruleFailures.forEach((m) => fail(dir, `solution${files.ext} breaks its own code rule: ${m}`));
 };
 
 /* ---------- python tasks (Pyodide in Node, same runner as the browser) ---------- */

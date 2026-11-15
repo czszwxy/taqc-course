@@ -1,8 +1,9 @@
 /**
  * Proves every Playwright task is solvable and not solved by its starter — with the REAL Playwright runner:
- *  - solution.ts is green on the correct page and catches every mutant (bug) of the task;
- *  - starter.ts does NOT pass.
- * Needs Chromium (`npm run lab:setup`) and starts the dev server itself if it is not running.
+ *  - the reference spec (solution.ts / solution.py) is green on the correct page and catches every mutant (bug) of the task;
+ *  - the starter does NOT pass.
+ * TypeScript tasks need Chromium (`npm run lab:setup`); Python tasks also need the venv (`npm run lab:python-setup`).
+ * The TypeScript runner starts the dev server itself; for Python tasks it must already be running (npm run dev).
  *
  * Run: npm run validate:lab            (all Playwright tasks)
  *      npm run validate:lab -- 15-     (only task ids containing "15-")
@@ -41,24 +42,26 @@ function findPlaywrightTasks(): LabTask[] {
 }
 
 async function checkTask({ id, dir, task }: LabTask): Promise<string[]> {
-  const solution = fs.readFileSync(path.join(dir, 'solution.ts'), 'utf8');
-  const starter = fs.readFileSync(path.join(dir, 'starter.ts'), 'utf8');
+  const ext = task.language === 'python' ? '.py' : '.ts';
+  const solution = fs.readFileSync(path.join(dir, `solution${ext}`), 'utf8');
+  const starter = fs.readFileSync(path.join(dir, `starter${ext}`), 'utf8');
   const bugs = task.mutants.map((m) => m.id);
+  const { language } = task;
 
-  const solutionRun = await runLab(root, { code: solution, bugs });
+  const solutionRun = await runLab(root, { code: solution, bugs, language });
   if (!solutionRun.ok) return [`${id}: solution run failed — ${solutionRun.message}`];
   const graded = gradeLabRun(task, solution, solutionRun);
   const problems = [
-    ...graded.errors.map((e) => `${id}: solution.ts does not load — ${e}`),
+    ...graded.errors.map((e) => `${id}: solution${ext} does not load — ${e}`),
     ...graded.correct.filter((t) => t.status !== 'passed').map((t) => `${id}: reference test "${t.title}" fails on the correct page — ${t.error ?? t.status}`),
     ...graded.mutants.filter((m) => !m.caught).map((m) => `${id}: reference tests do not catch mutant "${m.id}"`),
-    ...graded.ruleFailures.map((r) => `${id}: solution.ts breaks a code rule — ${r}`),
-    ...(graded.tooFewTests ? [`${id}: solution.ts has fewer than minTests tests`] : []),
+    ...graded.ruleFailures.map((r) => `${id}: solution${ext} breaks a code rule — ${r}`),
+    ...(graded.tooFewTests ? [`${id}: solution${ext} has fewer than minTests tests`] : []),
   ];
 
-  const starterRun = await runLab(root, { code: starter, bugs });
+  const starterRun = await runLab(root, { code: starter, bugs, language });
   const starterPasses = starterRun.ok && gradeLabRun(task, starter, starterRun).passed;
-  return starterPasses ? [...problems, `${id}: starter.ts already passes — the task is solved before the learner starts`] : problems;
+  return starterPasses ? [...problems, `${id}: starter${ext} already passes — the task is solved before the learner starts`] : problems;
 }
 
 async function main(): Promise<void> {

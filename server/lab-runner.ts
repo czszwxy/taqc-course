@@ -3,10 +3,15 @@ import { randomUUID } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import type { IncomingMessage, ServerResponse } from 'node:http';
+import { cleanMessage, hasLocalChromium, LAB_DIR, MS_PER_SECOND, RUN_TIMEOUT_MS, RUNS_DIR } from './lab-common';
+import { pythonLabStatus, runPythonLab } from './lab-python';
 import {
+  LAB_BASE_URL,
   LAB_BUG_PREFIX,
   LAB_CORRECT_PROJECT,
+  LAB_LANGUAGES,
   LAB_NO_BUGS,
+  type LabLanguage,
   type LabProjectResult,
   type LabRunRequest,
   type LabRunResult,
@@ -22,38 +27,24 @@ import {
  * correct page. Used by the dev server (POST /__lab/run) and by scripts/validate-lab.ts.
  */
 
-const LAB_DIR = 'lab';
-const RUNS_DIR = '.runs';
+export { labBrowsersDir } from './lab-common';
+
 const SPEC_FILE = 'learner.spec.ts';
 const PLAN_FILE = 'plan.json';
 const REPORT_FILE = 'report.json';
 const CONFIG_FILE = 'playwright.config.ts';
 
-/** A whole graded run (all page variants) must finish within this time. */
-const RUN_TIMEOUT_MS = 120_000;
 const MAX_BODY_BYTES = 200_000;
 const MAX_BUGS_PER_RUN = 12;
-const MAX_ERROR_CHARS = 3_000;
 const OUTPUT_TAIL_CHARS = 2_000;
 
 const HTTP_OK = 200;
 const HTTP_BAD_REQUEST = 400;
 const HTTP_FORBIDDEN = 403;
 const HTTP_SERVER_ERROR = 500;
-const MS_PER_SECOND = 1000;
 
 export const LAB_SETUP_MESSAGE =
   'Chromium for Playwright is not installed yet. Run this once in a terminal in the project folder: npm run lab:setup — then press Check again.';
-
-/** Project-local browser folder (installed by `npm run lab:setup`); lab/playwright.config.ts prefers it. */
-export function labBrowsersDir(root: string): string {
-  return path.join(root, LAB_DIR, '.browsers');
-}
-
-function hasLocalChromium(root: string): boolean {
-  const dir = labBrowsersDir(root);
-  return fs.existsSync(dir) && fs.readdirSync(dir).some((name) => name.startsWith('chromium'));
-}
 
 /** One page variant: the config appends `qa-lab-bugs=<bugs>` to the browser's user agent. */
 interface PlanProject {
@@ -144,17 +135,6 @@ interface JsonReport {
   errors?: JsonError[];
 }
 
-/*
- * ANSI colour codes in Playwright messages: matches "\u001b[31m" / "\u001b[2m", rejects plain "[31m".
- * https://regex101.com/?regex=%5Cu001b%5C%5B%5B0-9%3B%5D*m&flags=g
- */
-const ANSI = /\u001b\[[0-9;]*m/g;
-
-function cleanMessage(message: string): string {
-  const text = message.replace(ANSI, '').trim();
-  return text.length > MAX_ERROR_CHARS ? `${text.slice(0, MAX_ERROR_CHARS)}\n…` : text;
-}
-
 interface NamedSpec {
   title: string;
   spec: JsonSpec;
@@ -195,8 +175,9 @@ function needsSetup(output: string): boolean {
   return output.includes("Executable doesn't exist") || output.includes('npx playwright install');
 }
 
-/** Runs one graded lab run. Never throws. */
+/** Runs one graded lab run (TypeScript or Python). Never throws. */
 export async function runLab(root: string, request: LabRunRequest): Promise<LabRunResult> {
+  if (request.language === 'python') return runPythonLab(root, request);
   const started = Date.now();
   const runDir = path.join(root, LAB_DIR, RUNS_DIR, randomUUID());
   try {
@@ -223,7 +204,8 @@ export async function runLab(root: string, request: LabRunRequest): Promise<LabR
   }
 }
 
-export async function labStatus(root: string): Promise<LabStatus> {
+export async function labStatus(root: string, language: LabLanguage = 'typescript'): Promise<LabStatus> {
+  if (language === 'python') return pythonLabStatus(root);
   if (hasLocalChromium(root)) return { ready: true, message: 'Playwright and Chromium (lab/.browsers) are installed.' };
   try {
     const { chromium } = await import('@playwright/test');
@@ -254,8 +236,13 @@ function parseRequest(raw: string): LabRunRequest | null {
   try {
     const body = JSON.parse(raw) as Partial<LabRunRequest>;
     const bugs = Array.isArray(body.bugs) ? body.bugs : [];
-    const valid = typeof body.code === 'string' && bugs.length <= MAX_BUGS_PER_RUN && bugs.every((b) => typeof b === 'string' && BUG_ID.test(b));
-    return valid ? { code: body.code ?? '', bugs } : null;
+    const language = body.language ?? 'typescript';
+    const valid =
+      typeof body.code === 'string' &&
+      LAB_LANGUAGES.includes(language) &&
+      bugs.length <= MAX_BUGS_PER_RUN &&
+      bugs.every((b) => typeof b === 'string' && BUG_ID.test(b));
+    return valid ? { code: body.code ?? '', bugs, language } : null;
   } catch {
     return null;
   }
@@ -310,7 +297,8 @@ async function handle(root: string, req: IncomingMessage, res: ServerResponse, n
     return;
   }
   if (req.method === 'GET' && url.startsWith('/status')) {
-    sendJson(res, HTTP_OK, await labStatus(root));
+    const language: LabLanguage = new URL(url, LAB_BASE_URL).searchParams.get('language') === 'python' ? 'python' : 'typescript';
+    sendJson(res, HTTP_OK, await labStatus(root, language));
     return;
   }
   if (req.method === 'POST' && url.startsWith('/run') && (req.headers['content-type'] ?? '').startsWith('application/json')) {

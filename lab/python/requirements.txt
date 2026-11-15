@@ -1,0 +1,8 @@
+# Python Playwright lab: `npm run lab:python-setup` installs these into lab/.venv (inside the project).
+# playwright is pinned to the same version as @playwright/test in package.json,
+# so the Python and the TypeScript lab share one Chromium in lab/.browsers.
+playwright==1.65.0
+pytest-playwright==0.10.0
+pytest==9.2.0
+# Provides --base-url (without it pytest-playwright uses a fallback that pytest 9 warns about).
+pytest-base-url==2.1.0

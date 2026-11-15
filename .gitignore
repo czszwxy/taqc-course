@@ -6,5 +6,9 @@ lab/test-results
 lab/playwright-report
 lab/.runs
 lab/.browsers
+lab/.venv
+lab/python/.pytest_cache
+lab/python/test-results
+__pycache__/
 
 .playwright-mcp

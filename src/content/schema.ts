@@ -343,12 +343,15 @@ export const sqlTaskSchema = z.object({
 
 /**
  * A real Playwright test (module 15+), run by the dev-server lab runner in Chromium against a Bug Playground page.
- * Files: starter.ts (starting spec), solution.ts (reference spec). The learner's tests must pass on the correct page
- * and fail on every page variant listed in `mutants` (ids = the page's bug flags, see registry.ts bugIds).
+ * TypeScript (default): starter.ts / solution.ts = spec files for @playwright/test.
+ * Python (`language: "python"`, module 27+): starter.py / solution.py = pytest modules using pytest-playwright fixtures.
+ * The learner's tests must pass on the correct page and fail on every page variant listed in `mutants`
+ * (ids = the page's bug flags, see registry.ts bugIds).
  */
 export const playwrightTaskSchema = z.object({
   type: z.literal('playwright'),
   ...baseTask,
+  language: z.enum(['typescript', 'python']).default('typescript'),
   statement: z.string(),
   playground: z.string(),
   mutants: z.array(mutantSchema).default([]),

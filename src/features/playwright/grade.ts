@@ -1,6 +1,7 @@
 import type { PlaywrightTask } from '../../content/schema';
 import type { LabProjectResult, LabRunResult, LabTestResult } from '../../../server/lab-types';
 import { evaluateCodeRules } from '../../runner/client';
+import { evaluatePythonRules } from '../../runner/python-client';
 
 /** Pure grading of a Playwright lab run. Used by the task view and by scripts/validate-lab.ts. */
 
@@ -37,7 +38,8 @@ export function gradeLabRun(task: PlaywrightTask, code: string, run: LabRunOk): 
   const greenOnCorrect = run.errors.length === 0 && correct.length > 0 && correct.every((t) => t.status === 'passed');
   const mutants = task.mutants.map((m) => ({ ...m, caught: caught(run.projects.find((p) => p.bug === m.id)) }));
   const tooFewTests = task.minTests !== undefined && correct.length < task.minTests;
-  const ruleFailures = evaluateCodeRules(code, task.codeRules);
+  // Code rules ignore comments: // and /* */ in TypeScript specs, # in Python test modules.
+  const ruleFailures = task.language === 'python' ? evaluatePythonRules(code, task.codeRules) : evaluateCodeRules(code, task.codeRules);
   return {
     passed: greenOnCorrect && mutants.every((m) => m.caught) && !tooFewTests && ruleFailures.length === 0,
     correct,

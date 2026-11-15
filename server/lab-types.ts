@@ -36,11 +36,17 @@ export function applyLabBugs<T extends Record<string, boolean>>(bugs: T, selecti
 export const LAB_CORRECT_PROJECT = 'correct';
 export const LAB_BUG_PREFIX = 'bug:';
 
+/** typescript = @playwright/test (lab/playwright.config.ts); python = pytest + pytest-playwright (lab/.venv). */
+export type LabLanguage = 'typescript' | 'python';
+export const LAB_LANGUAGES: readonly LabLanguage[] = ['typescript', 'python'];
+
 export interface LabRunRequest {
-  /** The learner's spec file. */
+  /** The learner's spec file (a TypeScript spec or a Python test module). */
   code: string;
   /** Bug ids to run against — one extra project per bug, next to the correct page. Empty = correct page only. */
   bugs: string[];
+  /** Default: typescript. */
+  language?: LabLanguage;
 }
 
 export type LabTestStatus = 'passed' | 'failed' | 'timedOut' | 'skipped' | 'interrupted';

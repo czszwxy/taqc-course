@@ -13,7 +13,11 @@
     "validate:lab": "tsx scripts/validate-lab.ts",
     "lab": "playwright test -c lab",
     "lab:report": "playwright show-report lab/playwright-report",
-    "lab:setup": "tsx scripts/lab-setup.ts"
+    "lab:setup": "tsx scripts/lab-setup.ts",
+    "lab:python-setup": "tsx scripts/lab-python-setup.ts",
+    "lab:py": "tsx scripts/lab-python.ts",
+    "lab:py-codegen": "tsx scripts/lab-python.ts playwright codegen --target python-pytest",
+    "lab:py-trace": "tsx scripts/lab-python.ts playwright show-trace"
   },
   "dependencies": {
     "@fontsource-variable/caveat": "^5.3.0",

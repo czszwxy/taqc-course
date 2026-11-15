@@ -2,14 +2,14 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Editor, { type OnMount } from '@monaco-editor/react';
 import { monaco } from '../../monaco/setup';
 import type { PlaywrightTask } from '../../content/schema';
-import { loadTaskCode } from '../../content/loader';
+import { loadPythonTaskCode, loadTaskCode } from '../../content/loader';
 import { useProgress, useSettings } from '../progress/store';
 import { CodeBlock, Markdown } from '../../components/Markdown';
 import { Callout } from '../../components/ui';
 import { useAsync } from '../../lib/useAsync';
 import { Collapsible, ExplanationPanel, HintsPanel, NextActions, PlaygroundLink } from '../tasks/shared';
 import type { TaskViewProps } from '../tasks/types';
-import type { LabRunResult, LabStatus, LabTestResult } from '../../../server/lab-types';
+import type { LabLanguage, LabRunResult, LabStatus, LabTestResult } from '../../../server/lab-types';
 import { fetchLabStatus, runInLab } from './client';
 import { gradeLabRun, type PlaywrightGrade } from './grade';
 import { addPlaywrightTypes } from './monaco-types';
@@ -19,23 +19,54 @@ type EditorInstance = Parameters<OnMount>[0];
 /** The reference spec can be revealed after this many failed checks (or earlier with a confirmation). */
 const REVEAL_AFTER_FAILS = 3;
 const DRAFT_SAVE_DELAY_MS = 400;
-const SPEC_FILE = 'lab.spec.ts';
 const MS_PER_SECOND = 1000;
 const EDITOR_FONT_SIZE = 14;
-const EDITOR_TAB_SIZE = 2;
 const EDITOR_PADDING_TOP = 12;
 
-/** Same editor look as the TypeScript code tasks. */
-const EDITOR_OPTIONS = {
-  minimap: { enabled: false },
-  fontSize: EDITOR_FONT_SIZE,
-  fontFamily: '"JetBrains Mono Variable", "JetBrains Mono", "Cascadia Code", Consolas, monospace',
-  scrollBeyondLastLine: false,
-  tabSize: EDITOR_TAB_SIZE,
-  automaticLayout: true,
-  padding: { top: EDITOR_PADDING_TOP },
-  renderLineHighlight: 'line',
-} as const;
+/** What differs between a TypeScript spec (@playwright/test) and a Python test module (pytest-playwright). */
+interface LanguageSetup {
+  file: string;
+  monacoLanguage: string;
+  tabSize: number;
+  setupCommand: string;
+  gotoExample: string;
+}
+
+/** Project styles: 2 spaces in TypeScript, 4 in Python (PEP 8). */
+const TS_TAB_SIZE = 2;
+const PYTHON_TAB_SIZE = 4;
+
+const LANGUAGE_SETUP: Record<LabLanguage, LanguageSetup> = {
+  typescript: {
+    file: 'lab.spec.ts',
+    monacoLanguage: 'typescript',
+    tabSize: TS_TAB_SIZE,
+    setupCommand: 'npm run lab:setup',
+    gotoExample: "await page.goto('/playground/login')",
+  },
+  python: {
+    file: 'test_lab.py',
+    monacoLanguage: 'python',
+    tabSize: PYTHON_TAB_SIZE,
+    setupCommand: 'npm run lab:python-setup',
+    gotoExample: 'page.goto("/playground/login")',
+  },
+};
+
+/** Same editor look as the code tasks. */
+function editorOptions(tabSize: number) {
+  return {
+    minimap: { enabled: false },
+    fontSize: EDITOR_FONT_SIZE,
+    fontFamily: '"JetBrains Mono Variable", "JetBrains Mono", "Cascadia Code", Consolas, monospace',
+    scrollBeyondLastLine: false,
+    tabSize,
+    insertSpaces: true,
+    automaticLayout: true,
+    padding: { top: EDITOR_PADDING_TOP },
+    renderLineHighlight: 'line',
+  } as const;
+}
 
 interface Outcome {
   kind: 'run' | 'check';
@@ -64,9 +95,12 @@ function seconds(ms: number): string {
 
 export default function PlaywrightTaskView({ ct, header, onSimilar, next }: TaskViewProps) {
   const task = ct.task as PlaywrightTask;
-  const files = useAsync(() => loadTaskCode(ct.id), [ct.id]);
+  const language = task.language;
+  const setup = LANGUAGE_SETUP[language];
+  const files = useAsync(() => (language === 'python' ? loadPythonTaskCode(ct.id) : loadTaskCode(ct.id)), [ct.id, language]);
   const [statusKey, setStatusKey] = useState(0);
-  const labStatus = useAsync(() => fetchLabStatus(), [statusKey]);
+  const labStatus = useAsync(() => fetchLabStatus(language), [statusKey, language]);
+  const options = useMemo(() => editorOptions(setup.tabSize), [setup.tabSize]);
   const theme = useSettings((s) => s.theme);
   const progress = useProgress((s) => s.tasks[ct.id]);
   const recordAttempt = useProgress((s) => s.recordAttempt);
@@ -80,7 +114,9 @@ export default function PlaywrightTaskView({ ct, header, onSimilar, next }: Task
   const [outcome, setOutcome] = useState<Outcome | null>(null);
   const [showSolution, setShowSolution] = useState(false);
 
-  useEffect(() => addPlaywrightTypes(), []);
+  useEffect(() => {
+    if (language === 'typescript') addPlaywrightTypes();
+  }, [language]);
 
   const initialCode = useMemo(() => {
     if (!files.data) return '';
@@ -104,7 +140,7 @@ export default function PlaywrightTaskView({ ct, header, onSimilar, next }: Task
     saveDraft(ct.id, codeRef.current);
     const code = codeRef.current;
     const bugs = kind === 'check' ? task.mutants.map((m) => m.id) : [];
-    const run = await runInLab(code, bugs);
+    const run = await runInLab(code, bugs, language);
     const grade = run.ok ? gradeLabRun(task, code, run) : null;
     setOutcome({ kind, run, grade });
     setBusy(null);
@@ -145,7 +181,9 @@ export default function PlaywrightTaskView({ ct, header, onSimilar, next }: Task
         <Markdown compact>{task.statement}</Markdown>
         <PlaygroundLink id={task.playground} />
         <div className="mt-5 space-y-3">
-          {labStatus.data && !labStatus.data.ready && <SetupCallout status={labStatus.data} onRecheck={() => setStatusKey((k) => k + 1)} />}
+          {labStatus.data && !labStatus.data.ready && (
+            <SetupCallout status={labStatus.data} command={setup.setupCommand} onRecheck={() => setStatusKey((k) => k + 1)} />
+          )}
           <HintsPanel taskId={ct.id} hints={task.hints} />
           {task.explanation && (failed > 0 || solved) && <ExplanationPanel text={task.explanation} />}
           {showSolution && files.data ? (
@@ -161,12 +199,12 @@ export default function PlaywrightTaskView({ ct, header, onSimilar, next }: Task
           )}
           <Collapsible title="🧪 How this task is checked">
             <p className="text-sm text-muted">
-              Your file runs in the <b className="text-fg">real Playwright</b> (Chromium, headless) against the Bug Playground page. <b className="text-fg">▶ Run</b> uses
+              Your file runs in the <b className="text-fg">real Playwright</b>{language === 'python' ? ' for Python (pytest + pytest-playwright' : ' (Chromium'}, headless) against the Bug Playground page. <b className="text-fg">▶ Run</b> uses
               only the correct version of the page. <b className="text-fg">✓ Check</b> also runs your tests on {task.mutants.length || 'no'} broken version
               {task.mutants.length === 1 ? '' : 's'} of the page, each with one bug turned on. Good tests are green on the correct page and red on every broken one.
             </p>
             <p className="mt-2 text-sm text-muted">
-              Page URLs are relative: <code className="font-mono">await page.goto(&apos;/playground/login&apos;)</code> (baseURL is the app itself).
+              Page URLs are relative: <code className="font-mono">{setup.gotoExample}</code> (the base URL is the app itself).
             </p>
           </Collapsible>
         </div>
@@ -174,7 +212,7 @@ export default function PlaywrightTaskView({ ct, header, onSimilar, next }: Task
 
       <section className="flex min-h-[640px] flex-col lg:min-h-0">
         <div className="flex items-center gap-2 border-b border-line bg-surface px-3 py-2">
-          <span className="font-mono text-xs text-muted">{SPEC_FILE}</span>
+          <span className="font-mono text-xs text-muted">{setup.file}</span>
           <div className="flex-1" />
           <button className="btn btn-ghost btn-sm" onClick={reset} disabled={!files.data || busy !== null}>
             ↺ Reset
@@ -190,14 +228,14 @@ export default function PlaywrightTaskView({ ct, header, onSimilar, next }: Task
           {files.data ? (
             <Editor
               key={ct.id}
-              path={`file:///${ct.id}/${SPEC_FILE}`}
-              defaultLanguage="typescript"
+              path={`file:///${ct.id}/${setup.file}`}
+              defaultLanguage={setup.monacoLanguage}
               defaultValue={initialCode}
               theme={theme === 'dark' ? 'qa-dark' : 'qa-light'}
               onChange={onChange}
               onMount={onMount}
               loading={<div className="p-4 text-sm text-muted">Loading editor…</div>}
-              options={EDITOR_OPTIONS}
+              options={options}
             />
           ) : (
             <div className="p-4 text-sm text-muted">Loading task…</div>
@@ -206,7 +244,7 @@ export default function PlaywrightTaskView({ ct, header, onSimilar, next }: Task
         <div className="flex h-[42%] min-h-[220px] flex-col border-t border-line bg-surface">
           <div className="border-b border-line px-3 py-1.5 text-xs font-semibold text-muted">Playwright results</div>
           <div className="scroll-thin flex-1 overflow-y-auto p-3">
-            <ResultsPanel task={task} busy={busy} outcome={outcome} onSimilar={onSimilar} next={next} />
+            <ResultsPanel task={task} setupCommand={setup.setupCommand} busy={busy} outcome={outcome} onSimilar={onSimilar} next={next} />
           </div>
         </div>
       </section>
@@ -214,14 +252,14 @@ export default function PlaywrightTaskView({ ct, header, onSimilar, next }: Task
   );
 }
 
-function SetupCallout({ status, onRecheck }: { status: LabStatus; onRecheck: () => void }) {
+function SetupCallout({ status, command, onRecheck }: { status: LabStatus; command: string; onRecheck: () => void }) {
   return (
-    <Callout tone="warn" title="One-time setup: install the Playwright browser">
+    <Callout tone="warn" title="One-time setup of the Playwright lab">
       <p className="text-sm">{status.message}</p>
       <p className="mt-2 text-sm">
         Open a terminal <b>outside</b> this app (Windows Terminal, cmd or the VS Code terminal) in the project folder and run:
       </p>
-      <CodeBlock code="npm run lab:setup" />
+      <CodeBlock code={command} />
       <button className="btn btn-secondary btn-sm mt-2" onClick={onRecheck}>
         ↻ Check again
       </button>
@@ -231,12 +269,14 @@ function SetupCallout({ status, onRecheck }: { status: LabStatus; onRecheck: () 
 
 function ResultsPanel({
   task,
+  setupCommand,
   busy,
   outcome,
   onSimilar,
   next,
 }: {
   task: PlaywrightTask;
+  setupCommand: string;
   busy: null | 'run' | 'check';
   outcome: Outcome | null;
   onSimilar?: () => void;
@@ -262,9 +302,9 @@ function ResultsPanel({
   const { run, grade, kind } = outcome;
   if (!run.ok) {
     return (
-      <Callout tone={run.reason === 'busy' ? 'warn' : 'bad'} title={run.reason === 'setup' ? 'Playwright browser is not installed' : 'The run did not complete'}>
+      <Callout tone={run.reason === 'busy' ? 'warn' : 'bad'} title={run.reason === 'setup' ? 'The Playwright lab is not installed' : 'The run did not complete'}>
         <pre className="whitespace-pre-wrap font-mono text-[13px]">{run.message}</pre>
-        {run.reason === 'setup' && <CodeBlock code="npm run lab:setup" />}
+        {run.reason === 'setup' && <CodeBlock code={setupCommand} />}
       </Callout>
     );
   }
@@ -295,7 +335,7 @@ function ResultsPanel({
       )}
       {kind === 'check' && grade.tooFewTests && task.minTests !== undefined && (
         <Callout tone="bad" title={`Write at least ${task.minTests} tests`}>
-          One test() per behaviour from the task.
+          {task.language === 'python' ? 'One test_… function per behaviour from the task.' : 'One test() per behaviour from the task.'}
         </Callout>
       )}
       <TestList tests={grade.correct} />
@@ -325,11 +365,15 @@ function Summary({ task, grade, kind, durationMs }: { task: PlaywrightTask; grad
   }
   return (
     <Callout tone="bad" title="Not passed yet">
-      {grade.greenOnCorrect
-        ? `Your tests pass on the correct page and catch ${caughtCount} of ${grade.mutants.length} bugs.`
-        : 'First make every test pass on the correct page: a test that fails there has a wrong step or expectation.'}
+      {notPassedText(grade, caughtCount)}
     </Callout>
   );
+}
+
+function notPassedText(grade: PlaywrightGrade, caughtCount: number): string {
+  if (!grade.greenOnCorrect) return 'First make every test pass on the correct page: a test that fails there has a wrong step or expectation.';
+  if (grade.mutants.length === 0) return 'Your tests pass on the correct page, but the task requirements below are not met yet.';
+  return `Your tests pass on the correct page and catch ${caughtCount} of ${grade.mutants.length} bugs.`;
 }
 
 function TestList({ tests }: { tests: LabTestResult[] }) {
