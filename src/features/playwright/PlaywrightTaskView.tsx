@@ -10,6 +10,7 @@ import { Collapsible, ExplanationPanel, HintsPanel, NextActions, PlaygroundLink 
 import type { TaskViewProps } from '../tasks/types';
 import type { LabLanguage, LabRunResult, LabStatus, LabTestResult } from '../../../server/lab-types';
 import { fetchLabStatus, runInLab } from './client';
+import { IS_STATIC_SITE } from '../../site';
 import { gradeLabRun, type PlaywrightGrade } from './grade';
 
 
@@ -199,10 +200,10 @@ export default function PlaywrightTaskView({ ct, header, onSimilar, next }: Task
           <button className="btn btn-ghost btn-sm" onClick={reset} disabled={!files.data || busy !== null} title="Reset to the starting code">
             ↺ <span className="hidden sm:inline">Reset</span>
           </button>
-          <button className="btn btn-secondary btn-sm" onClick={() => void execute('run')} disabled={!files.data || busy !== null} title="Run on the correct page only">
+          <button className="btn btn-secondary btn-sm" onClick={() => void execute('run')} disabled={!files.data || busy !== null || IS_STATIC_SITE} title="Run on the correct page only">
             {busy === 'run' ? 'Running…' : '▶ Run'}
           </button>
-          <button className="btn btn-primary btn-sm" onClick={() => void execute('check')} disabled={!files.data || busy !== null} title="Ctrl+Enter">
+          <button className="btn btn-primary btn-sm" onClick={() => void execute('check')} disabled={!files.data || busy !== null || IS_STATIC_SITE} title="Ctrl+Enter">
             {busy === 'check' ? 'Checking…' : '✓ Check'}
           </button>
         </div>
@@ -236,6 +237,14 @@ export default function PlaywrightTaskView({ ct, header, onSimilar, next }: Task
 }
 
 function SetupCallout({ status, command, onRecheck }: { status: LabStatus; command: string; onRecheck: () => void }) {
+  if (IS_STATIC_SITE) {
+    return (
+      <Callout tone="warn" title="💻 This task runs on your computer">
+        <p className="text-sm">{status.message}</p>
+        <p className="mt-2 text-sm">To take the draft with you: Settings → Export progress here, then Import it in the course on your computer.</p>
+      </Callout>
+    );
+  }
   return (
     <Callout tone="warn" title="One-time setup of the Playwright lab">
       <p className="text-sm">{status.message}</p>

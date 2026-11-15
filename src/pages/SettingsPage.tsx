@@ -93,7 +93,8 @@ export function SettingsPage() {
               {stats.tasksSolved}/{stats.tasksTotal} tasks solved.{' '}
             </>
           )}
-          Progress of all courses is stored only in this browser (localStorage). Export it regularly as a backup or to move to another computer.
+          Progress of all courses is stored only in this browser (localStorage). Export it regularly as a backup or to move it to another device: the
+          course on your computer and the website on your phone each keep their own progress — export on one, import on the other.
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
           <button className="btn btn-primary" onClick={exportProgress}>

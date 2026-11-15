@@ -98,7 +98,14 @@ const PRODUCTS: Product[] = productsData.map((p, i) => ({
 
 const USERS: User[] = data.users;
 
-const b64url = (text: string): string => Buffer.from(text).toString('base64url');
+/** UTF-8 bytes of a string — works in Node (dev server) and in the browser (static site). */
+const utf8 = (text: string): Uint8Array => new TextEncoder().encode(text);
+
+/** base64url without padding (the JWT alphabet); the same output as Node's Buffer#toString('base64url'). */
+function b64url(text: string): string {
+  const base64 = btoa(Array.from(utf8(text), (byte) => String.fromCharCode(byte)).join(''));
+  return (base64.split('=')[0] ?? '').replaceAll('+', '-').replaceAll('/', '_');
+}
 
 function makeToken(user: User): string {
   const header = b64url(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
@@ -140,13 +147,28 @@ interface Reply {
 const reply = (status: number, body?: unknown, headers?: Record<string, string>): Reply => ({ status, body, headers });
 const error = (status: number, message: string, headers?: Record<string, string>): Reply => reply(status, { error: message }, headers);
 
-function send(res: ServerResponse, r: Reply): void {
+/** A request as plain data — what the dev-server middleware and the in-browser mock of the static site both pass in. */
+export interface ApiRequest {
+  method: string;
+  /** Path after the base plus the query string, e.g. "/orders/1002?x=1". */
+  url: string;
+  authorization?: string;
+  contentType?: string;
+  userAgent?: string;
+  body: string;
+}
+
+export interface ApiResponse {
+  status: number;
+  headers: Record<string, string>;
+  /** undefined = no body (for example 204 No Content). */
+  body?: string;
+}
+
+function toResponse(r: Reply): ApiResponse {
   const headers: Record<string, string> = { 'X-Request-Id': nextRequestId(), ...r.headers };
-  if (r.body === undefined) {
-    res.writeHead(r.status, headers).end();
-    return;
-  }
-  res.writeHead(r.status, { ...headers, 'Content-Type': 'application/json; charset=utf-8' }).end(JSON.stringify(r.body, null, LIMITS.jsonIndent));
+  if (r.body === undefined) return { status: r.status, headers };
+  return { status: r.status, headers: { ...headers, 'Content-Type': 'application/json; charset=utf-8' }, body: JSON.stringify(r.body, null, LIMITS.jsonIndent) };
 }
 
 function readBody(req: IncomingMessage): Promise<string> {
@@ -162,7 +184,7 @@ type Parsed = { ok: true; body: unknown } | { ok: false; reply: Reply };
 
 function parseBody(raw: string, contentType: string | undefined): Parsed {
   if (raw.trim() === '') return { ok: true, body: undefined };
-  if (Buffer.byteLength(raw) > LIMITS.maxBodyBytes) return { ok: false, reply: error(STATUS.payloadTooLarge, 'Body is too large') };
+  if (utf8(raw).length > LIMITS.maxBodyBytes) return { ok: false, reply: error(STATUS.payloadTooLarge, 'Body is too large') };
   if (!(contentType ?? '').toLowerCase().includes('application/json')) {
     return { ok: false, reply: error(STATUS.unsupportedMediaType, 'Content-Type must be application/json') };
   }
@@ -416,12 +438,12 @@ const ROUTES: Route[] = [
 
 const METHODS_WITH_BODY = new Set(['POST', 'PUT', 'PATCH']);
 
-async function handle(base: string, req: IncomingMessage): Promise<Reply> {
-  const url = new URL(req.url ?? '/', 'http://localhost');
-  const method = (req.method ?? 'GET').toUpperCase();
+async function handle(base: string, req: ApiRequest): Promise<Reply> {
+  const url = new URL(req.url || '/', 'http://localhost');
+  const method = req.method.toUpperCase();
   const store = stores[base] ?? seedStore();
   // Graded Playwright runs mark their requests (user agent) with the one bug to turn on — see server/lab-types.ts.
-  const bug = applyLabBugs(getBugs(base === API_FIXED_BASE), labBugsFromUserAgent(req.headers['user-agent']));
+  const bug = applyLabBugs(getBugs(base === API_FIXED_BASE), labBugsFromUserAgent(req.userAgent));
 
   if (method === 'POST' && url.pathname === '/reset') {
     const fresh = seedStore();
@@ -436,24 +458,38 @@ async function handle(base: string, req: IncomingMessage): Promise<Reply> {
     return error(STATUS.methodNotAllowed, `Method ${method} is not allowed here. Allowed: ${allow}`, { Allow: allow });
   }
 
-  const auth = match.r.auth ? authenticate(req.headers.authorization) : { user: null, problem: null };
+  const auth = match.r.auth ? authenticate(req.authorization) : { user: null, problem: null };
   if (auth.problem) return error(STATUS.unauthorized, auth.problem, { 'WWW-Authenticate': 'Bearer' });
 
-  const raw = METHODS_WITH_BODY.has(method) ? await readBody(req) : '';
-  const parsed = parseBody(raw, req.headers['content-type']);
+  const raw = METHODS_WITH_BODY.has(method) ? req.body : '';
+  const parsed = parseBody(raw, req.contentType);
   if (!parsed.ok) return parsed.reply;
 
   return match.r.handle({ base, store, bug, params: match.params ?? {}, query: url.searchParams, body: parsed.body, user: auth.user });
 }
 
-async function respond(base: string, req: IncomingMessage, res: ServerResponse): Promise<void> {
+/** Answers one API request for `base` (/api or /api-fixed). Used by the dev server and, on the static site, in the browser. */
+export async function handleApiRequest(base: string, req: ApiRequest): Promise<ApiResponse> {
   try {
     const result = await handle(base, req);
     if (result.store) stores[base] = result.store;
-    send(res, result);
+    return toResponse(result);
   } catch {
-    send(res, error(STATUS.serverError, 'Internal Server Error'));
+    return toResponse(error(STATUS.serverError, 'Internal Server Error'));
   }
+}
+
+async function respond(base: string, req: IncomingMessage, res: ServerResponse): Promise<void> {
+  const body = await readBody(req);
+  const r = await handleApiRequest(base, {
+    method: req.method ?? 'GET',
+    url: req.url ?? '/',
+    authorization: req.headers.authorization,
+    contentType: req.headers['content-type'],
+    userAgent: req.headers['user-agent'],
+    body,
+  });
+  res.writeHead(r.status, r.headers).end(r.body);
 }
 
 type Next = (err?: unknown) => void;

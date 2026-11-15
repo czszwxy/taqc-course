@@ -10,7 +10,8 @@ import type { PythonJob, PythonWorkerMessage } from './python-protocol';
  * Pyodide (a few seconds the first time) is not counted as the learner's run time.
  */
 
-const PYODIDE_URL = '/pyodide/';
+/** Under the build's base path, so it also works on the website (/taqc-course/pyodide/). */
+const PYODIDE_URL = `${import.meta.env.BASE_URL}pyodide/`;
 const RUNTIME_DIR = '/home/pyodide/qa_runtime';
 
 interface PyodideModule {

@@ -1,0 +1,50 @@
+# Builds the course as a static website and publishes it on GitHub Pages after every push to main:
+#   https://czszwxy.github.io/taqc-course/
+# The website has no server: the Gadgetly API is answered in the browser (src/site/mockApi.ts) and Playwright
+# tasks show "runs on your computer". One-time setup: repository Settings → Pages → Source: GitHub Actions.
+name: Deploy website
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Build the website
+        run: npm run build
+        env:
+          VITE_BASE: /taqc-course/
+          VITE_STATIC_SITE: '1'
+      # GitHub Pages serves 404.html for unknown paths: the app then opens that page itself (links like /learn/... work after a reload).
+      - run: cp dist/index.html dist/404.html
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState, type FormEvent } from 'react';
 import { PlaygroundShell, PgField, formatUah, inputClass, isFixedMode, withLabMode } from './PlaygroundShell';
+import { withBase } from '../site';
 
 /**
  * Bug Playground: Gadgetly "My account" — a signed-in area for the Playwright practice module (16): dialogs
@@ -336,7 +337,7 @@ function Dashboard({
 
       <p className="mt-6 text-sm text-slate-500">
         By using Gadgetly you agree to the{' '}
-        <a href="/playground/terms" target={bug.termsSameTab ? undefined : '_blank'} rel="noopener noreferrer" className="text-orange-600 underline">
+        <a href={withBase('/playground/terms')} target={bug.termsSameTab ? undefined : '_blank'} rel="noopener noreferrer" className="text-orange-600 underline">
           Terms of Service
         </a>
         .
@@ -344,7 +345,7 @@ function Dashboard({
 
       <iframe
         title="Help chat"
-        src={fixed ? '/playground/help-widget?fixed' : '/playground/help-widget'}
+        src={withBase(fixed ? '/playground/help-widget?fixed' : '/playground/help-widget')}
         className="mt-6 h-56 w-full rounded-lg border border-slate-200"
       />
     </div>

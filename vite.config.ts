@@ -110,6 +110,8 @@ function mockApi(): Plugin {
 }
 
 export default defineConfig({
+  // "/" for the local app; the GitHub Pages build sets VITE_BASE=/taqc-course/ (see .github/workflows/deploy-site.yml).
+  base: process.env['VITE_BASE'] ?? '/',
   plugins: [react(), tailwindcss(), tsLibs(), mockApi(), playwrightLab(), pyodideAssets()],
   worker: {
     format: 'es',

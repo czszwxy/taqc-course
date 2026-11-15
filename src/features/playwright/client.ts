@@ -1,4 +1,5 @@
 import { LAB_ROUTE, type LabLanguage, type LabRunResult, type LabStatus } from '../../../server/lab-types';
+import { IS_STATIC_SITE } from '../../site';
 
 /** Talks to the Playwright lab runner mounted in the local dev server (server/lab-runner.ts). */
 
@@ -7,7 +8,12 @@ const NOT_AVAILABLE: LabStatus = {
   message: 'The Playwright lab runs inside the local my-university server. Start the app with the launcher (or npm run dev) and reload this page.',
 };
 
+/** On the website there is no lab: Playwright needs the course running on the learner's computer. */
+export const SITE_LAB_MESSAGE =
+  'Playwright tests run in a real browser that the course starts on your computer, so on this website they cannot be run. Write your tests here if you like (the draft is saved in this browser), then run and check them in the course on your computer.';
+
 export async function fetchLabStatus(language: LabLanguage = 'typescript'): Promise<LabStatus> {
+  if (IS_STATIC_SITE) return { ready: false, message: SITE_LAB_MESSAGE };
   try {
     const res = await fetch(`${LAB_ROUTE}/status?language=${language}`, { cache: 'no-store' });
     return res.ok ? ((await res.json()) as LabStatus) : NOT_AVAILABLE;
@@ -18,6 +24,7 @@ export async function fetchLabStatus(language: LabLanguage = 'typescript'): Prom
 
 /** Runs the spec on the correct page and, for each bug id, on the page with only that bug turned on. */
 export async function runInLab(code: string, bugs: string[], language: LabLanguage = 'typescript'): Promise<LabRunResult> {
+  if (IS_STATIC_SITE) return { ok: false, reason: 'error', message: SITE_LAB_MESSAGE };
   try {
     const res = await fetch(`${LAB_ROUTE}/run`, {
       method: 'POST',
