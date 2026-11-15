@@ -4,6 +4,8 @@ import { useCurrentCourse } from '../app/currentCourse';
 import { snapshotProgress, useProgress, useSettings, type EditorMode, type ProgressData } from '../features/progress/store';
 import { courseStats } from '../features/progress/selectors';
 import { Callout } from '../components/ui';
+import { SyncSection } from '../features/sync/SyncSection';
+import { isSyncConnected, syncNow } from '../features/sync/sync';
 
 /** Progress files carry the app id; files exported before the rename say qa-academy. */
 const APP_ID = 'my-university';
@@ -46,8 +48,13 @@ export function SettingsPage() {
     try {
       const parsed = JSON.parse(await file.text()) as { app?: string; data?: ProgressData };
       if (!IMPORTABLE_APPS.has(parsed.app ?? '') || !parsed.data || typeof parsed.data.tasks !== 'object') throw new Error('This is not a my-university progress file.');
-      if (!confirm('Replace your current progress with the imported file?')) return;
+      const synced = isSyncConnected();
+      const question = synced
+        ? 'Replace your current progress with the imported file? Sync is on, so the copy on GitHub (and your other devices) will be replaced too.'
+        : 'Replace your current progress with the imported file?';
+      if (!confirm(question)) return;
       importData(parsed.data);
+      if (synced) void syncNow('replace');
       setMessage({ tone: 'ok', text: 'Progress imported.' });
     } catch (e) {
       setMessage({ tone: 'bad', text: e instanceof Error ? e.message : String(e) });
@@ -84,6 +91,8 @@ export function SettingsPage() {
         </div>
       </section>
 
+      <SyncSection />
+
       <section className="card mt-4 p-5">
         <h2 className="font-display text-lg font-bold">Your progress</h2>
         <p className="mt-1 text-sm text-muted">
@@ -118,8 +127,11 @@ export function SettingsPage() {
           <button
             className="btn btn-ghost text-bad"
             onClick={() => {
-              if (confirm('Delete ALL progress, drafts and hints? This cannot be undone (export first if unsure).')) {
+              const synced = isSyncConnected();
+              const warning = synced ? ' Sync is on, so it will be deleted on GitHub and your other devices too.' : '';
+              if (confirm(`Delete ALL progress, drafts and hints? This cannot be undone (export first if unsure).${warning}`)) {
                 reset();
+                if (synced) void syncNow('replace');
                 setMessage({ tone: 'ok', text: 'Progress reset.' });
               }
             }}

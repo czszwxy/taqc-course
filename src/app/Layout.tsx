@@ -2,6 +2,7 @@ import { Link, NavLink, Outlet } from 'react-router-dom';
 import { catalog, coursePath } from '../content/loader';
 import { useProgress, useSettings } from '../features/progress/store';
 import { courseStats } from '../features/progress/selectors';
+import { useAutoSync, useSync } from '../features/sync/sync';
 import { useCurrentCourse } from './currentCourse';
 
 const MAX_SHOWN_ERRORS = 8;
@@ -18,6 +19,8 @@ export function Layout() {
   const theoryRead = useProgress((s) => s.theoryRead);
   const current = useCurrentCourse();
   const stats = current ? courseStats(current, { tasks, theoryRead }) : undefined;
+  useAutoSync();
+  const syncFailed = useSync((s) => s.status === 'error' && Boolean(s.token));
 
   return (
     <div className="flex h-full flex-col">
@@ -60,8 +63,11 @@ export function Layout() {
           >
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
-          <NavLink to="/settings" className={navClass} aria-label="Settings" title="Settings & progress">
-            ⚙️
+          <NavLink to="/settings" className={navClass} aria-label="Settings" title={syncFailed ? 'Sync problem — open Settings' : 'Settings & progress'}>
+            <span className="relative">
+              ⚙️
+              {syncFailed && <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-bad" aria-hidden="true" />}
+            </span>
           </NavLink>
         </div>
       </header>

@@ -37,6 +37,8 @@ export interface ProgressData {
   tasks: Record<string, TaskProgress>;
   /** Unsent work: code, form values, found bugs… keyed by task id. */
   drafts: Record<string, unknown>;
+  /** When each draft was last saved (sync keeps the newer draft when two devices have different ones). */
+  draftTimes?: Record<string, string>;
   /** lessonId -> ISO date when the theory was marked as read. */
   theoryRead: Record<string, string>;
   verifiedLinks: Record<string, boolean>;
@@ -55,7 +57,7 @@ interface ProgressActions {
   reset: () => void;
 }
 
-export const emptyProgress = (): ProgressData => ({ tasks: {}, drafts: {}, theoryRead: {}, verifiedLinks: {} });
+export const emptyProgress = (): ProgressData => ({ tasks: {}, drafts: {}, draftTimes: {}, theoryRead: {}, verifiedLinks: {} });
 
 const now = () => new Date().toISOString();
 const blankTask = (): TaskProgress => ({
@@ -99,7 +101,7 @@ export const useProgress = create<ProgressData & ProgressActions>()(
           return { tasks: { ...s.tasks, [taskId]: { ...cur, solutionViewed: true, updatedAt: now() } } };
         }),
 
-      saveDraft: (taskId, draft) => set((s) => ({ drafts: { ...s.drafts, [taskId]: draft } })),
+      saveDraft: (taskId, draft) => set((s) => ({ drafts: { ...s.drafts, [taskId]: draft }, draftTimes: { ...s.draftTimes, [taskId]: now() } })),
 
       setTheoryRead: (lessonId, read) =>
         set((s) => {
@@ -123,7 +125,7 @@ export const useProgress = create<ProgressData & ProgressActions>()(
 
 export function snapshotProgress(): ProgressData {
   const s = useProgress.getState();
-  return { tasks: s.tasks, drafts: s.drafts, theoryRead: s.theoryRead, verifiedLinks: s.verifiedLinks, last: s.last };
+  return { tasks: s.tasks, drafts: s.drafts, draftTimes: s.draftTimes, theoryRead: s.theoryRead, verifiedLinks: s.verifiedLinks, last: s.last };
 }
 
 /* ---------- Settings ---------- */
