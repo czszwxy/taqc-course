@@ -130,22 +130,29 @@ export function snapshotProgress(): ProgressData {
 
 export type Theme = 'dark' | 'light';
 
+/** Code editor of code tasks: auto = the simple touch editor on phones / tablets, Monaco elsewhere. */
+export type EditorMode = 'auto' | 'full' | 'simple';
+
 interface SettingsState {
   theme: Theme;
   /** The course (profession) the learner is studying: course maps, lesson menus and "next lesson" follow it. */
   currentCourseId?: string;
+  editorMode: EditorMode;
   setTheme: (t: Theme) => void;
   toggleTheme: () => void;
   setCurrentCourse: (id: string) => void;
+  setEditorMode: (mode: EditorMode) => void;
 }
 
 export const useSettings = create<SettingsState>()(
   persist(
     (set) => ({
       theme: 'dark',
+      editorMode: 'auto',
       setTheme: (theme) => set({ theme }),
       toggleTheme: () => set((s) => ({ theme: s.theme === 'dark' ? 'light' : 'dark' })),
       setCurrentCourse: (currentCourseId) => set({ currentCourseId }),
+      setEditorMode: (editorMode) => set({ editorMode }),
     }),
     { name: STORAGE_KEYS.settings, version: 1 },
   ),

@@ -24,6 +24,33 @@ type Errors = Partial<Record<keyof Values, string>>;
 const EMPTY: Values = { fullName: '', email: '', age: '', password: '', confirm: '', country: '', terms: false };
 const COUNTRIES = ['Ukraine', 'Poland', 'Germany', 'United Kingdom', 'United States', 'Other'];
 
+/** Limits from the requirements panel (the bug variants move some of them by one). */
+const NAME_MIN = 2;
+const NAME_MAX = 50;
+const AGE_MIN = 18;
+const AGE_MAX = 65;
+const PASSWORD_MIN = 8;
+const PASSWORD_MAX = 20;
+
+/*
+ * Valid email: matches "olena.k@example.com", rejects "olena@example" (no dot in the domain) and "a b@x.io".
+ * https://regex101.com/?regex=%5E%5B%5E%5Cs%40%5D%2B%40%5B%5E%5Cs%40%5D%2B%5C.%5B%5E%5Cs%40%5D%7B2%2C%7D%24&testString=olena.k%40example.com
+ */
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+/*
+ * The emailDot bug: any "name@domain", so it also matches "olena@example"; rejects "olena.example.com".
+ * https://regex101.com/?regex=%5E%5B%5E%5Cs%40%5D%2B%40%5B%5E%5Cs%40%5D%2B%24&testString=olena%40example
+ */
+const EMAIL_WITHOUT_DOT = /^[^\s@]+@[^\s@]+$/;
+/*
+ * At least one digit: matches "Secret123", rejects "Secretabc". https://regex101.com/?regex=%5Cd&testString=Secret123
+ */
+const DIGIT = /\d/;
+/*
+ * Runs of whitespace between words: splits "Olena  Kovalenko" into ["Olena", "Kovalenko"]. https://regex101.com/?regex=%5Cs%2B
+ */
+const WHITESPACE = /\s+/;
+
 function getBugs(fixed: boolean) {
   const on = !fixed;
   return {
@@ -42,22 +69,22 @@ function validate(v: Values, bug: ReturnType<typeof getBugs>): Errors {
 
   const name = bug.nameSpaces ? v.fullName : v.fullName.trim();
   if (name.length === 0) e.fullName = 'Full name is required';
-  else if (name.length < 2 || name.length > 50) e.fullName = 'Full name must be 2–50 characters';
+  else if (name.length < NAME_MIN || name.length > NAME_MAX) e.fullName = 'Full name must be 2–50 characters';
 
   const email = v.email.trim();
-  const emailRe = bug.emailDot ? /^[^\s@]+@[^\s@]+$/ : /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  const emailRe = bug.emailDot ? EMAIL_WITHOUT_DOT : EMAIL;
   if (!email) e.email = 'Email is required';
   else if (!emailRe.test(email)) e.email = 'Enter a valid email address';
 
   const age = Number(v.age.trim());
   if (v.age.trim() === '') e.age = 'Age is required';
   else if (!Number.isInteger(age)) e.age = 'Age must be a whole number';
-  else if ((bug.age18 ? age <= 18 : age < 18) || age > 65) e.age = 'Age must be between 18 and 65';
+  else if ((bug.age18 ? age <= AGE_MIN : age < AGE_MIN) || age > AGE_MAX) e.age = 'Age must be between 18 and 65';
 
-  const maxLen = bug.pwdMax ? 19 : 20;
+  const maxLen = bug.pwdMax ? PASSWORD_MAX - 1 : PASSWORD_MAX;
   if (!v.password) e.password = 'Password is required';
-  else if (v.password.length < 8 || v.password.length > maxLen) e.password = 'Password must be 8–20 characters';
-  else if (!/\d/.test(v.password)) e.password = 'Password must contain at least one digit';
+  else if (v.password.length < PASSWORD_MIN || v.password.length > maxLen) e.password = 'Password must be 8–20 characters';
+  else if (!DIGIT.test(v.password)) e.password = 'Password must contain at least one digit';
 
   if (!bug.confirm) {
     if (!v.confirm) e.confirm = 'Please confirm your password';
@@ -85,7 +112,7 @@ export function SignupPage() {
     setErrors(e);
     if (Object.keys(e).length === 0) {
       const name = bug.nameSpaces ? values.fullName : values.fullName.trim();
-      setWelcome(bug.greeting ? name.trim().split(/\s+/)[0] ?? name : name);
+      setWelcome(bug.greeting ? name.trim().split(WHITESPACE)[0] ?? name : name);
     }
   };
 
@@ -97,13 +124,13 @@ export function SignupPage() {
   return (
     <div className="min-h-full bg-slate-100 text-slate-900" style={{ colorScheme: 'light' }}>
       <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-3">
-          <div className="flex items-center gap-2 text-lg font-bold text-teal-700">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-teal-600 text-white">T</span> Taskly
-            <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-amber-800">demo app</span>
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-5 py-3">
+          <div className="flex min-w-0 items-center gap-2 text-lg font-bold text-teal-700">
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-teal-600 text-white">T</span> Taskly
+            <span className="whitespace-nowrap rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-amber-800">demo app</span>
           </div>
-          <Link to="/playground" className="text-sm text-slate-500 hover:text-slate-800">
-            ← Back to my-university
+          <Link to="/playground" className="shrink-0 whitespace-nowrap text-sm text-slate-500 hover:text-slate-800">
+            ← Back<span className="hidden sm:inline"> to my-university</span>
           </Link>
         </div>
       </header>

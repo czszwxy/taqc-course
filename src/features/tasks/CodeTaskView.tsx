@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import Editor, { type OnMount } from '@monaco-editor/react';
-import { monaco } from '../../monaco/setup';
+import { CodeEditor, EditorModeToggle, useSimpleEditor, type CodeEditorHandle } from '../../components/CodeEditor';
 import type { CodeTask } from '../../content/schema';
 import { loadTaskCode } from '../../content/loader';
-import { useProgress, useSettings } from '../progress/store';
+import { useProgress } from '../progress/store';
 import {
   checkCode,
   checkTests,
@@ -21,7 +20,13 @@ import { useAsync } from '../../lib/useAsync';
 import { Collapsible, ExplanationPanel, HintsPanel, NextActions } from './shared';
 import type { TaskViewProps } from './types';
 
-type EditorInstance = Parameters<OnMount>[0];
+
+const DRAFT_SAVE_DELAY_MS = 400;
+/** The author's solution can be revealed after this many failed checks (or earlier with a confirmation). */
+const ATTEMPTS_BEFORE_SOLUTION = 3;
+
+/** Text colour of a console line by its level. */
+const LOG_LEVEL_CLASS: Partial<Record<LogEntry['level'], string>> = { error: 'text-bad', warn: 'text-warn' };
 
 interface ConsoleOutput {
   source: 'run' | 'check';
@@ -34,14 +39,13 @@ interface ConsoleOutput {
 export default function CodeTaskView({ ct, header, onSimilar, next }: TaskViewProps) {
   const task = ct.task as CodeTask;
   const files = useAsync(() => loadTaskCode(ct.id), [ct.id]);
-  const theme = useSettings((s) => s.theme);
   const progress = useProgress((s) => s.tasks[ct.id]);
   const recordAttempt = useProgress((s) => s.recordAttempt);
   const saveDraft = useProgress((s) => s.saveDraft);
   const markSolutionViewed = useProgress((s) => s.markSolutionViewed);
 
   const codeRef = useRef('');
-  const editorRef = useRef<EditorInstance | null>(null);
+  const editorRef = useRef<CodeEditorHandle | null>(null);
   const saveTimer = useRef<number | undefined>(undefined);
   const [busy, setBusy] = useState<null | 'check' | 'run'>(null);
   const [result, setResult] = useState<CheckResult | null>(null);
@@ -55,14 +59,27 @@ export default function CodeTaskView({ ct, header, onSimilar, next }: TaskViewPr
   useEffect(() => warmUpCompiler(), []);
 
   // Support files become Monaco models next to the editor file, so `import … from './subject'` resolves in the editor.
+  // Only the full editor needs them, so Monaco is loaded here only when it is shown (phones skip ~3 MB).
+  const simpleEditor = useSimpleEditor();
   useEffect(() => {
-    if (!files.data) return undefined;
-    const models = Object.entries(files.data.support).map(([name, code]) => {
-      const uri = monaco.Uri.parse(`file:///${ct.id}/${name}`);
-      return monaco.editor.getModel(uri) ?? monaco.editor.createModel(code, 'typescript', uri);
-    });
-    return () => models.forEach((m) => m.dispose());
-  }, [files.data, ct.id]);
+    if (!files.data || simpleEditor) return undefined;
+    const support = Object.entries(files.data.support);
+    const created: { dispose: () => void }[] = [];
+    const state = { active: true };
+    const createModels = async (): Promise<void> => {
+      const { monaco } = await import('../../monaco/setup');
+      if (!state.active) return;
+      support.forEach(([name, code]) => {
+        const uri = monaco.Uri.parse(`file:///${ct.id}/${name}`);
+        created.push(monaco.editor.getModel(uri) ?? monaco.editor.createModel(code, 'typescript', uri));
+      });
+    };
+    void createModels();
+    return () => {
+      state.active = false;
+      created.forEach((m) => m.dispose());
+    };
+  }, [files.data, ct.id, simpleEditor]);
 
   const initialCode = useMemo(() => {
     if (!files.data) return '';
@@ -77,7 +94,7 @@ export default function CodeTaskView({ ct, header, onSimilar, next }: TaskViewPr
   const onChange = (v?: string) => {
     codeRef.current = v ?? '';
     window.clearTimeout(saveTimer.current);
-    saveTimer.current = window.setTimeout(() => saveDraft(ct.id, codeRef.current), 400);
+    saveTimer.current = window.setTimeout(() => saveDraft(ct.id, codeRef.current), DRAFT_SAVE_DELAY_MS);
   };
 
   const doCheck = async () => {
@@ -109,13 +126,7 @@ export default function CodeTaskView({ ct, header, onSimilar, next }: TaskViewPr
     setBusy(null);
   };
 
-  const checkRef = useRef(doCheck);
-  checkRef.current = doCheck;
 
-  const onMount: OnMount = (editor) => {
-    editorRef.current = editor;
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => void checkRef.current());
-  };
 
   const reset = () => {
     if (!files.data) return;
@@ -129,7 +140,7 @@ export default function CodeTaskView({ ct, header, onSimilar, next }: TaskViewPr
   const solved = progress?.status === 'solved';
 
   const revealSolution = () => {
-    if (!solved && failed < 3 && !confirm('Try at least 3 times before looking at the solution — struggling a bit is how you learn. Show it anyway?')) return;
+    if (!solved && failed < ATTEMPTS_BEFORE_SOLUTION && !confirm('Try at least 3 times before looking at the solution — struggling a bit is how you learn. Show it anyway?')) return;
     markSolutionViewed(ct.id);
     setShowSolution(true);
   };
@@ -137,8 +148,8 @@ export default function CodeTaskView({ ct, header, onSimilar, next }: TaskViewPr
   if (files.error) return <div className="p-8 text-bad">Could not load the task files: {files.error}</div>;
 
   return (
-    <div className="grid h-full min-h-0 grid-cols-1 lg:grid-cols-[minmax(340px,2fr)_3fr]">
-      <section className="scroll-thin min-h-0 overflow-y-auto border-line p-5 lg:border-r lg:p-6">
+    <div className="grid grid-cols-1 lg:h-full lg:min-h-0 lg:grid-cols-[minmax(340px,2fr)_3fr]">
+      <section className="scroll-thin border-line p-5 lg:min-h-0 lg:overflow-y-auto lg:border-r lg:p-6">
         {header}
         <Markdown compact>{task.statement}</Markdown>
         {files.data && <SupportFiles files={files.data.support} testsMode={testsMode} />}
@@ -153,18 +164,20 @@ export default function CodeTaskView({ ct, header, onSimilar, next }: TaskViewPr
             </div>
           ) : (
             <button className="btn btn-ghost btn-sm" onClick={revealSolution}>
-              👀 Show solution {failed < 3 && !solved && <span className="text-faint">(after 3 attempts)</span>}
+              👀 Show solution {failed < ATTEMPTS_BEFORE_SOLUTION && !solved && <span className="text-faint">(after 3 attempts)</span>}
             </button>
           )}
         </div>
       </section>
 
-      <section className="flex min-h-[640px] flex-col lg:min-h-0">
+      {/* On a phone the statement comes first and the page scrolls; the editor block below gets most of the screen. */}
+      <section className="flex h-[88dvh] min-h-[520px] flex-col border-t-2 border-line lg:h-auto lg:min-h-0 lg:border-t-0">
         <div className="flex items-center gap-2 border-b border-line bg-surface px-3 py-2">
-          <span className="font-mono text-xs text-muted">{fileName}</span>
+          <span className="hidden font-mono text-xs text-muted sm:inline">{fileName}</span>
           <div className="flex-1" />
-          <button className="btn btn-ghost btn-sm" onClick={reset} disabled={!files.data}>
-            ↺ Reset
+          <EditorModeToggle />
+          <button className="btn btn-ghost btn-sm" onClick={reset} disabled={!files.data} title="Reset to the starting code">
+            ↺ <span className="hidden sm:inline">Reset</span>
           </button>
           {!testsMode && (
             <button className="btn btn-secondary btn-sm" onClick={doRun} disabled={!files.data || busy !== null} title="Run your file and see console.log output">
@@ -177,24 +190,16 @@ export default function CodeTaskView({ ct, header, onSimilar, next }: TaskViewPr
         </div>
         <div className="min-h-[280px] flex-1">
           {files.data ? (
-            <Editor
+            <CodeEditor
               key={ct.id}
               path={`file:///${ct.id}/${fileName}`}
-              defaultLanguage="typescript"
-              defaultValue={initialCode}
-              theme={theme === 'dark' ? 'qa-dark' : 'qa-light'}
+              language={'typescript'}
+              initialValue={initialCode}
+              tabSize={2}
               onChange={onChange}
-              onMount={onMount}
-              loading={<div className="p-4 text-sm text-muted">Loading editor…</div>}
-              options={{
-                minimap: { enabled: false },
-                fontSize: 14,
-                fontFamily: '"JetBrains Mono Variable", "JetBrains Mono", "Cascadia Code", Consolas, monospace',
-                scrollBeyondLastLine: false,
-                tabSize: 2,
-                automaticLayout: true,
-                padding: { top: 12 },
-                renderLineHighlight: 'line',
+              onSubmit={() => void doCheck()}
+              onReady={(handle) => {
+                editorRef.current = handle;
               }}
             />
           ) : (
@@ -215,15 +220,11 @@ export default function CodeTaskView({ ct, header, onSimilar, next }: TaskViewPr
             ))}
           </div>
           <div className="scroll-thin flex-1 overflow-y-auto p-3">
-            {panel === 'results' ? (
-              testsMode ? (
-                <SuiteView result={suite} busy={busy === 'check'} minTests={task.minTests} total={task.mutants.length} onSimilar={onSimilar} next={next} />
-              ) : (
-                <ResultsView result={result} busy={busy === 'check'} onSimilar={onSimilar} next={next} />
-              )
-            ) : (
-              <ConsoleView out={consoleOut} busy={busy === 'run'} />
+            {panel === 'console' && <ConsoleView out={consoleOut} busy={busy === 'run'} />}
+            {panel === 'results' && testsMode && (
+              <SuiteView result={suite} busy={busy === 'check'} minTests={task.minTests} total={task.mutants.length} onSimilar={onSimilar} next={next} />
             )}
+            {panel === 'results' && !testsMode && <ResultsView result={result} busy={busy === 'check'} onSimilar={onSimilar} next={next} />}
           </div>
         </div>
       </section>
@@ -354,7 +355,7 @@ function ConsoleView({ out, busy }: { out: ConsoleOutput | null; busy: boolean }
         </div>
       )}
       {out.logs.map((l, i) => (
-        <div key={i} className={`whitespace-pre-wrap border-b border-line/60 pb-1 ${l.level === 'error' ? 'text-bad' : l.level === 'warn' ? 'text-warn' : ''}`}>
+        <div key={i} className={`whitespace-pre-wrap border-b border-line/60 pb-1 ${LOG_LEVEL_CLASS[l.level] ?? ''}`}>
           {l.text}
         </div>
       ))}

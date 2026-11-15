@@ -58,13 +58,13 @@ export function PlaygroundShell({ brand, fixed, requirements, onReset, asideTitl
   return (
     <div className="min-h-full bg-slate-100 text-slate-900" style={{ colorScheme: 'light' }}>
       <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
-          <div className={`flex items-center gap-2 text-lg font-bold ${b.text}`}>
-            <span className={`grid h-8 w-8 place-items-center rounded-lg text-white ${b.badge}`}>{b.letter}</span> {b.name}
-            <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-amber-800">demo app</span>
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 py-3">
+          <div className={`flex min-w-0 items-center gap-2 text-lg font-bold ${b.text}`}>
+            <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg text-white ${b.badge}`}>{b.letter}</span> {b.name}
+            <span className="whitespace-nowrap rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-amber-800">demo app</span>
           </div>
-          <Link to="/playground" className="text-sm text-slate-500 hover:text-slate-800">
-            ← Back to my-university
+          <Link to="/playground" className="shrink-0 whitespace-nowrap text-sm text-slate-500 hover:text-slate-800">
+            ← Back<span className="hidden sm:inline"> to my-university</span>
           </Link>
         </div>
       </header>

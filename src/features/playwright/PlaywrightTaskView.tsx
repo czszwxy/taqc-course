@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import Editor, { type OnMount } from '@monaco-editor/react';
-import { monaco } from '../../monaco/setup';
+import { CodeEditor, EditorModeToggle, useSimpleEditor, type CodeEditorHandle, type EditorLanguage } from '../../components/CodeEditor';
 import type { PlaywrightTask } from '../../content/schema';
 import { loadPythonTaskCode, loadTaskCode } from '../../content/loader';
-import { useProgress, useSettings } from '../progress/store';
+import { useProgress } from '../progress/store';
 import { CodeBlock, Markdown } from '../../components/Markdown';
 import { Callout } from '../../components/ui';
 import { useAsync } from '../../lib/useAsync';
@@ -12,21 +11,17 @@ import type { TaskViewProps } from '../tasks/types';
 import type { LabLanguage, LabRunResult, LabStatus, LabTestResult } from '../../../server/lab-types';
 import { fetchLabStatus, runInLab } from './client';
 import { gradeLabRun, type PlaywrightGrade } from './grade';
-import { addPlaywrightTypes } from './monaco-types';
 
-type EditorInstance = Parameters<OnMount>[0];
 
 /** The reference spec can be revealed after this many failed checks (or earlier with a confirmation). */
 const REVEAL_AFTER_FAILS = 3;
 const DRAFT_SAVE_DELAY_MS = 400;
 const MS_PER_SECOND = 1000;
-const EDITOR_FONT_SIZE = 14;
-const EDITOR_PADDING_TOP = 12;
 
 /** What differs between a TypeScript spec (@playwright/test) and a Python test module (pytest-playwright). */
 interface LanguageSetup {
   file: string;
-  monacoLanguage: string;
+  monacoLanguage: EditorLanguage;
   tabSize: number;
   setupCommand: string;
   gotoExample: string;
@@ -53,20 +48,6 @@ const LANGUAGE_SETUP: Record<LabLanguage, LanguageSetup> = {
   },
 };
 
-/** Same editor look as the code tasks. */
-function editorOptions(tabSize: number) {
-  return {
-    minimap: { enabled: false },
-    fontSize: EDITOR_FONT_SIZE,
-    fontFamily: '"JetBrains Mono Variable", "JetBrains Mono", "Cascadia Code", Consolas, monospace',
-    scrollBeyondLastLine: false,
-    tabSize,
-    insertSpaces: true,
-    automaticLayout: true,
-    padding: { top: EDITOR_PADDING_TOP },
-    renderLineHighlight: 'line',
-  } as const;
-}
 
 interface Outcome {
   kind: 'run' | 'check';
@@ -100,23 +81,28 @@ export default function PlaywrightTaskView({ ct, header, onSimilar, next }: Task
   const files = useAsync(() => (language === 'python' ? loadPythonTaskCode(ct.id) : loadTaskCode(ct.id)), [ct.id, language]);
   const [statusKey, setStatusKey] = useState(0);
   const labStatus = useAsync(() => fetchLabStatus(language), [statusKey, language]);
-  const options = useMemo(() => editorOptions(setup.tabSize), [setup.tabSize]);
-  const theme = useSettings((s) => s.theme);
   const progress = useProgress((s) => s.tasks[ct.id]);
   const recordAttempt = useProgress((s) => s.recordAttempt);
   const saveDraft = useProgress((s) => s.saveDraft);
   const markSolutionViewed = useProgress((s) => s.markSolutionViewed);
 
   const codeRef = useRef('');
-  const editorRef = useRef<EditorInstance | null>(null);
+  const editorRef = useRef<CodeEditorHandle | null>(null);
   const saveTimer = useRef<number | undefined>(undefined);
   const [busy, setBusy] = useState<null | 'run' | 'check'>(null);
   const [outcome, setOutcome] = useState<Outcome | null>(null);
   const [showSolution, setShowSolution] = useState(false);
 
+  // The @playwright/test types are only for the full editor; loading them lazily keeps phones light.
+  const simpleEditor = useSimpleEditor();
   useEffect(() => {
-    if (language === 'typescript') addPlaywrightTypes();
-  }, [language]);
+    if (language !== 'typescript' || simpleEditor) return;
+    const addTypes = async (): Promise<void> => {
+      const { addPlaywrightTypes } = await import('./monaco-types');
+      addPlaywrightTypes();
+    };
+    void addTypes();
+  }, [language, simpleEditor]);
 
   const initialCode = useMemo(() => {
     if (!files.data) return '';
@@ -148,13 +134,7 @@ export default function PlaywrightTaskView({ ct, header, onSimilar, next }: Task
     if (!run.ok && run.reason === 'setup') setStatusKey((k) => k + 1);
   };
 
-  const checkRef = useRef(execute);
-  checkRef.current = execute;
 
-  const onMount: OnMount = (editor) => {
-    editorRef.current = editor;
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => void checkRef.current('check'));
-  };
 
   const reset = () => {
     if (!files.data) return;
@@ -175,8 +155,8 @@ export default function PlaywrightTaskView({ ct, header, onSimilar, next }: Task
   if (files.error) return <div className="p-8 text-bad">Could not load the task files: {files.error}</div>;
 
   return (
-    <div className="grid h-full min-h-0 grid-cols-1 lg:grid-cols-[minmax(340px,2fr)_3fr]">
-      <section className="scroll-thin min-h-0 overflow-y-auto border-line p-5 lg:border-r lg:p-6">
+    <div className="grid grid-cols-1 lg:h-full lg:min-h-0 lg:grid-cols-[minmax(340px,2fr)_3fr]">
+      <section className="scroll-thin border-line p-5 lg:min-h-0 lg:overflow-y-auto lg:border-r lg:p-6">
         {header}
         <Markdown compact>{task.statement}</Markdown>
         <PlaygroundLink id={task.playground} />
@@ -210,12 +190,14 @@ export default function PlaywrightTaskView({ ct, header, onSimilar, next }: Task
         </div>
       </section>
 
-      <section className="flex min-h-[640px] flex-col lg:min-h-0">
+      {/* On a phone the statement comes first and the page scrolls; the editor block below gets most of the screen. */}
+      <section className="flex h-[88dvh] min-h-[520px] flex-col border-t-2 border-line lg:h-auto lg:min-h-0 lg:border-t-0">
         <div className="flex items-center gap-2 border-b border-line bg-surface px-3 py-2">
-          <span className="font-mono text-xs text-muted">{setup.file}</span>
+          <span className="hidden font-mono text-xs text-muted sm:inline">{setup.file}</span>
           <div className="flex-1" />
-          <button className="btn btn-ghost btn-sm" onClick={reset} disabled={!files.data || busy !== null}>
-            ↺ Reset
+          <EditorModeToggle />
+          <button className="btn btn-ghost btn-sm" onClick={reset} disabled={!files.data || busy !== null} title="Reset to the starting code">
+            ↺ <span className="hidden sm:inline">Reset</span>
           </button>
           <button className="btn btn-secondary btn-sm" onClick={() => void execute('run')} disabled={!files.data || busy !== null} title="Run on the correct page only">
             {busy === 'run' ? 'Running…' : '▶ Run'}
@@ -226,16 +208,17 @@ export default function PlaywrightTaskView({ ct, header, onSimilar, next }: Task
         </div>
         <div className="min-h-[280px] flex-1">
           {files.data ? (
-            <Editor
+            <CodeEditor
               key={ct.id}
               path={`file:///${ct.id}/${setup.file}`}
-              defaultLanguage={setup.monacoLanguage}
-              defaultValue={initialCode}
-              theme={theme === 'dark' ? 'qa-dark' : 'qa-light'}
+              language={setup.monacoLanguage}
+              initialValue={initialCode}
+              tabSize={setup.tabSize}
               onChange={onChange}
-              onMount={onMount}
-              loading={<div className="p-4 text-sm text-muted">Loading editor…</div>}
-              options={options}
+              onSubmit={() => void execute('check')}
+              onReady={(handle) => {
+                editorRef.current = handle;
+              }}
             />
           ) : (
             <div className="p-4 text-sm text-muted">Loading task…</div>

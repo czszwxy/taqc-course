@@ -18,6 +18,40 @@ function cellTone(checked: boolean, value: string | undefined, correct: string):
   return value === correct ? 'border-ok/70 bg-ok-soft' : 'border-bad/70 bg-bad-soft';
 }
 
+interface AnswerSelectProps {
+  label: string;
+  options: string[];
+  value: string | undefined;
+  correct: string;
+  checked: boolean;
+  locked: boolean;
+  revealed: boolean;
+  onChange: (value: string) => void;
+}
+
+/** One answer cell: the select, coloured after a check, plus the correct answer once revealed. */
+function AnswerSelect({ label, options, value, correct, checked, locked, revealed, onChange }: AnswerSelectProps) {
+  return (
+    <>
+      <select
+        className={`select py-1.5 ${cellTone(checked, value, correct)}`}
+        value={value ?? ''}
+        onChange={(e) => onChange(e.target.value)}
+        disabled={locked}
+        aria-label={label}
+      >
+        <option value="">—</option>
+        {options.map((o) => (
+          <option key={o} value={o}>
+            {o}
+          </option>
+        ))}
+      </select>
+      {revealed && value !== correct && <div className="mt-1 text-xs font-semibold text-ok">→ {correct}</div>}
+    </>
+  );
+}
+
 export function TableTaskView({ ct, header, onSimilar, next }: TaskViewProps) {
   const task = ct.task as TableTask;
   const recordAttempt = useProgress((s) => s.recordAttempt);
@@ -60,7 +94,45 @@ export function TableTaskView({ ct, header, onSimilar, next }: TaskViewProps) {
       <Markdown>{task.statement}</Markdown>
       <PlaygroundLink id={task.playground} />
 
-      <div className="card mt-5 overflow-x-auto">
+      {/* Phones: one card per row — given values with their column names, then the answer selects. */}
+      <ol className="mt-5 space-y-3 md:hidden">
+        {task.rows.map((row, r) => (
+          <li key={r} className="card p-4 text-sm">
+            <div className="mb-2 text-xs font-semibold tabular-nums text-faint">#{r + 1}</div>
+            <dl className="space-y-1.5">
+              {row.given.map((g, i) => (
+                <div key={i}>
+                  <dt className="text-xs font-semibold text-muted">{task.givenColumns[i]}</dt>
+                  <dd>
+                    <Markdown compact className="[&_p]:my-0">
+                      {g}
+                    </Markdown>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            <div className="mt-3 space-y-2 border-t border-line pt-3">
+              {task.answerColumns.map((col) => (
+                <label key={col.id} className="block">
+                  <span className="mb-1 block text-xs font-semibold text-accent-fg">{col.label}</span>
+                  <AnswerSelect
+                    label={`${col.label}, row ${r + 1}`}
+                    options={col.options}
+                    value={answers[r]?.[col.id]}
+                    correct={row.answers[col.id] ?? ''}
+                    checked={checked}
+                    locked={checked && passed}
+                    revealed={revealed}
+                    onChange={(value) => setCell(r, col.id, value)}
+                  />
+                </label>
+              ))}
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <div className="card mt-5 hidden overflow-x-auto md:block">
         <table className="w-full min-w-[44rem] border-collapse text-sm">
           <thead>
             <tr className="bg-hover text-left">
@@ -88,28 +160,20 @@ export function TableTaskView({ ct, header, onSimilar, next }: TaskViewProps) {
                     </Markdown>
                   </td>
                 ))}
-                {task.answerColumns.map((col) => {
-                  const value = answers[r]?.[col.id];
-                  return (
-                    <td key={col.id} className="min-w-[9.5rem] border-l-2 border-l-accent/30 px-2 py-1.5 align-top">
-                      <select
-                        className={`select py-1.5 ${cellTone(checked, value, row.answers[col.id])}`}
-                        value={value ?? ''}
-                        onChange={(e) => setCell(r, col.id, e.target.value)}
-                        disabled={checked && passed}
-                        aria-label={`${col.label}, row ${r + 1}`}
-                      >
-                        <option value="">—</option>
-                        {col.options.map((o) => (
-                          <option key={o} value={o}>
-                            {o}
-                          </option>
-                        ))}
-                      </select>
-                      {revealed && value !== row.answers[col.id] && <div className="mt-1 text-xs font-semibold text-ok">→ {row.answers[col.id]}</div>}
-                    </td>
-                  );
-                })}
+                {task.answerColumns.map((col) => (
+                  <td key={col.id} className="min-w-[9.5rem] border-l-2 border-l-accent/30 px-2 py-1.5 align-top">
+                    <AnswerSelect
+                      label={`${col.label}, row ${r + 1}`}
+                      options={col.options}
+                      value={answers[r]?.[col.id]}
+                      correct={row.answers[col.id] ?? ''}
+                      checked={checked}
+                      locked={checked && passed}
+                      revealed={revealed}
+                      onChange={(value) => setCell(r, col.id, value)}
+                    />
+                  </td>
+                ))}
               </tr>
             ))}
           </tbody>

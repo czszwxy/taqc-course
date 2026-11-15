@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { catalog } from '../content/loader';
 import { useCurrentCourse } from '../app/currentCourse';
-import { snapshotProgress, useProgress, useSettings, type ProgressData } from '../features/progress/store';
+import { snapshotProgress, useProgress, useSettings, type EditorMode, type ProgressData } from '../features/progress/store';
 import { courseStats } from '../features/progress/selectors';
 import { Callout } from '../components/ui';
 
@@ -12,13 +12,14 @@ const JSON_INDENT = 2;
 /** Length of the date part of an ISO timestamp: "2026-11-12". */
 const ISO_DATE_LENGTH = 10;
 
-/** Lets the same file be chosen again after an import (the input keeps its last value otherwise). */
-function clearFileInput(input: HTMLInputElement): void {
-  input.value = '';
-}
+const EDITOR_MODES: { mode: EditorMode; label: string }[] = [
+  { mode: 'auto', label: '✨ Auto (simple on phones)' },
+  { mode: 'full', label: '🖥️ Always full' },
+  { mode: 'simple', label: '📱 Always simple' },
+];
 
 export function SettingsPage() {
-  const { theme, setTheme } = useSettings();
+  const { theme, setTheme, editorMode, setEditorMode } = useSettings();
   const tasks = useProgress((s) => s.tasks);
   const theoryRead = useProgress((s) => s.theoryRead);
   const importData = useProgress((s) => s.importData);
@@ -69,6 +70,21 @@ export function SettingsPage() {
       </section>
 
       <section className="card mt-4 p-5">
+        <h2 className="font-display text-lg font-bold">Code editor</h2>
+        <p className="mt-1 text-sm text-muted">
+          The full editor (the one from VS Code) has autocomplete and error underlines, but it is awkward with a phone keyboard. The simple editor is made for
+          phones: no autocorrect, auto-indent and a row of keys for brackets and quotes.
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {EDITOR_MODES.map(({ mode, label }) => (
+            <button key={mode} className={`btn ${editorMode === mode ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setEditorMode(mode)}>
+              {label}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section className="card mt-4 p-5">
         <h2 className="font-display text-lg font-bold">Your progress</h2>
         <p className="mt-1 text-sm text-muted">
           {current && stats && (
@@ -94,7 +110,8 @@ export function SettingsPage() {
             onChange={(e) => {
               const f = e.target.files?.[0];
               if (f) void onImport(f);
-              clearFileInput(e.currentTarget);
+              // Lets the same file be chosen again after an import (the input keeps its last value otherwise).
+              if (fileRef.current) fileRef.current.value = '';
             }}
           />
           <button

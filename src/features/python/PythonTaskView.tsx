@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import Editor, { type OnMount } from '@monaco-editor/react';
-import { monaco } from '../../monaco/setup';
+import { CodeEditor, EditorModeToggle, type CodeEditorHandle } from '../../components/CodeEditor';
 import type { PythonTask } from '../../content/schema';
 import { loadPythonTaskCode } from '../../content/loader';
-import { useProgress, useSettings } from '../progress/store';
+import { useProgress } from '../progress/store';
 import {
   checkPythonSolution,
   checkPythonTests,
@@ -19,15 +18,12 @@ import { useAsync } from '../../lib/useAsync';
 import { Collapsible, ExplanationPanel, HintsPanel, NextActions } from '../tasks/shared';
 import type { TaskViewProps } from '../tasks/types';
 
-type EditorInstance = Parameters<OnMount>[0];
 type Panel = 'results' | 'console';
 type NextTarget = TaskViewProps['next'];
 
 const DRAFT_SAVE_DELAY_MS = 400;
 const ATTEMPTS_BEFORE_SOLUTION = 3;
-const EDITOR_FONT_SIZE = 14;
 const PYTHON_TAB_SIZE = 4;
-const EDITOR_PADDING_TOP = 12;
 const SUBJECT_FILE = 'subject.py';
 
 interface ConsoleOutput {
@@ -39,7 +35,6 @@ interface ConsoleOutput {
 export default function PythonTaskView({ ct, header, onSimilar, next }: TaskViewProps) {
   const task = ct.task as PythonTask;
   const files = useAsync(() => loadPythonTaskCode(ct.id), [ct.id]);
-  const theme = useSettings((s) => s.theme);
   const progress = useProgress((s) => s.tasks[ct.id]);
   const recordAttempt = useProgress((s) => s.recordAttempt);
   const saveDraft = useProgress((s) => s.saveDraft);
@@ -48,7 +43,7 @@ export default function PythonTaskView({ ct, header, onSimilar, next }: TaskView
   const testsMode = task.mode === 'tests';
   const fileName = testsMode ? 'tests.py' : 'solution.py';
   const codeRef = useRef('');
-  const editorRef = useRef<EditorInstance | null>(null);
+  const editorRef = useRef<CodeEditorHandle | null>(null);
   const saveTimer = useRef<number | undefined>(undefined);
   const [busy, setBusy] = useState<null | 'check' | 'run'>(null);
   const [result, setResult] = useState<PythonCheckResult | null>(null);
@@ -103,13 +98,7 @@ export default function PythonTaskView({ ct, header, onSimilar, next }: TaskView
     setBusy(null);
   };
 
-  const checkRef = useRef(doCheck);
-  checkRef.current = doCheck;
 
-  const onMount: OnMount = (editor) => {
-    editorRef.current = editor;
-    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => void checkRef.current());
-  };
 
   const reset = () => {
     if (!files.data) return;
@@ -132,8 +121,8 @@ export default function PythonTaskView({ ct, header, onSimilar, next }: TaskView
   if (files.error) return <div className="p-8 text-bad">Could not load the task files: {files.error}</div>;
 
   return (
-    <div className="grid h-full min-h-0 grid-cols-1 lg:grid-cols-[minmax(340px,2fr)_3fr]">
-      <section className="scroll-thin min-h-0 overflow-y-auto border-line p-5 lg:border-r lg:p-6">
+    <div className="grid grid-cols-1 lg:h-full lg:min-h-0 lg:grid-cols-[minmax(340px,2fr)_3fr]">
+      <section className="scroll-thin border-line p-5 lg:min-h-0 lg:overflow-y-auto lg:border-r lg:p-6">
         {header}
         <Markdown compact>{task.statement}</Markdown>
         {files.data && <SupportFiles files={files.data.support} testsMode={testsMode} />}
@@ -154,12 +143,14 @@ export default function PythonTaskView({ ct, header, onSimilar, next }: TaskView
         </div>
       </section>
 
-      <section className="flex min-h-[640px] flex-col lg:min-h-0">
+      {/* On a phone the statement comes first and the page scrolls; the editor block below gets most of the screen. */}
+      <section className="flex h-[88dvh] min-h-[520px] flex-col border-t-2 border-line lg:h-auto lg:min-h-0 lg:border-t-0">
         <div className="flex items-center gap-2 border-b border-line bg-surface px-3 py-2">
-          <span className="font-mono text-xs text-muted">🐍 {fileName}</span>
+          <span className="hidden font-mono text-xs text-muted sm:inline">🐍 {fileName}</span>
           <div className="flex-1" />
-          <button className="btn btn-ghost btn-sm" onClick={reset} disabled={!files.data}>
-            ↺ Reset
+          <EditorModeToggle />
+          <button className="btn btn-ghost btn-sm" onClick={reset} disabled={!files.data} title="Reset to the starting code">
+            ↺ <span className="hidden sm:inline">Reset</span>
           </button>
           {!testsMode && (
             <button className="btn btn-secondary btn-sm" onClick={doRun} disabled={!files.data || busy !== null} title="Run your file and see print() output">
@@ -172,25 +163,16 @@ export default function PythonTaskView({ ct, header, onSimilar, next }: TaskView
         </div>
         <div className="min-h-[280px] flex-1">
           {files.data ? (
-            <Editor
+            <CodeEditor
               key={ct.id}
               path={`file:///${ct.id}/${fileName}`}
-              defaultLanguage="python"
-              defaultValue={initialCode}
-              theme={theme === 'dark' ? 'qa-dark' : 'qa-light'}
+              language={'python'}
+              initialValue={initialCode}
+              tabSize={PYTHON_TAB_SIZE}
               onChange={onChange}
-              onMount={onMount}
-              loading={<div className="p-4 text-sm text-muted">Loading editor…</div>}
-              options={{
-                minimap: { enabled: false },
-                fontSize: EDITOR_FONT_SIZE,
-                fontFamily: '"JetBrains Mono Variable", "JetBrains Mono", "Cascadia Code", Consolas, monospace',
-                scrollBeyondLastLine: false,
-                tabSize: PYTHON_TAB_SIZE,
-                insertSpaces: true,
-                automaticLayout: true,
-                padding: { top: EDITOR_PADDING_TOP },
-                renderLineHighlight: 'line',
+              onSubmit={() => void doCheck()}
+              onReady={(handle) => {
+                editorRef.current = handle;
               }}
             />
           ) : (
