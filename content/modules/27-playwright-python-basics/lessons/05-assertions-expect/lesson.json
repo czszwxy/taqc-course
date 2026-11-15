@@ -1,0 +1,28 @@
+{
+  "title": "Assertions with expect",
+  "minutes": 55,
+  "summary": "Web-first перевірки expect у Playwright для Python: to_be_visible, to_have_text і to_contain_text, to_have_value, to_have_count, to_be_checked, to_be_enabled, to_have_url, заперечення not_to_…, регулярні вирази, власне повідомлення й timeout, soft assertions (expect.soft) і коли доречний звичайний assert",
+  "resources": [
+    {
+      "title": "Playwright for Python: Assertions",
+      "url": "https://playwright.dev/python/docs/test-assertions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: LocatorAssertions (full list)",
+      "url": "https://playwright.dev/python/docs/api/class-locatorassertions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: PageAssertions",
+      "url": "https://playwright.dev/python/docs/api/class-pageassertions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "title": "Playwright for Python: Basics",
+  "description": "UI-тести на Python: pytest керує справжнім браузером через Playwright і плагін pytest-playwright. Встановлення й запуск, фікстура page, локатори, дії, перевірки expect, автоочікування й нестабільні тести, Codegen, Trace Viewer і налагодження. Кожна задача з кодом запускається в справжньому Chromium на сторінках Bug Playground і перевіряється на версіях сторінки з навмисними багами.",
+  "goals": [
+    "Install pytest-playwright and run UI tests headless, headed and in slow motion",
+    "Write tests with the page fixture and understand test isolation (a new browser context per test)",
+    "Find elements with user-facing locators (get_by_role, get_by_label, get_by_text, get_by_test_id) and filter them",
+    "Act like a user: fill, press, check, select_option, click, reload",
+    "Check results with web-first assertions (expect) and soft assertions",
+    "Explain auto-waiting and fix flaky tests without sleep",
+    "Record tests with Codegen and investigate failures with the Trace Viewer and the Inspector"
+  ]
+}

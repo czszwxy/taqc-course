@@ -1,0 +1,25 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Sign-up form with user-facing locators",
+  "playground": "signup",
+  "statement": "Протестуй форму реєстрації (`/playground/signup`) **лише вбудованими локаторами**: `get_by_label`, `get_by_role`, `get_by_text` (без `page.locator(...)`).\n\nУ стартовому файлі вже є словник `VALID`, хелпер `fill_form` і перший тест. `fill_form(page, age=\"18\")` заповнює форму валідними даними, замінюючи передані поля (галочку Terms він не ставить). Допиши тести на вимоги:\n\n1. Валідні дані → заголовок `Welcome, Olena Kovalenko!`. *Уже є.*\n2. Без галочки **I agree to the Terms of Service** акаунт не створюється: з'являється `You must accept the Terms of Service`.\n3. Паролі не збігаються (`Secret123` / `Secret124`) → `Passwords do not match`.\n4. Email без крапки в домені (`olena@example`) → `Enter a valid email address`.\n5. Пароль рівно з **20** символів — верхня межа, його приймають: `Secret12345678901234` (і такий самий у Confirm password) → акаунт створюється.\n\n**✓ Check** запустить тести на правильній формі та на 4 її версіях з різними багами. Кожен баг має «вбити» хоча б один тест.",
+  "minTests": 4,
+  "mutants": [
+    { "id": "terms", "description": "the account was created without accepting the Terms of Service.", "hint": "Submit a valid form WITHOUT checking the Terms checkbox: an error must appear and no account must be created." },
+    { "id": "confirm", "description": "\"Confirm password\" was never compared with the password.", "hint": "Try two different passwords (Secret123 / Secret124) — the form must say they do not match." },
+    { "id": "emailDot", "description": "an email without a dot in the domain (olena@example) was accepted.", "hint": "Try olena@example — the form must reject it." },
+    { "id": "pwdMax", "description": "a password of exactly 20 characters was rejected (the maximum was off by one).", "hint": "Test the upper password boundary from the requirements: exactly 20 characters must be accepted." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "get_by_label\\(", "message": "Поля форми шукай через `get_by_label(...)`." },
+    { "kind": "require", "pattern": "get_by_role\\(", "message": "Кнопки й заголовки шукай через `get_by_role(...)`." },
+    { "kind": "forbid", "pattern": "\\.locator\\(", "message": "У цьому завданні тренуємо вбудовані локатори: замість `page.locator(...)` використай `get_by_label` / `get_by_role` / `get_by_text`." }
+  ],
+  "hints": [
+    "Тест без галочки: `fill_form(page)`, одразу `page.get_by_role(\"button\", name=\"Create account\").click()`, потім `expect(page.get_by_text(\"You must accept the Terms of Service\")).to_be_visible()`.",
+    "Інші значення передавай у хелпер: `fill_form(page, confirm=\"Secret124\")`, `fill_form(page, email=\"olena@example\")`.",
+    "20 символів: `password = \"Secret12345678901234\"` → `fill_form(page, password=password, confirm=password)`; після submit має з'явитися заголовок привітання."
+  ],
+  "explanation": "Кожна вимога — окремий тест: валідні дані плюс **одна** зміна. Тоді впалий тест одразу показує, яке правило зламане. Межу (20 символів) перевіряють значенням рівно на межі: саме там ховаються помилки `>` замість `>=`. Типові помилки локаторів тут: `get_by_label(\"Password\")` без `exact=True` (знайде ще й Confirm password) і `get_by_text(\"Email\")` замість `get_by_label(\"Email\")`."
+}

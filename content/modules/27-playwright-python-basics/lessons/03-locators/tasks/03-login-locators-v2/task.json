@@ -1,0 +1,25 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "variantOf": "03-signup-locators",
+  "title": "Login rules with user-facing locators",
+  "playground": "login",
+  "statement": "Ще три вимоги сторінки логіну (`/playground/login`), знову **лише вбудованими локаторами** (без `page.locator(...)`). У стартовому файлі є хелпер `sign_in(page, email)` і перший тест.\n\n1. Демо-користувач входить: заголовок `Welcome back!` і `Signed in as demo@taskly.test`. *Уже є.*\n2. Email **нечутливий до регістру**: `DEMO@Taskly.TEST` теж входить.\n3. **Пробіли** до і після email ігноруються: `  demo@taskly.test  ` входить.\n4. Без галочки **Remember me** після **Log out** поле Email порожнє.\n\nЗначення поля перевіряє `expect(page.get_by_label(\"Email\")).to_have_value(\"\")`.",
+  "minTests": 4,
+  "mutants": [
+    { "id": "emailCase", "description": "the email was compared case-sensitively.", "hint": "Sign in with the email in a different case (DEMO@Taskly.TEST)." },
+    { "id": "emailSpaces", "description": "spaces around the email were not trimmed.", "hint": "Sign in with spaces before and after the email." },
+    { "id": "rememberMe", "description": "the email was remembered even with \"Remember me\" unchecked.", "hint": "Sign in WITHOUT Remember me, log out and check the Email field." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "get_by_label\\(", "message": "Поля форми шукай через `get_by_label(...)`." },
+    { "kind": "require", "pattern": "get_by_role\\(", "message": "Кнопки й заголовки шукай через `get_by_role(...)`." },
+    { "kind": "require", "pattern": "to_have_value\\(", "message": "Вимога 4: перевір значення поля Email через `to_have_value(\"\")`." },
+    { "kind": "forbid", "pattern": "\\.locator\\(", "message": "Тренуємо вбудовані локатори: замість `page.locator(...)` використай `get_by_label` / `get_by_role` / `get_by_text`." }
+  ],
+  "hints": [
+    "Хелпер уже приймає будь-який email: `sign_in(page, \"DEMO@Taskly.TEST\")`, `sign_in(page, \"  demo@taskly.test  \")`.",
+    "Вихід: `page.get_by_role(\"button\", name=\"Log out\").click()`, потім `expect(page.get_by_label(\"Email\")).to_have_value(\"\")`."
+  ],
+  "explanation": "Нормалізація введення (регістр, пробіли) — класичне місце багів: розробник порівнює рядки «як є». Кожен варіант — окремий тест, щоб падіння одразу казало, що саме зламано. Для Remember me важливий **наслідок**, який видно лише після виходу: перевіряй значення поля, а не стан галочки."
+}

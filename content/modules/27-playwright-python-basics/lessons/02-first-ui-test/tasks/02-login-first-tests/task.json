@@ -1,0 +1,19 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Your first pytest-playwright tests: the login page",
+  "playground": "login",
+  "statement": "Напиши перші три тести для сторінки логіну Taskly (`/playground/login`). Відкрий сторінку кнопкою нижче й подивись на неї.\n\n1. **test_sign_in_form_is_shown** — є заголовок `Sign in to Taskly`, поля **Email** і **Password** та кнопка **Log in**. *Уже є у стартовому файлі — подивись, як він влаштований.*\n2. **test_demo_user_can_sign_in** — увійди як `demo@taskly.test` / `Demo1234`: з'являється заголовок `Welcome back!` і текст `Signed in as demo@taskly.test`.\n3. **test_wrong_password_shows_error** — `demo@taskly.test` з паролем `wrong-pass` → повідомлення `Invalid email or password`, а заголовка `Welcome back!` немає.\n\nКорисні локатори:\n\n```python\npage.get_by_label(\"Email\")\npage.get_by_label(\"Password\", exact=True)  # без exact знайде ще й чекбокс \"Show password\"\npage.get_by_role(\"button\", name=\"Log in\")\npage.get_by_role(\"heading\", name=\"Welcome back!\")\npage.get_by_test_id(\"signed-in-as\")\npage.get_by_role(\"alert\")\n```\n\nНатисни **▶ Run**, щоб запустити тести в справжньому Chromium, і **✓ Check**, щоб здати.",
+  "minTests": 3,
+  "codeRules": [
+    { "kind": "require", "pattern": "expect\\(", "message": "Тест без `expect(...)` нічого не перевіряє: додай перевірки." },
+    { "kind": "require", "pattern": "\\.fill\\(", "message": "Заповни поля через `.fill(...)`: `page.get_by_label(\"Email\").fill(\"demo@taskly.test\")`." },
+    { "kind": "require", "pattern": "\\.click\\(\\)", "message": "Натисни кнопку **Log in**: `page.get_by_role(\"button\", name=\"Log in\").click()` (з дужками!)." }
+  ],
+  "hints": [
+    "Заповнення поля: `page.get_by_label(\"Email\").fill(\"demo@taskly.test\")`. Натискання: `page.get_by_role(\"button\", name=\"Log in\").click()`.",
+    "Текст елемента: `expect(page.get_by_test_id(\"signed-in-as\")).to_have_text(\"Signed in as demo@taskly.test\")`.",
+    "Перевірка, що елемента немає: `expect(page.get_by_role(\"heading\", name=\"Welcome back!\")).to_be_hidden()`."
+  ],
+  "explanation": "Кожен тест має три частини: **Arrange** (`page.goto`), **Act** (`fill`, `click`) і **Assert** (`expect`). Перед кожною дією Playwright сам чекає, поки елемент з'явиться і стане доступним, тому пауз не потрібно. Найчастіші помилки тут: `get_by_label(\"Password\")` без `exact=True` (знаходить і поле, і чекбокс «Show password» → strict mode violation) і `get_by_text(\"Welcome back!\")` замість заголовка — такий текст є ще й у підзаголовку форми, тож перевірка «привітання немає» стає хибною."
+}

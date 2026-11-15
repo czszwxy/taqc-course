@@ -1,0 +1,43 @@
+{
+  "type": "written",
+  "title": "Investigate a flaky test",
+  "statement": "Тест колеги на CI падає приблизно один раз із десяти. Локально в нього «завжди зелений».\n\n```python\ndef test_order_is_paid(page: Page):\n    page.goto(\"/orders/1002\")\n    page.get_by_role(\"button\", name=\"Pay\").click()\n    time.sleep(1)\n    assert page.get_by_test_id(\"order-status\").inner_text() == \"Paid\"\n```\n\nПовідомлення з CI:\n\n```text\nAssertionError: assert 'Processing…' == 'Paid'\n```\n\nПісля кліку сторінка показує `Processing…`, поки сервер обробляє оплату, і лише потім — `Paid`. Розбери проблему як QA-інженер.",
+  "fields": [
+    { "id": "cause", "label": "Чому тест то проходить, то падає?", "kind": "textarea" },
+    { "id": "fix", "label": "Виправлений тест (код)", "kind": "textarea", "placeholder": "def test_order_is_paid(page: Page):\n    ..." },
+    { "id": "proof", "label": "Як довести, що виправлення допомогло?", "kind": "textarea" },
+    { "id": "prevention", "label": "Правила для команди, щоб таке не повторювалось (одне на рядок)", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "cause", "check": "mentionsAny", "value": ["sleep", "пауз", "секунд", "1 с", "1 s", "фіксован"], "message": "Причина: поясни роль `time.sleep(1)` — фіксованої паузи." },
+    { "field": "cause", "check": "mentionsAny", "value": ["inner_text", "один раз", "не чекає", "не повторю", "once", "моментальн", "одразу"], "message": "Причина: `inner_text()` читає статус один раз і не чекає, поки він стане `Paid`." },
+    { "field": "cause", "check": "mentionsAny", "value": ["ci", "повільн", "швидк", "сервер", "processing"], "message": "Причина: чому на CI падає, а локально ні (швидкість сервера / машини)." },
+    { "field": "fix", "check": "mentionsAll", "value": ["expect\\(", "to_have_text\\("], "message": "Виправлення: web-first перевірка `expect(...).to_have_text(\"Paid\")`." },
+    { "field": "fix", "check": "notMentions", "value": ["sleep", "wait_for_timeout", "inner_text"], "message": "Виправлення: без `time.sleep`, `wait_for_timeout` і `inner_text()`." },
+    { "field": "proof", "check": "mentionsAny", "value": ["\\d+ раз", "\\d+ times", "range", "parametrize", "багато разів", "кілька разів", "повтор", "repeat"], "message": "Доказ: один зелений прогін нічого не доводить — запусти тест багато разів поспіль." },
+    { "field": "prevention", "check": "minItems", "value": 2, "message": "Правила: щонайменше два." }
+  ],
+  "model": {
+    "cause": "Тест чекає фіксовану 1 секунду, а потім `inner_text()` читає статус ОДИН раз. Якщо сервер обробив оплату швидше ніж за секунду (локально), там уже `Paid` — тест зелений. На CI сервер повільніший: через секунду ще `Processing…`, і assert падає. Тест залежить від швидкості середовища, а не від поведінки застосунку.",
+    "fix": "def test_order_is_paid(page: Page):\n    page.goto(\"/orders/1002\")\n    page.get_by_role(\"button\", name=\"Pay\").click()\n    expect(page.get_by_test_id(\"order-status\")).to_have_text(\"Paid\")",
+    "proof": "Запустити тест 20–50 разів поспіль локально (тимчасово `@pytest.mark.parametrize(\"attempt\", range(30))`) і кілька разів на CI. Додатково: перевірити, що тест падає, якщо статус так і не стане Paid (тимчасово очікувати \"Paidd\"), — тобто перевірка справжня. Ще варто перевірити, що тест не став повільнішим: він має завершуватися, щойно статус змінився.",
+    "prevention": [
+      "Ніяких time.sleep і wait_for_timeout у тестах: чекаємо стан через expect",
+      "Значення зі сторінки перевіряємо web-first перевірками, а не assert над inner_text() / is_visible()",
+      "Нестабільний тест не перезапускаємо «до зеленого»: заводимо задачу і виправляємо причину",
+      "У code review звертаємо увагу на паузи й одноразові читання"
+    ]
+  },
+  "checklist": [
+    "Я пояснив, чому локально тест проходить, а на CI ні",
+    "Виправлення чекає стан `Paid`, а не фіксований час",
+    "У виправленні немає sleep / wait_for_timeout / inner_text",
+    "Доказ — багато прогонів, а не один",
+    "Правила для команди конкретні й перевіряються в code review"
+  ],
+  "hints": [
+    "Що бачить тест через 1 секунду на швидкій машині і на повільній?",
+    "Яка перевірка сама дочекається, поки `Processing…` зміниться на `Paid`?"
+  ],
+  "explanation": "Нестабільність тут — від поєднання фіксованої паузи з одноразовим читанням: результат залежить від того, чи встигла сторінка за секунду. Web-first перевірка чекає саме **стану** і завершується, щойно він настав: тест стає і стабільним, і швидшим. Доказ виправлення — серія прогонів, бо падіння було лише в частині запусків."
+}

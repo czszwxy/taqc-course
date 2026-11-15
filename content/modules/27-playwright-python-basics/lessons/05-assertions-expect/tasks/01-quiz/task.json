@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Assertions with expect",
+  "show": 5,
+  "hints": ["expect повторює перевірку до timeout; inner_text() читає один раз. to_have_text — увесь текст."],
+  "questions": [
+    {
+      "id": "retry",
+      "kind": "single",
+      "text": "Що робить `expect(counter).to_have_text(\"3 items left\")`, якщо зараз на сторінці `2 items left`?",
+      "options": [
+        { "text": "Повторює перевірку, доки текст не стане `3 items left` або не мине timeout", "correct": true },
+        { "text": "Одразу падає" },
+        { "text": "Чекає рівно 5 секунд, а потім перевіряє" }
+      ]
+    },
+    {
+      "id": "full-text",
+      "kind": "single",
+      "text": "Текст повідомлення `Invalid email or password`. Яка перевірка пройде?",
+      "options": [
+        { "text": "`to_contain_text(\"Invalid email\")`", "correct": true },
+        { "text": "`to_have_text(\"Invalid email\")`", "explain": "`to_have_text` порівнює увесь текст елемента." },
+        { "text": "`to_have_value(\"Invalid email\")`", "explain": "`to_have_value` — для значення поля вводу." }
+      ]
+    },
+    {
+      "id": "deleted",
+      "kind": "single",
+      "text": "Як перевірити, що задачу `Buy coffee` видалено зі списку?",
+      "options": [
+        { "text": "`expect(page.get_by_text(\"Buy coffee\")).to_have_count(0)`", "correct": true },
+        { "text": "`assert not page.get_by_text(\"Buy coffee\").is_visible()`", "explain": "`is_visible()` читає стан один раз і не чекає, поки задача зникне." },
+        { "text": "`expect(page.get_by_text(\"Buy coffee\")).to_be_visible()`" }
+      ]
+    },
+    {
+      "id": "soft",
+      "kind": "single",
+      "text": "Що відбувається, коли не справджується `expect.soft(...)`?",
+      "options": [
+        { "text": "Розбіжність записується, тест виконується далі й падає в кінці з усіма розбіжностями", "correct": true },
+        { "text": "Тест зупиняється одразу" },
+        { "text": "Розбіжність ігнорується" }
+      ]
+    },
+    {
+      "id": "assert-ok",
+      "kind": "single",
+      "text": "Де доречний звичайний `assert`, а не `expect`?",
+      "options": [
+        { "text": "Для значень Python, що вже не зміняться: статус відповіді API, обчислене число", "correct": true },
+        { "text": "Для тексту на сторінці після кліку" },
+        { "text": "Для перевірки, що кнопка стала активною" }
+      ]
+    },
+    {
+      "id": "checkbox",
+      "kind": "single",
+      "text": "Як перевірити, що галочка Remember me знята?",
+      "options": [
+        { "text": "`expect(page.get_by_label(\"Remember me\")).not_to_be_checked()`", "correct": true },
+        { "text": "`expect(page.get_by_label(\"Remember me\")).to_have_value(\"off\")`" },
+        { "text": "`expect(page.get_by_label(\"Remember me\")).to_be_hidden()`" }
+      ]
+    },
+    {
+      "id": "url",
+      "kind": "single",
+      "text": "Після входу користувача переводить на `/dashboard`. Яка перевірка правильна?",
+      "options": [
+        { "text": "`expect(page).to_have_url(re.compile(r\".*/dashboard\"))`", "correct": true },
+        { "text": "`assert page.url == \"/dashboard\"`", "explain": "`page.url` — повна адреса, і читається вона один раз, без очікування переходу." },
+        { "text": "`expect(page.get_by_text(\"/dashboard\")).to_be_visible()`" }
+      ]
+    }
+  ]
+}

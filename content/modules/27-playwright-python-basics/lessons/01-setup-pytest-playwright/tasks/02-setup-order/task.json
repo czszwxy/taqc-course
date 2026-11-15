@@ -1,0 +1,18 @@
+{
+  "type": "order",
+  "title": "From an empty folder to the first green UI test",
+  "statement": "Розстав кроки в правильному порядку: від порожньої папки до першого зеленого UI-тесту, за яким ти ще й поспостерігаєш очима.",
+  "items": [
+    "Створити віртуальне оточення: `python -m venv .venv`",
+    "Активувати його: `.venv\\Scripts\\activate`",
+    "Встановити плагін (разом із Playwright і pytest): `pip install pytest-playwright`",
+    "Завантажити браузер командою, яку щойно встановив pip: `playwright install chromium`",
+    "Перший запуск: `pytest` → `1 passed`, вікна браузера не видно (headless)",
+    "Подивитися, як тест працює: `pytest --headed --slowmo 500`"
+  ],
+  "hints": [
+    "Пакети ставлять уже в **активоване** оточення.",
+    "Команда `playwright` з'являється тільки після `pip install`. Спершу просто запусти тест, потім дивись на нього в повільному режимі."
+  ],
+  "explanation": "Оточення створюють і активують до встановлення пакетів, інакше вони потраплять у глобальний Python. `playwright install` — команда з пакета Playwright, тому вона можлива лише після `pip install`. Без браузерів тест упаде з `Executable doesn't exist`. Перший запуск — headless (як на CI); `--headed --slowmo` вмикають, коли треба подивитися на тест очима."
+}

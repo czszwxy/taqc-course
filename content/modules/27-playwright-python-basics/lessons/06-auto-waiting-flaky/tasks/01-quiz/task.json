@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Auto-waiting and flaky tests",
+  "show": 5,
+  "hints": ["Дії чекають готовності елемента, expect повторюється. Пауза — або нестабільно, або повільно."],
+  "questions": [
+    {
+      "id": "flaky",
+      "kind": "single",
+      "text": "Що таке flaky test?",
+      "options": [
+        { "text": "Тест, який то проходить, то падає без змін у коді застосунку і тесту", "correct": true },
+        { "text": "Тест, що завжди падає" },
+        { "text": "Повільний тест" }
+      ]
+    },
+    {
+      "id": "disabled",
+      "kind": "single",
+      "text": "Кнопка Send стає активною через секунду після введення адреси. Що зробить `click()`?",
+      "options": [
+        { "text": "Дочекається, поки кнопка стане enabled, і натисне", "correct": true },
+        { "text": "Одразу впаде, бо кнопка disabled" },
+        { "text": "Натисне неактивну кнопку" }
+      ]
+    },
+    {
+      "id": "sleep-longer",
+      "kind": "single",
+      "text": "Тест з `time.sleep(1)` іноді падає на CI. Колега пропонує `time.sleep(3)`. Що не так?",
+      "options": [
+        { "text": "Тест стане повільнішим і все одно може впасти; треба чекати стан через `expect`", "correct": true },
+        { "text": "Нічого: 3 секунди точно вистачить" },
+        { "text": "`time.sleep` не працює в pytest" }
+      ]
+    },
+    {
+      "id": "overlay",
+      "kind": "single",
+      "text": "`click()` падає з timeout, у call log: `<div class=\"cookie-banner\"> intercepts pointer events`. У чому справа?",
+      "options": [
+        { "text": "Кнопку перекриває банер cookies: спершу закрий його, як зробив би користувач", "correct": true },
+        { "text": "Треба `time.sleep(5)`" },
+        { "text": "Кнопки немає на сторінці" }
+      ]
+    },
+    {
+      "id": "expect-response",
+      "kind": "single",
+      "text": "Навіщо `with page.expect_response(\"**/api/orders\") as info:` перед кліком?",
+      "options": [
+        { "text": "Щоб «підписатися» на відповідь до дії й не пропустити її, а потім перевірити статус", "correct": true },
+        { "text": "Щоб підмінити відповідь сервера" },
+        { "text": "Щоб сповільнити запит" }
+      ]
+    },
+    {
+      "id": "shared-data",
+      "kind": "single",
+      "text": "Два тести змінюють одне й те саме замовлення на сервері й падають лише при паралельному запуску. Причина?",
+      "options": [
+        { "text": "Спільні дані: кожен тест має створювати власне замовлення", "correct": true },
+        { "text": "Мало `sleep`" },
+        { "text": "pytest-playwright не підтримує паралельний запуск" }
+      ]
+    },
+    {
+      "id": "prove",
+      "kind": "single",
+      "text": "Як переконатися, що нестабільний тест виправлено?",
+      "options": [
+        { "text": "Запустити його багато разів поспіль (наприклад, `parametrize(\"attempt\", range(20))`) і на CI", "correct": true },
+        { "text": "Один зелений прогін" },
+        { "text": "Подивитися на нього з `--headed`" }
+      ]
+    }
+  ]
+}

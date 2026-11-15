@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "The page fixture",
+  "show": 5,
+  "hints": ["browser — один на сесію, context і page — нові для кожного тесту. Локатор лише описує елемент."],
+  "questions": [
+    {
+      "id": "browser-count",
+      "kind": "single",
+      "text": "20 тестів просять фікстуру `page`. Скільки разів запуститься браузер?",
+      "options": [
+        { "text": "Один раз: `browser` має scope session, а контекст і вкладка нові для кожного тесту", "correct": true },
+        { "text": "20 разів" },
+        { "text": "Жодного: `page` працює без браузера" }
+      ]
+    },
+    {
+      "id": "isolation",
+      "kind": "single",
+      "text": "Тест A увійшов в акаунт (токен у localStorage). Тест B запускається після нього. Чи залогінений тест B?",
+      "options": [
+        { "text": "Ні: у кожного тесту свій новий контекст без cookies і localStorage", "correct": true },
+        { "text": "Так: браузер той самий" },
+        { "text": "Залежить від порядку тестів у файлі" }
+      ]
+    },
+    {
+      "id": "locator-lazy",
+      "kind": "single",
+      "text": "Що відбувається в момент виклику `page.get_by_role(\"button\", name=\"Pay\")`?",
+      "options": [
+        { "text": "Створюється локатор — опис кнопки; шукати її Playwright буде під час дії чи перевірки", "correct": true },
+        { "text": "Playwright одразу шукає кнопку і падає, якщо її ще немає" },
+        { "text": "Кнопка натискається" }
+      ]
+    },
+    {
+      "id": "no-parens",
+      "kind": "single",
+      "text": "У тесті рядок `page.get_by_role(\"button\", name=\"Pay\").click` (без дужок). Що буде?",
+      "options": [
+        { "text": "Нічого не натиснеться, і помилки не буде — це просто посилання на метод", "correct": true },
+        { "text": "Кнопка натиснеться" },
+        { "text": "SyntaxError" }
+      ]
+    },
+    {
+      "id": "no-assert",
+      "kind": "single",
+      "text": "У тесті є `goto` і `click`, але немає жодного `expect`. Що він перевіряє?",
+      "options": [
+        { "text": "Майже нічого: він пройде і на сторінці з багом, якщо кнопку вдалося натиснути", "correct": true },
+        { "text": "Що сторінка працює правильно" },
+        { "text": "pytest не дозволить запустити тест без перевірки" }
+      ]
+    },
+    {
+      "id": "import",
+      "kind": "single",
+      "text": "Як імпортувати `Page` і `expect` для тестів pytest-playwright?",
+      "options": [
+        { "text": "`from playwright.sync_api import Page, expect`", "correct": true },
+        { "text": "`from playwright.async_api import Page, expect`", "explain": "Це асинхронний API, з ним треба `async def` і `await`." },
+        { "text": "`from pytest import page, expect`" }
+      ]
+    },
+    {
+      "id": "can-fail",
+      "kind": "single",
+      "text": "Як переконатися, що новий тест справді щось перевіряє?",
+      "options": [
+        { "text": "Тимчасово зіпсувати очікуване значення і побачити, що тест став червоним", "correct": true },
+        { "text": "Запустити його ще раз і побачити, що він знову зелений" },
+        { "text": "Додати `--headed`" }
+      ]
+    }
+  ]
+}

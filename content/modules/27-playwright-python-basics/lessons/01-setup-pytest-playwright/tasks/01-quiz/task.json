@@ -1,0 +1,80 @@
+{
+  "type": "quiz",
+  "title": "Setting up pytest-playwright",
+  "show": 5,
+  "hints": ["Плагін ставить бібліотеку, браузери завантажує окрема команда. Тести синхронні."],
+  "questions": [
+    {
+      "id": "what-installs",
+      "kind": "single",
+      "text": "Що встановлює `pip install pytest-playwright`?",
+      "options": [
+        { "text": "Плагін pytest-playwright, бібліотеку Playwright і pytest — але не браузери", "correct": true },
+        { "text": "Усе, включно з Chromium, Firefox і WebKit", "explain": "Браузери завантажує окрема команда `playwright install`." },
+        { "text": "Лише браузери" }
+      ]
+    },
+    {
+      "id": "executable",
+      "kind": "single",
+      "text": "Перший тест падає з `Executable doesn't exist at …`. Що забули?",
+      "options": [
+        { "text": "Завантажити браузер: `playwright install chromium`", "correct": true },
+        { "text": "Встановити pytest" },
+        { "text": "Додати `--headed`" }
+      ]
+    },
+    {
+      "id": "headed",
+      "kind": "single",
+      "text": "Як побачити вікно браузера під час тесту?",
+      "options": [
+        { "text": "`pytest --headed`", "correct": true },
+        { "text": "Нічого не треба: вікно видно завжди", "explain": "За замовчуванням браузер headless — без вікна." },
+        { "text": "`pytest -s`", "explain": "`-s` показує print із тестів, браузер лишається headless." }
+      ]
+    },
+    {
+      "id": "base-url",
+      "kind": "single",
+      "text": "Навіщо `--base-url http://localhost:5173`?",
+      "options": [
+        { "text": "Щоб у тестах писати відносні адреси `page.goto(\"/login\")` і міняти стенд при запуску", "correct": true },
+        { "text": "Щоб тести працювали швидше" },
+        { "text": "Щоб браузер відкрив цю адресу після всіх тестів" }
+      ]
+    },
+    {
+      "id": "await",
+      "kind": "single",
+      "text": "У статті приклад `await page.goto(\"/login\")`. Як це записати в тесті pytest-playwright?",
+      "options": [
+        { "text": "`page.goto(\"/login\")` — без `await`, у плагіна синхронний API", "correct": true },
+        { "text": "Так само, з `await`", "explain": "`await` у звичайній функції — SyntaxError." },
+        { "text": "`page.goto(\"/login\").wait()`" }
+      ]
+    },
+    {
+      "id": "channel",
+      "kind": "single",
+      "text": "Чим `--browser-channel chrome` відрізняється від `--browser chromium`?",
+      "options": [
+        { "text": "Запускає встановлений на комп'ютері Google Chrome, а не збірку Chromium від Playwright", "correct": true },
+        { "text": "Нічим" },
+        { "text": "Запускає тести одночасно у двох браузерах" }
+      ]
+    },
+    {
+      "id": "options",
+      "kind": "multiple",
+      "text": "Які з цих опцій є в pytest-playwright?",
+      "options": [
+        { "text": "`--headed`", "correct": true },
+        { "text": "`--slowmo 500`", "correct": true },
+        { "text": "`--tracing retain-on-failure`", "correct": true },
+        { "text": "`--ui`", "explain": "UI mode є в раннері Playwright для TypeScript, у pytest-плагіна його немає." },
+        { "text": "`--project chromium`", "explain": "Проєкти — поняття конфігу TypeScript-раннера. У pytest браузер обирають через `--browser`." }
+      ]
+    }
+  ]
+}

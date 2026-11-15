@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Actions",
+  "show": 5,
+  "hints": ["`fill` замінює значення, `check` задає стан, `press` натискає клавішу. Кожна дія сама чекає елемент."],
+  "questions": [
+    {
+      "id": "fill",
+      "kind": "single",
+      "text": "У полі вже є текст `old`. Що буде після `field.fill(\"new\")`?",
+      "options": [
+        { "text": "`new` — fill замінює значення", "correct": true },
+        { "text": "`oldnew`" },
+        { "text": "Помилка: поле не порожнє" }
+      ]
+    },
+    {
+      "id": "check-twice",
+      "kind": "single",
+      "text": "Галочка Remember me уже стоїть. Що зробить `check()`?",
+      "options": [
+        { "text": "Нічого: стан уже потрібний (і перевірить це)", "correct": true },
+        { "text": "Зніме галочку", "explain": "Так зробив би `click()`: він перемикає стан." },
+        { "text": "Впаде з помилкою" }
+      ]
+    },
+    {
+      "id": "sequentially",
+      "kind": "single",
+      "text": "Коли потрібен `press_sequentially` замість `fill`?",
+      "options": [
+        { "text": "Коли поле реагує на кожне натискання: підказки під час набору, маска номера", "correct": true },
+        { "text": "Завжди: він надійніший" },
+        { "text": "Для паролів" }
+      ]
+    },
+    {
+      "id": "select",
+      "kind": "single",
+      "text": "Як вибрати `Poland` у `<select>` з підписом Country?",
+      "options": [
+        { "text": "`page.get_by_label(\"Country\").select_option(\"Poland\")`", "correct": true },
+        { "text": "`page.get_by_label(\"Country\").fill(\"Poland\")`", "explain": "`fill` працює з полями вводу, на `<select>` він падає." },
+        { "text": "`page.get_by_text(\"Poland\").check()`" }
+      ]
+    },
+    {
+      "id": "wait",
+      "kind": "single",
+      "text": "Кнопка з'являється через пів секунди після завантаження сторінки. Що потрібно перед `click()`?",
+      "options": [
+        { "text": "Нічого: `click()` сам чекає, поки кнопка з'явиться і стане доступною", "correct": true },
+        { "text": "`time.sleep(1)`" },
+        { "text": "`page.reload()`" }
+      ]
+    },
+    {
+      "id": "escape",
+      "kind": "single",
+      "text": "Вимога: «Esc під час редагування скасовує зміни». Яка дія імітує користувача?",
+      "options": [
+        { "text": "`edit_field.press(\"Escape\")`", "correct": true },
+        { "text": "`edit_field.fill(\"Escape\")`" },
+        { "text": "`page.get_by_role(\"button\", name=\"Escape\").click()`" }
+      ]
+    },
+    {
+      "id": "reload",
+      "kind": "single",
+      "text": "Як перевірити, що позначка «виконано» зберігається?",
+      "options": [
+        { "text": "Поставити позначку, `page.reload()` і перевірити, що вона на місці", "correct": true },
+        { "text": "Поставити позначку і перевірити її одразу" },
+        { "text": "Відкрити сторінку в новому тесті" }
+      ]
+    }
+  ]
+}

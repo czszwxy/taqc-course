@@ -1,0 +1,23 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Debug three broken login tests",
+  "playground": "login",
+  "statement": "Колега написав три тести для сторінки логіну (`/playground/login`), але всі вони **червоні** навіть на правильній сторінці. Сторінка працює за вимогами — помилки в самих тестах, по одній у кожному.\n\n1. **test_locked_account_cannot_sign_in** — `locked@taskly.test` / `Locked123` → `Your account is locked. Contact support.`\n2. **test_forgot_password_needs_an_email** — «Forgot password?» з порожнім Email → повідомлення під полем Email (текст — у вимогах на сторінці).\n3. **test_wrong_password_is_rejected** — `demo@taskly.test` з паролем `wrong-pass` → `Invalid email or password`.\n\nНатисни **▶ Run** і прочитай повідомлення Playwright для кожного тесту: тип помилки, `Actual value`, call log і рядок. Виправ **як** тести це роблять, але не змінюй, **що** вони перевіряють. Відкрий сторінку кнопкою нижче й звір тексти з блоком Requirements.\n\n**✓ Check** перевірить, що виправлені тести зелені на правильній сторінці й ловлять 2 баги.",
+  "minTests": 3,
+  "mutants": [
+    { "id": "lockedLogin", "description": "a locked account could still sign in.", "hint": "The locked-account test must check the \"Your account is locked\" message after signing in with locked@taskly.test." },
+    { "id": "forgotEmpty", "description": "\"Forgot password?\" with an empty email showed the success message.", "hint": "The forgot-password test must check the exact message from the requirements under the Email field." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "exact=True", "message": "Поле пароля: `get_by_label(\"Password\", exact=True)` — без exact локатор знаходить ще й чекбокс «Show password»." },
+    { "kind": "require", "pattern": "Enter your email first", "message": "Перевір текст з вимог: «Forgot password?» з порожнім Email показує `Enter your email first`." },
+    { "kind": "forbid", "pattern": "name=\"Login\"", "message": "Кнопка називається `Log in` (з пробілом)." }
+  ],
+  "hints": [
+    "`strict mode violation: get_by_label(\"Password\") resolved to 2 elements` — підпис «Password» є і в полі, і в чекбоксі «Show password». Додай `exact=True`.",
+    "`Locator expected to have text 'Email is required' … Actual value: …` — сторінка показує інший текст. Звір його з вимогами: що має показати «Forgot password?» з порожнім полем?",
+    "`Timeout 5000ms exceeded … waiting for get_by_role(\"button\", name=\"Login\")` — на кнопці написано `Log in`, а частковий збіг «Login» не знаходить «Log in»."
+  ],
+  "explanation": "Кожне повідомлення Playwright підказує причину: **strict mode violation** — локатор знайшов кілька елементів (уточни: `exact=True`); **expected to have text … Actual value** — сторінка показує інший текст (звір очікування з вимогами, а не з пам'яттю); **Timeout … waiting for get_by_role(...)** — немає кнопки з таким ім'ям. Важливо: виправляй тест, лише переконавшись за вимогами, що помиляється саме тест. Якби сторінка показувала не те, що у вимогах, — це був би баг, і тест мав би лишитися червоним."
+}

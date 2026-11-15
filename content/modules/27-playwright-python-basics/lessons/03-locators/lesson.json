@@ -1,0 +1,29 @@
+{
+  "title": "Locators",
+  "minutes": 60,
+  "summary": "Вбудовані локатори Playwright для Python (get_by_role, get_by_label, get_by_placeholder, get_by_text, get_by_test_id), роль і accessible name, частковий і точний збіг, strict mode, ланцюжки й filter (has_text, has, nth), CSS і XPath як останній варіант і чому локатори мають шукати елементи так, як користувач",
+  "resources": [
+    {
+      "title": "Playwright for Python: Locators",
+      "url": "https://playwright.dev/python/docs/locators",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Other locators (CSS, XPath)",
+      "url": "https://playwright.dev/python/docs/other-locators",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: ARIA roles",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Які ролі мають елементи: button, link, heading, checkbox, textbox…",
+      "needsVerification": true
+    }
+  ]
+}

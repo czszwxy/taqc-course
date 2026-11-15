@@ -1,0 +1,34 @@
+{
+  "type": "table",
+  "title": "Which debugging tool?",
+  "statement": "Для кожної ситуації обери інструмент, який допоможе найбільше.",
+  "hints": [
+    "Codegen — коли тесту ще немає, Inspector (`page.pause()`) — коли треба зупинитися зараз, Trace Viewer — коли прогін уже відбувся.",
+    "Скріншот — один кадр, відео — увесь прогін, трейс — кадри плюс мережа й консоль."
+  ],
+  "explanation": "Інструменти доповнюють один одного: Codegen допомагає почати, `--headed --slowmo` і Inspector — роздивитися тест зараз на своєму комп'ютері, Trace Viewer — розслідувати прогін, що вже відбувся (особливо на CI). Скріншоти й відео — найпростіші вкладення до баг-репорту.",
+  "givenColumns": ["Ситуація"],
+  "answerColumns": [
+    {
+      "id": "tool",
+      "label": "Інструмент",
+      "options": [
+        "Codegen",
+        "Trace Viewer (--tracing retain-on-failure)",
+        "page.pause() + Inspector",
+        "--headed --slowmo 500",
+        "--screenshot only-on-failure",
+        "--video retain-on-failure"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["Треба швидко записати чернетку тесту для нової сторінки, клацаючи по ній"], "answers": { "tool": "Codegen" } },
+    { "given": ["Тест упав на CI: треба побачити сторінку в момент падіння і мережеві запити"], "answers": { "tool": "Trace Viewer (--tracing retain-on-failure)" } },
+    { "given": ["Хочеш зупинити тест перед кроком, що падає, і спробувати там інші локатори"], "answers": { "tool": "page.pause() + Inspector" } },
+    { "given": ["Просто подивитися, що тест робить, — він клацає занадто швидко"], "answers": { "tool": "--headed --slowmo 500" } },
+    { "given": ["Для кожного впалого тесту в нічному прогоні потрібен знімок екрана до звіту"], "answers": { "tool": "--screenshot only-on-failure" } },
+    { "given": ["Показати розробнику, як анімація «стрибає» під час нестабільного тесту"], "answers": { "tool": "--video retain-on-failure" } },
+    { "given": ["Через тиждень після прогону треба з'ясувати, яку відповідь повернув сервер у тесті, що впав"], "answers": { "tool": "Trace Viewer (--tracing retain-on-failure)" } }
+  ]
+}

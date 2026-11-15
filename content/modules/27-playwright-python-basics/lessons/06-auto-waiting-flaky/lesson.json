@@ -1,0 +1,28 @@
+{
+  "title": "Auto-waiting and flaky tests",
+  "minutes": 55,
+  "summary": "Чому UI-тести бувають нестабільними (flaky), автоочікування дій (actionability: visible, stable, enabled, editable), повторення перевірок expect, чому time.sleep і wait_for_timeout — погане рішення, явні очікування (to_have_url, expect_response), інші причини нестабільності й як довести, що виправлення допомогло",
+  "resources": [
+    {
+      "title": "Playwright for Python: Auto-waiting (actionability checks)",
+      "url": "https://playwright.dev/python/docs/actionability",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Assertions — auto-retrying assertions",
+      "url": "https://playwright.dev/python/docs/test-assertions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Network (waiting for responses)",
+      "url": "https://playwright.dev/python/docs/network",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

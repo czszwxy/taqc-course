@@ -1,0 +1,25 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "variantOf": "02-todo-actions",
+  "title": "Catalog filters: type, select, check, clear",
+  "playground": "search",
+  "statement": "Каталог Gadgetly (`/playground/search`) має 14 товарів і фільтри: поле **Search**, список **Category**, галочку **In stock only**, поле **Max price** і кнопку **Clear filters**. Над карточками — лічильник `14 products found`.\n\n1. Категорія `Laptops` + **In stock only** → `2 products found`. *Уже є.*\n2. Пошук **нечутливий до регістру**: `MOUSE` знаходить 2 товари, серед них `Gaming Mouse X7`.\n3. **Max price** включно: категорія `Accessories` і Max price `2199` → у списку є `Mechanical Keyboard K8` (він коштує рівно 2 199).\n4. **Clear filters** скидає все: після пошуку `Phone`, категорії `Phones` і галочки In stock only поле Search порожнє, галочки немає, і знову видно всі 14 товарів.\n\nКарточки товарів: `cards = page.get_by_test_id(\"results\").get_by_role(\"listitem\")`.",
+  "minTests": 4,
+  "mutants": [
+    { "id": "searchCase", "description": "the search was case-sensitive.", "hint": "Search in a different case (MOUSE) — the same products must be found." },
+    { "id": "maxExclusive", "description": "Max price excluded products that cost exactly the maximum (< instead of <=).", "hint": "Set Max price exactly to a product's price (2199) — that product must stay in the list." },
+    { "id": "clearKeepsSearch", "description": "\"Clear filters\" did not clear the search text.", "hint": "Type a search text, then Clear filters: the Search field must be empty and all products visible." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "select_option\\(", "message": "Категорію вибирай через `select_option(...)`." },
+    { "kind": "require", "pattern": "\\.check\\(", "message": "Галочку In stock only став через `.check()`." },
+    { "kind": "require", "pattern": "\\.fill\\(", "message": "Текст пошуку й ціну вводь через `.fill(...)`." }
+  ],
+  "hints": [
+    "Пошук: `page.get_by_label(\"Search\").fill(\"MOUSE\")`, потім `expect(cards).to_have_count(2)` і `expect(cards.filter(has_text=\"Gaming Mouse X7\")).to_be_visible()`.",
+    "Ціна: `page.get_by_label(\"Category\").select_option(\"Accessories\")`, `page.get_by_label(\"Max price\").fill(\"2199\")`.",
+    "Після Clear filters: `expect(page.get_by_label(\"Search\")).to_have_value(\"\")`, `expect(page.get_by_label(\"In stock only\")).not_to_be_checked()`, `expect(cards).to_have_count(14)`."
+  ],
+  "explanation": "Фільтри — комбінації дій: ввести, вибрати, поставити галочку, скинути. Перевіряй результат кожної комбінації і **межі** (ціна рівно 2 199). Для «скинути все» перевіряй кожне поле окремо: найчастіше розробник забуває скинути саме одне з них (тут — текст пошуку)."
+}

@@ -1,0 +1,36 @@
+{
+  "title": "Setting up pytest-playwright",
+  "minutes": 45,
+  "summary": "З чого складається UI-автоматизація на Python (playwright, браузери, плагін pytest-playwright), встановлення у venv, перший запуск headless і headed, корисні опції (--headed, --browser, --slowmo, --base-url, --device), pytest.ini, синхронний API і лабораторія my-university",
+  "resources": [
+    {
+      "title": "Playwright for Python: Installation",
+      "url": "https://playwright.dev/python/docs/intro",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Running and debugging tests",
+      "url": "https://playwright.dev/python/docs/running-tests",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Pytest plugin reference (CLI options and fixtures)",
+      "url": "https://playwright.dev/python/docs/test-runners",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Playwright Python pytest tutorial",
+      "url": "https://www.youtube.com/results?search_query=playwright+python+pytest+tutorial",
+      "kind": "video",
+      "lang": "en",
+      "note": "Пошук: обирай свіжі відео (Playwright швидко оновлюється).",
+      "needsVerification": true
+    }
+  ]
+}

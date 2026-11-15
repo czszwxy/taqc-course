@@ -1,0 +1,37 @@
+{
+  "type": "table",
+  "title": "Which pytest-playwright option?",
+  "statement": "Для кожної ситуації обери опцію запуску.",
+  "hints": [
+    "`--browser` — двигун (chromium / firefox / webkit), `--browser-channel` — встановлений Chrome або Edge.",
+    "`--device` емулює пристрій повністю: екран, user agent, touch."
+  ],
+  "explanation": "Опції pytest-playwright керують тим, **як** запускаються ті самі тести: з вікном чи без, у якому браузері, на якому стенді, з якими артефактами. Код тестів від цього не змінюється — тому один набір тестів можна прогнати і на ноутбуці з вікном, і на CI headless у трьох браузерах.",
+  "givenColumns": ["Ситуація"],
+  "answerColumns": [
+    {
+      "id": "option",
+      "label": "Опція",
+      "options": [
+        "--headed",
+        "--slowmo 500",
+        "--browser firefox",
+        "--browser chromium --browser webkit",
+        "--browser-channel chrome",
+        "--base-url https://staging.example.com",
+        "--device \"iPhone 13\"",
+        "--output artifacts"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["Хочеш бачити вікно браузера, поки тест працює"], "answers": { "option": "--headed" } },
+    { "given": ["Тест клацає так швидко, що нічого не встигаєш роздивитися"], "answers": { "option": "--slowmo 500" } },
+    { "given": ["Користувачі скаржаться на баг лише у Firefox"], "answers": { "option": "--browser firefox" } },
+    { "given": ["Кожен тест треба прогнати у двох двигунах: Chromium і WebKit (як у Safari)"], "answers": { "option": "--browser chromium --browser webkit" } },
+    { "given": ["Баг відтворюється тільки у справжньому Google Chrome, встановленому на комп'ютері"], "answers": { "option": "--browser-channel chrome" } },
+    { "given": ["Ті самі тести треба прогнати на тестовому стенді, а не на localhost"], "answers": { "option": "--base-url https://staging.example.com" } },
+    { "given": ["Перевірити мобільну версію сторінки: маленький екран і мобільний user agent"], "answers": { "option": "--device \"iPhone 13\"" } },
+    { "given": ["CI забирає скріншоти й трейси з папки `artifacts`, а не з `test-results`"], "answers": { "option": "--output artifacts" } }
+  ]
+}

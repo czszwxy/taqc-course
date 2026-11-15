@@ -1,0 +1,25 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Shopping cart: web-first and soft assertions",
+  "playground": "cart",
+  "statement": "Кошик Gadgetly (`/playground/cart`) стартує так: `Wireless mouse M2` 500 × 1, `Mechanical keyboard K8` 1 500 × 1, `USB-C cable 1 m` 250 × 2. Тобто Subtotal `2,500 UAH`, Shipping `100 UAH`, Total `2,600 UAH`.\n\nСуми мають `data-testid`: `subtotal`, `discount`, `shipping`, `total`. Напиши тести з **web-first** перевірками (`to_have_text`, `to_contain_text`, `to_have_count`). Для групи сум використовуй **soft assertions** (`expect.soft`), щоб бачити всі розбіжності за один прогін.\n\n1. Початкові суми (soft). *Уже є.*\n2. Subtotal **рівно 3,000** → доставка `Free` (кабель × 4: поле `page.get_by_label(\"Quantity of USB-C cable 1 m\")`).\n3. Повторне застосування `SAVE10` (знижка 10 %) **не подвоює** знижку: Discount містить `250 UAH`, Total `2,350 UAH`.\n4. **Remove** видаляє саме той товар, у рядку якого натиснули: після видалення клавіатури її рядка немає, мишка й кабель лишилися, Subtotal `1,000 UAH`.\n5. Учасник **Gadgetly Plus** (галочка) має безкоштовну доставку і **з** промокодом `SAVE10`: Shipping `Free`, Total `2,250 UAH`.\n\nРядок товару: `page.get_by_test_id(\"cart-item-keyboard\")` (також `cart-item-mouse`, `cart-item-cable`).",
+  "minTests": 4,
+  "mutants": [
+    { "id": "shippingBoundary", "description": "a subtotal of exactly 3,000 UAH still paid for shipping (> instead of >=).", "hint": "Make the subtotal exactly 3,000 UAH (cable quantity 4) and check Shipping." },
+    { "id": "promoTwice", "description": "applying SAVE10 again doubled the discount.", "hint": "Click Apply twice with SAVE10 and check the Discount and the Total." },
+    { "id": "removeLast", "description": "\"Remove\" deleted the last item instead of the clicked one.", "hint": "Remove an item that is NOT the last one and check which rows are left." },
+    { "id": "memberWithPromo", "description": "a Plus member lost free shipping when SAVE10 was applied.", "hint": "Tick Gadgetly Plus, apply SAVE10 and check Shipping." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "expect\\.soft\\(", "message": "Для групи сум використай soft assertions: `expect.soft(...)`." },
+    { "kind": "require", "pattern": "to_have_text\\(", "message": "Суми перевіряй web-first перевіркою `to_have_text(...)`." },
+    { "kind": "forbid", "pattern": "inner_text\\(|text_content\\(", "message": "Не читай текст вручну (`inner_text()` читає один раз і не чекає змін). Використай `expect(locator).to_have_text(...)`." }
+  ],
+  "hints": [
+    "Межа доставки: `page.get_by_label(\"Quantity of USB-C cable 1 m\").fill(\"4\")`, далі `expect.soft(...)` для subtotal `3,000 UAH`, shipping `Free`, total `3,000 UAH`.",
+    "Промокод: `page.get_by_label(\"Promo code\").fill(\"SAVE10\")`, двічі `page.get_by_role(\"button\", name=\"Apply\").click()`, потім `expect(page.get_by_test_id(\"discount\")).to_contain_text(\"250 UAH\")`.",
+    "Remove: `page.get_by_test_id(\"cart-item-keyboard\").get_by_role(\"button\", name=\"Remove\").click()`, потім `expect(page.get_by_test_id(\"cart-item-keyboard\")).to_have_count(0)` і `to_be_visible()` для двох інших рядків. Plus: `page.get_by_label(\"Gadgetly Plus\").check()`."
+  ],
+  "explanation": "Суми кошика залежать одна від одної, тому для групи сум зручні `expect.soft`: один прогін показує і неправильний Subtotal, і неправильний Total. Для Remove мало перевірити, що рядків стало два: треба перевірити, **які** саме лишилися — інакше видалення не того товару пройде непомітно. Найчастіша помилка — читати суму через `inner_text()` одразу після дії: значення ще може бути старим."
+}

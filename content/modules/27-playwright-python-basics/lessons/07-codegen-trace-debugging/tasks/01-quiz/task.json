@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Codegen, trace viewer and debugging",
+  "show": 5,
+  "hints": ["Codegen пише чернетку, Trace Viewer показує записаний прогін, Inspector — крок за кроком зараз."],
+  "questions": [
+    {
+      "id": "codegen-asserts",
+      "kind": "single",
+      "text": "Чого Codegen **не** зробить за тебе?",
+      "options": [
+        { "text": "Не вирішить, що треба перевіряти за вимогами", "correct": true },
+        { "text": "Не підбере локатори" },
+        { "text": "Не запише кліки й введення" }
+      ]
+    },
+    {
+      "id": "actual",
+      "kind": "single",
+      "text": "У повідомленні про помилку `Actual value: 3 products found`. Що це?",
+      "options": [
+        { "text": "Значення, яке насправді було на сторінці, коли перевірка здалася", "correct": true },
+        { "text": "Очікуване значення з вимог" },
+        { "text": "Кількість спроб перевірки" }
+      ]
+    },
+    {
+      "id": "ci-failure",
+      "kind": "single",
+      "text": "Тест упав лише на CI, вікна там немає. Що допоможе найбільше?",
+      "options": [
+        { "text": "Трейс (`--tracing retain-on-failure`) і Trace Viewer: кроки, знімки сторінки, мережа", "correct": true },
+        { "text": "`--headed` на CI" },
+        { "text": "Додати `time.sleep` і перезапустити" }
+      ]
+    },
+    {
+      "id": "pause",
+      "kind": "single",
+      "text": "Що робить `page.pause()` у тесті, запущеному з `--headed`?",
+      "options": [
+        { "text": "Зупиняє тест і відкриває Inspector: можна йти по кроках і пробувати локатори", "correct": true },
+        { "text": "Робить скріншот" },
+        { "text": "Чекає 1 секунду" }
+      ]
+    },
+    {
+      "id": "retain",
+      "kind": "single",
+      "text": "Що означає `--tracing retain-on-failure`?",
+      "options": [
+        { "text": "Трейс записується для кожного тесту, а зберігається лише для тих, що впали", "correct": true },
+        { "text": "Трейс записується лише після падіння" },
+        { "text": "Тест перезапускається після падіння" }
+      ]
+    },
+    {
+      "id": "fix-or-bug",
+      "kind": "single",
+      "text": "Тест очікує `Enter your email first`, а сторінка показує `Reset link sent`. Що зробити першим?",
+      "options": [
+        { "text": "Звірити з вимогами: якщо вимоги кажуть `Enter your email first`, це баг застосунку", "correct": true },
+        { "text": "Змінити очікування в тесті на `Reset link sent`" },
+        { "text": "Видалити тест" }
+      ]
+    },
+    {
+      "id": "artifacts",
+      "kind": "single",
+      "text": "Яка опція збереже знімок екрана кожного впалого тесту?",
+      "options": [
+        { "text": "`--screenshot only-on-failure`", "correct": true },
+        { "text": "`--headed`" },
+        { "text": "`--slowmo 500`" }
+      ]
+    }
+  ]
+}

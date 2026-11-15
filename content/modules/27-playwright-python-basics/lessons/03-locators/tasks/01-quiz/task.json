@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Locators",
+  "show": 5,
+  "hints": ["Роль і підпис — те, що бачить користувач. Збіг за замовчуванням частковий. Дія вимагає рівно одного елемента."],
+  "questions": [
+    {
+      "id": "best",
+      "kind": "single",
+      "text": "Який локатор найкраще знайде кнопку з написом «Create account»?",
+      "options": [
+        { "text": "`page.get_by_role(\"button\", name=\"Create account\")`", "correct": true },
+        { "text": "`page.locator(\"form > div:nth-child(7) > button\")`", "explain": "Залежить від верстки: додадуть поле — селектор зламається." },
+        { "text": "`page.locator(\".bg-teal-600\")`", "explain": "Клас стилю зміниться разом із дизайном." }
+      ]
+    },
+    {
+      "id": "field",
+      "kind": "single",
+      "text": "Як знайти поле вводу з підписом `Max price`?",
+      "options": [
+        { "text": "`page.get_by_label(\"Max price\")`", "correct": true },
+        { "text": "`page.get_by_text(\"Max price\")`", "explain": "Знайде сам підпис (текст), а не поле: `fill` у нього не ввести." },
+        { "text": "`page.get_by_role(\"label\", name=\"Max price\")`" }
+      ]
+    },
+    {
+      "id": "partial",
+      "kind": "single",
+      "text": "На сторінці є кнопки «Add» і «Add to cart». Що знайде `page.get_by_role(\"button\", name=\"Add\")`?",
+      "options": [
+        { "text": "Обидві: збіг за замовчуванням частковий — потрібен `exact=True`", "correct": true },
+        { "text": "Лише «Add»" },
+        { "text": "Нічого" }
+      ]
+    },
+    {
+      "id": "strict",
+      "kind": "single",
+      "text": "`page.get_by_role(\"button\", name=\"Edit\").click()` падає зі `strict mode violation … resolved to 3 elements`. Що зробити?",
+      "options": [
+        { "text": "Уточнити локатор: знайти потрібний рядок через `filter(has_text=...)` і шукати кнопку в ньому", "correct": true },
+        { "text": "Додати `.first` — він завжди правильний", "explain": "`.first` прив'язує тест до порядку рядків і може натиснути не той Edit." },
+        { "text": "Додати `time.sleep(1)`" }
+      ]
+    },
+    {
+      "id": "test-id",
+      "kind": "single",
+      "text": "Коли доречний `get_by_test_id(...)`?",
+      "options": [
+        { "text": "Коли в елемента немає зручної ролі чи тексту (наприклад, сума `2,600 UAH`), а розробники домовились про `data-testid`", "correct": true },
+        { "text": "Завжди — він найкращий" },
+        { "text": "Ніколи — він крихкий" }
+      ]
+    },
+    {
+      "id": "nth",
+      "kind": "single",
+      "text": "Що знайде `cards.nth(1)`?",
+      "options": [
+        { "text": "Другу картку: нумерація з нуля", "correct": true },
+        { "text": "Першу картку" },
+        { "text": "Усі картки, крім першої" }
+      ]
+    },
+    {
+      "id": "a11y",
+      "kind": "single",
+      "text": "Кнопку-іконку не вдається знайти через `get_by_role(\"button\", name=...)`: у неї немає ні тексту, ні `aria-label`. Що це означає для QA?",
+      "options": [
+        { "text": "Це ще й дефект доступності: екранний диктор так само не назве цю кнопку", "correct": true },
+        { "text": "Нічого: треба просто взяти CSS-селектор" },
+        { "text": "Playwright не підтримує кнопки-іконки" }
+      ]
+    }
+  ]
+}

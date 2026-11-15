@@ -1,0 +1,21 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Fix a flaky test on a slow endpoint",
+  "playground": "api",
+  "statement": "Колега написав тест для API console (`/playground/api`): спершу швидкий запит (`/api/health`, адреса вже заповнена), потім запит на повільний endpoint `/api/slow?ms=1500` — сервер відповідає через 1,5 с. «На моєму комп'ютері проходило», а на CI тест **то проходить, то падає**.\n\nНатисни **▶ Run** і подивись, як саме він падає. Потім виправ тест і допиши другий:\n\n1. **test_slow_request_shows_the_response** — прибери `time.sleep`, заміни ручне читання тексту (`inner_text()` + `assert`) на **web-first** перевірки: статус `200 OK` і тіло відповіді містить `\"waitedMs\": 1500`.\n2. **test_send_is_disabled_while_waiting** — поки чекаємо відповідь повільного запиту, кнопка Send **неактивна**, а після відповіді знову **активна**.\n\nУвага: поки запит виконується, на кнопці замість `Send` показується `…`, тому шукай її через `page.get_by_test_id(\"api-send\")`.\n\nЗадачу зараховано, коли тести зелені й не містять `time.sleep` / `wait_for_timeout` / `inner_text()`.",
+  "minTests": 2,
+  "codeRules": [
+    { "kind": "forbid", "pattern": "time\\.sleep\\(|wait_for_timeout\\(", "message": "Прибери паузи: фіксована пауза або занадто коротка (тест падає), або занадто довга (тести повільні)." },
+    { "kind": "forbid", "pattern": "inner_text\\(|text_content\\(", "message": "`inner_text()` читає текст один раз і не чекає. Використай `expect(locator).to_contain_text(...)`." },
+    { "kind": "require", "pattern": "to_contain_text\\(|to_have_text\\(", "message": "Перевір відповідь web-first перевіркою: `to_contain_text(...)`." },
+    { "kind": "require", "pattern": "to_be_disabled\\(", "message": "Другий тест: кнопка Send неактивна під час запиту (`to_be_disabled()`)." },
+    { "kind": "require", "pattern": "to_be_enabled\\(", "message": "Другий тест: після відповіді кнопка знову активна (`to_be_enabled()`)." }
+  ],
+  "hints": [
+    "Тіло відповіді: `expect(page.get_by_test_id(\"api-response-body\")).to_contain_text('\"waitedMs\": 1500')` — перевірка сама дочекається нової відповіді.",
+    "Статус: `expect(page.get_by_test_id(\"api-status\")).to_have_text(\"200 OK\")`.",
+    "Другий тест: після `send.click()` одразу `expect(send).to_be_disabled()`, потім дочекайся тіла відповіді і перевір `expect(send).to_be_enabled()`."
+  ],
+  "explanation": "Тест падав, бо через 0,5 с на сторінці ще була **попередня** відповідь (від `/api/health`), а `inner_text()` прочитав її один раз. Web-first перевірка повторюється, доки не з'явиться саме `\"waitedMs\": 1500`, — і завершується одразу, щойно відповідь прийшла. Стан кнопки під час запиту — окрема вимога: без неї користувач може надіслати запит кілька разів."
+}

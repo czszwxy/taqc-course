@@ -1,0 +1,25 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "variantOf": "02-cart-assertions",
+  "title": "Order status flow: check status, history and errors",
+  "playground": "order",
+  "statement": "Сторінка замовлення Gadgetly (`/playground/order`) — адмін-панель зі статусом замовлення, кнопками дій (**Pay**, **Ship**, **Deliver**, **Return**, **Cancel**) та історією. Нове замовлення має статус `Created`, в історії 1 рядок.\n\nВимоги: дозволені лише переходи Created → Pay → Paid → Ship → Shipped → Deliver → Delivered → Return → Returned, а також Cancel із Created чи Paid. Недозволена дія показує `<Action> is not allowed for an order in status <Status>`, статус не змінюється, історія не росте. Скасування оплаченого замовлення записує в історію `Refund of 2,749 UAH issued`.\n\n1. Pay → статус `Paid`, в історії 2 рядки. *Уже є.*\n2. **Ship** до оплати не дозволений: повідомлення `Ship is not allowed for an order in status Created`, статус `Created`, в історії 1 рядок.\n3. **Cancelled** — кінцевий статус: Cancel → Pay → повідомлення `Pay is not allowed for an order in status Cancelled`, статус лишається `Cancelled`.\n4. Pay → Cancel → в історії `Refund of 2,749 UAH issued`.\n\nЛокатори: статус `page.get_by_test_id(\"order-status\")`, рядки історії `page.get_by_test_id(\"order-history\").get_by_role(\"listitem\")`, повідомлення `page.get_by_role(\"alert\")`, примітка `page.get_by_test_id(\"history-note\")`.",
+  "minTests": 4,
+  "mutants": [
+    { "id": "shipBeforePay", "description": "a Created (unpaid) order could be shipped.", "hint": "Try Ship on a new order: it must be rejected." },
+    { "id": "payAfterCancel", "description": "a Cancelled order could be paid again.", "hint": "Cancel the order, then try Pay: Cancelled must be final." },
+    { "id": "refundNote", "description": "cancelling a Paid order did not record the refund.", "hint": "Pay, then Cancel, and check the history note." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "to_have_count\\(", "message": "Кількість рядків історії перевір через `to_have_count(...)`." },
+    { "kind": "require", "pattern": "to_have_text\\(", "message": "Статус і повідомлення перевіряй через `to_have_text(...)`." },
+    { "kind": "forbid", "pattern": "inner_text\\(|text_content\\(", "message": "Не читай текст вручну: `expect(...).to_have_text(...)` сам дочекається зміни статусу." }
+  ],
+  "hints": [
+    "Недозволений крок: `page.get_by_role(\"button\", name=\"Ship\").click()`, потім `expect(page.get_by_role(\"alert\")).to_have_text(\"Ship is not allowed for an order in status Created\")`.",
+    "Перевір, що нічого не змінилося: `expect(status).to_have_text(\"Created\")` і `expect(history).to_have_count(1)`.",
+    "Повернення коштів: Pay, Cancel, потім `expect(page.get_by_test_id(\"history-note\")).to_have_text(\"Refund of 2,749 UAH issued\")`."
+  ],
+  "explanation": "Для заборонених переходів перевіряй три речі: повідомлення, незмінний статус і незмінну історію. Якщо перевірити лише повідомлення, баг «показав помилку, але все одно змінив статус» пройде непомітно. Для кінцевих статусів потрібен ланцюжок дій: спершу дійти до статусу (Cancel), потім спробувати недозволену дію."
+}

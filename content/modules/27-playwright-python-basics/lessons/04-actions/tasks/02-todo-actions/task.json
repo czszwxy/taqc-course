@@ -1,0 +1,25 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "To-do list: act like a user",
+  "playground": "todo",
+  "statement": "Список справ Taskly (`/playground/todo`) відкривається з трьома задачами: `Write test cases for the login page` (виконана), `Report the cart bug` і `Buy coffee` (активні). Лічильник показує `2 items left`.\n\nНапиши тести, що працюють **як користувач**: друкують, натискають клавіші, ставлять галочки, перезавантажують сторінку.\n\n1. **Enter** додає задачу, лічильник стає `3 items left`. *Уже є.*\n2. **Esc** під час редагування скасовує зміни: Edit у `Buy coffee` → новий текст `Buy tea` → Esc → лишається `Buy coffee`.\n3. Позначка «виконано» **зберігається** після перезавантаження сторінки (`page.reload()`).\n4. **Clear completed** видаляє лише виконані задачі: лишаються 2 активні.\n5. Задача рівно зі **100** символів (максимум за вимогами) додається.\n\nОдна задача: `coffee = page.get_by_test_id(\"todo-item\").filter(has_text=\"Buy coffee\")`. Поле редагування має підпис `Edit task`. Рядок зі 100 літер у Python: `\"x\" * 100`.",
+  "minTests": 5,
+  "mutants": [
+    { "id": "escSaves", "description": "Esc while editing saved the new text instead of cancelling.", "hint": "Edit a task, type new text and press Escape — the old text must stay." },
+    { "id": "doneNotSaved", "description": "the completed state was lost after a page reload.", "hint": "Mark a task as completed, reload the page and check the checkbox again." },
+    { "id": "clearAll", "description": "\"Clear completed\" deleted ALL tasks.", "hint": "Click \"Clear completed\" and check that the active tasks are still there." },
+    { "id": "maxLength", "description": "a task of exactly 100 characters was rejected (the maximum was off by one).", "hint": "Add a task of exactly 100 characters — the upper boundary must be accepted." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "\\.press\\(", "message": "Натисни клавішу як користувач: `.press(\"Enter\")` / `.press(\"Escape\")`." },
+    { "kind": "require", "pattern": "\\.check\\(", "message": "Галочку став через `.check()`." },
+    { "kind": "require", "pattern": "reload\\(", "message": "Для вимоги 3 потрібен `page.reload()`." }
+  ],
+  "hints": [
+    "Редагування: `coffee.get_by_role(\"button\", name=\"Edit\").click()`, далі `page.get_by_label(\"Edit task\").fill(\"Buy tea\")` і `.press(\"Escape\")`.",
+    "Галочка задачі: `coffee.get_by_role(\"checkbox\").check()`; після `page.reload()` — `expect(coffee.get_by_role(\"checkbox\")).to_be_checked()`.",
+    "Clear completed: `page.get_by_role(\"button\", name=\"Clear completed\").click()`, потім `expect(page.get_by_test_id(\"todo-item\")).to_have_count(2)`. 100 символів: `text = \"x\" * 100`, додай через Enter і перевір, що задач стало 4."
+  ],
+  "explanation": "Баги збереження стану й скасування видно лише через «бічні» дії: Esc замість Cancel, перезавантаження сторінки, масові операції. Перевіряй **наслідок**: старий текст лишився, галочка на місці після reload, активні задачі не зникли. Межу довжини перевіряй рівно на межі — 100 символів; `\"x\" * 100` дає рядок потрібної довжини без ручного набору."
+}

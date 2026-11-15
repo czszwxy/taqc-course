@@ -1,0 +1,36 @@
+{
+  "title": "Codegen, trace viewer and debugging",
+  "minutes": 60,
+  "summary": "Запис тестів через Codegen і що в згенерованому коді треба прибрати, як читати повідомлення про помилку Playwright (тип, Actual value, call log, рядок тесту), --headed і --slowmo, page.pause() та Inspector, PWDEBUG, Trace Viewer (--tracing retain-on-failure, show-trace), скріншоти й відео як артефакти для баг-репорту",
+  "resources": [
+    {
+      "title": "Playwright for Python: Test generator (Codegen)",
+      "url": "https://playwright.dev/python/docs/codegen",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Trace viewer",
+      "url": "https://playwright.dev/python/docs/trace-viewer",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Debugging tests (Inspector, PWDEBUG)",
+      "url": "https://playwright.dev/python/docs/debug",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright Trace Viewer online",
+      "url": "https://trace.playwright.dev",
+      "kind": "tool",
+      "lang": "en",
+      "note": "Відкриває trace.zip прямо у твоєму браузері.",
+      "needsVerification": true
+    }
+  ]
+}

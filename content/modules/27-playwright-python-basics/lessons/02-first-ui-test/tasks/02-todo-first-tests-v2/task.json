@@ -1,0 +1,20 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "variantOf": "02-login-first-tests",
+  "title": "First tests for the to-do list",
+  "playground": "todo",
+  "statement": "Перші тести для списку справ Taskly (`/playground/todo`). Сторінка відкривається з трьома задачами: `Write test cases for the login page` (виконана), `Report the cart bug` і `Buy coffee`.\n\n1. **test_todo_page_is_shown** — заголовок `My tasks` і поле з підказкою `What needs to be done?`. *Уже є.*\n2. **test_starts_with_three_tasks** — у списку 3 задачі, лічильник показує `2 items left`.\n3. **test_add_button_adds_a_task** — введи `Write Playwright tests` і натисни кнопку **Add**: задача з'являється у списку, задач стає 4, лічильник — `3 items left`.\n\nКорисні локатори:\n\n```python\npage.get_by_placeholder(\"What needs to be done?\")\npage.get_by_role(\"button\", name=\"Add\")\npage.get_by_test_id(\"todo-item\")      # кожна задача списку\npage.get_by_test_id(\"todo-counter\")   # \"2 items left\"\n```\n\nКількість елементів перевіряє `expect(locator).to_have_count(3)`.",
+  "minTests": 3,
+  "codeRules": [
+    { "kind": "require", "pattern": "to_have_count\\(", "message": "Кількість задач перевір через `expect(page.get_by_test_id(\"todo-item\")).to_have_count(...)`." },
+    { "kind": "require", "pattern": "\\.fill\\(", "message": "Введи текст задачі через `.fill(...)`." },
+    { "kind": "require", "pattern": "\\.click\\(\\)", "message": "Натисни кнопку **Add**: `.click()` (з дужками!)." }
+  ],
+  "hints": [
+    "Кількість: `expect(page.get_by_test_id(\"todo-item\")).to_have_count(3)`. Текст лічильника: `expect(page.get_by_test_id(\"todo-counter\")).to_have_text(\"2 items left\")`.",
+    "Додавання: `page.get_by_placeholder(\"What needs to be done?\").fill(\"Write Playwright tests\")`, потім `page.get_by_role(\"button\", name=\"Add\").click()`.",
+    "Нова задача у списку: `expect(page.get_by_text(\"Write Playwright tests\")).to_be_visible()`."
+  ],
+  "explanation": "Список справ зберігається в localStorage, але кожен тест отримує **новий контекст** — тому кожен тест бачить ті самі три стартові задачі, навіть якщо попередній щось додав. Типова помилка — перевіряти лише появу нової задачі: тоді баг у лічильнику пройде непоміченим. Перевіряй усі видимі наслідки дії: саму задачу, кількість і лічильник."
+}

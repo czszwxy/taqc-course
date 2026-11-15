@@ -1,0 +1,39 @@
+{
+  "type": "table",
+  "title": "Which action?",
+  "statement": "Для кожної дії користувача обери метод Playwright.",
+  "hints": [
+    "`fill` замінює значення одразу, `press_sequentially` друкує по літері.",
+    "`check` задає стан галочки, `select_option` працює зі справжнім `<select>`."
+  ],
+  "explanation": "Дія в тесті має відповідати тому, що робить людина, — тоді тест перевіряє той самий шлях, що й користувач. Наприклад, `press(\"Enter\")` перевіряє, що форма відправляється клавішею, а `click()` по кнопці — інший сценарій. Обидва варто покрити, якщо обидва є у вимогах.",
+  "givenColumns": ["Що робить користувач"],
+  "answerColumns": [
+    {
+      "id": "method",
+      "label": "Метод",
+      "options": [
+        "fill()",
+        "press_sequentially()",
+        "press(\"Enter\")",
+        "check()",
+        "select_option()",
+        "hover()",
+        "dblclick()",
+        "set_input_files()",
+        "clear()"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["Вводить email у поле (старий текст має зникнути)"], "answers": { "method": "fill()" } },
+    { "given": ["Друкує назву міста по літері, щоб під полем з'явилися підказки"], "answers": { "method": "press_sequentially()" } },
+    { "given": ["Відправляє форму пошуку клавішею, не натискаючи кнопку"], "answers": { "method": "press(\"Enter\")" } },
+    { "given": ["Ставить галочку «I agree to the Terms of Service» (якщо її ще немає)"], "answers": { "method": "check()" } },
+    { "given": ["Вибирає країну у випадаючому списку `<select>`"], "answers": { "method": "select_option()" } },
+    { "given": ["Наводить мишку на іконку «?», щоб з'явилася підказка"], "answers": { "method": "hover()" } },
+    { "given": ["Двічі клацає по рядку таблиці, щоб відкрити його для редагування"], "answers": { "method": "dblclick()" } },
+    { "given": ["Вибирає файл аватарки для завантаження"], "answers": { "method": "set_input_files()" } },
+    { "given": ["Стирає текст у полі пошуку, нічого не вводячи замість нього"], "answers": { "method": "clear()" } }
+  ]
+}

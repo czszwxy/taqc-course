@@ -1,0 +1,30 @@
+{
+  "type": "classify",
+  "title": "Resilient or fragile locator?",
+  "statement": "Розробники перероблять дизайн: змінять класи, обгортки й порядок блоків, але тексти кнопок, підписи полів і `data-testid` залишать. Які локатори переживуть редизайн?",
+  "show": 8,
+  "passScore": 0.75,
+  "categories": [
+    { "id": "resilient", "label": "Resilient", "description": "Шукає так, як бачить користувач, або за домовленим test id" },
+    { "id": "fragile", "label": "Fragile", "description": "Залежить від верстки, стилів чи позиції" }
+  ],
+  "items": [
+    { "id": "role-button", "text": "`page.get_by_role(\"button\", name=\"Log in\")`", "category": "resilient" },
+    { "id": "label", "text": "`page.get_by_label(\"Email\")`", "category": "resilient" },
+    { "id": "placeholder", "text": "`page.get_by_placeholder(\"What needs to be done?\")`", "category": "resilient" },
+    { "id": "test-id", "text": "`page.get_by_test_id(\"signed-in-as\")`", "category": "resilient", "explain": "`data-testid` — домовленість із розробниками: редизайн її не чіпає." },
+    { "id": "filter", "text": "`page.get_by_test_id(\"todo-item\").filter(has_text=\"Buy coffee\")`", "category": "resilient", "explain": "Рядок шукається за текстом задачі, а не за позицією." },
+    { "id": "heading", "text": "`page.get_by_role(\"heading\", name=\"My tasks\")`", "category": "resilient" },
+    { "id": "css-chain", "text": "`page.locator(\"#root > div > main > form > button:nth-child(5)\")`", "category": "fragile", "explain": "Будь-яка нова обгортка чи поле ламає цей шлях." },
+    { "id": "css-class", "text": "`page.locator(\".bg-teal-600\")`", "category": "fragile", "explain": "Клас кольору зміниться разом із дизайном." },
+    { "id": "xpath", "text": "`page.locator(\"xpath=/html/body/div/div[2]/ul/li[3]/span\")`", "category": "fragile", "explain": "Абсолютний XPath описує точну структуру сторінки." },
+    { "id": "nth-button", "text": "`page.get_by_role(\"button\").nth(4)`", "category": "fragile", "explain": "П'ята кнопка на сторінці — після редизайну це буде інша кнопка." },
+    { "id": "div-first", "text": "`page.locator(\"div\").filter(has_text=\"Buy coffee\").first`", "category": "fragile", "explain": "Перший `div`, що містить текст, — це найзовнішня обгортка сторінки, а не рядок задачі." },
+    { "id": "text-nth", "text": "`page.get_by_text(\"Welcome\").nth(1)`", "category": "fragile", "explain": "Друге входження тексту залежить від того, де і скільки разів він з'являється." }
+  ],
+  "hints": [
+    "Питай себе: що саме описує локатор — те, що бачить користувач, чи будову сторінки?",
+    "`nth`, `first` і довгі CSS-шляхи прив'язують тест до позиції елемента."
+  ],
+  "explanation": "Стійкі локатори описують елемент через роль, підпис, текст або домовлений `data-testid` — це не змінюється при редизайні, бо це і є інтерфейс для користувача. Крихкі описують верстку: класи стилів, вкладеність, номер елемента. Коли їх доводиться оновлювати після кожної зміни дизайну, автотести починають «червоніти» без справжніх багів, і команда перестає їм довіряти."
+}

@@ -1,0 +1,28 @@
+{
+  "title": "Actions",
+  "minutes": 55,
+  "summary": "Дії користувача в Playwright для Python: click, dblclick, fill, clear, press і press_sequentially, check / uncheck, select_option, hover, set_input_files, reload; чим fill відрізняється від посимвольного введення, check — від click, і типові помилки з чекбоксами, списками й назвами клавіш",
+  "resources": [
+    {
+      "title": "Playwright for Python: Actions (input, keyboard, checkboxes, select, files)",
+      "url": "https://playwright.dev/python/docs/input",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Locator API",
+      "url": "https://playwright.dev/python/docs/api/class-locator",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Keyboard",
+      "url": "https://playwright.dev/python/docs/api/class-keyboard",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "type": "classify",
+  "title": "Web-first or one-shot check?",
+  "statement": "Яка перевірка **чекає й повторюється**, доки сторінка не прийде в потрібний стан, а яка читає значення **один раз**?",
+  "show": 8,
+  "passScore": 0.75,
+  "categories": [
+    { "id": "web-first", "label": "Web-first", "description": "Повторює перевірку до timeout" },
+    { "id": "one-shot", "label": "One-shot", "description": "Читає стан один раз, не чекає змін" }
+  ],
+  "items": [
+    { "id": "to-have-text", "text": "`expect(page.get_by_test_id(\"total\")).to_have_text(\"2,350 UAH\")`", "category": "web-first" },
+    { "id": "inner-text", "text": "`assert page.get_by_test_id(\"total\").inner_text() == \"2,350 UAH\"`", "category": "one-shot", "explain": "`inner_text()` повертає текст у цей момент — можливо, ще старий." },
+    { "id": "to-have-url", "text": "`expect(page).to_have_url(re.compile(r\".*/dashboard\"))`", "category": "web-first" },
+    { "id": "page-url", "text": "`assert page.url.endswith(\"/dashboard\")`", "category": "one-shot", "explain": "`page.url` — адреса саме зараз; перехід може ще не відбутися." },
+    { "id": "to-have-count", "text": "`expect(cards).to_have_count(3)`", "category": "web-first" },
+    { "id": "count", "text": "`assert cards.count() == 3`", "category": "one-shot" },
+    { "id": "to-be-visible", "text": "`expect(page.get_by_role(\"alert\")).to_be_visible()`", "category": "web-first" },
+    { "id": "is-visible", "text": "`assert page.get_by_role(\"alert\").is_visible()`", "category": "one-shot", "explain": "`is_visible()` не чекає появи елемента: повертає False, якщо повідомлення з'явиться через мить." },
+    { "id": "to-have-value", "text": "`expect(page.get_by_label(\"Search\")).to_have_value(\"\")`", "category": "web-first" },
+    { "id": "input-value", "text": "`assert page.get_by_label(\"Search\").input_value() == \"\"`", "category": "one-shot" },
+    { "id": "soft", "text": "`expect.soft(page.get_by_test_id(\"subtotal\")).to_have_text(\"2,500 UAH\")`", "category": "web-first", "explain": "Soft-перевірка теж повторюється; вона лише не зупиняє тест при розбіжності." },
+    { "id": "title", "text": "`assert page.title() == \"Gadgetly\"`", "category": "one-shot" }
+  ],
+  "hints": [
+    "Усе, що починається з `expect(...)` (зокрема `expect.soft`), повторює перевірку.",
+    "`inner_text()`, `count()`, `is_visible()`, `input_value()`, `page.url`, `page.title()` повертають значення одразу."
+  ],
+  "explanation": "Web-first перевірки (`expect(...).to_...`) повторюються, доки сторінка не прийде в очікуваний стан або не мине timeout. Методи, що повертають значення (`inner_text()`, `count()`, `is_visible()`…), читають стан у момент виклику; `assert` над ними — головна причина нестабільних UI-тестів. Їх доречно використовувати лише тоді, коли стан уже точно встановився (наприклад, після web-first перевірки) або для логування."
+}
