@@ -1,0 +1,37 @@
+{
+  "type": "table",
+  "title": "Which network technique?",
+  "statement": "Для кожної ситуації обери інструмент Playwright (або справжній сервер без підміни).",
+  "hints": [
+    "`fulfill` — відповісти замість сервера, `abort` — обірвати, `continue_` — пропустити зі змінами, `fetch` — взяти справжню відповідь і змінити.",
+    "`expect_request` / `expect_response` нічого не підміняють — вони лише чекають і дають перевірити."
+  ],
+  "explanation": "Інструменти мережі відповідають на різні питання. Підміна (`fulfill`, `abort`, `fetch`) керує тим, що **отримує** сторінка, і перевіряє реакцію інтерфейсу. `expect_request` / `expect_response` перевіряють, що сторінка **надсилає** і що реально повертає сервер. А для того, що має зберегтися на сервері, підміна безсила — потрібен справжній бекенд.",
+  "givenColumns": ["Ситуація"],
+  "answerColumns": [
+    {
+      "id": "technique",
+      "label": "Інструмент",
+      "options": [
+        "route.fulfill(status=500, ...)",
+        "route.fulfill(json=...)",
+        "route.abort()",
+        "route.continue_(headers=...)",
+        "route.fetch() + route.fulfill(response=..., json=...)",
+        "page.expect_request(...)",
+        "page.expect_response(...)",
+        "Справжній сервер без підміни"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["Як сторінка показує помилку сервера при завантаженні замовлень"], "answers": { "technique": "route.fulfill(status=500, ...)" } },
+    { "given": ["Стан «No orders yet» без видалення справжніх замовлень"], "answers": { "technique": "route.fulfill(json=...)" } },
+    { "given": ["Повідомлення, коли мережа недоступна і запит обривається"], "answers": { "technique": "route.abort()" } },
+    { "given": ["Додати до справжнього запиту заголовок `X-Test-Run`, щоб сервер позначив тестові дані"], "answers": { "technique": "route.continue_(headers=...)" } },
+    { "given": ["Взяти справжній список товарів і залишити в ньому лише один товар із дуже довгою назвою"], "answers": { "technique": "route.fetch() + route.fulfill(response=..., json=...)" } },
+    { "given": ["Кнопка Save має надсилати `newsletter: true`, коли галочка стоїть"], "answers": { "technique": "page.expect_request(...)" } },
+    { "given": ["Який статус і тіло повернув сервер на справжній запит під час тесту"], "answers": { "technique": "page.expect_response(...)" } },
+    { "given": ["Нове замовлення справді зберігається і видно після перезавантаження"], "answers": { "technique": "Справжній сервер без підміни" } }
+  ]
+}

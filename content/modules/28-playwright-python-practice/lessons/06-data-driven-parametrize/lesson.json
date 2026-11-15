@@ -1,0 +1,28 @@
+{
+  "title": "Data-driven tests with parametrize",
+  "minutes": 55,
+  "summary": "Data-driven UI-тести: @pytest.mark.parametrize разом із фікстурою page, кілька параметрів, читабельні ids (список і функція), pytest.param з власним id і маркою xfail, дані з JSON-файлу, окремі тести для валідних і невалідних значень замість if у тесті, обережно з комбінаторним вибухом",
+  "resources": [
+    {
+      "title": "pytest: How to parametrize fixtures and test functions",
+      "url": "https://docs.pytest.org/en/stable/how-to/parametrize.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: pytest.param",
+      "url": "https://docs.pytest.org/en/stable/reference/reference.html#pytest-param",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "ISTQB Glossary: data-driven testing",
+      "url": "https://glossary.istqb.org/en_US/search?term=data-driven%20testing",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

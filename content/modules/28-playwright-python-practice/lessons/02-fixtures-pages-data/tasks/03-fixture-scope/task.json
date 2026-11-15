@@ -1,0 +1,28 @@
+{
+  "type": "classify",
+  "title": "Which scope for this fixture?",
+  "statement": "Для кожної фікстури UI-проєкту обери scope.",
+  "show": 8,
+  "passScore": 0.75,
+  "categories": [
+    { "id": "function", "label": "function", "description": "Нова для кожного тесту" },
+    { "id": "session", "label": "session", "description": "Одна на весь запуск" }
+  ],
+  "items": [
+    { "id": "page-object", "text": "`LoginPage(page)` з відкритою сторінкою логіну", "category": "function", "explain": "Залежить від `page`, а він новий для кожного тесту." },
+    { "id": "console-list", "text": "Список помилок консолі поточної сторінки", "category": "function" },
+    { "id": "api-order", "text": "Замовлення, створене через API для тесту і видалене після `yield`", "category": "function" },
+    { "id": "fresh-cart", "text": "Кошик із двома товарами, який тест змінюватиме", "category": "function", "explain": "Тест змінює дані — інші тести не мають бачити ці зміни." },
+    { "id": "signed-in-page", "text": "Сторінка, на якій користувач уже увійшов (з готового стану сесії)", "category": "function" },
+    { "id": "users-json", "text": "Тестові користувачі, прочитані з `users.json` (тести їх не змінюють)", "category": "session" },
+    { "id": "auth-state", "text": "Файл стану сесії після одного входу (storage state), спільний для всіх тестів", "category": "session" },
+    { "id": "settings", "text": "Налаштування з змінних оточення: адреса стенду, ім'я тестового користувача", "category": "session" },
+    { "id": "api-token", "text": "Токен API для підготовки даних, який не змінюється під час запуску", "category": "session" },
+    { "id": "unique-email", "text": "Унікальний email для реєстрації нового користувача в тесті", "category": "function", "explain": "Кожен тест реєструє свого користувача." }
+  ],
+  "hints": [
+    "Усе, що залежить від `page` або що тест змінює, — function.",
+    "session — лише для незмінних даних і дорогої підготовки, яку достатньо зробити один раз."
+  ],
+  "explanation": "Scope function дає кожному тесту свіжі дані — тести не впливають один на одного. Scope session економить час на дорогій підготовці (вхід, читання файлів), але підходить лише для того, що тести не змінюють. Помилка в бік session — найчастіша причина тестів, що падають лише в певному порядку."
+}

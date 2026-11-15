@@ -1,0 +1,28 @@
+{
+  "title": "Page Object Model in Python",
+  "minutes": 60,
+  "summary": "Навіщо Page Object Model, клас сторінки на Python (локатори в __init__, дії — методи з назвами з предметної області), перевірки лишаються в тесті, структура pages/ і tests/, pythonpath у pytest.ini, компоненти сторінки і типові помилки: assert усередині page object, page замість self.page, методи на кожен клік",
+  "resources": [
+    {
+      "title": "Playwright for Python: Page object models",
+      "url": "https://playwright.dev/python/docs/pom",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Martin Fowler: PageObject",
+      "url": "https://martinfowler.com/bliki/PageObject.html",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: pythonpath ini option",
+      "url": "https://docs.pytest.org/en/stable/reference/reference.html#confval-pythonpath",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

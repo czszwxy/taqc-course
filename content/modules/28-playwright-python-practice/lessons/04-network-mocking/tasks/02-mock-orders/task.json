@@ -1,0 +1,22 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Account orders: mock the API responses",
+  "playground": "account",
+  "statement": "Після входу сторінка **My account** (`/playground/account`) завантажує замовлення запитом `GET /api/orders`. Справжні дані на сервері можуть змінюватися, а помилку сервера вручну не відтвориш, тому **підміни відповіді** через `page.route`. Маршрут треба зареєструвати **до** входу: замовлення вантажаться одразу після нього.\n\n1. Відповідь з одним замовленням → видно `Order #2001` і `3 pcs · paid`. *Уже є.*\n2. Порожній список `{\"items\": []}` → `No orders yet` (`data-testid=\"orders-empty\"`).\n3. Помилка **500** → `Could not load your orders.` (`role=\"alert\"`), і стану «No orders yet» немає.\n4. Спершу 500, а після **Try again** — нормальна відповідь → видно замовлення.\n5. Справжній запит (без підміни) іде з заголовком `Authorization: Bearer …` (`page.expect_request`).",
+  "minTests": 5,
+  "mutants": [
+    { "id": "retryNoop", "description": "\"Try again\" did not send a new request.", "hint": "First answer 500, then switch the handler to a real list: click Try again and expect the order to appear." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "route\\.fulfill\\(", "message": "Відповідай замість сервера: `route.fulfill(...)`." },
+    { "kind": "require", "pattern": "status=500", "message": "Вимоги 3–4: відповідь зі статусом 500 — `route.fulfill(status=500, json=...)`." },
+    { "kind": "require", "pattern": "expect_request\\(", "message": "Вимога 5: перевір справжній запит через `with page.expect_request(...) as request_info:`." }
+  ],
+  "hints": [
+    "Порожній список: `page.route(\"**/api/orders\", lambda route: route.fulfill(json={\"items\": []}))`, потім вхід і `expect(page.get_by_test_id(\"orders-empty\")).to_have_text(\"No orders yet\")`.",
+    "Try again: `server = {\"down\": True}`, обробник обирає 500 або список за `server[\"down\"]`; після повідомлення про помилку — `server[\"down\"] = False` і клік Try again.",
+    "Заголовок: `with page.expect_request(\"**/api/orders\") as request_info: sign_in(page)`, потім `assert request_info.value.headers[\"authorization\"].startswith(\"Bearer \")`."
+  ],
+  "explanation": "Підміна відповідей дає контроль над станами, які на справжньому сервері трапляються рідко: порожньо, помилка, відновлення після помилки. Для «спершу помилка, потім успіх» обробник має читати стан, який змінює тест, — лічильник викликів ненадійний (React у режимі розробки може надіслати запит двічі). А тест 5 нагадує, що мережу перевіряють в обидва боки: не лише що сторінка показує, а й що вона надсилає."
+}

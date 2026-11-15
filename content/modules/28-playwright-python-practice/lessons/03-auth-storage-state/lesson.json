@@ -1,0 +1,28 @@
+{
+  "title": "Authentication and storage state",
+  "minutes": 55,
+  "summary": "Чому не входити через форму в кожному тесті, що таке сесія (cookies, localStorage) і storage state, збереження стану після одного входу в session-фікстурі, вхід через API-токен, new_context(storage_state=...) замість browser.new_context, окремі тести на сам вхід і вихід, безпека файлів стану",
+  "resources": [
+    {
+      "title": "Playwright for Python: Authentication",
+      "url": "https://playwright.dev/python/docs/auth",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: BrowserContext.storage_state",
+      "url": "https://playwright.dev/python/docs/api/class-browsercontext#browser-context-storage-state",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: APIRequestContext",
+      "url": "https://playwright.dev/python/docs/api/class-apirequestcontext",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

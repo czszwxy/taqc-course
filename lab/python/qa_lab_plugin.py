@@ -64,10 +64,15 @@ def _lab_api_user_agent(playwright):
 
 
 @pytest.fixture
-def context(context):
-    context.set_default_timeout(ACTION_TIMEOUT_MS)
-    context.set_default_navigation_timeout(NAVIGATION_TIMEOUT_MS)
-    return context
+def new_context(new_context):
+    # The page / context fixtures and the learner's own new_context(storage_state=...) calls all get the lab timeouts.
+    def make(**kwargs):
+        created = new_context(**kwargs)
+        created.set_default_timeout(ACTION_TIMEOUT_MS)
+        created.set_default_navigation_timeout(NAVIGATION_TIMEOUT_MS)
+        return created
+
+    return make
 
 
 # ---------- results ----------

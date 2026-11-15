@@ -1,0 +1,24 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Sign-up tests through a page object",
+  "playground": "signup",
+  "statement": "Тести форми реєстрації (`/playground/signup`) через **Page Object**. У стартовому файлі вже є клас `SignupPage` (`goto()`, `fill(**changes)`, `register(accept_terms=True, **changes)`) і перший тест.\n\n1. Додай у клас метод **`error(field)`**, що повертає локатор помилки під полем. Помилки мають `data-testid` вигляду `error-fullName`, `error-email`, `error-age`, `error-password`, `error-confirm`, `error-terms`.\n2. Допиши тести **лише через клас** — у самих тестах без `page.get_by_...`:\n   - ім'я з одних пробілів (`\"   \"`) не приймається: `Full name is required`, акаунт не створюється;\n   - без галочки Terms: `You must accept the Terms of Service` під галочкою;\n   - паролі не збігаються: `Passwords do not match` під Confirm password.\n\nУ справжньому проєкті клас лежав би в `pages/signup_page.py`. Тут усе в одному файлі.",
+  "minTests": 4,
+  "mutants": [
+    { "id": "nameSpaces", "description": "a full name made only of spaces was accepted (no trim).", "hint": "Register with a full name of spaces only — it must be treated as empty." },
+    { "id": "terms", "description": "the account was created without accepting the Terms of Service.", "hint": "Register WITHOUT the Terms checkbox (register(accept_terms=False)) and check the error under it." },
+    { "id": "confirm", "description": "\"Confirm password\" was never compared with the password.", "hint": "Register with confirm=\"Secret124\" and check the error under Confirm password." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "class SignupPage", "message": "Залиш клас `SignupPage` — тести мають працювати через нього." },
+    { "kind": "require", "pattern": "def error\\(self", "message": "Додай у клас метод `def error(self, field):`, що повертає локатор помилки поля." },
+    { "kind": "forbid", "pattern": "^ {4}(?!def |class )\\S.*(?<!self\\.)\\bpage\\.get_by_", "flags": "m", "message": "У тестах — лише методи й атрибути `SignupPage`. `page.get_by_...` можна писати тільки всередині класу (`self.page...` або в `__init__`)." }
+  ],
+  "hints": [
+    "Метод: `def error(self, field): return self.page.get_by_test_id(f\"error-{field}\")`.",
+    "Тест на пробіли: `signup.register(full_name=\"   \")`, потім `expect(signup.error(\"fullName\")).to_have_text(\"Full name is required\")` і `expect(signup.welcome).to_be_hidden()`.",
+    "Без галочки: `signup.register(accept_terms=False)` і `expect(signup.error(\"terms\")).to_have_text(\"You must accept the Terms of Service\")`."
+  ],
+  "explanation": "Page object бере на себе **як**: заповнити форму, знайти помилку під полем. Тест лишає собі **що**: які дані ввести і яке повідомлення очікувати. Метод `error(field)` — один для всіх полів, тому новий тест на валідацію — це два рядки. Типова помилка — шукати повідомлення через `get_by_text` прямо в тесті: так тест знову залежить від верстки, а не від класу сторінки."
+}

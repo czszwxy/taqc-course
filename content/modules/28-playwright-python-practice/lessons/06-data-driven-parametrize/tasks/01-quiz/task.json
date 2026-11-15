@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Data-driven tests with parametrize",
+  "show": 5,
+  "hints": ["Кожен рядок parametrize — окремий тест з новою page. ids — для звіту. Валідні й невалідні — окремо."],
+  "questions": [
+    {
+      "id": "separate",
+      "kind": "single",
+      "text": "`@pytest.mark.parametrize(\"query\", [\"mouse\", \"laptop\", \"earbuds\"])` на тесті з `page`. Що буде, якщо випадок `laptop` упаде?",
+      "options": [
+        { "text": "Інші два випадки все одно виконаються: це три окремі тести, кожен у новому контексті", "correct": true },
+        { "text": "Решта випадків не запуститься" },
+        { "text": "Усі три тести позначаться червоними" }
+      ]
+    },
+    {
+      "id": "ids",
+      "kind": "single",
+      "text": "Навіщо `ids=[\"upper-case\", \"spaces-around\"]`?",
+      "options": [
+        { "text": "Щоб у звіті було видно, на яких даних упав тест", "correct": true },
+        { "text": "Щоб тести працювали швидше" },
+        { "text": "Без ids parametrize не працює" }
+      ]
+    },
+    {
+      "id": "if",
+      "kind": "single",
+      "text": "Як краще перевірити валідні (18, 65) і невалідні (17, 66) значення віку?",
+      "options": [
+        { "text": "Двома параметризованими тестами: accepted і rejected", "correct": true },
+        { "text": "Одним тестом з `if accepted: ... else: ...`" },
+        { "text": "Чотирма окремими функціями" }
+      ]
+    },
+    {
+      "id": "xfail",
+      "kind": "single",
+      "text": "Один із випадків падає через відомий баг QA-31. Як позначити лише його?",
+      "options": [
+        { "text": "`pytest.param(..., marks=pytest.mark.xfail(reason=\"QA-31\", strict=True))`", "correct": true },
+        { "text": "Позначити весь тест `@pytest.mark.skip`" },
+        { "text": "Видалити цей випадок" }
+      ]
+    },
+    {
+      "id": "product",
+      "kind": "single",
+      "text": "Тест має два декоратори parametrize: 5 значень і 4 значення. Скільки тестів запуститься?",
+      "options": [
+        { "text": "20 — значення перемножуються", "correct": true },
+        { "text": "9" },
+        { "text": "5" }
+      ]
+    },
+    {
+      "id": "file",
+      "kind": "single",
+      "text": "Коли дані зі `search_cases.json` читаються, якщо файл відкривається на рівні модуля?",
+      "options": [
+        { "text": "Один раз, коли pytest збирає тести", "correct": true },
+        { "text": "Перед кожним тестом" },
+        { "text": "Лише якщо тест упав" }
+      ]
+    },
+    {
+      "id": "how-many",
+      "kind": "single",
+      "text": "Скільки значень брати для класу «вік від 18 до 65»?",
+      "options": [
+        { "text": "Межі (18, 65) і, за бажання, одне значення всередині — більше нічого нового не перевірить", "correct": true },
+        { "text": "Усі 48 значень" },
+        { "text": "Одне випадкове значення" }
+      ]
+    }
+  ]
+}

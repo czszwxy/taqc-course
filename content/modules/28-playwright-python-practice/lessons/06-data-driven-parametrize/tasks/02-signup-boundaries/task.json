@@ -1,0 +1,23 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Sign-up boundaries as parametrized tests",
+  "playground": "signup",
+  "statement": "Форма реєстрації (`/playground/signup`). Вимоги: вік — ціле число **від 18 до 65**, пароль — **8–20 символів** і хоча б одна цифра. У стартовому файлі є хелпер `register(page, **changes)` і перший параметризований тест.\n\nПеретвори таблицю граничних значень на **параметризовані тести з читабельними ids** (`ids=` або `pytest.param(..., id=...)`):\n\n| Що | Значення | Очікування |\n|---|---|---|\n| валідний вік | 18, 30, 65 | акаунт створено (`Welcome, Olena Kovalenko!`) |\n| невалідний вік | 17, 66 | `Age must be between 18 and 65` під полем Age |\n| невалідний вік | `abc` | `Age must be a whole number` |\n| валідний пароль | 8 і 20 символів | акаунт створено |\n| невалідний пароль | 7 і 21 символ | `Password must be 8–20 characters` під полем Password |\n\nПомилки під полями: `page.get_by_test_id(\"error-age\")`, `page.get_by_test_id(\"error-password\")`. Валідні й невалідні значення — **окремими** тестами, без `if` у тілі тесту.",
+  "minTests": 10,
+  "mutants": [
+    { "id": "age18", "description": "age 18 was rejected (the check used > instead of >=).", "hint": "The lower age boundary 18 must be in the accepted cases." },
+    { "id": "pwdMax", "description": "a password of exactly 20 characters was rejected (the maximum was off by one).", "hint": "Add a password of exactly 20 characters to the accepted cases." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "@pytest\\.mark\\.parametrize", "message": "Використай `@pytest.mark.parametrize`." },
+    { "kind": "require", "pattern": "ids=|pytest\\.param\\(", "message": "Дай випадкам читабельні назви: `ids=[...]` або `pytest.param(..., id=\"...\")`." },
+    { "kind": "forbid", "pattern": "^\\s+if\\s.*:\\s*$\\n\\s+expect\\(", "flags": "m", "message": "Не перемикай перевірки через `if` у тесті: валідні й невалідні значення — окремими тестами." }
+  ],
+  "hints": [
+    "Невалідний вік: `@pytest.mark.parametrize((\"age\", \"message\"), [(\"17\", AGE_RANGE), (\"66\", AGE_RANGE), (\"abc\", \"Age must be a whole number\")], ids=[\"below-min\", \"above-max\", \"not-a-number\"])`.",
+    "Паролі: `\"Abcdefg1\"` — 8 символів, `\"Abcdefghij1234567890\"` — 20. Передавай однаковий пароль і в Confirm: `register(page, password=password, confirm=password)`.",
+    "Повідомлення про довжину пароля містить довге тире: скопіюй його з умови або перевіряй `to_contain_text(\"8–20\")`."
+  ],
+  "explanation": "Таблиця граничних значень перетворюється на тести майже дослівно: кожен рядок — окремий випадок з власною назвою в звіті. Межі (18 і 65, 8 і 20) мають бути в «прийнятих» випадках — саме там ховаються помилки `>` замість `>=`. Валідні й невалідні значення в різних тестах: тоді кожен тест перевіряє одну поведінку, а звіт одразу показує, яка група зламалася."
+}

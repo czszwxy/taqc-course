@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Authentication and storage state",
+  "show": 5,
+  "hints": ["storage state = cookies + localStorage. Вхід — один раз у session-фікстурі через browser, не page."],
+  "questions": [
+    {
+      "id": "why",
+      "kind": "single",
+      "text": "Чому не варто входити через форму в кожному з 200 тестів?",
+      "options": [
+        { "text": "Це повільно, а поломка форми входу «покладе» всі тести й сховає справжні причини", "correct": true },
+        { "text": "Playwright не дозволяє заповнювати форму входу двічі" },
+        { "text": "Через це тести не можна запускати паралельно" }
+      ]
+    },
+    {
+      "id": "contains",
+      "kind": "single",
+      "text": "Що зберігає `context.storage_state(path=...)`?",
+      "options": [
+        { "text": "Cookies і localStorage контексту", "correct": true },
+        { "text": "Скріншот сторінки" },
+        { "text": "Пароль користувача" }
+      ]
+    },
+    {
+      "id": "session-browser",
+      "kind": "single",
+      "text": "Session-фікстура, що входить один раз, має працювати з…",
+      "options": [
+        { "text": "`browser` і власним тимчасовим контекстом — `page` має scope function", "correct": true },
+        { "text": "`page`" },
+        { "text": "`context`" }
+      ]
+    },
+    {
+      "id": "base-url",
+      "kind": "single",
+      "text": "`page = browser.new_context(storage_state=path).new_page()`, потім `page.goto(\"/account\")` падає з помилкою про адресу. Чому?",
+      "options": [
+        { "text": "`browser.new_context` не знає `--base-url`: передай `base_url=` або використай фікстуру `new_context`", "correct": true },
+        { "text": "Файл стану пошкоджений" },
+        { "text": "Сторінка /account не існує" }
+      ]
+    },
+    {
+      "id": "api-login",
+      "kind": "single",
+      "text": "Навіщо входити через API, а не через форму, перед тестами інших сторінок?",
+      "options": [
+        { "text": "Це швидше і не залежить від верстки форми; форму перевіряють окремі тести", "correct": true },
+        { "text": "Через API вхід надійніше тестує форму" },
+        { "text": "Інакше storage state не працює" }
+      ]
+    },
+    {
+      "id": "commit",
+      "kind": "single",
+      "text": "Чи комітити файл `auth/state.json` у репозиторій?",
+      "options": [
+        { "text": "Ні: це ключ від тестового акаунта, і він швидко застаріває — створюй його під час запуску", "correct": true },
+        { "text": "Так, щоб колегам не входити" },
+        { "text": "Так, але лише в приватний репозиторій" }
+      ]
+    },
+    {
+      "id": "verify-login",
+      "kind": "single",
+      "text": "Навіщо в session-фікстурі `expect(...)` після натискання Sign in, перед `storage_state`?",
+      "options": [
+        { "text": "Щоб зберегти стан лише після справжнього входу — інакше у файлі може ще не бути токена", "correct": true },
+        { "text": "Без expect фікстура не запуститься" },
+        { "text": "Щоб тест був довшим" }
+      ]
+    }
+  ]
+}

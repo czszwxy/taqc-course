@@ -1,0 +1,21 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Account page: session, sign out and storage state",
+  "playground": "account",
+  "statement": "Сторінка **My account** Gadgetly (`/playground/account`) тримає сесію в localStorage під ключем `gadgetly:token`. Тестовий користувач: `qa@gadgetly.test` / `Test1234`. У стартовому файлі є `USER`, хелпер `sign_in_via_ui(page)` і перший тест.\n\n1. Після входу через форму сесія **переживає перезавантаження**. *Уже є.*\n2. **Sign out** забуває сесію: одразу видно форму входу (`Sign in to your account`), і **після перезавантаження** теж.\n3. **Вхід один раз**: session-фікстура `auth_state(browser, base_url, tmp_path_factory)` входить через форму у власному контексті, зберігає `context.storage_state(path=...)` і повертає шлях. Тест створює контекст `new_context(storage_state=auth_state)` — і `My account` відкривається без форми входу, з текстом `Signed in as qa@gadgetly.test`.\n4. **Вхід через API**: токен з `POST /api/auth/login` (тіло — `USER`) покладений у storage state словником → `My account` відкривається одразу.\n\n```python\napi = playwright.request.new_context(base_url=base_url)\ntoken = api.post(\"/api/auth/login\", data=USER).json()[\"token\"]\nstate = {\"cookies\": [], \"origins\": [{\"origin\": base_url, \"localStorage\": [{\"name\": \"gadgetly:token\", \"value\": token}]}]}\n```",
+  "minTests": 4,
+  "codeRules": [
+    { "kind": "require", "pattern": "scope=\"session\"|scope='session'", "message": "Вимога 3: фікстура `auth_state` зі `scope=\"session\"` — вхід один раз на запуск." },
+    { "kind": "require", "pattern": "\\.storage_state\\(path=", "message": "Збережи стан після входу: `context.storage_state(path=...)`." },
+    { "kind": "require", "pattern": "new_context\\(storage_state=", "message": "Тести зі станом створюють контекст `new_context(storage_state=...)`." },
+    { "kind": "require", "pattern": "/api/auth/login", "message": "Вимога 4: отримай токен запитом `POST /api/auth/login`." },
+    { "kind": "require", "pattern": "Sign in to your account", "message": "Вимога 2: перевір, що після Sign out видно форму входу `Sign in to your account`." }
+  ],
+  "hints": [
+    "Sign out: `page.get_by_role(\"button\", name=\"Sign out\").click()`, перевір заголовок `Sign in to your account`, потім `page.reload()` і перевір ще раз.",
+    "Session-фікстура: `context = browser.new_context(base_url=base_url)`, `sign_in_via_ui(context.new_page())`, `path = tmp_path_factory.mktemp(\"auth\") / \"state.json\"`, `context.storage_state(path=path)`, `context.close()`, `return path`.",
+    "У тесті: `page = new_context(storage_state=auth_state).new_page()`, `page.goto(\"/playground/account\")`, `expect(page.get_by_test_id(\"account-email\")).to_have_text(\"Signed in as qa@gadgetly.test\")`."
+  ],
+  "explanation": "Перевірки сесії — це дві різні речі. Тести 1–2 перевіряють **саму** поведінку входу й виходу, тому вони проходять форму. Тести 3–4 показують, як іншим тестам **обійти** форму: стан збирається один раз і передається новим контекстам. Найчастіша помилка тут — `browser.new_context(storage_state=...)` без `base_url`: тоді відносна адреса не відкривається. Фікстура `new_context` бере `--base-url` сама і закриває контекст після тесту."
+}

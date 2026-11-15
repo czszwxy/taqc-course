@@ -1,0 +1,13 @@
+{
+  "title": "Playwright for Python in Practice",
+  "description": "Як із окремих UI-тестів зробити підтримуваний набір: Page Object Model, фікстури для сторінок і даних, вхід один раз через storage state, підміна й перевірка мережевих запитів, діалоги, фрейми й нові вкладки, data-driven тести з parametrize, паралельний запуск і налаштування проєкту. Задачі з кодом запускаються в справжньому Chromium і перевіряються на версіях сторінок з навмисними багами.",
+  "goals": [
+    "Organize UI tests with page objects: locators and actions in a class, checks in the test",
+    "Build fixtures for page objects, page events and test data, and choose their scope",
+    "Sign in once and reuse the session with storage_state (from the UI or from an API token)",
+    "Mock server responses with page.route and check what the page sends with expect_request",
+    "Handle alert / confirm / prompt dialogs, iframes and new tabs",
+    "Turn boundary values and data tables into parametrized UI tests with readable ids",
+    "Configure viewports and context options, run tests in parallel with pytest-xdist and keep them independent"
+  ]
+}

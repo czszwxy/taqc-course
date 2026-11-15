@@ -1,0 +1,28 @@
+{
+  "title": "Fixtures for pages and test data",
+  "minutes": 55,
+  "summary": "Фікстури, що повертають page objects, ланцюжки фікстур, conftest.py для UI-тестів, слухачі подій сторінки (console, pageerror, response) і чому вони мають підключатися до goto, фабрики унікальних тестових даних, scope фікстур і ScopeMismatch, yield для прибирання",
+  "resources": [
+    {
+      "title": "pytest: How to use fixtures",
+      "url": "https://docs.pytest.org/en/stable/how-to/fixtures.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Events (page.on)",
+      "url": "https://playwright.dev/python/docs/events",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Pytest plugin reference — fixtures",
+      "url": "https://playwright.dev/python/docs/test-runners",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

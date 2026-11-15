@@ -1,0 +1,40 @@
+{
+  "type": "written",
+  "title": "Configure a pytest-playwright project for a team",
+  "statement": "Команда починає UI-проєкт на pytest-playwright. Вимоги:\n\n- тести лежать у `tests/`, page objects — у `pages/` (імпорт `from pages... import ...`);\n- адреса стенду за замовчуванням `http://localhost:5173`, але на CI її передають при запуску;\n- для тестів, що впали, зберігаються трейс і скріншот;\n- маркери `smoke` (критичні перевірки) і `slow` (довгі сценарії) зареєстровані;\n- на кожен pull request — лише smoke-тести, швидко, паралельно, у Chromium;\n- щоночі — увесь набір у трьох браузерах, паралельно, на staging `https://staging.gadgetly.test`.\n\nЗаповни налаштування й команди.",
+  "fields": [
+    { "id": "ini", "label": "pytest.ini", "kind": "textarea", "placeholder": "[pytest]\n..." },
+    { "id": "pr", "label": "Команда для pull request (smoke)", "kind": "text" },
+    { "id": "nightly", "label": "Команда для нічного запуску", "kind": "text" },
+    { "id": "gitignore", "label": "Що додати в .gitignore (по одному на рядок)", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "ini", "check": "mentionsAll", "value": ["\\[pytest\\]", "addopts", "base-url"], "message": "pytest.ini: секція `[pytest]` і `addopts` з `--base-url`." },
+    { "field": "ini", "check": "mentionsAll", "value": ["testpaths", "pythonpath"], "message": "pytest.ini: `testpaths = tests` і `pythonpath = .` (для імпорту `pages`)." },
+    { "field": "ini", "check": "mentionsAny", "value": ["tracing", "screenshot"], "message": "pytest.ini: артефакти для впалих тестів (`--tracing retain-on-failure`, `--screenshot only-on-failure`)." },
+    { "field": "ini", "check": "mentionsAll", "value": ["markers", "smoke", "slow"], "message": "pytest.ini: зареєструй маркери `smoke` і `slow` у `markers`." },
+    { "field": "pr", "check": "mentionsAll", "value": ["pytest", "-m\\s*\"?'?smoke", "-n"], "message": "PR: `pytest -m smoke -n auto` (лише smoke, паралельно)." },
+    { "field": "nightly", "check": "mentionsAll", "value": ["--browser\\s+firefox", "--browser\\s+webkit", "-n", "staging"], "message": "Нічний запуск: три `--browser`, `-n auto` і `--base-url` staging." },
+    { "field": "gitignore", "check": "mentionsAny", "value": ["test-results"], "message": ".gitignore: папка артефактів `test-results/`." },
+    { "field": "gitignore", "check": "minItems", "value": 2, "message": ".gitignore: щонайменше два рядки (артефакти, venv, стан входу…)." }
+  ],
+  "model": {
+    "ini": "[pytest]\ntestpaths = tests\npythonpath = .\naddopts = --base-url http://localhost:5173 --tracing retain-on-failure --screenshot only-on-failure\nmarkers =\n    smoke: critical checks for every pull request\n    slow: long end-to-end flows",
+    "pr": "pytest -m smoke -n auto --browser chromium",
+    "nightly": "pytest -n auto --browser chromium --browser firefox --browser webkit --base-url https://staging.gadgetly.test",
+    "gitignore": [".venv/", "test-results/", "auth/ (saved storage state files)", "__pycache__/", ".pytest_cache/"]
+  },
+  "checklist": [
+    "Адреса стенду в addopts — за замовчуванням, і її можна перебити з командного рядка",
+    "Трейс і скріншот зберігаються лише для тестів, що впали",
+    "Маркери зареєстровані з описом",
+    "PR-запуск — лише smoke і паралельно",
+    "Нічний запуск — три браузери, staging, паралельно",
+    "Артефакти, venv і файли стану входу не потрапляють у git"
+  ],
+  "hints": [
+    "Опції, що потрібні в кожному запуску, — в `addopts`; те, що відрізняється між PR і нічним запуском, — у команді.",
+    "`--browser` можна повторити кілька разів, а `--base-url` з командного рядка перебиває значення з addopts."
+  ],
+  "explanation": "Налаштування проєкту — це домовленість команди: усе, що потрібно завжди (адреса за замовчуванням, артефакти, маркери, шляхи), живе в `pytest.ini`, а відмінності між запусками (які тести, які браузери, який стенд) — у командах CI. Так тести не змінюються від середовища до середовища, а артефакти й секрети (стан входу) не потрапляють у репозиторій."
+}

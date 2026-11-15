@@ -1,0 +1,37 @@
+{
+  "type": "table",
+  "title": "Dialogs, frames, tabs, downloads: which API?",
+  "statement": "Для кожної ситуації обери, що написати в тесті.",
+  "hints": [
+    "`accept()` — OK, `dismiss()` — Cancel, `accept(\"текст\")` — OK із введеним текстом.",
+    "Для всього, що з'являється після кліку (вкладка, файл), — менеджер контексту `with page.expect_...()`."
+  ],
+  "explanation": "Діалоги обробляє функція, підключена через `page.once` / `page.on` до кліку; її аргумент — об'єкт діалогу з `type`, `message`, `accept()` і `dismiss()`. Вміст iframe знаходять через `frame_locator`. Події, що стаються після кліку (нова вкладка, завантаження), ловлять менеджером контексту `expect_popup` / `expect_download`.",
+  "givenColumns": ["Ситуація"],
+  "answerColumns": [
+    {
+      "id": "api",
+      "label": "API",
+      "options": [
+        "dialog.accept()",
+        "dialog.dismiss()",
+        "dialog.accept(\"New name\")",
+        "dialog.message",
+        "page.on(\"dialog\", ...)",
+        "page.frame_locator(...)",
+        "page.expect_popup()",
+        "page.expect_download()"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["Підтвердити видалення в confirm «Delete project?»"], "answers": { "api": "dialog.accept()" } },
+    { "given": ["Натиснути Cancel у confirm і перевірити, що нічого не видалено"], "answers": { "api": "dialog.dismiss()" } },
+    { "given": ["Ввести нову назву проєкту в prompt"], "answers": { "api": "dialog.accept(\"New name\")" } },
+    { "given": ["Перевірити текст повідомлення в alert"], "answers": { "api": "dialog.message" } },
+    { "given": ["Обробити всі діалоги, які з'являться за один сценарій (prompt, потім alert)"], "answers": { "api": "page.on(\"dialog\", ...)" } },
+    { "given": ["Заповнити поле картки у вбудованій формі оплати (iframe)"], "answers": { "api": "page.frame_locator(...)" } },
+    { "given": ["Перевірити сторінку, що відкрилася в новій вкладці після кліку"], "answers": { "api": "page.expect_popup()" } },
+    { "given": ["Отримати CSV-файл після кліку Export і перевірити його назву"], "answers": { "api": "page.expect_download()" } }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "variantOf": "02-signup-boundaries",
+  "title": "Cart quantities and promo codes as data-driven tests",
+  "playground": "cart",
+  "statement": "Кошик Gadgetly (`/playground/cart`): `Wireless mouse M2` 500 × 1, `Mechanical keyboard K8` 1 500 × 1, `USB-C cable 1 m` 250 × 2 (Subtotal `2,500 UAH`, Total `2,600 UAH`). Вимоги: кількість — **від 1 до 10**; промокод `SAVE10` (знижка 10 %) не залежить від регістру й пробілів навколо.\n\nУ стартовому файлі є параметризований тест на валідні кількості. Допиши **параметризовані тести з ids**:\n\n| Що | Значення | Очікування |\n|---|---|---|\n| невалідна кількість мишки | `0`, `11` | `Quantity must be from 1 to 10` (`role=\"alert\"`), Subtotal лишається `2,500 UAH` |\n| промокод | `SAVE10`, `save10`, `  Save10  ` | Discount містить `250 UAH`, Total `2,350 UAH` |\n\nПоле кількості: `page.get_by_label(\"Quantity of Wireless mouse M2\")`; промокод: `page.get_by_label(\"Promo code\")` і кнопка `Apply`.",
+  "minTests": 7,
+  "mutants": [
+    { "id": "qtyZero", "description": "quantity 0 was accepted.", "hint": "Add 0 to the invalid quantities — the lower boundary minus one." },
+    { "id": "promoCase", "description": "promo codes were case-sensitive.", "hint": "Add the promo code in lower case and in mixed case with spaces." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "@pytest\\.mark\\.parametrize", "message": "Використай `@pytest.mark.parametrize`." },
+    { "kind": "require", "pattern": "ids=|pytest\\.param\\(", "message": "Дай випадкам читабельні назви: `ids=[...]` або `pytest.param(..., id=\"...\")`." }
+  ],
+  "hints": [
+    "Невалідні: `@pytest.mark.parametrize(\"quantity\", [\"0\", \"11\"], ids=[\"below-min\", \"above-max\"])`, потім `expect(page.get_by_role(\"alert\")).to_have_text(\"Quantity must be from 1 to 10\")`.",
+    "Промокоди: `ids=[\"upper\", \"lower\", \"mixed-with-spaces\"]`; заповни поле, натисни Apply і перевір `discount` (`to_contain_text(\"250 UAH\")`) та `total`."
+  ],
+  "explanation": "Класи еквівалентності кількості — «нижче мінімуму», «у межах», «вище максимуму»; межі кожного класу (0 і 1, 10 і 11) дають чотири випадки. Для промокоду класи — різні способи написати той самий код: регістр і пробіли. Обидві таблиці лягають у `parametrize` майже дослівно, а ids одразу кажуть у звіті, який випадок зламано."
+}

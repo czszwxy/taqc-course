@@ -1,0 +1,28 @@
+{
+  "type": "classify",
+  "title": "Page object or test?",
+  "statement": "Ти розбиваєш тести списку справ на `TodoPage` і тести. Куди що належить?",
+  "show": 8,
+  "passScore": 0.75,
+  "categories": [
+    { "id": "page-object", "label": "Page object", "description": "Як знайти елемент і як зробити дію" },
+    { "id": "test", "label": "Test", "description": "Які дані взяти і який результат очікувати" }
+  ],
+  "items": [
+    { "id": "locator-input", "text": "`self.new_task = page.get_by_placeholder(\"What needs to be done?\")`", "category": "page-object" },
+    { "id": "add-method", "text": "Метод `add(text)`: `fill` + `press(\"Enter\")`", "category": "page-object" },
+    { "id": "goto", "text": "Метод `goto()` з адресою `/playground/todo`", "category": "page-object" },
+    { "id": "item-method", "text": "Метод `item(text)`, що повертає рядок задачі за текстом", "category": "page-object" },
+    { "id": "counter-locator", "text": "Локатор лічильника `get_by_test_id(\"todo-counter\")`", "category": "page-object" },
+    { "id": "expected-counter", "text": "`expect(todo.counter).to_have_text(\"3 items left\")`", "category": "test", "explain": "Очікуваний результат залежить від конкретного сценарію — це рішення тесту." },
+    { "id": "task-text", "text": "Текст задачі `Write Playwright tests` для конкретного сценарію", "category": "test", "explain": "Тестові дані передають у методи аргументами." },
+    { "id": "boundary-100", "text": "Рішення перевірити задачу рівно зі 100 символів", "category": "test" },
+    { "id": "expect-hidden", "text": "Перевірка, що після видалення задачі її немає: `to_have_count(0)`", "category": "test" },
+    { "id": "which-row", "text": "Вибір, яку саме задачу позначити виконаною в цьому сценарії", "category": "test" }
+  ],
+  "hints": [
+    "Якщо зміниться верстка — що доведеться правити? Це page object.",
+    "Якщо зміняться вимоги чи сценарій — що доведеться правити? Це тест."
+  ],
+  "explanation": "Page object відповідає на питання **як**: як знайти поле, як додати задачу, як відкрити сторінку. Тест відповідає на питання **що**: які дані ввести і який результат правильний. Такий поділ означає, що зміна верстки зачіпає лише клас, а зміна вимог — лише тести."
+}

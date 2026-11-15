@@ -1,0 +1,35 @@
+{
+  "title": "Dialogs, frames and new tabs",
+  "minutes": 55,
+  "summary": "Діалоги alert / confirm / prompt (Playwright за замовчуванням їх закриває), обробник page.once / page.on(\"dialog\"), accept, accept(текст), dismiss і перевірка повідомлень; iframe через frame_locator і content_frame; нові вкладки через expect_popup; завантаження файлів через expect_download",
+  "resources": [
+    {
+      "title": "Playwright for Python: Dialogs",
+      "url": "https://playwright.dev/python/docs/dialogs",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Frames",
+      "url": "https://playwright.dev/python/docs/frames",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Pages (new tabs, popups)",
+      "url": "https://playwright.dev/python/docs/pages",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Downloads",
+      "url": "https://playwright.dev/python/docs/downloads",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

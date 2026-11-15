@@ -1,0 +1,24 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Product page on phone and tablet viewports",
+  "playground": "responsive",
+  "statement": "Сторінка товару Gadgetly (`/playground/responsive`) має працювати на ширині **від 320 px**: телефони, планшети, комп'ютери. Розмір вікна задавай **налаштуванням контексту** — маркером `@pytest.mark.browser_context_args(viewport=...)` — або `page.set_viewport_size(...)`.\n\n1. На телефоні (375×812) видно кнопку меню `Open menu`. *Уже є.*\n2. На телефоні (375×812) кнопка **Add to cart** видима і працює: після кліку `Added to cart ✓`.\n3. На ширині **320, 375 і 414 px** сторінка **не має горизонтального скролу** (параметризований тест): `page.evaluate(\"document.documentElement.scrollWidth <= window.innerWidth\")` дорівнює `True`.\n4. На планшеті (**800**×1024) видно посилання навігації (`data-testid=\"nav-links\"`), а кнопка меню схована.",
+  "minTests": 6,
+  "mutants": [
+    { "id": "cartHiddenMobile", "description": "\"Add to cart\" was hidden on phones (< 640 px).", "hint": "On a 375 px wide viewport, Add to cart must be visible and clickable." },
+    { "id": "tableOverflow", "description": "the specs table was wider than the screen on phones, so the page scrolled sideways.", "hint": "Check scrollWidth <= innerWidth at phone widths (320–414 px)." },
+    { "id": "navGap", "description": "at 768–1023 px neither the nav links nor the menu button were shown.", "hint": "At 800 px either the nav links or the menu button must be visible — the requirements say the links." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "browser_context_args|set_viewport_size", "message": "Задавай розмір вікна маркером `@pytest.mark.browser_context_args(viewport=...)` або через `page.set_viewport_size(...)`." },
+    { "kind": "require", "pattern": "scrollWidth", "message": "Вимога 3: перевір горизонтальний скрол через `document.documentElement.scrollWidth <= window.innerWidth`." },
+    { "kind": "require", "pattern": "@pytest\\.mark\\.parametrize", "message": "Вимога 3: параметризуй ширину (320, 375, 414)." }
+  ],
+  "hints": [
+    "Телефон: `PHONE = {\"width\": 375, \"height\": 812}` і `@pytest.mark.browser_context_args(viewport=PHONE)`; клік `page.get_by_role(\"button\", name=\"Add to cart\")`, потім `expect(page.get_by_test_id(\"added\")).to_have_text(\"Added to cart ✓\")`.",
+    "Ширини: `@pytest.mark.parametrize(\"width\", [320, 375, 414])`, у тесті `page.set_viewport_size({\"width\": width, \"height\": 800})` до `goto`.",
+    "Планшет: `@pytest.mark.browser_context_args(viewport={\"width\": 800, \"height\": 1024})`, `expect(page.get_by_test_id(\"nav-links\")).to_be_visible()` і `expect(page.get_by_role(\"button\", name=\"Open menu\")).to_be_hidden()`."
+  ],
+  "explanation": "Баги верстки з'являються лише на певних ширинах, тому тести перевіряють сторінку **на тих ширинах, які обіцяють вимоги**: телефон, проміжна ширина планшета, найвужчий підтримуваний екран. Розмір вікна — налаштування контексту: маркер для окремого тесту, `set_viewport_size` для параметризованого. Горизонтальний скрол перевіряють числом із самої сторінки: `scrollWidth` не має перевищувати ширину вікна."
+}

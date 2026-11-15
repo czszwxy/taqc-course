@@ -1,0 +1,20 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Account page: dialogs, a new tab and the help chat iframe",
+  "playground": "account",
+  "statement": "Сторінка **My account** Gadgetly (`/playground/account`). Увійди як `qa@gadgetly.test` / `Test1234` (фікстура `account` уже є: вона входить і віддає сторінку) і перевір:\n\n1. **Export my data** → alert `Your data export has started. We will email you a link.`, потім статус `Export requested`. *Уже є.*\n2. **Delete account** → у confirm натисни **Cancel** → акаунт лишається: видно `My account` і кнопку Delete account.\n3. **Rename** → у prompt введи **порожній** рядок → alert `Display name cannot be empty`, ім'я лишається `Olena Tester` (`data-testid=\"display-name\"`).\n4. **Terms of Service** відкривається в **новій вкладці** із заголовком `Gadgetly Terms of Service`, а акаунт лишається відкритим у першій.\n5. **Help chat** (iframe з `title=\"Help chat\"` унизу): Send без питання → `Please type your question`; з питанням → `Thanks! We'll reply within 24 hours.`\n\nДіалоги: обробник `page.once(\"dialog\", ...)` / `page.on(\"dialog\", ...)` **до** кліку. Вкладка: `with page.expect_popup() as popup_info:`. Фрейм: `page.frame_locator('iframe[title=\"Help chat\"]')`.",
+  "minTests": 5,
+  "codeRules": [
+    { "kind": "require", "pattern": "\\.dismiss\\(\\)", "message": "Вимога 2: натисни Cancel у confirm — `dialog.dismiss()`." },
+    { "kind": "require", "pattern": "accept\\(\"\"\\)|accept\\(''\\)", "message": "Вимога 3: введи порожній рядок у prompt — `dialog.accept(\"\")`." },
+    { "kind": "require", "pattern": "expect_popup\\(", "message": "Вимога 4: нову вкладку лови через `with page.expect_popup() as popup_info:`." },
+    { "kind": "require", "pattern": "frame_locator\\(|content_frame", "message": "Вимога 5: шукай елементи чату всередині фрейму — `page.frame_locator(...)`." }
+  ],
+  "hints": [
+    "Cancel: `account.once(\"dialog\", lambda dialog: dialog.dismiss())`, клік Delete account, потім `expect(account.get_by_role(\"heading\", name=\"My account\")).to_be_visible()` і кнопка Delete account на місці.",
+    "Rename: обробник `on(\"dialog\", ...)` записує `f\"{dialog.type}: {dialog.message}\"` у список; prompt — `accept(\"\")`, alert — `accept()`. Після `expect(...display-name...).to_have_text(\"Olena Tester\")` перевір список.",
+    "Чат: `chat = account.frame_locator('iframe[title=\"Help chat\"]')`, `chat.get_by_role(\"button\", name=\"Send\").click()`, `expect(chat.get_by_role(\"alert\")).to_have_text(\"Please type your question\")`; поле — `chat.get_by_label(\"Your question\")`, відповідь — `chat.get_by_role(\"status\")`."
+  ],
+  "explanation": "Кожен із цих елементів має «негативну» відповідь, яку звичайний тест не перевірить: Cancel у confirm, порожній prompt, вкладка замість переходу. Обробник діалогу реєструють до кліку, бо без нього Playwright сам закриє діалог. Тексти діалогів перевіряють через список, який заповнює обробник, — після наступної перевірки сторінки. Для нової вкладки перша перевірка отримує довший timeout: сторінка завантажується з нуля."
+}

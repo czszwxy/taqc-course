@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Fixtures for pages and test data",
+  "show": 5,
+  "hints": ["Фікстура з page має scope function. Слухачі — до goto. Одна фікстура в межах тесту — один об'єкт."],
+  "questions": [
+    {
+      "id": "page-object-fixture",
+      "kind": "single",
+      "text": "Фікстура `todo(page)` створює `TodoPage` і відкриває сторінку. Який у неї має бути scope?",
+      "options": [
+        { "text": "function: вона залежить від `page`, а `page` новий для кожного тесту", "correct": true },
+        { "text": "session — щоб сторінка відкривалася один раз" },
+        { "text": "Байдуже" }
+      ]
+    },
+    {
+      "id": "scope-mismatch",
+      "kind": "single",
+      "text": "Що означає `ScopeMismatch: You tried to access the function scoped fixture page with a session scoped request object`?",
+      "options": [
+        { "text": "Фікстура зі scope session попросила `page`, а він існує лише в межах одного тесту", "correct": true },
+        { "text": "Браузер не встановлено" },
+        { "text": "Тест не має параметра `page`" }
+      ]
+    },
+    {
+      "id": "listener-order",
+      "kind": "single",
+      "text": "Навіщо фікстурі `todo` параметр `failed_responses`, якщо вона його не використовує?",
+      "options": [
+        { "text": "Щоб слухач `page.on(\"response\")` підключився до `goto()` і не пропустив запити завантаження", "correct": true },
+        { "text": "Без цього pytest не запустить тест" },
+        { "text": "Щоб тест працював швидше" }
+      ]
+    },
+    {
+      "id": "same-object",
+      "kind": "single",
+      "text": "Тест просить і `todo`, і `failed_responses`, а `todo` теж залежить від `failed_responses`. Скільки списків буде створено?",
+      "options": [
+        { "text": "Один: у межах тесту фікстура викликається один раз і всім віддає той самий об'єкт", "correct": true },
+        { "text": "Два" },
+        { "text": "Жодного" }
+      ]
+    },
+    {
+      "id": "console",
+      "kind": "single",
+      "text": "Як дізнатися, що сторінка написала помилку в консоль браузера?",
+      "options": [
+        { "text": "`page.on(\"console\", handler)` і перевірка `message.type == \"error\"`", "correct": true },
+        { "text": "`page.console_errors()`" },
+        { "text": "Через `capsys`", "explain": "`capsys` перехоплює вивід Python, а не консоль браузера." }
+      ]
+    },
+    {
+      "id": "unique",
+      "kind": "single",
+      "text": "Тест реєструє користувача з email `qa@example.com`. Перший запуск зелений, другий — «email already taken». Як виправити?",
+      "options": [
+        { "text": "Генерувати унікальний email у фабриці даних (наприклад, з `uuid`)", "correct": true },
+        { "text": "Запускати тест лише один раз" },
+        { "text": "Додати `time.sleep`" }
+      ]
+    },
+    {
+      "id": "yield",
+      "kind": "single",
+      "text": "Фікстура створює замовлення через API для тесту. Як гарантувати, що воно буде видалене?",
+      "options": [
+        { "text": "Видалити його в коді після `yield` — він виконається навіть після падіння тесту", "correct": true },
+        { "text": "Видалити в кінці тесту" },
+        { "text": "Не видаляти" }
+      ]
+    }
+  ]
+}

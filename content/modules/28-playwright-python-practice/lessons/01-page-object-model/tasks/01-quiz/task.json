@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Page Object Model",
+  "show": 5,
+  "hints": ["Page object знає, ЯК знайти й зробити; тест знає, ЩО перевірити."],
+  "questions": [
+    {
+      "id": "why",
+      "kind": "single",
+      "text": "Розробники змінили підказку поля нової задачі. Як POM спрощує ремонт тестів?",
+      "options": [
+        { "text": "Локатор описаний один раз у класі сторінки — змінюється одне місце", "correct": true },
+        { "text": "POM сам знаходить нові локатори" },
+        { "text": "Ніяк: усе одно треба правити кожен тест" }
+      ]
+    },
+    {
+      "id": "init",
+      "kind": "single",
+      "text": "Що відбувається в `TodoPage(page)`, якщо `__init__` створює `self.counter = page.get_by_test_id(\"todo-counter\")`?",
+      "options": [
+        { "text": "Створюються локатори — описи елементів; шукати їх будуть пізніше, під час дій і перевірок", "correct": true },
+        { "text": "Playwright одразу шукає лічильник і падає, якщо сторінка ще не відкрита" },
+        { "text": "Відкривається сторінка списку справ" }
+      ]
+    },
+    {
+      "id": "asserts",
+      "kind": "single",
+      "text": "Де мають бути перевірки очікуваного результату (`expect(...).to_have_text(\"3 items left\")`)?",
+      "options": [
+        { "text": "У тесті: page object не знає, який результат правильний у конкретному випадку", "correct": true },
+        { "text": "У методі `add()`, щоб не повторювати" },
+        { "text": "У `__init__`" }
+      ]
+    },
+    {
+      "id": "self",
+      "kind": "single",
+      "text": "У методі `def goto(self):` написано `page.goto(self.URL)`. Що буде?",
+      "options": [
+        { "text": "`NameError: name 'page' is not defined` — треба `self.page.goto(...)`", "correct": true },
+        { "text": "Працюватиме" },
+        { "text": "Відкриється порожня сторінка" }
+      ]
+    },
+    {
+      "id": "data",
+      "kind": "single",
+      "text": "Як краще передати дані у `sign_in`?",
+      "options": [
+        { "text": "Аргументами: `sign_in(email, password)` — тоді метод підходить і для неправильного пароля", "correct": true },
+        { "text": "Записати `demo@taskly.test` прямо в метод" },
+        { "text": "Через глобальну змінну" }
+      ]
+    },
+    {
+      "id": "returns",
+      "kind": "single",
+      "text": "Метод `item(text)` повертає `self.items.filter(has_text=text)`. Навіщо повертати локатор?",
+      "options": [
+        { "text": "Тест сам вирішує, що з ним перевірити: видимість, галочку, кількість", "correct": true },
+        { "text": "Щоб метод швидше працював" },
+        { "text": "Методи page object завжди мають щось повертати" }
+      ]
+    },
+    {
+      "id": "pythonpath",
+      "kind": "single",
+      "text": "Тести в `tests/` падають з `ModuleNotFoundError: No module named 'pages'`. Що допоможе?",
+      "options": [
+        { "text": "`pythonpath = .` у `pytest.ini` — корінь проєкту потрапить у шлях імпорту", "correct": true },
+        { "text": "Перенести всі тести в `pages/`" },
+        { "text": "`pip install pages`" }
+      ]
+    }
+  ]
+}

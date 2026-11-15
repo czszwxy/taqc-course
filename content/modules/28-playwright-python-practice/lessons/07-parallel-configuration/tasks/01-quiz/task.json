@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Parallel runs and configuration",
+  "show": 5,
+  "hints": ["Воркер — окремий процес зі своїм браузером. Паралельність вимагає незалежних тестів."],
+  "questions": [
+    {
+      "id": "worker",
+      "kind": "single",
+      "text": "Що таке воркер у `pytest -n 4`?",
+      "options": [
+        { "text": "Окремий процес Python зі своїм браузером, який виконує частину тестів", "correct": true },
+        { "text": "Вкладка браузера" },
+        { "text": "Потік усередині одного тесту" }
+      ]
+    },
+    {
+      "id": "global-count",
+      "kind": "single",
+      "text": "Тест перевіряє `assert len(all_orders) == 5`. Чому він падає лише при `-n auto`?",
+      "options": [
+        { "text": "Інші тести паралельно створюють і видаляють замовлення — глобальна кількість змінюється", "correct": true },
+        { "text": "xdist рахує замовлення неправильно" },
+        { "text": "Потрібен `time.sleep`" }
+      ]
+    },
+    {
+      "id": "session-xdist",
+      "kind": "single",
+      "text": "Session-фікстура входить один раз і зберігає storage state. Скільки разів вона виконається при `-n 4`?",
+      "options": [
+        { "text": "До 4 разів — по одному в кожному воркері", "correct": true },
+        { "text": "Рівно один раз" },
+        { "text": "Перед кожним тестом" }
+      ]
+    },
+    {
+      "id": "spread",
+      "kind": "single",
+      "text": "Як перевизначити `browser_context_args`, щоб не загубити налаштування плагіна?",
+      "options": [
+        { "text": "`return {**browser_context_args, \"locale\": \"uk-UA\"}`", "correct": true },
+        { "text": "`return {\"locale\": \"uk-UA\"}`", "explain": "Так губляться інші опції, зокрема `base_url` з `--base-url`." },
+        { "text": "Змінити `pytest.ini`" }
+      ]
+    },
+    {
+      "id": "one-test",
+      "kind": "single",
+      "text": "Лише один тест має працювати у вікні 390×844. Що використати?",
+      "options": [
+        { "text": "`@pytest.mark.browser_context_args(viewport={\"width\": 390, \"height\": 844})` на цьому тесті", "correct": true },
+        { "text": "`--device` для всього запуску" },
+        { "text": "Перевизначити `browser_context_args` у кореневому conftest.py" }
+      ]
+    },
+    {
+      "id": "markers",
+      "kind": "single",
+      "text": "Навіщо реєструвати маркери в `pytest.ini` (`markers = smoke: ...`)?",
+      "options": [
+        { "text": "pytest попередить про опечатку в назві маркера, а `-m smoke` знаходитиме лише справжні маркери", "correct": true },
+        { "text": "Без цього маркери не працюють узагалі" },
+        { "text": "Щоб тести запускалися паралельно" }
+      ]
+    },
+    {
+      "id": "addopts",
+      "kind": "single",
+      "text": "У `addopts` записано `--base-url http://localhost:5173`. Як прогнати тести на staging?",
+      "options": [
+        { "text": "Передати `--base-url https://staging…` у командному рядку — він перебиває значення з addopts", "correct": true },
+        { "text": "Переписати всі `page.goto` на повні адреси" },
+        { "text": "Неможливо без зміни pytest.ini" }
+      ]
+    }
+  ]
+}

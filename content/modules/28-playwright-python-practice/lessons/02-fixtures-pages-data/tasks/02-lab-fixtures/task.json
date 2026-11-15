@@ -1,0 +1,25 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Fixtures for the DevTools Lab: page and console errors",
+  "playground": "devtools",
+  "statement": "Сторінка **DevTools Lab** (`/playground/devtools`). У стартовому файлі вже є фікстура `lab`: вона відкриває сторінку і віддає `page` у тест, і перший тест.\n\n1. Додай фікстуру **`console_errors`**: список, куди потрапляють усі повідомлення консолі типу `error` (`page.on(\"console\", ...)`) і необроблені помилки сторінки (`page.on(\"pageerror\", ...)`).\n2. Зроби так, щоб `lab` **залежала** від `console_errors` — тоді слухачі підключаться **до** відкриття сторінки.\n3. Тести:\n   - **Apply** для промокоду неактивна; якщо ввімкнути її через DOM і натиснути, сервер **відмовляє**: `Server rejected the request (403)…`. *Уже є.*\n   - **Calculate total** показує текст, що починається з `Total: `, і **не пише помилок** у консоль: `assert console_errors == []`.\n   - **Log out** видаляє кошик з localStorage (ключ `lab:cart`).\n\nlocalStorage читають так: `lab.evaluate(\"localStorage.getItem('lab:cart')\")`. Дочекатися, поки значення зникне: `lab.wait_for_function(\"() => localStorage.getItem('lab:cart') === null\")`.",
+  "minTests": 3,
+  "mutants": [
+    { "id": "totalCrash", "description": "\"Calculate total\" threw a TypeError (it read a missing item).", "hint": "Click Calculate total, check the Total: message AND that console_errors stayed empty." },
+    { "id": "promoClientOnly", "description": "the enabled Apply button gave a discount without a server check.", "hint": "Remove the disabled attribute, click Apply and check the server's answer." },
+    { "id": "logoutKeepsCart", "description": "Log out left lab:cart in localStorage.", "hint": "After Log out wait until localStorage.getItem('lab:cart') is null (wait_for_function)." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "def console_errors\\(", "message": "Додай фікстуру `console_errors`." },
+    { "kind": "require", "pattern": "\"pageerror\"|'pageerror'", "message": "Збирай і необроблені помилки сторінки: `page.on(\"pageerror\", ...)`." },
+    { "kind": "require", "pattern": "def lab\\([^)]*console_errors", "message": "Фікстура `lab` має залежати від `console_errors`: `def lab(page, console_errors):` — тоді слухачі підключаться до goto." },
+    { "kind": "require", "pattern": "console_errors == \\[\\]", "message": "Перевір, що помилок у консолі немає: `assert console_errors == []`." }
+  ],
+  "hints": [
+    "Фікстура: `errors = []`, функція `def remember(message): if message.type == \"error\": errors.append(message.text)`, `page.on(\"console\", remember)`, `page.on(\"pageerror\", lambda error: errors.append(str(error)))`, `return errors`.",
+    "Total: `expect(lab.get_by_test_id(\"total-message\")).to_have_text(re.compile(r\"^Total: \"))` (імпорт `re`), потім `assert console_errors == []`.",
+    "Log out: перевір, що кошик є (`assert lab.evaluate(\"localStorage.getItem('lab:cart')\") is not None`), натисни `Log out` і виклич `lab.wait_for_function(...)`."
+  ],
+  "explanation": "Помилка в консолі часто не видна в інтерфейсі: сторінка показує загальне «Something went wrong» або взагалі нічого. Фікстура зі слухачем збирає такі помилки для кожного тесту, а залежність `lab(page, console_errors)` гарантує, що слухач підключено до завантаження сторінки. Для стану, що змінюється не миттєво (localStorage після Log out), потрібна перевірка з очікуванням: `wait_for_function` повторює умову, доки вона не справдиться або не мине timeout."
+}

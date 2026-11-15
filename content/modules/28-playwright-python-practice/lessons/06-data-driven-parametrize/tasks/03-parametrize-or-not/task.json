@@ -1,0 +1,29 @@
+{
+  "type": "classify",
+  "title": "Parametrize, separate tests or a run option?",
+  "statement": "Для кожної ситуації обери найкраще рішення.",
+  "show": 8,
+  "passScore": 0.75,
+  "categories": [
+    { "id": "parametrize", "label": "Parametrize", "description": "Ті самі кроки й перевірка, різні дані" },
+    { "id": "separate", "label": "Separate tests", "description": "Різні кроки або різні перевірки" },
+    { "id": "option", "label": "Run option", "description": "Не код тесту, а параметр запуску" }
+  ],
+  "items": [
+    { "id": "ages", "text": "Вік 17 і 66 на формі: ті самі кроки, те саме повідомлення про помилку", "category": "parametrize" },
+    { "id": "promo-case", "text": "Промокод `SAVE10`, `save10` і `' SAVE10 '` дають ту саму знижку", "category": "parametrize" },
+    { "id": "categories", "text": "П'ять категорій каталогу: вибрати категорію і перевірити кількість товарів", "category": "parametrize" },
+    { "id": "widths", "text": "Сторінка на ширині 320, 375 і 414 px — ніде немає горизонтального скролу", "category": "parametrize" },
+    { "id": "login-logout", "text": "«Вхід, потім вихід і перевірка, що сесію забуто» та «вхід з неправильним паролем»", "category": "separate", "explain": "Різні кроки і різні очікування — це різні тест-кейси." },
+    { "id": "valid-invalid", "text": "Валідна реєстрація (вітання) і невалідний email (помилка під полем)", "category": "separate", "explain": "Різні перевірки: без `if` у тесті їх не об'єднати в один параметризований тест." },
+    { "id": "export-delete", "text": "Export (alert) і Delete account (confirm) на сторінці акаунта", "category": "separate" },
+    { "id": "browsers", "text": "Ті самі тести в Chromium, Firefox і WebKit", "category": "option", "explain": "`--browser chromium --browser firefox --browser webkit`." },
+    { "id": "staging", "text": "Ті самі тести на staging замість localhost", "category": "option", "explain": "`--base-url https://staging…`." },
+    { "id": "smoke", "text": "На кожен pull request запускати лише smoke-тести", "category": "option", "explain": "Маркер і `-m smoke`." }
+  ],
+  "hints": [
+    "Якщо змінюються лише дані — parametrize. Якщо змінюються кроки чи перевірки — окремі тести.",
+    "Браузер, стенд і вибір підмножини тестів задають при запуску, а не в коді тесту."
+  ],
+  "explanation": "Parametrize — для однієї поведінки на різних даних (класи еквівалентності, межі, варіанти написання). Різні сценарії з різними кроками чи перевірками — окремі тести, інакше з'являється `if` у тесті. А все, що стосується **середовища** запуску (браузер, стенд, набір тестів), задають опціями командного рядка: код тестів від цього не змінюється."
+}

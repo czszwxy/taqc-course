@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Dialogs, frames and new tabs",
+  "show": 5,
+  "hints": ["Діалог без обробника закривається сам. Вміст iframe — окремий документ. Нова вкладка — expect_popup."],
+  "questions": [
+    {
+      "id": "default",
+      "kind": "single",
+      "text": "Тест натискає «Delete project», з'являється confirm. Обробника діалогів немає. Що зробить Playwright?",
+      "options": [
+        { "text": "Закриє діалог сам — як натискання Cancel", "correct": true },
+        { "text": "Натисне OK" },
+        { "text": "Тест зависне до timeout" }
+      ]
+    },
+    {
+      "id": "before",
+      "kind": "single",
+      "text": "Коли реєструвати `page.once(\"dialog\", ...)`?",
+      "options": [
+        { "text": "До дії, що відкриває діалог", "correct": true },
+        { "text": "Одразу після кліку" },
+        { "text": "Наприкінці тесту" }
+      ]
+    },
+    {
+      "id": "prompt",
+      "kind": "single",
+      "text": "Як ввести `Release 2.0` у prompt і натиснути OK?",
+      "options": [
+        { "text": "`dialog.accept(\"Release 2.0\")`", "correct": true },
+        { "text": "`dialog.fill(\"Release 2.0\")`" },
+        { "text": "`page.keyboard.type(\"Release 2.0\")`" }
+      ]
+    },
+    {
+      "id": "frame",
+      "kind": "single",
+      "text": "Поле `Card number` лежить усередині `<iframe title=\"Payment\">`. Як його знайти?",
+      "options": [
+        { "text": "`page.frame_locator('iframe[title=\"Payment\"]').get_by_label(\"Card number\")`", "correct": true },
+        { "text": "`page.get_by_label(\"Card number\")`", "explain": "Локатори сторінки не бачать вміст iframe — це окремий документ." },
+        { "text": "`page.goto(\"iframe\")`" }
+      ]
+    },
+    {
+      "id": "popup",
+      "kind": "single",
+      "text": "Як отримати сторінку, яка відкривається в новій вкладці після кліку?",
+      "options": [
+        { "text": "`with page.expect_popup() as popup_info:` навколо кліку, потім `popup_info.value`", "correct": true },
+        { "text": "Після кліку працювати з тим самим `page`" },
+        { "text": "`page.reload()`" }
+      ]
+    },
+    {
+      "id": "once-on",
+      "kind": "single",
+      "text": "Чим `page.once(\"dialog\", ...)` відрізняється від `page.on(\"dialog\", ...)`?",
+      "options": [
+        { "text": "`once` спрацьовує лише на наступний діалог, `on` — на кожен", "correct": true },
+        { "text": "Нічим" },
+        { "text": "`once` працює лише з alert" }
+      ]
+    },
+    {
+      "id": "same-tab",
+      "kind": "single",
+      "text": "Вимога: «Terms відкриваються в новій вкладці». Тест з `expect_popup()` падає з timeout. Що це може означати?",
+      "options": [
+        { "text": "Посилання відкрилося в тій самій вкладці — тест знайшов розбіжність з вимогою", "correct": true },
+        { "text": "Треба `time.sleep`" },
+        { "text": "Playwright не підтримує вкладки" }
+      ]
+    }
+  ]
+}

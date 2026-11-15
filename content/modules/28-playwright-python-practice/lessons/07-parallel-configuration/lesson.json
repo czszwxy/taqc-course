@@ -1,0 +1,35 @@
+{
+  "title": "Parallel runs and configuration",
+  "minutes": 55,
+  "summary": "Паралельний запуск UI-тестів з pytest-xdist (-n auto, --dist loadfile), що ламається при паралельності і як писати незалежні тести, session-фікстури в кожному worker, налаштування pytest.ini (addopts, markers, testpaths, pythonpath), browser_context_args і маркер для розміру вікна, локалі й часової зони, --device, set_viewport_size, timeouts",
+  "resources": [
+    {
+      "title": "pytest-xdist documentation",
+      "url": "https://pytest-xdist.readthedocs.io/en/stable/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Pytest plugin reference — parallelism and configuration",
+      "url": "https://playwright.dev/python/docs/test-runners",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Emulation (viewport, locale, timezone, devices)",
+      "url": "https://playwright.dev/python/docs/emulation",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: Configuration (pytest.ini)",
+      "url": "https://docs.pytest.org/en/stable/reference/customize.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

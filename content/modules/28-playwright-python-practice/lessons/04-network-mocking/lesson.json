@@ -1,0 +1,35 @@
+{
+  "title": "Network mocking with page.route",
+  "minutes": 60,
+  "summary": "Навіщо підміняти мережу в UI-тестах і коли не варто, page.route і шаблони адрес, route.fulfill (status, json), route.abort, route.continue_, route.fetch для зміни справжньої відповіді, обробник зі станом, перевірка запитів через expect_request і expect_response (метод, заголовки, тіло, параметри адреси)",
+  "resources": [
+    {
+      "title": "Playwright for Python: Mock APIs",
+      "url": "https://playwright.dev/python/docs/mock",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Network",
+      "url": "https://playwright.dev/python/docs/network",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Route",
+      "url": "https://playwright.dev/python/docs/api/class-route",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: urllib.parse",
+      "url": "https://docs.python.org/3/library/urllib.parse.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

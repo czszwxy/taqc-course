@@ -1,0 +1,24 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "variantOf": "02-mock-orders",
+  "title": "DevTools Lab: check what the page sends",
+  "playground": "devtools",
+  "statement": "Друга сторона роботи з мережею — перевірити, **що саме** сторінка надсилає на сервер. Сторінка **DevTools Lab** (`/playground/devtools`), розділ **3. Network**.\n\n1. Якщо сервер на **Save profile** відповів **500** (`page.route`), сторінка пише `Could not save the profile`. *Уже є.*\n2. **Save profile** надсилає `POST …/lab/profile` з тілом `{\"name\": \"Olena\", \"newsletter\": true, \"language\": \"uk\"}` — галочка newsletter стоїть за замовчуванням.\n3. Якщо зняти галочку **Subscribe to newsletter**, у тілі `\"newsletter\": false`.\n4. **Load orders** зі статусом **Shipped** (список `Status`) надсилає запит з параметром `status=shipped`.\n\n```python\nwith page.expect_request(lambda r: \"/lab/profile\" in r.url and r.method == \"POST\") as request_info:\n    page.get_by_role(\"button\", name=\"Save profile\").click()\nbody = request_info.value.post_data_json\n```",
+  "minTests": 4,
+  "mutants": [
+    { "id": "newsletterFalse", "description": "Save profile sent newsletter: false although the box was checked.", "hint": "Check post_data_json of the profile request with the box CHECKED (the default)." },
+    { "id": "ordersFilter", "description": "Load orders sent status=all instead of the selected status.", "hint": "Select Shipped, click Load orders and check the status query parameter of the request." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "expect_request\\(", "message": "Перехоплюй запити через `with page.expect_request(...) as request_info:`." },
+    { "kind": "require", "pattern": "post_data_json", "message": "Тіло запиту перевір через `request_info.value.post_data_json`." },
+    { "kind": "require", "pattern": "parse_qs|urlparse|status=shipped", "message": "Вимога 4: перевір параметр адреси `status` (наприклад, через `urllib.parse.parse_qs`)." }
+  ],
+  "hints": [
+    "Тіло за замовчуванням: `assert request_info.value.post_data_json == {\"name\": \"Olena\", \"newsletter\": True, \"language\": \"uk\"}` (у Python — `True` з великої).",
+    "Галочка: `page.get_by_label(\"Subscribe to newsletter\").uncheck()` перед кліком Save profile.",
+    "Статус: `page.get_by_label(\"Status\", exact=True).select_option(\"shipped\")`, `with page.expect_request(\"**/lab/orders*\") as request_info: ...click()`, потім `parse_qs(urlparse(request_info.value.url).query)[\"status\"] == [\"shipped\"]`."
+  ],
+  "explanation": "Інтерфейс може виглядати правильно, а на сервер піде не те: галочка стоїть, а в запиті `false`; фільтр вибрано, а в запиті `all`. Такі баги видно лише в мережі — у DevTools вручну або в тесті через `expect_request`. Перевіряй запит у **стані за замовчуванням** теж: саме там помилка в тілі запиту найлегше ховається."
+}
