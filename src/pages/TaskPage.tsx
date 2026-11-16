@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, type ComponentType } from 'react';
-import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { lessonPath, lessonsById, neighbourLessons, taskPath, tasksById, type Course, type CourseLesson, type CourseTask } from '../content/loader';
 import { useCourseForModule } from '../app/currentCourse';
 import { TASK_TYPE_LABEL, type Task } from '../content/schema';
@@ -70,6 +70,9 @@ export function TaskPage() {
     if (main && !main.isVariant) setLast(location.pathname + location.search, main.task.title);
   }, [main, location.pathname, location.search, setLast]);
 
+  // A "similar task" opened by its own folder URL (old link, bookmark) → its main task with ?v=.
+  const variantMain = main?.isVariant ? tasksById.get(main.mainId) : undefined;
+  if (main && variantMain) return <Navigate replace to={`${taskPath(variantMain)}?v=${encodeURIComponent(main.slug)}`} />;
   if (!main || main.isVariant || !lesson || !active) return <NotFound />;
 
   const group = [main, ...main.variants];

@@ -29,7 +29,7 @@ function asText(value: string | string[] | undefined): string {
 
 function FieldInput({ field, value, onChange, disabled }: { field: WrittenField; value: string | string[]; onChange: (v: string | string[]) => void; disabled: boolean }) {
   if (field.kind === 'list') {
-    return <StepsEditor steps={Array.isArray(value) ? value : [value]} onChange={onChange} disabled={disabled} placeholder={field.placeholder} />;
+    return <StepsEditor steps={Array.isArray(value) ? value : [value]} onChange={onChange} disabled={disabled} placeholder={field.placeholder} itemName="item" />;
   }
   const text = Array.isArray(value) ? value.join('\n') : value;
   if (field.kind === 'text') {

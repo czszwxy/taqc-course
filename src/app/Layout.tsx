@@ -1,11 +1,13 @@
-import { Link, NavLink, Outlet } from 'react-router-dom';
-import { catalog, coursePath } from '../content/loader';
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
+import { catalog } from '../content/loader';
 import { useProgress, useSettings } from '../features/progress/store';
 import { courseStats } from '../features/progress/selectors';
 import { useAutoSync, useSync } from '../features/sync/sync';
 import { useCurrentCourse } from './currentCourse';
 
 const MAX_SHOWN_ERRORS = 8;
+/** Routes that belong to one course: only there the top bar shows that course's lesson counter. */
+const COURSE_ROUTE_PREFIXES = ['/course/', '/module/', '/learn/'];
 
 function navClass({ isActive }: { isActive: boolean }): string {
   const state = isActive ? 'bg-highlight text-highlight-fg' : 'text-muted hover:bg-hover hover:text-fg';
@@ -18,7 +20,9 @@ export function Layout() {
   const tasks = useProgress((s) => s.tasks);
   const theoryRead = useProgress((s) => s.theoryRead);
   const current = useCurrentCourse();
-  const stats = current ? courseStats(current, { tasks, theoryRead }) : undefined;
+  const { pathname } = useLocation();
+  const inCourse = COURSE_ROUTE_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+  const stats = current && inCourse ? courseStats(current, { tasks, theoryRead }) : undefined;
   useAutoSync();
   const syncFailed = useSync((s) => s.status === 'error' && Boolean(s.token));
 
@@ -34,16 +38,9 @@ export function Layout() {
               <span aria-hidden="true">🎓</span>
               <span className="hidden md:inline">Courses</span>
             </NavLink>
-            {current && (
-              <NavLink to={coursePath(current)} className={navClass} title={`${current.title} (${current.subtitle}) — course map`}>
-                <span aria-hidden="true">{current.icon}</span>
-                <span className="hidden truncate lg:inline">{current.title}</span>
-                <span className="lg:hidden">Map</span>
-              </NavLink>
-            )}
             <NavLink to="/playground" className={navClass} title="Bug Playground">
               <span aria-hidden="true">🐞</span>
-              <span className="hidden xl:inline">Bug Playground</span>
+              <span className="hidden md:inline">Bug Playground</span>
             </NavLink>
           </nav>
           <div className="flex-1" />
