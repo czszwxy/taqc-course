@@ -85,6 +85,28 @@ function laterLast(a: ProgressData['last'], b: ProgressData['last']): ProgressDa
   return b.at > a.at ? b : a;
 }
 
+/** Keeps only the entries of a record whose time (from `timeOf`) is after `since`. */
+function newerThan<T>(record: Record<string, T>, since: string, timeOf: (key: string, value: T) => string | undefined): Record<string, T> {
+  return Object.fromEntries(Object.entries(record).filter(([key, value]) => (timeOf(key, value) ?? '') > since));
+}
+
+/**
+ * Only what changed after `since` (an ISO time): used when another device reset or imported the progress — work done
+ * here after that moment is kept, everything older follows the reset. Links have no times, so none of them are kept.
+ */
+export function changesSince(data: ProgressData, since: string): ProgressData {
+  const draftTimes = newerThan(data.draftTimes ?? {}, since, (_key, time) => time);
+  const last = data.last && data.last.at > since ? data.last : undefined;
+  return {
+    tasks: newerThan(data.tasks, since, (_key, task) => task.updatedAt),
+    drafts: newerThan(data.drafts, since, (key) => draftTimes[key]),
+    draftTimes,
+    theoryRead: newerThan(data.theoryRead, since, (_key, time) => time),
+    verifiedLinks: {},
+    ...(last === undefined ? {} : { last }),
+  };
+}
+
 export function mergeProgress(local: ProgressData, remote: ProgressData): ProgressData {
   const { drafts, draftTimes } = mergeDrafts(local, remote);
   const last = laterLast(local.last, remote.last);
