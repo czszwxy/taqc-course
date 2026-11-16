@@ -1,0 +1,25 @@
+{
+  "type": "playwright",
+  "title": "Deal of the day: offline, location and time zone",
+  "playground": "deal",
+  "statement": "Та сама сторінка **Deal of the day** (`/playground/deal`), тепер — середовище користувача.\n\nВимоги:\n\n- **Офлайн**: банер `You are offline. Reconnect to buy.` (`data-testid=\"offline-banner\"`) і неактивна **Buy now**; коли мережа повернулась — банер зникає, кнопка активна.\n- **Find nearest store**: `Nearest store: <місто>` (`store-result`) — найближчий з магазинів Kyiv, Lviv, Odesa. Якщо доступ до геолокації заборонено — `Location access denied. Choose a store from the list.` (`store-error`).\n- **Deal ends at** (`deal-end-time`) показує час завершення у **часовому поясі користувача**.\n\nУ стартовому файлі є приклад з геолокацією Львова. Напиши тести:\n\n1. Офлайн і повернення мережі (`context.setOffline`).\n2. Користувач у **Харкові** (`49.99, 36.23`) → `Nearest store: Kyiv`.\n3. Без дозволу на геолокацію → повідомлення про відмову.\n4. Часовий пояс `Europe/Kyiv`, годинник `2026-03-20T12:00:00Z` → `Deal ends at 14:05`.\n\nПотрібно щонайменше 5 тестів.",
+  "minTests": 5,
+  "mutants": [
+    { "id": "offlineBuy", "description": "Buy now stayed enabled while the browser was offline.", "hint": "Go offline and check the Buy now button, not only the banner." },
+    { "id": "geoDenied", "description": "With location access denied the page showed “Locating…” forever.", "hint": "Run a test without the geolocation permission and expect the denied message." },
+    { "id": "nearestWrong", "description": "The nearest store was picked by latitude only (Kharkiv → Lviv).", "hint": "Use a location where the closest store is not the one with the closest latitude — Kharkiv." },
+    { "id": "endTimeUtc", "description": "“Deal ends at” was shown in UTC instead of the user's time zone.", "hint": "Set timezoneId and a fixed clock, then check the end time text." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "setOffline\\(", "message": "Вимкни мережу через `context.setOffline(true)`." },
+    { "kind": "require", "pattern": "timezoneId", "message": "Задай часовий пояс: `test.use({ timezoneId: 'Europe/Kyiv' })`." },
+    { "kind": "require", "pattern": "geolocation", "message": "Задай координати через `geolocation` у `test.use`." },
+    { "kind": "forbid", "pattern": "waitForTimeout", "message": "Без пауз: `expect` чекає сам." }
+  ],
+  "hints": [
+    "Офлайн: `async ({ page, context })`, `await context.setOffline(true)`, перевірки, потім `await context.setOffline(false)` і перевір, що банера немає (`toHaveCount(0)`) і кнопка активна.",
+    "Харків: окремий `test.describe` з `test.use({ geolocation: { latitude: 49.99, longitude: 36.23 }, permissions: ['geolocation'] })`. Тест без дозволу — поза цими `describe`.",
+    "Часовий пояс: `test.describe` з `test.use({ timezoneId: 'Europe/Kyiv' })`; у тесті `await page.clock.install({ time: new Date('2026-03-20T12:00:00Z') })` до `goto`."
+  ],
+  "explanation": "Кожен тест відтворює середовище, яке важко отримати руками: зникла мережа, користувач в іншому місті, заборонений доступ, інший часовий пояс. Дані для геолокації обрано так, щоб вони розрізняли правильний алгоритм і спрощений: для Харкова найближчий магазин — Київ, хоча за широтою ближчий Львів. А перевірка часу має сенс лише разом з фіксованим годинником і явним `timezoneId` — інакше результат залежить від машини."
+}

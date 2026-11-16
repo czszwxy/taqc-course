@@ -1,0 +1,28 @@
+{
+  "title": "Time, network and device emulation",
+  "minutes": 65,
+  "summary": "Як тестувати те, чого не можна чекати чи зробити руками: фальшивий годинник page.clock (install, pauseAt, fastForward, runFor, setFixedTime), офлайн-режим, геолокація й дозволи, часовий пояс і локаль, кольорова схема та розмір екрана; де задавати налаштування (test.use, проєкти, новий контекст)",
+  "resources": [
+    {
+      "title": "Playwright: Clock",
+      "url": "https://playwright.dev/docs/clock",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Emulation (devices, locale, timezone, geolocation, permissions, offline)",
+      "url": "https://playwright.dev/docs/emulation",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Geolocation API",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

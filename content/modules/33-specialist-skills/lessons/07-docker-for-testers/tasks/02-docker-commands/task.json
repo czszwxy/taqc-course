@@ -1,0 +1,37 @@
+{
+  "type": "table",
+  "title": "Which Docker command do you need?",
+  "statement": "Робочий день тестувальника з Docker. Для кожної потреби обери команду.",
+  "hints": [
+    "`ps` — що запущено, `logs` — що пише, `exec` — зайти всередину, `run` — запустити нове.",
+    "Команди `docker compose …` працюють одразу з усіма сервісами з файлу."
+  ],
+  "explanation": "Майже вся щоденна робота — це шість дій: завантажити (`pull`), запустити (`run`), подивитися (`ps`, `logs`), зайти всередину (`exec`), зупинити (`stop`) і підняти чи прибрати ціле середовище (`compose up`, `compose down -v`).",
+  "givenColumns": ["Need"],
+  "answerColumns": [
+    {
+      "id": "command",
+      "label": "Command",
+      "options": [
+        "docker pull postgres:17",
+        "docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=test postgres:17",
+        "docker ps",
+        "docker logs -f app",
+        "docker exec -it app bash",
+        "docker stop app",
+        "docker compose up -d",
+        "docker compose down -v"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["Завантажити образ бази даних, не запускаючи його"], "answers": { "command": "docker pull postgres:17" } },
+    { "given": ["Запустити базу у фоні з доступом через порт 5432 і паролем `test`"], "answers": { "command": "docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=test postgres:17" } },
+    { "given": ["Подивитися, які контейнери зараз працюють"], "answers": { "command": "docker ps" } },
+    { "given": ["Стежити за логами застосунку, поки відтворюєш баг"], "answers": { "command": "docker logs -f app" } },
+    { "given": ["Зайти в термінал усередині контейнера застосунку, щоб подивитися файл конфігурації"], "answers": { "command": "docker exec -it app bash" } },
+    { "given": ["Зупинити контейнер застосунку"], "answers": { "command": "docker stop app" } },
+    { "given": ["Підняти у фоні всі сервіси з `docker-compose.yml`"], "answers": { "command": "docker compose up -d" } },
+    { "given": ["Зупинити все середовище і стерти дані бази, щоб почати з чистого аркуша"], "answers": { "command": "docker compose down -v" } }
+  ]
+}

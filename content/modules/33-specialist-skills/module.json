@@ -1,0 +1,14 @@
+{
+  "title": "Specialist Skills: Beyond the Basics",
+  "description": "Те, що відрізняє сильного автоматизатора від початківця: просунуті інструменти Playwright (кроки, polling, власні матчери), керування часом, мережею й геолокацією в тестах, тестування доступності (axe + клавіатура), основи performance- і security-тестування, BDD і Gherkin, Docker для тестувальника та робота з AI-асистентами без втрати якості. Практика — на двох нових сторінках Bug Playground (Deal of the day і Accessibility lab) та вже знайомих сторінках.",
+  "goals": [
+    "Structure long scenarios with test.step, poll non-UI values and write custom matchers",
+    "Control time, offline mode, geolocation and time zones in Playwright tests",
+    "Test accessibility with an automatic axe scan plus keyboard and role checks",
+    "Explain load, stress, spike and soak tests, percentiles and Core Web Vitals, and compute a load-test summary",
+    "Recognise the main web security risks (OWASP Top 10) and probe them safely as a QA",
+    "Write clear Gherkin scenarios and know where BDD helps",
+    "Run tests in Docker containers and read a docker compose file",
+    "Use AI assistants for testing work while verifying their output and protecting data"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "title": "Accessibility testing",
+  "minutes": 70,
+  "summary": "Доступність (a11y) для тестувальника: навіщо і кому, WCAG 2.2 і принципи POUR, що перевіряти руками (клавіатура, фокус, назви й підписи, alt, контраст, помилки, діалоги), інструменти (DevTools, axe, скрінрідер) і автоматизація в Playwright: скан axe-core, перевірки ролей і назв, клавіатурні тести та aria-снапшоти — і чому автоматика знаходить лише частину проблем",
+  "resources": [
+    {
+      "title": "W3C WAI: WCAG 2 Overview",
+      "url": "https://www.w3.org/WAI/standards-guidelines/wcag/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "W3C WAI: Easy Checks — a first review of web accessibility",
+      "url": "https://www.w3.org/WAI/test-evaluate/preliminary/",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Accessibility testing (axe-core)",
+      "url": "https://playwright.dev/docs/accessibility-testing",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Snapshot testing with aria snapshots",
+      "url": "https://playwright.dev/docs/aria-snapshots",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "axe-core: the accessibility testing engine",
+      "url": "https://github.com/dequelabs/axe-core",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Accessibility",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

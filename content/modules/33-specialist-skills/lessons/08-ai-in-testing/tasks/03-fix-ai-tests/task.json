@@ -1,0 +1,23 @@
+{
+  "type": "playwright",
+  "title": "Review and fix AI-generated tests",
+  "playground": "search",
+  "statement": "Колега попросив AI: «Напиши тести Playwright для сторінки пошуку» — і надіслав результат тобі на рев'ю (стартовий файл). AI не бачив ні сторінку `/playground/search`, ні вимоги. Тести мають типові вади: вигадані локатори й числа, паузи, перевірки, які нічого не доводять.\n\nВимоги (жовта панель на сторінці):\n\n- пошук за назвою **не залежить від регістру**: `MOUSE` знаходить 2 товари;\n- лічильник `N products found` **дорівнює кількості карток**; з **In stock only** це `10 products found` і 10 карток;\n- сортування **Price: high to low** — ціни за спаданням, перший товар — `Laptop Pro 15`.\n\nВиправ три тести так, щоб вони проходили на правильній сторінці і **ловили порушення цих вимог**:\n\n- лише справжні локатори (`getByLabel`, `getByTestId`, `getByRole`);\n- точні перевірки (`toHaveCount`, `toHaveText`, порядок цін);\n- без `waitForTimeout`.",
+  "minTests": 3,
+  "mutants": [
+    { "id": "searchCase", "description": "Search was case-sensitive: “MOUSE” found nothing.", "hint": "Search in upper case and check the exact number of cards, not just that something is shown." },
+    { "id": "countIgnoresStock", "description": "With “In stock only” the counter still counted out-of-stock products.", "hint": "Compare the counter text with the number of cards when In stock only is on." },
+    { "id": "sortAsText", "description": "“Price: high to low” compared prices as text.", "hint": "Check the first product and that every price is not higher than the previous one." }
+  ],
+  "codeRules": [
+    { "kind": "forbid", "pattern": "waitForTimeout", "message": "Прибери паузи: `expect(...)` чекає сам." },
+    { "kind": "forbid", "pattern": "#search-box|\\.product-card", "message": "Це вигадані локатори — таких елементів на сторінці немає. Використай `getByLabel('Search')`, `getByTestId('results')`…" },
+    { "kind": "forbid", "pattern": "toBeTruthy\\(\\)|toBeGreaterThan\\(0\\)", "message": "Перевірка «щось є» нічого не доводить. Перевір точну кількість, текст або порядок." }
+  ],
+  "hints": [
+    "Пошук: `await page.getByLabel('Search').fill('MOUSE');` і `await expect(page.getByTestId('results').getByRole('listitem')).toHaveCount(2);`.",
+    "Наявність: після `check()` перевір і картки (`toHaveCount(10)`), і лічильник (`toHaveText('10 products found')`) — число візьми з вимог, а не з тесту AI.",
+    "Сортування: дочекайся `await expect(page.getByTestId('product-name').first()).toHaveText('Laptop Pro 15');`, потім `allInnerTexts()` для `product-price`, перетвори на числа (`Number(text.replace(/\\D/g, ''))`) і порівняй з відсортованою копією."
+  ],
+  "explanation": "Кожна вада згенерованого тесту має причину. Локатори `#search-box` і `.product-card` AI вигадав, бо не бачив сторінку. Число `12` він теж вигадав, бо не знав даних. `toBeGreaterThan(0)` і `toBeTruthy()` «працюють» за будь-якої поведінки, тож не ловлять жодного дефекту. Паузи повільні й ненадійні. Рев'ю зводиться до трьох питань: чи існують локатори, чи взяті очікування з вимог і чи здатен тест упасти, коли вимогу порушено."
+}

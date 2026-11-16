@@ -1,0 +1,35 @@
+{
+  "title": "Performance testing basics",
+  "minutes": 55,
+  "summary": "Основи performance-тестування для QA: навіщо і які бувають тести (load, stress, spike, soak), метрики (час відповіді, перцентилі p50 / p95 / p99, throughput, error rate), чому середнє бреше, SLA і пороги, мінімальний скрипт k6, швидкість фронтенду — Core Web Vitals (LCP, INP, CLS) і Lighthouse, лабораторні й польові дані, і правила безпеки навантажувальних тестів",
+  "resources": [
+    {
+      "title": "Grafana k6 documentation",
+      "url": "https://grafana.com/docs/k6/latest/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "k6: Thresholds",
+      "url": "https://grafana.com/docs/k6/latest/using-k6/thresholds/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev: Web Vitals",
+      "url": "https://web.dev/articles/vitals",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Chrome for Developers: Lighthouse overview",
+      "url": "https://developer.chrome.com/docs/lighthouse/overview",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

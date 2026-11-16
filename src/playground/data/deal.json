@@ -1,0 +1,11 @@
+{
+  "product": { "name": "Wireless Headphones H1", "regularPrice": 2999, "dealPrice": 2399 },
+  "dealMinutes": 5,
+  "toastMs": 5000,
+  "tickMs": 250,
+  "stores": [
+    { "city": "Kyiv", "latitude": 50.45, "longitude": 30.52 },
+    { "city": "Lviv", "latitude": 49.84, "longitude": 24.03 },
+    { "city": "Odesa", "latitude": 46.48, "longitude": 30.72 }
+  ]
+}

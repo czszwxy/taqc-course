@@ -1,0 +1,25 @@
+{
+  "type": "playwright",
+  "title": "To-do list: steps, a custom matcher and polling",
+  "playground": "todo",
+  "statement": "Сторінка **My tasks** (`/playground/todo`) відкривається з трьома задачами: `Write test cases for the login page` (виконана), `Report the cart bug` і `Buy coffee` (активні); лічильник — `2 items left`. Список зберігається в `localStorage` під ключем `qa-playground:todo` як масив об'єктів `{ id, text, done }`.\n\nУ стартовому файлі є перший тест з `test.step`. Зроби три речі:\n\n1. **Власний матчер** `toHaveItemsLeft(count)` для `page`: перевіряє текст лічильника (`data-testid=\"todo-counter\"`) — `N items left`, а для однієї задачі `1 item left`. Усередині використай `baseExpect(...).toHaveText(...)`, щоб матчер чекав.\n2. Тести з кроками (`test.step`):\n   - виконати `Buy coffee` (чекбокс) → `toHaveItemsLeft(1)`;\n   - видалити активну `Buy coffee` (кнопка `Delete …`) → лишилось 2 рядки і `toHaveItemsLeft(1)`.\n3. Тест збереження: після виконання `Buy coffee` запис у `localStorage` має `done: true`. Значення не з локатора — перевір через **`expect.poll`**.\n\nПотрібно щонайменше 4 тести.",
+  "minTests": 4,
+  "mutants": [
+    { "id": "plural", "description": "For one active task the counter said “1 items left”.", "hint": "Leave exactly one active task and check the counter text through your matcher." },
+    { "id": "counterAfterDelete", "description": "Deleting an active task did not decrease the counter.", "hint": "Delete an active task and check the counter." },
+    { "id": "doneNotSaved", "description": "The completed state was not saved to localStorage.", "hint": "Complete a task and poll the saved list in localStorage for done: true." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "\\.extend\\(\\s*\\{", "message": "Створи власний матчер через `baseExpect.extend({ ... })`." },
+    { "kind": "require", "pattern": "toHaveItemsLeft\\(", "message": "Використай свій матчер `toHaveItemsLeft(...)` у тестах." },
+    { "kind": "require", "pattern": "expect\\s*\\.poll\\(", "message": "Збережений список перевір через `expect.poll(...)`." },
+    { "kind": "require", "pattern": "test\\.step\\(", "message": "Розбий сценарії на кроки `test.step(...)`." },
+    { "kind": "forbid", "pattern": "waitForTimeout", "message": "Без пауз: `expect` і `expect.poll` чекають самі." }
+  ],
+  "hints": [
+    "Матчер: `async toHaveItemsLeft(page: Page, count: number)`; очікуваний текст — `` `${count} ${count === 1 ? 'item' : 'items'} left` ``; усередині `try { await baseExpect(page.getByTestId('todo-counter')).toHaveText(expected); } catch { pass = false; }` і поверни `{ pass, name, expected, actual, message: () => ... }`.",
+    "Рядок задачі: `page.getByTestId('todo-item').filter({ hasText: 'Buy coffee' })`; у ньому — `getByRole('checkbox')` і `getByRole('button', { name: /Delete/ })`.",
+    "Polling: `await expect.poll(async () => { const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('qa-playground:todo') ?? '[]')); return saved.find((t) => t.text === 'Buy coffee')?.done; }).toBe(true);`"
+  ],
+  "explanation": "Три інструменти — три різні проблеми. Матчер `toHaveItemsLeft` ховає правило однини / множини в одному місці й дає зрозуміле повідомлення. `expect.poll` потрібен, бо `localStorage` — не елемент сторінки: значення з `page.evaluate` саме не оновиться, його треба перечитувати. А `test.step` робить зі звіту сценарій: видно, на якому кроці тест упав."
+}

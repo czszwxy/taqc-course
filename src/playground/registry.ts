@@ -130,6 +130,20 @@ const PAGES: PageEntry[] = [
       'trackingIgnoresEmail',
     ],
   },
+  {
+    id: 'deal',
+    title: 'Deal of the day',
+    path: '/playground/deal',
+    description: 'A timed deal for practising what tests cannot wait for: a countdown and a self-hiding message (fake clock), going offline, geolocation and time zones.',
+    bugIds: ['timerFormat', 'buyAfterEnd', 'endedPrice', 'toastStays', 'offlineBuy', 'geoDenied', 'nearestWrong', 'endTimeUtc'],
+  },
+  {
+    id: 'a11y',
+    title: 'Accessibility lab',
+    path: '/playground/a11y',
+    description: 'A product card with a newsletter form and a dialog for accessibility testing: alt text, labels, names, contrast, keyboard access, announced errors and focus.',
+    bugIds: ['imgNoAlt', 'inputNoLabel', 'iconNoName', 'lowContrast', 'divButton', 'errorNotAnnounced', 'focusNotMoved', 'escNoClose'],
+  },
 ];
 
 export const PLAYGROUND_PAGES: PlaygroundPage[] = PAGES.map((page) => ({ ...page, bugs: page.bugIds.length }));

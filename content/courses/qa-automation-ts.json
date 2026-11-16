@@ -327,6 +327,17 @@
           ]
         }
       ]
+    },
+    {
+      "id": "specialist",
+      "title": "Specialist Skills",
+      "description": "Beyond the core course: advanced Playwright, time and device emulation, accessibility, performance, security, BDD, Docker and working with AI assistants.",
+      "modules": [
+        {
+          "slug": "33-specialist-skills",
+          "title": "Specialist Skills: Beyond the Basics"
+        }
+      ]
     }
   ]
 }

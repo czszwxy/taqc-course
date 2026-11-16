@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "Time, network and device emulation",
+  "show": 6,
+  "hints": ["install до goto; pauseAt зупиняє час; fastForward стрибає вперед. Геолокація потребує і координат, і дозволу."],
+  "questions": [
+    {
+      "id": "install-order",
+      "kind": "single",
+      "text": "Коли викликати `page.clock.install()`?",
+      "options": [
+        { "text": "До `page.goto()` — щоб таймери сторінки створювались уже за фальшивим годинником", "correct": true },
+        { "text": "Після завантаження сторінки" },
+        { "text": "Байдуже коли" }
+      ]
+    },
+    {
+      "id": "after-install",
+      "kind": "single",
+      "text": "Що відбувається з часом одразу після `clock.install({ time })`?",
+      "options": [
+        { "text": "Він іде далі від заданого моменту; щоб зупинити — `pauseAt`", "correct": true },
+        { "text": "Він зупинений, доки не викликати `resume`" },
+        { "text": "Він іде вдвічі швидше" }
+      ]
+    },
+    {
+      "id": "fast-forward",
+      "kind": "single",
+      "text": "Повідомлення має зникнути через 5 секунд. Як перевірити це без справжнього очікування?",
+      "options": [
+        { "text": "Зупинити час (`pauseAt`), показати повідомлення, `clock.fastForward(5000)` і перевірити, що його немає", "correct": true },
+        { "text": "`page.waitForTimeout(5000)`" },
+        { "text": "Збільшити таймаут `expect` до 6 секунд і чекати", "explain": "Працюватиме, але тест реально чекатиме 5 секунд — на сотнях тестів це хвилини." }
+      ]
+    },
+    {
+      "id": "fixed-time",
+      "kind": "single",
+      "text": "Сторінка показує «Happy New Year!» лише 1 січня; таймерів немає. Що найпростіше?",
+      "options": [
+        { "text": "`page.clock.setFixedTime(new Date('2027-01-01T10:00:00'))`", "correct": true },
+        { "text": "Запускати тест лише 1 січня" },
+        { "text": "Змінити системну дату на машині CI" }
+      ]
+    },
+    {
+      "id": "geo-permission",
+      "kind": "single",
+      "text": "У `test.use` задано лише `geolocation: { latitude, longitude }`. Що отримає сторінка, коли запитає місцезнаходження?",
+      "options": [
+        { "text": "Відмову в доступі: потрібен ще `permissions: ['geolocation']`", "correct": true },
+        { "text": "Задані координати" },
+        { "text": "Координати машини, де запущено тест" }
+      ]
+    },
+    {
+      "id": "timezone-ci",
+      "kind": "single",
+      "text": "Тест перевіряє, що подія показана о `14:00`, і проходить у тебе, але падає в CI. Найімовірніша причина?",
+      "options": [
+        { "text": "Інший часовий пояс машини CI; задай `timezoneId` явно", "correct": true },
+        { "text": "У CI інша версія Playwright" },
+        { "text": "CI занадто повільний" }
+      ]
+    },
+    {
+      "id": "offline",
+      "kind": "single",
+      "text": "Що робить `context.setOffline(true)`?",
+      "options": [
+        { "text": "Вимикає мережу для всіх сторінок контексту: запити падають, браузер повідомляє сторінці про офлайн", "correct": true },
+        { "text": "Закриває браузер" },
+        { "text": "Сповільнює мережу до 3G" }
+      ]
+    },
+    {
+      "id": "where-to-set",
+      "kind": "single",
+      "text": "Половина тестів файлу має йти з геолокацією Львова, половина — без дозволу. Як організувати?",
+      "options": [
+        { "text": "Два `test.describe`: в одному `test.use({ geolocation, permissions })`, в іншому — без них", "correct": true },
+        { "text": "Одна глобальна настройка в конфігурації" },
+        { "text": "Два окремі репозиторії" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "title": "BDD and Gherkin",
+  "minutes": 50,
+  "summary": "Behaviour-Driven Development для тестувальника: навіщо команді приклади замість розмитих вимог, мова Gherkin (Feature, Scenario, Given / When / Then, Background, Scenario Outline з Examples, теги), як писати добрі сценарії (декларативно, одна поведінка, 3–5 кроків), як їх автоматизують (step definitions, Cucumber, playwright-bdd) і коли BDD не окупається",
+  "resources": [
+    {
+      "title": "Cucumber: Gherkin reference",
+      "url": "https://cucumber.io/docs/gherkin/reference/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Cucumber: Behaviour-Driven Development",
+      "url": "https://cucumber.io/docs/bdd/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "playwright-bdd: BDD tests with the Playwright runner",
+      "url": "https://vitalets.github.io/playwright-bdd/",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

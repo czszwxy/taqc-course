@@ -1,0 +1,28 @@
+{
+  "title": "Advanced Playwright toolkit: steps, polling, custom matchers",
+  "minutes": 60,
+  "summary": "Інструменти, які роблять тести читабельними й точними: test.step для довгих сценаріїв і звітів, expect.poll для значень не з локаторів (API, localStorage), expect(...).toPass для повтору блоку, власні матчери через expect.extend і анотації test.skip / fixme / fail / slow",
+  "resources": [
+    {
+      "title": "Playwright: Assertions (expect.poll, toPass, custom matchers)",
+      "url": "https://playwright.dev/docs/test-assertions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Annotations (skip, fixme, fail, slow, tags)",
+      "url": "https://playwright.dev/docs/test-annotations",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Best Practices",
+      "url": "https://playwright.dev/docs/best-practices",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+{
+  "type": "bug-report",
+  "title": "Bug hunt: accessibility of a product card",
+  "playground": "a11y",
+  "minBugs": 4,
+  "statement": "Сторінка **Accessibility lab** (`/playground/a11y`) — картка товару з формою підписки й діалогом. На ній **8** дефектів доступності. Знайди й оформи щонайменше **4** — по одному репорту на дефект.\n\nЯк шукати:\n\n- пройди сторінку **лише клавіатурою**: `Tab`, `Shift+Tab`, `Enter`, `Space`, `Esc`;\n- у DevTools → Elements → вкладка **Accessibility** подивись `Name` і `Role` елементів; у вибиральнику кольору — контраст;\n- надішли форму порожньою і з правильним email, спостерігай за фокусом.\n\nВимоги — у жовтій панелі на сторінці.",
+  "hints": [
+    "Зображення, поле Email, кнопка-серце, сірий текст про доставку — подивись їхні Name / Role і контраст у DevTools.",
+    "Спробуй дійти до «Show details» через Tab. Що відбувається з помилкою email для скрінрідера (role)?",
+    "Відкрий діалог підписки: де фокус? Що робить Esc?"
+  ],
+  "explanation": "Дефекти доступності діляться на дві групи. Перша — у розмітці: немає alt, поле без пов'язаного підпису, кнопка-іконка без назви, слабкий контраст; їх показують DevTools і автоматичний скан. Друга — у поведінці: «кнопка» з div, до якої не дійти клавіатурою, помилка, що не оголошується, діалог, який не забирає фокус і не закривається через Esc; їх видно лише тоді, коли відкладаєш мишу. Добрий репорт називає елемент, спосіб відтворення (клавіша або інструмент) і вимогу.",
+  "bugs": [
+    {
+      "id": "img-no-alt",
+      "title": "The product image has no alt text",
+      "match": ["image|img|picture|зображен|картинк|фото", "alt|text alternative|текстов\\S* альтернатив|альтернативн\\S* текст"],
+      "severity": ["Major", "Minor"],
+      "severityWhy": "Користувач скрінрідера не дізнається, що на зображенні товару; інформація є лише візуально. Major (або Minor, якщо назва товару поруч).",
+      "model": {
+        "title": "Product image has no alt attribute, so screen readers get no description",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/a11y is open",
+        "steps": ["Inspect the product image in DevTools → Elements", "Open the Accessibility tab and check Name"],
+        "testData": "Image of Wireless Headphones H1",
+        "actualResult": "The img element has no alt attribute; the accessible Name is empty.",
+        "expectedResult": "The image has a text alternative (alt) that describes it, e.g. \"Wireless Headphones H1, black, over-ear\".",
+        "severity": "Major",
+        "priority": "Medium",
+        "attachments": "devtools-accessibility-img.png"
+      }
+    },
+    {
+      "id": "input-no-label",
+      "title": "The Email field has no linked label",
+      "match": ["email|e-mail|пошт", "label|лейбл|мітк|підпис", "field|input|textbox|пол[еяю]"],
+      "severity": ["Major"],
+      "severityWhy": "Скрінрідер оголошує поле як безіменне «edit text»; клік по тексту «Email» не ставить курсор у поле. Заповнити форму наосліп неможливо — Major.",
+      "model": {
+        "title": "Email field in \"Get deal alerts\" has no label linked to the input",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/a11y is open",
+        "steps": ["Inspect the Email input in DevTools → Accessibility and check Name", "Click the text \"Email\" above the field"],
+        "testData": "",
+        "actualResult": "The text \"Email\" is a plain span, not a label; the input has an empty accessible Name and clicking the text does not move the cursor into the field.",
+        "expectedResult": "The field has a visible label linked to the input (label for=…), so its Name is \"Email\".",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "icon-no-name",
+      "title": "The wishlist icon button has no accessible name",
+      "match": ["wishlist|heart|♥|серц|обран|icon", "name|назв|aria-label|ім'я|announce|оголошу|unlabel"],
+      "severity": ["Major"],
+      "severityWhy": "Скрінрідер каже лише «button» — незрозуміло, що вона робить. Функція недоступна для незрячих користувачів — Major.",
+      "model": {
+        "title": "Wishlist heart icon button has no accessible name",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/a11y is open",
+        "steps": ["Press Tab until the round heart button gets focus", "Check its Name in DevTools → Accessibility"],
+        "testData": "",
+        "actualResult": "The heart icon button has an empty Name: a screen reader announces only \"button\".",
+        "expectedResult": "The icon button has an accessible name, e.g. aria-label \"Add to wishlist\".",
+        "severity": "Major",
+        "priority": "Medium",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "low-contrast",
+      "title": "The delivery note has too low contrast",
+      "match": ["contrast|контраст", "delivery|доставк|gr[ae]y|сір|note|promo|text|текст"],
+      "severity": ["Minor", "Major"],
+      "severityWhy": "Текст про безкоштовну доставку майже не видно людям зі слабким зором і на яскравому світлі. Інформація не критична — Minor / Major.",
+      "model": {
+        "title": "\"Free delivery\" note is light grey on white: contrast about 1.5:1 instead of 4.5:1",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/a11y is open",
+        "steps": ["Inspect the text \"Free delivery for orders from 2,000 UAH\"", "Open the colour picker in DevTools → Styles and read the contrast ratio"],
+        "testData": "",
+        "actualResult": "Light grey text on a white background, contrast ratio about 1.5:1.",
+        "expectedResult": "Text contrast is at least 4.5:1 (WCAG AA).",
+        "severity": "Minor",
+        "priority": "Medium",
+        "attachments": "contrast-ratio.png"
+      }
+    },
+    {
+      "id": "div-button",
+      "title": "\"Show details\" cannot be used from the keyboard",
+      "match": ["details|детал", "keyboard|клавіатур|tab|enter|div|role|роль|button|кнопк"],
+      "severity": ["Major", "Critical"],
+      "severityWhy": "Користувач без миші взагалі не може відкрити характеристики товару — функція заблокована. Major / Critical.",
+      "model": {
+        "title": "\"Show details\" is a div: it is skipped by Tab and has no button role",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/a11y is open",
+        "steps": ["Press Tab repeatedly from the top of the page", "Watch whether \"Show details\" gets the keyboard cursor", "Check its Role in DevTools → Accessibility"],
+        "testData": "",
+        "actualResult": "Tab skips \"Show details\"; it is a div with a click handler and has no button role, so the details cannot be shown from the keyboard.",
+        "expectedResult": "\"Show details\" is a real button: reachable with Tab, works with Enter / Space and reports whether the details are expanded.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "error-not-announced",
+      "title": "The email error is not announced to screen readers",
+      "match": ["error|помилк", "alert|announce|оголошу|screen reader|скрінрідер|aria-describedby|aria-invalid|not linked|не пов'язан"],
+      "severity": ["Major"],
+      "severityWhy": "Незрячий користувач натискає Subscribe і не дізнається, що форма не надіслана і чому. Major.",
+      "model": {
+        "title": "Email validation error is not announced: no role=\"alert\" and no link to the field",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/a11y is open",
+        "steps": ["Leave Email empty and press Subscribe", "Inspect the message \"Enter a valid email address\" and the input in DevTools"],
+        "testData": "Empty email",
+        "actualResult": "The error is a plain paragraph without role=\"alert\"; the input has no aria-invalid and no aria-describedby, so a screen reader stays silent.",
+        "expectedResult": "The error is announced (role=\"alert\") and linked to the Email input.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "focus-not-moved",
+      "title": "Focus does not move into the dialog when it opens",
+      "match": ["dialog|modal|діалог|модальн", "focus|фокус", "open|відкри|behind|під діалог|not move|не переход|не переміщ|залиша"],
+      "severity": ["Major"],
+      "severityWhy": "Користувач клавіатури й скрінрідера лишається «під» діалогом: не знає, що він з'явився, і Tab веде по прихованих елементах. Major.",
+      "model": {
+        "title": "Focus stays on the Subscribe button behind the dialog when \"You're subscribed!\" opens",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/a11y is open",
+        "steps": ["Type qa@example.test into Email", "Press Enter to subscribe — the dialog opens", "Check which element has focus (document.activeElement in the Console)"],
+        "testData": "qa@example.test",
+        "actualResult": "The dialog opens, but focus stays on the Subscribe button behind it.",
+        "expectedResult": "When the dialog opens, focus moves into it (to the Close button).",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "esc-no-close",
+      "title": "Esc does not close the dialog",
+      "match": ["dialog|modal|діалог|модальн", "(^|[^a-z])esc([^a-z]|$)|escape"],
+      "severity": ["Major", "Minor"],
+      "severityWhy": "Стандартний спосіб закрити діалог з клавіатури не працює; лишається тільки кнопка Close. Major / Minor.",
+      "model": {
+        "title": "The \"You're subscribed!\" dialog ignores the Esc key",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/a11y is open",
+        "steps": ["Type qa@example.test into Email and press Subscribe", "When the dialog appears, press Esc"],
+        "testData": "qa@example.test",
+        "actualResult": "Nothing happens: the dialog remains on the screen after Esc.",
+        "expectedResult": "Esc closes the dialog and the keyboard cursor returns to the Subscribe button.",
+        "severity": "Major",
+        "priority": "Medium",
+        "attachments": ""
+      }
+    }
+  ],
+  "checklist": [
+    "Названо конкретний елемент (зображення, поле Email, кнопка-серце…)",
+    "Вказано, як відтворити: клавіша (Tab, Esc) або інструмент (DevTools → Accessibility, контраст)",
+    "Actual описує, що отримує користувач клавіатури або скрінрідера",
+    "Expected посилається на вимогу (alt, label, назва, 4.5:1, фокус у діалозі)",
+    "Severity відображає, чи заблоковано функцію для частини користувачів"
+  ]
+}

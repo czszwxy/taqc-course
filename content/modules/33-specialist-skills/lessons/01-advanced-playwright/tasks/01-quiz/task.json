@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "Advanced Playwright toolkit",
+  "show": 6,
+  "hints": ["Локатор — звичайний expect; значення з функції — expect.poll; блок дій — toPass з timeout; повторювана перевірка — власний матчер."],
+  "questions": [
+    {
+      "id": "poll-why",
+      "kind": "single",
+      "text": "Чому `expect(await page.evaluate(() => localStorage.getItem('cart'))).toBe('[]')` може бути нестабільним?",
+      "options": [
+        { "text": "Значення читається один раз; якщо сторінка запише його на 100 мс пізніше, перевірка впаде. `expect.poll` перечитує значення до таймауту", "correct": true },
+        { "text": "`page.evaluate` не вміє читати localStorage" },
+        { "text": "`toBe` не порівнює рядки" }
+      ]
+    },
+    {
+      "id": "topass-timeout",
+      "kind": "single",
+      "text": "Скільки разів виконається блок у `await expect(async () => { ... }).toPass()` без опцій, якщо перша спроба впала?",
+      "options": [
+        { "text": "Один: типовий timeout у `toPass` — 0, його треба задавати явно", "correct": true },
+        { "text": "Доки не мине 5 секунд, як у `expect.poll`" },
+        { "text": "Доки не мине таймаут тесту" }
+      ]
+    },
+    {
+      "id": "step-value",
+      "kind": "single",
+      "text": "Що повертає `await test.step('Create order', async () => { ...; return id; })`?",
+      "options": [
+        { "text": "Значення, яке повернула функція кроку (`id`)", "correct": true },
+        { "text": "Нічого: кроки не можуть повертати значення" },
+        { "text": "Об'єкт звіту кроку" }
+      ]
+    },
+    {
+      "id": "matcher-wait",
+      "kind": "single",
+      "text": "Чому всередині власного матчера краще викликати `baseExpect(locator).toHaveText(...)`, а не порівнювати `await locator.innerText()`?",
+      "options": [
+        { "text": "Так матчер чекає на значення, як вбудовані web-first перевірки, і не додає нестабільності", "correct": true },
+        { "text": "`innerText()` не працює в матчерах" },
+        { "text": "Так матчер виконується швидше" }
+      ]
+    },
+    {
+      "id": "fail-vs-skip",
+      "kind": "single",
+      "text": "У продукті відомий баг, виправлення заплановане. Яка анотація не дасть про нього забути?",
+      "options": [
+        { "text": "`test.fail()` — тест запускається й очікувано падає; щойно баг виправлять, тест «впаде» навпаки, і ти приберeш анотацію", "correct": true },
+        { "text": "`test.skip()` — тест просто не запускається", "explain": "Пропущений тест ніхто не помітить, коли баг виправлять." },
+        { "text": "`test.slow()`" }
+      ]
+    },
+    {
+      "id": "slow",
+      "kind": "single",
+      "text": "Що робить `test.slow()`?",
+      "options": [
+        { "text": "Потроює таймаут цього тесту", "correct": true },
+        { "text": "Уповільнює дії браузера, щоб було видно" },
+        { "text": "Запускає тест останнім" }
+      ]
+    },
+    {
+      "id": "step-granularity",
+      "kind": "single",
+      "text": "Який крок `test.step` найкорисніший у звіті?",
+      "options": [
+        { "text": "`Fill in the delivery details` — осмислена дія користувача з кількох рядків", "correct": true },
+        { "text": "`Click` — кожен клік окремим кроком" },
+        { "text": "`Step 3`" }
+      ]
+    },
+    {
+      "id": "poll-or-locator",
+      "kind": "single",
+      "text": "Текст статусу є на сторінці в елементі `order-status`. Що обрати?",
+      "options": [
+        { "text": "`await expect(page.getByTestId('order-status')).toHaveText('Paid')` — локатор уже вміє чекати", "correct": true },
+        { "text": "`expect.poll` з `innerText()`", "explain": "Працюватиме, але це зайва складність: для локаторів є web-first перевірки." },
+        { "text": "`toPass` з `reload()`" }
+      ]
+    }
+  ]
+}

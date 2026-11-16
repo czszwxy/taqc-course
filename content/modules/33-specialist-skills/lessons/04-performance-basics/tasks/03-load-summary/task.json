@@ -1,0 +1,12 @@
+{
+  "type": "code",
+  "title": "Summarize a load test: percentile, error rate, verdict",
+  "statement": "Після навантажувального тесту в тебе є список запитів. Напиши дві функції, що перетворюють його на вердикт.\n\n**`percentile(values, p)`** — перцентиль методом найближчого рангу: відсортуй **копію** масиву за зростанням і поверни елемент з номером `Math.ceil((p / 100) * values.length)` (нумерація з 1). Порожній масив → `0`.\n\n**`summarize(samples, sla)`** → об'єкт:\n\n| Поле | Значення |\n|---|---|\n| `requests` | кількість запитів |\n| `errorRate` | частка запитів зі статусом `>= 400` (число від 0 до 1) |\n| `avgMs` | середній час, округлений через `Math.round` |\n| `p95Ms` | 95-й перцентиль часу |\n| `passed` | `true`, якщо запити є, `p95Ms <= sla.p95Ms` **і** `errorRate <= sla.maxErrorRate` |\n\nДля порожнього списку: усі числа `0`, `passed: false` — «немає даних» не означає «пройшов».\n\n```ts\npercentile([100, 100, 2000, 100], 50);  // 100\npercentile([100, 100, 2000, 100], 95);  // 2000\n\nsummarize(\n  [{ durationMs: 120, status: 200 }, { durationMs: 480, status: 200 }, { durationMs: 300, status: 500 }, { durationMs: 100, status: 200 }],\n  { p95Ms: 500, maxErrorRate: 0.3 },\n);\n// { requests: 4, errorRate: 0.25, avgMs: 250, p95Ms: 480, passed: true }\n```",
+  "hints": [
+    "`const sorted = [...values].sort((a, b) => a - b);` — без `(a, b) => a - b` числа сортуються як рядки (`1000` раніше за `200`).",
+    "Номер елемента: `const rank = Math.ceil((p / 100) * sorted.length);` → `sorted[rank - 1]`.",
+    "`errorRate`: `samples.filter((s) => s.status >= 400).length / samples.length`; порожній список оброби окремо, щоб не ділити на нуль."
+  ],
+  "explanation": "```ts\nexport function percentile(values: number[], p: number): number {\n  if (values.length === 0) return 0;\n  const sorted = [...values].sort((a, b) => a - b);\n  const rank = Math.ceil((p / 100) * sorted.length);\n  return sorted[Math.max(rank, 1) - 1];\n}\n```\n\nТри пастки: сортування чисел без функції порівняння (`sort()` порівнює як рядки), зміна вхідного масиву (`sort` сортує на місці — потрібна копія) і ділення на нуль для порожнього списку. У вердикті важливі **обидві** умови: швидкі відповіді з 30 % помилок — це не успіх.",
+  "codeRules": []
+}

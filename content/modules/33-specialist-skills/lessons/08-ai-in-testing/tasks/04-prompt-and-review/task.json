@@ -1,0 +1,48 @@
+{
+  "type": "written",
+  "title": "Write a prompt and a review checklist",
+  "playground": "deal",
+  "statement": "Ти хочеш, щоб AI-асистент написав чернетку тестів Playwright для сторінки **Deal of the day** (`/playground/deal`). Підготуй усе, що потрібно для якісного результату.\n\n1. **Запит (prompt)**: роль, вимоги зі сторінки (жовта панель), справжня структура сторінки (перелічи елементи з ролями й назвами або `data-testid`), правила проєкту, формат відповіді.\n2. **Чекліст рев'ю**: що ти перевіриш у згенерованих тестах, перш ніж прийняти їх.\n3. **Чого не можна вставляти** в такий запит.",
+  "fields": [
+    { "id": "prompt", "label": "Prompt", "kind": "textarea", "placeholder": "Ти — QA automation engineer. Напиши тести Playwright (TypeScript) для …\n\nВимоги:\n- …" },
+    { "id": "review", "label": "Review checklist (one per line)", "kind": "list" },
+    { "id": "never", "label": "Never include in a prompt (one per line)", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "prompt", "check": "minLength", "value": 400, "message": "Запит надто короткий: додай вимоги, структуру сторінки, правила й формат." },
+    { "field": "prompt", "check": "mentionsAll", "value": ["playwright", "вимог|requirement"], "message": "Назви інструмент (Playwright) і додай розділ з вимогами." },
+    { "field": "prompt", "check": "mentionsAny", "value": ["button|кнопк|data-testid|testid|role|рол|aria"], "message": "Дай справжню структуру сторінки: кнопки, ролі, `data-testid`." },
+    { "field": "prompt", "check": "mentionsAny", "value": ["waitForTimeout|без пауз|no sleep|sleep|clock|годинник"], "message": "Додай правило про час: без пауз, керування годинником (`page.clock`)." },
+    { "field": "prompt", "check": "mentionsAny", "value": ["2[ ,.]?399|2[ ,.]?999|00:00|5 (seconds|секунд)|offline|офлайн"], "message": "Вимоги мають містити конкретику зі сторінки: ціни, таймер, 5 секунд, офлайн." },
+    { "field": "review", "check": "minItems", "value": 5, "message": "Щонайменше 5 пунктів рев'ю." },
+    { "field": "review", "check": "mentionsAny", "value": ["запус|run"], "message": "Перший пункт рев'ю — запустити тести." },
+    { "field": "review", "check": "mentionsAny", "value": ["локатор|locator|селектор|selector"], "message": "Перевір, що локатори існують на сторінці." },
+    { "field": "never", "check": "minItems", "value": 2, "message": "Назви щонайменше 2 речі, які не можна вставляти в запит." },
+    { "field": "never", "check": "mentionsAny", "value": ["парол|password|токен|token|секрет|secret|\\.env|ключ|key"], "message": "Згадай секрети: паролі, токени, ключі." }
+  ],
+  "model": {
+    "prompt": "Ти — QA automation engineer. Напиши тести Playwright (TypeScript, @playwright/test) для сторінки Deal of the day за адресою /playground/deal.\n\nВимоги:\n- Акція: Wireless Headphones H1 за 2,399 UAH замість 2,999 UAH; триває до наступних круглих 5 хвилин годинника (12:00 → 12:05).\n- Таймер Ends in показує mm:ss (наприклад 04:05) і зменшується щосекунди.\n- Коли таймер доходить до 00:00: текст Deal ended, ціна 2,999 UAH, кнопка Buy now неактивна.\n- Buy now показує повідомлення Added to cart: Wireless Headphones H1 — 2,399 UAH, яке зникає через 5 секунд.\n- Offline: банер You are offline. Reconnect to buy. і неактивна Buy now; після повернення мережі все як було.\n\nСтруктура сторінки:\n- heading \"Deal of the day\"\n- data-testid=\"deal-timer\", \"deal-price\", \"deal-ended\", \"toast\", \"offline-banner\"\n- button \"Buy now\", button \"Find nearest store\"\n\nПравила проєкту:\n- Локатори лише getByRole і getByTestId з цього списку; нічого не вигадуй.\n- Не чекай справжнього часу: page.clock.install до goto, далі pauseAt і fastForward; без waitForTimeout.\n- Офлайн — через context.setOffline.\n- Web-first перевірки expect з точними текстами з вимог; один тест — одна поведінка; назви тестів описують поведінку.\n\nФормат: один файл deal.spec.ts, без пояснень. Якщо якоїсь інформації бракує — постав питання, а не вигадуй.",
+    "review": [
+      "Запустити тести: усі зелені на сторінці, без попереджень",
+      "Локатори існують на сторінці і взяті з наданого списку",
+      "Очікувані тексти й числа збігаються з вимогами (2,399 / 2,999 UAH, 5 секунд, тексти повідомлень)",
+      "Немає waitForTimeout і разових перевірок без очікування; час керується через page.clock",
+      "Кожен тест здатен упасти: тимчасово змінюю очікування й бачу червоний",
+      "Один тест — одна поведінка; тести незалежні",
+      "Немає зайвого коду, вигаданих API і секретів"
+    ],
+    "never": [
+      "Паролі, токени й ключі (файл .env, заголовок Authorization)",
+      "Персональні дані клієнтів: email, телефони, адреси",
+      "Логи й дампи з продакшну без знеособлення",
+      "Внутрішній код і документи, якщо правила компанії цього не дозволяють"
+    ]
+  },
+  "checklist": [
+    "Запит має роль, вимоги, реальну структуру сторінки, правила і формат",
+    "Вимоги конкретні: ціни, тексти, проміжки часу",
+    "Є правило «не вигадуй — постав питання»",
+    "Чекліст рев'ю починається із запуску і містить перевірку «тест здатен упасти»",
+    "Перелічено, що не можна вставляти: секрети, персональні дані"
+  ]
+}

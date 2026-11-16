@@ -1,0 +1,42 @@
+{
+  "title": "Security testing basics for QA",
+  "minutes": 55,
+  "summary": "Що тестувальник може перевірити в безпеці без спеціальних інструментів: OWASP Top 10 (редакція 2025), контроль доступу й IDOR, автентифікація й сесії, ін'єкції (SQL, XSS), витік чутливих даних, помилки конфігурації; матриця перевірок доступу для API, безпечні «проби» і правила етики",
+  "resources": [
+    {
+      "title": "OWASP Top 10 (project page)",
+      "url": "https://owasp.org/www-project-top-ten/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "OWASP Top 10:2025",
+      "url": "https://top10.owasp.org/2025/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "OWASP Cheat Sheet Series",
+      "url": "https://cheatsheetseries.owasp.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "PortSwigger Web Security Academy (free labs)",
+      "url": "https://portswigger.net/web-security",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Web security",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/Security",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

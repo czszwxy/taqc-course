@@ -37,7 +37,7 @@ export type Brand = 'taskly' | 'gadgetly';
 
 const BRANDS: Record<Brand, { name: string; letter: string; badge: string; text: string }> = {
   taskly: { name: 'Taskly', letter: 'T', badge: 'bg-teal-600', text: 'text-teal-700' },
-  gadgetly: { name: 'Gadgetly', letter: 'G', badge: 'bg-orange-500', text: 'text-orange-600' },
+  gadgetly: { name: 'Gadgetly', letter: 'G', badge: 'bg-orange-500', text: 'text-orange-700' },
 };
 
 interface ShellProps {

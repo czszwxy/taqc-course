@@ -5,10 +5,13 @@ import playwrightTestTypes from '../../../node_modules/playwright/types/test.d.t
 import coreIndex from '../../../node_modules/playwright-core/index.d.ts?raw';
 import coreTypes from '../../../node_modules/playwright-core/types/types.d.ts?raw';
 import coreStructs from '../../../node_modules/playwright-core/types/structs.d.ts?raw';
+import axePlaywright from '../../../node_modules/@axe-core/playwright/dist/index.d.ts?raw';
+import axeCore from '../../../node_modules/axe-core/axe.d.ts?raw';
 
 /**
  * The real @playwright/test type declarations for the editor (autocomplete for page., expect(…), locators).
  * Lazy: this module is only loaded by the Playwright task view. protocol.d.ts (CDP, ~800 KB) is left out on purpose.
+ * @axe-core/playwright (accessibility scans, module 33) comes with its own small declarations.
  */
 const LIBS: ReadonlyArray<readonly [string, string]> = [
   ['file:///node_modules/@playwright/test/index.d.ts', testIndex],
@@ -17,6 +20,8 @@ const LIBS: ReadonlyArray<readonly [string, string]> = [
   ['file:///node_modules/playwright-core/index.d.ts', coreIndex],
   ['file:///node_modules/playwright-core/types/types.d.ts', coreTypes],
   ['file:///node_modules/playwright-core/types/structs.d.ts', coreStructs],
+  ['file:///node_modules/@axe-core/playwright/index.d.ts', axePlaywright],
+  ['file:///node_modules/axe-core/index.d.ts', axeCore],
 ];
 
 const state = { added: false };
