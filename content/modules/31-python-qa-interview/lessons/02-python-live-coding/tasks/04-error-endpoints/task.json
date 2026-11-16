@@ -1,0 +1,11 @@
+{
+  "type": "python",
+  "title": "Live coding: which endpoints fail most?",
+  "statement": "Після нічного прогону в логах API багато помилок. Знайди, які ендпоінти падають найчастіше.\n\nРядок логу: `дата час МЕТОД шлях статус тривалість`, наприклад:\n\n```text\n2026-11-02 10:15:01 GET /api/orders/1002 500 123ms\n```\n\nНапиши `error_endpoints(lines)` — список пар `(endpoint, count)` для запитів зі статусом **500 і вище**:\n\n- `endpoint` — `МЕТОД шлях`, де кожна частина шляху з одних цифр замінена на `{id}`, а query string (`?...`) відкинута: `GET /api/orders/{id}`;\n- сортування: за `count` за спаданням, при рівності — за `endpoint` за абеткою;\n- **биті** рядки (менше 6 частин або статус не число) пропускай.\n\n```python\nerror_endpoints([\n    \"2026-11-02 10:15:01 GET /api/orders/1002 500 123ms\",\n    \"2026-11-02 10:15:02 GET /api/orders/1001 503 98ms\",\n    \"2026-11-02 10:15:03 POST /api/orders 201 45ms\",\n    \"2026-11-02 10:15:04 GET /api/products?page=2 502 300ms\",\n])\n# [('GET /api/orders/{id}', 2), ('GET /api/products', 1)]\n```",
+  "hints": [
+    "`parts = line.split()` — перевір `len(parts) >= 6` і `parts[4].isdigit()`.",
+    "Шлях: `path.split(\"?\")[0]`, потім `\"/\".join(\"{id}\" if part.isdigit() else part for part in path.split(\"/\"))`.",
+    "Рахуй через `Counter`, сортуй `sorted(counts.items(), key=lambda pair: (-pair[1], pair[0]))`."
+  ],
+  "explanation": "Задача з трьох кроків: розібрати рядок (з перевіркою на биті дані), нормалізувати шлях (інакше `/orders/1001` і `/orders/1002` порахуються як різні ендпоінти) і порахувати з сортуванням за двома ключами. Інтерв'юер стежить, чи ти спитаєш про биті рядки, query string і статуси 5xx, а не лише 500."
+}

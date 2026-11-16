@@ -1,0 +1,44 @@
+{
+  "type": "written",
+  "title": "\"Tell me about your Python test framework\"",
+  "statement": "Підготуй відповідь на питання **«Розкажи про свій фреймворк автотестів»** — на основі того, що ти зробив у модулях про pytest, Playwright, API і CI (і що зробиш у фінальному проєкті). Пиши так, як говоритимеш, — українською чи англійською.\n\nКоротку версію прочитай уголос із таймером: вона має вкластися приблизно в хвилину.",
+  "fields": [
+    { "id": "short", "label": "One-minute version", "kind": "textarea" },
+    { "id": "architecture", "label": "Architecture (layers and how they connect)", "kind": "textarea" },
+    { "id": "decision", "label": "One decision: what, why, and its trade-off", "kind": "textarea" },
+    { "id": "stability", "label": "Stability, CI and reports", "kind": "textarea" },
+    { "id": "improve", "label": "What you would improve next (one per line)", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "short", "check": "minLength", "value": 300, "message": "Коротка версія — близько хвилини мовлення: щонайменше кілька речень." },
+    { "field": "short", "check": "mentionsAll", "value": ["pytest", "playwright"], "message": "Назви основні інструменти: pytest і Playwright." },
+    { "field": "architecture", "check": "mentionsAny", "value": ["page object", "pages"], "message": "Опиши page objects." },
+    { "field": "architecture", "check": "mentionsAny", "value": ["fixture", "фікстур", "conftest"], "message": "Розкажи, як фікстури (conftest.py) з'єднують шари." },
+    { "field": "decision", "check": "minLength", "value": 120, "message": "Рішення: що, чому і яка в нього ціна — кілька речень." },
+    { "field": "decision", "check": "mentionsAny", "value": ["бо", "тому що", "because", "щоб", "so that", "навіщо", "why"], "message": "Поясни причину рішення («бо…», «щоб…»)." },
+    { "field": "stability", "check": "mentionsAny", "value": ["expect", "auto.?wait", "авто-?очікуван"], "message": "Стабільність: як тести чекають на сторінку (`expect`)." },
+    { "field": "stability", "check": "mentionsAny", "value": ["ci", "github actions", "pipeline", "конвеєр"], "message": "Розкажи про запуск у CI." },
+    { "field": "improve", "check": "minItems", "value": 2, "message": "Назви щонайменше 2 конкретні покращення." }
+  ],
+  "model": {
+    "short": "Це мій навчальний фреймворк на Python для API і UI тестів інтернет-магазину Gadgetly — я робив його сам, близько 40 тестів. pytest — раннер, Playwright — браузер, requests і pydantic — API-тести й контракти відповідей. Тести працюють через page objects і API-клієнт, а фікстури в conftest.py готують і прибирають дані через API, тож кожен тест незалежний і їх можна запускати паралельно. Налаштування — зі змінних оточення, токен — у GitHub Secrets. У GitHub Actions на кожен pull request іде smoke, вночі — повна регресія; JUnit XML і трейси упалих тестів зберігаються як артефакти. Наступний крок — матриця браузерів.",
+    "architecture": "Шари: tests/ui і tests/api містять лише сценарії й перевірки. pages/ — page objects (LoginPage, CatalogPage): локатори за ролями й підписами та дії користувача. api/ — клієнт з базовою адресою, токеном і timeout на кожен запит. models/ — pydantic-моделі відповідей. config/settings.py читає змінні оточення в frozen dataclass. Кореневий conftest.py дає settings, api-клієнт і токен (scope session), tests/ui/conftest.py — page objects і вже увійдену сторінку через add_init_script, tests/api/conftest.py — фікстуру order з yield, що видаляє створене. pyproject.toml: testpaths, маркери smoke/regression з --strict-markers, base_url.",
+    "decision": "Тестові дані створюю через API у фікстурі з yield, а не через UI і не беру з бази «як є». Бо так тест швидкий (запит замість п'яти кроків у браузері), незалежний (кожен працює зі своїм замовленням за id) і прибирає за собою навіть після падіння. Ціна — фреймворк залежить від API: якщо ендпоінт створення зламаний, падають і UI-тести, тому в звіті я окремо бачу API-тести створення і розбираю їх першими.",
+    "stability": "Перевірки лише через expect, який сам чекає; жодних sleep. Локатори — get_by_role, get_by_label, data-testid. Кожен тест має свої дані, тому порядок і паралельність не впливають. Нові тести проганяю з --count=20, перш ніж мерджити. Flaky-тест розбираю за трейсом; якщо не встигаю виправити — маркер quarantine й окремий job із задачею. CI: GitHub Actions, setup-python з кешем pip, playwright install --with-deps, адреса з vars, токен із secrets; артефакти — JUnit XML, HTML-звіт і трейси упалих тестів, завантажуються навіть після червоного прогону.",
+    "improve": [
+      "Матриця браузерів (Chromium, Firefox, WebKit) з fail-fast: false",
+      "Паралельний запуск -n auto у CI, щоб нічна регресія йшла менше 5 хвилин",
+      "Allure-звіт з кроками й історією для команди",
+      "Перевірка контрактів усіх ендпоінтів моделями, а не лише головних"
+    ]
+  },
+  "checklist": [
+    "Коротка версія вкладається приблизно в хвилину вголос",
+    "Чесно: навчальний проєкт, «я», реальний обсяг",
+    "Архітектура шарами: тести, page objects, API-клієнт, моделі, налаштування, conftest",
+    "Рішення з причиною і ціною (компроміс)",
+    "Стабільність: expect, локатори, власні дані, робота з flaky",
+    "CI і звіти: коли запускається, що бачить команда після червоного прогону",
+    "Конкретні покращення з причинами"
+  ]
+}

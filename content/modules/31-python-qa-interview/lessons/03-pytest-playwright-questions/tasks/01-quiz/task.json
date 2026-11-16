@@ -1,0 +1,159 @@
+{
+  "type": "quiz",
+  "title": "Mock interview: pytest & Playwright for Python (question bank)",
+  "intro": "Банк питань про pytest і Playwright для Python. Кожна спроба — 8 випадкових питань.",
+  "show": 8,
+  "hints": ["Фікстури з yield, scopes, маркери, parametrize; у Playwright — локатори за ролями, expect, ізольований context."],
+  "questions": [
+    {
+      "id": "yield-cleanup",
+      "kind": "single",
+      "text": "Коли виконується код після `yield` у фікстурі?",
+      "options": [
+        { "text": "Після тесту — навіть якщо тест упав", "correct": true },
+        { "text": "Лише якщо тест пройшов" },
+        { "text": "Перед тестом" }
+      ]
+    },
+    {
+      "id": "scope-token",
+      "kind": "single",
+      "text": "Фікстура логіниться через API і повертає токен. Який scope доречний?",
+      "options": [
+        { "text": "`session` — токен не змінюється, а логін на кожен тест лише сповільнює прогін", "correct": true },
+        { "text": "`function` — так завжди безпечніше", "explain": "Безпечно, але даремно повільно: токен ніхто не змінює." },
+        { "text": "Scope не впливає на кількість логінів" }
+      ]
+    },
+    {
+      "id": "conftest-import",
+      "kind": "single",
+      "text": "Як тест отримує фікстуру з `conftest.py`?",
+      "options": [
+        { "text": "Параметром функції з такою самою назвою — без імпорту", "correct": true },
+        { "text": "`from conftest import fixture_name`" },
+        { "text": "Через `pytest.use(\"name\")`" }
+      ]
+    },
+    {
+      "id": "parametrize-ids",
+      "kind": "single",
+      "text": "Навіщо `ids` у `@pytest.mark.parametrize`?",
+      "options": [
+        { "text": "Щоб у звіті було видно, який саме набір даних упав: `test_quantity[zero]` замість `test_quantity[0-400]`", "correct": true },
+        { "text": "Щоб тести запускались паралельно" },
+        { "text": "Без них параметризація не працює" }
+      ]
+    },
+    {
+      "id": "markers-run",
+      "kind": "single",
+      "text": "Як запустити лише smoke-тести, крім повільних?",
+      "options": [
+        { "text": "`python -m pytest -m \"smoke and not slow\"`", "correct": true },
+        { "text": "`python -m pytest --smoke --no-slow`" },
+        { "text": "`python -m pytest -k smoke`", "explain": "`-k` фільтрує за назвою тесту, а не за маркером." }
+      ]
+    },
+    {
+      "id": "xfail-vs-skip",
+      "kind": "single",
+      "text": "Відомий баг, виправлення в наступному спринті. Як позначити тест?",
+      "options": [
+        { "text": "`@pytest.mark.xfail(reason=\"BUG-123\", strict=True)` — тест запускається, і команда дізнається, коли баг виправлять", "correct": true },
+        { "text": "`@pytest.mark.skip` — щоб не заважав" },
+        { "text": "Видалити тест до виправлення" }
+      ]
+    },
+    {
+      "id": "monkeypatch-env",
+      "kind": "single",
+      "text": "Як у тесті тимчасово задати змінну оточення `API_TOKEN`?",
+      "options": [
+        { "text": "`monkeypatch.setenv(\"API_TOKEN\", \"t-42\")` — після тесту значення повернеться", "correct": true },
+        { "text": "`os.environ[\"API_TOKEN\"] = \"t-42\"`", "explain": "Зміна залишиться для всіх наступних тестів." },
+        { "text": "`pytest --env API_TOKEN=t-42`" }
+      ]
+    },
+    {
+      "id": "page-fixture",
+      "kind": "single",
+      "text": "Що дає фікстура `page` з pytest-playwright?",
+      "options": [
+        { "text": "Нову вкладку в новому ізольованому контексті для кожного тесту, з налаштуваннями запуску (браузер, base URL, трейси)", "correct": true },
+        { "text": "Одну спільну вкладку для всіх тестів" },
+        { "text": "Браузер без вкладок" }
+      ]
+    },
+    {
+      "id": "locator-choice",
+      "kind": "single",
+      "text": "Який локатор кнопки входу найстійкіший?",
+      "options": [
+        { "text": "`page.get_by_role(\"button\", name=\"Sign in\")`", "correct": true },
+        { "text": "`page.locator(\"#root > div > form > button:nth-child(3)\")`" },
+        { "text": "`page.locator(\".btn.btn-primary.mt-2\")`" }
+      ]
+    },
+    {
+      "id": "expect-vs-assert",
+      "kind": "single",
+      "text": "Чим `expect(locator).to_have_text(\"Paid\")` кращий за `assert locator.inner_text() == \"Paid\"`?",
+      "options": [
+        { "text": "`expect` повторює перевірку до таймауту, поки сторінка оновлюється; `inner_text()` читає один раз", "correct": true },
+        { "text": "Нічим, це однакові перевірки" },
+        { "text": "`expect` швидший, бо не чекає" }
+      ]
+    },
+    {
+      "id": "strict-mode",
+      "kind": "single",
+      "text": "`page.get_by_role(\"button\", name=\"Delete\").click()` падає з «strict mode violation: resolved to 3 elements». Що робити?",
+      "options": [
+        { "text": "Звузити локатор: знайти рядок потрібного елемента (`filter(has_text=...)`) і шукати кнопку всередині", "correct": true },
+        { "text": "Додати `.first` — так завжди простіше", "explain": "Тест натисне будь-яку першу кнопку — можливо, не ту." },
+        { "text": "Збільшити таймаут" }
+      ]
+    },
+    {
+      "id": "login-once",
+      "kind": "single",
+      "text": "50 UI-тестів, кожен логіниться через форму. Як прискорити?",
+      "options": [
+        { "text": "Увійти один раз (UI чи API), зберегти storage state і створювати контексти з ним; форму входу перевіряти окремими тестами", "correct": true },
+        { "text": "Запускати тести лише вночі" },
+        { "text": "Прибрати перевірки після входу" }
+      ]
+    },
+    {
+      "id": "pom-assert",
+      "kind": "single",
+      "text": "Де мають бути перевірки результату: у page object чи в тесті?",
+      "options": [
+        { "text": "У тесті: page object знає локатори й дії, а що вважати успіхом — вирішує тест", "correct": true },
+        { "text": "У page object — так менше коду в тестах" },
+        { "text": "У conftest.py" }
+      ]
+    },
+    {
+      "id": "flaky-first",
+      "kind": "single",
+      "text": "UI-тест падає раз на 20 запусків. Що зробити першим?",
+      "options": [
+        { "text": "Відтворити (`--count`), відкрити трейс упалого запуску і знайти причину", "correct": true },
+        { "text": "Додати `time.sleep(5)` перед перевіркою" },
+        { "text": "Увімкнути `--reruns 3`" }
+      ]
+    },
+    {
+      "id": "api-vs-ui",
+      "kind": "single",
+      "text": "Що краще перевірити API-тестом, а не UI-тестом?",
+      "options": [
+        { "text": "Що сервер повертає 400 для кількості 0 і 403 для чужого замовлення", "correct": true },
+        { "text": "Що кнопка «Pay» неактивна для оплаченого замовлення" },
+        { "text": "Що помилка показана червоним під полем" }
+      ]
+    }
+  ]
+}

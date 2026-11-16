@@ -1,0 +1,21 @@
+{
+  "title": "Telling about your Python framework",
+  "minutes": 50,
+  "summary": "Як розповісти про свій фреймворк на pytest і Playwright: версія на 1 хвилину і на 3 хвилини, структура відповіді (контекст → архітектура → рішення й компроміси → стабільність → CI і звіти → що покращив би), конкретика замість загальних слів, чесність щодо навчального проєкту, типові уточнювальні питання і як показати репозиторій на співбесіді",
+  "resources": [
+    {
+      "title": "Playwright: Best Practices (general guide, examples in TypeScript)",
+      "url": "https://playwright.dev/docs/best-practices",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: tell me about your test automation framework interview",
+      "url": "https://www.youtube.com/results?search_query=tell+me+about+your+test+automation+framework+interview",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "type": "written",
+  "title": "Code review: what is wrong with this pytest test?",
+  "statement": "Поширений формат співбесіди: тобі показують тести і питають **«що тут не так?»**. Знайди якомога більше проблем і перепиши так, як зробив би сам.\n\n```python\nimport time\nfrom playwright.sync_api import sync_playwright\n\norder_id = None\n\n\ndef test_1():\n    global order_id\n    with sync_playwright() as p:\n        browser = p.chromium.launch(headless=False)\n        page = browser.new_page()\n        page.goto(\"http://localhost:5173/playground/account\")\n        page.fill(\"#root > div > div:nth-child(2) input\", \"qa@gadgetly.test\")\n        page.fill(\"input[type=password]\", \"Test1234\")\n        page.click(\".btn-primary\")\n        time.sleep(3)\n        assert page.locator(\"text=My orders\").is_visible()\n        order_id = page.locator(\".order-id\").inner_text()\n\n\ndef test_2():\n    r = requests.delete(f\"http://localhost:5173/api/orders/{order_id}\")\n    assert r.status_code\n```",
+  "fields": [
+    { "id": "problems", "label": "Problems (one per line)", "kind": "list" },
+    { "id": "rewrite", "label": "Your version", "kind": "textarea", "placeholder": "import pytest\nimport requests\nfrom playwright.sync_api import Page, expect\n…" }
+  ],
+  "rules": [
+    { "field": "problems", "check": "minItems", "value": 6, "message": "Знайди щонайменше 6 проблем — їх тут понад десять." },
+    { "field": "problems", "check": "mentionsAny", "value": ["sleep", "пауз"], "message": "Пропущено `time.sleep(3)` — фіксована пауза замість очікування." },
+    { "field": "problems", "check": "mentionsAny", "value": ["global", "глобальн", "порядк", "order of", "залеж"], "message": "Пропущено головне: `test_2` залежить від `test_1` через глобальну змінну." },
+    { "field": "problems", "check": "mentionsAny", "value": ["status_code", "завжди (істин|true|пройде)", "always true"], "message": "Пропущено `assert r.status_code` — ця перевірка завжди істинна для будь-якого статусу." },
+    { "field": "problems", "check": "mentionsAny", "value": ["селектор", "selector", "nth-child", "локатор", "locator"], "message": "Пропущено крихкі CSS-селектори." },
+    { "field": "problems", "check": "mentionsAny", "value": ["fixture", "фікстур", "sync_playwright"], "message": "Пропущено: власний `sync_playwright()` замість фікстури `page`." },
+    { "field": "rewrite", "check": "mentionsAll", "value": ["expect", "def test_"], "message": "Перепиши з `expect(...)` і зрозумілими назвами `test_...`." },
+    { "field": "rewrite", "check": "notMentions", "value": ["time\\.sleep", "wait_for_timeout", "global "], "message": "У твоїй версії не має бути пауз і глобальних змінних." }
+  ],
+  "model": {
+    "problems": [
+      "time.sleep(3) — фіксована пауза: повільно і все одно нестабільно; expect чекає сам",
+      "is_visible() — разова перевірка без очікування; треба expect(...).to_be_visible()",
+      "test_2 залежить від test_1 через глобальну змінну order_id: окремо, в іншому порядку чи паралельно він ламається",
+      "assert r.status_code завжди істинний (будь-який статус — непорожнє число); треба == 204",
+      "Крихкі селектори (#root > div > div:nth-child(2), .btn-primary, .order-id) — ламаються від верстки",
+      "Власний sync_playwright() замість фікстури page: немає base_url, трейсів, скріншотів, ізоляції",
+      "Браузер ніде не закривається",
+      "headless=False — у CI немає екрана, і запуск повільніший",
+      "Повна адреса localhost у коді замість base_url / налаштувань",
+      "Пароль у коді — має бути в змінних оточення / секретах",
+      "test_2 без import requests, без токена Authorization і без timeout",
+      "Назви test_1 і test_2 нічого не кажуть про поведінку",
+      "test_1 перевіряє вхід і ще збирає дані для іншого тесту — дві відповідальності; дані треба створювати через API у фікстурі"
+    ],
+    "rewrite": "import json\nimport os\n\nimport pytest\nimport requests\nfrom playwright.sync_api import Page, expect\n\nTIMEOUT = 5\n\n\n@pytest.fixture(scope=\"session\")\ndef api(base_url):\n    return f\"{base_url}/api\"\n\n\n@pytest.fixture(scope=\"session\")\ndef token(api):\n    credentials = {\"email\": os.environ[\"QA_EMAIL\"], \"password\": os.environ[\"QA_PASSWORD\"]}\n    response = requests.post(f\"{api}/auth/login\", json=credentials, timeout=TIMEOUT)\n    response.raise_for_status()\n    return response.json()[\"token\"]\n\n\n@pytest.fixture\ndef order(api, token):\n    headers = {\"Authorization\": f\"Bearer {token}\"}\n    created = requests.post(f\"{api}/orders\", json={\"productId\": 1, \"quantity\": 1}, headers=headers, timeout=TIMEOUT).json()\n    yield created\n    requests.delete(f\"{api}/orders/{created['id']}\", headers=headers, timeout=TIMEOUT)\n\n\ndef test_signed_in_user_sees_their_new_order(page: Page, token, order):\n    page.add_init_script(f\"localStorage.setItem('gadgetly:token', {json.dumps(token)})\")\n    page.goto(\"/playground/account\")\n\n    expect(page.get_by_role(\"heading\", name=\"My orders\")).to_be_visible()\n    expect(page.get_by_test_id(f\"order-{order['id']}\")).to_be_visible()\n\n\ndef test_deleting_an_order_returns_204(api, token, order):\n    headers = {\"Authorization\": f\"Bearer {token}\"}\n    response = requests.delete(f\"{api}/orders/{order['id']}\", headers=headers, timeout=TIMEOUT)\n\n    assert response.status_code == 204, response.text"
+  },
+  "checklist": [
+    "Пауза і разова перевірка → expect(...)",
+    "Залежність тестів через глобальну змінну → кожен тест готує свої дані у фікстурі",
+    "assert r.status_code → точний статус (== 204)",
+    "Крихкі CSS-селектори → get_by_role / get_by_label / get_by_test_id",
+    "Свій sync_playwright, незакритий браузер, headless=False → фікстура page",
+    "Адреса й пароль у коді → base_url, змінні оточення",
+    "API-запит: import, токен, timeout",
+    "Назви тестів описують поведінку"
+  ]
+}

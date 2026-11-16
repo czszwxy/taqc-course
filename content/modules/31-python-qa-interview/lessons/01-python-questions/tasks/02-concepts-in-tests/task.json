@@ -1,0 +1,29 @@
+{
+  "type": "table",
+  "title": "Which Python feature is this test code using?",
+  "statement": "Інтерв'юер питає: «Де в твоїх тестах декоратори? А генератори?» Для кожного рядка з тестового коду обери, яку можливість Python він використовує.",
+  "hints": [
+    "`@` над функцією — декоратор. `with` — контекстний менеджер. `yield` у функції — генератор.",
+    "Функція, що повертає іншу функцію і пам'ятає змінні, — замикання."
+  ],
+  "explanation": "Знання мови на співбесіді найкраще показувати через власний код: фікстури з `yield` — генератори, маркери — декоратори, `pytest.raises` і `expect_popup` — контекстні менеджери, фабрики фікстур — замикання, білдери даних — `**kwargs`. Коли ти так пов'язуєш поняття з тестами, інтерв'юер бачить, що ти не завчив визначення, а користуєшся ними.",
+  "givenColumns": ["Test code"],
+  "answerColumns": [
+    {
+      "id": "feature",
+      "label": "Python feature",
+      "options": ["Decorator", "Generator (yield)", "Context manager (with)", "Closure", "**kwargs", "Dataclass", "Exception chaining", "Comprehension"]
+    }
+  ],
+  "rows": [
+    { "given": ["`@pytest.mark.parametrize(\"qty\", [0, 11])`"], "answers": { "feature": "Decorator" } },
+    { "given": ["Фікстура: `order = create_order()`, `yield order`, `delete_order(order[\"id\"])`"], "answers": { "feature": "Generator (yield)" } },
+    { "given": ["`with pytest.raises(ValueError, match=\"quantity\"):`"], "answers": { "feature": "Context manager (with)" } },
+    { "given": ["`with page.expect_popup() as popup_info:`"], "answers": { "feature": "Context manager (with)" } },
+    { "given": ["Фікстура повертає `def make_user(role): return {\"email\": f\"qa-{counter}@...\", \"role\": role}` і пам'ятає `counter`"], "answers": { "feature": "Closure" }, "explain": "Внутрішня функція пам'ятає змінні зовнішньої — це замикання; фабрика фікстур повертає саме її." },
+    { "given": ["`def build_order(**overrides): return {**DEFAULTS, **overrides}`"], "answers": { "feature": "**kwargs" } },
+    { "given": ["`@dataclass(frozen=True) class Settings: base_url: str`"], "answers": { "feature": "Dataclass" } },
+    { "given": ["`raise ApiError(\"login failed\") from error`"], "answers": { "feature": "Exception chaining" } },
+    { "given": ["`ids = [p[\"id\"] for p in items if p[\"inStock\"]]`"], "answers": { "feature": "Comprehension" } }
+  ]
+}

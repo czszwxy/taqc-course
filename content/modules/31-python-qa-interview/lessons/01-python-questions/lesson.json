@@ -1,0 +1,35 @@
+{
+  "title": "Python interview questions",
+  "minutes": 55,
+  "summary": "Що питають з Python на співбесіді QA Automation і як відповідати: змінювані й незмінні типи, копія і посилання, is і ==, змінюваний default, *args / **kwargs, декоратори (як написати свій, functools.wraps), контекстні менеджери (with, contextmanager), генератори, винятки; задачі «що надрукує цей код?» і де кожне поняття живе в pytest і Playwright",
+  "resources": [
+    {
+      "title": "Python docs: Glossary (decorator, context manager, generator)",
+      "url": "https://docs.python.org/3/glossary.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: contextlib.contextmanager",
+      "url": "https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: functools.wraps",
+      "url": "https://docs.python.org/3/library/functools.html#functools.wraps",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Python decorators explained",
+      "url": "https://www.youtube.com/results?search_query=python+decorators+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

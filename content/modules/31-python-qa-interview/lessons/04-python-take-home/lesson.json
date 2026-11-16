@@ -1,0 +1,28 @@
+{
+  "title": "A Python take-home assignment",
+  "minutes": 75,
+  "summary": "Тестове завдання (take-home) на Python: як читати бриф і питати, план на обмежений час, структура репозиторію (pyproject, requirements, conftest, pages, api, models), що перевіряє рев'юер (запуск з чистого клону, незалежні тести, стабільність, жодних секретів), README; симуляція — план, міні-фреймворк для API каталогу й сторінки пошуку Gadgetly, README",
+  "resources": [
+    {
+      "title": "pytest: Good Integration Practices",
+      "url": "https://docs.pytest.org/en/stable/explanation/goodpractices.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Writing tests",
+      "url": "https://playwright.dev/python/docs/writing-tests",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "GitHub Docs: About READMEs",
+      "url": "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

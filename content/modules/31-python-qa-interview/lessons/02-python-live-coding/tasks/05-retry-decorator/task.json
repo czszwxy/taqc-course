@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Live coding: a retry decorator",
+  "statement": "Класичне завдання на позицію автоматизатора: напиши декоратор, що повторює нестабільний виклик (наприклад, до тестового API).\n\n`retry(times, exceptions=(Exception,))`:\n\n- викликає функцію до `times` разів, поки вона не спрацює без винятку, і повертає її результат;\n- повторює **лише** винятки з `exceptions`; інші пропускає одразу, без повторів;\n- якщо всі спроби впали — піднімає виняток **останньої** спроби;\n- передає всі аргументи (`*args`, `**kwargs`) і зберігає ім'я та docstring функції (`functools.wraps`);\n- `times` менше 1 → `ValueError` одразу при `retry(0)`.\n\n```python\n@retry(times=3, exceptions=(ConnectionError,))\ndef get_status(order_id):\n    ...\n\nget_status(1002)   # до 3 спроб, якщо падає з ConnectionError\n```",
+  "hints": [
+    "Три рівні: `def retry(times, exceptions=(Exception,))` → `def decorator(func)` → `def wrapper(*args, **kwargs)`; перевірку `times` зроби на першому рівні.",
+    "У `wrapper`: `for _ in range(times): try: return func(*args, **kwargs) except exceptions as error: last_error = error`.",
+    "Після циклу — `raise last_error`. Над `wrapper` — `@functools.wraps(func)`."
+  ],
+  "explanation": "Декоратор з параметрами — три вкладені функції: параметри → функція → виклик. `except exceptions` приймає кортеж класів, тож повторюються лише очікувані збої (мережа), а справжні помилки (`ValueError` у даних) пролітають одразу — інакше повтор ховав би баги. Після вичерпання спроб важливо підняти **останній** виняток, щоб звіт показав справжню причину. А перевірка `times` на першому рівні ловить помилку налаштування ще при імпорті модуля, а не посеред тесту.",
+  "codeRules": [
+    { "kind": "require", "pattern": "functools\\.wraps|@wraps", "message": "Збережи ім'я й docstring функції: `@functools.wraps(func)` над `wrapper`." }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "type": "written",
+  "title": "Take-home part 1: read the brief and plan",
+  "playground": "search",
+  "statement": "Ти отримав тестове завдання:\n\n> **Gadgetly — QA Automation (Python) take-home.** Our product catalog has a REST API (`GET /api/products` with `category`, `inStock`, `minPrice`, `maxPrice`, `page`, `limit`; `GET /api/products/{id}`) and a **Catalog** page (`/playground/search`) with search, filters, sorting and *Add to cart*. Please write automated tests in Python (pytest, Playwright, any HTTP library). Time box: 4 hours. Send a link to a Git repository with a README.\n\nВідкрий сторінку (кнопка **Open page**) і, за бажанням, API в API-консолі. Перш ніж писати код, склади план: що автоматизуєш першим і чому, як влаштуєш проєкт, що свідомо не робиш і які питання поставиш компанії.",
+  "fields": [
+    { "id": "priorities", "label": "What you automate first and why (one per line)", "kind": "list" },
+    { "id": "structure", "label": "Project structure and tools", "kind": "textarea" },
+    { "id": "out-of-scope", "label": "Out of scope / later (one per line)", "kind": "list" },
+    { "id": "questions", "label": "Questions to the company (one per line)", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "priorities", "check": "minItems", "value": 4, "message": "Назви щонайменше 4 пріоритетні сценарії." },
+    { "field": "priorities", "check": "mentionsAny", "value": ["api", "/products"], "message": "Додай API-сценарії: вони швидкі й стабільні — їх варто автоматизувати першими." },
+    { "field": "priorities", "check": "mentionsAny", "value": ["page", "сторінк", "ui", "sort", "фільтр", "filter", "search", "пошук"], "message": "Додай і UI-сценарії сторінки каталогу." },
+    { "field": "structure", "check": "mentionsAny", "value": ["page object", "pages/", "pom"], "message": "Опиши page object для сторінки каталогу." },
+    { "field": "structure", "check": "mentionsAny", "value": ["requirements", "pyproject", "conftest"], "message": "Згадай файли проєкту: `requirements.txt`, `pyproject.toml`, `conftest.py`." },
+    { "field": "out-of-scope", "check": "minItems", "value": 2, "message": "Назви щонайменше 2 речі, які свідомо не робиш (і чому)." },
+    { "field": "questions", "check": "minItems", "value": 2, "message": "Сформулюй щонайменше 2 питання до компанії." }
+  ],
+  "model": {
+    "priorities": [
+      "API: контракт товару (поля й типи для всіх 14 товарів) — від нього залежить і сторінка",
+      "API: фільтри category / inStock / ціна дають правильні товари; total відповідає фільтру",
+      "API: сторінки (page, limit) не перетинаються і разом дають увесь каталог; limit понад максимум — 400",
+      "UI: сортування за ціною (обидва напрямки) — бізнес-критичне для вибору товару",
+      "UI: фільтр «In stock only» — лічильник дорівнює кількості карток",
+      "UI: товар не в наявності не можна додати в кошик",
+      "UI: пошук без урахування регістру і порожній результат"
+    ],
+    "structure": "Python 3.13, pytest, pytest-playwright, requests, pydantic. Шари: api/client.py (клієнт каталогу), models/product.py (pydantic-модель з extra=forbid), pages/catalog_page.py (page object з локаторами за підписами й data-testid), tests/api і tests/ui, conftest.py з фікстурами settings, catalog_api, catalog_page. pyproject.toml: testpaths, markers (api, ui, smoke), --strict-markers, base_url. requirements.txt з точними версіями; адреса — через PYTEST_BASE_URL. Опційно — GitHub Actions з JUnit XML і трейсами як артефактами.",
+    "out-of-scope": [
+      "Кросбраузерність: лише Chromium — у брифі немає вимог до браузерів",
+      "Візуальні перевірки (скріншоти) — нестабільні без зафіксованого середовища",
+      "Навантажувальне тестування API — інший інструмент і окреме завдання",
+      "Кошик після «Add to cart» — у брифі лише сама кнопка"
+    ],
+    "questions": [
+      "Чи стабільні дані каталогу (14 товарів), чи вони можуть змінитися між запусками?",
+      "Які браузери й роздільності екрана важливі для користувачів?",
+      "Чи потрібен CI-конфіг, чи достатньо локального запуску?",
+      "Як повідомляти про знайдені баги: у README чи окремим файлом?"
+    ]
+  },
+  "checklist": [
+    "Пріоритети за ризиком: API-контракт і фільтри першими, потім ключові UI-сценарії",
+    "Є і API, і UI — і пояснено, чому саме ці сценарії",
+    "Структура з шарами: клієнт, моделі, page object, conftest, pyproject, requirements",
+    "Свідомі межі з причинами (не «не встиг», а «не входить у бриф»)",
+    "Питання, від відповідей на які залежать тести (стабільність даних, браузери, формат здачі)"
+  ]
+}

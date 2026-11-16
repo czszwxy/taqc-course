@@ -1,0 +1,161 @@
+{
+  "type": "quiz",
+  "title": "Mock interview: Python (question bank)",
+  "intro": "Банк питань з Python для співбесіди на QA Automation. Кожна спроба — 8 випадкових питань. Для «що надрукує?» трасуй код рядок за рядком.",
+  "show": 8,
+  "hints": ["Трасуй код: таблиця змінних, рядок за рядком. Згадай пастки: змінюваний default, спільні посилання, is проти ==."],
+  "questions": [
+    {
+      "id": "list-tuple",
+      "kind": "single",
+      "text": "Головна відмінність списку від кортежу?",
+      "options": [
+        { "text": "Список змінюваний, кортеж — ні; тому кортеж (з незмінних елементів) може бути ключем словника чи елементом множини", "correct": true },
+        { "text": "Кортеж швидший, тому його використовують завжди" },
+        { "text": "У кортежі можуть бути лише числа" }
+      ]
+    },
+    {
+      "id": "default-arg",
+      "kind": "text",
+      "text": "Що надрукує другий `print`?\n\n```python\ndef add_item(item, items=[]):\n    items.append(item)\n    return items\n\nprint(add_item(\"a\"))\nprint(add_item(\"b\"))\n```",
+      "accept": ["['a', 'b']", "[\"a\", \"b\"]"],
+      "placeholder": "вивід",
+      "explanation": "Типове значення `[]` створюється **один раз** при визначенні функції, тож обидва виклики змінюють той самий список. Виправлення: `items=None` і `if items is None: items = []`."
+    },
+    {
+      "id": "grid",
+      "kind": "single",
+      "text": "Що надрукує код?\n\n```python\ngrid = [[0] * 2] * 2\ngrid[0][0] = 9\nprint(grid)\n```",
+      "options": [
+        { "text": "`[[9, 0], [9, 0]]`", "correct": true },
+        { "text": "`[[9, 0], [0, 0]]`", "explain": "Так було б з `[[0] * 2 for _ in range(2)]`." },
+        { "text": "Помилка" }
+      ]
+    },
+    {
+      "id": "alias",
+      "kind": "text",
+      "text": "Що надрукує `print(expected)`?\n\n```python\nexpected = [\"Phones\", \"Laptops\"]\nactual = expected\nactual.append(\"Tablets\")\nprint(expected)\n```",
+      "accept": ["['Phones', 'Laptops', 'Tablets']", "[\"Phones\", \"Laptops\", \"Tablets\"]"],
+      "placeholder": "вивід",
+      "explanation": "`actual = expected` не копіює список: обидві змінні вказують на той самий об'єкт. Для незалежної копії — `expected.copy()` або `list(expected)`."
+    },
+    {
+      "id": "is-eq",
+      "kind": "single",
+      "text": "`a = [1, 2]` і `b = [1, 2]`. Чому дорівнюють `a == b` і `a is b`?",
+      "options": [
+        { "text": "`True` і `False`: значення рівні, але це два різні об'єкти", "correct": true },
+        { "text": "`True` і `True`" },
+        { "text": "`False` і `False`" }
+      ]
+    },
+    {
+      "id": "sort-none",
+      "kind": "single",
+      "text": "Що надрукує код?\n\n```python\nprices = [3, 1, 2]\nresult = prices.sort()\nprint(result)\n```",
+      "options": [
+        { "text": "`None` — `sort()` сортує список на місці й нічого не повертає", "correct": true },
+        { "text": "`[1, 2, 3]`", "explain": "Новий відсортований список повертає `sorted(prices)`." },
+        { "text": "`[3, 1, 2]`" }
+      ]
+    },
+    {
+      "id": "all-empty",
+      "kind": "single",
+      "text": "Тест робить `assert all(item[\"inStock\"] for item in items)`, а API повернув порожній `items`. Що станеться?",
+      "options": [
+        { "text": "Тест пройде: `all([])` — `True`. Треба окремо перевірити, що список не порожній", "correct": true },
+        { "text": "Тест упаде з `IndexError`" },
+        { "text": "Тест упаде: `all([])` — `False`" }
+      ]
+    },
+    {
+      "id": "kwargs",
+      "kind": "text",
+      "text": "Що надрукує код?\n\n```python\ndef build_user(**overrides):\n    user = {\"name\": \"QA\", \"role\": \"user\"}\n    user.update(overrides)\n    return user\n\nprint(build_user(role=\"admin\")[\"role\"])\n```",
+      "accept": ["admin"],
+      "placeholder": "вивід",
+      "explanation": "`**overrides` збирає іменовані аргументи в словник `{\"role\": \"admin\"}`, а `update` перезаписує типове значення — класичний білдер тестових даних."
+    },
+    {
+      "id": "decorator-return",
+      "kind": "single",
+      "text": "Що поверне `price(2)`?\n\n```python\ndef log(func):\n    def wrapper(*args):\n        print(\"call\")\n        func(*args)\n    return wrapper\n\n@log\ndef price(quantity):\n    return 499 * quantity\n```",
+      "options": [
+        { "text": "`None` — `wrapper` викликає `func`, але не повертає результат", "correct": true },
+        { "text": "`998`" },
+        { "text": "Помилка" }
+      ]
+    },
+    {
+      "id": "wraps",
+      "kind": "single",
+      "text": "Навіщо `@functools.wraps(func)` усередині декоратора?",
+      "options": [
+        { "text": "Щоб обгорнута функція зберегла ім'я й docstring оригіналу — інакше у звітах і помилках вона зветься `wrapper`", "correct": true },
+        { "text": "Без нього декоратор не працює" },
+        { "text": "Щоб декоратор можна було застосувати двічі" }
+      ]
+    },
+    {
+      "id": "context-manager",
+      "kind": "single",
+      "text": "Що гарантує `with` для контекстного менеджера?",
+      "options": [
+        { "text": "Вихідна частина (закрити файл, відкотити зміну) виконається навіть якщо всередині блоку стався виняток", "correct": true },
+        { "text": "Що всередині блоку не буде винятків" },
+        { "text": "Що блок виконається двічі" }
+      ]
+    },
+    {
+      "id": "generator",
+      "kind": "single",
+      "text": "Що надрукує код?\n\n```python\ndef numbers():\n    yield 1\n    yield 2\n\ngen = numbers()\nprint(list(gen), list(gen))\n```",
+      "options": [
+        { "text": "`[1, 2] []` — генератор вичерпується після першого проходу", "correct": true },
+        { "text": "`[1, 2] [1, 2]`" },
+        { "text": "Помилка" }
+      ]
+    },
+    {
+      "id": "finally",
+      "kind": "text",
+      "text": "Що надрукує код (два рядки через пробіл)?\n\n```python\ndef check():\n    try:\n        return \"ok\"\n    finally:\n        print(\"cleanup\")\n\nprint(check())\n```",
+      "accept": ["cleanup ok", "cleanup\nok"],
+      "placeholder": "вивід",
+      "explanation": "`finally` виконується перед тим, як функція реально поверне значення: спершу друкується `cleanup`, потім `print` друкує результат `ok`."
+    },
+    {
+      "id": "none-check",
+      "kind": "single",
+      "text": "Як правильно перевірити, що функція повернула `None`?",
+      "options": [
+        { "text": "`assert result is None`", "correct": true },
+        { "text": "`assert not result`", "explain": "Пропустить і `0`, `\"\"`, `[]` — це не те саме, що `None`." },
+        { "text": "`assert result == \"None\"`" }
+      ]
+    },
+    {
+      "id": "dict-get",
+      "kind": "single",
+      "text": "Відповідь API може не мати поля `discount`. Як прочитати його без `KeyError`?",
+      "options": [
+        { "text": "`body.get(\"discount\", 0)`", "correct": true },
+        { "text": "`body[\"discount\"] or 0`" },
+        { "text": "`body.discount`" }
+      ]
+    },
+    {
+      "id": "float",
+      "kind": "single",
+      "text": "Що надрукує `print(0.1 + 0.2 == 0.3)`?",
+      "options": [
+        { "text": "`False` — дробові числа зберігаються приблизно; у тестах — `pytest.approx`", "correct": true },
+        { "text": "`True`" },
+        { "text": "Помилка" }
+      ]
+    }
+  ]
+}

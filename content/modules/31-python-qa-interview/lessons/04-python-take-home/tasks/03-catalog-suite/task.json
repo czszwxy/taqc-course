@@ -1,0 +1,26 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Take-home part 2: a mini framework for the catalog API and page",
+  "playground": "search",
+  "statement": "Реалізуй свій план у вигляді міні-фреймворку **в одному файлі** (у справжньому репозиторії це були б окремі модулі). У стартовому файлі вже є: модель `Product` (pydantic), фікстура `api`, page object `CatalogPage`, по одному прикладу API- і UI-тесту.\n\n**API** (`{base_url}/api/products`):\n\n1. Кожен товар каталогу (`limit=50`) відповідає моделі `Product`.\n2. Фільтр `category` — **параметризований** тест: `Accessories` → 5, `Laptops` → 3, `Phones` → 3, `Headphones` → 3 (`total` і кількість `items`).\n3. Сторінки `page=1` і `page=2` з `limit=5` **не перетинаються** за `id`.\n4. `limit=51` → `400`.\n\n**UI** (`/playground/search`, лише через `CatalogPage`):\n\n5. «Price: high to low» — ціни карток ідуть за спаданням (перший — `Laptop Pro 15`).\n6. «In stock only» — лічильник `10 products found` і рівно 10 карток.\n7. Товар не в наявності (`Gaming Mouse X7`, картка `product-p02`) — кнопка **Add to cart** неактивна.\n\nПотрібно щонайменше 8 тестів (параметризований рахується за кожен набір).",
+  "minTests": 8,
+  "mutants": [
+    { "id": "paginationOverlap", "description": "Page 2 of /api/products repeated the last product of page 1.", "hint": "Request page 1 and page 2 with the same limit and compare the product ids." },
+    { "id": "sortAsText", "description": "“Price: high to low” compared prices as text, so 9,999 came before 54,999.", "hint": "Sort by price high to low and check the order of all prices, not just that the list changed." },
+    { "id": "countIgnoresStock", "description": "With “In stock only” the counter still counted out-of-stock products.", "hint": "Turn on In stock only and compare the counter with the number of cards." },
+    { "id": "addOutOfStock", "description": "Add to cart was enabled for an out-of-stock product.", "hint": "Find an out-of-stock product card and check its Add to cart button state." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "parametrize", "message": "Фільтр за категорією — параметризованим тестом: `@pytest.mark.parametrize(...)`." },
+    { "kind": "require", "pattern": "model_validate", "message": "Контракт товару перевір моделлю: `Product.model_validate(item)`." },
+    { "kind": "forbid", "pattern": "^ {4}(?!def |class )\\S.*(?<!self\\.)\\bpage\\.(get_by_|locator\\()", "flags": "m", "message": "UI-тести працюють лише через `CatalogPage`: локатори живуть у page object (`__init__` чи методи з `self.page`), а в тестах — `catalog.<локатор>` або метод класу." },
+    { "kind": "forbid", "pattern": "time\\.sleep|wait_for_timeout", "message": "Без пауз: `expect(...)` чекає сам." }
+  ],
+  "hints": [
+    "API: `requests.get(f\"{api}/products\", params={\"category\": category, \"limit\": 50}, timeout=TIMEOUT)`; сторінки — два запити з `page=1` і `page=2`, порівняй множини `id` через `isdisjoint`.",
+    "Сортування: `catalog.sort.select_option(label=\"Price: high to low\")`, потім `expect(catalog.names.first).to_have_text(\"Laptop Pro 15\")` і перевір усі ціни: `catalog.price_values()` має дорівнювати `sorted(..., reverse=True)`.",
+    "Неактивна кнопка: `expect(catalog.add_to_cart(\"p02\")).to_be_disabled()` — додай такий метод у `CatalogPage`."
+  ],
+  "explanation": "Хороший take-home показує шари навіть в одному файлі: модель описує контракт, клієнтські фікстури — доступ до API, page object — сторінку, а тести лише формулюють поведінку. API-тести швидко покривають дані (контракт, фільтри, сторінки, межі), UI-тести — те, що видно лише в браузері: порядок карток, лічильник проти карток, стан кнопки. Кожна перевірка конкретна: не «список змінився», а «ціни за спаданням»; не «лічильник є», а «дорівнює кількості карток»."
+}

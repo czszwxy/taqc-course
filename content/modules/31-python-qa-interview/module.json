@@ -1,0 +1,12 @@
+{
+  "title": "Python QA Interview",
+  "description": "Технічна співбесіда на Python QA Automation: питання з Python (змінювані типи, копії, is і ==, декоратори, контекстні менеджери, генератори, «що надрукує цей код?»), live coding на Python з типовими для QA задачами, питання про pytest і Playwright з live coding тесту на час, тестове завдання (take-home) на API й UI каталогу Gadgetly і розповідь про власний фреймворк. Загальні теми співбесід (резюме, STAR, англійська, пошук роботи) — у модулі «Getting Hired».",
+  "goals": [
+    "Answer common Python interview questions with a short example and a link to tests",
+    "Predict the output of tricky Python snippets step by step",
+    "Solve QA-flavoured live coding tasks in Python while thinking aloud",
+    "Answer pytest and Playwright for Python questions and write a UI test under time pressure",
+    "Complete a Python take-home assignment: plan, API + UI suite, README",
+    "Tell a clear, honest story about your Python test framework and handle follow-up questions"
+  ]
+}

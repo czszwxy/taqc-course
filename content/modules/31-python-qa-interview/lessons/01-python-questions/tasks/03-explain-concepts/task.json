@@ -1,0 +1,34 @@
+{
+  "type": "written",
+  "title": "Explain three Python concepts like in an interview",
+  "statement": "Інтерв'юер просить пояснити три поняття. Для кожного: **визначення** одним-двома реченнями, **маленький приклад** (можна кодом), **де це в твоїх тестах**. Пиши так, як сказав би вголос, — 3–6 речень на поняття.\n\n1. Що таке декоратор? Як написати свій?\n2. Що таке контекстний менеджер?\n3. Чим генератор відрізняється від звичайної функції?",
+  "fields": [
+    { "id": "decorator", "label": "Decorator", "kind": "textarea" },
+    { "id": "context", "label": "Context manager", "kind": "textarea" },
+    { "id": "generator", "label": "Generator", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "decorator", "check": "minLength", "value": 120, "message": "Декоратор: визначення, приклад і де в тестах — щонайменше кілька речень." },
+    { "field": "decorator", "check": "mentionsAny", "value": ["обгорт", "wrap", "приймає функц", "takes a function", "повертає (нову )?функц"], "message": "Поясни суть: декоратор приймає функцію і повертає нову, обгорнуту." },
+    { "field": "decorator", "check": "mentionsAny", "value": ["pytest\\.fixture", "parametrize", "pytest\\.mark", "allure\\.step", "mock\\.patch"], "message": "Наведи приклад з тестів: `@pytest.fixture`, `@pytest.mark.parametrize`…" },
+    { "field": "context", "check": "minLength", "value": 100, "message": "Контекстний менеджер: визначення, приклад і де в тестах." },
+    { "field": "context", "check": "mentionsAny", "value": ["with"], "message": "Згадай оператор `with`." },
+    { "field": "context", "check": "mentionsAny", "value": ["навіть", "even if", "гарант", "finally", "закри", "close", "прибир", "cleanup"], "message": "Головне: вихідна частина (закрити, прибрати) виконається навіть після винятку." },
+    { "field": "generator", "check": "minLength", "value": 100, "message": "Генератор: визначення, приклад і де в тестах." },
+    { "field": "generator", "check": "mentionsAny", "value": ["yield"], "message": "Згадай `yield`." },
+    { "field": "generator", "check": "mentionsAny", "value": ["фікстур", "fixture"], "message": "Пов'яжи з тестами: фікстура з `yield` — генератор, код після `yield` — прибирання." }
+  ],
+  "model": {
+    "decorator": "Декоратор — це функція, яка приймає іншу функцію і повертає нову, «обгорнуту», що додає поведінку до або після виклику. Запис @log_calls над def — скорочення для fn = log_calls(fn). Свій пишу так: усередині декоратора функція wrapper(*args, **kwargs), яка щось робить і повертає func(*args, **kwargs), а над нею @functools.wraps(func), щоб зберегти ім'я. У тестах користуюсь щодня: @pytest.fixture, @pytest.mark.parametrize, @pytest.mark.smoke; у live coding писав декоратор retry, що повторює функцію при ConnectionError.",
+    "context": "Контекстний менеджер — об'єкт, який працює з оператором with і гарантує, що вихідна частина виконається навіть якщо всередині блоку виник виняток: файл закриється, зміна відкотиться. Свій можна написати через @contextmanager: код до yield — вхід, після yield у finally — вихід. У тестах: with pytest.raises(ValueError) перевіряє виняток, with page.expect_popup() ловить нову вкладку, with allure.step(...) розмічає кроки звіту.",
+    "generator": "Генератор — функція з yield: вона не повертає все одразу, а видає значення по одному і ставиться на паузу між ними, тому працює ліниво й економить пам'ять. Після вичерпання повторно не проходиться. Звичайна функція з return завершується одразу. У pytest фікстура з yield — генератор: до yield готую дані (створюю замовлення через API), тест отримує значення, а код після yield виконується після тесту — прибирання, навіть якщо тест упав."
+  },
+  "checklist": [
+    "Кожне поняття: визначення → приклад → де в тестах",
+    "Декоратор: приймає функцію, повертає обгорнуту; *args/**kwargs, return func(...), functools.wraps",
+    "Контекстний менеджер: with, вихід гарантований навіть після винятку; @contextmanager",
+    "Генератор: yield, пауза між значеннями, лінивість; фікстура з yield і прибирання",
+    "Приклади з власних тестів, а не лише з підручника",
+    "Без вигаданих термінів — якщо не впевнений, опиши поведінку"
+  ]
+}

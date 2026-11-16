@@ -1,0 +1,18 @@
+{
+  "type": "order",
+  "title": "Put the framework story in order",
+  "statement": "Розстав частини 2–3-хвилинної відповіді на «Розкажи про свій фреймворк» у найлогічнішому порядку.",
+  "items": [
+    "Context: what the framework tests, how big it is and what your role was",
+    "Architecture: tests → page objects and the API client → models; fixtures in conftest.py",
+    "Key decisions with reasons and trade-offs (test data via API, settings from the environment)",
+    "Stability: web-first assertions, independent tests with their own data, how flaky tests are handled",
+    "CI and reports: when it runs, what the team sees after a red run",
+    "What you would improve next and why"
+  ],
+  "hints": [
+    "Від загального до деталей: спершу «що це», потім «як влаштовано», потім «чому так».",
+    "Закінчуй поглядом уперед — що покращив би."
+  ],
+  "explanation": "Слухач спершу має зрозуміти, про що мова (контекст), потім побачити картину (архітектура), а вже тоді оцінити рішення, стабільність і процес. Завершення «що покращив би» показує рефлексію і дає інтерв'юеру природну тему для наступного питання."
+}

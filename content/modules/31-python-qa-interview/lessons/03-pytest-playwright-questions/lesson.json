@@ -1,0 +1,28 @@
+{
+  "title": "pytest and Playwright interview questions",
+  "minutes": 60,
+  "summary": "Питання про pytest і Playwright для Python на співбесіді: фікстури й scopes, conftest, parametrize, маркери, моки, локатори, авто-очікування, page objects, сесії, нестабільні тести; live coding UI-тесту за 20 хвилин (що оцінюють і як не загубитися), а також «що не так з цим тестом?» — рев'ю чужого коду",
+  "resources": [
+    {
+      "title": "pytest: How to use fixtures",
+      "url": "https://docs.pytest.org/en/stable/how-to/fixtures.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Best Practices (general guide, examples in TypeScript)",
+      "url": "https://playwright.dev/docs/best-practices",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Locators",
+      "url": "https://playwright.dev/python/docs/locators",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

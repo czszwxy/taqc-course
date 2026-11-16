@@ -1,0 +1,22 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Live coding: test the to-do list in 20 minutes",
+  "playground": "todo",
+  "statement": "Інтерв'юер відкриває сторінку **My tasks** (`/playground/todo`) і каже: «У тебе 20 хвилин. Напиши тести на лічильник і очищення списку». Засічи час.\n\nСторінка відкривається з трьома задачами: `Write test cases for the login page` (виконана), `Report the cart bug` і `Buy coffee` (активні); лічильник — `2 items left`.\n\nВимоги, які треба покрити:\n\n- лічильник «**N items left**» = кількість **активних** задач; для однієї — `1 item left`;\n- видалення **активної** задачі (кнопка ×) зменшує лічильник;\n- **Clear completed** прибирає лише виконані задачі, активні лишаються.\n\nПерший тест (додавання задачі) уже є. Потрібно щонайменше 3 тести; без пауз (`time.sleep`, `wait_for_timeout`).",
+  "minTests": 3,
+  "mutants": [
+    { "id": "plural", "description": "For one active task the counter said “1 items left”.", "hint": "Leave exactly one active task (complete or delete one) and check the counter text." },
+    { "id": "counterAfterDelete", "description": "Deleting an active task did not decrease the counter.", "hint": "Delete an active task with × and check the counter." },
+    { "id": "clearAll", "description": "“Clear completed” deleted every task, active ones too.", "hint": "Press Clear completed and check that the active tasks are still in the list." }
+  ],
+  "codeRules": [
+    { "kind": "forbid", "pattern": "time\\.sleep|wait_for_timeout", "message": "На співбесіді пауза — червоний прапорець. `expect(...)` чекає сам." }
+  ],
+  "hints": [
+    "Рядок задачі: `page.get_by_test_id(\"todo-item\").filter(has_text=\"Buy coffee\")`; всередині — `get_by_role(\"checkbox\")` і `get_by_role(\"button\", name=\"Delete\")`.",
+    "Лічильник: `expect(page.get_by_test_id(\"todo-counter\")).to_have_text(\"1 item left\")`.",
+    "Після **Clear completed** перевір кількість рядків (`to_have_count(2)`) і що активні задачі на місці."
+  ],
+  "explanation": "За 20 хвилин важливо вибрати сценарії з найбільшим ризиком і довести кожен до зеленого: однина в лічильнику (крайній випадок N = 1), лічильник після видалення (стан після дії) і «Clear completed» (дія не повинна зачепити зайве). Кожен тест сам відкриває сторінку, шукає задачу за текстом у її рядку і перевіряє конкретне значення через `expect` — без пауз і без залежності від інших тестів."
+}

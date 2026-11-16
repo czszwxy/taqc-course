@@ -1,0 +1,28 @@
+{
+  "title": "Python live coding",
+  "minutes": 70,
+  "summary": "Як проходить live coding на Python для QA: уточнити умову, проговорити приклади й крайні випадки, написати простий робочий розв'язок, перевірити, потім покращити; інструменти, що економлять час (Counter, defaultdict, set, sorted з key, enumerate, any/all, isinstance), складність простими словами, рекурсія для вкладеного JSON і декоратор з параметрами; практика — чотири класичні задачі, порівняння JSON, розбір логів і декоратор retry",
+  "resources": [
+    {
+      "title": "Python docs: collections (Counter, defaultdict)",
+      "url": "https://docs.python.org/3/library/collections.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: Sorting HOW TO",
+      "url": "https://docs.python.org/3/howto/sorting.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python Wiki: TimeComplexity",
+      "url": "https://wiki.python.org/moin/TimeComplexity",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}
