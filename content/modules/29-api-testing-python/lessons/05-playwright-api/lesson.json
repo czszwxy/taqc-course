@@ -1,0 +1,28 @@
+{
+  "title": "API testing with Playwright APIRequestContext",
+  "minutes": 50,
+  "summary": "HTTP-клієнт Playwright для Python: playwright.request.new_context з base_url і extra_http_headers, фікстура з yield і dispose(), get / post / put / patch / delete з data і params, APIResponse (status, ok, json(), headers), expect(response).to_be_ok(), fail_on_status_code, пастка зі слешем на початку шляху, коли обирати Playwright API, а коли requests",
+  "resources": [
+    {
+      "title": "Playwright for Python: API testing",
+      "url": "https://playwright.dev/python/docs/api-testing",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: APIRequestContext",
+      "url": "https://playwright.dev/python/docs/api/class-apirequestcontext",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: APIResponseAssertions",
+      "url": "https://playwright.dev/python/docs/api/class-apiresponseassertions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

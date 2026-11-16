@@ -1,0 +1,37 @@
+{
+  "type": "table",
+  "title": "Translate requests code to Playwright",
+  "statement": "Колега переносить API-тести з requests на APIRequestContext. Для кожного рядка requests обери відповідник у Playwright (контекст створено з `base_url=f\"{base_url}/api/\"`).",
+  "hints": [
+    "У Playwright тіло — `data`, статус — `status`, текст — метод `text()`, заголовки сесії — `extra_http_headers`.",
+    "Секунди в requests — мілісекунди в Playwright."
+  ],
+  "explanation": "Обидва клієнти роблять те саме, відрізняються назви: `json=` → `data=`, `status_code` → `status`, `text` → `text()`, `Session` з заголовками → контекст з `extra_http_headers`, `close()` → `dispose()`, `raise_for_status()` → `fail_on_status_code=True`. Найлегше помилитися з одиницями часу (секунди проти мілісекунд) і зі слешем на початку шляху.",
+  "givenColumns": ["requests"],
+  "answerColumns": [
+    {
+      "id": "playwright",
+      "label": "Playwright",
+      "options": [
+        "api.get(\"products\", params={\"limit\": 2})",
+        "api.post(\"orders\", data=body)",
+        "response.status",
+        "response.text()",
+        "playwright.request.new_context(extra_http_headers=…)",
+        "api.dispose()",
+        "fail_on_status_code=True",
+        "timeout=5000"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`requests.get(f\"{api}/products\", params={\"limit\": 2})`"], "answers": { "playwright": "api.get(\"products\", params={\"limit\": 2})" } },
+    { "given": ["`requests.post(f\"{api}/orders\", json=body)`"], "answers": { "playwright": "api.post(\"orders\", data=body)" } },
+    { "given": ["`response.status_code`"], "answers": { "playwright": "response.status" } },
+    { "given": ["`response.text`"], "answers": { "playwright": "response.text()" } },
+    { "given": ["`session = requests.Session()` і `session.headers.update({\"Authorization\": …})`"], "answers": { "playwright": "playwright.request.new_context(extra_http_headers=…)" } },
+    { "given": ["`session.close()`"], "answers": { "playwright": "api.dispose()" } },
+    { "given": ["`response.raise_for_status()`"], "answers": { "playwright": "fail_on_status_code=True" } },
+    { "given": ["`timeout=5` (5 секунд)"], "answers": { "playwright": "timeout=5000" } }
+  ]
+}

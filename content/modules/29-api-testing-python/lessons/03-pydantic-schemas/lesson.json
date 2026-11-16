@@ -1,0 +1,35 @@
+{
+  "title": "Schema validation with pydantic",
+  "minutes": 60,
+  "summary": "Контракт відповіді API як модель pydantic: BaseModel і типи, model_validate і ValidationError, extra=\"forbid\" проти зайвих полів, strict=True проти «499» замість 499, Literal для статусів, Field(gt=0) для меж, вкладені моделі й TypeAdapter(list[Model]), model_validator для бізнес-правил (total = unitPrice × quantity)",
+  "resources": [
+    {
+      "title": "Pydantic: Models",
+      "url": "https://docs.pydantic.dev/latest/concepts/models/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Pydantic: Strict mode",
+      "url": "https://docs.pydantic.dev/latest/concepts/strict_mode/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Pydantic: Validators",
+      "url": "https://docs.pydantic.dev/latest/concepts/validators/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Pydantic: Type Adapter",
+      "url": "https://docs.pydantic.dev/latest/concepts/type_adapter/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

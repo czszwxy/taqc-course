@@ -1,0 +1,21 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Orders: prepare through the API, check in the UI",
+  "playground": "account",
+  "statement": "Сторінка **My account** (`/playground/account`) показує замовлення як `2 pcs · created · 998 UAH` (рядок — `data-testid=\"order-<id>\"`, сума — `data-testid=\"order-total\"`). У стартовому файлі є: фікстури `api`, `token`, `auth`, фікстура **`order`** (створює `{\"productId\": 1, \"quantity\": 2}` через API і видаляє після тесту), функція `open_account(page, token)` (відкриває сторінку вже увійденим) і перший тест.\n\n1. Замовлення, створене через API, видно в UI: `2 pcs · created` і сума `998 UAH`. *Уже є.*\n2. Кількість, змінена через API (`PATCH` → `{\"quantity\": 3}`), видно в UI: `3 pcs` і сума `1,497 UAH`.\n3. Замовлення, **видалене через API**, зникає з UI після перезавантаження сторінки (`page.reload()`), а заголовок `My orders` лишається.\n\nЗміни через API роби **до** перевірки в UI; якщо сторінка вже відкрита — перезавантаж її.",
+  "minTests": 3,
+  "mutants": [
+    { "id": "patchTotal", "description": "PATCH changed the quantity but left the old total — the UI showed the wrong sum.", "hint": "PATCH the quantity through the API, open the page and check the total shown in the row." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "requests\\.patch\\(", "message": "Вимога 2: зміни кількість через API — `requests.patch(...)`." },
+    { "kind": "require", "pattern": "\\.reload\\(\\)", "message": "Вимога 3: після видалення через API перезавантаж сторінку — `page.reload()`." },
+    { "kind": "require", "pattern": "to_have_count\\(0\\)", "message": "Вимога 3: рядка видаленого замовлення більше немає — `to_have_count(0)`." }
+  ],
+  "hints": [
+    "PATCH: `requests.patch(f\"{api}/orders/{order['id']}\", json={\"quantity\": 3}, headers=auth, timeout=TIMEOUT)`, потім `open_account(page, token)` і перевір рядок `order-<id>`.",
+    "Видалення: спершу `open_account(...)` і `expect(row).to_be_visible()`, потім `requests.delete(...)`, `page.reload()` і `expect(row).to_have_count(0)`."
+  ],
+  "explanation": "Гібридний тест перевіряє зв'язок шарів: дані, змінені на сервері, мають дійти до екрана. API готує стан (створює, змінює, видаляє) швидко й точно, а UI-перевірка дивиться очима користувача. Порядок важливий: сторінка показує те, що завантажила, тож після зміни через API її треба відкрити заново або перезавантажити."
+}

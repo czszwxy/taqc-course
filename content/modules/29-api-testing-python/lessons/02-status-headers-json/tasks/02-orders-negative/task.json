@@ -1,0 +1,23 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Orders API: access and validation errors",
+  "playground": "api",
+  "statement": "Негативні тести для замовлень Gadgetly API. Тестовий користувач — `qa@gadgetly.test` (user 42). У стартовому файлі є фікстури `api` і `auth` (заголовок з токеном, вхід один раз на сесію) і перший тест.\n\n1. Без токена: `GET /orders` → `401`, заголовок `WWW-Authenticate: Bearer`, помилка `Authorization header is missing`. *Уже є.*\n2. Зі своїм токеном: `GET /orders` → `200`, `Content-Type` починається з `application/json`, і **кожне** замовлення в `items` належить користувачу `42` (`userId`).\n3. Чуже замовлення: `GET /orders/1001` (належить іншому користувачу) → `403` і помилка `You don't have access to this order`.\n4. Кількість `0`: `POST /orders` з `{\"productId\": 1, \"quantity\": 0}` → `400` і помилка `quantity must be from 1 to 10`.\n5. Товар, якого немає на складі: `POST /orders` з `{\"productId\": 2, \"quantity\": 1}` → `409` і помилка `Product is out of stock`.\n\nЯкщо сервер **помилково** створив замовлення (`201`), видали його в тесті, перш ніж перевіряти статус.",
+  "minTests": 5,
+  "mutants": [
+    { "id": "otherUsersOrder", "description": "GET /orders/:id returned another user's order instead of 403.", "hint": "Request order 1001 (it belongs to another user) with your token: the API must refuse with 403." },
+    { "id": "quantityZero", "description": "POST /orders accepted quantity 0.", "hint": "Create an order with quantity 0: the API must answer 400 (and clean up if it created one)." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "status_code\\s*==", "message": "Перевіряй точний статус: `response.status_code == 403`." },
+    { "kind": "require", "pattern": "headers\\[|headers\\.get\\(", "message": "Вимога 2: перевір заголовок `Content-Type` відповіді." },
+    { "kind": "require", "pattern": "requests\\.delete\\(", "message": "Якщо сервер помилково створив замовлення, видали його: `requests.delete(...)`." }
+  ],
+  "hints": [
+    "Свої замовлення: `body = requests.get(f\"{api}/orders\", headers=auth, timeout=TIMEOUT).json()`, потім `assert all(order[\"userId\"] == 42 for order in body[\"items\"])`.",
+    "Чуже: `requests.get(f\"{api}/orders/1001\", headers=auth, timeout=TIMEOUT)` → `status_code == 403` і `json()[\"error\"]`.",
+    "Кількість 0: після `POST` — `if response.status_code == 201: requests.delete(f\"{api}/orders/{response.json()['id']}\", headers=auth, timeout=TIMEOUT)`, і лише потім `assert response.status_code == 400`."
+  ],
+  "explanation": "Негативні тести API перевіряють межі доступу і валідацію: без токена, чужий ресурс, невалідні дані, неможливий стан. У кожному — точний статус і текст помилки. Найнебезпечніший баг тут — доступ до чужого замовлення (витік даних): його ловить лише тест, що навмисно просить **чужий** id. І ще одне правило: тест, що міг створити дані, прибирає їх, навіть якщо сервер повівся неправильно."
+}

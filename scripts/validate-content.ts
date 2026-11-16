@@ -357,9 +357,20 @@ const checkSqlTask: Checker<'sql'> = async (dir, task) => {
  * (scripts/validate-lab.ts), which needs Chromium and the dev server.
  */
 /** Per language: the spec files and the import every reference spec must have. */
+/*
+ * TypeScript specs import @playwright/test: matches "import { test, expect } from '@playwright/test';", rejects a file without it.
+ * https://regex101.com/?regex=from%20'%40playwright%2Ftest'
+ */
+const TS_PLAYWRIGHT_IMPORT = /from '@playwright\/test'/;
+/*
+ * Python lab tests use Playwright (UI) or requests (API, module 29+): matches "from playwright.sync_api import Page, expect"
+ * and "import requests", rejects "import pytest" alone. https://regex101.com/?regex=%5E(from%20playwright%5C.sync_api%20import%7Cimport%20requests%5Cb)&flags=m
+ */
+const PY_LAB_IMPORT = /^(from playwright\.sync_api import|import requests\b)/m;
+
 const PLAYWRIGHT_FILES = {
-  typescript: { ext: '.ts', requiredImport: "from '@playwright/test'", importHint: "import test/expect from '@playwright/test'" },
-  python: { ext: '.py', requiredImport: 'from playwright.sync_api import', importHint: 'import Page/expect from playwright.sync_api' },
+  typescript: { ext: '.ts', requiredImport: TS_PLAYWRIGHT_IMPORT, importHint: "import test/expect from '@playwright/test'" },
+  python: { ext: '.py', requiredImport: PY_LAB_IMPORT, importHint: 'import Page/expect from playwright.sync_api (UI tests) or import requests (API tests)' },
 } as const;
 
 const checkPlaywrightTask: Checker<'playwright'> = (dir, task) => {
@@ -371,7 +382,7 @@ const checkPlaywrightTask: Checker<'playwright'> = (dir, task) => {
     fail(dir, `${task.language} playwright tasks need starter${files.ext} and solution${files.ext}`);
     return;
   }
-  if (!solution.includes(files.requiredImport)) fail(dir, `solution${files.ext} must ${files.importHint}`);
+  if (!files.requiredImport.test(solution)) fail(dir, `solution${files.ext} must ${files.importHint}`);
   if (starter.trim() === solution.trim()) fail(dir, `starter${files.ext} is identical to solution${files.ext}`);
   // Mutants may come from any playground page or the mock API ("api"): API + UI tasks combine them.
   const bugIds = PLAYGROUND_PAGES.flatMap((p) => p.bugIds ?? []);

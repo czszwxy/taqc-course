@@ -1,0 +1,28 @@
+{
+  "title": "CRUD tests with fixtures and cleanup",
+  "minutes": 55,
+  "summary": "CRUD-тести API на Python: фікстура з requests.Session і токеном на всю сесію, фікстура, що створює дані й прибирає їх після yield (навіть після падіння), фабрика даних з прибиранням усього створеного, перевірка після видалення (404), прибирання, що не падає на вже видаленому, незалежність тестів і заборона глобальних підрахунків",
+  "resources": [
+    {
+      "title": "pytest: Fixtures — teardown with yield",
+      "url": "https://docs.pytest.org/en/stable/how-to/fixtures.html#teardown-cleanup-aka-fixture-finalization",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Requests: Session objects",
+      "url": "https://requests.readthedocs.io/en/latest/user/advanced/#session-objects",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: HTTP PUT vs PATCH",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PATCH",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Playwright APIRequestContext",
+  "show": 5,
+  "hints": ["base_url зі слешем у кінці, шляхи без слеша на початку. timeout — у мілісекундах. dispose() наприкінці."],
+  "questions": [
+    {
+      "id": "slash",
+      "kind": "single",
+      "text": "`base_url=\"http://localhost:5173/api/\"`. Куди піде `context.get(\"/orders\")`?",
+      "options": [
+        { "text": "На `http://localhost:5173/orders` — слеш на початку відраховує шлях від кореня сайту", "correct": true },
+        { "text": "На `http://localhost:5173/api/orders`" },
+        { "text": "Запит не відправиться" }
+      ]
+    },
+    {
+      "id": "json-body",
+      "kind": "single",
+      "text": "Як надіслати JSON-тіло `{\"productId\": 1, \"quantity\": 2}` через Playwright API?",
+      "options": [
+        { "text": "`context.post(\"orders\", data={\"productId\": 1, \"quantity\": 2})`", "correct": true },
+        { "text": "`context.post(\"orders\", json={…})`", "explain": "У Python-версії Playwright тіло передають через `data`; словник серіалізується в JSON." },
+        { "text": "`context.post(\"orders\", params={…})`" }
+      ]
+    },
+    {
+      "id": "status",
+      "kind": "single",
+      "text": "Як прочитати статус відповіді Playwright API?",
+      "options": [
+        { "text": "`response.status`", "correct": true },
+        { "text": "`response.status_code`", "explain": "Так у requests." },
+        { "text": "`response.code()`" }
+      ]
+    },
+    {
+      "id": "timeout-ms",
+      "kind": "single",
+      "text": "Ти написав `context.get(\"slow\", timeout=5)`. Що не так?",
+      "options": [
+        { "text": "У Playwright timeout — у мілісекундах: це 5 мс, а не 5 с", "correct": true },
+        { "text": "Нічого" },
+        { "text": "timeout не можна передавати в get" }
+      ]
+    },
+    {
+      "id": "auth-header",
+      "kind": "single",
+      "text": "Як додати токен до всіх запитів контексту?",
+      "options": [
+        { "text": "`playwright.request.new_context(base_url=…, extra_http_headers={\"Authorization\": f\"Bearer {token}\"})`", "correct": true },
+        { "text": "Передавати `headers=` у кожен запит — інакше ніяк", "explain": "Так теж можна, але `extra_http_headers` додає заголовок до кожного запиту автоматично." },
+        { "text": "`context.login(token)`" }
+      ]
+    },
+    {
+      "id": "to-be-ok",
+      "kind": "single",
+      "text": "Вимога: створення повертає `201`. Чому мало `expect(response).to_be_ok()`?",
+      "options": [
+        { "text": "`to_be_ok()` пропустить будь-який 2xx, зокрема 200 замість 201", "correct": true },
+        { "text": "`to_be_ok()` перевіряє лише тіло" },
+        { "text": "Цього достатньо" }
+      ]
+    },
+    {
+      "id": "dispose",
+      "kind": "single",
+      "text": "Навіщо `context.dispose()` після `yield` у фікстурі?",
+      "options": [
+        { "text": "Закрити HTTP-клієнт і його з'єднання, коли тести завершились", "correct": true },
+        { "text": "Видалити створені тестом дані" },
+        { "text": "Вийти з акаунта на сервері" }
+      ]
+    }
+  ]
+}

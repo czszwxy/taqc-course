@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Checking status, headers and JSON",
+  "show": 5,
+  "hints": ["Точний статус, потрібні заголовки, рівно потрібні поля. Прибирай створене навіть у негативних тестах."],
+  "questions": [
+    {
+      "id": "message",
+      "kind": "single",
+      "text": "Навіщо писати `assert response.status_code == 201, response.text`?",
+      "options": [
+        { "text": "Якщо тест упаде, у звіті одразу буде тіло відповіді з поясненням сервера", "correct": true },
+        { "text": "Щоб перевірити, що тіло не порожнє" },
+        { "text": "Без другого аргументу assert не працює" }
+      ]
+    },
+    {
+      "id": "location",
+      "kind": "single",
+      "text": "Який заголовок перевіряють після `201 Created`?",
+      "options": [
+        { "text": "`Location` — адреса створеного ресурсу", "correct": true },
+        { "text": "`Allow`" },
+        { "text": "`WWW-Authenticate`" }
+      ]
+    },
+    {
+      "id": "fields",
+      "kind": "single",
+      "text": "Як одним рядком перевірити, що в тілі рівно поля `id`, `name`, `price` — без відсутніх і зайвих?",
+      "options": [
+        { "text": "`assert set(body) == {\"id\", \"name\", \"price\"}`", "correct": true },
+        { "text": "`assert \"id\" in body`" },
+        { "text": "`assert len(body) > 0`" }
+      ]
+    },
+    {
+      "id": "not-500",
+      "kind": "single",
+      "text": "Вимога: невалідна кількість → `400`. Чому `assert response.status_code != 500` погана перевірка?",
+      "options": [
+        { "text": "Вона пройде і з 200 (невалідне прийняли), і з 404", "correct": true },
+        { "text": "Вона повільна" },
+        { "text": "Вона нічим не гірша" }
+      ]
+    },
+    {
+      "id": "cleanup-negative",
+      "kind": "single",
+      "text": "Негативний тест надсилає замовлення з кількістю 0. Через баг сервер відповів 201 і створив його. Що має зробити тест?",
+      "options": [
+        { "text": "Видалити створене замовлення, а потім упасти на перевірці статусу", "correct": true },
+        { "text": "Просто впасти — прибирання не потрібне, тест же червоний" },
+        { "text": "Перезапустити сервер" }
+      ]
+    },
+    {
+      "id": "every-item",
+      "kind": "single",
+      "text": "Фільтр `inStock=true`. Яка перевірка сильніша?",
+      "options": [
+        { "text": "`assert all(p[\"inStock\"] for p in body[\"items\"])`", "correct": true },
+        { "text": "`assert body[\"items\"][0][\"inStock\"]`", "explain": "Баг у другому елементі цей тест не помітить." },
+        { "text": "`assert body[\"items\"]`" }
+      ]
+    },
+    {
+      "id": "no-content",
+      "kind": "single",
+      "text": "`DELETE /orders/1003` повернув `204`. Що буде після `response.json()`?",
+      "options": [
+        { "text": "Помилка розбору JSON: у 204 немає тіла", "correct": true },
+        { "text": "Порожній словник `{}`" },
+        { "text": "`None`" }
+      ]
+    }
+  ]
+}

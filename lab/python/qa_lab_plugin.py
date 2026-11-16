@@ -33,6 +33,26 @@ NAVIGATION_TIMEOUT_MS = 15_000
 expect.set_options(timeout=EXPECT_TIMEOUT_MS)
 
 
+def _mark_requests():
+    """API tests written with the requests library carry the same marker as the browser, so mock-API bugs are graded."""
+    try:
+        from requests.adapters import HTTPAdapter
+    except ImportError:  # a lab installed before module 29: nothing to mark
+        return
+    original_send = HTTPAdapter.send
+
+    def send(self, request, *args, **kwargs):
+        agent = request.headers.get("User-Agent", "")
+        if "qa-lab-bugs=" not in agent:
+            request.headers["User-Agent"] = f"{agent} qa-lab-bugs={BUGS}".strip()
+        return original_send(self, request, *args, **kwargs)
+
+    HTTPAdapter.send = send
+
+
+_mark_requests()
+
+
 def _user_agent(playwright):
     return f"{playwright.devices[DEVICE]['user_agent']} qa-lab-bugs={BUGS}"
 

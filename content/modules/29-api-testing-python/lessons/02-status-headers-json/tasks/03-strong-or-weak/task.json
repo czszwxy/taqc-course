@@ -1,0 +1,29 @@
+{
+  "type": "classify",
+  "title": "Strong or weak API assertion?",
+  "statement": "Які перевірки по-справжньому ловлять баги API, а які пропустять більшість із них?",
+  "show": 8,
+  "passScore": 0.75,
+  "categories": [
+    { "id": "strong", "label": "Strong", "description": "Перевіряє точне значення з вимог" },
+    { "id": "weak", "label": "Weak", "description": "Пройде і з неправильною відповіддю" }
+  ],
+  "items": [
+    { "id": "status-201", "text": "`assert response.status_code == 201, response.text`", "category": "strong" },
+    { "id": "ok", "text": "`assert response.ok`", "category": "weak", "explain": "Пройде з будь-яким статусом 200–399, зокрема 200 замість 201." },
+    { "id": "not-500", "text": "`assert response.status_code != 500`", "category": "weak", "explain": "Пройде і з 200, і з 404 там, де очікували 400." },
+    { "id": "fields", "text": "`assert set(order) == {\"id\", \"userId\", \"productId\", \"quantity\", \"unitPrice\", \"total\", \"status\", \"createdAt\"}`", "category": "strong" },
+    { "id": "truthy-json", "text": "`assert response.json()`", "category": "weak", "explain": "Будь-яке непорожнє тіло, навіть `{\"error\": …}`." },
+    { "id": "location", "text": "`assert response.headers[\"Location\"].endswith(f\"/orders/{order['id']}\")`", "category": "strong" },
+    { "id": "error-in-text", "text": "`assert \"error\" in response.text`", "category": "weak", "explain": "Слово «error» може трапитися будь-де — і текст помилки не перевірено." },
+    { "id": "error-exact", "text": "`assert response.json() == {\"error\": \"Product not found\"}`", "category": "strong" },
+    { "id": "first-item", "text": "`assert body[\"items\"][0][\"category\"] == \"Phones\"`", "category": "weak", "explain": "Перевіряє лише перший товар зі списку." },
+    { "id": "every-item", "text": "`assert all(p[\"category\"] == \"Phones\" for p in body[\"items\"])` разом із `body[\"total\"] == 3`", "category": "strong" },
+    { "id": "len-positive", "text": "`assert len(body[\"items\"]) > 0`", "category": "weak", "explain": "Не каже нічого про те, чи це **правильні** елементи." }
+  ],
+  "hints": [
+    "Спитай себе: чи може ця перевірка пройти, коли API відповів неправильно?",
+    "Сильна перевірка порівнює з конкретним значенням з вимог: статус, поля, текст помилки, кожен елемент."
+  ],
+  "explanation": "Слабкі перевірки («ok», «не 500», «щось є в тілі») пропускають більшість реальних багів API: неправильний статус успіху, чужі дані, неповний фільтр. Сильні порівнюють з точним очікуванням: статус, набір полів, текст помилки, властивість **кожного** елемента. Пиши перевірки так, щоб кожна могла впасти лише з однієї причини."
+}

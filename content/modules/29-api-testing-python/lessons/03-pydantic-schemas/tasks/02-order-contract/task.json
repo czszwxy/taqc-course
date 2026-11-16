@@ -1,0 +1,23 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Login and order contracts with pydantic",
+  "playground": "api",
+  "statement": "Опиши контракти відповідей Gadgetly API моделями **pydantic** і перевір ними відповіді. У стартовому файлі вже є модель `Product`, фікстури `api` і `auth` та перший тест.\n\n1. Каталог: усі товари відповідають `Product`. *Уже є.*\n2. **Вхід**: модель `User` (`id`, `email`, `name`, `role` — рядок `customer`) і `LoginResponse` (`token` — рядок, `tokenType` — лише `Bearer`, `expiresIn` — ціле більше 0, `user` — `User`). Відповідь `POST /auth/login` відповідає `LoginResponse`, `user.email` = `qa@gadgetly.test`.\n3. **Замовлення**: модель `Order` з полями `id`, `userId`, `productId`, `quantity` (від 1 до 10), `unitPrice` (більше 0), `total`, `status` (`created` або `paid`), `createdAt` (рядок) і **правилом** `total == unitPrice * quantity`. Нове замовлення `{\"productId\": 1, \"quantity\": 2}` (`201`) відповідає `Order`.\n4. **PATCH**: після `PATCH /orders/<id>` з `{\"quantity\": 3}` відповідь (`200`) теж відповідає `Order` — тобто сума перерахована.\n\nУсі моделі — з `extra=\"forbid\"` і `strict=True`. Створені замовлення видаляй.",
+  "minTests": 4,
+  "mutants": [
+    { "id": "patchTotal", "description": "PATCH changed the quantity but left the old total.", "hint": "Validate the PATCH response with the Order model — its rule total == unitPrice * quantity must hold." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "class Order\\(BaseModel\\)", "message": "Опиши модель `class Order(BaseModel)`." },
+    { "kind": "require", "pattern": "class LoginResponse\\(BaseModel\\)", "message": "Опиши модель `class LoginResponse(BaseModel)` для відповіді входу." },
+    { "kind": "require", "pattern": "@model_validator", "message": "Правило `total == unitPrice * quantity` — у `@model_validator(mode=\"after\")`." },
+    { "kind": "require", "pattern": "Literal\\[", "message": "Перелік допустимих значень (`tokenType`, `status`) — через `Literal[...]`." }
+  ],
+  "hints": [
+    "`class LoginResponse(BaseModel):` з `model_config = ConfigDict(extra=\"forbid\", strict=True)`, `token: str`, `tokenType: Literal[\"Bearer\"]`, `expiresIn: int = Field(gt=0)`, `user: User`.",
+    "У `Order`: `quantity: int = Field(ge=1, le=10)`, `status: Literal[\"created\", \"paid\"]`, і валідатор: `if self.total != self.unitPrice * self.quantity: raise ValueError(...)`, наприкінці `return self`.",
+    "PATCH: `requests.patch(f\"{api}/orders/{order_id}\", json={\"quantity\": 3}, headers=auth, timeout=TIMEOUT)`, потім `Order.model_validate(response.json())`. Видаляй замовлення у `finally`."
+  ],
+  "explanation": "Модель pydantic перетворює вимоги до відповіді на виконувану перевірку: типи, межі, перелік значень і правила між полями. Найцінніше тут — правило `total == unitPrice * quantity` у `model_validator`: воно ловить логічний баг (сума не перерахувалась після PATCH), якого не видно з типів. Одна модель перевіряє і створення, і зміну замовлення — описуєш контракт раз, використовуєш скрізь."
+}

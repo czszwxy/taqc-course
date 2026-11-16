@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "HTTP requests with requests",
+  "show": 5,
+  "hints": ["params — у адресу, json — у тіло. 404 — не виняток, а відповідь. Timeout — завжди."],
+  "questions": [
+    {
+      "id": "params",
+      "kind": "single",
+      "text": "Як надіслати `GET /api/products?category=Laptops&limit=2`?",
+      "options": [
+        { "text": "`requests.get(f\"{api}/products\", params={\"category\": \"Laptops\", \"limit\": 2}, timeout=5)`", "correct": true },
+        { "text": "`requests.get(f\"{api}/products\", json={\"category\": \"Laptops\", \"limit\": 2}, timeout=5)`", "explain": "`json=` кладе дані в тіло запиту, а фільтри GET-запиту — у query string." },
+        { "text": "`requests.post(f\"{api}/products\", data={\"category\": \"Laptops\"})`" }
+      ]
+    },
+    {
+      "id": "json-body",
+      "kind": "single",
+      "text": "API чекає тіло `{\"email\": …, \"password\": …}` у JSON. Який аргумент?",
+      "options": [
+        { "text": "`json={\"email\": email, \"password\": password}`", "correct": true },
+        { "text": "`data={\"email\": email, \"password\": password}`", "explain": "`data=` надсилає форму `email=…&password=…`, а не JSON." },
+        { "text": "`params={\"email\": email, \"password\": password}`" }
+      ]
+    },
+    {
+      "id": "not-exception",
+      "kind": "single",
+      "text": "Сервер відповів 404. Що зробить `requests.get(...)`?",
+      "options": [
+        { "text": "Поверне `Response` зі `status_code == 404` — виняток не виникає", "correct": true },
+        { "text": "Кине виняток `HTTPError`", "explain": "Так робить лише `raise_for_status()`, якщо його викликати." },
+        { "text": "Поверне `None`" }
+      ]
+    },
+    {
+      "id": "timeout",
+      "kind": "single",
+      "text": "Навіщо `timeout=5` у кожному запиті?",
+      "options": [
+        { "text": "Без нього тест чекатиме відповідь вічно, якщо сервер завис", "correct": true },
+        { "text": "Щоб запит виконувався рівно 5 секунд" },
+        { "text": "Без timeout requests не працює" }
+      ]
+    },
+    {
+      "id": "ok-weak",
+      "kind": "single",
+      "text": "Вимога: створення замовлення повертає `201`. Чому `assert response.ok` — слабка перевірка?",
+      "options": [
+        { "text": "`ok` — це будь-який статус 200–399: тест пройде і з 200, і з 302", "correct": true },
+        { "text": "`ok` перевіряє лише тіло" },
+        { "text": "Вона не слабка — це те саме, що `== 201`" }
+      ]
+    },
+    {
+      "id": "session",
+      "kind": "single",
+      "text": "Навіщо `requests.Session()` в API-тестах?",
+      "options": [
+        { "text": "Задати спільні заголовки (наприклад, токен) один раз і перевикористовувати з'єднання", "correct": true },
+        { "text": "Щоб запити йшли паралельно" },
+        { "text": "Щоб зберегти відповіді у файл" }
+      ]
+    },
+    {
+      "id": "raise",
+      "kind": "single",
+      "text": "Де доречний `response.raise_for_status()`?",
+      "options": [
+        { "text": "У фікстурі входу: якщо вхід не вдався, далі тестувати немає сенсу", "correct": true },
+        { "text": "У тесті, що перевіряє відповідь 404", "explain": "Там 404 — очікуваний результат; виняток зламає саму перевірку." },
+        { "text": "Після кожного запиту" }
+      ]
+    }
+  ]
+}

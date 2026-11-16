@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Schema validation with pydantic",
+  "show": 5,
+  "hints": ["extra=\"forbid\" — зайві поля, strict=True — типи без перетворень, Literal — перелік значень, model_validator — правила між полями."],
+  "questions": [
+    {
+      "id": "extra",
+      "kind": "single",
+      "text": "API почав віддавати зайве поле `internalNote`. Що змусить модель це помітити?",
+      "options": [
+        { "text": "`model_config = ConfigDict(extra=\"forbid\")`", "correct": true },
+        { "text": "`strict=True`", "explain": "strict стосується типів, а не зайвих полів." },
+        { "text": "Нічого: pydantic завжди відкидає зайві поля з помилкою", "explain": "За замовчуванням зайві поля тихо ігноруються." }
+      ]
+    },
+    {
+      "id": "strict",
+      "kind": "single",
+      "text": "Ціна прийшла як `\"499\"` (рядок). Поле `price: int`. Коли модель впаде?",
+      "options": [
+        { "text": "Лише зі `strict=True`; без нього pydantic перетворить рядок на число", "correct": true },
+        { "text": "Завжди" },
+        { "text": "Ніколи" }
+      ]
+    },
+    {
+      "id": "literal",
+      "kind": "single",
+      "text": "Як дозволити в полі `status` лише значення `created` і `paid`?",
+      "options": [
+        { "text": "`status: Literal[\"created\", \"paid\"]`", "correct": true },
+        { "text": "`status: str = Field(gt=0)`" },
+        { "text": "`status: list[str]`" }
+      ]
+    },
+    {
+      "id": "list",
+      "kind": "single",
+      "text": "Як перевірити список товарів `body[\"items\"]` моделлю `Product`?",
+      "options": [
+        { "text": "`TypeAdapter(list[Product]).validate_python(body[\"items\"])`", "correct": true },
+        { "text": "`Product.model_validate(body[\"items\"])`", "explain": "Модель описує один товар, а не список." },
+        { "text": "`list(Product)`" }
+      ]
+    },
+    {
+      "id": "rule",
+      "kind": "single",
+      "text": "Як перевірити, що `total == unitPrice * quantity`?",
+      "options": [
+        { "text": "`@model_validator(mode=\"after\")`, що кидає `ValueError`, якщо правило порушено, і повертає `self`", "correct": true },
+        { "text": "Тип `int` для всіх трьох полів" },
+        { "text": "`Field(gt=0)` для total" }
+      ]
+    },
+    {
+      "id": "read-error",
+      "kind": "single",
+      "text": "Тест упав: `user.email — Field required`. Що це означає?",
+      "options": [
+        { "text": "У вкладеному об'єкті `user` відповіді немає поля `email`", "correct": true },
+        { "text": "Email має неправильний формат" },
+        { "text": "Модель User не описана" }
+      ]
+    },
+    {
+      "id": "model-from-response",
+      "kind": "single",
+      "text": "Чому модель описують за вимогами, а не копіюючи поточну відповідь API?",
+      "options": [
+        { "text": "Інакше модель закріпить нинішній баг (зайве поле, неправильний тип) як «норму»", "correct": true },
+        { "text": "Бо pydantic не вміє читати JSON" },
+        { "text": "Це однаково" }
+      ]
+    }
+  ]
+}

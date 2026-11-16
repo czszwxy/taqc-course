@@ -1,0 +1,23 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "First API tests with requests: products and login",
+  "playground": "api",
+  "statement": "Перші автотести для **Gadgetly API** (документація — у API console: кнопка нижче). Адреса API — фікстура `api` (`{base_url}/api`), таймаут — константа `TIMEOUT`. У стартовому файлі вже є перевірка `GET /health`.\n\nНапиши тести з **requests**:\n\n1. `GET /health` → `200`, `status` = `ok`, `version` = `1.4.0`. *Уже є.*\n2. Фільтр за категорією: `GET /products?category=Phones` → `200`, `total` = `3`, і **кожен** товар у `items` має категорію `Phones`.\n3. Сторінки не перетинаються: `GET /products` з `limit=5` на сторінках `page=1` і `page=2` — жоден `id` не повторюється.\n4. Неіснуючий товар: `GET /products/999` → `404` і тіло `{\"error\": \"Product not found\"}`.\n5. Вхід без пароля: `POST /auth/login` з тілом `{\"email\": \"qa@gadgetly.test\"}` → `400` і помилка `email and password are required`.\n\n**✓ Check** запустить тести проти правильного API і проти версій API з багами.",
+  "minTests": 5,
+  "mutants": [
+    { "id": "paginationOverlap", "description": "page 2 started with the last product of page 1.", "hint": "Compare the ids of page 1 and page 2 (limit=5): they must not overlap." },
+    { "id": "loginMissingPassword", "description": "login without a password answered 500 instead of 400.", "hint": "Send a login body without \"password\" and check the exact status." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "requests\\.(get|post)\\(", "message": "Надсилай запити через бібліотеку requests: `requests.get(...)`, `requests.post(...)`." },
+    { "kind": "require", "pattern": "params=", "message": "Фільтри й сторінки передавай через `params={...}`, а не вписуй у адресу руками." },
+    { "kind": "forbid", "pattern": "requests\\.\\w+\\((?![^\\n]*timeout=)[^\\n]*\\)\\s*$", "flags": "m", "message": "Кожен запит — з `timeout=TIMEOUT`: без нього тест може чекати вічно." }
+  ],
+  "hints": [
+    "Фільтр: `response = requests.get(f\"{api}/products\", params={\"category\": \"Phones\"}, timeout=TIMEOUT)`, потім `assert all(p[\"category\"] == \"Phones\" for p in body[\"items\"])`.",
+    "Сторінки: збери множини `{p[\"id\"] for p in ...[\"items\"]}` для `page=1` і `page=2` і перевір `first.isdisjoint(second)`.",
+    "Вхід без пароля: `requests.post(f\"{api}/auth/login\", json={\"email\": \"qa@gadgetly.test\"}, timeout=TIMEOUT)`; перевір `status_code == 400` і `response.json()[\"error\"]`."
+  ],
+  "explanation": "API-тест — це запит і точні перевірки відповіді: статус, тіло, а для списків — властивість **кожного** елемента, а не лише першого. Пагінацію перевіряють порівнянням сусідніх сторінок: баг «перший товар сторінки 2 = останній товар сторінки 1» не видно на жодній сторінці окремо. Для помилок перевіряй точний статус (400, а не «щось не 200») і текст помилки — 500 замість 400 означає, що сервер упав на невалідних даних."
+}

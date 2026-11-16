@@ -1,0 +1,23 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Orders API with Playwright's APIRequestContext",
+  "playground": "api",
+  "statement": "Ті самі API-тести — але інструментом Playwright, без requests. У стартовому файлі є фікстура `public_api` (контекст без токена, `base_url` = `{base_url}/api/`) і перший тест.\n\n1. Каталог: `GET products?limit=50` → `expect(response).to_be_ok()` і `total` = `14`. *Уже є.*\n2. Додай фікстуру **`user_api`** (scope session): отримай токен через `public_api.post(\"auth/login\", data=USER)`, створи контекст з `extra_http_headers={\"Authorization\": f\"Bearer {token}\"}`, віддай через `yield`, після нього — `dispose()`.\n3. Свої замовлення: `GET orders` → `200`, кожне замовлення належить користувачу `42`.\n4. Чуже замовлення: `GET orders/1001` → `403`.\n5. Видалення: створи замовлення (`201`), видали його (`204`), повторне видалення → `404`.\n\nШляхи — **без** слеша на початку (`\"orders\"`, а не `\"/orders\"`).",
+  "minTests": 4,
+  "mutants": [
+    { "id": "otherUsersOrder", "description": "GET /orders/:id returned another user's order instead of 403.", "hint": "Request orders/1001 with your token: the API must refuse with 403." },
+    { "id": "deleteMissing", "description": "DELETE of a non-existent order answered 204 instead of 404.", "hint": "Delete your order twice: the second DELETE must be 404." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "extra_http_headers", "message": "Токен для всіх запитів — через `extra_http_headers` у `new_context(...)`." },
+    { "kind": "require", "pattern": "\\.dispose\\(\\)", "message": "Закрий контекст `user_api` після `yield`: `context.dispose()`." },
+    { "kind": "forbid", "pattern": "^import requests|requests\\.", "flags": "m", "message": "У цьому завданні — лише APIRequestContext від Playwright, без бібліотеки requests." }
+  ],
+  "hints": [
+    "Токен: `token = public_api.post(\"auth/login\", data=USER).json()[\"token\"]`; контекст: `playwright.request.new_context(base_url=f\"{base_url}/api/\", extra_http_headers={...})`.",
+    "Статус у Playwright — `response.status` (не `status_code`).",
+    "Видалення: `order = user_api.post(\"orders\", data={\"productId\": 1, \"quantity\": 1}).json()`, потім двічі `user_api.delete(f\"orders/{order['id']}\")` — 204, а тоді 404."
+  ],
+  "explanation": "APIRequestContext — той самий HTTP, інший інструмент: контекст із `base_url` і заголовками замість сесії requests, `data` замість `json`, `status` замість `status_code`. Фікстура з `yield` і `dispose()` відповідає за життєвий цикл клієнта. Перевірки ж не змінюються: чужий ресурс — 403, повторне видалення — 404, точний статус замість «ок»."
+}

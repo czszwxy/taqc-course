@@ -1,0 +1,27 @@
+{
+  "type": "table",
+  "title": "Which requests argument?",
+  "statement": "Для кожної потреби обери аргумент функції requests (`requests.get(...)`, `requests.post(...)`…).",
+  "hints": [
+    "`params` — у адресу після `?`, `json` — тіло JSON, `data` — тіло форми.",
+    "`timeout` обмежує очікування, `allow_redirects=False` зупиняє на першій відповіді 3xx."
+  ],
+  "explanation": "Кожен аргумент requests відповідає частині HTTP-запиту з модуля про HTTP: query string (`params`), тіло JSON (`json`) чи форми (`data`), заголовки (`headers`), файли (`files`). `timeout` і `allow_redirects` нічого не додають у запит, а керують тим, як requests чекає й обробляє відповідь.",
+  "givenColumns": ["Що потрібно"],
+  "answerColumns": [
+    {
+      "id": "argument",
+      "label": "Аргумент",
+      "options": ["params=", "json=", "data=", "headers=", "timeout=", "files=", "allow_redirects=False"]
+    }
+  ],
+  "rows": [
+    { "given": ["Відфільтрувати список: `?category=Laptops&inStock=true`"], "answers": { "argument": "params=" } },
+    { "given": ["Надіслати нове замовлення `{\"productId\": 1, \"quantity\": 2}` у тілі"], "answers": { "argument": "json=" } },
+    { "given": ["Додати `Authorization: Bearer <token>`"], "answers": { "argument": "headers=" } },
+    { "given": ["Надіслати HTML-форму `email=…&password=…`"], "answers": { "argument": "data=" } },
+    { "given": ["Не чекати відповідь довше 5 секунд"], "answers": { "argument": "timeout=" } },
+    { "given": ["Завантажити аватарку `avatar.png` на сервер"], "answers": { "argument": "files=" } },
+    { "given": ["Перевірити сам редирект: статус 302 і заголовок Location, а не сторінку, куди він веде"], "answers": { "argument": "allow_redirects=False" } }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "type": "table",
+  "title": "Which part of the model catches it?",
+  "statement": "Кожен рядок — зміна у відповіді API, яку тест має помітити. Обери, яка частина моделі pydantic її зловить.",
+  "hints": [
+    "Типи без перетворень — `strict=True`, зайві поля — `extra=\"forbid\"`, межі — `Field(...)`, перелік значень — `Literal`.",
+    "Правило, що зв'язує кілька полів, типом не опишеш — для нього `model_validator`."
+  ],
+  "explanation": "Кожна частина моделі відповідає за свій клас змін: наявність поля (обов'язкове поле), тип (`strict=True`), зайві поля (`extra=\"forbid\"`), межі (`Field`), перелік (`Literal`), структуру списків і вкладених об'єктів (`TypeAdapter`, вкладена модель) і правила між полями (`model_validator`). Разом вони роблять контракт виконуваним: будь-яке непомічене відхилення від вимог стає упалим тестом із точним місцем помилки.",
+  "givenColumns": ["Що змінилось у відповіді"],
+  "answerColumns": [
+    {
+      "id": "tool",
+      "label": "Що зловить",
+      "options": [
+        "Обов'язкове поле (без значення за замовчуванням)",
+        "strict=True",
+        "extra=\"forbid\"",
+        "Field(gt=0)",
+        "Literal[...]",
+        "@model_validator",
+        "TypeAdapter(list[Model])",
+        "Вкладена модель"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["З відповіді зникло поле `createdAt`"], "answers": { "tool": "Обов'язкове поле (без значення за замовчуванням)" } },
+    { "given": ["`price` прийшов рядком `\"499\"` замість числа"], "answers": { "tool": "strict=True" } },
+    { "given": ["З'явилося поле `internalCost`, якого немає у вимогах"], "answers": { "tool": "extra=\"forbid\"" } },
+    { "given": ["Товар прийшов із `price: 0`"], "answers": { "tool": "Field(gt=0)" } },
+    { "given": ["`status` прийшов як `\"Shipped\"`, а дозволено лише `created` і `paid`"], "answers": { "tool": "Literal[...]" } },
+    { "given": ["`total` не дорівнює `unitPrice * quantity`"], "answers": { "tool": "@model_validator" } },
+    { "given": ["Один із 14 товарів у списку `items` прийшов без `name`"], "answers": { "tool": "TypeAdapter(list[Model])" } },
+    { "given": ["В об'єкті `user` всередині відповіді входу немає `email`"], "answers": { "tool": "Вкладена модель" } }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "title": "HTTP requests with requests",
+  "minutes": 55,
+  "summary": "Бібліотека requests для API-тестів: get / post / put / patch / delete, params, json, headers, timeout, об'єкт Response (status_code, json(), headers, elapsed), базова адреса через фікстуру, requests.Session, raise_for_status і типові помилки — запит без timeout, data замість json, json() на порожній відповіді",
+  "resources": [
+    {
+      "title": "Requests: Quickstart",
+      "url": "https://requests.readthedocs.io/en/latest/user/quickstart/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Requests: Advanced usage (Session objects, timeouts)",
+      "url": "https://requests.readthedocs.io/en/latest/user/advanced/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: HTTP request methods",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Python requests API testing pytest",
+      "url": "https://www.youtube.com/results?search_query=python+requests+api+testing+pytest",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

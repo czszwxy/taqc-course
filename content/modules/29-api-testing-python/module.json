@@ -1,0 +1,12 @@
+{
+  "title": "API Testing with Python",
+  "description": "Автоматизація API-тестів на Python: бібліотека requests, перевірка статусів, заголовків і JSON, контракти відповідей з pydantic, CRUD-тести з фікстурами й прибиранням даних, APIRequestContext від Playwright і поєднання API та UI. Задачі з кодом запускаються проти справжнього Gadgetly API і перевіряються на версіях API з навмисними багами.",
+  "goals": [
+    "Send GET / POST / PUT / PATCH / DELETE requests with requests: params, json, headers, timeout, Session",
+    "Check status codes, headers and JSON bodies precisely, including negative and error cases",
+    "Describe response contracts with pydantic models and catch broken fields, types and business rules",
+    "Write CRUD tests that create their own data with fixtures and always clean it up",
+    "Use Playwright's APIRequestContext for API tests and know when to choose it over requests",
+    "Combine API and UI: prepare data through the API, check it in the browser, clean up through the API"
+  ]
+}

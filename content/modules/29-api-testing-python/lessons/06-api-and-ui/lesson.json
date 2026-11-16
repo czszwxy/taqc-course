@@ -1,0 +1,28 @@
+{
+  "title": "Combining API and UI",
+  "minutes": 55,
+  "summary": "Гібридні тести: підготовка даних і вхід через API, перевірка того, що бачить користувач, в UI, перевірка наслідків дій в UI через API, прибирання через API; вхід без форми через токен у localStorage (add_init_script) або storage state, коли UI треба перезавантажити, і що не варто перевіряти через API",
+  "resources": [
+    {
+      "title": "Playwright for Python: API testing — prepare server state via API",
+      "url": "https://playwright.dev/python/docs/api-testing#prepare-server-state-via-api-calls",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Page.add_init_script",
+      "url": "https://playwright.dev/python/docs/api/class-page#page-add-init-script",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Authentication",
+      "url": "https://playwright.dev/python/docs/auth",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

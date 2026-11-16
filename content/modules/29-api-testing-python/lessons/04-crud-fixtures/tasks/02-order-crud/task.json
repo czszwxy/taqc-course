@@ -1,0 +1,23 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Order CRUD with fixtures and cleanup",
+  "playground": "api",
+  "statement": "Повний життєвий цикл замовлення в Gadgetly API. У стартовому файлі є фікстура `session` (`requests.Session` з токеном користувача 42 на весь запуск) і перший тест.\n\n1. Додай фікстуру **`order`**: створює замовлення `{\"productId\": 1, \"quantity\": 2}`, віддає його тесту, а **після `yield`** видаляє (без `assert` — тест міг уже видалити його сам).\n2. Тести:\n   - `GET /me` повертає користувача `42`. *Уже є.*\n   - **Read**: `GET /orders/<id>` повертає той самий об'єкт, що й `POST`.\n   - **PUT** з `{\"productId\": 3, \"quantity\": 1}` повністю замінює замовлення: `productId` = `3`, `unitPrice` = `2199`, `total` = `2199`.\n   - **PATCH** з `{\"quantity\": 4}`: `quantity` = `4`, `total` = `unitPrice * 4`.\n   - **DELETE**: `204`, потім `GET` того самого id → `404`, повторний `DELETE` → `404`.",
+  "minTests": 5,
+  "mutants": [
+    { "id": "patchTotal", "description": "PATCH changed the quantity but left the old total.", "hint": "After PATCH quantity=4 the total must be unitPrice * 4." },
+    { "id": "deleteMissing", "description": "DELETE of a non-existent order answered 204 instead of 404.", "hint": "Delete the order, then delete it again: the second DELETE must be 404." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "def order\\(", "message": "Додай фікстуру `order`, що створює замовлення." },
+    { "kind": "require", "pattern": "yield", "message": "Прибирання — після `yield` у фікстурі `order`." },
+    { "kind": "require", "pattern": "\\.delete\\(", "message": "Фікстура має видаляти створене замовлення: `session.delete(...)`." }
+  ],
+  "hints": [
+    "Фікстура: `created = session.post(f\"{api}/orders\", json={...}, timeout=TIMEOUT).json()`, `yield created`, потім `session.delete(f\"{api}/orders/{created['id']}\", timeout=TIMEOUT)`.",
+    "PUT: `session.put(f\"{api}/orders/{order['id']}\", json={\"productId\": 3, \"quantity\": 1}, timeout=TIMEOUT)` — і перевір `productId`, `unitPrice`, `total`.",
+    "DELETE: перший — `204`; `session.get(...)` → `404`; ще один `session.delete(...)` → `404`. Teardown фікстури теж отримає 404 — і це нормально."
+  ],
+  "explanation": "Фікстура з `yield` гарантує, що кожен тест має своє свіже замовлення і що воно зникне після тесту, навіть після падіння. У CRUD-перевірках головне — **похідні** значення (сума після PUT і PATCH) і повна перевірка видалення: не лише 204, а й 404 на читання і повторне видалення. Видалення неіснуючого об'єкта з відповіддю 204 — тихий баг: клієнт думає, що видалив щось, чого не було."
+}

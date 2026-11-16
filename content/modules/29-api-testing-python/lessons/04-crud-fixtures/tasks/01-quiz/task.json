@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "CRUD tests with fixtures and cleanup",
+  "show": 5,
+  "hints": ["Код після yield виконується завжди. Teardown не падає. Свій об'єкт — за id."],
+  "questions": [
+    {
+      "id": "after-yield",
+      "kind": "single",
+      "text": "Тест упав на assert. Що буде з кодом після `yield` у фікстурі, що створила замовлення?",
+      "options": [
+        { "text": "Виконається — замовлення буде видалено", "correct": true },
+        { "text": "Не виконається, бо тест упав" },
+        { "text": "Виконається лише з `--cleanup`" }
+      ]
+    },
+    {
+      "id": "teardown-assert",
+      "kind": "single",
+      "text": "Чому в teardown після `yield` не пишуть `assert response.status_code == 204`?",
+      "options": [
+        { "text": "Тест міг уже сам видалити об'єкт — повторний DELETE поверне 404, і прибирання «впаде»", "correct": true },
+        { "text": "Бо в teardown не можна писати assert" },
+        { "text": "Бо DELETE завжди повертає 200" }
+      ]
+    },
+    {
+      "id": "global-count",
+      "kind": "single",
+      "text": "Чому погано перевіряти «після створення замовлень стало 3»?",
+      "options": [
+        { "text": "Інші тести паралельно створюють і видаляють свої замовлення — кількість змінюється", "correct": true },
+        { "text": "Бо API не повертає кількість" },
+        { "text": "Так перевіряти правильно" }
+      ]
+    },
+    {
+      "id": "session-scope",
+      "kind": "single",
+      "text": "Яку область дії (scope) дати фікстурі, що входить і повертає `requests.Session` з токеном?",
+      "options": [
+        { "text": "`session` — вхід один раз на весь запуск", "correct": true },
+        { "text": "`function` — вхід перед кожним тестом", "explain": "Працюватиме, але повільно і без потреби." },
+        { "text": "Байдуже" }
+      ]
+    },
+    {
+      "id": "delete-check",
+      "kind": "single",
+      "text": "Як переконатися, що `DELETE /orders/<id>` справді видалив замовлення?",
+      "options": [
+        { "text": "Після `204` зробити `GET /orders/<id>` і отримати `404`", "correct": true },
+        { "text": "Подивитися, що DELETE повернув 204" },
+        { "text": "Порахувати всі замовлення" }
+      ]
+    },
+    {
+      "id": "patch-vs-put",
+      "kind": "single",
+      "text": "Чим перевірка `PATCH` відрізняється від перевірки `PUT`?",
+      "options": [
+        { "text": "PATCH змінює лише передані поля, решта — без змін; PUT замінює ресурс повністю", "correct": true },
+        { "text": "Нічим" },
+        { "text": "PATCH видаляє ресурс" }
+      ]
+    },
+    {
+      "id": "factory",
+      "kind": "single",
+      "text": "Тесту потрібні три замовлення з різною кількістю. Що зручніше?",
+      "options": [
+        { "text": "Фабрика-фікстура `make_order(**fields)`, що пам'ятає id і прибирає всі", "correct": true },
+        { "text": "Три однакові фікстури" },
+        { "text": "Створити їх у тілі тесту без прибирання" }
+      ]
+    }
+  ]
+}

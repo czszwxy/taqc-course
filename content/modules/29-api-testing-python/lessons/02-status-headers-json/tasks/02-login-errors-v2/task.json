@@ -1,0 +1,22 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "variantOf": "02-orders-negative",
+  "title": "Login and order creation: errors and headers",
+  "playground": "api",
+  "statement": "Ще один набір перевірок відповіді Gadgetly API — статуси, заголовки й тексти помилок. Фікстури `api` і `auth` уже є, як і перший тест.\n\n1. Неправильний пароль: `POST /auth/login` → `401` і помилка `Invalid email or password`. *Уже є.*\n2. Вхід без пароля: `POST /auth/login` з `{\"email\": \"qa@gadgetly.test\"}` → `400` і помилка `email and password are required`.\n3. Нове замовлення `{\"productId\": 1, \"quantity\": 2}` → `201`, заголовок `Location` закінчується на `/orders/<id нового замовлення>`, `total` = `998`. Наприкінці тесту видали замовлення.\n4. Кількість `0` → `400` і `quantity must be from 1 to 10` (якщо сервер помилково створив замовлення — видали його).\n5. Тіло не JSON: `POST /auth/login` з `data=\"email=qa\"` (форма замість JSON) → `415` і помилка `Content-Type must be application/json`.",
+  "minTests": 5,
+  "mutants": [
+    { "id": "loginMissingPassword", "description": "login without a password answered 500 instead of 400.", "hint": "Send a login body without \"password\" and check the exact status." },
+    { "id": "quantityZero", "description": "POST /orders accepted quantity 0.", "hint": "Create an order with quantity 0: the API must answer 400 (and clean up if it created one)." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "Location", "message": "Вимога 3: перевір заголовок `Location` після `201`." },
+    { "kind": "require", "pattern": "requests\\.delete\\(", "message": "Видаляй створені замовлення: `requests.delete(...)`." }
+  ],
+  "hints": [
+    "Location: `assert response.headers[\"Location\"].endswith(f\"/orders/{order['id']}\")`. Видалення — у `finally` або одразу після перевірок.",
+    "415: `requests.post(f\"{api}/auth/login\", data=\"email=qa\", timeout=TIMEOUT)` — `data=` з рядком надсилає не JSON."
+  ],
+  "explanation": "Заголовки — частина контракту так само, як тіло: `Location` після створення каже клієнту, де шукати новий ресурс, а `415` захищає сервер від неправильного формату тіла. Для `400` проти `500` важливий точний статус: 500 означає, що сервер упав на невалідних даних, — це окремий баг, навіть якщо вхід і так не відбувся."
+}
