@@ -12,3 +12,6 @@ lab/python/test-results
 __pycache__/
 
 .playwright-mcp
+lab/python/reports
+lab/python/allure-results
+lab/python/allure-report

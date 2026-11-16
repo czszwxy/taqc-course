@@ -1,0 +1,6 @@
+{
+  "title": "Tech check: Python test automation",
+  "minutes": 50,
+  "summary": "Tech check по всьому блоку автоматизації на Python: pytest (основи, фікстури, параметризація, маркери, моки), Playwright для Python (локатори, авто-очікування, page objects, сесії, моки мережі), API-тести з requests і pydantic, фреймворк, налаштування, звіти, CI і нестабільні тести — відкриті питання вголос з таймером і самооцінкою",
+  "resources": []
+}

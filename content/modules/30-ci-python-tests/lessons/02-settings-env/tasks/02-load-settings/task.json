@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Load test settings from the environment",
+  "statement": "Напиши завантаження налаштувань фреймворку. Клас `Settings` уже є.\n\n**`parse_bool(text)`** — `True` для `true`, `1`, `yes`, `on`; `False` для `false`, `0`, `no`, `off`. Регістр і пробіли навколо не важливі. Будь-яке інше слово — `ValueError`.\n\n**`load_settings(env)`** — `env` це словник змінних оточення:\n\n| Змінна | Правило |\n|---|---|\n| `BASE_URL` | типово `http://localhost:5173`; `/` в кінці прибрати |\n| `API_TOKEN` | обов'язкова: немає або порожня → `ValueError`, у тексті якої є `API_TOKEN` |\n| `HEADLESS` | типово `True`; інакше через `parse_bool` |\n| `TIMEOUT_MS` | типово `5000`; ціле число більше за 0, інакше → `ValueError` |\n\n```python\nload_settings({\"API_TOKEN\": \"t-42\", \"BASE_URL\": \"https://staging.gadgetly.test/\", \"HEADLESS\": \"False\"})\n# Settings(base_url='https://staging.gadgetly.test', api_token='t-42', headless=False, timeout_ms=5000)\n\nload_settings({})\n# ValueError: API_TOKEN is not set\n```",
+  "hints": [
+    "`word = text.strip().lower()`, далі `if word in TRUE_WORDS: return True` … і `raise ValueError(...)` для решти.",
+    "`env.get(\"BASE_URL\", DEFAULT_BASE_URL).rstrip(\"/\")`; для токена — `env.get(\"API_TOKEN\", \"\")` і перевірка на порожній рядок.",
+    "`int(\"abc\")` сам піднімає `ValueError`; для `0` і від'ємних додай свою перевірку."
+  ],
+  "explanation": "Змінні оточення — завжди рядки, тож налаштування треба **перетворити й перевірити** на старті: числа через `int`, булеві — через список дозволених слів (а не `bool(...)`, для якого `\"false\"` — істина), обов'язкові значення — з ясним повідомленням. Тоді помилка в оточенні зупиняє прогін одразу, а не перетворюється на загадкові падіння посеред тестів.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "(?<![\\w.])bool\\s*\\(", "message": "Не перетворюй рядок через `bool(...)`: `bool(\"false\")` — це `True`. Порівнюй зі списками слів." }
+  ]
+}

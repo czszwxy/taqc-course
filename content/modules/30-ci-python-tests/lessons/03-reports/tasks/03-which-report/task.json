@@ -1,0 +1,35 @@
+{
+  "type": "table",
+  "title": "Which report or option answers this need?",
+  "statement": "У команді різні люди питають різне про ті самі автотести. Для кожної потреби обери звіт або опцію pytest.",
+  "hints": [
+    "Машинам — JUnit XML. Людям одним файлом — pytest-html. Кроки, вкладення, функції й історія — Allure.",
+    "Докази конкретного падіння в UI — скріншот, відео, трейс Playwright."
+  ],
+  "explanation": "Кожен звіт відповідає на своє питання: JUnit XML годує CI, pytest-html дає один файл для перегляду, Allure показує кроки, вкладення й тенденції, а артефакти Playwright — що саме бачив браузер у момент падіння. Термінальні опції (`-ra`, `--durations`) — швидка відповідь для того, хто запускає тести сам.",
+  "givenColumns": ["Need"],
+  "answerColumns": [
+    {
+      "id": "report",
+      "label": "Report / option",
+      "options": [
+        "--junitxml",
+        "--html … --self-contained-html",
+        "Allure (--alluredir)",
+        "--tracing retain-on-failure",
+        "--screenshot only-on-failure",
+        "-ra",
+        "--durations=10"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["CI має показати в pull request, скільки тестів упало і які"], "answers": { "report": "--junitxml" } },
+    { "given": ["Менеджер хоче один файл, який відкриється в браузері без жодних програм"], "answers": { "report": "--html … --self-contained-html" } },
+    { "given": ["QA lead хоче бачити кроки всередині тестів, групування за функціями й тенденції між прогонами"], "answers": { "report": "Allure (--alluredir)" } },
+    { "given": ["Розробник хоче покроково переглянути DOM і мережу упалого UI-тесту"], "answers": { "report": "--tracing retain-on-failure" } },
+    { "given": ["Потрібна картинка сторінки в момент, коли тест упав"], "answers": { "report": "--screenshot only-on-failure" } },
+    { "given": ["У терміналі не видно, чому пропущені 8 тестів"], "answers": { "report": "-ra" } },
+    { "given": ["Прогін триває 25 хвилин — треба знайти, які тести найдовші"], "answers": { "report": "--durations=10" } }
+  ]
+}

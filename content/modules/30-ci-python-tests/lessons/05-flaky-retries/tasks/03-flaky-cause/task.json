@@ -1,0 +1,30 @@
+{
+  "type": "classify",
+  "title": "What makes this test flaky?",
+  "statement": "Ти розбираєш нестабільні тести фреймворку Gadgetly. Для кожного випадку визнач головну причину.",
+  "show": 8,
+  "passScore": 0.75,
+  "categories": [
+    { "id": "timing", "label": "Timing", "description": "Фіксована пауза або разова перевірка без очікування" },
+    { "id": "data", "label": "Shared data or state", "description": "Тести ділять дані, акаунти або змінний стан" },
+    { "id": "order", "label": "Test order", "description": "Тест залежить від того, що зробив інший тест" },
+    { "id": "outside", "label": "Time or outside world", "description": "Дата, часовий пояс, зовнішній сервіс" }
+  ],
+  "items": [
+    { "id": "sleep", "text": "`page.click(...)`, потім `time.sleep(1)` і `assert page.get_by_text(\"Saved\").is_visible()`", "category": "timing" },
+    { "id": "inner-text", "text": "`assert badge.inner_text() == \"2\"` одразу після кліку «Add to cart»", "category": "timing" },
+    { "id": "count-now", "text": "`assert rows.count() == 3` одразу після фільтрації", "category": "timing", "explain": "`count()` — разове значення; `expect(rows).to_have_count(3)` дочекається." },
+    { "id": "same-email", "text": "Тести реєстрації в 4 процесах (`-n 4`) використовують той самий `qa@example.test`", "category": "data" },
+    { "id": "session-list", "text": "Тест додає товар у список з фікстури `scope=\"session\"`, і сусідній тест бачить зайвий товар", "category": "data" },
+    { "id": "global-total", "text": "API-тест перевіряє, що замовлень у системі рівно 12", "category": "data", "explain": "Інші тести й люди теж створюють замовлення — перевіряй лише свої дані за id." },
+    { "id": "delete-after-create", "text": "`test_delete_order` видаляє замовлення, створене в `test_create_order`", "category": "order" },
+    { "id": "login-first", "text": "Тест кошика проходить лише після тесту входу, бо той зберіг сесію в глобальну змінну", "category": "order" },
+    { "id": "midnight", "text": "Перевірка «замовлення створене сьогодні» падає в CI між 23:00 і 00:00 UTC", "category": "outside" },
+    { "id": "real-mail", "text": "Тест чекає лист від справжнього поштового сервісу, який іноді затримується на хвилину", "category": "outside" }
+  ],
+  "hints": [
+    "`sleep`, `inner_text()`, `count()`, `is_visible()` без `expect` — це про очікування.",
+    "Якщо тест ламається лише разом із сусідом або в іншому порядку — дані, стан чи порядок."
+  ],
+  "explanation": "Причина підказує виправлення: для таймінгу — web-first перевірки `expect(...)`, для спільних даних — унікальні дані й власна підготовка кожного тесту, для порядку — незалежні тести з фікстурами, для часу й зовнішнього світу — фіксовані дати й моки. Повтор (`--reruns`) не виправляє жодну з цих причин — лише ховає її."
+}

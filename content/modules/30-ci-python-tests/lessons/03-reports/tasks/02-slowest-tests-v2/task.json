@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "title": "Find the slowest tests in a JUnit XML report",
+  "variantOf": "02-junit-summary",
+  "statement": "Схожа задача: прогін став довгим, і треба знайти, що його гальмує. Напиши `slowest_tests(xml_text, limit)` — прочитай JUnit XML модулем `xml.etree.ElementTree` і поверни список кортежів `(\"classname::name\", seconds)`:\n\n- `seconds` — атрибут `time` як `float`; якщо атрибута немає — `0.0`;\n- від найповільнішого до найшвидшого; однаковий час — за назвою за абеткою;\n- не більше `limit` елементів; тести з усіх `<testsuite>` у файлі.\n\n```python\nslowest_tests(xml_text, 2)\n# [('tests.ui.test_checkout::test_place_order', 8.42), ('tests.ui.test_login::test_valid_login', 1.2)]\n```",
+  "hints": [
+    "`for case in root.iter(\"testcase\"):` і `float(case.get(\"time\", \"0\"))`.",
+    "Сортування за двома ключами: `sorted(items, key=lambda item: (-item[1], item[0]))`.",
+    "Обріж зріз: `[:limit]`."
+  ],
+  "explanation": "Атрибути XML — рядки, тому час треба перетворити на `float` (з типовим `\"0\"` для відсутнього атрибута). Сортування «за спаданням часу, а при рівності — за назвою» робиться одним ключем-кортежем з мінусом перед числом. Порівнюй рядки `\"10.5\"` і `\"9.1\"` — і побачиш, чому без `float` найповільнішим здасться не той тест.",
+  "codeRules": [
+    { "kind": "require", "pattern": "ElementTree|etree", "message": "Розбери XML модулем `xml.etree.ElementTree`." },
+    { "kind": "forbid", "pattern": "import re\\b|re\\.(search|findall|match)", "message": "Не розбирай XML регулярними виразами — використай ElementTree." }
+  ]
+}

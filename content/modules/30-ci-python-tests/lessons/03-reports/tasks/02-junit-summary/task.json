@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Summarize a JUnit XML report",
+  "statement": "Після прогону в CI треба надіслати команді короткий підсумок. Напиши `summarize_junit(xml_text)` — прочитай JUnit XML модулем `xml.etree.ElementTree` і поверни словник:\n\n| Ключ | Значення |\n|---|---|\n| `total` | кількість `<testcase>` |\n| `passed` | тести без `<failure>`, `<error>` і `<skipped>` |\n| `failed` | тести з `<failure>` |\n| `errors` | тести з `<error>` |\n| `skipped` | тести з `<skipped>` |\n| `failed_tests` | назви `classname::name` тестів з `<failure>` **або** `<error>` — у порядку у файлі |\n\nРахуй за елементами `<testcase>`, а не за атрибутами `<testsuite>`: після об'єднання звітів кількох машин у файлі буде кілька `<testsuite>`.\n\n```xml\n<testsuites>\n  <testsuite name=\"pytest\" tests=\"3\">\n    <testcase classname=\"tests.ui.test_login\" name=\"test_valid_login\" time=\"1.204\" />\n    <testcase classname=\"tests.ui.test_login\" name=\"test_wrong_password\" time=\"0.982\">\n      <failure message=\"AssertionError\">...</failure>\n    </testcase>\n    <testcase classname=\"tests.ui.test_cart\" name=\"test_promo\" time=\"0.000\">\n      <skipped message=\"no promo on staging\" />\n    </testcase>\n  </testsuite>\n</testsuites>\n```\n\n```python\nsummarize_junit(xml_text)\n# {'total': 3, 'passed': 1, 'failed': 1, 'errors': 0, 'skipped': 1,\n#  'failed_tests': ['tests.ui.test_login::test_wrong_password']}\n```",
+  "hints": [
+    "`root = ET.fromstring(xml_text)` і `for case in root.iter(\"testcase\"):` — знайде тести в усіх `<testsuite>`.",
+    "`case.find(\"failure\") is not None` — саме `is not None`: елемент без дочірніх елементів «хибний».",
+    "Назва: `f\"{case.get('classname')}::{case.get('name')}\"`."
+  ],
+  "explanation": "JUnit XML — дерево: `<testsuites>` → `<testsuite>` → `<testcase>`, а результат тесту — дочірній елемент (`failure`, `error`, `skipped`) або його відсутність. `iter(\"testcase\")` обходить усі тести на будь-якій глибині, `find(...)` перевіряє дочірній елемент. Головна пастка — перевірка `if element:` замість `is not None`: існуючий елемент без дітей вважається хибним.",
+  "codeRules": [
+    { "kind": "require", "pattern": "ElementTree|etree", "message": "Розбери XML модулем `xml.etree.ElementTree`." },
+    { "kind": "forbid", "pattern": "import re\\b|re\\.(search|findall|match)", "message": "Не розбирай XML регулярними виразами — використай ElementTree." }
+  ]
+}

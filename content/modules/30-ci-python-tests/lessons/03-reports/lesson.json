@@ -1,0 +1,42 @@
+{
+  "title": "Reports: HTML and Allure",
+  "minutes": 55,
+  "summary": "Хто і навіщо читає звіти; термінал (-ra, --durations), JUnit XML для CI і як прочитати його з Python (xml.etree.ElementTree), pytest-html — один файл для людей, Allure: кроки, назви, вкладення і звіт через Allure Report CLI, артефакти Playwright (скріншоти, відео, трейси лише для упалих тестів)",
+  "resources": [
+    {
+      "title": "pytest: Creating JUnitXML format files",
+      "url": "https://docs.pytest.org/en/stable/how-to/output.html#creating-junitxml-format-files",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest-html documentation",
+      "url": "https://pytest-html.readthedocs.io/en/latest/user_guide.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Allure Report: Getting started with Pytest",
+      "url": "https://allurereport.org/docs/pytest/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Test runners (CLI arguments)",
+      "url": "https://playwright.dev/python/docs/test-runners",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: xml.etree.ElementTree",
+      "url": "https://docs.python.org/3/library/xml.etree.elementtree.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

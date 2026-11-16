@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Framework structure and pytest configuration",
+  "show": 5,
+  "hints": ["Тести — що перевіряємо; page objects — як працювати зі сторінкою; конфігурація — одна для всієї команди."],
+  "questions": [
+    {
+      "id": "why-layers",
+      "kind": "single",
+      "text": "Головна причина ділити проєкт на шари (tests, pages, api, config)?",
+      "options": [
+        { "text": "Кожна зміна в продукті правиться в одному місці, а тести читаються як сценарії", "correct": true },
+        { "text": "Так тести працюють швидше" },
+        { "text": "pytest не знаходить тести в одному файлі" }
+      ]
+    },
+    {
+      "id": "assert-in-pom",
+      "kind": "single",
+      "text": "Метод `LoginPage.sign_in()` наприкінці робить `expect(greeting).to_be_visible()`. Що з цим не так?",
+      "options": [
+        { "text": "Метод не можна використати в негативному тесті (невірний пароль) — перевірка результату має бути в тесті", "correct": true },
+        { "text": "Нічого, так і треба" },
+        { "text": "`expect` не працює всередині класів" }
+      ]
+    },
+    {
+      "id": "conftest-scope",
+      "kind": "single",
+      "text": "Фікстура `created_order` потрібна лише тестам з `tests/api/`. Де її тримати?",
+      "options": [
+        { "text": "У `tests/api/conftest.py`", "correct": true },
+        { "text": "У кореневому `conftest.py`", "explain": "Працюватиме, але UI-тести бачитимуть непотрібну їм фікстуру, а кореневий файл розростеться." },
+        { "text": "У кожному тестовому файлі окремо" }
+      ]
+    },
+    {
+      "id": "strict-markers",
+      "kind": "single",
+      "text": "Навіщо `--strict-markers` в `addopts`?",
+      "options": [
+        { "text": "Опечатка в назві маркера (`@pytest.mark.smok`) зупиняє прогін, а не тихо вибирає нуль тестів", "correct": true },
+        { "text": "Щоб маркери працювали швидше" },
+        { "text": "Щоб запускати лише тести з маркерами" }
+      ]
+    },
+    {
+      "id": "pythonpath",
+      "kind": "single",
+      "text": "У CI тест падає з `ModuleNotFoundError: No module named 'pages'`, хоча папка `pages/` є. Що допоможе?",
+      "options": [
+        { "text": "`pythonpath = [\".\"]` у конфігурації pytest (або запуск `python -m pytest` з кореня)", "correct": true },
+        { "text": "`pip install pages`" },
+        { "text": "Перейменувати папку на `tests/pages`" }
+      ]
+    },
+    {
+      "id": "xfail-strict",
+      "kind": "single",
+      "text": "Що дає `xfail_strict = true`?",
+      "options": [
+        { "text": "Тест з xfail, який раптом пройшов, стає червоним — команда дізнається, що баг виправили", "correct": true },
+        { "text": "Усі тести з xfail пропускаються" },
+        { "text": "Упалі тести позначаються як xfail" }
+      ]
+    },
+    {
+      "id": "import-fixture",
+      "kind": "single",
+      "text": "Як тест з `tests/ui/test_login.py` отримує фікстуру `settings` з кореневого `conftest.py`?",
+      "options": [
+        { "text": "Просто додає параметр `settings` у функцію тесту", "correct": true },
+        { "text": "`from conftest import settings`" },
+        { "text": "`pytest.get_fixture(\"settings\")`" }
+      ]
+    }
+  ]
+}

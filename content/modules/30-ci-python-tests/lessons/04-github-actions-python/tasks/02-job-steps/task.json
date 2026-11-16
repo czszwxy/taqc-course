@@ -1,0 +1,18 @@
+{
+  "type": "order",
+  "title": "Order the steps of a Python test job",
+  "statement": "Розстав кроки job, що запускає pytest + Playwright тести в GitHub Actions, у правильному порядку.",
+  "items": [
+    "Check out the repository (actions/checkout)",
+    "Set up Python with the pip cache (actions/setup-python, cache: pip)",
+    "Install packages: pip install -r requirements.txt",
+    "Download the browser: python -m playwright install --with-deps chromium",
+    "Run python -m pytest with the URL and token in env and report options",
+    "Upload reports and traces as artifacts (if: !cancelled())"
+  ],
+  "hints": [
+    "Спершу код і Python, потім пакети, потім браузер (він ставиться командою з пакета playwright).",
+    "Звіти завантажуються останніми — вони з'являються лише після тестів."
+  ],
+  "explanation": "Кожен крок спирається на попередній: без коду немає `requirements.txt`, без Python немає `pip`, без пакета `playwright` немає команди `playwright install`, без браузера не запуститься UI-тест, а звіти з'являються лише після прогону. Тому завантаження звітів — останнє і з умовою `!cancelled()`, щоб працювати й після червоних тестів."
+}

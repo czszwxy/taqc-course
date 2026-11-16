@@ -1,0 +1,33 @@
+{
+  "type": "written",
+  "title": "Write a workflow for pytest and Playwright",
+  "statement": "Напиши `.github/workflows/tests.yml` для фреймворку Gadgetly на Python (pytest + pytest-playwright + requests).\n\nВимоги:\n\n- запуск на кожен **pull request** у `main`, **щоночі** о 01:30 UTC і **вручну**;\n- Ubuntu, ліміт 40 хвилин;\n- Python 3.13 з кешем pip, пакети з `requirements.txt`;\n- **матриця** браузерів `chromium` і `firefox`; падіння одного не зупиняє інший;\n- адреса з **змінної** репозиторію `STAGING_URL`, токен із **секрету** `API_TOKEN` — у змінні оточення `PYTEST_BASE_URL` і `API_TOKEN`;\n- JUnit XML і трейси упалих тестів зберігаються як артефакт **навіть після червоного прогону**, з окремим ім'ям для кожного браузера.\n\nДругим полем коротко поясни свої рішення.",
+  "fields": [
+    { "id": "yaml", "label": "tests.yml", "kind": "textarea", "placeholder": "name: Tests\non:\n  …" },
+    { "id": "notes", "label": "Notes for the reviewer", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "yaml", "check": "mentionsAll", "value": ["pull_request", "schedule", "cron", "workflow_dispatch"], "message": "Тригери: `pull_request`, `schedule` з `cron` і `workflow_dispatch`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["runs-on", "ubuntu", "timeout-minutes"], "message": "Машина й ліміт: `runs-on: ubuntu-latest`, `timeout-minutes: 40`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["actions/setup-python", "cache: *[\"']?pip", "requirements\\.txt"], "message": "Python: `actions/setup-python` з `cache: pip`, потім `pip install -r requirements.txt`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["matrix", "chromium", "firefox", "fail-fast: *false", "--browser"], "message": "Матриця `browser: [chromium, firefox]` з `fail-fast: false` і `--browser ${{ matrix.browser }}` у команді pytest." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["playwright install", "--with-deps"], "message": "Браузер: `python -m playwright install --with-deps ${{ matrix.browser }}`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["vars\\.STAGING_URL", "secrets\\.API_TOKEN", "PYTEST_BASE_URL"], "message": "У `env` кроку з тестами: `PYTEST_BASE_URL: ${{ vars.STAGING_URL }}` і `API_TOKEN: ${{ secrets.API_TOKEN }}`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["--junitxml", "--tracing"], "message": "Звіти: `--junitxml=reports/junit.xml` і `--tracing retain-on-failure`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["upload-artifact", "cancelled\\(\\)|always\\(\\)", "name:[^\\n]*matrix\\.browser"], "message": "Артефакт: `actions/upload-artifact` з `if: ${{ !cancelled() }}` і ім'ям на зразок `reports-${{ matrix.browser }}`." },
+    { "field": "notes", "check": "minLength", "value": 60, "message": "Поясни 2–3 рішення: навіщо матриця, `fail-fast: false`, `!cancelled()`." }
+  ],
+  "model": {
+    "yaml": "name: Tests\n\non:\n  pull_request:\n    branches: [main]\n  schedule:\n    - cron: \"30 1 * * *\"\n  workflow_dispatch:\n\njobs:\n  tests:\n    runs-on: ubuntu-latest\n    timeout-minutes: 40\n    strategy:\n      fail-fast: false\n      matrix:\n        browser: [chromium, firefox]\n    steps:\n      - uses: actions/checkout@v7\n\n      - uses: actions/setup-python@v7\n        with:\n          python-version: \"3.13\"\n          cache: pip\n\n      - name: Install dependencies\n        run: pip install -r requirements.txt\n\n      - name: Install the browser\n        run: python -m playwright install --with-deps ${{ matrix.browser }}\n\n      - name: Run tests\n        env:\n          PYTEST_BASE_URL: ${{ vars.STAGING_URL }}\n          API_TOKEN: ${{ secrets.API_TOKEN }}\n        run: >\n          python -m pytest --browser ${{ matrix.browser }}\n          --junitxml=reports/junit.xml\n          --tracing retain-on-failure\n\n      - name: Upload reports\n        if: ${{ !cancelled() }}\n        uses: actions/upload-artifact@v7\n        with:\n          name: reports-${{ matrix.browser }}\n          path: |\n            reports/\n            test-results/\n          retention-days: 14",
+    "notes": "Матриця запускає ті самі тести в Chromium і Firefox паралельно; fail-fast: false, щоб падіння в одному браузері не скасувало інший і ми бачили повну картину. Адреса — у vars (її корисно бачити в логах), токен — у secrets (маскується). Звіти завантажуються з !cancelled(), бо найпотрібніші вони саме після червоного прогону, а ім'я артефакту містить браузер, щоб два jobs не конфліктували. Браузер ставиться лише той, що потрібен варіанту матриці."
+  },
+  "checklist": [
+    "Тригери: pull_request у main, schedule (cron \"30 1 * * *\" — 01:30 UTC), workflow_dispatch",
+    "setup-python з cache: pip і pip install -r requirements.txt",
+    "playwright install --with-deps саме для браузера з матриці",
+    "Адреса з vars, токен із secrets — через env кроку з тестами, не в аргументах команди",
+    "--browser ${{ matrix.browser }} у команді pytest",
+    "upload-artifact з !cancelled() і унікальним ім'ям для кожного браузера",
+    "Жодного пароля чи токена у файлі"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "Find flaky tests in CI history",
+  "statement": "У тебе вивантаження результатів тестів з CI за тиждень — список словників:\n\n```python\n{\"test\": \"tests/ui/test_cart.py::test_add_two_items\", \"commit\": \"a1b2c3\", \"outcome\": \"passed\"}\n```\n\n`outcome` — `passed`, `failed` або `skipped`. Напиши `find_flaky(runs)` — відсортований список **унікальних** назв тестів, які на **тому самому коміті** хоча б раз пройшли і хоча б раз упали.\n\nНе flaky:\n\n- завжди падає на коміті — це зламаний тест або баг;\n- пройшов на одному коміті й упав на іншому — змінився код;\n- `skipped` не рахується ні як прохід, ні як падіння.\n\n```python\nruns = [\n    {\"test\": \"test_cart\", \"commit\": \"a1\", \"outcome\": \"passed\"},\n    {\"test\": \"test_cart\", \"commit\": \"a1\", \"outcome\": \"failed\"},\n    {\"test\": \"test_login\", \"commit\": \"a1\", \"outcome\": \"passed\"},\n    {\"test\": \"test_login\", \"commit\": \"b2\", \"outcome\": \"failed\"},\n]\nfind_flaky(runs)  # ['test_cart']\n```",
+  "hints": [
+    "Згрупуй результати за парою `(test, commit)`: словник, де ключ — кортеж, а значення — множина outcome.",
+    "Пара flaky, коли в її множині є і `\"passed\"`, і `\"failed\"`: `{\"passed\", \"failed\"} <= outcomes`.",
+    "Тест може бути flaky на кількох комітах — збери назви в множину і поверни `sorted(...)`."
+  ],
+  "explanation": "Flaky — це властивість «той самий код, різний результат», тому групувати треба за **комітом**, а не лише за назвою тесту: падіння після нового коміту — нормальна реакція на зміну. Ключ-кортеж `(test, commit)` і множина результатів відповідають на питання одним рядком, а `skipped` просто не впливає на перевірку «є і passed, і failed».",
+  "codeRules": []
+}

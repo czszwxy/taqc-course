@@ -174,7 +174,8 @@
             "Settings and environment variables",
             "Reports: HTML and Allure",
             "GitHub Actions for pytest and Playwright",
-            "Flaky tests and retries"
+            "Flaky tests and retries",
+            "Tech check: Python test automation"
           ]
         }
       ]

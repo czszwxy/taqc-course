@@ -1,0 +1,12 @@
+{
+  "title": "CI & Framework for Python Tests",
+  "description": "Як зібрати окремі тести на pytest і Playwright у фреймворк, який працює без тебе: шари проєкту й налаштування pytest, налаштування через змінні оточення й секрети, звіти (JUnit XML, pytest-html, Allure, артефакти Playwright), GitHub Actions для Python, а також нестабільні тести й повтори. Практика — Python-задачі на завантаження налаштувань, розбір JUnit-звіту й пошук flaky-тестів в історії CI, таблиці «помилка → виправлення», workflow, і tech check по всьому блоку автоматизації на Python.",
+  "goals": [
+    "Organize a pytest + Playwright project into layers: tests, pages, API clients, models, data, config",
+    "Configure pytest for a team: testpaths, markers, strict options, pythonpath",
+    "Load settings from environment variables safely and test the loader with monkeypatch",
+    "Produce reports for people and machines: JUnit XML, pytest-html, Allure, traces and screenshots",
+    "Run pytest and Playwright for Python in GitHub Actions with secrets, caching and artifacts",
+    "Find flaky tests from CI history and use reruns without hiding problems"
+  ]
+}

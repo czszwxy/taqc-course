@@ -1,0 +1,35 @@
+{
+  "title": "GitHub Actions for pytest and Playwright",
+  "minutes": 60,
+  "summary": "Workflow для Python-автотестів: тригери (pull_request, push, schedule, workflow_dispatch), actions/setup-python з кешем pip, pip install -r requirements.txt, python -m playwright install --with-deps, змінні (vars) і секрети (secrets) через env, звіти й трейси як артефакти з if: !cancelled(), матриця браузерів з унікальними іменами артефактів, -n auto, і типові помилки в логах CI",
+  "resources": [
+    {
+      "title": "GitHub Docs: Building and testing Python",
+      "url": "https://docs.github.com/en/actions/tutorials/build-and-test-code/python",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "actions/setup-python",
+      "url": "https://github.com/actions/setup-python",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Continuous Integration",
+      "url": "https://playwright.dev/python/docs/ci",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "GitHub Docs: Using secrets in GitHub Actions",
+      "url": "https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

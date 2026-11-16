@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "GitHub Actions for Python tests",
+  "show": 5,
+  "hints": ["Бібліотеки — pip, браузери — playwright install, секрети — через env, звіти — з !cancelled()."],
+  "questions": [
+    {
+      "id": "browsers",
+      "kind": "single",
+      "text": "`pip install -r requirements.txt` пройшов, але тести падають з `Executable doesn't exist at …/ms-playwright/…`. Чого бракує?",
+      "options": [
+        { "text": "Кроку `python -m playwright install --with-deps chromium` — пакет є, а браузера немає", "correct": true },
+        { "text": "Ще одного `pip install playwright`" },
+        { "text": "`cache: pip`" }
+      ]
+    },
+    {
+      "id": "cache",
+      "kind": "single",
+      "text": "Що дає `cache: pip` в `actions/setup-python`?",
+      "options": [
+        { "text": "Скачані пакети зберігаються між прогонами — встановлення швидше", "correct": true },
+        { "text": "Тести не перезапускаються, якщо код не змінився" },
+        { "text": "Кешуються браузери Playwright" }
+      ]
+    },
+    {
+      "id": "secret",
+      "kind": "single",
+      "text": "Як передати токен з секрету `API_TOKEN` у тести?",
+      "options": [
+        { "text": "Через `env:` кроку з тестами: `API_TOKEN: ${{ secrets.API_TOKEN }}`, а тест читає змінну оточення", "correct": true },
+        { "text": "Записати токен у `requirements.txt`" },
+        { "text": "`python -m pytest --token=${{ secrets.API_TOKEN }}` — так безпечніше" }
+      ]
+    },
+    {
+      "id": "not-cancelled",
+      "kind": "single",
+      "text": "Навіщо `if: ${{ !cancelled() }}` на кроці завантаження звітів?",
+      "options": [
+        { "text": "Інакше після упалих тестів крок пропуститься, і звітів не буде саме тоді, коли вони потрібні", "correct": true },
+        { "text": "Щоб звіт не завантажувався, якщо тести впали" },
+        { "text": "Щоб прогін не можна було скасувати" }
+      ]
+    },
+    {
+      "id": "matrix-name",
+      "kind": "single",
+      "text": "Матриця `browser: [chromium, firefox]`, обидва jobs завантажують артефакт `name: reports`. Що станеться?",
+      "options": [
+        { "text": "Другий job впаде: артефакт з таким ім'ям уже є; треба `reports-${{ matrix.browser }}`", "correct": true },
+        { "text": "Звіти об'єднаються автоматично" },
+        { "text": "Нічого поганого" }
+      ]
+    },
+    {
+      "id": "fail-fast",
+      "kind": "single",
+      "text": "Що робить `fail-fast: false` у `strategy` матриці?",
+      "options": [
+        { "text": "Інші варіанти матриці продовжують працювати, коли один упав", "correct": true },
+        { "text": "Тести зупиняються після першого падіння" },
+        { "text": "Job ніколи не стає червоним" }
+      ]
+    },
+    {
+      "id": "vars-vs-secrets",
+      "kind": "single",
+      "text": "Адреса staging — `vars` чи `secrets`?",
+      "options": [
+        { "text": "`vars`: це не секрет, і її корисно бачити в логах", "correct": true },
+        { "text": "`secrets`: усе, що стосується середовища, — секрет", "explain": "Секрети маскуються в логах, а адреса в логах допомагає розбирати падіння." },
+        { "text": "Прописати в коді тестів" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "Load browser settings from the environment",
+  "variantOf": "02-load-settings",
+  "statement": "Схожа задача: налаштування браузера для UI-тестів. Клас `BrowserSettings` уже є.\n\n**`parse_viewport(text)`** — рядок `ШИРИНАxВИСОТА` (наприклад `1280x720`, `390X844`, пробіли навколо дозволені) → кортеж `(1280, 720)`. Неправильний формат або не додатні числа → `ValueError`.\n\n**`load_browser_settings(env)`**:\n\n| Змінна | Правило |\n|---|---|\n| `BROWSER` | типово `chromium`; регістр не важливий; дозволені лише `chromium`, `firefox`, `webkit`, інакше `ValueError` з назвою браузера в тексті |\n| `SLOW_MO_MS` | типово `0`; ціле число не менше за 0, інакше `ValueError` |\n| `VIEWPORT` | типово `(1280, 720)`; інакше через `parse_viewport` |\n\n```python\nload_browser_settings({\"BROWSER\": \"Firefox\", \"VIEWPORT\": \"390x844\"})\n# BrowserSettings(browser='firefox', slow_mo_ms=0, viewport=(390, 844))\n\nload_browser_settings({\"BROWSER\": \"safari\"})\n# ValueError: unknown browser 'safari'\n```",
+  "hints": [
+    "`parts = text.strip().lower().split(\"x\")` — має бути рівно дві частини; `int(...)` для кожної.",
+    "`browser = env.get(\"BROWSER\", \"chromium\").strip().lower()` і перевірка `in BROWSERS`.",
+    "`int(\"-5\")` — це `-5` без помилки: від'ємне значення перевір окремо."
+  ],
+  "explanation": "Та сама ідея, що й у основній задачі: змінні оточення — рядки, тож їх перетворюють і перевіряють одразу. Обмежений набір значень (браузер) перевіряється входженням у множину, складений формат (`1280x720`) — розбором на частини з перевіркою кожної. Опечатка `BROWSER=chorme` має зупинити прогін на старті, а не тихо запустити інший браузер."
+}

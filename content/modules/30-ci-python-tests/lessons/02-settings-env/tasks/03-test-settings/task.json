@@ -1,0 +1,26 @@
+{
+  "type": "python",
+  "mode": "tests",
+  "title": "Test the settings loader with monkeypatch",
+  "statement": "`load_settings()` у `subject.py` читає налаштування прямо з `os.environ`:\n\n- `API_TOKEN` — обов'язкова; немає або порожня → `ValueError` з `API_TOKEN` у тексті;\n- `BASE_URL` — типово `http://localhost:5173`, `/` в кінці прибирається;\n- `HEADLESS` — типово `True`; `true/1/yes/on` і `false/0/no/off` без урахування регістру; інше слово → `ValueError`.\n\nНапиши тести, що змінюють оточення через **`monkeypatch.setenv` / `delenv`**. Типові значення перевіряй лише після `delenv` — на іншій машині змінна може бути задана. Потрібно щонайменше 5 тестів.",
+  "hints": [
+    "`monkeypatch.delenv(\"BASE_URL\", raising=False)` перед перевіркою типової адреси.",
+    "Перевір `HEADLESS=false` і `HEADLESS=FALSE` окремо: є версії з `bool(...)` і з урахуванням регістру.",
+    "Помилки: `with pytest.raises(ValueError, match=\"API_TOKEN\"):` після `delenv(\"API_TOKEN\", raising=False)`; і `HEADLESS=maybe`."
+  ],
+  "explanation": "Налаштування — теж код, і помилки в ньому дорогі: `bool(\"false\")` вмикає не той режим, загублений `/` ламає всі адреси, необов'язковий токен дає 401 посеред прогону. `monkeypatch.setenv` / `delenv` змінюють оточення лише на час тесту, тому кожен тест задає рівно ту ситуацію, яку перевіряє, — і не залежить від того, що задано на машині.",
+  "codeRules": [
+    { "kind": "require", "pattern": "monkeypatch\\.setenv", "message": "Задавай змінні через `monkeypatch.setenv(...)`." },
+    { "kind": "require", "pattern": "monkeypatch\\.delenv", "message": "Прибирай змінні через `monkeypatch.delenv(..., raising=False)` перед перевіркою типових значень." },
+    { "kind": "forbid", "pattern": "os\\.environ\\s*\\[[^\\]]*\\]\\s*=(?!=)", "message": "Не змінюй `os.environ` напряму — зміна залишиться для інших тестів. Використай `monkeypatch.setenv`." }
+  ],
+  "minTests": 5,
+  "mutants": [
+    { "id": "default-url", "description": "Типова адреса була http://localhost:3000.", "hint": "Є версія з іншою типовою адресою. Прибери BASE_URL через delenv і перевір адресу повністю." },
+    { "id": "slash-kept", "description": "/ в кінці BASE_URL не прибирався.", "hint": "Є версія, що не прибирає / в кінці адреси. Задай BASE_URL з / в кінці." },
+    { "id": "token-optional", "description": "Без API_TOKEN налаштування завантажувались з порожнім токеном.", "hint": "Є версія, де токен необов'язковий. Прибери API_TOKEN і чекай ValueError." },
+    { "id": "bool-cast", "description": "HEADLESS читався через bool(...): \"false\" ставав True.", "hint": "Є версія, де HEADLESS=false вмикає headless. Перевір false явно." },
+    { "id": "case-sensitive", "description": "HEADLESS=FALSE великими літерами вважався невідомим словом.", "hint": "Є версія, чутлива до регістру. Перевір значення великими літерами." },
+    { "id": "unknown-ignored", "description": "Невідоме слово в HEADLESS тихо давало True.", "hint": "Є версія, що мовчки приймає будь-яке слово. Задай HEADLESS=maybe і чекай ValueError." }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "title": "Settings and environment variables",
+  "minutes": 55,
+  "summary": "Одні тести — різні середовища: змінні оточення (os.environ, get з типовим значенням, обов'язкові змінні), рядки замість чисел і булевих значень (пастка \"false\"), frozen dataclass Settings і функція load_settings(env), фікстура settings, файл .env і секрети CI, PYTEST_BASE_URL і --base-url, тести налаштувань з monkeypatch.setenv / delenv",
+  "resources": [
+    {
+      "title": "Python docs: os.environ",
+      "url": "https://docs.python.org/3/library/os.html#os.environ",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: monkeypatch — environment variables",
+      "url": "https://docs.pytest.org/en/stable/how-to/monkeypatch.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "The Twelve-Factor App: Config",
+      "url": "https://12factor.net/config",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

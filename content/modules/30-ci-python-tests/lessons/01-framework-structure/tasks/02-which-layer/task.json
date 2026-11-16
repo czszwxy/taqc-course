@@ -1,0 +1,31 @@
+{
+  "type": "classify",
+  "title": "Which layer does this code belong to?",
+  "statement": "Ти переносиш тести Gadgetly з одного великого файлу у фреймворк. Для кожного шматка коду обери шар, де йому місце.",
+  "show": 8,
+  "passScore": 0.75,
+  "categories": [
+    { "id": "test", "label": "tests/", "description": "Сценарій і перевірки" },
+    { "id": "page", "label": "pages/", "description": "Локатори й дії зі сторінкою" },
+    { "id": "api", "label": "api/", "description": "Клієнт API: адреси, заголовки" },
+    { "id": "data", "label": "data/ or models/", "description": "Тестові дані, білдери, моделі відповідей" },
+    { "id": "config", "label": "config/ or conftest.py", "description": "Налаштування і фікстури-«клей»" }
+  ],
+  "items": [
+    { "id": "locator", "text": "`self.email = page.get_by_label(\"Email\")`", "category": "page" },
+    { "id": "sign-in", "text": "Метод `sign_in(email, password)`: заповнити поля й натиснути кнопку", "category": "page" },
+    { "id": "expect-greeting", "text": "`expect(account.greeting).to_have_text(\"Hello, QA\")`", "category": "test" },
+    { "id": "status-403", "text": "`assert response.status_code == 403` для чужого замовлення", "category": "test" },
+    { "id": "client-create", "text": "Метод `create_order(product_id, quantity)`, що робить `POST {api}/orders` з токеном", "category": "api" },
+    { "id": "auth-header", "text": "Додавання заголовка `Authorization: Bearer ...` до кожного запиту", "category": "api" },
+    { "id": "user-builder", "text": "`build_user(**overrides)` — користувач з унікальним email", "category": "data" },
+    { "id": "order-model", "text": "`class Order(BaseModel)` з полями `id`, `total`, `status`", "category": "data" },
+    { "id": "base-url", "text": "Читання `BASE_URL` зі змінної оточення з адресою за замовчуванням", "category": "config" },
+    { "id": "signed-in-fixture", "text": "Фікстура `signed_in_page`, що кладе токен у сторінку і віддає її тестам", "category": "config" }
+  ],
+  "hints": [
+    "Якщо код відповідає на питання «що перевіряємо?» — це тест. «Як знайти / натиснути?» — page object. «Куди надіслати запит?» — клієнт API.",
+    "Фікстури, що з'єднують шари для тестів, живуть у `conftest.py`."
+  ],
+  "explanation": "Тест описує сценарій і перевіряє результат; page object знає локатори й дії; клієнт API — адреси й заголовки; дані й моделі описують, **з чим** працюємо; налаштування й фікстури з'єднують усе разом. Якщо перевірка опиняється в page object або локатор — у тесті, шари злипаються, і зміна однієї кнопки ламає багато файлів."
+}

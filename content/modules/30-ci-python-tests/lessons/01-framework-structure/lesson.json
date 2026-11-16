@@ -1,0 +1,28 @@
+{
+  "title": "Project structure and pytest configuration",
+  "minutes": 50,
+  "summary": "Від окремих тестів до фреймворку: шари tests / pages / api / models / data / config, що де живе і чого там бути не повинно, conftest.py на кількох рівнях, pyproject.toml для команди (testpaths, pythonpath, addopts, markers, strict-опції, base_url) і типові помилки конфігурації з їхніми симптомами",
+  "resources": [
+    {
+      "title": "pytest: Good Integration Practices",
+      "url": "https://docs.pytest.org/en/stable/explanation/goodpractices.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: Configuration",
+      "url": "https://docs.pytest.org/en/stable/reference/customize.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Page object models",
+      "url": "https://playwright.dev/python/docs/pom",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

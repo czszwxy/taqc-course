@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Settings and environment variables",
+  "show": 5,
+  "hints": ["Значення змінних оточення — рядки. Секрети — ні в коді, ні в git."],
+  "questions": [
+    {
+      "id": "string",
+      "kind": "single",
+      "text": "`TIMEOUT_MS=5000` задано в оточенні. Що поверне `os.environ[\"TIMEOUT_MS\"]`?",
+      "options": [
+        { "text": "Рядок `\"5000\"`", "correct": true },
+        { "text": "Число `5000`" },
+        { "text": "`None`" }
+      ]
+    },
+    {
+      "id": "bool-trap",
+      "kind": "single",
+      "text": "`HEADLESS=false`. Чому дорівнює `bool(os.environ[\"HEADLESS\"])`?",
+      "options": [
+        { "text": "`True` — непорожній рядок «істинний»", "correct": true },
+        { "text": "`False`" },
+        { "text": "Помилка" }
+      ]
+    },
+    {
+      "id": "missing-key",
+      "kind": "single",
+      "text": "Змінної `API_TOKEN` немає. Що зробить `os.environ[\"API_TOKEN\"]`?",
+      "options": [
+        { "text": "Підніме `KeyError`", "correct": true },
+        { "text": "Поверне порожній рядок" },
+        { "text": "Поверне `None`", "explain": "Так поводиться `os.environ.get(\"API_TOKEN\")`." }
+      ]
+    },
+    {
+      "id": "secret-place",
+      "kind": "single",
+      "text": "Де тримати пароль тестового акаунта для CI?",
+      "options": [
+        { "text": "У секретах репозиторію в CI; локально — у `.env`, який у `.gitignore`", "correct": true },
+        { "text": "У `settings.py` — репозиторій приватний" },
+        { "text": "У `.env.example`" }
+      ]
+    },
+    {
+      "id": "fail-fast",
+      "kind": "single",
+      "text": "Навіщо перевіряти обов'язкові налаштування одразу в `load_settings()`?",
+      "options": [
+        { "text": "Прогін зупиняється на старті з ясним повідомленням, а не падає посеред тестів з 401 чи KeyError", "correct": true },
+        { "text": "Так тести працюють швидше" },
+        { "text": "Цього вимагає pytest" }
+      ]
+    },
+    {
+      "id": "base-url-priority",
+      "kind": "single",
+      "text": "У `pyproject.toml` — `base_url = \"http://localhost:5173\"`, в оточенні — `PYTEST_BASE_URL=https://staging.gadgetly.test`, команда — без `--base-url`. Яку адресу отримає фікстура `base_url`?",
+      "options": [
+        { "text": "Staging — змінна оточення важливіша за конфігураційний файл", "correct": true },
+        { "text": "localhost — конфігураційний файл головніший" },
+        { "text": "Помилка: два значення" }
+      ]
+    },
+    {
+      "id": "default-test",
+      "kind": "single",
+      "text": "Тест перевіряє типове значення `BASE_URL`. Що зробити на початку тесту?",
+      "options": [
+        { "text": "`monkeypatch.delenv(\"BASE_URL\", raising=False)` — на іншій машині змінна може бути задана", "correct": true },
+        { "text": "`os.environ.clear()`", "explain": "Це зітре все оточення процесу без відкату — інші тести зламаються." },
+        { "text": "Нічого" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "type": "table",
+  "title": "CI log → fix",
+  "statement": "Ти налаштовуєш workflow для Python-автотестів, і кожен прогін падає по-новому. Для кожного рядка з логу обери виправлення.",
+  "hints": [
+    "Помилки імпорту й відсутні фікстури — пакети в `requirements.txt`. Відсутні браузери — окремий крок установки.",
+    "Помилки з'єднання й «не задано» — оточення: адреса й секрети."
+  ],
+  "explanation": "Лог CI — це симптом, а виправлення майже завжди — пропущений крок або налаштування: пакет не записаний у `requirements.txt`, браузер не скачаний, секрет не переданий в `env`, застосунок недоступний з машини CI, крок звітів пропускається після падіння, ім'я артефакту повторюється в матриці. Навчись впізнавати ці повідомлення — і більшість червоних прогонів «з нічого» лагодитимуться за хвилину.",
+  "givenColumns": ["Log line"],
+  "answerColumns": [
+    {
+      "id": "fix",
+      "label": "Fix",
+      "options": [
+        "Add the package with a pinned version to requirements.txt",
+        "Add a step: python -m playwright install --with-deps chromium",
+        "Pass the secret: env API_TOKEN: ${{ secrets.API_TOKEN }}",
+        "Point PYTEST_BASE_URL to staging or start the app in the workflow",
+        "Add if: ${{ !cancelled() }} to the upload step",
+        "Use a unique artifact name, e.g. reports-${{ matrix.browser }}",
+        "Register the marker in the pytest config"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`ModuleNotFoundError: No module named 'requests'`"], "answers": { "fix": "Add the package with a pinned version to requirements.txt" } },
+    { "given": ["`fixture 'page' not found`"], "answers": { "fix": "Add the package with a pinned version to requirements.txt" }, "explain": "Фікстуру `page` дає плагін pytest-playwright — його немає серед встановлених пакетів." },
+    { "given": ["`Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-…`"], "answers": { "fix": "Add a step: python -m playwright install --with-deps chromium" } },
+    { "given": ["`Host system is missing dependencies to run browsers.`"], "answers": { "fix": "Add a step: python -m playwright install --with-deps chromium" }, "explain": "`--with-deps` ставить системні бібліотеки Linux, потрібні браузеру." },
+    { "given": ["`ValueError: API_TOKEN is not set` (секрет у репозиторії створено)"], "answers": { "fix": "Pass the secret: env API_TOKEN: ${{ secrets.API_TOKEN }}" } },
+    { "given": ["`requests.exceptions.ConnectionError: … host='localhost', port=5173 … Connection refused`"], "answers": { "fix": "Point PYTEST_BASE_URL to staging or start the app in the workflow" } },
+    { "given": ["Тести впали, але серед артефактів прогону немає звіту"], "answers": { "fix": "Add if: ${{ !cancelled() }} to the upload step" } },
+    { "given": ["`(409) Conflict: an artifact with this name already exists on the workflow run`"], "answers": { "fix": "Use a unique artifact name, e.g. reports-${{ matrix.browser }}" } },
+    { "given": ["`'regression' not found in markers configuration option`"], "answers": { "fix": "Register the marker in the pytest config" } }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "type": "table",
+  "title": "Symptom → configuration fix",
+  "statement": "Новий колега запускає фреймворк і щоразу натрапляє на щось дивне. Для кожного симптому обери налаштування pytest, яке його виправляє або запобігає йому.",
+  "hints": [
+    "Помилка імпорту власних папок — шлях імпорту. Тести з чужих папок — де шукати тести.",
+    "Тихі проблеми (нуль тестів, непомітно виправлений баг) лікуються «суворими» опціями."
+  ],
+  "explanation": "Більшість дивностей при запуску — це конфігурація: де шукати тести (`testpaths`), звідки імпортувати (`pythonpath`), наскільки суворо ставитись до маркерів і xfail (`--strict-markers`, `xfail_strict`), що показати в підсумку (`-ra`), яка адреса за замовчуванням (`base_url`). Записані в `pyproject.toml`, ці налаштування однакові в усіх членів команди і в CI.",
+  "givenColumns": ["Symptom"],
+  "answerColumns": [
+    {
+      "id": "fix",
+      "label": "Setting",
+      "options": [
+        "testpaths = [\"tests\"]",
+        "pythonpath = [\".\"]",
+        "addopts = \"--strict-markers\" + markers",
+        "xfail_strict = true",
+        "addopts = \"-ra\"",
+        "base_url = \"http://localhost:5173\"",
+        "minversion = \"9.0\""
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`python -m pytest` збирає тести з бібліотек у `.venv/` і з папки `scripts/`"], "answers": { "fix": "testpaths = [\"tests\"]" } },
+    { "given": ["`ModuleNotFoundError: No module named 'pages'` в CI"], "answers": { "fix": "pythonpath = [\".\"]" } },
+    { "given": ["`-m smoke` вибрав 0 тестів: у половині файлів написано `@pytest.mark.smok`"], "answers": { "fix": "addopts = \"--strict-markers\" + markers" } },
+    { "given": ["Баг виправили місяць тому, а тест з `xfail` досі «очікувано падає» і ніхто не помітив"], "answers": { "fix": "xfail_strict = true" }, "explain": "З суворим xfail тест, що пройшов, стає червоним (XPASS(strict)) — час прибрати маркер." },
+    { "given": ["У підсумку прогону не видно, **чому** 12 тестів пропущені"], "answers": { "fix": "addopts = \"-ra\"" } },
+    { "given": ["Кожен UI-тест пише `page.goto(\"http://localhost:5173/playground/login\")` повністю"], "answers": { "fix": "base_url = \"http://localhost:5173\"" } },
+    { "given": ["На ноутбуці колеги зі старим pytest конфігурація тихо ігнорується, і тести поводяться інакше"], "answers": { "fix": "minversion = \"9.0\"" } }
+  ]
+}

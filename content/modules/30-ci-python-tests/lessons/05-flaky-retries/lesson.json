@@ -1,0 +1,28 @@
+{
+  "title": "Flaky tests and retries",
+  "minutes": 55,
+  "summary": "Нестабільні (flaky) тести в pytest + Playwright: типові причини (фіксовані паузи й разові перевірки, спільні дані, залежність від порядку, час і зовнішні сервіси), як їх впіймати (pytest-repeat --count, перемішаний порядок, історія CI), pytest-rerunfailures (--reruns, --only-rerun, @pytest.mark.flaky) і правила, щоб повтори не ховали баги, карантин з окремим job",
+  "resources": [
+    {
+      "title": "pytest: Flaky tests",
+      "url": "https://docs.pytest.org/en/stable/explanation/flaky.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest-rerunfailures on PyPI",
+      "url": "https://pypi.org/project/pytest-rerunfailures/",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Auto-waiting",
+      "url": "https://playwright.dev/python/docs/actionability",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

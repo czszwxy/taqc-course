@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Reports",
+  "show": 5,
+  "hints": ["JUnit XML — для машин, HTML і Allure — для людей, трейси й скріншоти — докази для упалих тестів."],
+  "questions": [
+    {
+      "id": "junit-who",
+      "kind": "single",
+      "text": "Для чого насамперед потрібен `--junitxml`?",
+      "options": [
+        { "text": "Щоб CI-система прочитала результати: кількість тестів, упалі тести, історію", "correct": true },
+        { "text": "Щоб звіт гарно виглядав у браузері" },
+        { "text": "Щоб тести запускались паралельно" }
+      ]
+    },
+    {
+      "id": "error-vs-failure",
+      "kind": "single",
+      "text": "У JUnit XML тест має `<error message=\"failed on setup with ...\">`. Що сталося?",
+      "options": [
+        { "text": "Упала фікстура чи підготовка — до перевірок тесту справа не дійшла", "correct": true },
+        { "text": "Не пройшла перевірка `assert`", "explain": "Це був би `<failure>`." },
+        { "text": "Тест пропущено" }
+      ]
+    },
+    {
+      "id": "self-contained",
+      "kind": "single",
+      "text": "Навіщо `--self-contained-html` разом з `--html=report.html`?",
+      "options": [
+        { "text": "Стилі й картинки вбудовуються в один файл — його можна скачати з CI і відкрити будь-де", "correct": true },
+        { "text": "Звіт створюється швидше" },
+        { "text": "Звіт містить лише упалі тести" }
+      ]
+    },
+    {
+      "id": "allure-results",
+      "kind": "single",
+      "text": "Після `python -m pytest --alluredir allure-results` у папці лише JSON-файли. Що далі?",
+      "options": [
+        { "text": "Побудувати HTML інструментом Allure Report: `npx allure generate allure-results`, потім `npx allure open`", "correct": true },
+        { "text": "Відкрити будь-який JSON у браузері — це і є звіт" },
+        { "text": "Додати `--self-contained-html`" }
+      ]
+    },
+    {
+      "id": "retain",
+      "kind": "single",
+      "text": "Що робить `--tracing retain-on-failure`?",
+      "options": [
+        { "text": "Записує трейс кожного тесту, але зберігає лише для упалих", "correct": true },
+        { "text": "Записує трейс лише після падіння" },
+        { "text": "Повторює упалий тест з трейсом" }
+      ]
+    },
+    {
+      "id": "durations",
+      "kind": "single",
+      "text": "Як дізнатися п'ять найповільніших тестів прогону без плагінів?",
+      "options": [
+        { "text": "`python -m pytest --durations=5`", "correct": true },
+        { "text": "`python -m pytest --slowest=5`" },
+        { "text": "Лише через Allure" }
+      ]
+    },
+    {
+      "id": "find-falsy",
+      "kind": "single",
+      "text": "Чому `if case.find(\"failure\"):` — помилка при читанні JUnit XML?",
+      "options": [
+        { "text": "Елемент без дочірніх елементів вважається «хибним», тож упалий тест порахується як зелений; треба `is not None`", "correct": true },
+        { "text": "`find` завжди повертає список" },
+        { "text": "Це не помилка" }
+      ]
+    }
+  ]
+}

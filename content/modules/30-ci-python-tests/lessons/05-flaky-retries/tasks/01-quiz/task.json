@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Flaky tests and retries",
+  "show": 5,
+  "hints": ["Flaky — той самий код, різний результат. Повтор не виправляє причину."],
+  "questions": [
+    {
+      "id": "definition",
+      "kind": "single",
+      "text": "Який тест точно flaky?",
+      "options": [
+        { "text": "На тому самому коміті один прогін зелений, інший — червоний", "correct": true },
+        { "text": "Тест упав після нового коміту" },
+        { "text": "Тест завжди падає на staging" }
+      ]
+    },
+    {
+      "id": "one-shot",
+      "kind": "single",
+      "text": "Чому `assert page.get_by_text(\"Saved\").is_visible()` — джерело нестабільності?",
+      "options": [
+        { "text": "`is_visible()` перевіряє один раз, без очікування; `expect(...).to_be_visible()` чекає, поки текст з'явиться", "correct": true },
+        { "text": "`is_visible()` повільний" },
+        { "text": "Це не джерело нестабільності" }
+      ]
+    },
+    {
+      "id": "count",
+      "kind": "single",
+      "text": "Як відтворити рідкісне падіння одного тесту локально?",
+      "options": [
+        { "text": "`python -m pytest tests/ui/test_cart.py --count=30 -x` (pytest-repeat)", "correct": true },
+        { "text": "Запустити один раз з `-v`" },
+        { "text": "`--reruns 30`", "explain": "Повтори перезапускають лише упалий тест і роблять результат зеленим — це навпаки ховає падіння." }
+      ]
+    },
+    {
+      "id": "parallel",
+      "kind": "single",
+      "text": "Тести зелені послідовно, але падають з `-n 4`. Найімовірніша причина?",
+      "options": [
+        { "text": "Спільні дані чи стан між тестами або залежність від порядку", "correct": true },
+        { "text": "pytest-xdist має баги" },
+        { "text": "Машина CI занадто швидка" }
+      ]
+    },
+    {
+      "id": "reruns-hide",
+      "kind": "single",
+      "text": "Чим небезпечний `--reruns 5` в `addopts` для всіх запусків?",
+      "options": [
+        { "text": "Нестабільні тести й рідкісні баги продукту стають зеленими і зникають із поля зору", "correct": true },
+        { "text": "Тести працюють у 5 разів довше завжди" },
+        { "text": "Нічим" }
+      ]
+    },
+    {
+      "id": "only-rerun",
+      "kind": "single",
+      "text": "Що робить `--reruns 2 --only-rerun ConnectionError`?",
+      "options": [
+        { "text": "Повторює тест лише тоді, коли він упав з `ConnectionError`; падіння перевірок не повторюються", "correct": true },
+        { "text": "Повторює всі тести двічі" },
+        { "text": "Пропускає тести з `ConnectionError`" }
+      ]
+    },
+    {
+      "id": "quarantine",
+      "kind": "single",
+      "text": "Що робить карантин корисним, а не «вимкненням тесту»?",
+      "options": [
+        { "text": "Задача з відповідальним і терміном, окремий job, повернення в основний набір після виправлення", "correct": true },
+        { "text": "`@pytest.mark.skip` без причини" },
+        { "text": "Видалення тесту з репозиторію" }
+      ]
+    }
+  ]
+}

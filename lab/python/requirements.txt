@@ -11,3 +11,8 @@ pytest-xdist==3.8.0
 # API testing (module 29): the HTTP client and response models.
 requests==2.34.2
 pydantic==2.14.3
+# Reports and reruns for your practice runs (module 30): npm run lab:py -- --html=reports/report.html --self-contained-html,
+# --alluredir allure-results, --reruns 2. Graded runs do not use them.
+pytest-html==4.2.0
+pytest-rerunfailures==16.7
+allure-pytest==2.16.2
