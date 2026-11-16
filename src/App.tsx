@@ -20,6 +20,7 @@ import { ResponsivePage } from './playground/ResponsivePage';
 import { ApiConsolePage } from './playground/ApiConsolePage';
 import { AccountPage } from './playground/AccountPage';
 import { CheckoutPage } from './playground/CheckoutPage';
+import { ReturnsPage } from './playground/ReturnsPage';
 import { HelpWidgetPage } from './playground/HelpWidgetPage';
 import { TermsPage } from './playground/TermsPage';
 import { useSettings } from './features/progress/store';
@@ -44,6 +45,7 @@ export default function App() {
       <Route path="/playground/api" element={<ApiConsolePage />} />
       <Route path="/playground/account" element={<AccountPage />} />
       <Route path="/playground/checkout" element={<CheckoutPage />} />
+      <Route path="/playground/returns" element={<ReturnsPage />} />
       <Route path="/playground/help-widget" element={<HelpWidgetPage />} />
       <Route path="/playground/terms" element={<TermsPage />} />
       <Route element={<Layout />}>

@@ -1,0 +1,36 @@
+{
+  "title": "CI, README and publishing",
+  "minutes": 120,
+  "summary": "Регресійний набір для Returns & refunds, що ловить кожну відому регресію, а потім — портфоліо на Python: власний репозиторій з тією ж архітектурою на публічному навчальному застосунку (Toolshop з UI і REST API), pyproject і requirements, GitHub Actions зі звітами й трейсами, README з бейджем, публікація і фінальне самоперевіряння",
+  "resources": [
+    {
+      "title": "Practice Software Testing (Toolshop) — repository with app, REST API and Swagger",
+      "url": "https://github.com/testsmith-io/practice-software-testing",
+      "kind": "tool",
+      "lang": "en",
+      "note": "Застосунок: practicesoftwaretesting.com; API: api.practicesoftwaretesting.com; Swagger: api.practicesoftwaretesting.com/api/documentation.",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Continuous Integration",
+      "url": "https://playwright.dev/python/docs/ci",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "GitHub Docs: Building and testing Python",
+      "url": "https://docs.github.com/en/actions/tutorials/build-and-test-code/python",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "GitHub Docs — Adding a workflow status badge",
+      "url": "https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/monitoring-workflows/adding-a-workflow-status-badge",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

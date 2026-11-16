@@ -1,0 +1,319 @@
+{
+  "type": "bug-report",
+  "title": "Bug hunt: Returns page and API",
+  "playground": "returns",
+  "minBugs": 5,
+  "statement": "Повноцінний пошук багів у фінальній системі. Сторінка **Returns & refunds** (`/playground/returns`) і **returns API** містять **11** дефектів — частину видно на сторінці, частину лише в **Network** або в прямих запитах до API (приклади `fetch` і `requests` — у теорії).\n\nЗнайди й оформи щонайменше **5** баг-репортів. Використай свій чекліст і таблицю рішень. На кожен баг — окремий репорт і **Submit**.\n\nПорада: тестуй за **вимогами** з жовтої панелі, звіряй підсумок, підтвердження і збережене повернення (`GET /api/returns/:id?email=`).",
+  "hints": [
+    "Межі: 14-й день (#5002), 15-й для Defective (#5003), «+» на купленій кількості, коментар рівно 300 символів.",
+    "Гроші: порівняй суми з таблицею рішень — Defective + Opened, магазинний кредит з комісією; зміни стан після вибору причини — чи оновився підсумок?",
+    "Сервер окремо: 4 кабелі, подарункова картка, відстеження з чужим email — через fetch або requests."
+  ],
+  "explanation": "Дефекти цієї системи — на межах (останній день вікна, 30 днів для браку, купленої кількості, 300 символів), у грошах (комісія за брак, бонус від повної вартості, сума в підтвердженні), у перерахунку після змін (стан товару), у валідації сервера (кількість, подарункова картка) і в доступі (відстеження з чужим email). Добрий репорт називає точні суми й дати: «Refund 2,550 UAH, expected 2,999 UAH».",
+  "bugs": [
+    {
+      "id": "qty-above-bought",
+      "title": "\"+\" lets you return more items than were bought",
+      "match": [
+        "\\+|increase|plus|збільш|плюс",
+        "(^|\\D)4(\\D|$)|four|чотир|more than (bought|purchased)|більше,? ніж (куплен|придбан)|above (the )?purchased|понад куплен",
+        "button|кнопк|disabl|неактив|enabled|активн"
+      ],
+      "severity": ["Minor", "Major"],
+      "severityWhy": "Вимогу про максимум порушено, але сервер відхиляє зайву кількість — клієнт бачить помилку замість суми. Minor (або Major через заплутаний стан форми).",
+      "model": {
+        "title": "Returns: the \"+\" button stays enabled at the purchased quantity (3 cables) and sets 4",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/returns, order #5001 found with anna.koval@example.test",
+        "steps": [
+          "Tick USB-C Cable 1 m (3 bought) — quantity 1",
+          "Click \"+\" twice — quantity 3",
+          "Check the \"+\" button and click it once more"
+        ],
+        "testData": "Order #5001, USB-C Cable 1 m, bought 3",
+        "actualResult": "At quantity 3 the \"+\" button is still enabled; the next click shows quantity 4 and an error in the refund summary.",
+        "expectedResult": "The \"+\" button is disabled at the purchased quantity (3); you cannot return more than you bought.",
+        "severity": "Minor",
+        "priority": "Medium",
+        "attachments": "screenshot-cables-4.png"
+      }
+    },
+    {
+      "id": "stale-condition",
+      "title": "Switching Unopened / Opened does not re-price the refund summary",
+      "match": [
+        "opened|відкрит|condition|стан товару",
+        "(not|n't|doesn'?t|does not|did not|не) ?(re-?pric|recalc|update|chang|онов|змін|перерах)|stale|same (refund|amount|sum)|залиша|та сама сума",
+        "summary|підсум|refund|поверн"
+      ],
+      "severity": ["Major", "Minor"],
+      "severityWhy": "Клієнт бачить неправильну суму перед відправкою: після запиту сервер рахує інакше — несподівано менше грошей. Major.",
+      "model": {
+        "title": "Returns: after switching the condition to Opened the refund summary still shows 2,909 UAH",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/returns, order #5001 found with anna.koval@example.test",
+        "steps": [
+          "Tick Wireless Headphones H1 (2,999 UAH)",
+          "Choose the reason Changed my mind — the summary shows Refund 2,909 UAH",
+          "Switch Item condition to Opened",
+          "Check the refund summary"
+        ],
+        "testData": "Wireless Headphones H1 2,999 UAH, Changed my mind",
+        "actualResult": "The summary does not update: Restocking fee —, Refund 2,909 UAH (the same as for Unopened).",
+        "expectedResult": "The summary is re-priced: Restocking fee −449 UAH, Return shipping −90 UAH, Refund 2,460 UAH.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": "screenshot-summary-opened.png"
+      }
+    },
+    {
+      "id": "comment-300",
+      "title": "A comment of exactly 300 characters is rejected",
+      "match": [
+        "comment|коментар",
+        "(^|\\D)300(\\D|$)",
+        "reject|too long|занадто довг|error|помилк|not accept|не прийма|відхил"
+      ],
+      "severity": ["Minor"],
+      "severityWhy": "Граничне значення працює неправильно, але обхід простий — скоротити текст на символ. Minor.",
+      "model": {
+        "title": "Returns: a comment of exactly 300 characters is rejected as \"too long\" (max is 300)",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/returns, order #5001 found with anna.koval@example.test",
+        "steps": [
+          "Tick Wireless Headphones H1, reason Defective / does not work",
+          "Paste a comment of exactly 300 characters (the counter shows 300 / 300)",
+          "Click Request return"
+        ],
+        "testData": "Comment: 300 × \"x\"",
+        "actualResult": "Error under the field: \"Comment is too long (max 300 characters)\"; the return is not requested.",
+        "expectedResult": "300 characters are allowed; the return is requested. Only 301+ characters show the error.",
+        "severity": "Minor",
+        "priority": "Low",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "confirmation-item-value",
+      "title": "The confirmation shows the items value instead of the refund",
+      "match": [
+        "confirmation|підтвердж",
+        "items value|вартість товар|2[ ,.]?999|instead of (the )?refund|замість (суми )?повернення|differs|відрізня|не збіга|doesn'?t match|does not match|mismatch",
+        "refund|повернення|amount|сум"
+      ],
+      "severity": ["Major"],
+      "severityWhy": "Клієнту обіцяють більше грошей, ніж він отримає: підтвердження показує повну вартість товару. Скарги й навантаження на підтримку — Major.",
+      "model": {
+        "title": "Returns confirmation shows 2,999 UAH (items value) while the refund in the summary is 2,909 UAH",
+        "environment": "Chrome 131, Windows 11, QA Academy local",
+        "preconditions": "/playground/returns, order #5001 found with anna.koval@example.test",
+        "steps": [
+          "Tick Wireless Headphones H1, reason Changed my mind, Unopened, Original payment method",
+          "Note Refund in the summary: 2,909 UAH",
+          "Click Request return",
+          "Check the amount in the confirmation"
+        ],
+        "testData": "Wireless Headphones H1 2,999 UAH",
+        "actualResult": "Confirmation: \"Refund: 2,999 UAH\" — the items value, not the refund.",
+        "expectedResult": "Confirmation: \"Refund: 2,909 UAH\" — the same amount as the summary and the saved return.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": "screenshot-confirmation.png"
+      }
+    },
+    {
+      "id": "window-boundary",
+      "title": "The last day of the 14-day window is rejected",
+      "match": [
+        "window|вікн|closed|закрит",
+        "5002|2026-03-06|06\\.03|6 mar|day 14|14-?(й|ий) день|exactly 14|рівно 14|last day|останн(ій|ього) д",
+        "reject|відхил|closed|закрит|422|not allowed|не дозвол|error|помилк"
+      ],
+      "severity": ["Major"],
+      "severityWhy": "Клієнт втрачає законне право на повернення в останній день — це порушення правил і можливий юридичний ризик. Major.",
+      "model": {
+        "title": "Returns: order #5002 delivered 2026-03-06 (day 14, the last day) is rejected as \"window closed\"",
+        "environment": "Chrome 131, Windows 11, QA Academy local; demo date 2026-03-20",
+        "preconditions": "/playground/returns",
+        "steps": [
+          "Find order #5002 with max.bondar@example.test",
+          "Tick Mechanical Keyboard K8, reason Changed my mind",
+          "Check the refund summary"
+        ],
+        "testData": "Order #5002, delivered 2026-03-06; today 2026-03-20 = day 14",
+        "actualResult": "\"Return window closed: this order could be returned until 2026-03-20\" — the message names today as the last day but rejects the return.",
+        "expectedResult": "Day 14 is the last day included: the summary shows Refund 2,109 UAH (2,199 − 90).",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "defective-window",
+      "title": "Defective items get 14 days instead of 30",
+      "match": [
+        "defective|брак|несправ",
+        "(^|\\D)30(\\D|$)|тридцят",
+        "window|вікн|closed|закрит|reject|відхил|422|5003|15"
+      ],
+      "severity": ["Major", "Critical"],
+      "severityWhy": "Клієнт з бракованим товаром не може його повернути протягом обіцяних 30 днів — пряме порушення гарантійних умов. Major / Critical.",
+      "model": {
+        "title": "Returns: a Defective return for order #5003 (15 days after delivery) is rejected — the 30-day window is not applied",
+        "environment": "Chrome 131, Windows 11, QA Academy local; demo date 2026-03-20",
+        "preconditions": "/playground/returns",
+        "steps": [
+          "Find order #5003 with max.bondar@example.test (delivered 2026-03-05)",
+          "Tick Noise Cancelling Headphones, reason Defective / does not work",
+          "Check the refund summary"
+        ],
+        "testData": "Order #5003, 15 days after delivery, reason Defective",
+        "actualResult": "\"Return window closed: this order could be returned until 2026-03-19\" — 14 days are used for a defective item.",
+        "expectedResult": "Defective items have 30 days: the summary shows Refund 8,999 UAH; the defective window ends 2026-04-04.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "fee-on-faulty",
+      "title": "Restocking fee is charged for opened defective / wrong / damaged items",
+      "match": [
+        "defective|wrong item|damaged|брак|несправ|пошкодж|не той товар",
+        "restocking|комісі|fee|15 ?%|449",
+        "opened|відкрит|2[ ,.]?550|charged|стягу|deduct|утрим|віднім"
+      ],
+      "severity": ["Critical", "Major"],
+      "severityWhy": "Клієнт платить комісію за брак магазину — недоплата грошей кожному такому клієнту. Critical / Major.",
+      "model": {
+        "title": "Returns quote: a defective opened item is charged a 449 UAH restocking fee (refund 2,550 instead of 2,999)",
+        "environment": "QA Academy local; UI and POST /api/returns/quote",
+        "preconditions": "Order #5001 for anna.koval@example.test",
+        "steps": [
+          "Tick Wireless Headphones H1 (2,999 UAH)",
+          "Choose reason Defective / does not work and condition Opened",
+          "Check Restocking fee and Refund in the summary (or the quote response)"
+        ],
+        "testData": "Wireless Headphones H1 2,999 UAH, Defective, Opened, Original payment method",
+        "actualResult": "Restocking fee −449 UAH, Refund 2,550 UAH.",
+        "expectedResult": "No restocking fee for defective, wrong or damaged items: Restocking fee —, Refund 2,999 UAH.",
+        "severity": "Critical",
+        "priority": "High",
+        "attachments": "quote-response.json"
+      }
+    },
+    {
+      "id": "bonus-before-fees",
+      "title": "Store credit bonus is taken from the items value, not from the refund",
+      "match": [
+        "store credit|кредит",
+        "bonus|бонус",
+        "299|2[ ,.]?759|items value|вартост(і|ь) товар|before (the )?fees|до (вирахування|утримання|комісі)|instead of 246|замість 246"
+      ],
+      "severity": ["Major", "Minor"],
+      "severityWhy": "Компанія переплачує кожному клієнту, що обирає кредит після утримань. Пряма фінансова втрата — Major.",
+      "model": {
+        "title": "Returns: store credit bonus is 299 UAH (10 % of the items value) instead of 246 UAH (10 % of the refund after fees)",
+        "environment": "QA Academy local; UI and POST /api/returns/quote",
+        "preconditions": "Order #5001 for anna.koval@example.test",
+        "steps": [
+          "Tick Wireless Headphones H1 (2,999 UAH)",
+          "Choose reason Changed my mind, condition Opened, refund to Store credit",
+          "Check Store credit bonus and Refund"
+        ],
+        "testData": "2,999 − 449 (fee) − 90 (shipping) = 2,460 before the bonus",
+        "actualResult": "Store credit bonus +299 UAH, Refund 2,759 UAH.",
+        "expectedResult": "Bonus = 10 % of the refund after fees: +246 UAH, Refund 2,706 UAH.",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "over-return",
+      "title": "The API accepts a quantity above the purchased quantity",
+      "match": [
+        "\\bapi\\b|/api|quote|endpoint|fetch|requests\\.|postman|curl|status code|статус-?код",
+        "(^|\\D)4(\\D|$)|four|чотир|more than (bought|purchased)|більше,? ніж (куплен|придбан)|above (the )?purchased|понад куплен",
+        "quantit|кількіст"
+      ],
+      "severity": ["Major", "Critical"],
+      "severityWhy": "Через API можна отримати гроші за товари, яких не купували, — пряма фінансова втрата і шахрайський сценарій. Major / Critical.",
+      "model": {
+        "title": "POST /api/returns/quote accepts quantity 4 for a line with 3 bought and returns 200",
+        "environment": "QA Academy local, DevTools Console / Python requests",
+        "preconditions": "Returns API available at /api/returns",
+        "steps": [
+          "Send POST /api/returns/quote with body {\"orderId\":5001,\"email\":\"anna.koval@example.test\",\"items\":[{\"lineId\":2,\"quantity\":4}],\"reason\":\"wrong-item\",\"condition\":\"unopened\",\"refundMethod\":\"original\"}",
+          "Check the status and the body"
+        ],
+        "testData": "Order #5001, line 2 (USB-C Cable 1 m, bought 3), quantity 4",
+        "actualResult": "200 OK, itemsValue 996, refund 996.",
+        "expectedResult": "400 Bad Request: \"Quantity for USB-C Cable 1 m must be from 1 to 3\".",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "gift-card",
+      "title": "The API accepts a return of a gift card",
+      "match": [
+        "gift|подарун",
+        "\\bapi\\b|/api|quote|fetch|requests\\.|200|accept|прийма|910|1[ ,.]?000",
+        "return|повер"
+      ],
+      "severity": ["Major", "Critical"],
+      "severityWhy": "Подарункову картку можна «повернути» за гроші, залишивши собі її баланс, — фінансова втрата. Major / Critical.",
+      "model": {
+        "title": "POST /api/returns/quote accepts the gift card (line 3 of #5001) and returns 200 with a refund",
+        "environment": "QA Academy local, DevTools Console / Python requests",
+        "preconditions": "Returns API available at /api/returns",
+        "steps": [
+          "Send POST /api/returns/quote with body {\"orderId\":5001,\"email\":\"anna.koval@example.test\",\"items\":[{\"lineId\":3,\"quantity\":1}],\"reason\":\"changed-mind\",\"condition\":\"unopened\",\"refundMethod\":\"original\"}",
+          "Check the status and the body"
+        ],
+        "testData": "Order #5001, line 3 — Gadgetly Gift Card, 1,000 UAH, category Gift cards",
+        "actualResult": "200 OK, refund 910 UAH.",
+        "expectedResult": "422 Unprocessable Entity: \"Gift cards cannot be returned\".",
+        "severity": "Major",
+        "priority": "High",
+        "attachments": ""
+      }
+    },
+    {
+      "id": "tracking-email",
+      "title": "A return can be tracked with any email",
+      "match": [
+        "track|відстеж|get /api/returns|/returns/\\d",
+        "email|e-mail|пошт",
+        "any|будь-як|wrong|інш|чуж|another|someone else|не той|404"
+      ],
+      "severity": ["Critical", "Major"],
+      "severityWhy": "Будь-хто, хто вгадав номер повернення, бачить чужі дані: email, товари, суму. Витік персональних даних — Critical.",
+      "model": {
+        "title": "Track a return shows return #3001 with a wrong email (someone else's data is exposed)",
+        "environment": "Chrome 131, Windows 11, QA Academy local; GET /api/returns/:id",
+        "preconditions": "A return requested for order #5001 (anna.koval@example.test), return number known, e.g. #3001",
+        "steps": [
+          "In Track a return enter the return number",
+          "Enter the email someone@example.test",
+          "Click Track (or send GET /api/returns/3001?email=someone@example.test)"
+        ],
+        "testData": "Return #3001; wrong email someone@example.test",
+        "actualResult": "The return is shown: \"Return #3001 — requested — refund …\"; the API answers 200 with the customer's email and items.",
+        "expectedResult": "\"Return not found. Check the return number and the email.\"; the API answers 404.",
+        "severity": "Critical",
+        "priority": "High",
+        "attachments": ""
+      }
+    }
+  ],
+  "checklist": [
+    "Заголовок: що, де і за якої умови, з числами або датами",
+    "Кроки відтворення з конкретними даними (замовлення, email, товар)",
+    "Actual і expected з точними сумами / текстами",
+    "Для API-багів — метод, адреса, тіло запиту і статус",
+    "Severity обґрунтована (гроші клієнта, гроші компанії, персональні дані)"
+  ]
+}

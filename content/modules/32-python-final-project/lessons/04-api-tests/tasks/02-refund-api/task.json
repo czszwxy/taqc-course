@@ -1,0 +1,25 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Milestone 4a: API tests for the refund calculation",
+  "playground": "returns",
+  "statement": "API-шар фреймворку. У стартовому файлі є pydantic-модель `ReturnQuote` з перевіркою «сума сходиться», helper `quote(api, **overrides)` з тілом за замовчуванням (навушники з #5001) і перший тест.\n\n1. **Параметризований** тест таблиці рішень — для кожного рядка перевір `restockingFee`, `returnShipping`, `storeCreditBonus` і `refund` (відповідь — через `ReturnQuote.model_validate`):\n\n| reason | condition | refundMethod | fee | shipping | bonus | refund |\n|---|---|---|---|---|---|---|\n| changed-mind | unopened | original | 0 | 90 | 0 | 2909 |\n| changed-mind | opened | original | 449 | 90 | 0 | 2460 |\n| changed-mind | unopened | store-credit | 0 | 90 | 290 | 3199 |\n| changed-mind | opened | store-credit | 449 | 90 | 246 | 2706 |\n| defective | opened | original | 0 | 0 | 0 | 2999 |\n| defective | unopened | store-credit | 0 | 0 | 299 | 3298 |\n| wrong-item | opened | store-credit | 0 | 0 | 299 | 3298 |\n| damaged | opened | original | 0 | 0 | 0 | 2999 |\n\n2. Кількість більша за куплену (кабелі, `lineId` 2, куплено 3, просимо 4) → `400`.\n3. Подарункова картка (`lineId` 3) → `422`.\n\nПотрібно щонайменше 10 тестів.",
+  "minTests": 10,
+  "mutants": [
+    { "id": "feeOnFaulty", "description": "Opened defective / wrong / damaged items were charged the restocking fee.", "hint": "Check the restocking fee for an opened item returned as defective, wrong or damaged." },
+    { "id": "bonusBeforeFees", "description": "The store credit bonus was 10 % of the items value instead of the refund after fees.", "hint": "Check the bonus for store credit when there are deductions (changed my mind)." },
+    { "id": "overReturn", "description": "The API accepted a quantity above the purchased quantity.", "hint": "Ask to return 4 cables when 3 were bought." },
+    { "id": "giftCardAccepted", "description": "The API accepted a gift card return.", "hint": "Ask to return the gift card (line 3 of order 5001)." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "parametrize", "message": "Таблицю рішень — параметризованим тестом." },
+    { "kind": "require", "pattern": "model_validate", "message": "Перевір відповідь моделлю: `ReturnQuote.model_validate(response.json())`." },
+    { "kind": "forbid", "pattern": "requests\\.\\w+\\((?![^\\n]*timeout=)[^\\n]*\\)\\s*$", "flags": "m", "message": "Кожен запит — з `timeout=TIMEOUT` (або через helper `quote`)." }
+  ],
+  "hints": [
+    "Параметри: `\"reason, condition, method, fee, shipping, bonus, refund\"`; у тесті — `quote(api, reason=reason, condition=condition, refundMethod=method)`.",
+    "Перевір усі складові одним порівнянням кортежів: `(body.restockingFee, body.returnShipping, body.storeCreditBonus, body.refund) == (fee, shipping, bonus, refund)`.",
+    "Негативні: `quote(api, items=[{\"lineId\": 2, \"quantity\": 4}])` → 400; `quote(api, items=[{\"lineId\": 3, \"quantity\": 1}])` → 422."
+  ],
+  "explanation": "Таблиця рішень як параметризований тест покриває всі правила грошей за секунди: кожен рядок — комбінація причини, стану й способу, а перевірка всіх складових одразу показує, яке правило зламалося. Модель гарантує контракт і внутрішню узгодженість відповіді, але не правильність складових — тому потрібні обидва. Негативні тести перевіряють те, від чого UI захищає, а сервер мусить захищати сам."
+}

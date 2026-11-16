@@ -1,0 +1,28 @@
+{
+  "type": "table",
+  "title": "Decision table: what is deducted and what is refunded",
+  "playground": "returns",
+  "statement": "Заповни таблицю рішень для **Wireless Headphones H1 (2,999 UAH)** із замовлення #5001. Для кожної комбінації визнач комісію, доставку повернення, бонус магазинного кредиту і суму повернення.\n\nПравила: комісія 15 % (вниз) — лише *Changed my mind* + *Opened*; доставка повернення 90 UAH — лише *Changed my mind*; бонус 10 % (вниз) від суми після утримань — лише для магазинного кредиту.",
+  "hints": [
+    "15 % від 2,999 = 449.85 → 449. Defective, Wrong item і Damaged — без утримань.",
+    "Бонус рахуй від суми **після** утримань: для 2,909 це 290, для 2,460 — 246, без утримань — 299."
+  ],
+  "explanation": "Умови незалежні, тож таблиця будується так: причина визначає, чи є доставка повернення і чи можлива комісія; стан — чи комісія справді стягується; спосіб — чи додається бонус, і рахується він уже від суми після утримань. Найчастіші помилки: комісія для бракованого товару і бонус від повної вартості товару.",
+  "givenColumns": ["Reason", "Condition", "Refund to"],
+  "answerColumns": [
+    { "id": "fee", "label": "Restocking fee", "options": ["0", "449"] },
+    { "id": "shipping", "label": "Return shipping", "options": ["0", "90"] },
+    { "id": "bonus", "label": "Store credit bonus", "options": ["0", "246", "290", "299"] },
+    { "id": "refund", "label": "Refund", "options": ["2,460", "2,706", "2,909", "2,999", "3,199", "3,298"] }
+  ],
+  "rows": [
+    { "given": ["Changed my mind", "Unopened", "Original payment"], "answers": { "fee": "0", "shipping": "90", "bonus": "0", "refund": "2,909" } },
+    { "given": ["Changed my mind", "Opened", "Original payment"], "answers": { "fee": "449", "shipping": "90", "bonus": "0", "refund": "2,460" } },
+    { "given": ["Changed my mind", "Unopened", "Store credit"], "answers": { "fee": "0", "shipping": "90", "bonus": "290", "refund": "3,199" }, "explain": "2,999 − 90 = 2,909; бонус 10 % від 2,909 = 290; 2,909 + 290 = 3,199." },
+    { "given": ["Changed my mind", "Opened", "Store credit"], "answers": { "fee": "449", "shipping": "90", "bonus": "246", "refund": "2,706" }, "explain": "2,999 − 449 − 90 = 2,460; бонус — від 2,460, а не від 2,999." },
+    { "given": ["Defective", "Opened", "Original payment"], "answers": { "fee": "0", "shipping": "0", "bonus": "0", "refund": "2,999" }, "explain": "Брак — провина магазину: ні комісії, ні доставки, навіть для відкритого товару." },
+    { "given": ["Defective", "Unopened", "Store credit"], "answers": { "fee": "0", "shipping": "0", "bonus": "299", "refund": "3,298" } },
+    { "given": ["Wrong item sent", "Opened", "Store credit"], "answers": { "fee": "0", "shipping": "0", "bonus": "299", "refund": "3,298" } },
+    { "given": ["Damaged in delivery", "Opened", "Original payment"], "answers": { "fee": "0", "shipping": "0", "bonus": "0", "refund": "2,999" } }
+  ]
+}

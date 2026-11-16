@@ -1,0 +1,30 @@
+{
+  "type": "written",
+  "title": "Write the CI workflow and config for your repository",
+  "statement": "Підготуй конфігурацію свого портфоліо-репозиторію на Python для **Toolshop** (practicesoftwaretesting.com).\n\nВимоги до workflow (`.github/workflows/tests.yml`):\n\n- запуск на **push** у `main`, на **pull request**, **щоночі** і **вручну**;\n- Ubuntu, ліміт 20 хвилин;\n- Python 3.13 з кешем pip, пакети з `requirements.txt`, Chromium із системними бібліотеками;\n- JUnit XML і HTML-звіт, трейси лише для упалих тестів;\n- звіти й трейси — артефакт **навіть після червоного прогону**.\n\nДругим полем — конфігурація pytest (`pyproject.toml`): де тести, маркери, суворі опції, адреса застосунку.",
+  "fields": [
+    { "id": "workflow", "label": ".github/workflows/tests.yml", "kind": "textarea", "placeholder": "name: Tests\non:\n  …" },
+    { "id": "config", "label": "pyproject.toml — [tool.pytest.ini_options]", "kind": "textarea", "placeholder": "[tool.pytest.ini_options]\n…" }
+  ],
+  "rules": [
+    { "field": "workflow", "check": "mentionsAll", "value": ["push", "pull_request", "schedule", "cron", "workflow_dispatch"], "message": "Тригери: `push`, `pull_request`, `schedule` з `cron`, `workflow_dispatch`." },
+    { "field": "workflow", "check": "mentionsAll", "value": ["runs-on", "ubuntu", "timeout-minutes"], "message": "Машина й ліміт: `runs-on: ubuntu-latest`, `timeout-minutes: 20`." },
+    { "field": "workflow", "check": "mentionsAll", "value": ["actions/setup-python", "cache: *[\"']?pip", "requirements\\.txt", "playwright install", "--with-deps"], "message": "Кроки: setup-python з `cache: pip` → `pip install -r requirements.txt` → `python -m playwright install --with-deps chromium`." },
+    { "field": "workflow", "check": "mentionsAll", "value": ["--junitxml", "--html", "--tracing"], "message": "Звіти: `--junitxml`, `--html … --self-contained-html`, `--tracing retain-on-failure`." },
+    { "field": "workflow", "check": "mentionsAll", "value": ["upload-artifact", "cancelled\\(\\)|always\\(\\)"], "message": "Артефакт: `actions/upload-artifact` з `if: ${{ !cancelled() }}`." },
+    { "field": "config", "check": "mentionsAll", "value": ["testpaths", "markers", "strict-markers", "base_url"], "message": "Конфігурація: `testpaths`, `markers`, `--strict-markers` в `addopts`, `base_url`." },
+    { "field": "config", "check": "mentionsAny", "value": ["practicesoftwaretesting"], "message": "`base_url` — адреса Toolshop." }
+  ],
+  "model": {
+    "workflow": "name: Tests\n\non:\n  push:\n    branches: [main]\n  pull_request:\n  schedule:\n    - cron: \"0 4 * * *\"\n  workflow_dispatch:\n\njobs:\n  tests:\n    runs-on: ubuntu-latest\n    timeout-minutes: 20\n    steps:\n      - uses: actions/checkout@v7\n\n      - uses: actions/setup-python@v7\n        with:\n          python-version: \"3.13\"\n          cache: pip\n\n      - name: Install dependencies\n        run: pip install -r requirements.txt\n\n      - name: Install Chromium\n        run: python -m playwright install --with-deps chromium\n\n      - name: Run tests\n        run: >\n          python -m pytest\n          --junitxml=reports/junit.xml\n          --html=reports/report.html --self-contained-html\n          --tracing retain-on-failure --screenshot only-on-failure\n\n      - name: Upload reports\n        if: ${{ !cancelled() }}\n        uses: actions/upload-artifact@v7\n        with:\n          name: test-reports\n          path: |\n            reports/\n            test-results/\n          retention-days: 14",
+    "config": "[tool.pytest.ini_options]\nminversion = \"9.0\"\ntestpaths = [\"tests\"]\npythonpath = [\".\"]\naddopts = \"-ra --strict-markers\"\nmarkers = [\n    \"smoke: critical checks for every pull request\",\n    \"api: tests without a browser\",\n    \"ui: browser tests\",\n]\nxfail_strict = true\nbase_url = \"https://practicesoftwaretesting.com\""
+  },
+  "checklist": [
+    "Тригери: push, pull_request, schedule, workflow_dispatch",
+    "setup-python з кешем pip, залежності з requirements.txt, Chromium з --with-deps",
+    "JUnit XML, HTML-звіт одним файлом, трейси лише для упалих",
+    "Артефакт з !cancelled()",
+    "pyproject: testpaths, pythonpath, маркери, --strict-markers, base_url",
+    "Жодного пароля чи токена у файлах — лише secrets, якщо знадобляться"
+  ]
+}

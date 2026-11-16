@@ -1,0 +1,20 @@
+{
+  "type": "order",
+  "title": "Publishing your Python project: the right order",
+  "statement": "Розстав кроки публікації портфоліо-репозиторію на Python у правильному порядку.",
+  "items": [
+    "Create a public GitHub repository with a Python .gitignore (.venv, __pycache__, reports, test-results)",
+    "Add pyproject.toml and requirements.txt with pinned versions",
+    "Push the code with meaningful commits (pages, api, models, tests, docs)",
+    "Add the GitHub Actions workflow and push it",
+    "Check that the workflow is green in the Actions tab and open the report artifact",
+    "Add the status badge and finish the README",
+    "Clone the repository into an empty folder and follow the README as a new user",
+    "Pin the repository on your profile and add the link to your CV and LinkedIn"
+  ],
+  "hints": [
+    "Спершу місце (репозиторій з .gitignore) і залежності — потім код.",
+    "Бейдж і README фіналізують, коли CI вже зелений; перевірка «як новий користувач» — перед тим, як показувати світу."
+  ],
+  "explanation": "`.gitignore` до першого коміту не дає потрапити в історію `.venv/` і звітам. Залежності з версіями — до коду, щоб CI ставив те саме, що й ти. CI додають, коли код уже є, і перевіряють зеленим прогоном з артефактом; бейдж і README — після цього. Перевірка з чистого клону ловить «у мене працює», а посилання в резюме — останній крок, коли все готово."
+}

@@ -1,0 +1,28 @@
+{
+  "title": "UI framework with pytest and Playwright",
+  "minutes": 75,
+  "summary": "UI-частина фінального фреймворку на Python: page object для багатокрокової форми повернення (локатори з exact, дії, без перевірок результату), фікстури (сторінка, прибирання створених повернень через API), тестові дані як frozen dataclass, параметризація меж вікна повернення, структура репозиторію; етапи 3a (page object) і 3b (фікстури й дані) перевіряються на прихованих регресіях",
+  "resources": [
+    {
+      "title": "Playwright for Python: Page object models",
+      "url": "https://playwright.dev/python/docs/pom",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Locators (exact matching)",
+      "url": "https://playwright.dev/python/docs/locators",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: How to parametrize fixtures and test functions",
+      "url": "https://docs.pytest.org/en/stable/how-to/parametrize.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

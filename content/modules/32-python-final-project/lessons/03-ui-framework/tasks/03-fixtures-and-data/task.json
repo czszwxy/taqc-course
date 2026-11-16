@@ -1,0 +1,26 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Milestone 3b: fixtures, test data and window boundaries",
+  "playground": "returns",
+  "statement": "Другий етап — фікстури й дані. `ReturnsPage` з етапу 3a уже в стартовому файлі разом з `created_returns` і тестовими даними `Customer`.\n\n1. Додай фікстуру **`returns_page`** (відкрита сторінка) і використовуй її в усіх тестах замість `ReturnsPage(page).open()`.\n2. **Параметризований** тест «вікно відкрите» з `ids` — у підсумку з'являється сума:\n   - #5002, *Changed my mind*, Mechanical Keyboard K8 → `2,109 UAH` (14-й день);\n   - #5003, *Defective*, Noise Cancelling Headphones → `8,999 UAH` (15-й день, вікно 30);\n   - #5004, *Defective*, Phone Mini → `9,999 UAH` (30-й день).\n3. **Параметризований** тест «вікно закрите» — помилка в підсумку містить `2026-03-19`:\n   - #5003, *Changed my mind*, Noise Cancelling Headphones (15-й день);\n   - #5006, *Defective*, Webcam 4K (31-й день).\n4. Підтвердження показує **ту саму суму**, що й підсумок: навушники з #5001, *Changed my mind* → `2,909 UAH` у підсумку і в підтвердженні (і прибирання через `created_returns`).\n\nПотрібно щонайменше 7 тестів (кожен набір параметрів рахується).",
+  "minTests": 7,
+  "mutants": [
+    { "id": "windowBoundary", "description": "The last day of the 14-day window (and day 30 for defective) was rejected.", "hint": "Order #5002 is on day 14 — the last day included: the refund must be shown." },
+    { "id": "defectiveWindow", "description": "Defective items got the 14-day window instead of 30 days.", "hint": "Return a defective item from order #5003 (day 15): the 30-day window must accept it." },
+    { "id": "confirmationItemValue", "description": "The confirmation showed the items value instead of the refund.", "hint": "Request a Changed my mind return and compare the confirmation amount with the summary." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "def returns_page\\(", "message": "Додай фікстуру `returns_page`." },
+    { "kind": "require", "pattern": "parametrize", "message": "Межі вікна — параметризованими тестами." },
+    { "kind": "require", "pattern": "ids\\s*=", "message": "Дай наборам параметрів читабельні `ids`." },
+    { "kind": "forbid", "pattern": "^ {4}(?!def |class )\\S.*(?<!self\\.)\\bpage\\.(get_by_|locator\\()", "flags": "m", "message": "У тестах — лише методи й атрибути `ReturnsPage`." },
+    { "kind": "forbid", "pattern": "time\\.sleep|wait_for_timeout", "message": "Без пауз: `expect(...)` чекає сам." }
+  ],
+  "hints": [
+    "`@pytest.fixture` + `def returns_page(page: Page) -> ReturnsPage: return ReturnsPage(page).open()`.",
+    "Помилка вікна — у підсумку: додай у клас `self.quote_error = page.get_by_test_id(\"quote-error\")` і в тесті `expect(returns_page.quote_error).to_contain_text(\"2026-03-19\")`.",
+    "Підтвердження: `self.confirmation_refund = page.get_by_test_id(\"confirmation-refund\")`; збережи суму з підсумку до запиту й порівняй після."
+  ],
+  "explanation": "Фікстура `returns_page` прибирає повтори, а дані в `Customer` і параметризація з `ids` перетворюють таблицю меж вікна на кілька читабельних тестів: обидва боки межі 14 днів і межі 30 днів для браку. Перевірка «підтвердження = підсумок» ловить розбіжність між тим, що клієнт бачив, і тим, що йому пообіцяли, а створене повернення прибирається фікстурою навіть після падіння."
+}

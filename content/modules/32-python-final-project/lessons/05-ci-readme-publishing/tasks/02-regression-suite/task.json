@@ -1,0 +1,30 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Milestone 5: the regression suite",
+  "playground": "returns",
+  "statement": "Фінальний етап: регресійний набір, що ловить **кожну** відому регресію Returns & refunds. Перевірка запускає твій набір на правильній системі і на 8 версіях з одним дефектом кожна — зелений лише на правильній.\n\nУ стартовому файлі є все з попередніх етапів: модель `ReturnQuote`, helper `quote(api, **overrides)`, фікстури `api`, `created_return`, `created_returns`, мінімальний `ReturnsPage` і перший тест.\n\nПокрий (див. таблицю ризиків у теорії):\n\n- межі вікна через API — дозволено: #5002 *Changed my mind* (2109), #5003 *Defective* (8999), #5004 *Defective* (9999); відхилено (422): #5003 *Changed my mind*, #5006 *Defective*;\n- гроші: *Defective* + *Opened* без комісії (2999); *Changed my mind* + *Opened* + кредит → бонус 246, сума 2706;\n- валідацію сервера: 4 кабелі → 400, подарункова картка → 422;\n- доступ: створене повернення з чужим email → 404;\n- показ: підтвердження в UI = підсумок (2,909 UAH) з прибиранням.\n\nПотрібно щонайменше 8 тестів. Набір має бути **швидким**: UI — лише там, де ризик у показі.",
+  "minTests": 8,
+  "mutants": [
+    { "id": "windowBoundary", "description": "The last day of the window was rejected.", "hint": "Quote a Changed my mind return for order #5002 — day 14 is still allowed." },
+    { "id": "defectiveWindow", "description": "Defective items got 14 days instead of 30.", "hint": "Quote a Defective return for order #5003 (day 15)." },
+    { "id": "feeOnFaulty", "description": "Opened faulty items were charged the restocking fee.", "hint": "Quote a Defective, Opened return and check the fee." },
+    { "id": "bonusBeforeFees", "description": "The store credit bonus was taken from the items value.", "hint": "Quote Changed my mind + Opened + store credit and check the bonus." },
+    { "id": "overReturn", "description": "A quantity above the purchased quantity was accepted.", "hint": "Ask for 4 cables when 3 were bought." },
+    { "id": "giftCardAccepted", "description": "A gift card return was accepted.", "hint": "Ask to return the gift card (line 3)." },
+    { "id": "trackingIgnoresEmail", "description": "A return could be read with any email.", "hint": "Read a created return through the API with another email." },
+    { "id": "confirmationItemValue", "description": "The confirmation showed the items value instead of the refund.", "hint": "Request a return in the UI and compare the confirmation with the summary." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "parametrize", "message": "Межі вікна й правила грошей — параметризованими тестами." },
+    { "kind": "require", "pattern": "model_validate", "message": "Перевіряй успішні відповіді моделлю `ReturnQuote`." },
+    { "kind": "forbid", "pattern": "time\\.sleep|wait_for_timeout", "message": "Без пауз: `expect(...)` чекає сам." },
+    { "kind": "forbid", "pattern": "requests\\.\\w+\\((?![^\\n]*timeout=)[^\\n]*\\)\\s*$", "flags": "m", "message": "Кожен запит — з `timeout=TIMEOUT` (або через helper `quote`)." }
+  ],
+  "hints": [
+    "Межі вікна: `quote(api, orderId=5002, email=MAX, reason=\"changed-mind\")` — для замовлень з одним товаром рядок завжди `lineId` 1, тож `items` з тіла за замовчуванням підходить.",
+    "Гроші й валідація — як в етапі 4a; доступ — як в етапі 4b.",
+    "UI: знайди #5001, навушники, *Changed my mind*, перевір підсумок `2,909 UAH`, запит, додай номер у `created_returns`, перевір суму в підтвердженні."
+  ],
+  "explanation": "Хороший регресійний набір — це карта ризиків: кожен тест відповідає за конкретне правило, і разом вони ловлять усі відомі регресії. Більшість перевірок іде через API (секунди замість хвилин), а UI лишається для ризику показу — підтвердження з неправильною сумою. Параметризація тримає межі й гроші компактними, моделі — контракт, фікстури — прибирання."
+}

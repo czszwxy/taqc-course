@@ -1,0 +1,28 @@
+{
+  "title": "Project brief and test plan",
+  "minutes": 60,
+  "summary": "Нова система для фінального проєкту — Gadgetly Returns & refunds: бриф, правила (вікно повернення 14 / 30 днів, комісія за повернення відкритого товару, доставка повернення, бонус магазинного кредиту, подарункові картки, коментар), returns API, фіксована «сьогоднішня» дата для детермінованих тестів, як досліджувати систему (Network, requests, API-консоль), перегляд вимог і тест-план для фреймворку на Python",
+  "resources": [
+    {
+      "title": "ISTQB Glossary",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Chrome DevTools: Inspect network activity",
+      "url": "https://developer.chrome.com/docs/devtools/network",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Requests: Quickstart",
+      "url": "https://requests.readthedocs.io/en/latest/user/quickstart/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

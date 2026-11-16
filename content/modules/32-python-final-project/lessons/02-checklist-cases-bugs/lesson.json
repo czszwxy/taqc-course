@@ -1,0 +1,21 @@
+{
+  "title": "Checklist, test cases and bug reports",
+  "minutes": 75,
+  "summary": "Від правил до тестів: чекліст для Returns & refunds, таблиця рішень для суми повернення (причина × стан × спосіб), граничні значення вікна повернення (14 / 15 і 30 / 31 день), тест-кейс на межу, полювання на баги в UI і returns API та баг-репорти з точними сумами й запитами",
+  "resources": [
+    {
+      "title": "ISTQB Glossary: decision table testing",
+      "url": "https://glossary.istqb.org/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Using the Fetch API",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

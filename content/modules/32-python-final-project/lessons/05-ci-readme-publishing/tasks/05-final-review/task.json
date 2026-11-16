@@ -1,0 +1,47 @@
+{
+  "type": "written",
+  "title": "Final review of your Python portfolio project",
+  "statement": "Фінальний крок Python-курсу. Опублікуй репозиторій, пройди самоперевірку і натисни **Copy for review** — встав у чат з Claude разом із посиланням на репозиторій і попроси рецензію, як від тімліда на співбесіді.",
+  "fields": [
+    { "id": "repo", "label": "Repository link", "kind": "text", "placeholder": "https://github.com/<login>/<repository>" },
+    { "id": "summary", "label": "What the project contains (tests, docs, CI) — 2–4 sentences", "kind": "textarea" },
+    { "id": "decisions", "label": "Three decisions you made and why (one per line)", "kind": "list" },
+    { "id": "selfcheck", "label": "Self-check: what you verified before publishing (one per line)", "kind": "list" },
+    { "id": "story", "label": "Your 1-minute interview story about this project", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "repo", "check": "mentionsAny", "value": ["github\\.com/"], "message": "Посилання на репозиторій на GitHub." },
+    { "field": "summary", "check": "minLength", "value": 120, "message": "Опиши вміст: тести, документацію, CI." },
+    { "field": "decisions", "check": "minItems", "value": 3, "message": "Три рішення з причинами." },
+    { "field": "selfcheck", "check": "minItems", "value": 5, "message": "Щонайменше 5 пунктів самоперевірки." },
+    { "field": "selfcheck", "check": "mentionsAny", "value": ["clone|клон"], "message": "Перевір запуск з чистого клону." },
+    { "field": "selfcheck", "check": "mentionsAny", "value": ["secret|секрет|password|парол|token|токен"], "message": "Перевір, що в історії немає секретів." },
+    { "field": "story", "check": "minLength", "value": 300, "message": "Історія на хвилину — кілька речень: що, як побудовано, чому, що далі." }
+  ],
+  "model": {
+    "repo": "https://github.com/<your-login>/toolshop-tests",
+    "summary": "UI and API test automation for the Toolshop demo shop in Python: 18 UI tests through page objects and 9 API tests with pydantic models, run by pytest. GitHub Actions runs them on every push, pull request and nightly and keeps JUnit XML, an HTML report and traces of failed tests as artifacts. The docs folder has my test plan, checklist, decision table and bug reports for Gadgetly Returns & refunds from the course final project.",
+    "decisions": [
+      "Data and rules through the API, the UI only for what a customer sees — the suite runs in about 2 minutes and does not flake",
+      "Every test creates its own data in fixtures with yield and cleans it up — tests are independent and can run in parallel",
+      "Locators by role and label with exact=True where labels overlap — fewer broken tests when the layout changes"
+    ],
+    "selfcheck": [
+      "Cloned into an empty folder and followed the README step by step — all tests green",
+      "No .venv, reports or test-results in git history",
+      "No passwords or tokens in the code or history; settings come from environment variables",
+      "CI is green on main; the HTML report and a trace open from the artifact",
+      "Ran the suite 5 times in a row — no flaky tests",
+      "README has the badge, the stack, how to run, the structure and next steps"
+    ],
+    "story": "My final project is a Python test framework for a demo shop, Toolshop. pytest is the runner, Playwright drives the browser, requests and pydantic cover the API. I split it into layers: page objects, an API client, models, data builders and fixtures in conftest, so tests read like scenarios. Business rules and contracts are tested through the API — it is fast and precise — and the UI tests cover what the customer sees. Every test prepares and cleans up its own data, which keeps the suite independent and stable. GitHub Actions runs it on every pull request and nightly and keeps reports and traces. Before that, in the course, I tested a returns and refunds system end to end: a test plan, a decision table for refunds, boundary tests for the return window and eleven bug reports. Next I want to add a browser matrix and parallel runs."
+  },
+  "checklist": [
+    "Репозиторій публічний, CI зелений, бейдж у README",
+    "Запуск з чистого клону перевірено",
+    "У історії немає секретів, .venv і звітів",
+    "Три рішення з причинами — готові відповіді на «чому так?»",
+    "Історія на хвилину: що, як, чому, що далі — без перебільшень",
+    "Посилання додано в резюме й LinkedIn"
+  ]
+}

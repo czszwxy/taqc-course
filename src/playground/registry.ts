@@ -109,6 +109,27 @@ const PAGES: PageEntry[] = [
       'trackingIgnoresPhone',
     ],
   },
+  {
+    id: 'returns',
+    title: 'Returns & refunds',
+    path: '/playground/returns',
+    description:
+      'The Python final project system: find a delivered order, choose items, reason, condition and refund method, request a return and track it — priced by the returns API.',
+    // Page flags first, then the returns API flags (server/mock-api.ts getBugs).
+    bugIds: [
+      'qtyAboveBought',
+      'staleCondition',
+      'commentLength',
+      'confirmationItemValue',
+      'windowBoundary',
+      'defectiveWindow',
+      'feeOnFaulty',
+      'bonusBeforeFees',
+      'overReturn',
+      'giftCardAccepted',
+      'trackingIgnoresEmail',
+    ],
+  },
 ];
 
 export const PLAYGROUND_PAGES: PlaygroundPage[] = PAGES.map((page) => ({ ...page, bugs: page.bugIds.length }));

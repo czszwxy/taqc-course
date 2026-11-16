@@ -1,0 +1,25 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Milestone 3a: a ReturnsPage page object",
+  "playground": "returns",
+  "statement": "Перший етап фреймворку — page object. У стартовому файлі є `ReturnsPage` з базовими локаторами, `open()`, `find_order()` і `item()`, фікстура прибирання `created_returns` і перший тест.\n\nДодай у `ReturnsPage` методи:\n\n- `increase(name)` — кнопка «+» товару (`Increase <name>`);\n- `set_condition(label)` — вибрати `Unopened` / `Opened` (**обережно**: «Opened» без `exact=True` збігається з «Unopened»);\n- `return_number()` — номер з підтвердження без `#`.\n\nНапиши тести (лише через `ReturnsPage`):\n\n1. Кабелі в #5001 (куплено 3): після двох «+» кількість `3`, і «+» **неактивна**.\n2. Навушники, *Changed my mind*: після вибору **Opened** підсумок перераховується на `2,460 UAH`.\n3. Коментар рівно **300** символів для *Defective* приймається: повернення створене (підтвердження видно). Додай `(номер, email)` у `created_returns`.\n\nПотрібно щонайменше 4 тести.",
+  "minTests": 4,
+  "mutants": [
+    { "id": "qtyAboveBought", "description": "“+” stayed enabled at the purchased quantity, so 4 cables could be chosen.", "hint": "Increase the cables to the purchased quantity (3) and check the “+” button state." },
+    { "id": "staleCondition", "description": "Switching Unopened / Opened did not re-price the refund summary.", "hint": "Choose a reason first, then switch the condition to Opened and check the refund amount." },
+    { "id": "commentLength", "description": "A comment of exactly 300 characters was rejected as too long.", "hint": "Submit a Defective return with a comment of exactly 300 characters." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "class ReturnsPage", "message": "Залиш клас `ReturnsPage` — тести працюють через нього." },
+    { "kind": "require", "pattern": "def set_condition\\(self", "message": "Додай метод `def set_condition(self, label):`." },
+    { "kind": "forbid", "pattern": "^ {4}(?!def |class )\\S.*(?<!self\\.)\\bpage\\.(get_by_|locator\\()", "flags": "m", "message": "У тестах — лише методи й атрибути `ReturnsPage`. Локатори пиши всередині класу (`self.page...` або в `__init__`)." },
+    { "kind": "forbid", "pattern": "time\\.sleep|wait_for_timeout", "message": "Без пауз: `expect(...)` чекає сам." }
+  ],
+  "hints": [
+    "`def increase(self, name): return self.page.get_by_role(\"button\", name=f\"Increase {name}\")`, у тесті — `expect(returns.increase(\"USB-C Cable 1 m\")).to_be_disabled()`.",
+    "`def set_condition(self, label): self.page.get_by_label(label, exact=True).check()`.",
+    "Номер: `self.page.get_by_test_id(\"return-number\").inner_text().lstrip(\"#\")`; після запиту спершу `expect(returns.confirmation).to_be_visible()`."
+  ],
+  "explanation": "Page object збирає локатори й дії багатокрокової форми в одному класі: тести читаються як сценарії, а пастки (часткові збіги підписів) розв'язуються один раз — у методі. Три тести покривають три різні типи ризиків UI: межу (кнопка на купленій кількості), перерахунок після зміни стану і граничну довжину коментаря. Тест, що створює дані, одразу реєструє їх для прибирання."
+}

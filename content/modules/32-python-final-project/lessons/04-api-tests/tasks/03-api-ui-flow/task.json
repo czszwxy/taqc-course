@@ -1,0 +1,23 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Milestone 4b: API + UI flows with cleanup",
+  "playground": "returns",
+  "statement": "Комбіновані тести. У стартовому файлі є фікстури `api` і **`created_return`** (створює повернення навушників через `POST /api/returns`, після тесту видаляє), helper `quote()` і `ReturnsPage` з частиною відстеження.\n\n1. **Створено через API → видно в UI**: у *Track a return* номер + email замовлення → `Return #<id> — requested — refund 2,909 UAH`. *(Уже є.)*\n2. З **чужим** email (`someone@example.test`) у UI — помилка `Return not found…`.\n3. Те саме через API: `GET /api/returns/<id>?email=someone@example.test` → `404`.\n4. **Підсумок сторінки = API**: на сторінці навушники, *Changed my mind*, потім **Opened** — сума в підсумку дорівнює `refund` з `quote(api, condition=\"opened\")` (формат `2,460 UAH`: `f\"{refund:,} UAH\"`).\n\nПотрібно щонайменше 4 тести.",
+  "minTests": 4,
+  "mutants": [
+    { "id": "trackingIgnoresEmail", "description": "A return could be tracked with any email (UI and API).", "hint": "Track the created return with a wrong email — in the UI and with GET /api/returns/<id>." },
+    { "id": "staleCondition", "description": "The page did not re-price the summary after switching to Opened, so it differed from the API.", "hint": "Switch the condition to Opened on the page and compare the summary with the API quote for the same choice." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "created_return", "message": "Використай фікстуру `created_return` — дані створюються через API і прибираються після тесту." },
+    { "kind": "require", "pattern": "quote\\(api", "message": "Для тесту «підсумок = API» отримай суму через `quote(api, ...)`." },
+    { "kind": "forbid", "pattern": "time\\.sleep|wait_for_timeout", "message": "Без пауз: `expect(...)` чекає сам." }
+  ],
+  "hints": [
+    "UI з чужим email: `returns.track(created_return[\"id\"], \"someone@example.test\")`, потім `expect(returns.track_error).to_contain_text(\"Return not found\")`.",
+    "API: `requests.get(f\"{api}/returns/{created_return['id']}\", params={\"email\": \"someone@example.test\"}, timeout=TIMEOUT)` → `404`.",
+    "«Підсумок = API»: `expected = quote(api, condition=\"opened\").json()[\"refund\"]`, на сторінці — `returns.set_condition(\"Opened\")` і `expect(returns.refund).to_have_text(f\"{expected:,} UAH\")`."
+  ],
+  "explanation": "API готує дані швидко й прибирає їх після тесту, а UI перевіряє те, що бачить людина. Доступ за email перевіряється на обох рівнях: якщо сервер віддає чуже повернення, винна не лише сторінка. А тест «підсумок = API» не дублює правила грошей — він перевіряє зв'язок: сторінка після кожної зміни показує те, що порахував сервер."
+}

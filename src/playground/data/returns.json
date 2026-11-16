@@ -1,0 +1,80 @@
+{
+  "today": "2026-03-20",
+  "rules": {
+    "windowDays": 14,
+    "defectiveWindowDays": 30,
+    "restockingPercent": 15,
+    "returnShippingFee": 90,
+    "storeCreditBonusPercent": 10,
+    "commentMinLength": 10,
+    "commentMaxLength": 300,
+    "firstReturnId": 3001
+  },
+  "reasons": {
+    "defective": "Defective / does not work",
+    "wrong-item": "Wrong item sent",
+    "damaged": "Damaged in delivery",
+    "changed-mind": "Changed my mind"
+  },
+  "commentRequiredFor": ["defective", "damaged"],
+  "conditions": {
+    "unopened": "Unopened",
+    "opened": "Opened"
+  },
+  "refundMethods": {
+    "original": "Original payment method",
+    "store-credit": "Store credit (+10 % bonus)"
+  },
+  "nonReturnableCategories": ["Gift cards"],
+  "orders": [
+    {
+      "id": 5001,
+      "email": "anna.koval@example.test",
+      "status": "delivered",
+      "deliveredAt": "2026-03-18",
+      "lines": [
+        { "lineId": 1, "name": "Wireless Headphones H1", "category": "Headphones", "price": 2999, "quantity": 1 },
+        { "lineId": 2, "name": "USB-C Cable 1 m", "category": "Accessories", "price": 249, "quantity": 3 },
+        { "lineId": 3, "name": "Gadgetly Gift Card", "category": "Gift cards", "price": 1000, "quantity": 1 }
+      ]
+    },
+    {
+      "id": 5002,
+      "email": "max.bondar@example.test",
+      "status": "delivered",
+      "deliveredAt": "2026-03-06",
+      "lines": [
+        { "lineId": 1, "name": "Mechanical Keyboard K8", "category": "Accessories", "price": 2199, "quantity": 1 },
+        { "lineId": 2, "name": "Wireless Mouse M2", "category": "Accessories", "price": 499, "quantity": 2 }
+      ]
+    },
+    {
+      "id": 5003,
+      "email": "max.bondar@example.test",
+      "status": "delivered",
+      "deliveredAt": "2026-03-05",
+      "lines": [{ "lineId": 1, "name": "Noise Cancelling Headphones", "category": "Headphones", "price": 8999, "quantity": 1 }]
+    },
+    {
+      "id": 5004,
+      "email": "olha.melnyk@example.test",
+      "status": "delivered",
+      "deliveredAt": "2026-02-18",
+      "lines": [{ "lineId": 1, "name": "Phone Mini", "category": "Phones", "price": 9999, "quantity": 1 }]
+    },
+    {
+      "id": 5005,
+      "email": "olha.melnyk@example.test",
+      "status": "shipped",
+      "deliveredAt": null,
+      "lines": [{ "lineId": 1, "name": "Laptop Stand", "category": "Accessories", "price": 1250, "quantity": 1 }]
+    },
+    {
+      "id": 5006,
+      "email": "ivan.shevchuk@example.test",
+      "status": "delivered",
+      "deliveredAt": "2026-02-17",
+      "lines": [{ "lineId": 1, "name": "Webcam 4K", "category": "Accessories", "price": 3000, "quantity": 1 }]
+    }
+  ]
+}

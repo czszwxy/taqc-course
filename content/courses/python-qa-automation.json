@@ -4,7 +4,7 @@
   "tagline": "Zero → Trainee QA Automation (Python)",
   "description": "The same QA foundation as the TypeScript track, then Python from zero, pytest, Playwright for Python, API testing with requests, CI and a Python portfolio project. Shared modules (testing theory, web, HTTP, Git, SQL, getting hired) count in both QA courses.",
   "icon": "🐍",
-  "status": "in-progress",
+  "status": "available",
   "order": 2,
   "tracks": [
     {

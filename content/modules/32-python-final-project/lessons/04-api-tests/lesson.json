@@ -1,0 +1,28 @@
+{
+  "title": "API tests with Python",
+  "minutes": 75,
+  "summary": "API-частина фінального фреймворку: клієнт returns API на requests, pydantic-моделі відповіді з перевіркою «сума сходиться», таблиця рішень як параметризований тест, негативні сценарії (кількість, подарункова картка, вікно, доступ за email), комбіновані API + UI тести (створити через API — перевірити в UI; підсумок сторінки = відповідь API) з прибиранням; етапи 4a і 4b",
+  "resources": [
+    {
+      "title": "Requests: Quickstart",
+      "url": "https://requests.readthedocs.io/en/latest/user/quickstart/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Pydantic: Validators",
+      "url": "https://docs.pydantic.dev/latest/concepts/validators/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: API testing",
+      "url": "https://playwright.dev/python/docs/api-testing",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -10,6 +10,7 @@ import {
   type CheckoutOrder,
   type Outcome,
 } from './checkout-api';
+import { FIRST_RETURN_ID, createReturn, findReturn, lookupOrder, quoteReturn, type ReturnRequest } from './returns-api';
 import productsData from '../src/playground/data/products.json';
 import data from './mock-data.json';
 
@@ -66,6 +67,9 @@ interface Store {
   /** Module 20 checkout orders (server/checkout-api.ts). */
   checkoutOrders: CheckoutOrder[];
   nextCheckoutId: number;
+  /** Module 32 return requests (server/returns-api.ts). */
+  returns: ReturnRequest[];
+  nextReturnId: number;
 }
 
 function getBugs(fixed: boolean) {
@@ -83,6 +87,14 @@ function getBugs(fixed: boolean) {
     maxQtyIgnored: on, // quote/orders accept quantity 6–10 (max is 5)
     orderIgnoresPromo: on, // POST /checkout/orders drops the promo discount from the order total
     trackingIgnoresPhone: on, // GET /checkout/orders/:id returns the order with any phone (should be 404)
+    // Returns API (module 32) — listed in the `returns` page's bugIds in registry.ts:
+    windowBoundary: on, // the last day of the 14-day return window is rejected (days < 14 instead of <= 14)
+    defectiveWindow: on, // defective items get the 14-day window instead of 30 days
+    feeOnFaulty: on, // the restocking fee is charged for opened items returned for any reason, not only "changed my mind"
+    bonusBeforeFees: on, // the store credit bonus is 10 % of the items value instead of the refund after fees
+    overReturn: on, // a quantity above the purchased quantity is accepted
+    giftCardAccepted: on, // gift cards (non-returnable) are accepted
+    trackingIgnoresEmail: on, // GET /returns/:id returns the request with any email (should be 404)
   };
 }
 type Bugs = ReturnType<typeof getBugs>;
@@ -123,7 +135,7 @@ function priceOf(productId: number): number {
 
 function seedStore(): Store {
   const orders = data.orders.map((o) => ({ ...o, unitPrice: priceOf(o.productId), total: priceOf(o.productId) * o.quantity }));
-  return { orders, nextOrderId: data.nextOrderId, checkoutOrders: [], nextCheckoutId: FIRST_CHECKOUT_ORDER_ID };
+  return { orders, nextOrderId: data.nextOrderId, checkoutOrders: [], nextCheckoutId: FIRST_CHECKOUT_ORDER_ID, returns: [], nextReturnId: FIRST_RETURN_ID };
 }
 
 const stores: Record<string, Store> = { [API_BASE]: seedStore(), [API_FIXED_BASE]: seedStore() };
@@ -413,6 +425,25 @@ function cancelCheckout({ store, params, query }: Ctx): Reply {
   return { ...reply(STATUS.noContent), store: { ...store, checkoutOrders: store.checkoutOrders.filter((o) => o.id !== found.value.id) } };
 }
 
+/* ---------- returns (module 32): logic in returns-api.ts ---------- */
+
+function requestReturn({ base, store, body, bug }: Ctx): Reply {
+  const result = createReturn(base, body, bug, store.nextReturnId, new Date());
+  if (!result.request) return fromOutcome(result.outcome);
+  return { ...fromOutcome(result.outcome), store: { ...store, returns: [...store.returns, result.request], nextReturnId: store.nextReturnId + 1 } };
+}
+
+function trackReturn({ store, params, query, bug }: Ctx): Reply {
+  const found = findReturn(store.returns, params.id ?? '', query.get('email'), bug.trackingIgnoresEmail);
+  return found.ok ? reply(STATUS.ok, found.value) : fromOutcome(found.outcome);
+}
+
+function cancelReturn({ store, params, query }: Ctx): Reply {
+  const found = findReturn(store.returns, params.id ?? '', query.get('email'), false);
+  if (!found.ok) return fromOutcome(found.outcome);
+  return { ...reply(STATUS.noContent), store: { ...store, returns: store.returns.filter((r) => r.id !== found.value.id) } };
+}
+
 const ROUTES: Route[] = [
   { method: 'GET', path: '/health', handle: () => reply(STATUS.ok, { status: 'ok', version: data.version }) },
   { method: 'GET', path: '/products', handle: listProducts },
@@ -434,6 +465,11 @@ const ROUTES: Route[] = [
   { method: 'POST', path: '/checkout/orders', handle: placeCheckout },
   { method: 'GET', path: '/checkout/orders/:id', handle: trackCheckout },
   { method: 'DELETE', path: '/checkout/orders/:id', handle: cancelCheckout },
+  { method: 'GET', path: '/returns/orders/:id', handle: ({ params, query }) => fromOutcome(lookupOrder(params.id ?? '', query.get('email'))) },
+  { method: 'POST', path: '/returns/quote', handle: ({ body, bug }) => fromOutcome(quoteReturn(body, bug)) },
+  { method: 'POST', path: '/returns', handle: requestReturn },
+  { method: 'GET', path: '/returns/:id', handle: trackReturn },
+  { method: 'DELETE', path: '/returns/:id', handle: cancelReturn },
 ];
 
 const METHODS_WITH_BODY = new Set(['POST', 'PUT', 'PATCH']);

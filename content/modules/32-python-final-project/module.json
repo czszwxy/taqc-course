@@ -1,0 +1,12 @@
+{
+  "title": "Final Project: Python",
+  "description": "Фінальний проєкт Python-курсу: повний цикл тестування нової системи — Gadgetly Returns & refunds (сторінка повернень і returns API з 11 прихованими дефектами). Бриф і тест-план, чекліст, таблиця рішень для суми повернення, тест-кейс на межу вікна повернення, полювання на баги в UI і API, потім фреймворк на pytest + Playwright + requests + pydantic, що росте етапами (page object, фікстури й дані, API-тести, API + UI, регресійний набір), і портфоліо: власний репозиторій з CI, README і фінальним рев'ю.",
+  "goals": [
+    "Analyse a new system from its brief and requirements and write a test plan",
+    "Design tests with a checklist, a decision table and boundary test cases, then hunt and report bugs in the UI and the API",
+    "Build a pytest + Playwright UI framework with a page object, fixtures, test data and cleanup",
+    "Cover the returns API with requests, pydantic contracts and parametrized decision-table tests",
+    "Combine API and UI checks and assemble a regression suite that catches every regression",
+    "Publish a Python portfolio repository with CI, reports and a README"
+  ]
+}

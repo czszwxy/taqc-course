@@ -1,0 +1,43 @@
+{
+  "type": "test-case",
+  "title": "Test case: the 14-day return window boundary",
+  "playground": "returns",
+  "statement": "Напиши тест-кейс для межі вікна повернення **в UI**:\n\n> *Return window: 14 days after delivery, the last day included.* «Сьогодні» в демо — 20.03.2026.\n\nВикористай готові замовлення: **#5002** (`max.bondar@example.test`, доставлене 06.03.2026 — 14-й день, Mechanical Keyboard K8 за 2,199 UAH) і **#5003** (той самий email, доставлене 05.03.2026 — 15-й день). Причина — *Changed my mind*. Тест має показати обидва боки межі.",
+  "hints": [
+    "14-й день: повернення дозволене, у підсумку — сума (2,199 − 90 = 2,109 UAH, якщо Unopened).",
+    "15-й день: повідомлення про закрите вікно з датою останнього дня (2026-03-19)."
+  ],
+  "explanation": "Тест-кейс межі перевіряє значення **на межі** (14-й день — ще можна) і **за межею** (15-й — вже ні) з точними даними й числовими очікуваннями. Фіксована «сьогоднішня» дата і готові замовлення роблять результат однаковим у будь-який день запуску — це й умова для автоматизації цього кейсу.",
+  "rules": [
+    { "field": "title", "check": "mentionsAny", "value": ["14", "window|вікн"], "message": "Назва: межа 14-денного вікна повернення." },
+    { "field": "any", "check": "mentionsAll", "value": ["5002", "5003"], "message": "Перевір обидва боки межі: #5002 (14-й день) і #5003 (15-й)." },
+    { "field": "steps", "check": "minItems", "value": 5, "message": "Щонайменше 5 кроків: пошук, вибір товару, причина, перевірка — для кожного замовлення." },
+    { "field": "expectedResult", "check": "mentionsAny", "value": ["2[ ,.]?109"], "message": "Очікування для 14-го дня з числом: Refund 2,109 UAH." },
+    { "field": "expectedResult", "check": "mentionsAny", "value": ["closed|закрит|2026-03-19"], "message": "Очікування для 15-го дня: «Return window closed…» з датою 2026-03-19." },
+    { "field": "type", "check": "equals", "value": "Negative", "message": "Головна перевірка тут — відхилення на 15-й день: тип Negative (обидва боки межі в одному кейсі)." },
+    { "field": "priority", "check": "equals", "value": "High", "message": "Правило про права клієнта й гроші — priority High." }
+  ],
+  "model": {
+    "title": "Returns: a Changed my mind return is allowed on day 14 after delivery and rejected on day 15",
+    "type": "Negative",
+    "priority": "High",
+    "preconditions": "/playground/returns is open; demo date 20.03.2026; orders #5002 (delivered 06.03.2026) and #5003 (delivered 05.03.2026) exist for max.bondar@example.test.",
+    "testData": "Email max.bondar@example.test; #5002 Mechanical Keyboard K8 2,199 UAH; #5003 Noise Cancelling Headphones 8,999 UAH; reason Changed my mind; condition Unopened; refund to Original payment method.",
+    "steps": [
+      "Find order #5002 with max.bondar@example.test",
+      "Select Mechanical Keyboard K8, reason Changed my mind, condition Unopened",
+      "Check the refund summary",
+      "Find order #5003 with the same email",
+      "Select Noise Cancelling Headphones, reason Changed my mind",
+      "Check the refund summary"
+    ],
+    "expectedResult": "Step 3: no error; Items value 2,199 UAH, Return shipping −90 UAH, Refund 2,109 UAH. Step 6: the summary shows \"Return window closed: this order could be returned until 2026-03-19\" and no refund amount."
+  },
+  "checklist": [
+    "Обидва боки межі: 14-й день (#5002) і 15-й (#5003)",
+    "Точні дані: email, товари, причина, стан",
+    "Очікування з числом для дозволеного повернення (2,109 UAH)",
+    "Очікування з текстом і датою для відхиленого",
+    "Передумова фіксує демо-дату і тестові замовлення"
+  ]
+}

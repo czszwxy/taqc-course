@@ -1,0 +1,68 @@
+{
+  "type": "quiz",
+  "title": "Framework design decisions",
+  "show": 5,
+  "hints": ["Page object — дії; тест — перевірки; фікстури — підготовка й прибирання; дані — в одному місці."],
+  "questions": [
+    {
+      "id": "strict-opened",
+      "kind": "single",
+      "text": "`page.get_by_label(\"Opened\").check()` падає зі «strict mode violation: resolved to 2 elements». Чому?",
+      "options": [
+        { "text": "Підпис «Unopened» теж містить «opened»; потрібен `exact=True`", "correct": true },
+        { "text": "Радіокнопка ще не з'явилася" },
+        { "text": "У Playwright не можна вибирати радіокнопки за підписом" }
+      ]
+    },
+    {
+      "id": "where-expect",
+      "kind": "single",
+      "text": "Де перевірити, що сума повернення — `2,460 UAH`?",
+      "options": [
+        { "text": "У тесті: `expect(returns_page.refund).to_have_text(\"2,460 UAH\")`", "correct": true },
+        { "text": "У методі `set_condition()` page object" },
+        { "text": "У фікстурі `returns_page`" }
+      ]
+    },
+    {
+      "id": "cleanup",
+      "kind": "single",
+      "text": "UI-тест створює повернення. Як прибрати його надійно?",
+      "options": [
+        { "text": "Фікстура з `yield`, що після тесту скасовує створені повернення через API — навіть якщо тест упав", "correct": true },
+        { "text": "Останнім рядком тесту натиснути «Cancel return»" },
+        { "text": "Не прибирати — демо-дані скидаються" }
+      ]
+    },
+    {
+      "id": "frozen-data",
+      "kind": "single",
+      "text": "Навіщо `frozen=True` у dataclass з тестовими даними?",
+      "options": [
+        { "text": "Щоб тест не міг випадково змінити спільні дані для інших тестів", "correct": true },
+        { "text": "Щоб дані завантажувались швидше" },
+        { "text": "Без цього dataclass не можна імпортувати" }
+      ]
+    },
+    {
+      "id": "ids",
+      "kind": "single",
+      "text": "Навіщо `ids=[\"day-14-changed-mind\", ...]` у параметризації меж?",
+      "options": [
+        { "text": "У звіті одразу видно, яка межа впала, без розбору параметрів", "correct": true },
+        { "text": "Щоб тести запускались у певному порядку" },
+        { "text": "Щоб pytest не дублював тести" }
+      ]
+    },
+    {
+      "id": "fixture-scope",
+      "kind": "single",
+      "text": "Який scope для фікстури `returns_page`?",
+      "options": [
+        { "text": "`function` — кожен тест отримує свіжу сторінку від фікстури `page`", "correct": true },
+        { "text": "`session` — щоб відкривати сторінку один раз", "explain": "Фікстура `page` має scope function — фікстура ширшого scope не може від неї залежати, і тести ділили б стан форми." },
+        { "text": "`module`" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "type": "written",
+  "title": "Write the README of your portfolio project",
+  "statement": "Напиши README свого портфоліо-репозиторію на Python. Рекрутер і тімлід мають за кілька хвилин зрозуміти, **що** тестується, **як** запустити і **як** ти думаєш як QA.",
+  "fields": [
+    { "id": "about", "label": "Title, badge and About (what, stack, scope)", "kind": "textarea" },
+    { "id": "run", "label": "How to run", "kind": "textarea" },
+    { "id": "structure", "label": "Project structure", "kind": "textarea" },
+    { "id": "approach", "label": "Test approach (API vs UI, data, stability, reports)", "kind": "textarea" },
+    { "id": "next", "label": "Next steps (one per line)", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "about", "check": "mentionsAll", "value": ["badge|бейдж|!\\[", "pytest", "playwright"], "message": "Бейдж CI і стек: pytest, Playwright (і requests / pydantic, якщо є API)." },
+    { "field": "run", "check": "mentionsAll", "value": ["venv", "pip install -r requirements\\.txt", "playwright install", "pytest"], "message": "Запуск з нуля: venv → `pip install -r requirements.txt` → `python -m playwright install chromium` → `python -m pytest`." },
+    { "field": "structure", "check": "mentionsAll", "value": ["pages", "tests", "conftest"], "message": "Структура: `pages/`, `tests/`, `conftest.py` (і `api/`, `models/`, `docs/`)." },
+    { "field": "approach", "check": "minLength", "value": 200, "message": "Підхід — кілька речень: що на API, що в UI, дані й прибирання, стабільність, звіти." },
+    { "field": "approach", "check": "mentionsAll", "value": ["api", "ui|browser|браузер"], "message": "Поясни розподіл між API і UI." },
+    { "field": "next", "check": "minItems", "value": 3, "message": "Щонайменше 3 наступні кроки." }
+  ],
+  "model": {
+    "about": "# Toolshop test automation (Python)\n\n![Tests](https://github.com/<your-login>/toolshop-tests/actions/workflows/tests.yml/badge.svg)\n\nAutomated UI and API tests for the Toolshop demo shop (practicesoftwaretesting.com). Stack: Python 3.13, pytest, Playwright for Python, requests, pydantic, GitHub Actions. 18 UI tests (search, product page, cart, checkout, account) and 9 API tests (products, categories, login, cart). The docs folder also contains my test documentation for Gadgetly Returns & refunds from the QA course final project: test plan, checklist, decision table, test case and bug reports.",
+    "run": "Requirements: Python 3.13.\n\npython -m venv .venv\n.venv\\Scripts\\activate            # macOS/Linux: source .venv/bin/activate\npip install -r requirements.txt\npython -m playwright install chromium\npython -m pytest                   # everything\npython -m pytest -m api            # API only (no browser)\npython -m pytest -m smoke --headed # smoke, watch the browser\n\nReports: python -m pytest --junitxml=reports/junit.xml --html=reports/report.html --self-contained-html",
+    "structure": "pages/        page objects (SearchPage, ProductPage, CartPage, CheckoutPage)\napi/          a small client for the Toolshop REST API\nmodels/       pydantic models of API responses\ndata/         test data builders (unique emails, addresses)\ntests/ui/     browser tests\ntests/api/    API tests\nconftest.py   fixtures: settings, api client, page objects, signed-in page\ndocs/         test documentation (incl. Gadgetly Returns from the course)\npyproject.toml, requirements.txt, .github/workflows/tests.yml",
+    "approach": "Data rules and contracts are checked through the API: fast, precise, parametrized (catalog filters, login errors, cart totals), with pydantic models for the responses. The UI covers what a customer sees: search and filters, product details, adding to the cart, checkout steps. Tests are independent: each creates its own data through the API (fixtures with yield clean it up), signs in without the form where possible, uses role and label locators and web-first expect assertions — no sleeps. Settings come from environment variables. CI runs on every push and PR and nightly; JUnit XML, an HTML report and traces of failed tests are uploaded as artifacts even when the run is red.",
+    "next": [
+      "Run the UI suite in Firefox and WebKit (CI matrix)",
+      "Parallel runs with pytest-xdist once all tests are confirmed independent",
+      "Allure report with steps and history",
+      "Contract tests for every API endpoint used by the UI"
+    ]
+  },
+  "checklist": [
+    "Бейдж CI і стек у перших рядках",
+    "Запуск з нуля — команди, які працюють з чистого клону",
+    "Структура з поясненням шарів",
+    "Підхід: API проти UI, дані й прибирання, стабільність, звіти",
+    "Обсяг чесно і конкретно (скільки тестів, що покрито)",
+    "Наступні кроки з причинами",
+    "Жодних паролів, токенів і особистих даних"
+  ]
+}
