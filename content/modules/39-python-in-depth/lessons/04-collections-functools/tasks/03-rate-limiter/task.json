@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "A sliding-window rate limiter",
+  "statement": "API дозволяє клієнту не більше `limit` запитів за будь-які `window` секунд. Напиши клас `RateLimiter(limit, window)` з методом `allow(now)`, де `now` — час запиту в секундах (числа лише зростають).\n\n- Запит дозволено (`True`), якщо серед **дозволених** раніше запитів менше `limit` таких, що `now - час < window`. Дозволений запит запам'ятовується.\n- Відхилений запит (`False`) **не** запам'ятовується і не займає місця.\n- `limit < 1` → `ValueError(\"limit must be at least 1\")`.\n- Зберігай час дозволених запитів у `collections.deque` і прибирай застарілі з лівого боку.\n\n```python\nlimiter = RateLimiter(limit=3, window=60)\n[limiter.allow(t) for t in (0, 10, 20, 30)]   # [True, True, True, False]\nlimiter.allow(60)   # True — запит у момент 0 уже поза вікном (60 - 0 не менше 60)\n```",
+  "hints": [
+    "У `__init__`: `self.calls = deque()`.",
+    "На початку `allow`: `while self.calls and now - self.calls[0] >= self.window: self.calls.popleft()`.",
+    "Потім: якщо `len(self.calls) < self.limit` — `append(now)` і `True`, інакше `False`."
+  ],
+  "explanation": "Ковзне вікно — класична задача на `deque`: нові запити додаються праворуч, застарілі прибираються зліва, і обидві операції коштують O(1). Зі списком і `pop(0)` кожне прибирання зсувало б увесь список. Відхилені запити не записуються — інакше клієнт, що перевищив ліміт і продовжує стукати, ніколи б не отримав доступу знову.",
+  "codeRules": [
+    { "kind": "require", "pattern": "deque\\(", "message": "Зберігай час запитів у `collections.deque()`." }
+  ]
+}

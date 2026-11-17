@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Apply discount rules with class patterns",
+  "statement": "У файлі `rules.py` (лише для читання) описано правила знижок — dataclass-и `PercentOff(percent)`, `FixedOff(amount)` і `MinTotal(minimum, rule)` (вкладене правило діє, лише якщо сума не менша за мінімум). Напиши `apply_rule(total, rule)` через `match` з класовими патернами. Суми — цілі гривні.\n\n| Правило | Результат |\n|---|---|\n| `PercentOff(p)`, `1 <= p <= 100` | `total - total * p // 100` |\n| `PercentOff(p)` з іншим `p` | `ValueError(\"invalid percent\")` |\n| `FixedOff(a)` | `total - a`, але не менше `0` |\n| `MinTotal(m, inner)`, `total >= m` | результат `inner` для `total` |\n| `MinTotal(...)`, `total < m` | `total` без змін |\n| будь-що інше | `TypeError(\"unknown rule\")` |\n\n```python\napply_rule(999, PercentOff(15))                    # 850\napply_rule(300, FixedOff(500))                     # 0\napply_rule(2500, MinTotal(2000, FixedOff(200)))    # 2300\napply_rule(1500, MinTotal(2000, FixedOff(200)))    # 1500\n```",
+  "hints": [
+    "`from rules import FixedOff, MinTotal, PercentOff`. Позиційні патерни працюють, бо це dataclass-и: `case PercentOff(percent) if 1 <= percent <= 100:`.",
+    "Окремий `case PercentOff():` після нього — для неправильного відсотка.",
+    "Вкладене правило: `case MinTotal(minimum, inner) if total >= minimum: return apply_rule(total, inner)`, потім `case MinTotal(): return total`."
+  ],
+  "explanation": "Класовий патерн одночасно перевіряє тип (`isinstance`) і розпаковує атрибути, а умова `if` додає правило про значення. Для `MinTotal` функція викликає сама себе з вкладеним правилом — тож працюють будь-які комбінації. Порядок важливий: `PercentOff(percent) if ...` має стояти перед загальним `PercentOff()`, інакше правильний відсоток теж дасть помилку.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\bmatch\\s", "message": "Розбери правило через `match rule:`." },
+    { "kind": "require", "pattern": "case\\s+(PercentOff|FixedOff|MinTotal)\\(", "message": "Використай класові патерни: `case PercentOff(percent):`." }
+  ]
+}

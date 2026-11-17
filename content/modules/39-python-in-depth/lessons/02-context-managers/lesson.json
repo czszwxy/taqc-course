@@ -1,0 +1,28 @@
+{
+  "title": "Context managers",
+  "minutes": 55,
+  "summary": "Що робить with: __enter__ і __exit__, що потрапляє в as, як __exit__ дізнається про виняток і чому повертати True небезпечно; клас-менеджер, contextlib.contextmanager з одним yield і try / finally, suppress, кілька менеджерів в одному with та де менеджери контексту трапляються в SQLAlchemy, FastAPI і pytest",
+  "resources": [
+    {
+      "title": "Python docs: The with statement",
+      "url": "https://docs.python.org/3/reference/compound_stmts.html#the-with-statement",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: contextlib — utilities for with-statement contexts",
+      "url": "https://docs.python.org/3/library/contextlib.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: Context Manager Types",
+      "url": "https://docs.python.org/3/library/stdtypes.html#context-manager-types",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

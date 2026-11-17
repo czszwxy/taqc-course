@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "An audit log with @contextmanager",
+  "statement": "Напиши менеджер контексту `audit(log, action)` через `@contextmanager` (генератор з одним `yield`). Він записує в список `log`:\n\n- перед блоком — `\"start <action>\"`;\n- після успішного блоку — `\"ok <action>\"`;\n- якщо в блоці виняток — `\"fail <action>: <назва класу винятку>\"`, і виняток **летить далі**.\n\n```python\nlog = []\nwith audit(log, \"refund #3001\"):\n    pass\nlog   # ['start refund #3001', 'ok refund #3001']\n\nwith audit(log, \"charge #3002\"):\n    raise TimeoutError(\"gateway did not answer\")   # TimeoutError летить далі\nlog[-1]   # 'fail charge #3002: TimeoutError'\n```",
+  "hints": [
+    "До `yield` — `log.append(f\"start {action}\")`.",
+    "`try: yield` → `except Exception as error:` запиши `fail …` з `type(error).__name__` і зроби голий `raise` → `else:` запиши `ok …`."
+  ],
+  "explanation": "Виняток із тіла `with` з'являється всередині генератора саме в точці `yield`, тому навколо `yield` ставлять `try`. `except` записує невдачу і **повторно кидає** виняток (`raise`) — без цього `@contextmanager` вирішить, що помилку оброблено, і проковтне її. Гілка `else` виконується лише після успішного блоку.",
+  "codeRules": [
+    { "kind": "require", "pattern": "@contextmanager", "message": "Зроби менеджер через декоратор `@contextmanager` з `contextlib`." },
+    { "kind": "require", "pattern": "\\byield\\b", "message": "Генератор-менеджер має містити один `yield`." }
+  ]
+}

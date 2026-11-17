@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Order statuses as a StrEnum",
+  "statement": "Заміни «магічні рядки» статусів переліченням.\n\n1. `OrderStatus(StrEnum)` з членами `NEW = \"new\"`, `PAID = \"paid\"`, `SHIPPED = \"shipped\"`, `DELIVERED = \"delivered\"`, `CANCELLED = \"cancelled\"`.\n2. `change_status(current, target)` — приймає члени перелічення **або** рядки з API; повертає `target` як член `OrderStatus`, якщо перехід дозволено, інакше `ValueError(\"cannot change status from <current> to <target>\")`. Невідомий статус → `ValueError` (його кидає саме `OrderStatus(...)`).\n\nДозволені переходи: `new → paid`, `new → cancelled`, `paid → shipped`, `paid → cancelled`, `shipped → delivered`. Більше жодних (і «в той самий статус» теж).\n\n```python\nchange_status(\"new\", \"paid\")                       # <OrderStatus.PAID: 'paid'>\nchange_status(OrderStatus.PAID, OrderStatus.NEW)   # ValueError: cannot change status from paid to new\nchange_status(\"new\", \"lost\")                       # ValueError: 'lost' is not a valid OrderStatus\n```",
+  "hints": [
+    "`from enum import StrEnum`; члени — як атрибути класу: `NEW = \"new\"`.",
+    "На початку функції: `current = OrderStatus(current)` і `target = OrderStatus(target)` — працює і для рядків, і для членів.",
+    "Переходи — словник множин: `ALLOWED = {OrderStatus.NEW: {OrderStatus.PAID, OrderStatus.CANCELLED}, ...}`; перевірка `target not in ALLOWED.get(current, set())`."
+  ],
+  "explanation": "`OrderStatus(value)` — єдина точка, де сирий рядок з API стає статусом: невідоме значення одразу дає `ValueError`. Оскільки це `StrEnum`, f-рядок показує значення (`paid`), а порівняння з рядком `\"paid\"` працює. Переходи як словник множин тримають усі правила в одному місці: новий перехід — новий елемент, а не ще один `elif`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "StrEnum", "message": "Оголоси `class OrderStatus(StrEnum)`." }
+  ]
+}

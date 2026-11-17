@@ -1,0 +1,35 @@
+{
+  "title": "Logging",
+  "minutes": 55,
+  "summary": "Логування замість print: рівні DEBUG / INFO / WARNING / ERROR / CRITICAL, logger на модуль через getLogger(__name__), ієрархія і propagate, обробники, форматери й рівні, basicConfig лише в точці входу, «ліниві» аргументи замість f-рядків, logger.exception з traceback, що не можна писати в лог і як перевіряють логи в тестах",
+  "resources": [
+    {
+      "title": "Python docs: Logging HOWTO",
+      "url": "https://docs.python.org/3/howto/logging.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: logging — logging facility for Python",
+      "url": "https://docs.python.org/3/library/logging.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: Logging Cookbook",
+      "url": "https://docs.python.org/3/howto/logging-cookbook.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: How to manage logging (caplog)",
+      "url": "https://docs.pytest.org/en/stable/how-to/logging.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

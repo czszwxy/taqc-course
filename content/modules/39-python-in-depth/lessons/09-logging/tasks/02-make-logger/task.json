@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Configure a logger without duplicate lines",
+  "statement": "Напиши `make_logger(name, stream, level=logging.INFO)`, що повертає `logging.getLogger(name)`, налаштований так:\n\n- рівно **один** обробник — `logging.StreamHandler(stream)` з форматом `\"%(levelname)s %(name)s: %(message)s\"`;\n- рівень логера — `level`;\n- `propagate = False` — записи не дублюються в кореневому логері;\n- повторний виклик з тим самим `name` **замінює** старий обробник (наприклад, новим потоком), а не додає другий — інакше кожен рядок з'являвся б двічі.\n\n```python\nimport io\n\nstream = io.StringIO()\nlogger = make_logger(\"orders\", stream)\nlogger.info(\"order %s paid\", 1002)\nlogger.debug(\"not shown\")\nstream.getvalue()   # 'INFO orders: order 1002 paid\\n'\n```",
+  "hints": [
+    "`logger = logging.getLogger(name)`; спершу `logger.handlers.clear()` — так повторний виклик не накопичує обробники.",
+    "`handler = logging.StreamHandler(stream)`, `handler.setFormatter(logging.Formatter(\"%(levelname)s %(name)s: %(message)s\"))`, `logger.addHandler(handler)`.",
+    "`logger.setLevel(level)` і `logger.propagate = False`."
+  ],
+  "explanation": "`logging.getLogger(name)` завжди повертає **той самий** об'єкт для того самого імені, тож кожне налаштування накопичується. Без `handlers.clear()` другий виклик додав би другий обробник, і кожен запис з'являвся б двічі — одна з найчастіших скарг на логування. `propagate = False` не дає запису піти ще й до кореневого логера, якщо там теж є обробник.",
+  "codeRules": [
+    { "kind": "require", "pattern": "StreamHandler\\(", "message": "Додай обробник `logging.StreamHandler(stream)`." },
+    { "kind": "require", "pattern": "Formatter\\(", "message": "Задай формат через `logging.Formatter(...)`." }
+  ]
+}

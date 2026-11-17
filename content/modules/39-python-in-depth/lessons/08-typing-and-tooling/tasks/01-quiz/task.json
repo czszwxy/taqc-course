@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "Typing and tooling",
+  "show": 6,
+  "hints": ["Анотації перевіряє mypy, а не Python під час роботи. Protocol — форма, а не наслідування."],
+  "questions": [
+    {
+      "id": "runtime",
+      "kind": "single",
+      "text": "`def double(value: int) -> int: return value * 2`. Що поверне `double(\"ab\")`?",
+      "options": [
+        { "text": "`'abab'` — Python не перевіряє анотації під час роботи", "correct": true },
+        { "text": "`TypeError`" },
+        { "text": "`None`" }
+      ]
+    },
+    {
+      "id": "optional",
+      "kind": "single",
+      "text": "`find_user` повертає `User | None`. На що поскаржиться mypy у `find_user(42).email`?",
+      "options": [
+        { "text": "Результат може бути `None`, а в `None` немає атрибута `email` — треба перевірити", "correct": true },
+        { "text": "Ні на що" },
+        { "text": "На те, що 42 — не рядок" }
+      ]
+    },
+    {
+      "id": "generic",
+      "kind": "single",
+      "text": "`def last[T](items: list[T]) -> T | None`. Який тип результату `last([\"a\", \"b\"])` для mypy?",
+      "options": [
+        { "text": "`str | None`", "correct": true },
+        { "text": "`T | None`" },
+        { "text": "`Any`" }
+      ]
+    },
+    {
+      "id": "typeddict-runtime",
+      "kind": "single",
+      "text": "`class Address(TypedDict): city: str`. Що станеться з `Address(city=1)` під час роботи?",
+      "options": [
+        { "text": "Нічого: створиться звичайний словник `{'city': 1}`; помилку покаже лише mypy", "correct": true },
+        { "text": "`TypeError`" },
+        { "text": "`city` перетвориться на `'1'`" }
+      ]
+    },
+    {
+      "id": "protocol",
+      "kind": "single",
+      "text": "Протокол `SupportsClose` має метод `close()`. Клас `FileLog` має `close()`, але не успадковує протокол. Чи підходить `FileLog` туди, де очікується `SupportsClose`?",
+      "options": [
+        { "text": "Так — Protocol перевіряє структуру (наявність методу), а не наслідування", "correct": true },
+        { "text": "Ні — потрібно `class FileLog(SupportsClose)`" },
+        { "text": "Лише якщо `close` повертає `True`" }
+      ]
+    },
+    {
+      "id": "literal",
+      "kind": "single",
+      "text": "Параметр анотовано як `Literal[\"asc\", \"desc\"]`. Що це означає?",
+      "options": [
+        { "text": "Допустимі лише ці два рядки; інший рядок mypy позначить як помилку", "correct": true },
+        { "text": "Будь-який рядок, що починається з `asc` або `desc`" },
+        { "text": "Python кине помилку під час виклику з іншим значенням" }
+      ]
+    },
+    {
+      "id": "ruff",
+      "kind": "single",
+      "text": "Який інструмент знайде невикористаний `import os`?",
+      "options": [
+        { "text": "Лінтер: `ruff check`", "correct": true },
+        { "text": "`ruff format`" },
+        { "text": "`pytest`" }
+      ]
+    },
+    {
+      "id": "pre-commit",
+      "kind": "single",
+      "text": "Навіщо `pre-commit install`?",
+      "options": [
+        { "text": "Щоб перед кожним `git commit` автоматично запускалися налаштовані перевірки (лінтер, форматер…)", "correct": true },
+        { "text": "Щоб установити Python-пакети проєкту" },
+        { "text": "Щоб запускати тести після пушу на GitHub" }
+      ]
+    }
+  ]
+}

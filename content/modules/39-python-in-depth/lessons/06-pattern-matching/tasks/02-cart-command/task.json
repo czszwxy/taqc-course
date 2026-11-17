@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Cart commands with match",
+  "statement": "Чат-бот магазину отримує команду як список слів. Напиши `run(words, cart)` через `match / case`. `cart` — словник `sku → кількість`, функція змінює його і повертає відповідь:\n\n| Команда | Дія | Відповідь |\n|---|---|---|\n| `[\"add\", sku]` | +1 | `\"added 1 x <sku>\"` |\n| `[\"add\", sku, qty]`, `qty` — додатне ціле число | +qty | `\"added <qty> x <sku>\"` |\n| `[\"remove\", sku, ...]` — один чи кілька sku | прибрати ці позиції | `\"removed <скільки справді прибрано>\"` |\n| `[\"clear\"]` | очистити | `\"cart cleared\"` |\n| `[\"show\"]` | — | `\"cart is empty\"` або `\"KB-01 x 2, MS-02 x 1\"` (sku за абеткою) |\n| `[]` | — | `\"no command\"` |\n| будь-що інше | — | `\"unknown command: <слова через пробіл>\"` |\n\n```python\ncart = {}\nrun([\"add\", \"MS-02\"], cart)          # 'added 1 x MS-02'\nrun([\"add\", \"KB-01\", \"2\"], cart)     # 'added 2 x KB-01'\nrun([\"show\"], cart)                  # 'KB-01 x 2, MS-02 x 1'\nrun([\"add\", \"KB-01\", \"lots\"], cart)  # 'unknown command: add KB-01 lots'\n```",
+  "hints": [
+    "Два варіанти `add` — два `case`; для кількості — умова: `case [\"add\", sku, qty] if qty.isdigit() and int(qty) > 0:`.",
+    "Один чи більше sku: `case [\"remove\", sku, *more]:`, далі цикл по `[sku, *more]` з `cart.pop(item, None)`.",
+    "Окремий `case []:` має стояти до `case _:`."
+  ],
+  "explanation": "Кожен рядок таблиці — окремий `case`, тож правила читаються згори вниз без перевірок `len(words)`. Патерн `[\"add\", sku, qty]` з умовою `if` відсікає `\"lots\"` чи `\"0\"`, і такий виклик доходить до `case _`. `[\"remove\", sku, *more]` вимагає хоча б один sku: голе `[\"remove\"]` теж стане невідомою командою.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\bmatch\\s+\\w+", "message": "Розбери команду через `match words:`." },
+    { "kind": "require", "pattern": "\\bcase\\s", "message": "Кожна команда — окремий `case`." }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "title": "Iterators and itertools",
+  "minutes": 55,
+  "summary": "Протокол ітерації: iterable та iterator, iter() і next(), StopIteration, що насправді робить for і чому ітератор одноразовий; власний iterable через __iter__ з yield, yield from; itertools — islice, chain, batched, pairwise, groupby (лише сусідні елементи!), accumulate, count; ледача обробка великих даних",
+  "resources": [
+    {
+      "title": "Python docs: itertools — functions creating iterators",
+      "url": "https://docs.python.org/3/library/itertools.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: Iterator Types",
+      "url": "https://docs.python.org/3/library/stdtypes.html#iterator-types",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: Glossary — iterable, iterator",
+      "url": "https://docs.python.org/3/glossary.html#term-iterator",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

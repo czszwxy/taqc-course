@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "Logging",
+  "show": 6,
+  "hints": ["Логер пропускає свій рівень і вищі. Налаштування — у точці входу. logger.exception — у except."],
+  "questions": [
+    {
+      "id": "level",
+      "kind": "single",
+      "text": "Логер має рівень `WARNING`. Які з викликів дадуть запис: `debug`, `info`, `warning`, `error`?",
+      "options": [
+        { "text": "`warning` і `error`", "correct": true },
+        { "text": "Усі чотири" },
+        { "text": "Лише `warning`" }
+      ]
+    },
+    {
+      "id": "getlogger",
+      "kind": "single",
+      "text": "Яке ім'я матиме `logging.getLogger(__name__)` у файлі `app/orders.py` пакета `app`?",
+      "options": [
+        { "text": "`app.orders` — і видно, з якого модуля запис", "correct": true },
+        { "text": "`root`" },
+        { "text": "`orders.py`" }
+      ]
+    },
+    {
+      "id": "basic-config",
+      "kind": "single",
+      "text": "Де викликати `logging.basicConfig(...)`?",
+      "options": [
+        { "text": "Один раз у точці входу застосунку (main), а не в модулях і бібліотеках", "correct": true },
+        { "text": "На початку кожного модуля" },
+        { "text": "Перед кожним записом у лог" }
+      ]
+    },
+    {
+      "id": "exception",
+      "kind": "single",
+      "text": "Чим `logger.exception(\"payment failed\")` у блоці `except` відрізняється від `logger.error(\"payment failed\")`?",
+      "options": [
+        { "text": "Додає traceback поточного винятку (рівень той самий — ERROR)", "correct": true },
+        { "text": "Має рівень CRITICAL" },
+        { "text": "Повторно кидає виняток" }
+      ]
+    },
+    {
+      "id": "lazy",
+      "kind": "single",
+      "text": "Чому `logger.debug(\"order %s\", order_id)` кращий за `logger.debug(f\"order {order_id}\")`?",
+      "options": [
+        { "text": "Текст збирається лише якщо запис виводиться, а однаковий шаблон дає системам логів групувати події", "correct": true },
+        { "text": "f-рядки в логах заборонені" },
+        { "text": "Різниці немає" }
+      ]
+    },
+    {
+      "id": "double",
+      "kind": "single",
+      "text": "Кожен рядок логу з'являється двічі. Найімовірніша причина?",
+      "options": [
+        { "text": "Обробник додано двічі (наприклад, функцію налаштування викликали двічі) або запис іде і в обробник логера, і через propagate у кореневий", "correct": true },
+        { "text": "Логер має рівень DEBUG" },
+        { "text": "Так працює `StreamHandler`" }
+      ]
+    },
+    {
+      "id": "secrets",
+      "kind": "single",
+      "text": "Що з цього можна записувати в лог?",
+      "options": [
+        { "text": "Ідентифікатор користувача й номер замовлення", "correct": true },
+        { "text": "Токен доступу з заголовка Authorization" },
+        { "text": "Повний номер картки" }
+      ]
+    },
+    {
+      "id": "critical",
+      "kind": "single",
+      "text": "Застосунок не може підключитися до бази даних і не обробляє жодного запиту. Який рівень?",
+      "options": [
+        { "text": "CRITICAL", "correct": true },
+        { "text": "WARNING" },
+        { "text": "INFO" }
+      ]
+    }
+  ]
+}

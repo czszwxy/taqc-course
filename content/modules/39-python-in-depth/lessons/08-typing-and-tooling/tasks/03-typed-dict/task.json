@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Describe and validate a JSON payload",
+  "statement": "Опиши тіло запиту на створення замовлення через `TypedDict` і перевір його під час роботи (сам `TypedDict` нічого не перевіряє).\n\n1. `OrderItem(TypedDict)`: `sku: str`, `quantity: int`.\n2. `OrderPayload(TypedDict)`: `id: int`, `items: list[OrderItem]`, `note: NotRequired[str]`.\n3. `parse_order(data: dict) -> OrderPayload` — повертає **новий** словник лише з відомими ключами або кидає `ValueError`:\n\n| Помилка | Повідомлення |\n|---|---|\n| `id` відсутній або не ціле число (`bool` теж не число) | `\"id must be an integer\"` |\n| `items` відсутній, не список або порожній | `\"items must be a non-empty list\"` |\n| позиція не словник або `sku` не рядок | `\"item <i>: sku must be a string\"` |\n| `quantity` не ціле число або менше 1 | `\"item <i>: quantity must be a positive integer\"` |\n| `note` є, але не рядок | `\"note must be a string\"` |\n\n```python\nparse_order({\"id\": 1002, \"items\": [{\"sku\": \"KB-01\", \"quantity\": 2, \"color\": \"black\"}], \"coupon\": \"X\"})\n# {'id': 1002, 'items': [{'sku': 'KB-01', 'quantity': 2}]}\n```",
+  "hints": [
+    "`from typing import NotRequired, TypedDict`; поля — анотаціями в тілі класу, як у dataclass, але без значень.",
+    "Ціле число без `bool`: `type(value) is int` (бо `isinstance(True, int)` — `True`).",
+    "Перебирай позиції через `enumerate(items)` — так отримаєш номер `i` для повідомлення; `note` додавай у результат лише якщо він є у вхідних даних."
+  ],
+  "explanation": "`TypedDict` описує форму JSON для людей і mypy: обов'язкові та необов'язкові ключі (`__required_keys__`, `__optional_keys__`) і їхні типи. Але під час роботи це звичайний `dict`, тож дані з мережі все одно перевіряють кодом. Повернення нового словника лише з відомими ключами захищає далі код від сміття на кшталт `coupon` чи `color`. А `type(x) is int` — бо в Python `True` формально є цілим числом.",
+  "codeRules": [
+    { "kind": "require", "pattern": "TypedDict", "message": "Опиши структури через `TypedDict`." },
+    { "kind": "require", "pattern": "NotRequired\\[", "message": "Познач необов'язковий ключ: `note: NotRequired[str]`." }
+  ]
+}

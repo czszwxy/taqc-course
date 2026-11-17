@@ -1,0 +1,86 @@
+{
+  "type": "quiz",
+  "title": "Iterators and itertools",
+  "show": 6,
+  "hints": ["Ітератор одноразовий. groupby групує лише сусідні елементи. batched повертає кортежі."],
+  "questions": [
+    {
+      "id": "iterable-iterator",
+      "kind": "single",
+      "text": "Чим iterable відрізняється від iterator?",
+      "options": [
+        { "text": "Iterable вміє дати ітератор (`iter(obj)`); iterator видає елементи по одному (`next(it)`) і закінчується `StopIteration`", "correct": true },
+        { "text": "Це синоніми" },
+        { "text": "Iterable — лише список, iterator — лише генератор" }
+      ]
+    },
+    {
+      "id": "twice",
+      "kind": "single",
+      "text": "```python\nactive = (user for user in users if user[\"active\"])\nprint(len(list(active)))\nprint(len(list(active)))\n```\nУ списку 3 активні користувачі. Що виведеться?",
+      "options": [
+        { "text": "`3`, потім `0` — генератор вичерпано першим `list`", "correct": true },
+        { "text": "`3` і `3`" },
+        { "text": "Помилка: у генератора немає `len`" }
+      ]
+    },
+    {
+      "id": "stop",
+      "kind": "single",
+      "text": "Як `for` дізнається, що елементи закінчились?",
+      "options": [
+        { "text": "`next()` кидає `StopIteration`, і цикл тихо завершується", "correct": true },
+        { "text": "Порівнює лічильник з `len(...)`" },
+        { "text": "Ітератор повертає `None`" }
+      ]
+    },
+    {
+      "id": "groupby",
+      "kind": "text",
+      "text": "Скільки груп дасть `groupby([\"a\", \"b\", \"a\", \"a\"])`? Введи число.",
+      "accept": ["3"],
+      "placeholder": "number",
+      "explanation": "groupby групує лише **сусідні** однакові елементи: `a`, `b`, `aa` — три групи. Для однієї групи на ключ дані спершу сортують."
+    },
+    {
+      "id": "batched",
+      "kind": "single",
+      "text": "Що поверне `list(batched([1, 2, 3, 4, 5], 2))`?",
+      "options": [
+        { "text": "`[(1, 2), (3, 4), (5,)]`", "correct": true },
+        { "text": "`[[1, 2], [3, 4], [5]]`", "explain": "Порції — кортежі, не списки." },
+        { "text": "`[(1, 2), (3, 4)]` — неповна порція відкидається" }
+      ]
+    },
+    {
+      "id": "reiterable",
+      "kind": "single",
+      "text": "Клас має метод `__iter__` з `yield`. Чи можна обійти його об'єкт двома `for` поспіль?",
+      "options": [
+        { "text": "Так: кожен `for` викликає `__iter__` і отримує новий генератор", "correct": true },
+        { "text": "Ні: після першого `for` об'єкт вичерпано" },
+        { "text": "Лише якщо додати метод `reset()`" }
+      ]
+    },
+    {
+      "id": "islice",
+      "kind": "single",
+      "text": "Генератор `read_ids(path)` читає файл з мільйоном рядків. Скільки рядків прочитає `list(islice(read_ids(path), 10))`?",
+      "options": [
+        { "text": "Близько 10 — islice бере лише перші 10 елементів, і генератор далі не просувається", "correct": true },
+        { "text": "Мільйон — спершу читається весь файл" },
+        { "text": "Жодного — islice працює лише зі списками" }
+      ]
+    },
+    {
+      "id": "zip-strict",
+      "kind": "single",
+      "text": "`zip([1, 2, 3], [\"a\", \"b\"])` — що буде з елементом `3`?",
+      "options": [
+        { "text": "Його мовчки відкинуто: zip зупиняється на коротшому. `strict=True` кинув би помилку", "correct": true },
+        { "text": "Утвориться пара `(3, None)`" },
+        { "text": "Помилка `ValueError` завжди" }
+      ]
+    }
+  ]
+}

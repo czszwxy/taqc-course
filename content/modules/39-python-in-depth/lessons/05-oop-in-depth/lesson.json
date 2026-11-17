@@ -1,0 +1,35 @@
+{
+  "title": "OOP in depth",
+  "minutes": 60,
+  "summary": "Класи, як їх пишуть у бекенді: @property для обчислюваних і захищених атрибутів, setter з валідацією, @classmethod як альтернативний конструктор (from_dict) і чому там cls, а не назва класу, @staticmethod, перелічення Enum / StrEnum / IntEnum, абстрактні базові класи (ABC, abstractmethod) і шаблонний метод",
+  "resources": [
+    {
+      "title": "Python docs: Built-in functions — property",
+      "url": "https://docs.python.org/3/library/functions.html#property",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: enum — support for enumerations",
+      "url": "https://docs.python.org/3/library/enum.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: abc — abstract base classes",
+      "url": "https://docs.python.org/3/library/abc.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: Tutorial — Classes",
+      "url": "https://docs.python.org/3/tutorial/classes.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

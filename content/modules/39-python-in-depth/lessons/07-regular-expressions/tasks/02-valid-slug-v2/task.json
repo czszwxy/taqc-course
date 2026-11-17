@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Validate an order code",
+  "variantOf": "02-valid-slug",
+  "statement": "Схожа задача: служба підтримки вводить код замовлення вигляду `ORD-2026-000123`. Напиши `is_valid_order_code(text)` → `True` / `False`:\n\n- префікс `ORD` (саме великими літерами), дефіс;\n- рік — чотири цифри від `2000` до `2099` (тобто починається з `20`), дефіс;\n- рівно шість цифр номера;\n- нічого зайвого: ні пробілів, ні переносу рядка в кінці.\n\n```python\nis_valid_order_code(\"ORD-2026-000123\")   # True\nis_valid_order_code(\"ord-2026-000123\")   # False\nis_valid_order_code(\"ORD-1999-000123\")   # False\nis_valid_order_code(\"ORD-2026-00123\")    # False — п'ять цифр\n```",
+  "hints": [
+    "Рік з 2000 по 2099 — це `20\\d{2}`.",
+    "Шаблон цілком: `ORD-20\\d{2}-\\d{6}`; перевірка — `re.fullmatch(...) is not None`."
+  ],
+  "explanation": "Кожна частина коду має свій фрагмент шаблону: літерал `ORD-`, рік `20\\d{2}`, номер `\\d{6}`. `fullmatch` гарантує, що до і після коду нічого немає — зокрема прихованого переносу рядка, який пропустив би `re.match` з `$`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "fullmatch", "message": "Перевіряй увесь рядок через `re.fullmatch`." }
+  ]
+}

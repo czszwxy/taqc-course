@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Keep going after a failed payment and log the traceback",
+  "statement": "Нічна задача списує оплати за підписки. Напиши `charge_all(payments, charge, logger)`. Кожна оплата — словник з ключем `\"id\"`; `charge(payment)` списує її або кидає виняток.\n\n- Успіх → `logger.info(\"payment %s charged\", id)` і `id` у результат.\n- Виняток → `logger.exception(\"payment %s failed\", id)` (рівень ERROR **з traceback**) і перехід до наступної оплати — одна невдала не зупиняє решту.\n- Поверни список id успішних оплат у порядку обробки.\n\n```python\ncharge_all([{\"id\": \"p1\"}, {\"id\": \"p2\"}, {\"id\": \"p3\"}], charge, logger)\n# ['p1', 'p3'] — якщо charge кинув ConnectionError для p2\n# INFO  payment p1 charged\n# ERROR payment p2 failed  + Traceback ... ConnectionError: ...\n# INFO  payment p3 charged\n```",
+  "hints": [
+    "`try: charge(payment)` → `except Exception: logger.exception(...)` → `else:` запиши успіх.",
+    "`logger.exception` викликай саме всередині `except` — лише там він знає поточний виняток.",
+    "Повідомлення з шаблоном: `logger.exception(\"payment %s failed\", payment[\"id\"])`."
+  ],
+  "explanation": "`logger.exception` = `logger.error(..., exc_info=True)`: до запису додається тип винятку, повідомлення і traceback — без них причину нічної помилки вранці не знайти. Ловити `Exception` у циклі пакетної обробки — свідоме рішення: одна погана оплата не повинна залишити без обробки тисячі інших, але кожна помилка обов'язково потрапляє в лог.",
+  "codeRules": [
+    { "kind": "require", "pattern": "logger\\.exception\\(", "message": "Запиши помилку з traceback: `logger.exception(...)` у блоці `except`." },
+    { "kind": "forbid", "pattern": "logger\\.\\w+\\(\\s*f[\"']", "message": "Не формуй повідомлення f-рядком: передай шаблон з `%s` і значення окремими аргументами." }
+  ]
+}

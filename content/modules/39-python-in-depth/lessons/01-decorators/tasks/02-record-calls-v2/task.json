@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "A decorator that counts calls",
+  "variantOf": "02-record-calls",
+  "statement": "Схожа задача: напиши декоратор `count_calls`. Задекорована функція працює як раніше, а атрибут обгортки `count` показує, скільки разів її викликали (невдалі виклики з винятком теж рахуються). Ім'я та docstring зберігаються.\n\n```python\n@count_calls\ndef send_email(to, subject):\n    \"\"\"Send one email.\"\"\"\n    return f\"sent to {to}\"\n\nsend_email.count                       # 0\nsend_email(\"anna@example.com\", \"Hi\")  # 'sent to anna@example.com'\nsend_email(\"ivan@example.com\", \"Hi\")\nsend_email.count                       # 2\n```",
+  "hints": [
+    "Після визначення обгортки: `wrapper.count = 0`, потім `return wrapper`.",
+    "В обгортці спершу `wrapper.count += 1`, потім `return func(*args, **kwargs)`; не забудь `@wraps(func)`."
+  ],
+  "explanation": "Лічильник — атрибут конкретної обгортки, тому в кожної задекорованої функції він свій. Збільшувати його треба до виклику `func`, інакше виклик, що кинув виняток, не порахується. `@wraps(func)` зберігає `__name__` і `__doc__`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "@wraps\\(", "message": "Збережи ім'я та docstring: постав `@wraps(func)` над обгорткою." }
+  ]
+}

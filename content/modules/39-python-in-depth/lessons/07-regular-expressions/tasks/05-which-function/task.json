@@ -1,0 +1,28 @@
+{
+  "type": "table",
+  "title": "Which re function?",
+  "statement": "Для кожної задачі обери функцію модуля `re`, яка підходить найкраще.",
+  "hints": [
+    "Перевірка формату всього рядка — `fullmatch`; «чи є десь» — `search`; лише початок рядка — `match`.",
+    "Усі збіги списком — `findall`; з позиціями — `finditer`; заміна — `sub`; розбиття — `split`; той самий шаблон багато разів — `compile`."
+  ],
+  "explanation": "`fullmatch` перевіряє формат, `search` шукає будь-де, `match` — лише на початку. `findall` дає список збігів, `finditer` — об'єкти `Match` з позиціями. `sub` замінює, `split` розбиває. `compile` збирає шаблон один раз — корисно, коли його застосовують до мільйонів рядків або хочуть дати йому ім'я в коді.",
+  "givenColumns": ["Task"],
+  "answerColumns": [
+    {
+      "id": "function",
+      "label": "Function",
+      "options": ["re.fullmatch", "re.search", "re.match", "re.findall", "re.finditer", "re.sub", "re.split", "re.compile"]
+    }
+  ],
+  "rows": [
+    { "given": ["Перевірити, що введений промокод цілком має формат `SALE-1234`"], "answers": { "function": "re.fullmatch" } },
+    { "given": ["Дізнатися, чи є в рядку логу слово `ERROR` будь-де"], "answers": { "function": "re.search" } },
+    { "given": ["Перевірити, що рядок **починається** з HTTP-методу, а що далі — неважливо"], "answers": { "function": "re.match" } },
+    { "given": ["Витягти всі номери замовлень `ORD-…` з листа клієнта списком рядків"], "answers": { "function": "re.findall" } },
+    { "given": ["Підсвітити в тексті кожне знайдене слово — для цього потрібні позиції початку й кінця збігів"], "answers": { "function": "re.finditer" } },
+    { "given": ["Замінити всі номери телефонів у тексті на `***`"], "answers": { "function": "re.sub" } },
+    { "given": ["Розбити рядок тегів `python, fastapi;sql` за комами й крапками з комою разом з пробілами"], "answers": { "function": "re.split" } },
+    { "given": ["Той самий шаблон рядка логу застосовується до мільйона рядків і повинен мати зрозуміле ім'я в коді"], "answers": { "function": "re.compile" } }
+  ]
+}

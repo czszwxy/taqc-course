@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Describe webhook events",
+  "statement": "Платіжний сервіс надсилає події вебхуком — словники різної форми. Напиши `describe(event)` через `match` зі словниковими патернами:\n\n| Подія | Відповідь |\n|---|---|\n| `type` = `\"payment.succeeded\"`, `amount` — додатне `int` | `\"paid <amount> UAH\"` |\n| `type` = `\"payment.failed\"`, `reason` — рядок | `\"payment failed: <reason>\"` |\n| `type` = `\"refund.created\"`, `amount` — `int`, є `order_id` | `\"refund <amount> UAH for order <order_id>\"` |\n| будь-який інший словник, де `type` — рядок | `\"ignored: <type>\"` |\n| усе інше (немає `type`, не словник) | `\"invalid event\"` |\n\nЗайві ключі в подіях можливі й не заважають.\n\n```python\ndescribe({\"type\": \"payment.succeeded\", \"amount\": 1299, \"currency\": \"UAH\"})   # 'paid 1299 UAH'\ndescribe({\"type\": \"payment.succeeded\", \"amount\": \"1299\"})   # 'ignored: payment.succeeded' — сума рядком\ndescribe([\"payment.succeeded\"])                                # 'invalid event'\n```",
+  "hints": [
+    "Тип значення перевіряє класовий патерн: `case {\"type\": \"payment.succeeded\", \"amount\": int(amount)} if amount > 0:`.",
+    "Запасний для відомої форми: `case {\"type\": str(kind)}:` → `f\"ignored: {kind}\"`; останній — `case _:`."
+  ],
+  "explanation": "Словниковий патерн перевіряє лише ті ключі, які в ньому названо, тому нові поля в подіях не ламають розбір. `int(amount)` і `str(reason)` всередині патерну перевіряють тип: сума рядком не пройде як оплата, а потрапить у `ignored`. Порядок `case` — від конкретних до загальних, бо спрацьовує перший відповідний.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\bmatch\\s", "message": "Розбери подію через `match event:`." },
+    { "kind": "require", "pattern": "case\\s*\\{", "message": "Використай словникові патерни: `case {\"type\": ...}:`." }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "The most requested endpoints",
+  "statement": "Є рядки access-логу у форматі `МЕТОД ШЛЯХ СТАТУС ЧАС`. Напиши `top_endpoints(lines, n)` — поверни `n` найчастіше запитуваних шляхів як список пар `(шлях, кількість)`.\n\n- Метод не враховується: `GET /api/orders` і `POST /api/orders` — той самий шлях.\n- Query-рядок відкидається: `/api/orders?page=2` → `/api/orders`.\n- Порожні рядки (чи з самих пробілів) пропускаються.\n- Однакова кількість — у порядку **першої появи** (саме так працює `Counter.most_common`).\n\n```python\nlines = [\n    \"GET /api/orders 200 35ms\",\n    \"GET /api/products?page=2 200 12ms\",\n    \"POST /api/orders 201 80ms\",\n    \"\",\n    \"GET /api/products 200 10ms\",\n    \"GET /api/orders?status=paid 200 30ms\",\n]\ntop_endpoints(lines, 2)   # [('/api/orders', 3), ('/api/products', 2)]\n```",
+  "hints": [
+    "Шлях — другий елемент: `line.split()[1]`, а без query — `.split(\"?\")[0]`.",
+    "`Counter(...)` з генератора шляхів, пропускаючи рядки, де `line.strip()` порожній.",
+    "Відповідь — `counts.most_common(n)`."
+  ],
+  "explanation": "`Counter` рахує елементи будь-якого iterable, а `most_common(n)` одразу дає відсортовані пари, причому при рівній кількості зберігає порядок першої появи. Без відкидання query-рядка `/api/orders?page=2` і `/api/orders` рахувалися б як різні ендпоінти — типова помилка в аналізі логів.",
+  "codeRules": [
+    { "kind": "require", "pattern": "Counter\\(", "message": "Порахуй шляхи через `collections.Counter(...)`." }
+  ]
+}

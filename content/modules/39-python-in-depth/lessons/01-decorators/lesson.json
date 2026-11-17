@@ -1,0 +1,35 @@
+{
+  "title": "Decorators",
+  "minutes": 60,
+  "summary": "Що таке декоратор і як він працює всередині: функція, що повертає обгортку, синтаксис @, що виконується при визначенні, а що при виклику, functools.wraps, декоратори з аргументами (три рівні), кілька декораторів одночасно, стан в обгортці та де декоратори трапляються у фреймворках",
+  "resources": [
+    {
+      "title": "Python docs: Glossary — decorator",
+      "url": "https://docs.python.org/3/glossary.html#term-decorator",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: functools.wraps",
+      "url": "https://docs.python.org/3/library/functools.html#functools.wraps",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: Function definitions (decorators)",
+      "url": "https://docs.python.org/3/reference/compound_stmts.html#function-definitions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Python decorators explained",
+      "url": "https://www.youtube.com/results?search_query=python+decorators+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

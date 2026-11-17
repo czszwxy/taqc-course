@@ -1,0 +1,28 @@
+{
+  "title": "Regular expressions",
+  "minutes": 60,
+  "summary": "Модуль re для бекенду: сирі рядки r\"...\", search / match / fullmatch / findall / finditer / sub / split / compile, класи символів і квантифікатори, групи й іменовані групи, жадібні й ледачі повтори, прапорці IGNORECASE і VERBOSE, sub з функцією для маскування даних — і коли регулярні вирази не потрібні",
+  "resources": [
+    {
+      "title": "Python docs: re — regular expression operations",
+      "url": "https://docs.python.org/3/library/re.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: Regular Expression HOWTO",
+      "url": "https://docs.python.org/3/howto/regex.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "regex101 — test and explain regular expressions (choose the Python flavor)",
+      "url": "https://regex101.com/",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

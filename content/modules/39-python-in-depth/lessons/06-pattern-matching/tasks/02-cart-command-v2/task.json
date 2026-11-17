@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "title": "A tiny router with match",
+  "variantOf": "02-cart-command",
+  "statement": "Схожа задача: напиши мінімальний маршрутизатор `route(method, path)` через `match` по кортежу `(method, частини шляху)`. Частини шляху — `path.strip(\"/\").split(\"/\")` (тож `/orders/` і `/orders` однакові).\n\n| Запит | Відповідь |\n|---|---|\n| `GET /orders` | `\"list orders\"` |\n| `POST /orders` | `\"create order\"` |\n| `GET /orders/<id>`, `id` з цифр | `\"get order <id>\"` |\n| `DELETE /orders/<id>`, `id` з цифр | `\"delete order <id>\"` |\n| інший метод на `/orders` або `/orders/<id з цифр>` | `\"405 method not allowed\"` |\n| усе інше (зокрема `/orders/abc`) | `\"404 not found\"` |\n\n```python\nroute(\"GET\", \"/orders/1002\")   # 'get order 1002'\nroute(\"PUT\", \"/orders\")        # '405 method not allowed'\nroute(\"GET\", \"/orders/abc\")    # '404 not found'\n```",
+  "hints": [
+    "`match method, path.strip(\"/\").split(\"/\"):` — патерни виду `case \"GET\", [\"orders\"]:`.",
+    "Id: `case \"GET\", [\"orders\", order_id] if order_id.isdigit():`.",
+    "405: `case _, [\"orders\"]:` і `case _, [\"orders\", order_id] if order_id.isdigit():` — після конкретних маршрутів; наприкінці `case _:` → 404."
+  ],
+  "explanation": "Кортеж `(method, parts)` дає зіставляти метод і форму шляху одночасно. Порядок `case` важливий: конкретні маршрути — першими, «будь-який метод на відомий шлях» (405) — після них, а `case _` (404) — останнім. Умова `if order_id.isdigit()` відсікає `/orders/abc`, тож такий шлях доходить до 404, а не до 405.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\bmatch\\s", "message": "Зроби маршрутизацію через `match`." },
+    { "kind": "require", "pattern": "\\bcase\\s", "message": "Кожен маршрут — окремий `case`." }
+  ]
+}

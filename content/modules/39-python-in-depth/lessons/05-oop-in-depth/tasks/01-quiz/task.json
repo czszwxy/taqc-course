@@ -1,0 +1,98 @@
+{
+  "type": "quiz",
+  "title": "OOP in depth",
+  "show": 6,
+  "hints": ["property — метод, що виглядає як атрибут. classmethod отримує cls. ABC з abstractmethod не створюється."],
+  "questions": [
+    {
+      "id": "no-setter",
+      "kind": "single",
+      "text": "У класу є `@property def total(self)`, але немає setter. Що станеться з `order.total = 100`?",
+      "options": [
+        { "text": "`AttributeError` — атрибут лише для читання", "correct": true },
+        { "text": "Значення тихо перезапишеться" },
+        { "text": "Property перетвориться на звичайний атрибут" }
+      ]
+    },
+    {
+      "id": "recursion",
+      "kind": "single",
+      "text": "У setter `price` написано `self.price = value`. Що буде при `product.price = 10`?",
+      "options": [
+        { "text": "`RecursionError`: setter викликає сам себе; зберігати треба в `self._price`", "correct": true },
+        { "text": "Значення запишеться як звичайно" },
+        { "text": "`AttributeError`" }
+      ]
+    },
+    {
+      "id": "cls",
+      "kind": "single",
+      "text": "`class Price(Money)` — нащадок. Чому в `Money.from_string` пишуть `return cls(...)`, а не `return Money(...)`?",
+      "options": [
+        { "text": "Щоб `Price.from_string(...)` повертав об'єкт `Price`, а не `Money`", "correct": true },
+        { "text": "`Money(...)` усередині класу викликати заборонено" },
+        { "text": "`cls(...)` працює швидше" }
+      ]
+    },
+    {
+      "id": "staticmethod",
+      "kind": "single",
+      "text": "Що отримує метод з `@staticmethod` першим аргументом?",
+      "options": [
+        { "text": "Нічого особливого — ні `self`, ні `cls`; лише свої звичайні аргументи", "correct": true },
+        { "text": "`cls`" },
+        { "text": "`self`" }
+      ]
+    },
+    {
+      "id": "strenum",
+      "kind": "single",
+      "text": "`class Role(StrEnum): ADMIN = \"admin\"`. Що дасть `Role.ADMIN == \"admin\"`?",
+      "options": [
+        { "text": "`True` — член StrEnum і є рядком", "correct": true },
+        { "text": "`False` — перелічення не дорівнює рядку" },
+        { "text": "`TypeError`" }
+      ]
+    },
+    {
+      "id": "enum-from-value",
+      "kind": "single",
+      "text": "API надіслало статус `\"lost\"`, якого немає в `OrderStatus`. Що зробить `OrderStatus(\"lost\")`?",
+      "options": [
+        { "text": "Кине `ValueError: 'lost' is not a valid OrderStatus`", "correct": true },
+        { "text": "Поверне `None`" },
+        { "text": "Створить новий член перелічення" }
+      ]
+    },
+    {
+      "id": "abc",
+      "kind": "single",
+      "text": "`class PaymentGateway(ABC)` має `@abstractmethod def charge(...)`. Що буде з `PaymentGateway()`?",
+      "options": [
+        { "text": "`TypeError`: абстрактний клас не можна створити", "correct": true },
+        { "text": "Об'єкт створиться, а помилка буде при виклику `charge`" },
+        { "text": "Створиться порожній шлюз" }
+      ]
+    },
+    {
+      "id": "abc-subclass",
+      "kind": "single",
+      "text": "Нащадок `StripeGateway(PaymentGateway)` забув реалізувати `charge`. Коли проявиться помилка?",
+      "options": [
+        { "text": "Одразу при створенні `StripeGateway()` — `TypeError`", "correct": true },
+        { "text": "Лише коли хтось викличе `charge`" },
+        { "text": "Ніколи — використається порожній метод з базового класу" }
+      ]
+    },
+    {
+      "id": "magic-strings",
+      "kind": "single",
+      "text": "Чим `Role.ADMNI` (помилка в назві) кращий за рядок `\"admni\"`?",
+      "options": [
+        { "text": "Помилку видно одразу: `AttributeError` (і редактор підсвітить), а рядок тихо пройде і зламає перевірку прав", "correct": true },
+        { "text": "Нічим" },
+        { "text": "Python сам виправить назву" }
+      ]
+    }
+  ]
+}

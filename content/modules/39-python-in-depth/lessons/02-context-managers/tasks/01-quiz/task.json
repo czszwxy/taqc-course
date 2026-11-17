@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "Context managers",
+  "show": 6,
+  "hints": ["`__enter__` → тіло → `__exit__`, і `__exit__` виконується завжди. True з `__exit__` ковтає виняток."],
+  "questions": [
+    {
+      "id": "exit-always",
+      "kind": "single",
+      "text": "Коли викликається `__exit__`?",
+      "options": [
+        { "text": "Завжди після блоку `with` — і коли він завершився нормально, і коли кинув виняток", "correct": true },
+        { "text": "Лише коли в блоці був виняток" },
+        { "text": "Лише коли блок завершився без помилок" }
+      ]
+    },
+    {
+      "id": "as-value",
+      "kind": "single",
+      "text": "Що потрапляє у змінну після `as` у `with manager as value:`?",
+      "options": [
+        { "text": "Те, що повернув `manager.__enter__()`", "correct": true },
+        { "text": "Сам об'єкт `manager`, завжди", "explain": "Так буває лише тоді, коли `__enter__` повертає `self` — як у файлів." },
+        { "text": "Те, що повернув `__exit__`" }
+      ]
+    },
+    {
+      "id": "exit-true",
+      "kind": "single",
+      "text": "`__exit__` завжди повертає `True`. Що станеться з винятком, кинутим у блоці?",
+      "options": [
+        { "text": "Його буде проковтнуто: код після `with` продовжить виконуватися, ніби помилки не було", "correct": true },
+        { "text": "Він полетить далі, як завжди" },
+        { "text": "Python кине `RuntimeError`" }
+      ]
+    },
+    {
+      "id": "no-finally",
+      "kind": "single",
+      "text": "```python\n@contextmanager\ndef locked(lock):\n    lock.acquire()\n    yield\n    lock.release()\n```\nУ блоці `with locked(lock):` стався виняток. Що з блокуванням?",
+      "options": [
+        { "text": "Не зніметься: виняток з'являється в точці `yield`, і `lock.release()` не виконується. Потрібен `try / finally`", "correct": true },
+        { "text": "Зніметься — `@contextmanager` гарантує це сам" },
+        { "text": "Python зніме блокування під час збирання сміття" }
+      ]
+    },
+    {
+      "id": "exc-type",
+      "kind": "single",
+      "text": "Що означає `exc_type is None` усередині `__exit__`?",
+      "options": [
+        { "text": "Блок `with` завершився без винятку", "correct": true },
+        { "text": "Виняток невідомого типу" },
+        { "text": "`__enter__` нічого не повернув" }
+      ]
+    },
+    {
+      "id": "order",
+      "kind": "single",
+      "text": "`with open(\"a.txt\") as a, open(\"b.txt\") as b:` — у якому порядку закриються файли?",
+      "options": [
+        { "text": "Спершу `b`, потім `a` — вихід у зворотному порядку", "correct": true },
+        { "text": "Спершу `a`, потім `b`" },
+        { "text": "Одночасно" }
+      ]
+    },
+    {
+      "id": "suppress",
+      "kind": "single",
+      "text": "Навіщо `with suppress(FileNotFoundError): path.unlink()`?",
+      "options": [
+        { "text": "Видалити файл, а якщо його немає — свідомо проігнорувати саме цю помилку", "correct": true },
+        { "text": "Приховати будь-які помилки під час видалення" },
+        { "text": "Створити файл, якщо його немає" }
+      ]
+    },
+    {
+      "id": "two-yields",
+      "kind": "single",
+      "text": "Що буде, якщо генератор з `@contextmanager` має два `yield` поспіль?",
+      "options": [
+        { "text": "`RuntimeError: generator didn't stop` під час виходу з блоку", "correct": true },
+        { "text": "Блок `with` виконається двічі" },
+        { "text": "Друге значення потрапить в `as`" }
+      ]
+    }
+  ]
+}

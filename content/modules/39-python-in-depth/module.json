@@ -1,0 +1,15 @@
+{
+  "title": "Python in Depth",
+  "description": "Python глибше, ніж потрібно для перших скриптів: декоратори, менеджери контексту, протокол ітерації та itertools, collections і functools, просунуте ООП (property, classmethod, enum, ABC), pattern matching, регулярні вирази, типізація з generics і Protocol, інструменти якості коду та логування. Саме це постійно трапляється в коді FastAPI, Django і SQLAlchemy та на співбесідах Python-розробника.",
+  "goals": [
+    "Write decorators with functools.wraps, with arguments and with state; read stacked decorators",
+    "Build context managers as classes and with contextlib.contextmanager; know when __exit__ runs and what it may swallow",
+    "Explain the iteration protocol, write re-iterable classes and use itertools (batched, groupby, islice, chain, pairwise)",
+    "Pick the right tool from collections and functools: Counter, defaultdict, deque, lru_cache, partial",
+    "Design classes with property, classmethod, staticmethod, Enum and abstract base classes",
+    "Replace long if / elif chains with structural pattern matching (match / case)",
+    "Validate, parse and mask text with regular expressions — and know when not to use them",
+    "Use generics, TypedDict, Literal and Protocol, and set up mypy / ruff for a project",
+    "Log like a backend developer: loggers per module, levels, handlers, formatters, logger.exception"
+  ]
+}

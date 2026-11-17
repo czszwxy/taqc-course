@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Temporarily override settings",
+  "variantOf": "02-transaction",
+  "statement": "Схожа задача: у тестах і скриптах часто треба на час змінити налаштування й гарантовано повернути їх назад. Напиши клас-менеджер `TemporaryOverride(settings, **overrides)`:\n\n- на вході записує значення з `overrides` у словник `settings` і повертає **сам** `settings` (для `as`);\n- на виході відновлює старі значення, а ключі, яких до входу не було, **видаляє**;\n- відновлення відбувається **навіть після винятку** в блоці, а виняток летить далі.\n\n```python\nsettings = {\"debug\": False, \"timeout\": 30}\n\nwith TemporaryOverride(settings, debug=True, region=\"eu\") as current:\n    current   # {'debug': True, 'timeout': 30, 'region': 'eu'}\n\nsettings      # {'debug': False, 'timeout': 30}\n```",
+  "hints": [
+    "У `__init__` запам'ятай `overrides`; старі значення збирай у `__enter__`, перед зміною: `self.old = {key: settings[key] for key in self.overrides if key in settings}`.",
+    "Ключі, яких не було: `self.added = [key for key in self.overrides if key not in settings]`.",
+    "`__exit__`: `settings.update(self.old)`, потім `settings.pop(key, None)` для кожного доданого ключа; поверни `False`."
+  ],
+  "explanation": "Головне — запам'ятати стан **до** зміни: і старі значення, і те, яких ключів не було зовсім. `__exit__` виконується завжди, тому відновлення спрацює й після винятку, а `return False` не дасть цей виняток сховати. `pop(key, None)` не впаде, навіть якщо код у блоці вже сам видалив ключ.",
+  "codeRules": [
+    { "kind": "require", "pattern": "def __exit__\\(", "message": "Менеджер контексту потребує методу `__exit__(self, exc_type, exc, tb)`." }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "type": "table",
+  "title": "Which tool catches it?",
+  "statement": "Для кожної ситуації обери інструмент, який розв'язує її в Python-проєкті.",
+  "hints": [
+    "Типи до запуску — mypy; стиль і підозрілий код — ruff check; однакове форматування — ruff format; поведінка — pytest.",
+    "Дані під час роботи — Pydantic; запуск перевірок перед комітом — pre-commit; де живуть налаштування — pyproject.toml."
+  ],
+  "explanation": "Кожен інструмент ловить свій клас проблем: mypy — помилки типів без запуску, ruff check — підозрілі й зайві конструкції, ruff format — розбіжності стилю, pytest — неправильну поведінку, Pydantic — неправильні дані під час роботи. pre-commit запускає перевірки автоматично перед комітом, а `pyproject.toml` тримає налаштування всіх інструментів в одному місці.",
+  "givenColumns": ["Situation"],
+  "answerColumns": [
+    {
+      "id": "tool",
+      "label": "Tool",
+      "options": ["mypy", "ruff check", "ruff format", "pytest", "pre-commit", "pyproject.toml", "Pydantic"]
+    }
+  ],
+  "rows": [
+    { "given": ["Ще до запуску знайти `user.email`, де `user` може бути `None`"], "answers": { "tool": "mypy" } },
+    { "given": ["Невикористаний `import json` і змінна, яку присвоїли, але ніде не прочитали"], "answers": { "tool": "ruff check" } },
+    { "given": ["Однакові відступи, лапки й перенесення рядків у всієї команди — без суперечок на рев'ю"], "answers": { "tool": "ruff format" } },
+    { "given": ["Переконатися, що знижка рахується правильно на межах 999 і 1000 UAH"], "answers": { "tool": "pytest" } },
+    { "given": ["Не дати закомітити код, який не пройшов лінтер і форматер"], "answers": { "tool": "pre-commit" } },
+    { "given": ["Місце для налаштувань ruff, mypy і pytest одного проєкту"], "answers": { "tool": "pyproject.toml" } },
+    { "given": ["Під час роботи сервера перевірити, що в JSON запиту `quantity` — додатне ціле число"], "answers": { "tool": "Pydantic" } }
+  ]
+}

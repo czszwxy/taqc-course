@@ -1,0 +1,28 @@
+{
+  "title": "collections and functools",
+  "minutes": 55,
+  "summary": "Готові інструменти стандартної бібліотеки замість власних велосипедів: Counter і most_common, defaultdict для групування, deque для черг і «ковзних вікон», namedtuple, ChainMap для шарів налаштувань; functools — lru_cache і cache, partial; коли кеш шкодить і чому defaultdict створює ключі під час читання",
+  "resources": [
+    {
+      "title": "Python docs: collections — container datatypes",
+      "url": "https://docs.python.org/3/library/collections.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: functools — higher-order functions",
+      "url": "https://docs.python.org/3/library/functools.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python wiki: TimeComplexity (list vs deque)",
+      "url": "https://wiki.python.org/moin/TimeComplexity",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

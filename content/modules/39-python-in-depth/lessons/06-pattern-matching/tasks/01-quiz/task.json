@@ -1,0 +1,98 @@
+{
+  "type": "quiz",
+  "title": "Pattern matching",
+  "show": 6,
+  "hints": ["Перший case, що підійшов, виграє. Імена захоплюють, літерали порівнюють. Словник — потрібні ключі є, зайві не заважають."],
+  "questions": [
+    {
+      "id": "first-wins",
+      "kind": "single",
+      "text": "Підходять два `case`. Який виконається?",
+      "options": [
+        { "text": "Перший згори; решта не перевіряються", "correct": true },
+        { "text": "Обидва по черзі" },
+        { "text": "Найконкретніший" }
+      ]
+    },
+    {
+      "id": "capture",
+      "kind": "single",
+      "text": "`match [\"deploy\", \"prod\"]: case [\"deploy\", env]: ...` — чому дорівнює `env`?",
+      "options": [
+        { "text": "`\"prod\"` — ім'я в патерні захоплює значення на цьому місці", "correct": true },
+        { "text": "Python шукає змінну `env` і порівнює з нею" },
+        { "text": "`[\"prod\"]`" }
+      ]
+    },
+    {
+      "id": "star",
+      "kind": "single",
+      "text": "`case [\"remove\", *skus]:` для `[\"remove\"]` — підійде? Чому дорівнює `skus`?",
+      "options": [
+        { "text": "Підійде, `skus == []` — `*skus` збирає решту, навіть порожню", "correct": true },
+        { "text": "Не підійде: потрібен хоча б один елемент після `remove`" },
+        { "text": "Підійде, `skus is None`" }
+      ]
+    },
+    {
+      "id": "mapping-extra",
+      "kind": "single",
+      "text": "Подія `{\"type\": \"user.created\", \"email\": \"a@b.ua\", \"source\": \"web\"}`. Чи підійде `case {\"type\": \"user.created\", \"email\": email}:`?",
+      "options": [
+        { "text": "Так: потрібні ключі є, зайвий `source` ігнорується", "correct": true },
+        { "text": "Ні: у словнику є зайвий ключ" },
+        { "text": "Лише якщо додати `**rest`" }
+      ]
+    },
+    {
+      "id": "bare-name",
+      "kind": "single",
+      "text": "`PAID = \"paid\"`. У `match status:` після кількох інших case **останнім** стоїть `case PAID:`. Що станеться, якщо `status == \"new\"` і попередні case не підійшли?",
+      "options": [
+        { "text": "Case спрацює: голе ім'я захоплює будь-яке значення (і перезаписує змінну `PAID`)", "correct": true },
+        { "text": "Не спрацює: `\"new\" != \"paid\"`" },
+        { "text": "`SyntaxError`", "explain": "SyntaxError був би, якби після `case PAID:` стояли інші case — їх стало б неможливо досягти. Останнім такий case компілюється і тихо ловить усе." }
+      ]
+    },
+    {
+      "id": "int-pattern",
+      "kind": "single",
+      "text": "`{\"amount\": \"100\"}` (рядок) і `case {\"amount\": int(amount)}:` — підійде?",
+      "options": [
+        { "text": "Ні: `int(amount)` перевіряє тип, а `\"100\"` — рядок", "correct": true },
+        { "text": "Так, рядок буде перетворено на число" },
+        { "text": "Так, `amount == \"100\"`" }
+      ]
+    },
+    {
+      "id": "guard",
+      "kind": "single",
+      "text": "Патерн у `case [\"add\", sku, qty] if qty.isdigit():` підійшов, але умова хибна. Що далі?",
+      "options": [
+        { "text": "Python перевіряє наступні `case`", "correct": true },
+        { "text": "Виконується тіло цього case" },
+        { "text": "`match` завершується без результату" }
+      ]
+    },
+    {
+      "id": "no-default",
+      "kind": "single",
+      "text": "У функції з `match` немає `case _:`, а дані не підійшли ні під що. Що поверне функція (якщо після match немає `return`)?",
+      "options": [
+        { "text": "`None` — і помилка лишиться непоміченою", "correct": true },
+        { "text": "`MatchError`" },
+        { "text": "Значення останнього `case`" }
+      ]
+    },
+    {
+      "id": "dataclass-positional",
+      "kind": "single",
+      "text": "Чому для `@dataclass class Point: x: int; y: int` працює позиційний патерн `case Point(x, y):`?",
+      "options": [
+        { "text": "dataclass сам задає `__match_args__ = (\"x\", \"y\")`", "correct": true },
+        { "text": "Позиційні патерни працюють для будь-якого класу" },
+        { "text": "Через `__eq__` з dataclass" }
+      ]
+    }
+  ]
+}

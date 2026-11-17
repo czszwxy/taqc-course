@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Log slow and failed requests at the right level",
+  "statement": "Напиши `report(requests, logger, slow_ms=1000)`. Кожен запит — словник з ключами `\"path\"`, `\"status\"`, `\"ms\"`. Для кожного запиту — **рівно один** запис:\n\n| Умова (перевіряється по черзі) | Виклик |\n|---|---|\n| `status >= 500` | `logger.error(\"%s failed with status %s\", path, status)` |\n| `ms >= slow_ms` | `logger.warning(\"%s is slow: %sms\", path, ms)` |\n| інакше | `logger.debug(\"%s ok in %sms\", path, ms)` |\n\nПоверни кількість проблемних запитів (помилки + повільні). Передавай значення **окремими аргументами**, а не f-рядком: тест перевіряє шаблон повідомлення.\n\n```python\nreport([\n    {\"path\": \"/api/orders\", \"status\": 200, \"ms\": 35},\n    {\"path\": \"/api/checkout\", \"status\": 502, \"ms\": 3000},\n    {\"path\": \"/api/search\", \"status\": 200, \"ms\": 1500},\n], logger)   # 2\n# DEBUG   /api/orders ok in 35ms\n# ERROR   /api/checkout failed with status 502\n# WARNING /api/search is slow: 1500ms\n```",
+  "hints": [
+    "`if / elif / else` у циклі — так кожен запит дає рівно один запис, а помилка «перемагає» повільність.",
+    "Рахуй проблеми в гілках `error` і `warning`.",
+    "Шаблон і аргументи окремо: `logger.error(\"%s failed with status %s\", path, status)`."
+  ],
+  "explanation": "Рівень запису — це рішення про важливість: 502 — помилка, навіть якщо запит ще й повільний, тому перевірка статусу йде першою. Записи DEBUG у продакшні зазвичай відкидаються рівнем логера, але під час розслідування їх вмикають. Шаблон з `%s` лишається однаковим для всіх запитів, і система збору логів показує «`%s is slow: %sms` — 340 разів за годину», а не 340 різних рядків.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "logger\\.\\w+\\(\\s*f[\"']", "message": "Не формуй повідомлення f-рядком: передай шаблон з `%s` і значення окремими аргументами." }
+  ]
+}

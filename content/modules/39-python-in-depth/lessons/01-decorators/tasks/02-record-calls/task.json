@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "A decorator that records calls",
+  "statement": "Напиши декоратор `record_calls`. Задекорована функція працює як раніше (повертає той самий результат), а кожен її виклик додає кортеж `(args, kwargs)` у список `calls` — атрибут обгортки. Виклик записується, **навіть якщо функція кинула виняток**. Ім'я та docstring функції зберігаються.\n\n```python\n@record_calls\ndef add_item(cart_id, sku, quantity=1):\n    \"\"\"Add a product to the cart.\"\"\"\n    return f\"{cart_id}:{sku}x{quantity}\"\n\nadd_item(7, \"KB-01\")               # '7:KB-01x1'\nadd_item(7, \"MS-02\", quantity=3)   # '7:MS-02x3'\nadd_item.calls\n# [((7, 'KB-01'), {}), ((7, 'MS-02'), {'quantity': 3})]\nadd_item.__name__                 # 'add_item'\n```\n\nТакий декоратор — спрощений «шпигун» (spy): ним перевіряють, з якими аргументами код викликав залежність.",
+  "hints": [
+    "Каркас: `def record_calls(func):` → усередині `@wraps(func)` і `def wrapper(*args, **kwargs):` → після неї `wrapper.calls = []` і `return wrapper`.",
+    "В обгортці спершу `wrapper.calls.append((args, kwargs))`, потім `return func(*args, **kwargs)` — тоді й невдалий виклик буде записано."
+  ],
+  "explanation": "Список створюється всередині `record_calls`, тож кожна задекорована функція отримує свій. `args` у обгортці — вже кортеж, `kwargs` — словник, їх можна записати як є. Запис **до** виклику `func` гарантує, що в `calls` потрапить і виклик, який закінчився винятком. Без `@wraps(func)` ім'я стало б `wrapper`, а docstring зник би.",
+  "codeRules": [
+    { "kind": "require", "pattern": "@wraps\\(", "message": "Збережи ім'я та docstring: постав `@wraps(func)` над обгорткою." }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "A transaction as a context manager",
+  "statement": "Напиши клас-менеджер `Transaction(store)`. `store` — словник, що грає роль бази даних.\n\n- `with Transaction(store) as changes:` дає **порожній** словник `changes`, у який код записує зміни; сам `store` під час блоку не змінюється.\n- Блок завершився без помилки → усі зміни застосовуються до `store` (commit).\n- У блоці виняток → `store` лишається як був (rollback), а виняток **летить далі**.\n- Атрибут `status`: `\"new\"` після створення, `\"open\"` усередині блоку, `\"committed\"` або `\"rolled back\"` після.\n\n```python\nstore = {\"stock:KB-01\": 5}\n\nwith Transaction(store) as changes:\n    changes[\"stock:KB-01\"] = 4\n    changes[\"stock:MS-02\"] = 10\nstore   # {'stock:KB-01': 4, 'stock:MS-02': 10}\n\nwith Transaction(store) as changes:\n    changes[\"stock:KB-01\"] = 0\n    raise ValueError(\"payment failed\")   # ValueError летить далі\nstore   # без змін: {'stock:KB-01': 4, 'stock:MS-02': 10}\n```",
+  "hints": [
+    "У `__init__` збережи `store`, створи `self.changes = {}` і `self.status = \"new\"`.",
+    "`__enter__` ставить статус `\"open\"` і повертає `self.changes`.",
+    "`__exit__(self, exc_type, exc, tb)`: якщо `exc_type is None` — `self.store.update(self.changes)` і `\"committed\"`, інакше `\"rolled back\"`; поверни `False`, щоб виняток не проковтнувся."
+  ],
+  "explanation": "Зміни накопичуються окремо від `store` і потрапляють туди лише в `__exit__` — і лише тоді, коли `exc_type is None`. Так працюють справжні транзакції: або все, або нічого. `return False` (або просто відсутній `return`) означає «виняток не оброблено» — код, що викликав `with`, дізнається про помилку оплати. `return True` сховав би її, і замовлення виглядало б успішним.",
+  "codeRules": [
+    { "kind": "require", "pattern": "def __exit__\\(", "message": "Менеджер контексту потребує методу `__exit__(self, exc_type, exc, tb)`." }
+  ]
+}

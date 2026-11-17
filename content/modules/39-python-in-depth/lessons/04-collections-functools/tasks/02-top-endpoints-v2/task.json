@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Error statuses grouped by endpoint",
+  "variantOf": "02-top-endpoints",
+  "statement": "Схожа задача з тим самим логом `МЕТОД ШЛЯХ СТАТУС ЧАС`. Напиши `errors_by_path(lines)` — словник «шлях → список статусів помилок» (статус `>= 400`, як `int`) у порядку появи.\n\n- Query-рядок відкидається, порожні рядки пропускаються.\n- Шляхи **без** помилок у результат не потрапляють.\n- Поверни **звичайний** `dict` (а не `defaultdict`), щоб читання відсутнього шляху в коді, який отримає результат, не створювало порожніх записів.\n\n```python\nerrors_by_path([\n    \"GET /api/orders 500 35ms\",\n    \"GET /api/products 200 12ms\",\n    \"POST /api/orders?retry=1 503 80ms\",\n    \"GET /api/cart 404 3ms\",\n])\n# {'/api/orders': [500, 503], '/api/cart': [404]}\n```",
+  "hints": [
+    "`groups = defaultdict(list)`; для кожного непорожнього рядка: `method, path, status, _ = line.split()`.",
+    "Додавай лише помилки: `if int(status) >= 400: groups[path.split(\"?\")[0]].append(int(status))`.",
+    "Наприкінці `return dict(groups)`."
+  ],
+  "explanation": "`defaultdict(list)` прибирає перевірку «чи є вже такий ключ»: перше звернення створює порожній список. Головне — звертатися до `groups[path]` лише тоді, коли статус справді помилковий, інакше в результаті з'являться шляхи з порожніми списками. А `dict(groups)` на виході повертає звичайну поведінку з `KeyError` для відсутніх ключів.",
+  "codeRules": [
+    { "kind": "require", "pattern": "defaultdict\\(", "message": "Згрупуй статуси через `collections.defaultdict(list)`." }
+  ]
+}

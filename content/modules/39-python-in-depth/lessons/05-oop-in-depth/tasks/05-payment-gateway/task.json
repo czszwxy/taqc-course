@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "An abstract payment gateway",
+  "statement": "Застосунок має працювати з різними платіжними сервісами, а в тестах — з фейковим. Напиши:\n\n1. `PaymentGateway(ABC)`:\n   - абстрактний метод `charge(self, amount)` — списує суму й повертає id платежу (рядок);\n   - звичайний метод `pay(self, amount)` — шаблонний: якщо `amount <= 0` → `ValueError(\"amount must be positive\")` **без** виклику `charge`; інакше повертає `self.charge(amount)`.\n2. `FakeGateway(PaymentGateway)` — фейкова реалізація: атрибут `charges` (список сум, свій у кожного об'єкта); `charge` додає суму в список і повертає `\"ch_<номер>\"` (`ch_1`, `ch_2`, …).\n\n```python\ngateway = FakeGateway()\ngateway.pay(499)    # 'ch_1'\ngateway.pay(1299)   # 'ch_2'\ngateway.charges     # [499, 1299]\nPaymentGateway()    # TypeError: Can't instantiate abstract class ...\n```",
+  "hints": [
+    "`from abc import ABC, abstractmethod`; над `charge` у базовому класі — `@abstractmethod`, тіло — `...`.",
+    "`pay` пишеться в базовому класі один раз і викликає `self.charge(amount)` — яка саме реалізація спрацює, вирішує клас об'єкта.",
+    "У `FakeGateway.__init__`: `self.charges = []`; у `charge`: `append`, потім `return f\"ch_{len(self.charges)}\"`."
+  ],
+  "explanation": "Абстрактний базовий клас фіксує контракт: будь-який шлюз мусить уміти `charge`, а клас без реалізації не створиться взагалі. Загальна логіка (`pay` з перевіркою) живе в базовому класі й працює з будь-якою реалізацією — справжньою чи фейковою. Саме так у тестах підставляють `FakeGateway` замість реального платіжного сервісу.",
+  "codeRules": [
+    { "kind": "require", "pattern": "@abstractmethod", "message": "Познач `charge` у базовому класі як `@abstractmethod`." },
+    { "kind": "require", "pattern": "\\(ABC\\)", "message": "Успадкуй базовий клас від `ABC`." }
+  ]
+}

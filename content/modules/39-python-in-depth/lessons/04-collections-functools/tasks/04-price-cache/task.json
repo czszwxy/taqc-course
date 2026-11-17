@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Cache price lookups with lru_cache",
+  "statement": "Ціни товарів читаються з повільного сервісу функцією `fetch_price(product_id)` (вона приймає `int`). Напиши `make_price_lookup(fetch_price, maxsize=128)`, що повертає функцію `price(product_id)`:\n\n- `product_id` може прийти як `42`, `\"42\"` або `\" 42 \"` — це той самий товар, і в кеші він один;\n- `fetch_price` викликається лише для товарів, яких немає в кеші; кеш тримає не більше `maxsize` товарів, найдавніше використаний випадає першим — використай `functools.lru_cache`;\n- `price.clear()` очищає кеш.\n\n```python\nprice = make_price_lookup(slow_fetch, maxsize=2)\nprice(42)       # slow_fetch(42) викликано\nprice(\" 42 \")   # з кешу\nprice.clear()\nprice(\"42\")     # slow_fetch(42) викликано знову\n```",
+  "hints": [
+    "`cached = lru_cache(maxsize=maxsize)(fetch_price)` — `lru_cache(...)` можна застосувати як звичайну функцію.",
+    "Внутрішня `def price(product_id): return cached(int(str(product_id).strip()))` — так усі формати перетворюються на один ключ кешу до звернення до кешу.",
+    "Очищення: `price.clear = cached.cache_clear`, потім `return price`."
+  ],
+  "explanation": "Ключ кешу `lru_cache` — аргументи виклику, тому `42` і `\"42\"` були б різними записами і сервіс викликали б двічі. Нормалізація id до звернення до кешу дає один запис на товар. `maxsize` обмежує пам'ять: при переповненні випадає запис, яким найдовше не користувалися (LRU). А `cache_clear` потрібен, бо кеш сам не дізнається, що ціна змінилась.",
+  "codeRules": [
+    { "kind": "require", "pattern": "lru_cache", "message": "Використай `functools.lru_cache`." }
+  ]
+}

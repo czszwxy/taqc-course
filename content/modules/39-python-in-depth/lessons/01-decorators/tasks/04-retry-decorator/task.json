@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "A retry decorator for flaky calls",
+  "statement": "Зовнішні сервіси іноді відповідають помилкою, яка за мить зникає. Напиши декоратор `retry(times, exceptions=(Exception,))`:\n\n- викликає функцію; якщо вона кинула виняток одного з типів `exceptions` — викликає знову, загалом **не більше `times` разів**;\n- щойно виклик вдався — повертає його результат (більше не викликає);\n- якщо всі `times` спроб невдалі — кидає **останній** виняток далі;\n- винятки інших типів не повторюються — летять одразу;\n- `times < 1` → `ValueError(\"times must be at least 1\")` уже під час `retry(...)`;\n- ім'я функції зберігається.\n\n```python\n@retry(3, exceptions=(ConnectionError,))\ndef fetch_rates():\n    ...  # двічі ConnectionError, на третій раз {'USD': 41.2}\n\nfetch_rates()   # {'USD': 41.2} — функцію викликано 3 рази\n```",
+  "hints": [
+    "Перевір `times` на першому рівні, до `def decorator(func):` — тоді помилка буде одразу під час `retry(0)`.",
+    "Цикл `for attempt in range(1, times + 1):` з `try: return func(*args, **kwargs)`.",
+    "`except exceptions:` (кортеж типів працює) → якщо `attempt == times`, то голий `raise` кидає поточний виняток далі."
+  ],
+  "explanation": "`return` усередині `try` одразу завершує спроби після успіху. `except exceptions:` ловить лише перелічені типи — помилка в коді (наприклад, `KeyError`) не повторюється й не ховається. Голий `raise` в останній спробі кидає далі саме той виняток, що стався, з його повідомленням і traceback. Повторювати можна тимчасові збої (мережа, таймаут), а не баги.",
+  "codeRules": [
+    { "kind": "require", "pattern": "@wraps\\(", "message": "Збережи ім'я функції: постав `@wraps(func)` над обгорткою." }
+  ]
+}

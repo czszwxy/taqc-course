@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Notifications through a Protocol",
+  "statement": "Застосунок надсилає сповіщення різними каналами: email, SMS, push. Класи каналів пишуть різні люди, і вони не мають спільного предка. Опиши контракт через `Protocol`:\n\n1. `Notifier(Protocol)` з методом `send(self, to: str, text: str) -> bool`; над класом — `@runtime_checkable`, щоб працював `isinstance`.\n2. `notify_all(notifiers: list[Notifier], to: str, text: str) -> int` — викликає `send` у кожного каналу й повертає, скільки повернули `True`. Канал, що кинув виняток, рахується як невдалий, а інші **продовжують** отримувати сповіщення.\n\n```python\nclass EmailSender:\n    def send(self, to, text):\n        return True\n\nisinstance(EmailSender(), Notifier)   # True — без наслідування\nnotify_all([EmailSender(), BrokenSms()], \"+380501112233\", \"Your order is ready\")   # 1\n```",
+  "hints": [
+    "`from typing import Protocol, runtime_checkable`; тіло методу в протоколі — `...`.",
+    "У `notify_all`: лічильник, цикл, `try: if notifier.send(to, text): delivered += 1` → `except Exception: continue`.",
+    "Анотації `notify_all` перевіряються тестом: `notifiers: list[Notifier]`, `to: str`, `text: str`, `-> int`."
+  ],
+  "explanation": "`Protocol` описує, **що вміє** об'єкт, а не від кого він походить, — тому сторонні класи підходять без змін. `@runtime_checkable` дозволяє `isinstance`, але перевіряє лише наявність методів. У `notify_all` збій одного каналу не повинен зупиняти інші: користувач, у якого впала SMS-служба, все одно отримає email.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\(Protocol\\)", "message": "Опиши контракт класом, що успадковує `Protocol`." },
+    { "kind": "require", "pattern": "@runtime_checkable", "message": "Додай `@runtime_checkable` над протоколом." }
+  ]
+}

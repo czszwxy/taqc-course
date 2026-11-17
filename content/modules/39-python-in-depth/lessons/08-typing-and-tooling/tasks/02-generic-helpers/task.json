@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Generic helpers with type parameters",
+  "statement": "Напиши дві функції-помічники з **параметрами типу** (новий синтаксис Python 3.12+) — саме з такими сигнатурами:\n\n```python\nfrom collections.abc import Callable\n\ndef first[T](items: list[T]) -> T | None: ...\ndef index_by[K, V](items: list[V], key: Callable[[V], K]) -> dict[K, V]: ...\n```\n\n- `first` — перший елемент або `None` для порожнього списку (зверни увагу: перший елемент сам може бути `0` чи `\"\"`).\n- `index_by` — словник `key(елемент) → елемент`; якщо два елементи дають однаковий ключ → `ValueError(\"duplicate key: <repr ключа>\")`.\n\n```python\nusers = [{\"id\": 7, \"email\": \"anna@example.com\"}, {\"id\": 9, \"email\": \"ivan@example.com\"}]\nindex_by(users, lambda user: user[\"id\"])\n# {7: {'id': 7, ...}, 9: {'id': 9, ...}}\nindex_by([\"a\", \"b\", \"a\"], lambda s: s)   # ValueError: duplicate key: 'a'\n```\n\nТести перевіряють і поведінку, і анотації (через `typing.get_type_hints` і `__type_params__`).",
+  "hints": [
+    "`first`: `return items[0] if items else None` — перевіряй список, а не сам елемент.",
+    "`index_by`: цикл, `item_key = key(item)`; якщо ключ уже в результаті — `raise ValueError(f\"duplicate key: {item_key!r}\")`.",
+    "`!r` у f-рядку дає `repr`: для рядка — з лапками (`'a'`), для числа — просто `7`."
+  ],
+  "explanation": "Параметр типу пов'язує типи між собою: `first` повертає той самий `T`, що лежить у списку, а `index_by` — словник, де ключі мають тип результату `key`, а значення — тип елементів. Для mypy `first([1, 2])` — це `int | None`, тож він змусить обробити `None`. `items[0] if items` — правильна перевірка порожнечі: `first([0])` має повернути `0`, а не `None`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "def first\\[", "message": "Оголоси параметр типу: `def first[T](items: list[T]) -> T | None:`." },
+    { "kind": "require", "pattern": "def index_by\\[", "message": "Оголоси параметри типу: `def index_by[K, V](...)`." }
+  ]
+}

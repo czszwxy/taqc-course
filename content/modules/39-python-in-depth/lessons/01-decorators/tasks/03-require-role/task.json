@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "A decorator with an argument: require a role",
+  "statement": "Напиши декоратор з аргументом `require_role(role)`. Задекоровані функції завжди отримують першим позиційним аргументом користувача — словник з ключем `\"roles\"` (список рядків; ключа може й не бути — тоді ролей немає).\n\n- Якщо в користувача є потрібна роль — викликати функцію з усіма аргументами й повернути її результат.\n- Якщо немає — **не** викликати функцію, а кинути `PermissionError` з повідомленням `\"<role> role required\"`.\n- Ім'я та docstring функції зберігаються.\n\n```python\n@require_role(\"admin\")\ndef delete_order(user, order_id):\n    \"\"\"Delete an order (admins only).\"\"\"\n    return f\"order {order_id} deleted\"\n\nadmin = {\"name\": \"Olena\", \"roles\": [\"admin\", \"support\"]}\nguest = {\"name\": \"Ihor\", \"roles\": []}\n\ndelete_order(admin, 1001)   # 'order 1001 deleted'\ndelete_order(guest, 1001)   # PermissionError: admin role required\n```",
+  "hints": [
+    "Три рівні: `def require_role(role):` → `def decorator(func):` → `@wraps(func) def wrapper(user, *args, **kwargs):`; кожен рівень повертає наступний.",
+    "Ролі без ризику `KeyError`: `user.get(\"roles\", [])`.",
+    "Перевірка до виклику: `if role not in ...: raise PermissionError(f\"{role} role required\")`, інакше `return func(user, *args, **kwargs)`."
+  ],
+  "explanation": "`@require_role(\"admin\")` спершу викликає `require_role(\"admin\")`, а той повертає справжній декоратор, який замикає `role`. Обгортка перевіряє права **до** виклику функції — тому заборонена дія не встигає нічого змінити. Типові помилки: два рівні замість трьох (тоді в `role` потрапляє функція), `user[\"roles\"]` замість `.get` (`KeyError` для користувача без ключа) і забутий `return` (функція повертає `None`).",
+  "codeRules": [
+    { "kind": "require", "pattern": "@wraps\\(", "message": "Збережи ім'я та docstring: постав `@wraps(func)` над обгорткою." }
+  ]
+}

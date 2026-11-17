@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "An alternative constructor: User.from_dict",
+  "statement": "Дані користувача приходять з API словником. Доповни dataclass `User(id, email, is_admin=False)` двома методами:\n\n- `@classmethod from_dict(cls, data)`:\n  - обов'язкові ключі `\"id\"` та `\"email\"`; немає ключа → `ValueError(\"missing field: <ключ>\")` (спершу перевір `id`, потім `email`);\n  - `id` може прийти рядком (`\"42\"`) — перетвори на `int`;\n  - `email` обрізається від пробілів і переводиться в нижній регістр;\n  - `is_admin` необов'язковий (за замовчуванням `False`); зайві ключі ігноруються;\n  - для нащадків (`class Admin(User)`) метод має повертати об'єкт **нащадка**.\n- `to_dict(self)` → `{\"id\": ..., \"email\": ..., \"is_admin\": ...}`.\n\n```python\nUser.from_dict({\"id\": \"42\", \"email\": \" QA@Example.COM \", \"theme\": \"dark\"})\n# User(id=42, email='qa@example.com', is_admin=False)\n```",
+  "hints": [
+    "Перевірка: `for name in (\"id\", \"email\"): if name not in data: raise ValueError(f\"missing field: {name}\")`.",
+    "Створюй через `cls(id=int(data[\"id\"]), email=..., is_admin=bool(data.get(\"is_admin\", False)))` — саме `cls`, а не `User`."
+  ],
+  "explanation": "`from_dict` — типовий «другий конструктор»: він знає, як перетворити зовнішній формат на модель, а `__init__` лишається простим. Через `cls(...)` метод працює й для нащадків. Зайві ключі ігноруються свідомо: API може додати нове поле, і клієнт від цього не має падати. Порожні або відсутні обов'язкові поля — навпаки, зрозуміла помилка одразу.",
+  "codeRules": [
+    { "kind": "require", "pattern": "@classmethod", "message": "Зроби `from_dict` через `@classmethod`." },
+    { "kind": "forbid", "pattern": "return\\s+User\\(", "message": "Створюй об'єкт через `cls(...)`, щоб нащадки отримували свій клас." }
+  ]
+}

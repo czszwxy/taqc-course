@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "Regular expressions",
+  "show": 6,
+  "hints": ["fullmatch — увесь рядок, search — будь-де, match — лише з початку. Шаблони — сирі рядки r\"...\"."],
+  "questions": [
+    {
+      "id": "match-vs-fullmatch",
+      "kind": "single",
+      "text": "Що поверне `re.match(r\"\\d{4}\", \"2026abc\")`?",
+      "options": [
+        { "text": "Збіг `'2026'` — `match` перевіряє лише початок рядка", "correct": true },
+        { "text": "`None` — рядок містить літери" },
+        { "text": "`'2026abc'`" }
+      ]
+    },
+    {
+      "id": "validate",
+      "kind": "single",
+      "text": "Яку функцію обрати, щоб перевірити, що **весь** введений промокод відповідає формату?",
+      "options": [
+        { "text": "`re.fullmatch`", "correct": true },
+        { "text": "`re.search`" },
+        { "text": "`re.findall`" }
+      ]
+    },
+    {
+      "id": "raw",
+      "kind": "single",
+      "text": "Навіщо `r` у `r\"\\bERROR\\b\"`?",
+      "options": [
+        { "text": "Щоб Python не обробляв `\\` сам: у звичайному рядку `\\b` — це символ backspace", "correct": true },
+        { "text": "Щоб пошук був без різниці регістру" },
+        { "text": "Щоб шаблон скомпілювався швидше" }
+      ]
+    },
+    {
+      "id": "dot",
+      "kind": "single",
+      "text": "Шаблон `r\"shop.ua\"` перевіряє домен. Що з ним не так?",
+      "options": [
+        { "text": "`.` — будь-який символ, тож підійде й `shopXua`; потрібно `r\"shop\\.ua\"`", "correct": true },
+        { "text": "Нічого" },
+        { "text": "Крапки в шаблонах заборонені" }
+      ]
+    },
+    {
+      "id": "findall-groups",
+      "kind": "single",
+      "text": "Що поверне `re.findall(r\"(\\w+)=(\\d+)\", \"page=2&size=50\")`?",
+      "options": [
+        { "text": "`[('page', '2'), ('size', '50')]` — з кількома групами findall дає кортежі груп", "correct": true },
+        { "text": "`['page=2', 'size=50']`" },
+        { "text": "`{'page': 2, 'size': 50}`" }
+      ]
+    },
+    {
+      "id": "greedy",
+      "kind": "single",
+      "text": "`re.findall(r\"\\[.+\\]\", \"[INFO] start [WARN] slow\")` — що поверне?",
+      "options": [
+        { "text": "`['[INFO] start [WARN]']` — жадібний `.+` захоплює якомога більше; для окремих тегів потрібен `.+?`", "correct": true },
+        { "text": "`['[INFO]', '[WARN]']`" },
+        { "text": "`[]`" }
+      ]
+    },
+    {
+      "id": "none",
+      "kind": "single",
+      "text": "`found = re.fullmatch(pattern, line)`, а одразу далі `found[\"level\"]`. Що буде, якщо рядок не підійшов?",
+      "options": [
+        { "text": "`TypeError`: `found` — `None`; спершу перевір `if found is None`", "correct": true },
+        { "text": "`found[\"level\"]` поверне порожній рядок" },
+        { "text": "`KeyError`" }
+      ]
+    },
+    {
+      "id": "not-regex",
+      "kind": "single",
+      "text": "Треба дістати значення поля з JSON-відповіді. Що обрати?",
+      "options": [
+        { "text": "`json.loads(...)` і звернення до ключа — для JSON є парсер", "correct": true },
+        { "text": "`re.search(r'\"total\": (\\d+)', body)`" },
+        { "text": "`body.split(\"total\")`" }
+      ]
+    }
+  ]
+}

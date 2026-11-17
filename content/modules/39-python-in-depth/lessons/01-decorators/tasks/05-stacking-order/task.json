@@ -1,0 +1,19 @@
+{
+  "type": "order",
+  "title": "Stacked decorators: what happens when",
+  "statement": "У застосунку є такий обробник:\n\n```python\n@log_request\n@require_login\ndef get_profile(request):\n    return {\"name\": request.user}\n```\n\nОбидва декоратори — звичайні обгортки. Розстав події в тому порядку, в якому вони відбуваються: від імпорту модуля до відповіді на запит залогіненого користувача.",
+  "items": [
+    "require_login(get_profile) runs while the module is being imported",
+    "log_request(...) wraps the function returned by require_login",
+    "A request calls get_profile(request): the log_request wrapper starts first",
+    "The require_login wrapper checks that the user is logged in",
+    "The original get_profile body runs and returns the profile",
+    "The require_login wrapper returns the profile to the log_request wrapper",
+    "The log_request wrapper logs the response and returns it to the caller"
+  ],
+  "hints": [
+    "Декоратори застосовуються знизу вгору й лише один раз — під час імпорту: `get_profile = log_request(require_login(get_profile))`.",
+    "Під час виклику обгортки працюють як матрьошка: зовнішня починає першою і закінчує останньою."
+  ],
+  "explanation": "Під час імпорту Python виконує `get_profile = log_request(require_login(get_profile))` — спершу нижній декоратор, потім верхній. Під час запиту виклик іде ззовні всередину: обгортка `log_request` → обгортка `require_login` → оригінальна функція, а результат повертається назад у зворотному порядку. Тому `log_request` бачить і відмову `require_login`, і успішну відповідь."
+}

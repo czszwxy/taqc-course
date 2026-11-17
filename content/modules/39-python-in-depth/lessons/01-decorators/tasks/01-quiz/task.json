@@ -1,0 +1,96 @@
+{
+  "type": "quiz",
+  "title": "Decorators",
+  "show": 6,
+  "hints": ["`@d` над `def f` означає `f = d(f)`. Тіло декоратора виконується один раз, тіло обгортки — на кожен виклик."],
+  "questions": [
+    {
+      "id": "sugar",
+      "kind": "single",
+      "text": "Чому рівнозначний запис `@timer` над `def load_orders(...)`?",
+      "options": [
+        { "text": "`load_orders = timer(load_orders)` одразу після визначення функції", "correct": true },
+        { "text": "`timer()` викликається перед кожним викликом `load_orders`" },
+        { "text": "`load_orders = timer` — без виклику" }
+      ]
+    },
+    {
+      "id": "when",
+      "kind": "single",
+      "text": "Скільки разів виконується тіло функції `timer` (не обгортки), якщо `load_orders` викликали 100 разів?",
+      "options": [
+        { "text": "Один раз — коли Python виконав `def` з декоратором", "correct": true },
+        { "text": "100 разів" },
+        { "text": "101 раз" }
+      ]
+    },
+    {
+      "id": "no-return",
+      "kind": "single",
+      "text": "В обгортці написано `func(*args, **kwargs)` без `return`. Що повертатиме задекорована функція?",
+      "options": [
+        { "text": "Завжди `None`", "correct": true },
+        { "text": "Те саме, що й раніше" },
+        { "text": "Саму обгортку" }
+      ]
+    },
+    {
+      "id": "name",
+      "kind": "text",
+      "text": "Обгортка називається `wrapper`, `@wraps` не використано. Що виведе `print(load_orders.__name__)`?",
+      "accept": ["wrapper", "'wrapper'", "\"wrapper\""],
+      "placeholder": "name",
+      "explanation": "Ім'я тепер вказує на функцію `wrapper`. `@wraps(func)` копіює в неї `__name__`, `__doc__` та інші атрибути оригіналу."
+    },
+    {
+      "id": "args",
+      "kind": "single",
+      "text": "Навіщо обгортці параметри `*args, **kwargs`?",
+      "options": [
+        { "text": "Щоб приймати будь-які аргументи й передати їх оригінальній функції без змін", "correct": true },
+        { "text": "Без них декоратор не можна поставити над методом класу", "explain": "Метод теж працює з `*args`: `self` просто приходить першим у `args`. Але суть ширша — будь-які аргументи будь-якої функції." },
+        { "text": "Так вимагає синтаксис `@`" }
+      ]
+    },
+    {
+      "id": "factory",
+      "kind": "single",
+      "text": "Що повертає виклик `repeat(3)` у записі `@repeat(3)`?",
+      "options": [
+        { "text": "Декоратор — функцію, яка прийме `ping` і поверне обгортку", "correct": true },
+        { "text": "Результат трьох викликів `ping`" },
+        { "text": "Обгортку, яку викликають замість `ping`" }
+      ]
+    },
+    {
+      "id": "stack",
+      "kind": "single",
+      "text": "```python\n@log_request\n@require_login\ndef get_profile(request): ...\n```\nЯка обгортка першою починає працювати, коли приходить запит?",
+      "options": [
+        { "text": "`log_request` — вона зовнішня: `get_profile = log_request(require_login(get_profile))`", "correct": true },
+        { "text": "`require_login` — вона ближча до функції" },
+        { "text": "Обидві одночасно" }
+      ]
+    },
+    {
+      "id": "parens",
+      "kind": "single",
+      "text": "`def timer(func): ...` — декоратор без налаштувань. Що станеться з `@timer()` (з дужками)?",
+      "options": [
+        { "text": "`TypeError`: `timer()` викликано без обов'язкового аргументу `func`", "correct": true },
+        { "text": "Те саме, що `@timer`" },
+        { "text": "Функція виконається один раз при імпорті" }
+      ]
+    },
+    {
+      "id": "state",
+      "kind": "single",
+      "text": "Декоратор зберігає лічильник в атрибуті обгортки (`wrapper.count = 0` перед `return wrapper`). Він задекорував дві функції. Скільки лічильників?",
+      "options": [
+        { "text": "Два: кожен виклик декоратора створює нову обгортку зі своїм атрибутом", "correct": true },
+        { "text": "Один спільний" },
+        { "text": "Жодного: атрибути функціям додавати не можна" }
+      ]
+    }
+  ]
+}

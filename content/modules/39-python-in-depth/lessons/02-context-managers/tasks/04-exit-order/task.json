@@ -1,0 +1,19 @@
+{
+  "type": "order",
+  "title": "Two context managers and an exception",
+  "statement": "```python\nwith Connection(\"orders-db\") as conn, Transaction(conn) as tx:\n    tx.execute(\"UPDATE stock SET count = count - 1 WHERE sku = 'KB-01'\")\n    raise ValueError(\"out of stock\")\n```\n\nОбидва `__exit__` повертають `False`. Розстав події в порядку, в якому вони відбуваються.",
+  "items": [
+    "Connection.__enter__ runs and opens the connection",
+    "Transaction.__enter__ runs and begins a transaction",
+    "The block runs the UPDATE statement",
+    "ValueError is raised inside the block",
+    "Transaction.__exit__ receives the ValueError and rolls back",
+    "Connection.__exit__ receives the ValueError and closes the connection",
+    "The ValueError reaches the code that ran the with statement"
+  ],
+  "hints": [
+    "Менеджери входять зліва направо, а виходять у зворотному порядку.",
+    "`return False` в `__exit__` означає «виняток не оброблено» — він летить далі після всіх виходів."
+  ],
+  "explanation": "`with a, b:` — те саме, що вкладені `with a:` і `with b:`. Тому вхід іде зліва направо (з'єднання → транзакція), а вихід — справа наліво: спершу відкочується транзакція, потім закривається з'єднання. Кожен `__exit__` бачить той самий виняток; оскільки обидва повертають `False`, після всього прибирання `ValueError` доходить до коду, що викликав `with`."
+}

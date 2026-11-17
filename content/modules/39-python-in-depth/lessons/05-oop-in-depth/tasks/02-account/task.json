@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "A bank account with properties",
+  "statement": "Напиши клас `Account(owner, balance=0)`:\n\n- `owner` — property з setter: значення обрізається від пробілів; порожнє після обрізання → `ValueError(\"owner must not be empty\")`. Перевірка діє і в конструкторі, і при зміні.\n- `balance` — property **лише для читання** (спроба `account.balance = ...` → `AttributeError`). Початковий `balance < 0` → `ValueError(\"balance must not be negative\")`.\n- `deposit(amount)` і `withdraw(amount)` повертають новий баланс; `amount <= 0` → `ValueError(\"amount must be positive\")`; зняти більше, ніж є, → `ValueError(\"insufficient funds\")` (баланс не змінюється).\n\n```python\naccount = Account(\"  Olena Shevchenko \", 100)\naccount.owner         # 'Olena Shevchenko'\naccount.deposit(50)   # 150\naccount.withdraw(500) # ValueError: insufficient funds\naccount.balance = 1_000_000   # AttributeError\n```",
+  "hints": [
+    "Баланс зберігай у `self._balance`; `@property def balance(self): return self._balance` — без setter.",
+    "Для `owner`: `@property` + `@owner.setter`, значення — у `self._owner`. У `__init__` пиши `self.owner = owner`, щоб перевірка спрацювала й там.",
+    "Спільну перевірку суми винеси в `@staticmethod def _check_amount(amount)`."
+  ],
+  "explanation": "Property ховає внутрішній атрибут (`_balance`) за інтерфейсом, який не дає змінити баланс в обхід `deposit` / `withdraw`. Setter з перевіркою спрацьовує при будь-якому присвоєнні — і в `__init__`, якщо там писати через `self.owner = ...`. Перевірки виконуються **до** зміни балансу, тому невдала операція нічого не ламає.",
+  "codeRules": [
+    { "kind": "require", "pattern": "@property", "message": "Зроби `owner` і `balance` через `@property`." },
+    { "kind": "require", "pattern": "\\.setter", "message": "Для `owner` потрібен setter: `@owner.setter`." }
+  ]
+}

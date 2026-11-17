@@ -1,0 +1,42 @@
+{
+  "title": "Typing in depth and code quality tools",
+  "minutes": 60,
+  "summary": "Типи для командної розробки: X | None, generics з новим синтаксисом def f[T] (Python 3.12+), type-аліаси, Callable, Literal, TypedDict для JSON, Protocol для структурної типізації; анотації не перевіряються під час роботи — це робить mypy; ruff (лінтер і форматер), pyproject.toml і pre-commit",
+  "resources": [
+    {
+      "title": "Python docs: typing — support for type hints",
+      "url": "https://docs.python.org/3/library/typing.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "PEP 695 — Type Parameter Syntax",
+      "url": "https://peps.python.org/pep-0695/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "mypy documentation",
+      "url": "https://mypy.readthedocs.io/en/stable/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Ruff documentation",
+      "url": "https://docs.astral.sh/ruff/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pre-commit",
+      "url": "https://pre-commit.com/",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

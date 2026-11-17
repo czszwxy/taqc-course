@@ -1,0 +1,98 @@
+{
+  "type": "quiz",
+  "title": "collections and functools",
+  "show": 6,
+  "hints": ["Counter рахує, defaultdict групує, deque — черга з двох кінців, lru_cache кешує за аргументами."],
+  "questions": [
+    {
+      "id": "counter-missing",
+      "kind": "single",
+      "text": "`counts = Counter([\"paid\", \"new\"])`. Що дасть `counts[\"refunded\"]`?",
+      "options": [
+        { "text": "`0`", "correct": true },
+        { "text": "`KeyError`" },
+        { "text": "`None`" }
+      ]
+    },
+    {
+      "id": "most-common-tie",
+      "kind": "single",
+      "text": "`Counter([\"b\", \"a\", \"a\", \"b\", \"c\"]).most_common(1)` — що поверне?",
+      "options": [
+        { "text": "`[('b', 2)]` — при рівній кількості перший той, що зустрівся раніше", "correct": true },
+        { "text": "`[('a', 2)]` — за абеткою" },
+        { "text": "`[('a', 2), ('b', 2)]`" }
+      ]
+    },
+    {
+      "id": "defaultdict-read",
+      "kind": "single",
+      "text": "`groups = defaultdict(list)`, потім `if groups[\"vip\"]: ...`. Що тепер у `groups`?",
+      "options": [
+        { "text": "`{'vip': []}` — читання відсутнього ключа створило запис", "correct": true },
+        { "text": "Порожній словник — читання нічого не змінює" },
+        { "text": "Помилка `KeyError`" }
+      ]
+    },
+    {
+      "id": "deque-maxlen",
+      "kind": "single",
+      "text": "`d = deque(maxlen=2)`; `d.append(1)`; `d.append(2)`; `d.append(3)`. Що в `d`?",
+      "options": [
+        { "text": "`deque([2, 3])` — найстаріший елемент випав сам", "correct": true },
+        { "text": "`deque([1, 2])` — новий елемент не додано" },
+        { "text": "Помилка: черга переповнена" }
+      ]
+    },
+    {
+      "id": "pop0",
+      "kind": "single",
+      "text": "Чому для черги задач краще `deque.popleft()`, ніж `list.pop(0)`?",
+      "options": [
+        { "text": "`list.pop(0)` зсуває всі інші елементи (O(n)), а `popleft` працює за O(1)", "correct": true },
+        { "text": "`list.pop(0)` не існує" },
+        { "text": "`deque` займає менше пам'яті для будь-яких даних" }
+      ]
+    },
+    {
+      "id": "unhashable",
+      "kind": "single",
+      "text": "Функцію з `@lru_cache` викликали так: `total_price([1, 2, 3])`. Що станеться?",
+      "options": [
+        { "text": "`TypeError: unhashable type: 'list'` — аргументи стають ключем кешу і мають бути хешованими", "correct": true },
+        { "text": "Результат закешується за копією списку" },
+        { "text": "Кеш просто не спрацює, але функція виконається" }
+      ]
+    },
+    {
+      "id": "stale-cache",
+      "kind": "single",
+      "text": "`get_price(product_id)` з `@cache` читає ціну з бази. Адміністратор змінив ціну. Що поверне `get_price` для цього товару?",
+      "options": [
+        { "text": "Стару ціну з кешу, доки кеш не скинуть (`get_price.cache_clear()`)", "correct": true },
+        { "text": "Нову — кеш сам дізнається про зміну" },
+        { "text": "`None`" }
+      ]
+    },
+    {
+      "id": "chainmap",
+      "kind": "single",
+      "text": "`ChainMap({\"debug\": True}, {\"debug\": False, \"timeout\": 30})[\"debug\"]` — що поверне?",
+      "options": [
+        { "text": "`True` — пошук іде по словниках зліва направо", "correct": true },
+        { "text": "`False` — останній перемагає" },
+        { "text": "`[True, False]`" }
+      ]
+    },
+    {
+      "id": "partial",
+      "kind": "single",
+      "text": "`send_sms = partial(send, \"sms\")`. Що робить виклик `send_sms(\"+380501112233\", \"Hi\")`?",
+      "options": [
+        { "text": "Викликає `send(\"sms\", \"+380501112233\", \"Hi\")`", "correct": true },
+        { "text": "Викликає `send(\"+380501112233\", \"Hi\", \"sms\")`" },
+        { "text": "Нічого: partial лише описує функцію" }
+      ]
+    }
+  ]
+}
