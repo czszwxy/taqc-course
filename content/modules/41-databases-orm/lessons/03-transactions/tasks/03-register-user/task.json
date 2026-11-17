@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Turn IntegrityError into a domain error",
+  "statement": "Таблиця `users (id, email UNIQUE, name)`. Напиши `register_user(conn, email, name)`:\n\n- зберігає email **без пробілів по краях і в нижньому регістрі**;\n- фіксує зміни й повертає `id` нового користувача;\n- якщо такий email уже є, кидає `EmailTaken(email)` з `errors.py` **з першопричиною** (`raise ... from err`), а з'єднання лишається придатним для наступних операцій.\n\n```python\nregister_user(conn, \" Anna@Shop.ua\", \"Anna\")   # 1\nregister_user(conn, \"anna@shop.ua\", \"Copy\")    # EmailTaken: anna@shop.ua\n```",
+  "hints": [
+    "Не перевіряй email окремим `SELECT` — нехай `UNIQUE` у базі вирішує, а ти перехопи `sqlite3.IntegrityError`.",
+    "`with conn:` всередині `try`: при помилці буде rollback, а виняток долетить до `except`.",
+    "`except sqlite3.IntegrityError as err: raise EmailTaken(email) from err`."
+  ],
+  "explanation": "Обмеження `UNIQUE` — єдина надійна перевірка унікальності: окремий `SELECT` перед `INSERT` має гонку. Код вище не має знати про `sqlite3` — тому `IntegrityError` перекладають у `EmailTaken`, а `from err` зберігає першопричину для логів. `with conn:` відкочує невдалу вставку, тож наступна реєстрація в тому самому з'єднанні працює й фіксується як слід.",
+  "codeRules": [
+    { "kind": "require", "pattern": "except\\s+(?:sqlite3\\.)?IntegrityError", "message": "Перехопи саме `sqlite3.IntegrityError`, а не всі винятки." },
+    { "kind": "require", "pattern": "\\bfrom\\s+\\w+\\s*$", "message": "Збережи першопричину: `raise EmailTaken(email) from err`." }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "title": "SQLAlchemy ORM: models, Session and select",
+  "minutes": 60,
+  "summary": "Engine і URL бази, моделі SQLAlchemy 2.0 (DeclarativeBase, Mapped, mapped_column), Session як unit of work (add, flush, commit, get), запити select().where().order_by() і scalars(), стани об'єкта й identity map",
+  "resources": [
+    {
+      "title": "SQLAlchemy docs: ORM Quick Start",
+      "url": "https://docs.sqlalchemy.org/en/20/orm/quickstart.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLAlchemy Unified Tutorial",
+      "url": "https://docs.sqlalchemy.org/en/20/tutorial/index.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Офіційний підручник: Core і ORM у стилі 2.0",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: SQLAlchemy 2.0 ORM tutorial",
+      "url": "https://www.youtube.com/results?search_query=sqlalchemy+2.0+orm+tutorial",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

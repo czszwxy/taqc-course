@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Define the Product model",
+  "statement": "Опиши модель товару для таблиці `products` у стилі SQLAlchemy 2.0. `Base` уже є.\n\n| Атрибут | Тип | Правила |\n|---|---|---|\n| `id` | `int` | первинний ключ (вже є) |\n| `sku` | `str` | `String(20)`, унікальний, обов'язковий |\n| `name` | `str` | `String(100)`, обов'язковий |\n| `price` | `int` | обов'язковий (ціна в гривнях) |\n| `description` | `str` або `None` | може бути NULL |\n| `in_stock` | `bool` | обов'язковий, за замовчуванням `True` |\n\n```python\nwith Session(engine) as session:\n    session.add(Product(sku=\"KB-01\", name=\"Keyboard\", price=1500))\n    session.commit()\n# у базі: in_stock = True, description = NULL\n```\n\nТести створюють таблицю через `Base.metadata.create_all` і перевіряють стовпці та обмеження.",
+  "hints": [
+    "Обов'язкове поле — `Mapped[str]`, необов'язкове — `Mapped[str | None]`.",
+    "Довжину й унікальність задає `mapped_column(String(20), unique=True)`.",
+    "Значення за замовчуванням: `in_stock: Mapped[bool] = mapped_column(default=True)`."
+  ],
+  "explanation": "Анотація `Mapped[...]` визначає тип стовпця і чи може він бути NULL: `Mapped[str]` дає NOT NULL, `Mapped[str | None]` — NULL дозволено. Усе інше (довжина рядка, `unique`, `default`, первинний ключ) передають у `mapped_column(...)`. Типова помилка — зробити `name` чи `price` необов'язковими (`| None`): тоді база прийме товар без назви. Друга — забути `unique=True` для `sku`: два товари з одним артикулом зламають пошук.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "Column\\(", "message": "У стилі 2.0 стовпці описують через `Mapped[...]` і `mapped_column(...)`, а не `Column(...)`." }
+  ]
+}

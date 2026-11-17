@@ -1,0 +1,17 @@
+{
+  "type": "order",
+  "title": "Rename a column without downtime",
+  "statement": "У застосунку, що працює без перерв, стовпець `members.phone` треба перейменувати на `phone_number`. Під час кожного деплою стара версія коду ще кілька хвилин обслуговує запити. Розстав кроки в безпечному порядку (expand / contract).",
+  "items": [
+    "Migration: add a new nullable column phone_number",
+    "Deploy code that writes every change to both phone and phone_number",
+    "Data migration: copy phone into phone_number for the old rows",
+    "Deploy code that reads and writes only phone_number",
+    "Migration: drop the old column phone"
+  ],
+  "hints": [
+    "Спершу схема має підходити і старому, і новому коду — тільки додаємо.",
+    "Видаляють останнім, коли жоден працюючий код старий стовпець уже не читає."
+  ],
+  "explanation": "Expand: новий стовпець додається поруч зі старим, і код пише в обидва — так нові записи вже потрапляють у `phone_number`, а старий код усе ще працює. Потім переносять старі дані, перемикають читання на новий стовпець і лише тоді, коли жоден запущений код не звертається до `phone`, його видаляють (contract). Одна міграція `ALTER TABLE ... RENAME COLUMN` зламала б запити старої версії коду посеред деплою."
+}

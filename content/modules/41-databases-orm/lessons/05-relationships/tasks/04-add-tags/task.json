@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "Tag a product without duplicates",
+  "statement": "Моделі товарів і тегів — у `models.py` (багато-до-багатьох, `Tag.name` унікальний). Напиши `add_tags(session, sku, names)`:\n\n- знаходить товар за `sku`; якщо немає — `LookupError`;\n- назви тегів нормалізує: без пробілів по краях, нижній регістр;\n- **наявні** теги бере з бази, відсутні — створює;\n- не додає товару тег, який у нього вже є;\n- зберігає зміни й повертає назви всіх тегів товару за алфавітом.\n\n```python\nadd_tags(session, \"KB-01\", [\"USB\", \" wireless\", \"usb\"])   # ['usb', 'wireless']\n```",
+  "hints": [
+    "Спершу прибери повтори серед нормалізованих назв: `{name.strip().lower() for name in names}`.",
+    "Наявний тег: `session.scalars(select(Tag).where(Tag.name == name)).first()`; якщо `None` — `Tag(name=name)`.",
+    "`if tag not in product.tags: product.tags.append(tag)`, потім `session.commit()`."
+  ],
+  "explanation": "Унікальна назва тегу означає, що другий `Tag(name=\"usb\")` база не прийме — тож наявний тег треба знайти й перевикористати. Повтори у вхідних назвах і теги, що вже висять на товарі, — два інші джерела дублів: без перевірки SQLAlchemy спробує вставити той самий рядок у сполучну таблицю ще раз. Сам зв'язок додається просто: `product.tags.append(tag)` — рядок у `product_tags` з'явиться під час commit.",
+  "codeRules": []
+}

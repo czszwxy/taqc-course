@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Transactions",
+  "show": 6,
+  "hints": ["with conn: — commit або rollback, виняток летить далі. Перевіряй умову в самому UPDATE і дивись на rowcount."],
+  "questions": [
+    {
+      "id": "atomicity",
+      "kind": "single",
+      "text": "Що означає атомарність (A в ACID)?",
+      "options": [
+        { "text": "Усі зміни транзакції застосовуються разом — або жодна", "correct": true },
+        { "text": "Кожен запит виконується дуже швидко" },
+        { "text": "Таблиця блокується назавжди" }
+      ]
+    },
+    {
+      "id": "with-exception",
+      "kind": "single",
+      "text": "Усередині `with conn:` другий `INSERT` кинув `IntegrityError`. Що станеться?",
+      "options": [
+        { "text": "Rollback усіх змін блоку, а виняток полетить далі", "correct": true },
+        { "text": "Перший INSERT збережеться, виняток зникне" },
+        { "text": "Commit, бо перший запит був успішним" }
+      ]
+    },
+    {
+      "id": "race",
+      "kind": "single",
+      "text": "Код читає `stock`, перевіряє `if stock >= qty` і робить `UPDATE`. Який ризик?",
+      "options": [
+        { "text": "Два паралельні запити обидва пройдуть перевірку і продадуть більше, ніж є", "correct": true },
+        { "text": "Жодного: перевірка в Python надійніша за SQL" },
+        { "text": "UPDATE не спрацює без SELECT" }
+      ]
+    },
+    {
+      "id": "rowcount",
+      "kind": "single",
+      "text": "`UPDATE products SET stock = stock - 2 WHERE id = 7 AND stock >= 2` повернув `rowcount == 0`. Що це означає?",
+      "options": [
+        { "text": "Товару 7 немає або на складі менше 2 — нічого не змінено", "correct": true },
+        { "text": "Запит упав з помилкою" },
+        { "text": "Склад став 0" }
+      ]
+    },
+    {
+      "id": "raise-from",
+      "kind": "single",
+      "text": "Навіщо `raise EmailTaken(email) from err`?",
+      "options": [
+        { "text": "Код вище отримує зрозумілу доменну помилку, а `IntegrityError` лишається причиною в traceback", "correct": true },
+        { "text": "Щоб база автоматично відкотила транзакцію" },
+        { "text": "Щоб приховати помилку від логів" }
+      ]
+    },
+    {
+      "id": "commit-in-loop",
+      "kind": "single",
+      "text": "Імпорт робить `conn.commit()` після кожного товару, і на 50-му з 100 падає. Що в базі?",
+      "options": [
+        { "text": "49 товарів — імпорт виконано наполовину", "correct": true },
+        { "text": "Нічого — все відкотилось" },
+        { "text": "Усі 100" }
+      ]
+    },
+    {
+      "id": "no-rollback",
+      "kind": "single",
+      "text": "Код перехопив `IntegrityError` після першого з двох `INSERT` і продовжив роботу без `rollback()`. Чим це загрожує?",
+      "options": [
+        { "text": "Перший INSERT лишився у відкритій транзакції і збережеться наступним `commit()`", "correct": true },
+        { "text": "Нічим: помилка сама все відкотила" },
+        { "text": "З'єднання закриється" }
+      ]
+    }
+  ]
+}

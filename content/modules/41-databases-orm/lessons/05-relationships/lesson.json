@@ -1,0 +1,36 @@
+{
+  "title": "Relationships and the N+1 problem",
+  "minutes": 60,
+  "summary": "ForeignKey і relationship з back_populates, каскади (all, delete-orphan), багато-до-багатьох через secondary, ліниве завантаження і проблема N+1, selectinload і joinedload, як порахувати SQL-запити в тесті",
+  "resources": [
+    {
+      "title": "SQLAlchemy docs: Basic Relationship Patterns",
+      "url": "https://docs.sqlalchemy.org/en/20/orm/basic_relationships.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLAlchemy docs: Relationship Loading Techniques",
+      "url": "https://docs.sqlalchemy.org/en/20/orm/queryguide/relationships.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "lazy, selectinload, joinedload, raiseload",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLAlchemy docs: Cascades",
+      "url": "https://docs.sqlalchemy.org/en/20/orm/cascades.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: N+1 query problem explained",
+      "url": "https://www.youtube.com/results?search_query=n%2B1+query+problem+orm+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

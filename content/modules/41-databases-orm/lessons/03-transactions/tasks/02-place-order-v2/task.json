@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Transfer loyalty points atomically",
+  "variantOf": "02-place-order",
+  "statement": "Схожа задача: таблиці `customers (id, points)` і `transfers (from_id, to_id, points)`. Напиши `transfer_points(conn, from_id, to_id, points)`:\n\n- `points` має бути більше 0, інакше `ValueError` (до будь-яких змін);\n- списує бали з відправника **лише якщо їх вистачає** (умова в `UPDATE`), інакше `NotEnoughPoints(from_id)`;\n- нараховує бали отримувачу; якщо отримувача немає — `UnknownCustomer(to_id)`;\n- записує переказ у `transfers` і фіксує все.\n\nПри будь-якій помилці база лишається **без змін**. Винятки — у `errors.py`.",
+  "hints": [
+    "Тіло — в `with conn:`. Виняток посеред блоку відкотить уже зроблене списання.",
+    "Списання: `UPDATE customers SET points = points - ? WHERE id = ? AND points >= ?` і перевірка `rowcount`.",
+    "Нарахування: `UPDATE customers SET points = points + ? WHERE id = ?`; `rowcount == 0` — отримувача немає."
+  ],
+  "explanation": "Переказ — класична транзакція: списання і нарахування мають відбутися разом. Якщо отримувача немає, списання вже виконано — його відкочує `with conn:`, коли вилітає `UnknownCustomer`. Умова `points >= ?` у самому `UPDATE` не дає двом паралельним переказам витратити ті самі бали. Перевірку `points > 0` роблять до транзакції: від'ємний переказ «вкрав» би бали в отримувача.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "f[\"'][^\"'\\n]*\\b(?:update|insert|select)\\b|\\.format\\(", "flags": "im", "message": "Значення — лише параметрами `?`." }
+  ]
+}

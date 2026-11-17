@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Customer stats with an outer join",
+  "statement": "Моделі `Customer` (`email`) і `Order` (`customer_id`, `total`) — у `models.py`. Напиши `customer_stats(session)` — список `(email, кількість замовлень, сума замовлень)` для **всіх** покупців, включно з тими, хто нічого не замовляв (`0`, `0`). Порядок: більше замовлень — вище; при рівній кількості — за email. Одним запитом.\n\n```python\ncustomer_stats(session)\n# [('anna@shop.ua', 2, 1700), ('olha@shop.ua', 1, 90), ('ivan@shop.ua', 0, 0)]\n```",
+  "hints": [
+    "`outerjoin(Order, Order.customer_id == Customer.id)` лишає покупців без замовлень.",
+    "Рахуй `func.count(Order.id)`, а не `func.count()` — інакше покупець без замовлень отримає 1.",
+    "`func.coalesce(func.sum(Order.total), 0)` замість `NULL`; `group_by(Customer.id)`."
+  ],
+  "explanation": "Внутрішній `join` викинув би покупців без замовлень. З `outerjoin` вони лишаються, але з одним рядком, де всі поля замовлення — `NULL`: `COUNT(*)` порахує його як 1, а `COUNT(orders.id)` — правильно як 0. `SUM` по таких рядках дає `NULL`, тому його загортають у `coalesce(..., 0)`. Групують за `Customer.id`, а не за email-рядком, — так завжди надійніше.",
+  "codeRules": [
+    { "kind": "require", "pattern": "outerjoin\\(|isouter\\s*=\\s*True", "message": "Покупці без замовлень мають лишитись: `outerjoin(...)`." },
+    { "kind": "require", "pattern": "group_by\\(", "message": "Згрупуй рядки в базі: `group_by(...)`." }
+  ]
+}

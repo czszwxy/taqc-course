@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Create the shop schema",
+  "statement": "Напиши `create_schema(conn)` — створює чотири таблиці з обмеженнями і **вмикає зовнішні ключі** для цього з'єднання.\n\n| Таблиця | Стовпці та правила |\n|---|---|\n| `users` | `id` INTEGER PRIMARY KEY; `email` TEXT обов'язковий, унікальний; `name` TEXT обов'язковий |\n| `products` | `id` INTEGER PRIMARY KEY; `sku` TEXT обов'язковий, унікальний; `price` INTEGER обов'язковий, **більший за 0** |\n| `orders` | `id` INTEGER PRIMARY KEY; `user_id` обов'язковий, посилається на `users`; `status` TEXT обов'язковий, за замовчуванням `'new'`, лише `'new'`, `'paid'`, `'shipped'`, `'cancelled'` |\n| `order_items` | `order_id` → `orders` (**видаляється разом із замовленням**); `product_id` → `products`; `quantity` INTEGER обов'язковий, **не менше 1**; `unit_price` INTEGER обов'язковий; первинний ключ — пара `(order_id, product_id)` |\n\n```python\nconn = sqlite3.connect(\":memory:\")\ncreate_schema(conn)\nconn.execute(\"INSERT INTO orders (user_id) VALUES (999)\")   # IntegrityError — такого користувача немає\n```",
+  "hints": [
+    "Кілька команд одним викликом: `conn.executescript(\"\"\"CREATE TABLE ...; CREATE TABLE ...;\"\"\")`.",
+    "Зовнішні ключі в SQLite: `conn.execute(\"PRAGMA foreign_keys = ON\")`. Посилання: `user_id INTEGER NOT NULL REFERENCES users (id)`.",
+    "`CHECK (status IN ('new', 'paid', 'shipped', 'cancelled'))`, `REFERENCES orders (id) ON DELETE CASCADE`, `PRIMARY KEY (order_id, product_id)` — окремим рядком після стовпців."
+  ],
+  "explanation": "Кожне правило з таблиці — окреме обмеження: обов'язкові поля — `NOT NULL`, унікальні — `UNIQUE`, діапазони й списки значень — `CHECK`, посилання — `REFERENCES`, значення за замовчуванням — `DEFAULT`. Складений первинний ключ не дасть додати той самий товар у замовлення двічі (замість цього збільшують `quantity`). Найчастіша помилка — забутий `PRAGMA foreign_keys = ON`: тоді SQLite мовчки приймає посилання на неіснуючі рядки і не виконує `ON DELETE CASCADE`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "foreign_keys\\s*=\\s*on", "flags": "im", "message": "Увімкни зовнішні ключі: `PRAGMA foreign_keys = ON`." }
+  ]
+}

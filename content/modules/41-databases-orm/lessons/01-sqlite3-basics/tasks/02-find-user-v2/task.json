@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "title": "Filter products with named parameters",
+  "variantOf": "02-find-user",
+  "statement": "Схожа задача: таблиця `products` (`sku`, `name`, `category`, `price`). Напиши `products_in_category(conn, category, max_price=None)` — список словників `{\"sku\": ..., \"price\": ...}` товарів категорії, від найдешевшого (при рівній ціні — за `sku`). Якщо `max_price` задано — лише товари з ціною **не більшою** за нього.\n\n```python\nproducts_in_category(conn, \"mice\")                  # [{'sku': 'MS-01', 'price': 400}, ...]\nproducts_in_category(conn, \"mice\", max_price=500)   # лише до 500 включно\n```\n\nКатегорію й ціну передавай **іменованими параметрами** `:category`, `:max_price`.",
+  "hints": [
+    "Два запити або один: `... WHERE category = :category AND (:max_price IS NULL OR price <= :max_price)`.",
+    "Параметри словником: `{\"category\": category, \"max_price\": max_price}` — `None` стане `NULL`.",
+    "`ORDER BY price, sku`, а з кожного рядка — `{\"sku\": row[0], \"price\": row[1]}`."
+  ],
+  "explanation": "Іменовані параметри зручні, коли значень кілька або одне повторюється: словник `{\"category\": ..., \"max_price\": ...}` передається один раз. Необов'язковий фільтр можна виразити в SQL (`:max_price IS NULL OR price <= :max_price`) або зібрати текст запиту з **фіксованих** шматків — але значення завжди йдуть параметрами. Друге сортування за `sku` робить порядок однозначним.",
+  "codeRules": [
+    { "kind": "require", "pattern": ":category", "message": "Передай категорію іменованим параметром `:category`." },
+    { "kind": "forbid", "pattern": "f[\"'][^\"'\\n]*\\b(?:select|where|and)\\b|\\.format\\(|%\\s*\\(?\\s*(?:category|max_price)", "flags": "im", "message": "Не вклеюй значення у SQL: лише параметри `:category`, `:max_price`." }
+  ]
+}

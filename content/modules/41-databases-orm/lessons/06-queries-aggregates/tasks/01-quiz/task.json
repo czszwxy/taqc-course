@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Queries and aggregates",
+  "show": 6,
+  "hints": ["outerjoin + count(стовпця) + coalesce дають нулі. having — для груп. Пагінація без order_by ненадійна."],
+  "questions": [
+    {
+      "id": "count-star",
+      "kind": "single",
+      "text": "Звіт з `outerjoin` показує читачу без позик **1** позику. Яка причина?",
+      "options": [
+        { "text": "`func.count()` рахує рядок з NULL-полями позики; потрібно `func.count(Loan.id)`", "correct": true },
+        { "text": "outerjoin дублює читачів" },
+        { "text": "Треба замінити group_by на order_by" }
+      ]
+    },
+    {
+      "id": "join-drops",
+      "kind": "single",
+      "text": "Чому у звіті «позики за читачами» з `join` зникли читачі без позик?",
+      "options": [
+        { "text": "Внутрішнє з'єднання лишає лише рядки, що мають пару; потрібен `outerjoin`", "correct": true },
+        { "text": "SQLAlchemy приховує порожні групи" },
+        { "text": "Через відсутній `having`" }
+      ]
+    },
+    {
+      "id": "coalesce",
+      "kind": "single",
+      "text": "Що поверне `func.sum(Loan.fine)` для читача без позик (з outerjoin)?",
+      "options": [
+        { "text": "`None` (NULL) — тому суму загортають у `func.coalesce(..., 0)`", "correct": true },
+        { "text": "0" },
+        { "text": "Помилку" }
+      ]
+    },
+    {
+      "id": "having",
+      "kind": "single",
+      "text": "Потрібні читачі з двома й більше позиками. Де умова `count(Loan.id) >= 2`?",
+      "options": [
+        { "text": "У `having(...)` — це умова на групу після агрегації", "correct": true },
+        { "text": "У `where(...)`" },
+        { "text": "У `order_by(...)`" }
+      ]
+    },
+    {
+      "id": "offset",
+      "kind": "single",
+      "text": "Розмір сторінки 20. Який `offset` для сторінки 3?",
+      "options": [
+        { "text": "40", "correct": true },
+        { "text": "60" },
+        { "text": "3" }
+      ]
+    },
+    {
+      "id": "order-by-page",
+      "kind": "single",
+      "text": "Чому пагінація без `order_by` — баг?",
+      "options": [
+        { "text": "Порядок рядків не гарантований: той самий рядок може з'явитися на двох сторінках, а інший — на жодній", "correct": true },
+        { "text": "Це не баг, база завжди повертає рядки за id" },
+        { "text": "Без order_by не працює limit" }
+      ]
+    },
+    {
+      "id": "python-aggregate",
+      "kind": "single",
+      "text": "Що не так з `sum(o.total for o in session.scalars(select(Order)))`?",
+      "options": [
+        { "text": "Завантажує всі замовлення в пам'ять, хоча база порахувала б суму одним запитом `func.sum`", "correct": true },
+        { "text": "Сума буде неправильною" },
+        { "text": "Нічого, так швидше" }
+      ]
+    }
+  ]
+}

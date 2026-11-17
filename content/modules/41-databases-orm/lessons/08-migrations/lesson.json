@@ -1,0 +1,36 @@
+{
+  "title": "Schema migrations with Alembic",
+  "minutes": 55,
+  "summary": "Навіщо міграції замість create_all, як Alembic веде ланцюжок ревізій (revision, down_revision, таблиця alembic_version), upgrade / downgrade, autogenerate і що він не бачить, batch mode для SQLite, безпечні зміни на живій базі (expand / contract) і правила роботи з міграціями",
+  "resources": [
+    {
+      "title": "Alembic docs: Tutorial",
+      "url": "https://alembic.sqlalchemy.org/en/latest/tutorial.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Alembic docs: Auto Generating Migrations",
+      "url": "https://alembic.sqlalchemy.org/en/latest/autogenerate.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Розділ «What does Autogenerate Detect (and what does it not detect?)»",
+      "needsVerification": true
+    },
+    {
+      "title": "Alembic docs: Running \"Batch\" Migrations for SQLite",
+      "url": "https://alembic.sqlalchemy.org/en/latest/batch.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Alembic migrations tutorial",
+      "url": "https://www.youtube.com/results?search_query=alembic+migrations+tutorial",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

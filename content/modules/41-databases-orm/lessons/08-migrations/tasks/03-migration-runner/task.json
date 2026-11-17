@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Build a tiny migration runner",
+  "statement": "Зроби власну маленьку версію того, що робить `alembic upgrade head`. `migrations` — список пар `(version, statements)`: номер міграції і список SQL-команд (порядок у списку може бути будь-який). Напиши `apply_migrations(conn, migrations)`:\n\n1. створює таблицю `schema_version (version INTEGER PRIMARY KEY)`, якщо її ще немає;\n2. виконує міграції, яких ще немає в `schema_version`, **за зростанням** `version`;\n3. кожна міграція — **окрема транзакція**: команди + запис версії, потім commit;\n4. якщо команда падає — відкочує **цю** міграцію і кидає `MigrationError(version)` з `errors.py` з першопричиною; попередні лишаються застосованими, наступні не виконуються;\n5. повертає список версій, застосованих цим викликом.\n\nТест відкриває з'єднання з `autocommit=False` (Python 3.12+): транзакція відкрита завжди, тож відкочуються навіть `CREATE` і `ALTER TABLE`.\n\n```python\napply_migrations(conn, [(2, [\"ALTER TABLE users ADD COLUMN phone TEXT\"]), (1, [\"CREATE TABLE users (id INTEGER PRIMARY KEY)\"])])   # [1, 2]\napply_migrations(conn, same_list)   # [] — усе вже застосовано\n```",
+  "hints": [
+    "Застосовані версії: `{row[0] for row in conn.execute(\"SELECT version FROM schema_version\")}`; порядок — `sorted(migrations, key=lambda m: m[0])`.",
+    "Для кожної нової: виконай команди, `INSERT INTO schema_version (version) VALUES (?)`, `conn.commit()`.",
+    "Обгорни міграцію в `try` / `except sqlite3.Error as err:` → `conn.rollback()` і `raise MigrationError(version) from err`."
+  ],
+  "explanation": "Так працює будь-який інструмент міграцій: у базі зберігається, що вже виконано, і кожен запуск доганяє лише відсутнє — тому `upgrade` можна запускати скільки завгодно разів. Версія записується **в тій самій транзакції**, що й зміни: або міграцію застосовано й записано, або ні те, ні інше. Зламана міграція відкочується повністю й зупиняє ланцюжок — пропустити її й виконати наступні було б небезпечно, бо вони можуть залежати від неї.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\.rollback\\(|with\\s+conn\\s*:", "message": "Відкоти зламану міграцію: `conn.rollback()` або `with conn:`." }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Orders and revenue by status",
+  "statement": "Модель `Order` (`status`, `total`) — у `models.py`. Напиши `status_report(session)` — словник `{status: (кількість замовлень, сума total)}` для кожного статусу, що трапляється в таблиці. Порахуй **у базі одним запитом** з `group_by`.\n\n```python\nstatus_report(session)\n# {'new': (2, 1700), 'paid': (1, 900)}\n```",
+  "hints": [
+    "`select(Order.status, func.count(Order.id), func.sum(Order.total)).group_by(Order.status)`.",
+    "`session.execute(stmt).all()` дає рядки `(status, count, total)`.",
+    "Словник: `{status: (count, total) for status, count, total in rows}`."
+  ],
+  "explanation": "`group_by(Order.status)` ділить рядки на групи, а `func.count` і `func.sum` рахують кожну групу в базі — у Python приходить лише кілька рядків підсумку замість усієї таблиці. Для порожньої таблиці груп немає, тож результат — порожній словник.",
+  "codeRules": [
+    { "kind": "require", "pattern": "group_by\\(", "message": "Згрупуй рядки в базі: `group_by(...)`." },
+    { "kind": "require", "pattern": "func\\.sum\\(", "message": "Суму рахуй у базі: `func.sum(...)`." }
+  ]
+}

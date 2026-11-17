@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Migrations",
+  "show": 6,
+  "hints": ["create_all не змінює наявних таблиць. alembic_version — поточна ревізія. Застосовані міграції не редагують."],
+  "questions": [
+    {
+      "id": "why-not-create-all",
+      "kind": "single",
+      "text": "Чому в продакшені не обійтись `Base.metadata.create_all(engine)` після зміни моделі?",
+      "options": [
+        { "text": "Вона створює лише відсутні таблиці й не додає стовпці в наявні", "correct": true },
+        { "text": "Вона видаляє всі дані" },
+        { "text": "Вона працює лише з SQLite" }
+      ]
+    },
+    {
+      "id": "alembic-version",
+      "kind": "single",
+      "text": "Що зберігає таблиця `alembic_version`?",
+      "options": [
+        { "text": "id ревізії, на якій зараз база", "correct": true },
+        { "text": "Версію пакета alembic" },
+        { "text": "Копію всіх міграцій" }
+      ]
+    },
+    {
+      "id": "rename",
+      "kind": "single",
+      "text": "Стовпець `phone` перейменували в моделі на `phone_number` і запустили autogenerate. Що буде в чернетці?",
+      "options": [
+        { "text": "Видалення `phone` і додавання `phone_number` — без правок дані телефонів зникнуть", "correct": true },
+        { "text": "`op.alter_column(..., new_column_name=...)`" },
+        { "text": "Нічого: autogenerate не бачить змін стовпців" }
+      ]
+    },
+    {
+      "id": "edit-applied",
+      "kind": "single",
+      "text": "У міграції, вже застосованій на продакшені, знайшли помилку. Що робити?",
+      "options": [
+        { "text": "Написати нову міграцію, що виправляє помилку", "correct": true },
+        { "text": "Відредагувати старий файл — Alembic перезапустить його" },
+        { "text": "Видалити рядок з alembic_version і запустити знову" }
+      ]
+    },
+    {
+      "id": "not-null",
+      "kind": "single",
+      "text": "Що станеться з `op.add_column(\"members\", sa.Column(\"city\", sa.String(50), nullable=False))` на таблиці з рядками?",
+      "options": [
+        { "text": "Помилка: наявні рядки не мають значення для NOT NULL — додай nullable, заповни, потім зроби NOT NULL", "correct": true },
+        { "text": "Стовпець заповниться порожніми рядками" },
+        { "text": "Alembic сам підбере значення" }
+      ]
+    },
+    {
+      "id": "down-revision",
+      "kind": "single",
+      "text": "Що означає `down_revision` у файлі міграції?",
+      "options": [
+        { "text": "id попередньої ревізії в ланцюжку", "correct": true },
+        { "text": "Функцію відкату" },
+        { "text": "Версію Python" }
+      ]
+    },
+    {
+      "id": "idempotent",
+      "kind": "single",
+      "text": "`alembic upgrade head` запустили вдруге без нових міграцій. Що станеться?",
+      "options": [
+        { "text": "Нічого: база вже на head, виконувати нема чого", "correct": true },
+        { "text": "Усі міграції виконаються ще раз" },
+        { "text": "Помилка «table already exists»" }
+      ]
+    }
+  ]
+}

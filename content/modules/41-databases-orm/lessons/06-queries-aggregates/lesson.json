@@ -1,0 +1,28 @@
+{
+  "title": "Queries: joins, aggregates and pagination",
+  "minutes": 60,
+  "summary": "Вибір окремих стовпців і Row, фільтри and_ / or_ / in_ / ilike, join і outerjoin, func.count / sum / avg з group_by і having, coalesce для нулів, count(стовпця) проти count(*), пагінація limit / offset зі стабільним order_by і загальна кількість",
+  "resources": [
+    {
+      "title": "SQLAlchemy Unified Tutorial: Using SELECT Statements",
+      "url": "https://docs.sqlalchemy.org/en/20/tutorial/data_select.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLAlchemy docs: ORM Querying Guide — SELECT statements",
+      "url": "https://docs.sqlalchemy.org/en/20/orm/queryguide/select.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: SQLAlchemy 2.0 select join group by",
+      "url": "https://www.youtube.com/results?search_query=sqlalchemy+2.0+select+join+group+by",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

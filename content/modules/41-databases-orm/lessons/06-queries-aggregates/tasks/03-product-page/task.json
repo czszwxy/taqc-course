@@ -1,0 +1,17 @@
+{
+  "type": "python",
+  "title": "Paginate the catalog",
+  "statement": "Модель `Product` (`sku`, `name`) — у `models.py`. Напиши `product_page(session, page, per_page=5, search=None)` — словник:\n\n- `\"items\"` — `sku` товарів сторінки `page` (нумерація з 1) у порядку `Product.id`;\n- `\"total\"` — скільки товарів відповідає пошуку;\n- `\"pages\"` — скільки всього сторінок (0, якщо товарів немає).\n\n`search` — шукає підрядок у `name` **без урахування регістру**. `page` менше 1 — `ValueError`. Сторінка за межами — порожній `items`.\n\n```python\nproduct_page(session, 2, per_page=5)              # {'items': ['P-06', ..., 'P-10'], 'total': 12, 'pages': 3}\nproduct_page(session, 1, search=\"MOUSE\")         # лише товари з 'mouse' у назві\n```",
+  "hints": [
+    "Фільтр збери один раз: `conditions = [Product.name.ilike(f\"%{search}%\")] if search else []` — і застосуй його і до сторінки, і до підрахунку.",
+    "Сторінка: `select(Product.sku).where(*conditions).order_by(Product.id).limit(per_page).offset((page - 1) * per_page)`.",
+    "Кількість: `session.scalar(select(func.count()).select_from(Product).where(*conditions))`; сторінок — `math.ceil(total / per_page)`."
+  ],
+  "explanation": "Сторінку вибирає база: `order_by` робить порядок стабільним, `offset` пропускає попередні сторінки, `limit` обрізає поточну. Загальна кількість — окремий `count` з **тим самим** фільтром, інакше «знайдено 2, сторінок 3». `ilike` шукає без урахування регістру і на SQLite, і на PostgreSQL, а `like` — лише на SQLite (і лише для латиниці): тест на SQLite такої різниці не покаже. Перевірку `page < 1` роблять до запиту: від'ємний `offset` дав би дивні результати.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\.limit\\(", "message": "Сторінку обрізає база: `.limit(per_page)`." },
+    { "kind": "require", "pattern": "\\.offset\\(", "message": "Попередні сторінки пропускає база: `.offset(...)`." },
+    { "kind": "require", "pattern": "func\\.count\\(", "message": "Загальну кількість порахуй у базі: `func.count()`." },
+    { "kind": "require", "pattern": "\\.ilike\\(|func\\.lower\\(", "message": "Шукай без урахування регістру через `ilike(...)`: `like` і `contains` ігнорують регістр лише в SQLite і лише для латиниці, а на PostgreSQL — ні." }
+  ]
+}

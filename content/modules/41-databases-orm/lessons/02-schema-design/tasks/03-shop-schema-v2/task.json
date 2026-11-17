@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Create a blog schema with tags",
+  "variantOf": "03-shop-schema",
+  "statement": "Схожа задача для блогу: напиши `create_blog_schema(conn)` — чотири таблиці й увімкнені зовнішні ключі.\n\n| Таблиця | Стовпці та правила |\n|---|---|\n| `authors` | `id` INTEGER PRIMARY KEY; `email` TEXT обов'язковий, унікальний; `name` TEXT обов'язковий |\n| `posts` | `id` INTEGER PRIMARY KEY; `author_id` обов'язковий → `authors`, **пости видаляються разом з автором**; `title` TEXT обов'язковий; `status` TEXT обов'язковий, за замовчуванням `'draft'`, лише `'draft'` або `'published'` |\n| `tags` | `id` INTEGER PRIMARY KEY; `name` TEXT обов'язковий, унікальний |\n| `post_tags` | `post_id` → `posts`, `tag_id` → `tags` (обидва видаляються разом з постом / тегом); первинний ключ — пара `(post_id, tag_id)` |",
+  "hints": [
+    "`post_tags` — сполучна таблиця багато-до-багатьох: два зовнішні ключі й `PRIMARY KEY (post_id, tag_id)`.",
+    "`REFERENCES authors (id) ON DELETE CASCADE` і `PRAGMA foreign_keys = ON` до створення таблиць.",
+    "`CHECK (status IN ('draft', 'published'))` разом з `DEFAULT 'draft'`."
+  ],
+  "explanation": "Багато-до-багатьох завжди означає сполучну таблицю: у посту багато тегів, у тега багато постів, і жоден з них не може зберігати «список» іншого. Складений первинний ключ не дасть повісити той самий тег двічі, а `ON DELETE CASCADE` прибирає зв'язки, коли зникає пост або тег. Без `PRAGMA foreign_keys = ON` SQLite не перевіряє посилань і не виконує каскад.",
+  "codeRules": [
+    { "kind": "require", "pattern": "foreign_keys\\s*=\\s*on", "flags": "im", "message": "Увімкни зовнішні ключі: `PRAGMA foreign_keys = ON`." }
+  ]
+}

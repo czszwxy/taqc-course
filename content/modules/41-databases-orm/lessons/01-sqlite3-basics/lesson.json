@@ -1,0 +1,36 @@
+{
+  "title": "Python and SQLite: the DB-API",
+  "minutes": 55,
+  "summary": "Модуль sqlite3 і стандарт DB-API: connect, execute, fetchone / fetchall, параметри ? і :name замість f-рядків (SQL-ін'єкція), executemany, sqlite3.Row і cursor.description, commit і with conn",
+  "resources": [
+    {
+      "title": "Python docs: sqlite3 — DB-API 2.0 interface for SQLite databases",
+      "url": "https://docs.python.org/3/library/sqlite3.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "PEP 249 — Python Database API Specification v2.0",
+      "url": "https://peps.python.org/pep-0249/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Спільний інтерфейс sqlite3, psycopg та інших драйверів",
+      "needsVerification": true
+    },
+    {
+      "title": "OWASP: SQL Injection",
+      "url": "https://owasp.org/www-community/attacks/SQL_Injection",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Python sqlite3 tutorial",
+      "url": "https://www.youtube.com/results?search_query=python+sqlite3+tutorial",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

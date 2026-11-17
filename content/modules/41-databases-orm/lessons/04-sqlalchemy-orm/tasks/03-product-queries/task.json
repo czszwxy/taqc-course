@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Product queries with a Session",
+  "statement": "Модель `Product` лежить у `models.py` (відкрий файл): `sku`, `name`, `price`, `category`, `in_stock`. Напиши в `solution.py` чотири функції, кожна отримує відкриту `session`:\n\n- `add_product(session, sku, name, price, category)` — створює товар, **зберігає** (commit) і повертає його (з `id`).\n- `find_by_sku(session, sku)` — товар або `None`.\n- `cheapest_in_category(session, category, limit=3)` — товари категорії **в наявності**, від найдешевшого; при однаковій ціні — за `sku`; не більше `limit`.\n- `mark_sold_out(session, sku)` — ставить `in_stock = False`, зберігає й повертає `True`; якщо товару немає — `False`.\n\n```python\nadd_product(session, \"MS-01\", \"Mouse\", 400, \"mice\")\ncheapest_in_category(session, \"mice\", limit=2)   # [Product('MS-01', price=400), ...]\nfind_by_sku(session, \"NOPE\")                     # None\n```\n\nПиши запити через `select(...)`.",
+  "hints": [
+    "`session.scalars(select(Product).where(Product.sku == sku)).first()` — один товар або `None`.",
+    "Сортування за двома ключами: `.order_by(Product.price, Product.sku)`, обмеження — `.limit(limit)`.",
+    "Після зміни `product.in_stock = False` потрібен `session.commit()` — інакше зміна зникне разом із сесією."
+  ],
+  "explanation": "Кожна функція — один `select`: умови в `where(...)`, порядок в `order_by(...)`, кількість у `limit(...)`, а результат через `session.scalars(...)` — об'єкти, не кортежі. Зміни (новий товар, `in_stock = False`) зберігає лише `session.commit()`: тест закриває сесію і відкриває нову — незафіксоване зникає. Типові помилки — забути умову `in_stock`, сортувати лише за ціною (тоді порядок при однаковій ціні випадковий) і використати `session.execute`, що повертає рядки `(Product,)`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "select\\(", "message": "Пиши запити через `select(...)`." },
+    { "kind": "forbid", "pattern": "text\\(|execute\\(\\s*[\"']", "message": "Без сирого SQL: потрібні вирази `select(...)`." }
+  ]
+}

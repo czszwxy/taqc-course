@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Find a user safely",
+  "statement": "Таблиця `users` має стовпці `id`, `email`, `name`. Напиши `find_user(conn, email)` — словник `{\"id\": ..., \"email\": ..., \"name\": ...}` або `None`, якщо такого email немає.\n\n```python\nfind_user(conn, \"anna@shop.ua\")       # {'id': 1, 'email': 'anna@shop.ua', 'name': 'Anna'}\nfind_user(conn, \"' OR '1'='1\")        # None — це не email, а спроба SQL-ін'єкції\n```\n\nEmail передавай **параметром** запиту.",
+  "hints": [
+    "`conn.execute(\"SELECT id, email, name FROM users WHERE email = ?\", (email,))` — кома в кортежі обов'язкова.",
+    "`fetchone()` поверне кортеж або `None`. З кортежу збери словник: `{\"id\": row[0], ...}`.",
+    "Не вклеюй email f-рядком: тест передає `o'brien@shop.ua` і рядок-ін'єкцію."
+  ],
+  "explanation": "Параметр `?` передає email окремо від тексту запиту: апостроф у `o'brien@shop.ua` не ламає SQL, а `' OR '1'='1` шукається як звичайний (неіснуючий) email. Якщо вклеїти email f-рядком, перший випадок дасть синтаксичну помилку, а другий поверне першого користувача з таблиці. Перевір `None` до того, як читати стовпці.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "f[\"'][^\"'\\n]*\\b(?:select|where)\\b|\\.format\\(|%\\s*\\(?\\s*email", "flags": "im", "message": "Не вклеюй email у SQL (f-рядок, format, %): передай його параметром `?`." }
+  ]
+}

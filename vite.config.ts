@@ -6,6 +6,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { isNeededLibFile } from './src/runner/lib-files';
+import { PYTHON_PACKAGE_WHEELS, PYTHON_PACKAGES_DIR } from './src/runner/python-packages';
 import { API_BASE, API_FIXED_BASE, mockApiMiddleware } from './server/mock-api';
 import { labMiddleware } from './server/lab-runner';
 import { LAB_ROUTE } from './server/lab-types';
@@ -58,7 +59,10 @@ function playwrightLab(): Plugin {
   };
 }
 
-/** Pyodide (Python in WebAssembly) files the Python task worker loads from /pyodide/ — served locally, so it works offline. */
+/**
+ * Pyodide (Python in WebAssembly) files the Python task worker loads from /pyodide/ — served locally, so it works offline —
+ * plus the bundled package wheels from vendor/pyodide-packages (src/runner/python-packages.ts).
+ */
 const PYODIDE_ROUTE = '/pyodide';
 const PYODIDE_FILES = ['pyodide.mjs', 'pyodide.asm.mjs', 'pyodide.asm.wasm', 'python_stdlib.zip', 'pyodide-lock.json'];
 const PYODIDE_TYPES: Record<string, string> = {
@@ -66,19 +70,28 @@ const PYODIDE_TYPES: Record<string, string> = {
   '.wasm': 'application/wasm',
   '.zip': 'application/zip',
   '.json': 'application/json',
+  '.whl': 'application/zip',
 };
 
 function pyodideAssets(): Plugin {
-  const dir = path.join(path.dirname(fileURLToPath(import.meta.url)), 'node_modules', 'pyodide');
+  const root = path.dirname(fileURLToPath(import.meta.url));
+  const pyodideDir = path.join(root, 'node_modules', 'pyodide');
+  const wheelsDir = path.join(root, PYTHON_PACKAGES_DIR);
+  /** Public file name → file on disk. */
+  const files = new Map<string, string>([
+    ...PYODIDE_FILES.map((name): [string, string] => [name, path.join(pyodideDir, name)]),
+    ...PYTHON_PACKAGE_WHEELS.map((name): [string, string] => [name, path.join(wheelsDir, name)]),
+  ]);
   const serve = (req: { url?: string }, res: NodeJS.WritableStream & { setHeader: (k: string, v: string) => void }, next: () => void) => {
     const requested = (req.url ?? '').split('?')[0] ?? '';
     const name = requested.startsWith('/') ? requested.slice(1) : requested;
-    if (!PYODIDE_FILES.includes(name)) {
+    const file = files.get(name);
+    if (file === undefined) {
       next();
       return;
     }
     res.setHeader('Content-Type', PYODIDE_TYPES[path.extname(name)] ?? 'application/octet-stream');
-    fs.createReadStream(path.join(dir, name)).pipe(res);
+    fs.createReadStream(file).pipe(res);
   };
   return {
     name: 'my-university:pyodide',
@@ -89,7 +102,7 @@ function pyodideAssets(): Plugin {
       server.middlewares.use(PYODIDE_ROUTE, serve);
     },
     generateBundle() {
-      PYODIDE_FILES.forEach((file) => this.emitFile({ type: 'asset', fileName: `pyodide/${file}`, source: fs.readFileSync(path.join(dir, file)) }));
+      files.forEach((file, name) => this.emitFile({ type: 'asset', fileName: `pyodide/${name}`, source: fs.readFileSync(file) }));
     },
   };
 }

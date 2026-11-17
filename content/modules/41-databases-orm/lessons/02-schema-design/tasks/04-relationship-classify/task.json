@@ -1,0 +1,26 @@
+{
+  "type": "classify",
+  "title": "One-to-one, one-to-many or many-to-many?",
+  "statement": "Для кожної пари сутностей обери вид зв'язку. Подумай з обох боків: скільки других може мати один перший — і навпаки.",
+  "categories": [
+    { "id": "one-one", "label": "One-to-one", "description": "Зовнішній ключ + UNIQUE" },
+    { "id": "one-many", "label": "One-to-many", "description": "Зовнішній ключ у таблиці «багатьох»" },
+    { "id": "many-many", "label": "Many-to-many", "description": "Сполучна таблиця" }
+  ],
+  "items": [
+    { "id": "customer-orders", "text": "A customer and their orders", "category": "one-many", "explain": "Замовлення належить одному покупцю, покупець має багато замовлень: `orders.customer_id`." },
+    { "id": "order-products", "text": "An order and the products in it", "category": "many-many", "explain": "У замовленні багато товарів, товар — у багатьох замовленнях: сполучна таблиця `order_items` (з кількістю й ціною)." },
+    { "id": "user-settings", "text": "A user and their settings (exactly one settings row per user)", "category": "one-one", "explain": "`settings.user_id` з `UNIQUE`: другого рядка налаштувань для того самого користувача не буде." },
+    { "id": "product-tags", "text": "A product and its tags", "category": "many-many" },
+    { "id": "category-products", "text": "A category and the products in it (a product has one category)", "category": "one-many" },
+    { "id": "order-label", "text": "An order and its shipping label (one label per order)", "category": "one-one" },
+    { "id": "student-courses", "text": "A student and the courses they attend", "category": "many-many" },
+    { "id": "post-comments", "text": "A blog post and its comments", "category": "one-many" },
+    { "id": "employee-projects", "text": "An employee and the projects they work on", "category": "many-many" },
+    { "id": "country-cities", "text": "A country and its cities", "category": "one-many" }
+  ],
+  "show": 8,
+  "passScore": 0.8,
+  "hints": ["Спитай з обох боків: «чи може у товару бути багато тегів?» і «чи може тег бути в багатьох товарів?» — два «так» означають багато-до-багатьох."],
+  "explanation": "Якщо з одного боку «багато», а з іншого «один» — це один-до-багатьох, і ключ лежить у таблиці «багатьох». Якщо «багато» з обох боків — потрібна сполучна таблиця. Якщо «один» з обох — зовнішній ключ з `UNIQUE`."
+}

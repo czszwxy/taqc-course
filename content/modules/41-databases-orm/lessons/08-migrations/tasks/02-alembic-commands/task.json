@@ -1,0 +1,35 @@
+{
+  "type": "table",
+  "title": "What does this Alembic command do?",
+  "statement": "Для кожної команди обери, що вона робить.",
+  "hints": [
+    "`revision` створює файл, `upgrade` / `downgrade` виконують міграції, `current` / `history` лише показують.",
+    "`--autogenerate` порівнює моделі з базою; `stamp` лише записує версію."
+  ],
+  "explanation": "Команди діляться на три групи: створити міграцію (`revision`, з `--autogenerate` — чернетку з порівняння), виконати (`upgrade head` — усе відсутнє, `downgrade -1` — відкотити останню) і подивитись стан (`current`, `history`). `stamp head` лише записує версію в `alembic_version`, нічого не виконуючи, — так «підключають» міграції до бази, створеної раніше іншим способом.",
+  "givenColumns": ["Command"],
+  "answerColumns": [
+    {
+      "id": "effect",
+      "label": "What it does",
+      "options": [
+        "Creates an empty migration file",
+        "Drafts a migration by comparing the models with the database",
+        "Applies every migration the database has not seen yet",
+        "Rolls back the last applied migration",
+        "Shows the revision the database is at",
+        "Lists the chain of migrations",
+        "Records a revision as applied without running anything"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`alembic revision -m \"add phone\"`"], "answers": { "effect": "Creates an empty migration file" } },
+    { "given": ["`alembic revision --autogenerate -m \"add phone\"`"], "answers": { "effect": "Drafts a migration by comparing the models with the database" } },
+    { "given": ["`alembic upgrade head`"], "answers": { "effect": "Applies every migration the database has not seen yet" } },
+    { "given": ["`alembic downgrade -1`"], "answers": { "effect": "Rolls back the last applied migration" } },
+    { "given": ["`alembic current`"], "answers": { "effect": "Shows the revision the database is at" } },
+    { "given": ["`alembic history`"], "answers": { "effect": "Lists the chain of migrations" } },
+    { "given": ["`alembic stamp head`"], "answers": { "effect": "Records a revision as applied without running anything" } }
+  ]
+}

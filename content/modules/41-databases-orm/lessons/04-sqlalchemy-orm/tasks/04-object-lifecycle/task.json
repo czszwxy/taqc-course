@@ -1,0 +1,19 @@
+{
+  "type": "order",
+  "title": "The life of a new object",
+  "statement": "```python\nwith Session(engine) as session:\n    book = Book(isbn=\"9780000000002\", title=\"Refactoring\")\n    session.add(book)\n    session.commit()\n    print(book.title)\n```\n\nРозстав події в порядку, в якому вони відбуваються.",
+  "items": [
+    "Book(...) creates a plain Python object: the session does not know it yet (transient)",
+    "session.add(book) makes it pending: book.id is still None",
+    "session.commit() starts with a flush: SQLAlchemy sends INSERT INTO books with parameters",
+    "The database assigns the primary key and SQLAlchemy writes it into book.id",
+    "The transaction is committed: other connections can now see the row",
+    "print(book.title) reloads the expired attributes with a SELECT and prints 'Refactoring'",
+    "Leaving the with block closes the session: book becomes detached"
+  ],
+  "hints": [
+    "Спершу об'єкт лише в Python, потім сесія про нього знає, і лише flush надсилає SQL.",
+    "Після commit атрибути «протухають» (expire_on_commit) — перше звернення робить SELECT."
+  ],
+  "explanation": "Новий об'єкт проходить стани transient → pending → persistent → detached. `INSERT` надсилається під час flush, з якого починається `commit()`; після нього база вже дала `id`, а транзакція зафіксована. Після commit SQLAlchemy позначає атрибути застарілими, тож `book.title` перечитується з бази. Закриття сесії «від'єднує» об'єкт."
+}

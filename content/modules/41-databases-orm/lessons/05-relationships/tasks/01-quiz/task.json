@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Relationships and loading",
+  "show": 6,
+  "hints": ["ForeignKey — у базі, relationship — у Python. Лінивий зв'язок у циклі — N+1; selectinload — 2 запити."],
+  "questions": [
+    {
+      "id": "fk-vs-relationship",
+      "kind": "single",
+      "text": "Чим `mapped_column(ForeignKey(\"authors.id\"))` відрізняється від `relationship()`?",
+      "options": [
+        { "text": "ForeignKey створює стовпець-посилання в базі, relationship дає атрибут для навігації між об'єктами", "correct": true },
+        { "text": "Це синоніми" },
+        { "text": "relationship створює стовпець, а ForeignKey — індекс" }
+      ]
+    },
+    {
+      "id": "back-populates",
+      "kind": "single",
+      "text": "Навіщо `back_populates`?",
+      "options": [
+        { "text": "`book.author = tolkien` одразу додає книжку в `tolkien.books` — обидві сторони узгоджені ще до запису в базу", "correct": true },
+        { "text": "Щоб SQLAlchemy створила зовнішній ключ" },
+        { "text": "Щоб зв'язок завантажувався жадібно" }
+      ]
+    },
+    {
+      "id": "n-plus-one",
+      "kind": "single",
+      "text": "Скільки запитів зробить цикл по 100 авторах з `len(author.books)`, якщо зв'язок лінивий за замовчуванням?",
+      "options": [
+        { "text": "101: один на авторів і по одному на книжки кожного автора", "correct": true },
+        { "text": "2" },
+        { "text": "1" }
+      ]
+    },
+    {
+      "id": "selectin",
+      "kind": "single",
+      "text": "Що робить `select(Author).options(selectinload(Author.books))`?",
+      "options": [
+        { "text": "Другим запитом з `WHERE author_id IN (...)` завантажує книжки всіх знайдених авторів — разом 2 запити", "correct": true },
+        { "text": "Завантажує лише авторів, у яких є книжки" },
+        { "text": "Робить окремий запит для кожного автора, але швидше" }
+      ]
+    },
+    {
+      "id": "delete-orphan",
+      "kind": "single",
+      "text": "Зв'язок має `cascade=\"all, delete-orphan\"`. Що станеться після `author.books.remove(book)` і `commit()`?",
+      "options": [
+        { "text": "Книжку буде видалено з бази", "correct": true },
+        { "text": "У книжки стане `author_id = NULL`" },
+        { "text": "Нічого: зміни колекції не зберігаються" }
+      ]
+    },
+    {
+      "id": "secondary",
+      "kind": "single",
+      "text": "Що потрібно для зв'язку багато-до-багатьох у SQLAlchemy?",
+      "options": [
+        { "text": "Сполучна таблиця і `relationship(secondary=...)` з обох боків", "correct": true },
+        { "text": "Два `ForeignKey` в одній з моделей" },
+        { "text": "`Mapped[list[...]]` з обох боків без нічого іншого" }
+      ]
+    },
+    {
+      "id": "detect",
+      "kind": "single",
+      "text": "Як помітити N+1 у тестах, якщо результат функції правильний?",
+      "options": [
+        { "text": "Порахувати SQL-запити (подія `before_cursor_execute` або `echo=True`) і задати межу", "correct": true },
+        { "text": "Ніяк — лише профілювати на продакшені" },
+        { "text": "Перевірити, що функція повертає список" }
+      ]
+    }
+  ]
+}

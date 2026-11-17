@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "SQLAlchemy ORM basics",
+  "show": 6,
+  "hints": ["Mapped[T | None] — NULL дозволено. SQL надсилається під час flush. scalars — об'єкти, execute — кортежі."],
+  "questions": [
+    {
+      "id": "nullable",
+      "kind": "single",
+      "text": "Що означає `year: Mapped[int | None]` у моделі?",
+      "options": [
+        { "text": "Стовпець INTEGER, який **може** бути NULL", "correct": true },
+        { "text": "Стовпець INTEGER NOT NULL зі значенням за замовчуванням 0" },
+        { "text": "Атрибут лише в Python, у таблиці стовпця не буде" }
+      ]
+    },
+    {
+      "id": "when-insert",
+      "kind": "single",
+      "text": "Після `session.add(book)` значення `book.id` — `None`. Коли SQLAlchemy надішле `INSERT`?",
+      "options": [
+        { "text": "Під час flush — у `session.commit()` або перед наступним запитом цієї сесії", "correct": true },
+        { "text": "Одразу в `session.add()`" },
+        { "text": "Лише коли закриється Engine" }
+      ]
+    },
+    {
+      "id": "scalars-vs-execute",
+      "kind": "single",
+      "text": "Чим `session.scalars(select(Book)).all()` відрізняється від `session.execute(select(Book)).all()`?",
+      "options": [
+        { "text": "Перше повертає список об'єктів `Book`, друге — рядки-кортежі `(Book,)`", "correct": true },
+        { "text": "Нічим" },
+        { "text": "Перше працює лише для одного рядка" }
+      ]
+    },
+    {
+      "id": "get-missing",
+      "kind": "single",
+      "text": "Що поверне `session.get(Book, 999)`, якщо такого рядка немає?",
+      "options": [
+        { "text": "`None`", "correct": true },
+        { "text": "Виняток `NoResultFound`" },
+        { "text": "Порожній об'єкт `Book()`" }
+      ]
+    },
+    {
+      "id": "create-all",
+      "kind": "single",
+      "text": "До моделі `Book` додали поле `pages`, таблиця `books` у базі вже існує. Що зробить `Base.metadata.create_all(engine)`?",
+      "options": [
+        { "text": "Нічого з `books`: вона створює лише відсутні таблиці — новий стовпець додає міграція", "correct": true },
+        { "text": "Додасть стовпець `pages` (ALTER TABLE)" },
+        { "text": "Видалить і створить таблицю заново" }
+      ]
+    },
+    {
+      "id": "update",
+      "kind": "single",
+      "text": "Як змінити назву вже завантаженої книжки?",
+      "options": [
+        { "text": "`book.title = \"New\"`, потім `session.commit()` — сесія сама виконає UPDATE", "correct": true },
+        { "text": "Лише через `session.execute(\"UPDATE ...\")`" },
+        { "text": "`session.add(book)` ще раз з новою назвою — інакше зміни не збережуться" }
+      ]
+    },
+    {
+      "id": "engine-lifetime",
+      "kind": "single",
+      "text": "Як правильно в вебзастосунку?",
+      "options": [
+        { "text": "Один Engine на весь застосунок, коротка Session на кожен запит", "correct": true },
+        { "text": "Новий Engine на кожен HTTP-запит" },
+        { "text": "Одна Session на весь застосунок назавжди" }
+      ]
+    }
+  ]
+}

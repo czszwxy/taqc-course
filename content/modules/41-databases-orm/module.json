@@ -1,0 +1,14 @@
+{
+  "title": "Databases & SQLAlchemy",
+  "description": "Як Python-застосунок зберігає дані: модуль sqlite3 і DB-API з параметрами замість склеювання рядків, проєктування схеми з обмеженнями й зв'язками, транзакції «все або нічого», ORM SQLAlchemy 2.0 (моделі, Session, select), зв'язки й проблема N+1, запити з агрегатами й пагінацією, репозиторії та сесії в застосунку і міграції схеми з Alembic. Усі задачі запускаються просто в браузері: SQLite і SQLAlchemy вбудовані в застосунок.",
+  "goals": [
+    "Query SQLite from Python with the DB-API, always passing values as parameters",
+    "Design tables with primary and foreign keys, NOT NULL, UNIQUE and CHECK constraints",
+    "Keep related changes atomic with transactions and turn database errors into domain errors",
+    "Describe tables as SQLAlchemy 2.0 models and work with them through a Session and select()",
+    "Map one-to-many and many-to-many relationships and remove N+1 queries with eager loading",
+    "Write filters, joins, aggregates and pagination with SQLAlchemy",
+    "Organise database code with repositories, short-lived sessions and tests on an in-memory database",
+    "Evolve a schema safely with migrations and understand how Alembic tracks versions"
+  ]
+}

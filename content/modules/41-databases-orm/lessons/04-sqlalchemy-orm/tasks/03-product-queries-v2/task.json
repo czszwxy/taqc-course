@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "title": "Customer queries with a Session",
+  "variantOf": "03-product-queries",
+  "statement": "Схожа задача: модель `Customer` у `models.py` (`email`, `name`, `city` — може бути `None`, `is_active`). Напиши:\n\n- `register(session, email, name, city=None)` — email зберігається **без пробілів по краях і в нижньому регістрі**; commit; повертає клієнта.\n- `get_by_email(session, email)` — шукає так само нормалізований email; клієнт або `None`.\n- `active_in_city(session, city)` — активні клієнти міста, відсортовані за `name`.\n- `deactivate(session, customer_id)` — знаходить за первинним ключем, ставить `is_active = False`, зберігає, повертає `True`; немає такого `id` — `False`.\n\n```python\nregister(session, \"  Anna@Shop.UA \", \"Anna\", \"Lviv\")\nget_by_email(session, \"ANNA@shop.ua\").name   # 'Anna'\n```",
+  "hints": [
+    "Нормалізуй email в обох функціях однаково: `email.strip().lower()`.",
+    "Пошук за первинним ключем — `session.get(Customer, customer_id)`.",
+    "Дві умови в одному `where(Customer.city == city, Customer.is_active.is_(True))`."
+  ],
+  "explanation": "Якщо при реєстрації email нормалізують, а при пошуку — ні (або навпаки), той самий клієнт «не знаходиться». Тому нормалізацію роблять в одному місці й застосовують і до запису, і до пошуку. `session.get` — найкоротший пошук за первинним ключем: він повертає `None`, коли рядка немає. Зміни зберігає лише `commit()`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "select\\(", "message": "Пиши запити через `select(...)`." },
+    { "kind": "forbid", "pattern": "text\\(|execute\\(\\s*[\"']", "message": "Без сирого SQL: потрібні вирази `select(...)`." }
+  ]
+}

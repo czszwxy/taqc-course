@@ -1,0 +1,30 @@
+{
+  "type": "table",
+  "title": "Which constraint enforces it?",
+  "statement": "Для кожної вимоги до даних інтернет-магазину обери обмеження, яке змусить базу її дотримуватись.",
+  "hints": [
+    "«Не повторюється» — UNIQUE; «завжди є» — NOT NULL; «посилається на наявний рядок» — FOREIGN KEY.",
+    "Правило про діапазон чи список значень — CHECK; «якщо не передали» — DEFAULT."
+  ],
+  "explanation": "Кожне обмеження відповідає на одне питання: чи може значення бути порожнім (`NOT NULL`), чи може повторюватись (`UNIQUE`), чи відповідає правилу (`CHECK`), чи існує рядок, на який посилаємось (`FOREIGN KEY`), що підставити за замовчуванням (`DEFAULT`) і як однозначно знайти рядок (`PRIMARY KEY`).",
+  "givenColumns": ["Requirement"],
+  "answerColumns": [
+    {
+      "id": "constraint",
+      "label": "Constraint",
+      "options": ["PRIMARY KEY", "NOT NULL", "UNIQUE", "CHECK", "FOREIGN KEY", "DEFAULT"]
+    }
+  ],
+  "rows": [
+    { "given": ["Every order belongs to an existing customer"], "answers": { "constraint": "FOREIGN KEY" } },
+    { "given": ["Two customers cannot share an email"], "answers": { "constraint": "UNIQUE" } },
+    { "given": ["A product always has a name"], "answers": { "constraint": "NOT NULL" } },
+    { "given": ["The quantity in an order line is at least 1"], "answers": { "constraint": "CHECK" } },
+    { "given": ["A new order gets the status 'new' when none is given"], "answers": { "constraint": "DEFAULT" } },
+    { "given": ["Each row has its own identifier that never changes"], "answers": { "constraint": "PRIMARY KEY" } },
+    { "given": ["A discount is between 0 and 50 percent"], "answers": { "constraint": "CHECK" }, "explain": "Діапазон значень — умова `CHECK (discount BETWEEN 0 AND 50)`." },
+    { "given": ["A review refers to a product that exists"], "answers": { "constraint": "FOREIGN KEY" } },
+    { "given": ["A coupon code is used by only one coupon"], "answers": { "constraint": "UNIQUE" } },
+    { "given": ["`created_at` is filled with the current time automatically"], "answers": { "constraint": "DEFAULT" }, "explain": "`DEFAULT CURRENT_TIMESTAMP` підставить час, якщо значення не передали." }
+  ]
+}

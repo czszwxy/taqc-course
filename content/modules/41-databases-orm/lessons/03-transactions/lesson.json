@@ -1,0 +1,28 @@
+{
+  "title": "Transactions and database errors",
+  "minutes": 55,
+  "summary": "ACID і «все або нічого», як sqlite3 відкриває транзакції, commit / rollback і with conn, атомарна перевірка через умовний UPDATE і rowcount (без гонки check-then-act), переклад IntegrityError у доменні помилки з raise ... from",
+  "resources": [
+    {
+      "title": "Python docs: sqlite3 — transaction control",
+      "url": "https://docs.python.org/3/library/sqlite3.html#sqlite3-controlling-transactions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLite: Transaction",
+      "url": "https://www.sqlite.org/lang_transaction.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: ACID transactions explained",
+      "url": "https://www.youtube.com/results?search_query=acid+database+transactions+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Rows as dictionaries",
+  "statement": "Напиши універсальний помічник `query_dicts(conn, sql, params=())` — виконує запит і повертає список словників «ім'я стовпця → значення». Імена бери з `cursor.description` (вони враховують `AS`). Чуже з'єднання не змінюй: `conn.row_factory` має лишитися як був.\n\n```python\nquery_dicts(conn, \"SELECT sku, price AS amount FROM products WHERE price > ?\", (500,))\n# [{'sku': 'KB-01', 'amount': 1500}]\n```",
+  "hints": [
+    "`cursor = conn.execute(sql, params)`, потім `names = [column[0] for column in cursor.description]`.",
+    "Кожен рядок-кортеж перетвори на словник: `dict(zip(names, row))`.",
+    "Не став `conn.row_factory` — функцію викликає чужий код, і він чекає кортежі."
+  ],
+  "explanation": "`cursor.description` описує стовпці останнього запиту: перший елемент кожного опису — ім'я, вже з урахуванням `AS`. `zip(names, row)` поєднує імена зі значеннями. Змінювати `conn.row_factory` всередині помічника — побічний ефект: решта коду, що працює з тим самим з'єднанням, раптом отримає інший тип рядків.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\.description", "message": "Візьми імена стовпців з `cursor.description`." }
+  ]
+}

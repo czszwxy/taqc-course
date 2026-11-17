@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Fix the N+1 query",
+  "statement": "Сторінка «Історія замовлень» відкривається все повільніше. Функція `order_history(session)` у стартовому коді повертає **правильний** результат — список `(email, [суми замовлень])` для всіх покупців (за email, суми в порядку `Order.id`), — але робить окремий запит на замовлення кожного покупця.\n\nВиправ її: результат той самий, але **не більше 2 SQL-запитів** незалежно від кількості покупців. Моделі — у `models.py`.\n\n```python\norder_history(session)\n# [('anna@shop.ua', [500, 1200]), ('ivan@shop.ua', []), ...]\n```\n\nТест рахує запити на 30 покупцях.",
+  "hints": [
+    "Зараз `customer.orders` завантажується ліниво — окремим SELECT на кожного покупця.",
+    "Попроси завантажити замовлення заздалегідь: `select(Customer).options(selectinload(Customer.orders))`.",
+    "Порядок замовлень: `sorted(customer.orders, key=lambda order: order.id)` або `order_by` у самому `relationship` (але `models.py` змінювати не можна)."
+  ],
+  "explanation": "Лінивий зв'язок робить один запит на покупців і ще по одному на замовлення кожного з них — N+1. `selectinload(Customer.orders)` завантажує замовлення всіх знайдених покупців одним додатковим запитом `WHERE customer_id IN (...)`, тож запитів рівно два за будь-якої кількості покупців. Результат при цьому не змінюється — тому N+1 так легко пропустити без тесту, що рахує запити.",
+  "codeRules": [
+    { "kind": "require", "pattern": "selectinload|joinedload|subqueryload", "message": "Скажи SQLAlchemy завантажити замовлення заздалегідь (eager loading)." }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "Map customers and their orders",
+  "statement": "Доповни моделі `Customer` і `Order` зв'язком один-до-багатьох:\n\n- `Order.customer_id` — обов'язковий зовнішній ключ на `customers.id`;\n- `Customer.orders` — список замовлень, `Order.customer` — покупець, обидві сторони через `back_populates`;\n- замовлення не існують без покупця: вони видаляються разом з ним **і** коли їх прибирають зі списку `customer.orders`.\n\n```python\nanna = Customer(email=\"anna@shop.ua\", orders=[Order(total=500)])\nanna.orders.append(Order(total=1200))\nsession.add(anna)\nsession.commit()            # обидва замовлення збережено з customer_id = anna.id\n```",
+  "hints": [
+    "`customer_id: Mapped[int] = mapped_column(ForeignKey(\"customers.id\"))` — `Mapped[int]` без `| None` робить його обов'язковим.",
+    "`orders: Mapped[list[\"Order\"]] = relationship(back_populates=\"customer\", ...)` і `customer: Mapped[\"Customer\"] = relationship(back_populates=\"orders\")`.",
+    "Видалення разом з батьком і «сиріт» — `cascade=\"all, delete-orphan\"` на боці `Customer.orders`."
+  ],
+  "explanation": "Зовнішній ключ живе в таблиці «багатьох» (`orders.customer_id`), а `relationship` з обох боків дає навігацію `anna.orders` і `order.customer`. `back_populates` узгоджує сторони одразу в пам'яті. Каскад `all, delete-orphan` потрібен, бо замовлення без покупця не мають сенсу: без нього SQLAlchemy при видаленні покупця спробує поставити `customer_id = NULL`, а обов'язковий стовпець цього не дозволить.",
+  "codeRules": []
+}

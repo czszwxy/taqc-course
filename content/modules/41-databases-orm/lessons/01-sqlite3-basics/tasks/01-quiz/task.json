@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "sqlite3 and the DB-API",
+  "show": 6,
+  "hints": ["Значення — лише параметрами, параметри — кортеж з комою. with conn керує транзакцією, але не закриває з'єднання."],
+  "questions": [
+    {
+      "id": "why-params",
+      "kind": "single",
+      "text": "Чому значення передають параметрами (`?`), а не f-рядком?",
+      "options": [
+        { "text": "Драйвер передає значення окремо від SQL: немає ін'єкцій і проблем з апострофами", "correct": true },
+        { "text": "Так запит виконується вдвічі швидше, але результат той самий" },
+        { "text": "f-рядки в Python не працюють з SQL" }
+      ]
+    },
+    {
+      "id": "tuple",
+      "kind": "single",
+      "text": "Що не так з `conn.execute(\"SELECT * FROM users WHERE email = ?\", (email))`?",
+      "options": [
+        { "text": "`(email)` — не кортеж, а рядок: потрібно `(email,)`", "correct": true },
+        { "text": "Нічого" },
+        { "text": "Замість `?` треба писати `%s`" }
+      ]
+    },
+    {
+      "id": "no-commit",
+      "kind": "single",
+      "text": "Програма виконала `INSERT` і закрила з'єднання без `commit()`. Що в базі?",
+      "options": [
+        { "text": "Нового рядка немає — незафіксована транзакція відкотилась", "correct": true },
+        { "text": "Рядок є: close() сам робить commit" },
+        { "text": "База пошкоджена" }
+      ]
+    },
+    {
+      "id": "with-conn",
+      "kind": "single",
+      "text": "Що робить `with conn:` для з'єднання sqlite3?",
+      "options": [
+        { "text": "Commit, якщо блок завершився без винятку, і rollback, якщо з винятком; з'єднання лишається відкритим", "correct": true },
+        { "text": "Відкриває і закриває з'єднання" },
+        { "text": "Перехоплює й ховає винятки" }
+      ]
+    },
+    {
+      "id": "table-param",
+      "kind": "single",
+      "text": "Чи спрацює `conn.execute(\"SELECT * FROM ?\", (table_name,))`?",
+      "options": [
+        { "text": "Ні: параметри замінюють лише значення; назву таблиці звіряють з білим списком", "correct": true },
+        { "text": "Так, це безпечний спосіб вибрати таблицю" },
+        { "text": "Так, але тільки для SQLite" }
+      ]
+    },
+    {
+      "id": "fetchone-none",
+      "kind": "single",
+      "text": "Що поверне `cursor.fetchone()`, якщо запит не знайшов рядків?",
+      "options": [
+        { "text": "`None`", "correct": true },
+        { "text": "Порожній кортеж `()`" },
+        { "text": "Виняток" }
+      ]
+    },
+    {
+      "id": "row-factory",
+      "kind": "single",
+      "text": "Після `conn.row_factory = sqlite3.Row` як прочитати стовпець `email` з рядка `row`?",
+      "options": [
+        { "text": "`row[\"email\"]` (і `dict(row)` дає словник)", "correct": true },
+        { "text": "Лише `row[1]`" },
+        { "text": "`row.email()`" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Schema design",
+  "show": 6,
+  "hints": ["Ключ один-до-багатьох — у таблиці «багатьох». У SQLite зовнішні ключі вмикають PRAGMA. Гроші — не float."],
+  "questions": [
+    {
+      "id": "fk-pragma",
+      "kind": "single",
+      "text": "У SQLite є `REFERENCES users (id)`, але база прийняла замовлення для `user_id = 999`. Чому?",
+      "options": [
+        { "text": "Зовнішні ключі в SQLite вимкнені, доки з'єднання не виконає `PRAGMA foreign_keys = ON`", "correct": true },
+        { "text": "REFERENCES працює лише для текстових стовпців" },
+        { "text": "Так і має бути: зовнішній ключ — це лише документація" }
+      ]
+    },
+    {
+      "id": "fk-side",
+      "kind": "single",
+      "text": "Покупець має багато замовлень. Де зберігати зв'язок?",
+      "options": [
+        { "text": "`orders.user_id` — зовнішній ключ у таблиці «багатьох»", "correct": true },
+        { "text": "`users.order_ids` — список id замовлень" },
+        { "text": "`users.last_order_id`" }
+      ]
+    },
+    {
+      "id": "many-to-many",
+      "kind": "single",
+      "text": "Товар має багато тегів, тег — багато товарів. Як це змоделювати?",
+      "options": [
+        { "text": "Сполучна таблиця `product_tags (product_id, tag_id)` зі складеним первинним ключем", "correct": true },
+        { "text": "Стовпець `products.tags` з рядком `'usb,wireless'`" },
+        { "text": "Стовпець `tags.product_id`" }
+      ]
+    },
+    {
+      "id": "csv-column",
+      "kind": "single",
+      "text": "Чим поганий стовпець `tags = 'usb,wireless'`?",
+      "options": [
+        { "text": "Важко шукати й рахувати за тегом, немає перевірки назв і зв'язку з таблицею тегів", "correct": true },
+        { "text": "Нічим, це найшвидший варіант" },
+        { "text": "SQLite не дозволяє коми в TEXT" }
+      ]
+    },
+    {
+      "id": "unit-price",
+      "kind": "single",
+      "text": "`order_items.unit_price` копіює ціну товару. Це порушення нормалізації?",
+      "options": [
+        { "text": "Ні: це ціна на момент покупки — окремий факт, який не має змінюватись разом з ціною товару", "correct": true },
+        { "text": "Так, ціну треба брати JOIN-ом з `products`" },
+        { "text": "Так, і це прискорює запити" }
+      ]
+    },
+    {
+      "id": "money",
+      "kind": "single",
+      "text": "Як зберігати суми грошей?",
+      "options": [
+        { "text": "Цілим числом найменших одиниць (копійки) або NUMERIC / Decimal", "correct": true },
+        { "text": "`REAL` / `float` — це ж дробові числа" },
+        { "text": "Текстом `'15.99 UAH'`" }
+      ]
+    },
+    {
+      "id": "index-cost",
+      "kind": "single",
+      "text": "Яка ціна індексу?",
+      "options": [
+        { "text": "Додаткове місце і повільніші INSERT / UPDATE / DELETE — індекс теж треба оновлювати", "correct": true },
+        { "text": "Повільніші SELECT" },
+        { "text": "Жодної — індекси варто створювати на кожному стовпці" }
+      ]
+    }
+  ]
+}

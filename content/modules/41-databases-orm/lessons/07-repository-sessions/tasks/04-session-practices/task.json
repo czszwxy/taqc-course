@@ -1,0 +1,25 @@
+{
+  "type": "classify",
+  "title": "Healthy session habits",
+  "statement": "Для кожної практики роботи з базою в застосунку обери: це **гарна практика** чи **проблема**?",
+  "categories": [
+    { "id": "good", "label": "Good practice" },
+    { "id": "problem", "label": "Problem" }
+  ],
+  "items": [
+    { "id": "one-engine", "text": "One Engine is created at startup and shared by the whole app", "category": "good", "explain": "Engine тримає пул з'єднань — він один на застосунок." },
+    { "id": "session-per-request", "text": "Each HTTP request gets its own Session, closed at the end of the request", "category": "good" },
+    { "id": "global-session", "text": "One global Session is shared by all requests and threads", "category": "problem", "explain": "Стан сесії протікає між запитами, і сесія не потокобезпечна." },
+    { "id": "detached", "text": "A function returns ORM objects from a closed session, and the caller reads their lazy relationships", "category": "problem", "explain": "Сесії вже немає — DetachedInstanceError." },
+    { "id": "commit-per-row", "text": "An import of 10 000 rows calls commit() after every row", "category": "problem", "explain": "Повільно і не атомарно: падіння на середині лишає половину даних." },
+    { "id": "service-commits", "text": "The service calls commit() once, after all changes of one use case", "category": "good" },
+    { "id": "fresh-db", "text": "Each test gets a fresh in-memory SQLite database from a fixture", "category": "good" },
+    { "id": "no-rollback", "text": "After an exception the request continues with the same session without rollback()", "category": "problem", "explain": "Транзакція в невизначеному стані; після помилки flush сесія взагалі відмовить до rollback." },
+    { "id": "inject-session", "text": "The repository receives the session in its constructor", "category": "good", "explain": "Так його легко використати в сервісі й підставити тестову базу." },
+    { "id": "engine-per-call", "text": "Every function that needs the database creates its own Engine", "category": "problem", "explain": "Кожен Engine — новий пул з'єднань; їх стає сотні." }
+  ],
+  "show": 8,
+  "passScore": 0.8,
+  "hints": ["Engine — довгоживучий і один; Session — коротка, на одну операцію; commit — один на сценарій."],
+  "explanation": "Здорова схема: один Engine, коротка сесія на кожну одиницю роботи, один commit на сценарій у сервісі, сесія передається в репозиторій ззовні, а тести отримують чисту базу. Проблеми виникають, коли сесія живе занадто довго (глобальна), занадто коротко (об'єкти читаються після закриття), або коли транзакції ріжуться на шматки (commit на кожен рядок)."
+}

@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "title": "Top selling products",
+  "variantOf": "02-status-report",
+  "statement": "Схожа задача: моделі `Product` (`sku`) і `OrderItem` (`product_id`, `quantity`) — у `models.py`. Напиши `top_products(session, limit=3)` — список `(sku, продано штук)` від найбільшої кількості; при рівній кількості — за `sku`; не більше `limit` рядків. Товари, яких не продали жодного разу, не потрапляють. Усе — **одним запитом**.\n\n```python\ntop_products(session, limit=2)   # [('MS-01', 7), ('KB-01', 3)]\n```",
+  "hints": [
+    "`select(Product.sku, func.sum(OrderItem.quantity))` з `.join(OrderItem, OrderItem.product_id == Product.id)`.",
+    "`.group_by(Product.id)` — і сортування за сумою: `.order_by(func.sum(OrderItem.quantity).desc(), Product.sku)`.",
+    "`.limit(limit)`, а результат — `session.execute(stmt).all()`, перетворений на кортежі."
+  ],
+  "explanation": "Внутрішній `join` сам прибирає товари без продажів, `group_by` збирає рядки замовлень кожного товару, `func.sum` рахує продані штуки. Друге поле сортування (`sku`) робить порядок однозначним при рівних сумах, а `limit` обрізає результат ще в базі.",
+  "codeRules": [
+    { "kind": "require", "pattern": "group_by\\(", "message": "Згрупуй рядки в базі: `group_by(...)`." },
+    { "kind": "require", "pattern": "\\.limit\\(", "message": "Обмеж кількість рядків у запиті: `.limit(...)`." }
+  ]
+}

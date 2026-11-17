@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Save many rows at once",
+  "statement": "Імпорт з прайс-листа: `products` — список словників `{\"sku\": ..., \"name\": ..., \"price\": ...}`. Напиши `save_products(conn, products)`: вставляє всі товари в таблицю `products (sku, name, price)` **одним** `executemany`, **фіксує** зміни і повертає кількість вставлених рядків.\n\n```python\nsave_products(conn, [{\"sku\": \"KB-01\", \"name\": \"Keyboard\", \"price\": 1500}])   # 1\n```\n\nТест відкриває **друге** з'єднання до того самого файлу бази: без commit воно нових рядків не побачить.",
+  "hints": [
+    "Іменовані плейсхолдери читають значення прямо зі словників: `VALUES (:sku, :name, :price)`.",
+    "`with conn:` зробить commit (або rollback при помилці).",
+    "Кількість вставлених рядків — `cursor.rowcount` або `len(products)`."
+  ],
+  "explanation": "`executemany` з іменованими параметрами бере значення прямо зі словників — без циклу й без склеювання рядків. Зміни бачить лише та сесія, що їх зробила, доки не буде `commit()`: тест перевіряє це другим з'єднанням. `with conn:` фіксує транзакцію або відкочує її, якщо вилетів виняток.",
+  "codeRules": [
+    { "kind": "require", "pattern": "executemany\\(", "message": "Встав усі рядки одним `executemany(...)`." },
+    { "kind": "forbid", "pattern": "f[\"'][^\"'\\n]*\\b(?:insert|values)\\b|\\.format\\(", "flags": "im", "message": "Значення — лише параметрами, без f-рядків і format." }
+  ]
+}

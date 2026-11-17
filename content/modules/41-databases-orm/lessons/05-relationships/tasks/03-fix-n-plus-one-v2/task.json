@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Fix the N+1 query in the catalog",
+  "variantOf": "03-fix-n-plus-one",
+  "statement": "Схожа задача: товари й теги пов'язані багато-до-багатьох (`models.py`). `catalog(session)` повертає правильний список `(sku, [назви тегів за алфавітом])` для всіх товарів за `sku`, але завантажує теги кожного товару окремим запитом.\n\nВиправ: той самий результат, **не більше 2 SQL-запитів**.\n\n```python\ncatalog(session)   # [('HB-01', []), ('KB-01', ['usb', 'wireless']), ...]\n```",
+  "hints": [
+    "`product.tags` — лінивий зв'язок через сполучну таблицю: один SELECT на кожен товар.",
+    "`select(Product).options(selectinload(Product.tags))` завантажить теги всіх товарів одним запитом.",
+    "Назви тегів відсортуй у Python: `sorted(tag.name for tag in product.tags)`."
+  ],
+  "explanation": "Для багато-до-багатьох `selectinload` робить другий запит, що з'єднує сполучну таблицю з тегами для всіх знайдених товарів (`WHERE product_id IN (...)`). Разом — два запити за будь-якої кількості товарів, а без нього — один запит на кожен товар.",
+  "codeRules": [
+    { "kind": "require", "pattern": "selectinload|joinedload|subqueryload", "message": "Скажи SQLAlchemy завантажити теги заздалегідь (eager loading)." }
+  ]
+}

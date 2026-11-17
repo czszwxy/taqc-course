@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "An order repository",
+  "statement": "Модель `Order` (`customer_email`, `status` — за замовчуванням `\"new\"`, `total`) — у `models.py`, винятки — у `errors.py`. Напиши клас `OrderRepository(session)`:\n\n- `add(customer_email, total)` — створює замовлення, робить `flush` (щоб з'явився `id`) і повертає його;\n- `get(order_id)` — замовлення або `OrderNotFound(order_id)`;\n- `list_by_status(status)` — замовлення зі статусом, за `id`;\n- `mark_paid(order_id)` — лише `\"new\"` стає `\"paid\"`; з будь-якого іншого статусу — `InvalidTransition(order_id, status)`.\n\nРепозиторій **не робить commit** — це вирішує той, хто його викликає.\n\n```python\nrepo = OrderRepository(session)\norder = repo.add(\"anna@shop.ua\", 1500)   # order.id == 1, ще не зафіксовано\nrepo.mark_paid(order.id)\nsession.commit()                         # фіксує сервіс або тест\n```",
+  "hints": [
+    "`self.session.add(order)`, потім `self.session.flush()` — база видасть `id` в межах поточної транзакції.",
+    "`get`: `order = self.session.get(Order, order_id)`; `None` → `raise OrderNotFound(order_id)`.",
+    "`mark_paid` використовує `get`, перевіряє `order.status != \"new\"` і лише тоді змінює статус."
+  ],
+  "explanation": "Репозиторій відповідає за те, **як** знайти й зберегти замовлення, але не за межі транзакції: `flush` надсилає `INSERT` і дає `id`, а `commit` лишається за сервісом, що виконує весь сценарій. Тест перевіряє це просто: після `add` і `rollback` замовлення має зникнути. Правило переходу статусу живе в одному місці, а помилки — доменні (`OrderNotFound`, `InvalidTransition`), а не `None` чи `AttributeError`.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "\\.commit\\(", "message": "Репозиторій не робить commit — це вирішує той, хто його викликає." },
+    { "kind": "require", "pattern": "\\.flush\\(", "message": "Отримай id без commit: `self.session.flush()`." }
+  ]
+}

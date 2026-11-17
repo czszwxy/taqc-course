@@ -1,0 +1,29 @@
+{
+  "title": "Repositories, sessions and tests",
+  "minutes": 55,
+  "summary": "Скільки живе Session (один unit of work на запит), sessionmaker і session.begin(), репозиторій як шар доступу до даних, сервіс з бізнес-правилами, хто робить commit, DetachedInstanceError і expire_on_commit, тести на SQLite у пам'яті з фікстурами",
+  "resources": [
+    {
+      "title": "SQLAlchemy docs: Session Basics",
+      "url": "https://docs.sqlalchemy.org/en/20/orm/session_basics.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Розділ «When do I construct a Session, when do I commit it, and when do I close it?»",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLAlchemy docs: Transactions and Connection Management",
+      "url": "https://docs.sqlalchemy.org/en/20/orm/session_transaction.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: repository pattern Python SQLAlchemy",
+      "url": "https://www.youtube.com/results?search_query=repository+pattern+python+sqlalchemy",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

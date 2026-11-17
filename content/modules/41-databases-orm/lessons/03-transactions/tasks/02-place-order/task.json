@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Place an order atomically",
+  "statement": "Таблиці: `products (id, sku, stock)`, `orders (id, user_id)`, `order_items (order_id, product_id, quantity)`. Напиши `place_order(conn, user_id, items)`, де `items` — список пар `(product_id, quantity)`:\n\n1. для кожного товару зменшує `stock` на `quantity` — **лише якщо вистачає** (умова в самому `UPDATE`);\n2. створює замовлення і його рядки;\n3. фіксує все й повертає `id` замовлення.\n\nЯкщо будь-якого товару не вистачає (або його немає) — кидає `OutOfStock(product_id)` з `errors.py`, і в базі **нічого не змінюється**.\n\n```python\nplace_order(conn, 1, [(10, 2), (11, 1)])   # 1\nplace_order(conn, 1, [(10, 1), (11, 99)])  # OutOfStock: product 11 — склад товару 10 не зменшився\n```",
+  "hints": [
+    "Усе тіло — в `with conn:`: виняток усередині блоку відкотить і вже зроблені `UPDATE`.",
+    "`cursor = conn.execute(\"UPDATE products SET stock = stock - ? WHERE id = ? AND stock >= ?\", (quantity, product_id, quantity))`; `cursor.rowcount == 0` — не вистачає.",
+    "Номер нового замовлення — `cursor.lastrowid` після `INSERT INTO orders`."
+  ],
+  "explanation": "Списання складу і створення замовлення — одна транзакція: `with conn:` фіксує її в кінці або відкочує, якщо вилетів `OutOfStock`. Перевірка залишку всередині `UPDATE ... AND stock >= ?` атомарна: `rowcount == 0` означає, що товару немає або його замало. Типова помилка — `commit()` після кожного товару: тоді перший товар уже списаний, коли другий виявляється недоступним.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "f[\"'][^\"'\\n]*\\b(?:update|insert|select)\\b|\\.format\\(", "flags": "im", "message": "Значення — лише параметрами `?`." }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "title": "Designing a schema",
+  "minutes": 55,
+  "summary": "Первинні й зовнішні ключі, NOT NULL, UNIQUE, CHECK, DEFAULT, ON DELETE CASCADE; PRAGMA foreign_keys у SQLite; зв'язки один-до-багатьох, багато-до-багатьох і один-до-одного; нормалізація без фанатизму, гроші цілими числами й індекси",
+  "resources": [
+    {
+      "title": "SQLite: CREATE TABLE",
+      "url": "https://www.sqlite.org/lang_createtable.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLite: Foreign Key Support",
+      "url": "https://www.sqlite.org/foreignkeys.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Чому зовнішні ключі треба вмикати: PRAGMA foreign_keys = ON",
+      "needsVerification": true
+    },
+    {
+      "title": "PostgreSQL docs: Constraints",
+      "url": "https://www.postgresql.org/docs/current/ddl-constraints.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: database normalization explained",
+      "url": "https://www.youtube.com/results?search_query=database+normalization+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

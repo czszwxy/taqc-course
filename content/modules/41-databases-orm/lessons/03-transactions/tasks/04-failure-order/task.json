@@ -1,0 +1,18 @@
+{
+  "type": "order",
+  "title": "When the second INSERT fails",
+  "statement": "```python\ntry:\n    with conn:\n        conn.execute(\"INSERT INTO bookings (event_id, seat) VALUES (?, ?)\", (7, \"A1\"))\n        conn.execute(\"INSERT INTO bookings (event_id, seat) VALUES (?, ?)\", (7, \"A1\"))\nexcept sqlite3.IntegrityError as err:\n    raise SeatTaken(\"A1\") from err\n```\n\nУ таблиці `bookings` є `UNIQUE (event_id, seat)`. Розстав події в порядку, в якому вони відбуваються.",
+  "items": [
+    "sqlite3 opens a transaction (BEGIN) before the first INSERT",
+    "The first INSERT adds the booking for seat A1 inside the open transaction",
+    "The second INSERT breaks UNIQUE (event_id, seat) and sqlite3 raises IntegrityError",
+    "The with block sees the exception and calls conn.rollback(): the first booking is undone",
+    "The IntegrityError leaves the with block and reaches the except clause",
+    "SeatTaken('A1') is raised with the IntegrityError as its __cause__"
+  ],
+  "hints": [
+    "Транзакцію відкриває перший запит, що змінює дані.",
+    "`with conn:` спершу відкочує, а потім пропускає виняток далі — до `except`."
+  ],
+  "explanation": "Транзакція починається перед першою зміною, тож обидва `INSERT` — в одній транзакції. Коли другий порушує `UNIQUE`, `with conn:` відкочує все, включно з першою бронею, і не ховає виняток. Далі `except` перекладає технічну помилку в доменну `SeatTaken`, зберігаючи першопричину."
+}
