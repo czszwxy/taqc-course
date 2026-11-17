@@ -17,7 +17,7 @@ my-tests/
 ├─ playwright.config.ts      ← налаштування
 ├─ package.json              ← @playwright/test у devDependencies
 ├─ package-lock.json
-└─ .github/workflows/playwright.yml   ← (якщо обрав) запуск у CI
+└─ .github/workflows/playwright.yml   ← (якщо обрано) запуск у CI
 ```
 
 Тести — це файли `*.spec.ts` (або `*.test.ts`) у папці тестів.

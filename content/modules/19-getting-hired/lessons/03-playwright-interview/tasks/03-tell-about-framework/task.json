@@ -1,7 +1,7 @@
 {
   "type": "written",
   "title": "\"Tell me about your test framework\"",
-  "statement": "Підготуй відповідь на питання **«Розкажи про свій фреймворк автотестів»** на 2–3 хвилини. Спирайся на те, що ти зробив у модулях 15–18 (і що зробиш у фінальному проєкті модуля 20). Пиши англійською або українською, так, як говоритимеш.",
+  "statement": "Підготуй відповідь на питання **«Розкажи про свій фреймворк автотестів»** на 2–3 хвилини. Спирайся на те, що ти зробив(ла) у модулях 15–18 (і що зробиш у фінальному проєкті модуля 20). Пиши англійською або українською, так, як говоритимеш.",
   "fields": [
     { "id": "context", "label": "Context and stack", "kind": "textarea", "placeholder": "Educational project: UI + API tests for a demo shop, TypeScript + Playwright…" },
     { "id": "structure", "label": "Structure (folders, page objects, fixtures, clients)", "kind": "textarea" },

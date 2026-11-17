@@ -2,13 +2,13 @@
   "type": "written",
   "title": "Write a charter and run an exploratory session",
   "playground": "signup",
-  "statement": "Сплануй і проведи **дослідницьку сесію** на сторінці Sign-up з Bug Playground.\n\n1. Склади **charter** за шаблоном *Explore … with … to discover …*.\n2. Вкажи **timebox** у хвилинах.\n3. Проведи сесію (відкрий сторінку кнопкою нижче) і запиши **нотатки**: що перевірив, що знайшов, які виникли питання. Мінімум 4 рядки.",
+  "statement": "Сплануй і проведи **дослідницьку сесію** на сторінці Sign-up з Bug Playground.\n\n1. Склади **charter** за шаблоном *Explore … with … to discover …*.\n2. Вкажи **timebox** у хвилинах.\n3. Проведи сесію (відкрий сторінку кнопкою нижче) і запиши **нотатки**: що перевірив(ла), що знайшов(ла), які виникли питання. Мінімум 4 рядки.",
   "fields": [
     { "id": "target", "label": "Explore… (what area?)", "kind": "text", "placeholder": "the Sign-up form validation" },
     { "id": "resources", "label": "with… (resources, data, techniques)", "kind": "text", "placeholder": "boundary values, very long strings, keyboard only" },
     { "id": "information", "label": "to discover… (what information?)", "kind": "text", "placeholder": "validation bugs and unclear error messages" },
     { "id": "timebox", "label": "Timebox (minutes)", "kind": "text", "placeholder": "45" },
-    { "id": "notes", "label": "Session notes", "kind": "list", "placeholder": "Age 18 → error shown ❗ BUG?", "hint": "Короткі рядки: що перевірив → що побачив. Позначай баги й питання." }
+    { "id": "notes", "label": "Session notes", "kind": "list", "placeholder": "Age 18 → error shown ❗ BUG?", "hint": "Короткі рядки: що перевірив(ла) → що побачив(ла). Позначай баги й питання." }
   ],
   "rules": [
     { "field": "target", "check": "mentionsAny", "value": ["sign.?up|реєстрац|registration|форм|form"], "message": "Charter: вкажи **ціль** сесії — форму реєстрації (Sign-up) або її конкретну частину." },

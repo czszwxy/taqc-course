@@ -16,7 +16,7 @@
     { "field": "decisions", "check": "mentionsAny", "value": ["because|бо |оскільки|so that|щоб|to avoid|to keep"], "message": "Decisions: для кожного рішення — **чому**." },
     { "field": "selfcheck", "check": "minItems", "value": 4, "message": "Self-check: щонайменше 4 перевірки (CI зелений, запуск з нуля, без секретів, незалежні тести…)." },
     { "field": "selfcheck", "check": "mentionsAny", "value": ["clone|склон|fresh|з нуля|new folder|нов\\S* папк"], "message": "Self-check: запуск за README у новій папці." },
-    { "field": "story", "check": "minLength", "value": 200, "message": "Story: контекст → що зробив → рішення → результат (≈1 хвилина)." }
+    { "field": "story", "check": "minLength", "value": 200, "message": "Story: контекст → що зробив(ла) → рішення → результат (≈1 хвилина)." }
   ],
   "model": {
     "repo": "https://github.com/<you>/toolshop-tests",

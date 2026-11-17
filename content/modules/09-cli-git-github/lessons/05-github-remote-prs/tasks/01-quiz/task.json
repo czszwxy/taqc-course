@@ -17,7 +17,7 @@
     {
       "id": "first-push",
       "kind": "text",
-      "text": "Ти створив локально гілку `feature/search-tests` і закомітив зміни. Яка команда вперше відправить її на GitHub (remote `origin`)?",
+      "text": "Ти створив(ла) локально гілку `feature/search-tests` і закомітив(ла) зміни. Яка команда вперше відправить її на GitHub (remote `origin`)?",
       "accept": ["git push -u origin feature/search-tests", "git push --set-upstream origin feature/search-tests", "git push origin feature/search-tests"]
     },
     {
@@ -64,7 +64,7 @@
     {
       "id": "red-ci",
       "kind": "single",
-      "text": "У твоєму PR червоний CI: впав тест, який ти не чіпав. Найкращий перший крок?",
+      "text": "У твоєму PR червоний CI: впав тест, який ти не чіпав(ла). Найкращий перший крок?",
       "options": [
         { "text": "Відкрити лог CI, подивитися, що саме впало, і чи пов'язано це з моєю зміною", "correct": true },
         { "text": "Перезапускати CI, доки не стане зеленим" },

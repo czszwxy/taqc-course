@@ -4,7 +4,7 @@
 
 ## JSON у файлах
 
-У модулі Python Collections ти працював з `json.loads` / `json.dumps` — вони перетворюють **рядки**. Для файлів є пара без `s`:
+У модулі Python Collections ти працював(ла) з `json.loads` / `json.dumps` — вони перетворюють **рядки**. Для файлів є пара без `s`:
 
 ```python
 import json

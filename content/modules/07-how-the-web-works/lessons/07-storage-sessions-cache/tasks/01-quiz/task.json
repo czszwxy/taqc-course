@@ -55,7 +55,7 @@
     {
       "id": "privacy",
       "kind": "single",
-      "text": "У localStorage ти знайшла ключ `user` з полем `password: \"Secret123\"`. Що це?",
+      "text": "У localStorage ти знайшов(ла) ключ `user` з полем `password: \"Secret123\"`. Що це?",
       "options": [
         { "text": "Баг безпеки: пароль не можна зберігати в браузері", "correct": true },
         { "text": "Нормально: так зручніше для автологіну" }

@@ -2,7 +2,7 @@
   "type": "written",
   "title": "Take-home part 1: read the brief and plan",
   "playground": "search",
-  "statement": "Ти отримав тестове завдання:\n\n> **Gadgetly — QA Automation (Python) take-home.** Our product catalog has a REST API (`GET /api/products` with `category`, `inStock`, `minPrice`, `maxPrice`, `page`, `limit`; `GET /api/products/{id}`) and a **Catalog** page (`/playground/search`) with search, filters, sorting and *Add to cart*. Please write automated tests in Python (pytest, Playwright, any HTTP library). Time box: 4 hours. Send a link to a Git repository with a README.\n\nВідкрий сторінку (кнопка **Open page**) і, за бажанням, API в API-консолі. Перш ніж писати код, склади план: що автоматизуєш першим і чому, як влаштуєш проєкт, що свідомо не робиш і які питання поставиш компанії.",
+  "statement": "Ти отримав(ла) тестове завдання:\n\n> **Gadgetly — QA Automation (Python) take-home.** Our product catalog has a REST API (`GET /api/products` with `category`, `inStock`, `minPrice`, `maxPrice`, `page`, `limit`; `GET /api/products/{id}`) and a **Catalog** page (`/playground/search`) with search, filters, sorting and *Add to cart*. Please write automated tests in Python (pytest, Playwright, any HTTP library). Time box: 4 hours. Send a link to a Git repository with a README.\n\nВідкрий сторінку (кнопка **Open page**) і, за бажанням, API в API-консолі. Перш ніж писати код, склади план: що автоматизуєш першим і чому, як влаштуєш проєкт, що свідомо не робиш і які питання поставиш компанії.",
   "fields": [
     { "id": "priorities", "label": "What you automate first and why (one per line)", "kind": "list" },
     { "id": "structure", "label": "Project structure and tools", "kind": "textarea" },
@@ -46,7 +46,7 @@
     "Пріоритети за ризиком: API-контракт і фільтри першими, потім ключові UI-сценарії",
     "Є і API, і UI — і пояснено, чому саме ці сценарії",
     "Структура з шарами: клієнт, моделі, page object, conftest, pyproject, requirements",
-    "Свідомі межі з причинами (не «не встиг», а «не входить у бриф»)",
+    "Свідомі межі з причинами (не «не встиг(ла)», а «не входить у бриф»)",
     "Питання, від відповідей на які залежать тести (стабільність даних, браузери, формат здачі)"
   ]
 }

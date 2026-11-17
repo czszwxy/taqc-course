@@ -8,6 +8,6 @@
   ],
   "explanation": "`enumerate` дає індекс разом з елементом, а `return` усередині циклу завершує функцію на першому знайденому — це і є «перший». Якщо цикл дійшов до кінця, нічого не знайдено: `return -1` після циклу.",
   "codeRules": [
-    { "kind": "forbid", "pattern": "\\.index\\s*\\(", "message": "Без `.index()` — знайди сам у циклі з `enumerate`." }
+    { "kind": "forbid", "pattern": "\\.index\\s*\\(", "message": "Без `.index()` — знайди сам(а) у циклі з `enumerate`." }
   ]
 }

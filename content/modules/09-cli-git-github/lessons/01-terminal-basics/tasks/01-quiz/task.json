@@ -47,7 +47,7 @@
     {
       "id": "not-recognized",
       "kind": "single",
-      "text": "Ти ввів `npx playwright test` і бачиш `'npx' is not recognized as an internal or external command`. Найімовірніша причина?",
+      "text": "Ти ввів(ла) `npx playwright test` і бачиш `'npx' is not recognized as an internal or external command`. Найімовірніша причина?",
       "options": [
         { "text": "Node.js не встановлений або його немає в PATH", "correct": true },
         { "text": "У тестах є помилка", "explain": "До тестів справа не дійшла: shell не знайшов саму програму npx." },

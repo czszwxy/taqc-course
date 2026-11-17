@@ -92,7 +92,7 @@ Comprehension у круглих дужках — генератор:
 total = sum(item["price"] * item["qty"] for item in items)   # без проміжного списку
 ```
 
-Ти вже використовував їх з `sum`, `any`, `all`.
+Ти вже використовував(ла) їх з `sum`, `any`, `all`.
 
 ## itertools — коротко
 

@@ -26,7 +26,7 @@
     {
       "id": "default",
       "kind": "single",
-      "text": "У таблиці `users` колонка `role` має `DEFAULT 'customer'`. Ти вставив користувача без `role`. Яке значення буде?",
+      "text": "У таблиці `users` колонка `role` має `DEFAULT 'customer'`. Ти вставив(ла) користувача без `role`. Яке значення буде?",
       "options": [
         { "text": "`customer`", "correct": true },
         { "text": "`NULL`", "explain": "NULL було б, якби DEFAULT не було." },

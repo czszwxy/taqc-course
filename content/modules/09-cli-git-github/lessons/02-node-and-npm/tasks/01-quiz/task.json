@@ -7,7 +7,7 @@
     {
       "id": "install-all",
       "kind": "text",
-      "text": "Ти склонував проєкт з тестами. Яка команда встановить усі його залежності з package.json?",
+      "text": "Ти склонував(ла) проєкт з тестами. Яка команда встановить усі його залежності з package.json?",
       "accept": ["npm install", "npm i", "npm ci"],
       "explanation": "`npm install` (або `npm ci` для точного встановлення за lock-файлом)."
     },

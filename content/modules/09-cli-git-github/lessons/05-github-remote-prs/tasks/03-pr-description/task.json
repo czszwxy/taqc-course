@@ -1,7 +1,7 @@
 {
   "type": "written",
   "title": "Write a pull request description",
-  "statement": "Ти зробив дві речі в гілці `feature/search-tests` (задача **QA-217**):\n\n- додав 3 тести сторінки пошуку: порожній запит показує всі товари; фільтр за категорією; повідомлення «No results» для запиту без збігів;\n- виправив нестабільний (flaky) тест кошика: замінив `waitForTimeout(3000)` на очікування відповіді API кошика.\n\nЛокально `npx playwright test` дав 24 passed. Нові й виправлений тести ти прогнав 10 разів (`--repeat-each=10`): 0 падінь.\n\nНапиши заголовок і опис pull request.",
+  "statement": "Ти зробив(ла) дві речі в гілці `feature/search-tests` (задача **QA-217**):\n\n- додав(ла) 3 тести сторінки пошуку: порожній запит показує всі товари; фільтр за категорією; повідомлення «No results» для запиту без збігів;\n- виправив(ла) нестабільний (flaky) тест кошика: замінив(ла) `waitForTimeout(3000)` на очікування відповіді API кошика.\n\nЛокально `npx playwright test` дав 24 passed. Нові й виправлений тести ти прогнав(ла) 10 разів (`--repeat-each=10`): 0 падінь.\n\nНапиши заголовок і опис pull request.",
   "fields": [
     { "id": "title", "label": "PR title", "kind": "text", "placeholder": "Add … (QA-217)" },
     { "id": "summary", "label": "What & why", "kind": "textarea", "placeholder": "- Add …\n- Fix …\nTask: …" },

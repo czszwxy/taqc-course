@@ -37,7 +37,7 @@
     {
       "id": "timeout-ms",
       "kind": "single",
-      "text": "Ти написав `context.get(\"slow\", timeout=5)`. Що не так?",
+      "text": "Ти написав(ла) `context.get(\"slow\", timeout=5)`. Що не так?",
       "options": [
         { "text": "У Playwright timeout — у мілісекундах: це 5 мс, а не 5 с", "correct": true },
         { "text": "Нічого" },

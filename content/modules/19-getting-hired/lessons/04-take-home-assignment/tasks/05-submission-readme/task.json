@@ -16,8 +16,8 @@
     { "field": "covered", "check": "minLength", "value": 60, "message": "Covered: перелічи сценарії і коротко поясни вибір." },
     { "field": "bugs", "check": "minItems", "value": 3, "message": "Bugs: щонайменше 3 знайдені баги (з частини 2)." },
     { "field": "bugs", "check": "mentionsAny", "value": ["critical|major|minor|trivial|blocker"], "message": "Bugs: додай severity до кожного бага." },
-    { "field": "assumptions", "check": "minLength", "value": 30, "message": "Assumptions: що було незрозуміло і що ти припустив." },
-    { "field": "next", "check": "minLength", "value": 30, "message": "Next steps: що б ти зробив, маючи більше часу." }
+    { "field": "assumptions", "check": "minLength", "value": 30, "message": "Assumptions: що було незрозуміло і що ти припустив(ла)." },
+    { "field": "next", "check": "minLength", "value": 30, "message": "Next steps: що б ти зробив(ла), маючи більше часу." }
   ],
   "model": {
     "run": "Requirements: Node.js 20+.\n\n```bash\nnpm ci\nnpx playwright install chromium\nnpx playwright test\nnpx playwright show-report\n```\n\nThe app must be running at http://localhost:5173 (see `baseURL` in playwright.config.ts).",
@@ -41,6 +41,6 @@
     "Баги з severity і посиланнями на деталі",
     "Записано припущення",
     "Є чесний розділ «not covered / next steps»",
-    "Перевірено: склонував у нову папку і запустив за README"
+    "Перевірено: склонував(ла) у нову папку і запустив(ла) за README"
   ]
 }

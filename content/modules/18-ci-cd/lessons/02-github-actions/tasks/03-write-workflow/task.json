@@ -1,7 +1,7 @@
 {
   "type": "written",
   "title": "Write a Playwright workflow",
-  "statement": "Напиши `.github/workflows/playwright.yml` для проєкту автотестів Gadgetly (Node.js + `@playwright/test`).\n\nВимоги:\n\n- запуск на кожен **pull request** у `main` і **щоночі** о 02:00 UTC, плюс **ручний** запуск;\n- машина Ubuntu, ліміт 30 хвилин;\n- точні залежності з lock-файлу, браузери із системними бібліотеками;\n- адреса staging зі змінної репозиторію `STAGING_URL`, пароль із секрету `QA_PASSWORD`;\n- HTML-звіт (`playwright-report/`) зберігається як артефакт **навіть якщо тести впали**.\n\nДругим полем коротко поясни, що зробив і чому.",
+  "statement": "Напиши `.github/workflows/playwright.yml` для проєкту автотестів Gadgetly (Node.js + `@playwright/test`).\n\nВимоги:\n\n- запуск на кожен **pull request** у `main` і **щоночі** о 02:00 UTC, плюс **ручний** запуск;\n- машина Ubuntu, ліміт 30 хвилин;\n- точні залежності з lock-файлу, браузери із системними бібліотеками;\n- адреса staging зі змінної репозиторію `STAGING_URL`, пароль із секрету `QA_PASSWORD`;\n- HTML-звіт (`playwright-report/`) зберігається як артефакт **навіть якщо тести впали**.\n\nДругим полем коротко поясни, що зробив(ла) і чому.",
   "fields": [
     { "id": "yaml", "label": "playwright.yml", "kind": "textarea", "placeholder": "name: Playwright Tests\non:\n  …" },
     { "id": "notes", "label": "Notes for the reviewer", "kind": "textarea" }

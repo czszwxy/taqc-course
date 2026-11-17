@@ -47,7 +47,7 @@
     {
       "id": "dependent",
       "kind": "single",
-      "text": "Ти змінила `quantity` у замовленні з 2 на 5. Що ще обов'язково перевірити?",
+      "text": "Ти змінив(ла) `quantity` у замовленні з 2 на 5. Що ще обов'язково перевірити?",
       "options": [
         { "text": "Що `total` перерахувався: unitPrice × 5", "correct": true },
         { "text": "Лише саме поле quantity" }

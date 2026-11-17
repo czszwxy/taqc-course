@@ -54,7 +54,7 @@ page.get_by_role("button", name="Edit").click()
 Error: strict mode violation: get_by_role("button", name="Edit") resolved to 3 elements
 ```
 
-Playwright не вгадує, яку з трьох ти мав на увазі: краще впасти, ніж натиснути не те. Рішення — уточнити локатор.
+Playwright не вгадує, яку з трьох ти мав(ла) на увазі: краще впасти, ніж натиснути не те. Рішення — уточнити локатор.
 
 ## Ланцюжки і filter
 

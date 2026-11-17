@@ -19,7 +19,7 @@
     { "field": "start", "check": "mentionsAny", "value": ["remote|office|офіс|hybrid|гібрид|віддален|relocat|релокац|city|місто|kyiv|київ|lviv|львів"], "message": "Start: формат роботи і локація." },
     { "field": "english", "check": "mentionsAny", "value": ["a1|a2|b1|b2|c1|c2|intermediate|upper"], "message": "English: рівень за CEFR (B1, B2…)." },
     { "field": "otherOffers", "check": "minLength", "value": 30, "message": "Other processes: чесна коротка відповідь." },
-    { "field": "learning", "check": "minLength", "value": 40, "message": "Learning: конкретна тема і що вже зробив." }
+    { "field": "learning", "check": "minLength", "value": 40, "message": "Learning: конкретна тема і що вже зробив(ла)." }
   ],
   "model": {
     "whyUs": "You build an online marketplace with lots of user flows and integrations, which is exactly the kind of product I practised testing. I also saw on your engineering blog that QA engineers write automated tests in TypeScript and Playwright, and I'd like to grow in that stack with a mentor.",

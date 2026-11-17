@@ -1,7 +1,7 @@
 {
   "type": "written",
   "title": "Write the README of your portfolio project",
-  "statement": "Напиши README свого портфоліо-репозиторію **англійською**. Його відкриють першим — рекрутер, тімлід на співбесіді, ти сам через пів року.",
+  "statement": "Напиши README свого портфоліо-репозиторію **англійською**. Його відкриють першим — рекрутер, тімлід на співбесіді, ти сам(а) через пів року.",
   "fields": [
     { "id": "intro", "label": "Title, badge and one-paragraph intro", "kind": "textarea" },
     { "id": "tested", "label": "What is tested and why (areas, API vs UI split)", "kind": "textarea" },

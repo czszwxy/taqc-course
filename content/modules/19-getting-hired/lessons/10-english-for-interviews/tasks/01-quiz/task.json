@@ -72,7 +72,7 @@
     {
       "id": "not-heard",
       "kind": "single",
-      "text": "Ти не розчув питання інтерв'юера. Найкраща реакція:",
+      "text": "Ти не розчув(ла) питання інтерв'юера. Найкраща реакція:",
       "options": [
         { "text": "Sorry, could you repeat the question, please?", "correct": true },
         { "text": "Мовчки відповісти на те, що, як тобі здалося, спитали" },
@@ -82,7 +82,7 @@
     {
       "id": "dont-know",
       "kind": "single",
-      "text": "Ти не працював з інструментом, про який питають. Що сказати?",
+      "text": "Ти не працював(ла) з інструментом, про який питають. Що сказати?",
       "options": [
         { "text": "I haven't worked with it yet, but I know it is used for … and I would learn it quickly.", "correct": true },
         { "text": "Yes, I know it very well." },
@@ -92,7 +92,7 @@
     {
       "id": "report-bug",
       "kind": "single",
-      "text": "Як природніше сказати «я завів баг»?",
+      "text": "Як природніше сказати «я завів(ла) баг»?",
       "options": [
         { "text": "I reported a bug in Jira.", "correct": true },
         { "text": "I did a bug in Jira." },

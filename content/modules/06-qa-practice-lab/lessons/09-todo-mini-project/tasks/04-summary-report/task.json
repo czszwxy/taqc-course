@@ -2,7 +2,7 @@
   "type": "written",
   "title": "Step 4: test summary report and release recommendation",
   "playground": "todo",
-  "statement": "Заверши проєкт **test summary report** для команди Taskly To-do v1.0:\n\n- **Scope** — що тестувала, на якому середовищі, якими методами (чекліст, тест-кейс, exploratory).\n- **Results** — скільки пунктів чекліста перевірено і скільки знайдено багів.\n- **Bugs** — по одному рядку: короткий summary і severity.\n- **Risks** — що найнебезпечніше для користувачів.\n- **Recommendation** — go чи no-go і чому.",
+  "statement": "Заверши проєкт **test summary report** для команди Taskly To-do v1.0:\n\n- **Scope** — що тестував(ла), на якому середовищі, якими методами (чекліст, тест-кейс, exploratory).\n- **Results** — скільки пунктів чекліста перевірено і скільки знайдено багів.\n- **Bugs** — по одному рядку: короткий summary і severity.\n- **Risks** — що найнебезпечніше для користувачів.\n- **Recommendation** — go чи no-go і чому.",
   "fields": [
     { "id": "scope", "label": "Scope", "kind": "textarea" },
     { "id": "results", "label": "Results", "kind": "textarea" },
@@ -50,11 +50,11 @@
     "recommendation": "No-go: release after the Critical and Major bugs (Clear completed, reload, Esc) are fixed and retested, followed by a regression run of the checklist."
   },
   "hints": [
-    "Scope — це відповідь на «що, де і як я тестувала».",
+    "Scope — це відповідь на «що, де і як я тестував(ла)».",
     "Відсортуй баги за severity: зверху ті, через які користувач **втрачає дані**.",
     "Рекомендація: no-go / go + причина + умова (що має бути виправлено, щоб змінити рішення)."
   ],
-  "explanation": "Підсумковий звіт перетворює твою роботу на **рішення для команди**: обсяг (що, де, як), цифри, баги за severity, ризики простими словами і чітка рекомендація з умовою («no-go, поки не виправлено Critical і Major»). Якщо ти знайшла менше багів — це нормально: напиши звіт за своїми результатами і познач, що ще варто дослідити.",
+  "explanation": "Підсумковий звіт перетворює твою роботу на **рішення для команди**: обсяг (що, де, як), цифри, баги за severity, ризики простими словами і чітка рекомендація з умовою («no-go, поки не виправлено Critical і Major»). Якщо ти знайшов(ла) менше багів — це нормально: напиши звіт за своїми результатами і познач, що ще варто дослідити.",
   "checklist": [
     "Scope names the feature, environment and methods",
     "Results contain numbers",

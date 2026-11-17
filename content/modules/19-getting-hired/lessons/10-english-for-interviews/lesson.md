@@ -5,7 +5,7 @@
 ## Як перевіряють англійську
 
 - **HR-дзвінок частково англійською**: 5–15 хвилин «розкажи про себе», «чому QA», «твій проєкт».
-- **Частина технічної співбесіди англійською**: 2–3 теоретичні питання або «опиши баг, який ти знайшов».
+- **Частина технічної співбесіди англійською**: 2–3 теоретичні питання або «опиши баг, який ти знайшов(ла)».
 - **Окремий English check** з викладачем компанії або **запис** короткого відео / читання тексту.
 - **Тестове завдання англійською**: README і баг-репорти — теж перевірка мови.
 
@@ -15,7 +15,7 @@
 
 1. **Tell me about yourself** (1–2 хв): present → past → future.
 2. **Describe your project**: що тестує, стек, твоя роль, результат.
-3. **Describe a bug you found**: де, як знайшов, кроки, наслідок, що далі.
+3. **Describe a bug you found**: де, як знайшов(ла), кроки, наслідок, що далі.
 4. **Explain a concept**: regression testing, severity vs priority, test pyramid.
 5. **Why QA? Why our company?**
 6. **Your questions to the interviewer**.
@@ -27,7 +27,7 @@
 
 | Ситуація | Фраза |
 |---|---|
-| Не почув / не зрозумів | *Sorry, could you repeat the question, please?* · *Could you rephrase that?* |
+| Не почув(ла) / не зрозумів(ла) | *Sorry, could you repeat the question, please?* · *Could you rephrase that?* |
 | Уточнити | *Do you mean …?* · *Just to make sure I understand: …?* |
 | Виграти час | *That's a good question, let me think for a second.* |
 | Структурувати | *First, … Then, … Finally, …* · *There are two main reasons.* |

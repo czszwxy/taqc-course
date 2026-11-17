@@ -53,7 +53,7 @@
     {
       "id": "ui-check",
       "kind": "single",
-      "text": "Ти зібрав ціни з таблиці в `prices` після кліку «Сортувати за ціною ↑». Яка перевірка правильна?",
+      "text": "Ти зібрав(ла) ціни з таблиці в `prices` після кліку «Сортувати за ціною ↑». Яка перевірка правильна?",
       "options": [
         { "text": "`assert prices == sorted(prices)`", "correct": true },
         { "text": "`assert prices.sort()`", "explain": "`sort()` повертає None — assert завжди впаде, і ще й змінить список." }

@@ -49,7 +49,7 @@
       "text": "Яка послідовність правильна для посилання, що відкривається в новій вкладці?",
       "options": [
         { "text": "`const p = page.waitForEvent('popup');` → клік → `const tab = await p;`", "correct": true },
-        { "text": "клік → `const tab = await page.waitForEvent('popup');`", "explain": "Вкладка може відкритися ще до того, як ти почав чекати." }
+        { "text": "клік → `const tab = await page.waitForEvent('popup');`", "explain": "Вкладка може відкритися ще до того, як ти почав(ла) чекати." }
       ]
     },
     {

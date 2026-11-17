@@ -85,7 +85,7 @@ for number, (name, status) in enumerate(pairs, start=1):
 
 ## Кілька значень з функції
 
-`return a, b` — це повернення кортежу (ти бачив це в модулі Python Basics):
+`return a, b` — це повернення кортежу (ти бачив(ла) це в модулі Python Basics):
 
 ```python
 def passed_failed(results):

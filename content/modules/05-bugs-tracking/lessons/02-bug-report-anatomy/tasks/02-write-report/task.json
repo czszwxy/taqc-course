@@ -1,7 +1,7 @@
 {
   "type": "written",
   "title": "Write a bug report from your notes",
-  "statement": "Ти тестуєш кошик на **staging, build 2.4.1, Chrome 131, Windows 11**, залогінений як `olena@example.com`. Твої чорнові нотатки:\n\n> кошик порожній → додала Laptop Stand (1200 грн) → ввела SALE10 → натиснула Apply → з'явився рядок «Discount −120 грн», але Total так і лишився 1200 грн. Вимога US-58: SALE10 = −10% від суми товарів.\n\nОформи з нотаток **баг-репорт**.",
+  "statement": "Ти тестуєш кошик на **staging, build 2.4.1, Chrome 131, Windows 11**, залогінений як `olena@example.com`. Твої чорнові нотатки:\n\n> кошик порожній → додав(ла) Laptop Stand (1200 грн) → ввів(ла) SALE10 → натиснув(ла) Apply → з'явився рядок «Discount −120 грн», але Total так і лишився 1200 грн. Вимога US-58: SALE10 = −10% від суми товарів.\n\nОформи з нотаток **баг-репорт**.",
   "fields": [
     { "id": "summary", "label": "Summary", "kind": "text", "placeholder": "Cart: …" },
     { "id": "environment", "label": "Environment", "kind": "text", "placeholder": "staging, build …, browser …, OS …" },

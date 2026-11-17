@@ -184,7 +184,7 @@
       "id": "h-star",
       "kind": "single",
       "text": "Найбільша частина відповіді STAR:",
-      "options": [{ "text": "Action — що зробив саме ти", "correct": true }, { "text": "Situation" }]
+      "options": [{ "text": "Action — що зробив(ла) саме ти", "correct": true }, { "text": "Situation" }]
     },
     {
       "id": "e-phrase",

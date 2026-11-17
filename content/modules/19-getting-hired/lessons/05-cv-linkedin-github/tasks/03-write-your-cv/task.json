@@ -1,7 +1,7 @@
 {
   "type": "written",
   "title": "Write your CV summary, project bullets and LinkedIn headline",
-  "statement": "Напиши основу свого резюме **англійською** на базі того, що ти зробив у цьому курсі. Без вигадок: тільки те, що реально вмієш.\n\nПотім натисни **Copy for review** і попроси Claude прорецензувати (можна разом з текстом вакансії, під яку адаптуєш резюме).",
+  "statement": "Напиши основу свого резюме **англійською** на базі того, що ти зробив(ла) у цьому курсі. Без вигадок: тільки те, що реально вмієш.\n\nПотім натисни **Copy for review** і попроси Claude прорецензувати (можна разом з текстом вакансії, під яку адаптуєш резюме).",
   "fields": [
     { "id": "headline", "label": "Title / LinkedIn headline", "kind": "text", "placeholder": "Trainee QA Automation Engineer | TypeScript · Playwright · API testing" },
     { "id": "summary", "label": "Summary (2–3 sentences)", "kind": "textarea" },

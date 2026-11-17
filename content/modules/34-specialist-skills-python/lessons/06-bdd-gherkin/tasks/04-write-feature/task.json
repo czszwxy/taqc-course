@@ -2,7 +2,7 @@
   "type": "written",
   "title": "Write a feature file for the Deal of the day",
   "playground": "deal",
-  "statement": "Напиши feature-файл мовою Gherkin для сторінки **Deal of the day** (вимоги — у жовтій панелі на сторінці). Опиши **поведінку**, а не кліки:\n\n- щонайменше **3 сценарії** про різні правила (акція активна, акція завершилась, немає мережі, найближчий магазин…);\n- один із них — **`Scenario Outline`** з таблицею `Examples` (наприклад, місто користувача → найближчий магазин);\n- у кожному сценарії `Given`, `When`, `Then`; 3–5 кроків;\n- без локаторів, `data-testid` і слова «click».\n\nДругим полем поясни, які сценарії ти обрав і чому.",
+  "statement": "Напиши feature-файл мовою Gherkin для сторінки **Deal of the day** (вимоги — у жовтій панелі на сторінці). Опиши **поведінку**, а не кліки:\n\n- щонайменше **3 сценарії** про різні правила (акція активна, акція завершилась, немає мережі, найближчий магазин…);\n- один із них — **`Scenario Outline`** з таблицею `Examples` (наприклад, місто користувача → найближчий магазин);\n- у кожному сценарії `Given`, `When`, `Then`; 3–5 кроків;\n- без локаторів, `data-testid` і слова «click».\n\nДругим полем поясни, які сценарії ти обрав(ла) і чому.",
   "fields": [
     { "id": "feature", "label": "deal.feature", "kind": "textarea", "placeholder": "Feature: Deal of the day\n  …\n\n  Scenario: …\n    Given …\n    When …\n    Then …" },
     { "id": "notes", "label": "Why these scenarios?", "kind": "textarea" }

@@ -67,7 +67,7 @@ const res: ApiResponse<User[]> = { status: 200, data: [] };
 type Page<T> = { items: T[]; total: number };
 ```
 
-Ти вже використовувала generics, навіть не знаючи: `Array<string>` = `string[]`, `Record<string, number>`, `Promise<Response>`.
+Ти вже використовував(ла) generics, навіть не знаючи: `Array<string>` = `string[]`, `Record<string, number>`, `Promise<Response>`.
 
 > [!QA]
 > У Playwright generics усюди: `page.evaluate<T>()`, `response.json()` типізують через `as` або generic-обгортки, фікстури описують як `test.extend<{ loginPage: LoginPage }>()`. Розуміння `<T>` — ключ до читання документації й типів Playwright.

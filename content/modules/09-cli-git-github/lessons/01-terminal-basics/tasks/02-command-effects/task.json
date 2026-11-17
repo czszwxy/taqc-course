@@ -1,7 +1,7 @@
 {
   "type": "table",
   "title": "Match commands to what they do",
-  "statement": "Ти щойно відкрив термінал у папці проєкту з тестами. Що зробить кожна команда?",
+  "statement": "Ти щойно відкрив(ла) термінал у папці проєкту з тестами. Що зробить кожна команда?",
   "givenColumns": ["Command"],
   "answerColumns": [
     {

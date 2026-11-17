@@ -9,7 +9,7 @@
   ],
   "rules": [
     { "field": "any", "check": "notMentions", "value": ["[а-яґєії]"], "message": "Пиши англійською — без кирилиці." },
-    { "field": "about", "check": "minLength", "value": 200, "message": "About: 5–8 речень: хто ти зараз, як прийшов у QA, що шукаєш." },
+    { "field": "about", "check": "minLength", "value": 200, "message": "About: 5–8 речень: хто ти зараз, як прийшов(ла) у QA, що шукаєш." },
     { "field": "about", "check": "mentionsAny", "value": ["i'm|i am"], "message": "About: почни з себе: «I'm a trainee QA automation engineer…»." },
     { "field": "project", "check": "minLength", "value": 150, "message": "Project: що тестує, стек, твоя роль, результат." },
     { "field": "project", "check": "mentionsAny", "value": ["playwright|typescript|test"], "message": "Project: назви стек і що саме тестується." },
@@ -29,7 +29,7 @@
     "Усе англійською, прості речення",
     "Правильні часи: past simple для минулого, present perfect для «досі»",
     "Є конкретика: стек, числа, приклад",
-    "Прочитав уголос — укладається в 1–2 хвилини на відповідь",
-    "Попросив Claude перевірити і поставити уточнювальні питання"
+    "Прочитав(ла) уголос — укладається в 1–2 хвилини на відповідь",
+    "Попросив(ла) Claude перевірити і поставити уточнювальні питання"
   ]
 }

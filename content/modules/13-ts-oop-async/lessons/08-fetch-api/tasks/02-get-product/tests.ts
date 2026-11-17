@@ -10,5 +10,5 @@ describe('getProduct', () => {
   });
   it('throws for 404', async () => {
     await expect(getProduct(999)).rejects.toThrow('HTTP 404');
-  }, 'fetch не кидає помилку на 404 — перевір response.ok сама.');
+  }, 'fetch не кидає помилку на 404 — перевір response.ok сам(а).');
 });
