@@ -1,0 +1,36 @@
+{
+  "title": "Django REST Framework and testing Django",
+  "minutes": 75,
+  "summary": "DRF: ModelSerializer з validate_<поле>, generic views ListCreateAPIView і RetrieveUpdateDestroyAPIView, ViewSet і router, дозволи (IsAuthenticatedOrReadOnly, IsAdminUser, власний BasePermission), коди DRF (400 для валідації, 403 замість 401 із сесіями); тести Django з pytest-django: django_db, client і APIClient, force_login / force_authenticate, фікстури-фабрики, assertNumQueries і матриця доступу",
+  "resources": [
+    {
+      "title": "Django REST framework: Quickstart",
+      "url": "https://www.django-rest-framework.org/tutorial/quickstart/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Django REST framework: Serializers",
+      "url": "https://www.django-rest-framework.org/api-guide/serializers/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Django REST framework: Permissions",
+      "url": "https://www.django-rest-framework.org/api-guide/permissions/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest-django documentation",
+      "url": "https://pytest-django.readthedocs.io/en/latest/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "django_db, client, admin_client, django_user_model, settings",
+      "needsVerification": true
+    }
+  ]
+}

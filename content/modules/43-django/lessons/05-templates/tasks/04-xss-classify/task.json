@@ -1,0 +1,25 @@
+{
+  "type": "classify",
+  "title": "Escaped or an XSS risk?",
+  "statement": "Відгуки, профілі й пошук бібліотеки показують дані, які ввели люди. Для кожного рядка коду визнач: значення безпечно екрануються чи це ризик XSS.",
+  "categories": [
+    { "id": "safe", "label": "Escaped (safe)", "description": "Дані користувача стануть текстом" },
+    { "id": "risk", "label": "XSS risk", "description": "Дані користувача можуть стати кодом у браузері" }
+  ],
+  "items": [
+    { "id": "plain", "text": "`{{ review.text }}` in a template", "category": "safe", "explain": "Автоекранування за замовчуванням." },
+    { "id": "filter", "text": "`{{ review.text|truncatechars:80 }}`", "category": "safe", "explain": "Звичайні фільтри результат не «звільняють» від екранування." },
+    { "id": "safe-filter", "text": "`{{ review.text|safe }}`", "category": "risk", "explain": "`|safe` вимикає екранування для тексту користувача." },
+    { "id": "autoescape-off", "text": "`{% autoescape off %}{{ review.text }}{% endautoescape %}`", "category": "risk" },
+    { "id": "mark-safe", "text": "`mark_safe(request.GET[\"q\"])` passed to a template", "category": "risk" },
+    { "id": "format-html", "text": "`format_html(\"<b>{}</b>\", member.name)` in Python", "category": "safe", "explain": "`format_html` екранує підставлені значення, а HTML-каркас — твій." },
+    { "id": "f-string", "text": "`HttpResponse(f\"<h1>Results for {query}</h1>\")` in a view", "category": "risk", "explain": "f-рядок нічого не екранує — шаблони тут не працюють." },
+    { "id": "href", "text": "`<a href=\"{{ member.website }}\">` where the member typed the website", "category": "risk", "explain": "Лапки екрануються, але `javascript:...` — допустима адреса: перевіряй схему (лише http/https)." },
+    { "id": "json-script", "text": "`{{ shelf|json_script:\"shelf-data\" }}` for data used by JavaScript", "category": "safe", "explain": "`json_script` екранує дані для безпечного вбудовування в `<script>`." },
+    { "id": "escape-call", "text": "`HttpResponse(f\"<h1>{escape(query)}</h1>\")`", "category": "safe", "explain": "`django.utils.html.escape` робить те саме, що й автоекранування." }
+  ],
+  "show": 8,
+  "passScore": 0.8,
+  "hints": ["Шаблони екранують змінні самі. Ризик — коли екранування вимкнено (`|safe`, `mark_safe`, `autoescape off`), коли HTML збирають рядками без шаблону або коли небезпечне не HTML, а сама адреса."],
+  "explanation": "Django захищає кожну змінну в шаблоні, і фільтри цей захист не знімають. Вразливість з'являється, коли захист вимикають (`|safe`, `mark_safe`, `autoescape off`) для чужого тексту, коли HTML збирають f-рядком у view, або коли небезпечне значення — сама адреса в `href` (`javascript:`). Безпечні способи вставити дані у свій HTML — `format_html`, `escape` і `json_script` для JavaScript."
+}

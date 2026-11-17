@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "QuerySet API",
+  "show": 6,
+  "hints": ["get — рівно один. Q — «або». F — значення поля. annotate — на кожен рядок. select_related — вперед, prefetch_related — назад."],
+  "questions": [
+    {
+      "id": "get-none",
+      "kind": "single",
+      "text": "Що поверне `Book.objects.get(isbn=\"000\")`, якщо такої книжки немає?",
+      "options": [
+        { "text": "Підніме `Book.DoesNotExist`", "correct": true },
+        { "text": "`None`" },
+        { "text": "Порожній QuerySet" }
+      ]
+    },
+    {
+      "id": "or",
+      "kind": "single",
+      "text": "Як знайти книжки, де назва АБО ім'я автора містить `text`?",
+      "options": [
+        { "text": "`filter(Q(title__icontains=text) | Q(author__name__icontains=text))`", "correct": true },
+        { "text": "`filter(title__icontains=text, author__name__icontains=text)`" },
+        { "text": "`filter(title__icontains=text).filter(author__name__icontains=text)`" }
+      ]
+    },
+    {
+      "id": "f-update",
+      "kind": "single",
+      "text": "Чому для лічильника краще `filter(pk=1).update(copies=F(\"copies\") - 1)`, ніж `book.copies -= 1; book.save()`?",
+      "options": [
+        { "text": "Зміна відбувається одним SQL у базі — одночасні запити не загублять зменшення", "correct": true },
+        { "text": "`save()` не працює з числами" },
+        { "text": "`F` автоматично створює міграцію" }
+      ]
+    },
+    {
+      "id": "aggregate-annotate",
+      "kind": "single",
+      "text": "Чим `annotate(n=Count(\"books\"))` відрізняється від `aggregate(n=Count(\"books\"))` на `Author.objects`?",
+      "options": [
+        { "text": "`annotate` додає число до КОЖНОГО автора, `aggregate` повертає один підсумок на всю вибірку", "correct": true },
+        { "text": "Нічим" },
+        { "text": "`aggregate` працює лише з `Sum`" }
+      ]
+    },
+    {
+      "id": "lazy",
+      "kind": "single",
+      "text": "Скільки запитів виконає `qs = Book.objects.filter(pages__gt=300).order_by(\"title\")[:5]`?",
+      "options": [
+        { "text": "0 — QuerySet лінивий, запит піде, коли результат знадобиться", "correct": true },
+        { "text": "1" },
+        { "text": "3 — по одному на кожен метод" }
+      ]
+    },
+    {
+      "id": "select-prefetch",
+      "kind": "single",
+      "text": "Цикл по `Author.objects.all()` звертається до `author.books.all()`. Чим прибрати N+1?",
+      "options": [
+        { "text": "`prefetch_related(\"books\")` — зв'язок «назад», ще один запит на всіх", "correct": true },
+        { "text": "`select_related(\"books\")`" },
+        { "text": "`.distinct()`" }
+      ]
+    },
+    {
+      "id": "coalesce",
+      "kind": "single",
+      "text": "`Author.objects.annotate(pages=Sum(\"books__pages\"))`. Що буде в `pages` в автора без книжок?",
+      "options": [
+        { "text": "`None` — тому загортають у `Coalesce(Sum(...), 0)`", "correct": true },
+        { "text": "0" },
+        { "text": "Автор не потрапить у результат" }
+      ]
+    },
+    {
+      "id": "count-len",
+      "kind": "single",
+      "text": "Треба лише кількість книжок. Що краще?",
+      "options": [
+        { "text": "`Book.objects.count()` — `SELECT COUNT(*)`, без завантаження рядків", "correct": true },
+        { "text": "`len(Book.objects.all())`" },
+        { "text": "`len(list(Book.objects.all()))`" }
+      ]
+    }
+  ]
+}

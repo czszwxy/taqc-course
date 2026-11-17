@@ -1,0 +1,36 @@
+{
+  "title": "Admin, users and permissions",
+  "minutes": 65,
+  "summary": "Адмінка: createsuperuser, admin.register і ModelAdmin (list_display, list_filter, search_fields, prepopulated_fields, readonly_fields, дії), користувачі Django (create_user, хешування, is_staff), вхід і вихід, login_required і LoginRequiredMixin, права add / change / delete / view, групи, permission_required з raise_exception, власні дані користувача (404 для чужих), тести з force_login",
+  "resources": [
+    {
+      "title": "Django docs: The Django admin site",
+      "url": "https://docs.djangoproject.com/en/6.1/ref/contrib/admin/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Django docs: Using the Django authentication system",
+      "url": "https://docs.djangoproject.com/en/6.1/topics/auth/default/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "login_required, permission_required, групи, вбудовані views входу",
+      "needsVerification": true
+    },
+    {
+      "title": "Django docs: Customizing authentication (custom user model)",
+      "url": "https://docs.djangoproject.com/en/6.1/topics/auth/customizing/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest-django: helpers (admin_client, django_user_model)",
+      "url": "https://pytest-django.readthedocs.io/en/latest/helpers.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

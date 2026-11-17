@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "Template language and safety",
+  "show": 6,
+  "hints": ["extends — перший тег. block.super — вміст батьківського блоку. Змінні екрануються, |safe вимикає захист."],
+  "questions": [
+    {
+      "id": "escape",
+      "kind": "single",
+      "text": "Назва книжки — `<b>Bold</b>`. Що побачить браузер на сторінці з `{{ book.title }}`?",
+      "options": [
+        { "text": "Текст `<b>Bold</b>` — Django екранує його в `&lt;b&gt;Bold&lt;/b&gt;`", "correct": true },
+        { "text": "Жирне слово Bold" },
+        { "text": "Порожнє місце" }
+      ]
+    },
+    {
+      "id": "safe",
+      "kind": "single",
+      "text": "Коли доречно `{{ value|safe }}`?",
+      "options": [
+        { "text": "Лише для HTML, який згенерував твій власний код і в якому немає даних користувача", "correct": true },
+        { "text": "Для будь-якого тексту з бази, щоб працювало форматування" },
+        { "text": "Щоб пришвидшити рендеринг" }
+      ]
+    },
+    {
+      "id": "extends-first",
+      "kind": "single",
+      "text": "Де має стояти `{% extends \"library/base.html\" %}`?",
+      "options": [
+        { "text": "Першим тегом дочірнього шаблону", "correct": true },
+        { "text": "Будь-де, зазвичай наприкінці" },
+        { "text": "У `settings.py`" }
+      ]
+    },
+    {
+      "id": "block-super",
+      "kind": "single",
+      "text": "Базовий шаблон: `{% block title %}Library{% endblock %}`. Дочірній: `{% block title %}Books · {{ block.super }}{% endblock %}`. Який заголовок?",
+      "options": [
+        { "text": "`Books · Library`", "correct": true },
+        { "text": "`Books · `" },
+        { "text": "`Library`" }
+      ]
+    },
+    {
+      "id": "missing-var",
+      "kind": "single",
+      "text": "У шаблоні `{{ boook.title }}` (друкарська помилка). Що станеться?",
+      "options": [
+        { "text": "Нічого не виведеться і помилки не буде — тому шаблони варто тестувати", "correct": true },
+        { "text": "`TemplateSyntaxError`" },
+        { "text": "500 Internal Server Error" }
+      ]
+    },
+    {
+      "id": "empty",
+      "kind": "single",
+      "text": "Що робить `{% empty %}` усередині `{% for %}`?",
+      "options": [
+        { "text": "Виводить свій вміст, якщо список порожній", "correct": true },
+        { "text": "Очищує список" },
+        { "text": "Пропускає порожні елементи" }
+      ]
+    },
+    {
+      "id": "template-folder",
+      "kind": "single",
+      "text": "Чому шаблони кладуть у `library/templates/library/`, а не просто в `library/templates/`?",
+      "options": [
+        { "text": "Щоб `\"library/book_list.html\"` не плутався з однойменним шаблоном іншого застосунку", "correct": true },
+        { "text": "Так вимагає Python" },
+        { "text": "Інакше не працює наслідування" }
+      ]
+    },
+    {
+      "id": "html-assert",
+      "kind": "single",
+      "text": "Навіщо `html=True` в `assertContains(response, \"<h1>Books</h1>\", html=True)`?",
+      "options": [
+        { "text": "Порівнювати як HTML: пробіли, переноси й порядок атрибутів не заважають", "correct": true },
+        { "text": "Щоб перевірити, що відповідь — HTML, а не JSON" },
+        { "text": "Щоб вимкнути екранування" }
+      ]
+    }
+  ]
+}

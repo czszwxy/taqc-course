@@ -1,0 +1,26 @@
+{
+  "type": "table",
+  "title": "Who gets what?",
+  "statement": "Бібліотека має такі views:\n\n- `/loans/mine/` — `@login_required`, позики поточного читача;\n- `/loans/<pk>/` — `@login_required`, `get_object_or_404(Loan, pk=pk, member=request.user)`, а співробітникам (`is_staff`) — будь-яка позика;\n- `/reports/overdue/` — `@login_required` над `@permission_required(\"library.view_loan\", raise_exception=True)`;\n- `/loans/export/` — лише `@permission_required(\"library.view_loan\", raise_exception=True)`, без `login_required`;\n- `/admin/` — адмінка Django.\n\nОльга — звичайна читачка без прав; позика №9 — її, №15 — Івана. Бібліотекарка Марта — `is_staff` і має `library.view_loan`. Визнач код відповіді.",
+  "givenColumns": ["Who", "Request"],
+  "answerColumns": [
+    { "id": "status", "label": "Status", "options": ["200", "302", "403", "404"] }
+  ],
+  "rows": [
+    { "given": ["Guest", "`GET /loans/mine/`"], "answers": { "status": "302" } },
+    { "given": ["Olha", "`GET /loans/mine/`"], "answers": { "status": "200" } },
+    { "given": ["Olha", "`GET /loans/9/`"], "answers": { "status": "200" } },
+    { "given": ["Olha", "`GET /loans/15/`"], "answers": { "status": "404" }, "explain": "Фільтр `member=request.user` не знаходить чужу позику." },
+    { "given": ["Marta", "`GET /loans/15/`"], "answers": { "status": "200" } },
+    { "given": ["Guest", "`GET /reports/overdue/`"], "answers": { "status": "302" }, "explain": "`login_required` стоїть зверху і спрацьовує першим." },
+    { "given": ["Olha", "`GET /reports/overdue/`"], "answers": { "status": "403" } },
+    { "given": ["Marta", "`GET /reports/overdue/`"], "answers": { "status": "200" } },
+    { "given": ["Guest", "`GET /loans/export/`"], "answers": { "status": "403" }, "explain": "Без `login_required` `permission_required(..., raise_exception=True)` відповідає 403 навіть гостю." },
+    { "given": ["Olha", "`GET /admin/`"], "answers": { "status": "302" }, "explain": "Адмінка перенаправляє не-співробітників на свою сторінку входу." }
+  ],
+  "hints": [
+    "Спершу «хто ти?» (`login_required` → 302 для гостя), потім «твоє?» (фільтр за власником → 404), потім «чи можна?» (`raise_exception=True` → 403).",
+    "Без `login_required` зверху перевірка права з `raise_exception` спрацює й для гостя."
+  ],
+  "explanation": "Кожен рівень дає свій код: невідомий користувач перед `login_required` — `302` на вхід, чужий об'єкт при фільтрі за власником — `404`, немає права з `raise_exception=True` — `403`. Порядок декораторів вирішує, що побачить гість: `login_required` зверху відправляє на вхід, а сам `permission_required` з `raise_exception` — одразу `403`. Адмінка має власну логіку: усіх, хто не `is_staff`, вона відправляє на свою сторінку входу."
+}

@@ -19,6 +19,14 @@ import pytest
 
 RESULT_FILE = os.environ.get("QA_TASK_RESULT_FILE")
 PLUGIN_FILE = Path(__file__).name
+DJANGO_SETTINGS = "settings"
+UNITTEST_PREFIXES = ("False is not true : ", "True is not false : ")
+
+# Django tasks ship a read-only settings.py: point Django at it and load pytest-django (its client / django_db
+# fixtures). pytest-django must be registered before the conftests, so it is loaded here, by this -p plugin.
+if (Path.cwd() / f"{DJANGO_SETTINGS}.py").exists():
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", DJANGO_SETTINGS)
+    pytest_plugins = ["pytest_django.plugin"]
 ERROR_LINE = "E   "
 NO_TESTS = "No tests found: a test is a function whose name starts with test_, for example def test_health():"
 
@@ -36,12 +44,13 @@ def _name(nodeid):
 def _location(exc, root):
     """'solution.py, line 12: return orders[order_id]' — the last line of the task's own files in the traceback."""
     frames = traceback.extract_tb(exc.__traceback__) if exc.__traceback__ else []
-    own = [f for f in frames if Path(f.filename).parent == root and Path(f.filename).name != PLUGIN_FILE]
+    # The task's files may live in folders (shop/views.py): any file under the run folder except this plugin.
+    own = [f for f in frames if Path(f.filename).is_relative_to(root) and Path(f.filename).name != PLUGIN_FILE]
     if not own:
         return ""
     last = own[-1]
     line = (last.line or "").strip()
-    return f"{Path(last.filename).name}, line {last.lineno}" + (f": {line}" if line else "")
+    return f"{Path(last.filename).relative_to(root).as_posix()}, line {last.lineno}" + (f": {line}" if line else "")
 
 
 def _describe(excinfo, report, root):
@@ -54,6 +63,9 @@ def _describe(excinfo, report, root):
         lines = message.removeprefix("AssertionError: ").splitlines()
         blank = next((i for i, line in enumerate(lines) if not line.strip()), len(lines))
         message = "\n".join(lines[:blank])
+        # Django's assertions (assertContains, assertTemplateUsed…) are unittest checks: drop "False is not true : ".
+        for prefix in UNITTEST_PREFIXES:
+            message = message.removeprefix(prefix)
     else:
         message = f"{type(exc).__name__}: {exc}" if str(exc) else type(exc).__name__
     where = _location(exc, root)

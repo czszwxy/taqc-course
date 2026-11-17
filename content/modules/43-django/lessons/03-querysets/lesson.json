@@ -1,0 +1,36 @@
+{
+  "title": "QuerySets: asking the database",
+  "minutes": 70,
+  "summary": "objects.all / filter / exclude / get, пошукові умови через подвійне підкреслення (__icontains, __gte, __in, __isnull, author__name), Q для «або» і «не», F для порівняння полів і атомарних змін, annotate і aggregate (Count, Sum, Coalesce, filter=), values, ліниві QuerySet і їхній кеш, N+1 і select_related / prefetch_related, підрахунок запитів у тестах",
+  "resources": [
+    {
+      "title": "Django docs: Making queries",
+      "url": "https://docs.djangoproject.com/en/6.1/topics/db/queries/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Django docs: QuerySet API reference",
+      "url": "https://docs.djangoproject.com/en/6.1/ref/models/querysets/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "усі lookups, select_related, prefetch_related, коли QuerySet виконується",
+      "needsVerification": true
+    },
+    {
+      "title": "Django docs: Aggregation",
+      "url": "https://docs.djangoproject.com/en/6.1/topics/db/aggregation/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest-django: django_assert_num_queries",
+      "url": "https://pytest-django.readthedocs.io/en/latest/helpers.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

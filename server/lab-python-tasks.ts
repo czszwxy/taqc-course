@@ -7,6 +7,7 @@ import { killTree, labPythonDir, labVenvPython, parallelism, pythonLabEnv, runPo
 import {
   LAB_PYTHON_RUN_TIMEOUT_MS,
   LAB_PYTHON_TEST_TIMEOUT_MS,
+  PROJECT_FILE,
   type LabPythonJob,
   type LabPythonResponse,
   type LabPythonResult,
@@ -22,7 +23,7 @@ import {
  */
 
 export const PYTHON_TASK_SETUP_MESSAGE =
-  'Python with pytest and FastAPI is not installed in the course lab yet. Run this once in a terminal in the project folder: npm run lab:python-setup — then press Check again.';
+  'Python with pytest, FastAPI and Django is not installed in the course lab yet. Run this once in a terminal in the project folder: npm run lab:python-setup — then press Check again.';
 
 const PLUGIN_FILE = 'qa_task_plugin.py';
 const PLUGIN_NAME = 'qa_task_plugin';
@@ -32,8 +33,8 @@ const INI_CONTENT = '[pytest]\npython_files = tests.py\n';
 const RESULT_FILE = 'result.json';
 const OUTPUT_TAIL_CHARS = 2_000;
 
-/** The packages a lab Python task imports (folder names in site-packages; PyJWT installs as "jwt"; python_multipart reads login forms; pydantic_settings — settings from the environment). */
-const REQUIRED_PACKAGES = ['pytest', 'fastapi', 'httpx', 'sqlalchemy', 'jwt', 'python_multipart', 'pydantic_settings'];
+/** The packages a lab Python task imports (folder names in site-packages; PyJWT installs as "jwt"; python_multipart reads login forms; pydantic_settings — settings from the environment; django + pytest_django + rest_framework for module 43). */
+const REQUIRED_PACKAGES = ['pytest', 'fastapi', 'httpx', 'sqlalchemy', 'jwt', 'python_multipart', 'pydantic_settings', 'django', 'pytest_django', 'rest_framework'];
 
 /** null when the venv has everything lab Python tasks need, otherwise what is missing. Chromium is not needed. */
 export function missingPythonTaskLab(root: string): string | null {
@@ -46,19 +47,13 @@ export function missingPythonTaskLab(root: string): string | null {
 export function pythonTaskLabStatus(root: string): LabStatus {
   const missing = missingPythonTaskLab(root);
   return missing === null
-    ? { ready: true, message: 'Python with pytest and FastAPI (lab/.venv) is installed.' }
+    ? { ready: true, message: 'Python with pytest, FastAPI and Django (lab/.venv) is installed.' }
     : { ready: false, message: `${PYTHON_TASK_SETUP_MESSAGE} (${missing})` };
 }
 
-/*
- * Task file names: matches "solution.py", "app/main.py", "conftest.py"; rejects "../x.py", "C:/x.py", "a b.py", "x.txt".
- * https://regex101.com/?regex=%5E(%3F%3A%5BA-Za-z_%5D%5Cw*%5C%2F)*%5BA-Za-z_%5D%5Cw*%5C.py%24
- */
-const TASK_FILE = /^(?:[A-Za-z_]\w*\/)*[A-Za-z_]\w*\.py$/;
-
-/** True when the name is a plain relative .py path that cannot replace the grading plugin. */
+/** True when the name is a plain relative project path (.py / .html) that cannot replace the grading plugin. */
 export function isTaskFileName(name: string): boolean {
-  return TASK_FILE.test(name) && name !== PLUGIN_FILE;
+  return PROJECT_FILE.test(name) && name !== PLUGIN_FILE;
 }
 
 interface ProcessOutcome {

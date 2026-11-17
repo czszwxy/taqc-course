@@ -1,0 +1,18 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "file": "shop/templates/shop/product_list.html",
+  "title": "The catalog page template",
+  "statement": "View каталогу (`ProductListView`, по 4 товари, змінна `products`), маршрути і базовий шаблон `shop/templates/shop/base.html` з блоками `title` і `content` уже є (лише для читання). Напиши шаблон сторінки `shop/templates/shop/product_list.html`:\n\n1. Наслідує `shop/base.html`.\n2. Блок `title` — `Catalog · ` і вміст батьківського блоку (`Catalog · Gadget shop`).\n3. Блок `content`:\n   - `<h1>Catalog</h1>`;\n   - `<p class=\"count\">` з кількістю всіх товарів: `1 product`, `9 products` (кількість — у `page_obj.paginator.count`);\n   - список `<ul class=\"products\">`, у ньому для кожного товару `<li><a href=\"<адреса product-detail>\">назва</a> — ціна UAH</li>`; якщо `stock` дорівнює 0, у кінці `<li>` ще `<span class=\"badge\">Out of stock</span>`; порожній список — `<li>No products yet.</li>`;\n   - якщо є наступна сторінка — посилання `<a class=\"next\" href=\"?page=N\">Next</a>`.\n\n```html\n<li><a href=\"/products/webcam/\">Webcam</a> — 1999 UAH <span class=\"badge\">Out of stock</span></li>\n```\n\nНазви товарів вводять менеджери — жодних `|safe`.",
+  "hints": [
+    "Каркас: `{% extends \"shop/base.html\" %}`, `{% block title %}Catalog · {{ block.super }}{% endblock %}`, `{% block content %}…{% endblock %}`.",
+    "Рядок товару: `<a href=\"{% url 'product-detail' product.slug %}\">{{ product.name }}</a> — {{ product.price }} UAH` і `{% if product.stock == 0 %}<span class=\"badge\">Out of stock</span>{% endif %}`.",
+    "Кількість: `{{ page_obj.paginator.count }} product{{ page_obj.paginator.count|pluralize }}`; наступна сторінка: `{% if page_obj.has_next %}<a class=\"next\" href=\"?page={{ page_obj.next_page_number }}\">Next</a>{% endif %}`."
+  ],
+  "explanation": "Дочірній шаблон лише заповнює блоки каркаса: `extends` — першим тегом, `block.super` додає батьківський заголовок. Посилання будуються `{% url %}` за іменем маршруту, «закінчився на складі» — це `{% if %}`, порожній каталог — `{% empty %}`, а `pluralize` ставить «s» лише там, де треба. Автоекранування робить назву з `<script>` безпечним текстом — тест це перевіряє, і `|safe` тут зламав би захист.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\{%\\s*extends", "message": "Сторінка має наслідувати shop/base.html: {% extends %}." },
+    { "kind": "require", "pattern": "block\\.super", "message": "Заголовок бери з батьківського блоку — {{ block.super }}, а не вписуй його." },
+    { "kind": "forbid", "pattern": "\\|\\s*safe|autoescape\\s+off", "message": "Без |safe і autoescape off: назви вводять люди." }
+  ]
+}

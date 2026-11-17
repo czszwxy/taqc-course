@@ -1,0 +1,14 @@
+{
+  "title": "Django Basics",
+  "description": "Django — «батарейки в комплекті»: проєкт і застосунки, маршрути й views, моделі та міграції, QuerySet API, функціональні й класові views, шаблони з наслідуванням і автоекрануванням, форми з валідацією, адмінка, користувачі й права, а наостанок Django REST Framework і тести з pytest-django. Задачі запускаються на твоєму комп'ютері справжнім Django в середовищі курсу (lab/.venv): ти редагуєш один файл проєкту — models.py, views.py, шаблон, — а решта файлів лежить поруч для читання.",
+  "goals": [
+    "Create a Django project and app, wire URLs to views and return HTML and JSON",
+    "Describe tables as models with constraints and evolve them with migrations",
+    "Query data with the QuerySet API and avoid N+1 queries",
+    "Write function-based and class-based views with correct status codes",
+    "Render pages with template inheritance and keep them safe from XSS",
+    "Validate user input with forms and the Post/Redirect/Get pattern",
+    "Configure the admin and protect views with login and permissions",
+    "Build a small REST API with Django REST Framework and test Django code with pytest-django"
+  ]
+}

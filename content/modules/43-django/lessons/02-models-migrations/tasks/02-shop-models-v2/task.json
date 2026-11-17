@@ -1,0 +1,17 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "file": "shop/models.py",
+  "variantOf": "02-shop-models",
+  "title": "Order and OrderItem models",
+  "statement": "У `shop/models.py` вже є `Product` — допиши замовлення.\n\n**`Order`**:\n\n| Поле | Тип і правила |\n|---|---|\n| `number` | рядок до 12 символів, унікальний |\n| `customer_email` | `EmailField` |\n| `status` | `Order.Status` (`TextChoices`): `new`, `paid`, `shipped`, `cancelled`; за замовчуванням `new` |\n| `created_at` | заповнюється сам |\n\nПорядок за замовчуванням — новіші спершу (`-id`). `str(order)` — `\"Order A-1001\"`. Метод `total()` — сума `line_total` усіх рядків (0 для порожнього).\n\n**`OrderItem`**: `order` — `ForeignKey` на `Order`, рядки видаляються разом із замовленням, зворотний доступ `order.items`; `product` — `ForeignKey` на `Product`, товар з рядками замовлень видалити не можна, зворотний доступ `product.order_items`; `quantity` — `PositiveSmallIntegerField`, за замовчуванням 1, у базі щонайменше 1 (`orderitem_quantity_positive`); `unit_price` — `PositiveIntegerField`. Один товар — не більше одного рядка в замовленні (`UniqueConstraint` `unique_product_per_order`). Властивість `line_total` — `quantity * unit_price`.",
+  "hints": [
+    "`order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name=\"items\")`, `product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name=\"order_items\")`.",
+    "`constraints = [models.UniqueConstraint(fields=[\"order\", \"product\"], name=\"unique_product_per_order\"), models.CheckConstraint(condition=Q(quantity__gte=1), name=\"orderitem_quantity_positive\")]`.",
+    "`@property def line_total(self): return self.quantity * self.unit_price`; `def total(self): return sum(item.line_total for item in self.items.all())`."
+  ],
+  "explanation": "Рядки замовлення — «частина» замовлення, тому `CASCADE`: видалили замовлення — зникли й рядки. А товар — довідник, на який посилається історія продажів, тому `PROTECT`. Правило «один товар — один рядок» описує `UniqueConstraint` на парі полів, а «щонайменше 1» — `CheckConstraint`, бо `PositiveSmallIntegerField` дозволяє 0. Сума — це поведінка моделі: метод `total()` рахує її з рядків, а не зберігає окремим полем, яке легко розсинхронізувати.",
+  "codeRules": [
+    { "kind": "require", "pattern": "UniqueConstraint", "message": "Пару order + product обмеж UniqueConstraint." }
+  ]
+}

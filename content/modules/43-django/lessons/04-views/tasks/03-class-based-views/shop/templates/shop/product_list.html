@@ -1,0 +1,9 @@
+<h1>{% if category %}{{ category.name }}{% else %}All products{% endif %}</h1>
+<ul>
+  {% for product in products %}
+    <li><a href="{% url 'product-detail' product.slug %}">{{ product.name }}</a> — {{ product.price }} UAH</li>
+  {% empty %}
+    <li>No products found.</li>
+  {% endfor %}
+</ul>
+{% if is_paginated %}<p>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>{% endif %}

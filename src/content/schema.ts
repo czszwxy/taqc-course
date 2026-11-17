@@ -1,3 +1,4 @@
+import { PROJECT_FILE } from '../../server/lab-types';
 import { z } from 'zod';
 
 /** A choice-based question or classification needs at least this many options. */
@@ -366,11 +367,18 @@ export const playwrightTaskSchema = z.object({
  * subject.py, and they must fail on every mutants/<id>.py.
  * `runtime: "lab"` (module 42+): the same files run with real pytest in the lab venv on the learner's computer
  * (FastAPI, Django — packages Pyodide does not have; server/lab-python-tasks.ts). Not available on the website.
+ * Lab tasks may use a project layout: support files in folders (`shop/models.py`, `shop/templates/shop/list.html`),
+ * `file` = where the learner's code goes (starter.py / solution.py are its contents), `subject` = the file that
+ * mutants replace in tests mode.
  */
 export const pythonTaskSchema = z.object({
   type: z.literal('python'),
   ...baseTask,
   runtime: z.enum(['browser', 'lab']).default('browser'),
+  /** The learner's file inside the task, e.g. "shop/views.py" (default: solution.py, tests mode: tests.py). */
+  file: z.string().regex(PROJECT_FILE).optional(),
+  /** Tests mode: the file under test that each mutants/<id>.py replaces. */
+  subject: z.string().regex(PROJECT_FILE).default('subject.py'),
   statement: z.string(),
   codeRules: z.array(codeRuleSchema).default([]),
   mode: z.enum(['solution', 'tests']).default('solution'),

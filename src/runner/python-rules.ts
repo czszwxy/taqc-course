@@ -21,8 +21,9 @@ export function stripPythonComments(code: string): string {
     .join('\n');
 }
 
-export function evaluatePythonRules(code: string, rules: CodeRule[]): string[] {
-  const clean = stripPythonComments(code);
+/** Code rules of a Python task file; a template (file ending in .html) is checked as is — "#" is not a comment there. */
+export function evaluatePythonRules(code: string, rules: CodeRule[], file = 'solution.py'): string[] {
+  const clean = file.endsWith('.html') ? code : stripPythonComments(code);
   return rules
     .filter((r) => {
       // The pattern comes from task.json codeRules, e.g. "for\s+\w+\s+in" accepts "for item in items" and rejects "while True:".

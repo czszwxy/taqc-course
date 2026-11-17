@@ -1,0 +1,35 @@
+{
+  "title": "Templates and inheritance",
+  "minutes": 60,
+  "summary": "Мова шаблонів Django: змінні й крапкова нотація, фільтри (default, length, date, pluralize, truncatechars), теги if / for / empty / url / now, наслідування extends і block, include, де лежать шаблони, контекстні процесори (user, request), автоекранування й XSS, |safe, mark_safe і format_html, перевірка шаблонів у тестах",
+  "resources": [
+    {
+      "title": "Django docs: The Django template language",
+      "url": "https://docs.djangoproject.com/en/6.1/ref/templates/language/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Django docs: Built-in template tags and filters",
+      "url": "https://docs.djangoproject.com/en/6.1/ref/templates/builtins/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Django docs: Security — Cross site scripting (XSS) protection",
+      "url": "https://docs.djangoproject.com/en/6.1/topics/security/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "OWASP: Cross Site Scripting Prevention Cheat Sheet",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

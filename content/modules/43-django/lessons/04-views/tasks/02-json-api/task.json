@@ -1,0 +1,17 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "file": "shop/views.py",
+  "title": "A small JSON API without helpers",
+  "statement": "Моделі — `shop/models.py`, маршрути — `shop/urls.py` (лише для читання). Напиши в `shop/views.py` JSON-API товарів для мобільного застосунку (`@csrf_exempt`). Товар у JSON — `{\"id\", \"name\", \"sku\", \"price\"}`.\n\n**`product_collection`** — `/api/products/`, лише `GET` і `POST` (інші — `405`):\n\n- `GET` — **активні** товари за назвою; `?q=` — назва містить текст без урахування регістру; `?max_price=` — `price <= max_price`, а не ціле число — `400` `{\"error\": \"max_price must be a whole number\"}`.\n- `POST` — тіло JSON `{\"name\": непорожній рядок, \"sku\": непорожній рядок, \"price\": ціле >= 1}`. Не JSON — `400` `{\"error\": \"Invalid JSON\"}`; неправильні поля — `400` `{\"errors\": {<поле>: <повідомлення>, ...}}` з **усіма** неправильними полями; такий `sku` уже є — `409` `{\"error\": \"SKU already exists\"}`; успіх — `201`, товар (активний) і заголовок `Location` з адресою `product-detail`.\n\n**`product_detail`** — `/api/products/<int:pk>/`, лише `GET`: активний товар або `404` `{\"error\": \"Product not found\"}`.",
+  "hints": [
+    "Каркас: `@csrf_exempt` + `@require_http_methods([\"GET\", \"POST\"])`, усередині — `if request.method == \"GET\": ...`.",
+    "`max_price`: `try: limit = int(raw) except ValueError: return JsonResponse({...}, status=400)`. Тіло: `try: data = json.loads(request.body) except json.JSONDecodeError: ...`.",
+    "Перевір усі поля в словник `errors`, потім `Product.objects.filter(sku=...).exists()` → 409; `Location`: `response[\"Location\"] = reverse(\"product-detail\", args=[product.pk])`. Увага: `True` — теж `int` у Python, перевір `type(price) is int`."
+  ],
+  "explanation": "Без помічників усе — на тобі: розібрати JSON, перевірити кожне поле, зібрати всі помилки, відрізнити «погані дані» (`400`) від «конфлікту зі станом» (`409`), поставити `201` і `Location`. Невалідний параметр запиту теж має давати `400`, а не `500` від необробленого `ValueError`. Задача навмисно показує, скільки коду це забирає, — у наступних уроках форми й серіалізатори DRF зроблять ту саму перевірку декларативно.",
+  "codeRules": [
+    { "kind": "require", "pattern": "csrf_exempt", "message": "JSON-API для мобільного застосунку — позначи view @csrf_exempt." },
+    { "kind": "require", "pattern": "require_http_methods|require_GET", "message": "Обмеж методи декораторами require_http_methods / require_GET." }
+  ]
+}

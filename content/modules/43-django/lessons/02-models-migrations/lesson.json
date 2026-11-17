@@ -1,0 +1,37 @@
+{
+  "title": "Models and migrations",
+  "minutes": 65,
+  "summary": "Модель = таблиця: типи полів і їхні параметри (null і blank, default, unique, choices), ForeignKey з on_delete (CASCADE, PROTECT, SET_NULL) і related_name, ManyToManyField, Meta (ordering, constraints), __str__, TextChoices, міграції: makemigrations → migrate, showmigrations, sqlmigrate, і як тестувати обмеження в pytest-django",
+  "resources": [
+    {
+      "title": "Django docs: Models",
+      "url": "https://docs.djangoproject.com/en/6.1/topics/db/models/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Django docs: Model field reference",
+      "url": "https://docs.djangoproject.com/en/6.1/ref/models/fields/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "усі типи полів, on_delete, choices",
+      "needsVerification": true
+    },
+    {
+      "title": "Django docs: Migrations",
+      "url": "https://docs.djangoproject.com/en/6.1/topics/migrations/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Django docs: Constraints reference",
+      "url": "https://docs.djangoproject.com/en/6.1/ref/models/constraints/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "CheckConstraint(condition=...), UniqueConstraint",
+      "needsVerification": true
+    }
+  ]
+}

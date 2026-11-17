@@ -1,0 +1,28 @@
+{
+  "type": "table",
+  "title": "Does this line hit the database?",
+  "statement": "Рядки виконуються по черзі в тесті бібліотеки, де вже є кілька книжок. `qs` — це `Book.objects.filter(pages__gt=300)`, створений у першому рядку. Для кожного рядка визнач, чи надсилає він SQL-запит у базу.",
+  "givenColumns": ["Line"],
+  "answerColumns": [
+    { "id": "query", "label": "Sends a query?", "options": ["Yes", "No"] }
+  ],
+  "rows": [
+    { "given": ["`qs = Book.objects.filter(pages__gt=300)`"], "answers": { "query": "No" }, "explain": "Лише опис запиту." },
+    { "given": ["`qs = qs.exclude(status=\"on_loan\").order_by(\"title\")`"], "answers": { "query": "No" }, "explain": "Уточнення опису — новий QuerySet, але без запиту." },
+    { "given": ["`first_five = qs[:5]`"], "answers": { "query": "No" }, "explain": "Зріз без кроку лишається лінивим (стане LIMIT 5)." },
+    { "given": ["`books = list(qs)`"], "answers": { "query": "Yes" } },
+    { "given": ["`for book in qs: print(book.title)` (after the list above)"], "answers": { "query": "No" }, "explain": "Той самий `qs` уже виконано — результат у його кеші." },
+    { "given": ["`Book.objects.count()`"], "answers": { "query": "Yes" } },
+    { "given": ["`Book.objects.filter(isbn=\"978\").exists()`"], "answers": { "query": "Yes" } },
+    { "given": ["`Book.objects.get(pk=1)`"], "answers": { "query": "Yes" } },
+    { "given": ["`Book.objects.first()`"], "answers": { "query": "Yes" } },
+    { "given": ["`print(Book.objects.all().query)`"], "answers": { "query": "No" }, "explain": "`.query` лише показує SQL, не виконуючи його." },
+    { "given": ["`titles = Book.objects.values_list(\"title\", flat=True)`"], "answers": { "query": "No" }, "explain": "`values_list` теж повертає лінивий QuerySet." },
+    { "given": ["`Book.objects.filter(status=\"available\").update(status=\"on_loan\")`"], "answers": { "query": "Yes" } }
+  ],
+  "hints": [
+    "Методи, що повертають новий QuerySet (`filter`, `exclude`, `order_by`, `values_list`, зріз), запиту не роблять.",
+    "Запит іде, коли потрібні дані чи число: перебір, `list`, `count`, `exists`, `get`, `first`, `update`. Повторний перебір того самого `qs` бере кеш."
+  ],
+  "explanation": "QuerySet лінивий: поки ти будуєш умови, Django лише збирає SQL. Виконання запускають операції, яким потрібен результат — перебір, `list()`, `len()`, `bool()` — і методи, що повертають не QuerySet, а дані чи число (`get`, `first`, `count`, `exists`, `aggregate`, `update`, `delete`). Виконаний QuerySet кешує рядки, тож повторний перебір того самого об'єкта нового запиту не робить — а новий `Book.objects...` зробить."
+}

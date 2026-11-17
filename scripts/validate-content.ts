@@ -400,12 +400,18 @@ const checkPlaywrightTask: Checker<'playwright'> = (dir, task) => {
 
 const PY_RESERVED = new Set(['starter.py', 'solution.py', 'tests.py']);
 
-function readPythonSupport(dir: string): Record<string, string> {
+const PY_SUPPORT_EXT = ['.py', '.html'];
+const MUTANTS_DIR = 'mutants';
+
+/** Support files of a python task, also in folders (lab tasks with a project layout), keyed by their posix path. */
+function readPythonSupport(dir: string, prefix = ''): Record<string, string> {
   return Object.fromEntries(
-    fs
-      .readdirSync(dir)
-      .filter((f) => f.endsWith('.py') && !PY_RESERVED.has(f))
-      .map((f) => [f, fs.readFileSync(path.join(dir, f), 'utf8')]),
+    fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry): [string, string][] => {
+      const rel = prefix + entry.name;
+      if (entry.isDirectory()) return entry.name === MUTANTS_DIR && prefix === '' ? [] : Object.entries(readPythonSupport(path.join(dir, entry.name), `${rel}/`));
+      const isSupport = PY_SUPPORT_EXT.some((ext) => entry.name.endsWith(ext)) && !(prefix === '' && PY_RESERVED.has(entry.name));
+      return isSupport ? [[rel, fs.readFileSync(path.join(dir, entry.name), 'utf8')]] : [];
+    }),
   );
 }
 
@@ -437,20 +443,28 @@ interface PythonGrade {
 }
 
 /** Tests mode: run a tests file on subject.py, then on every mutant (only when green on subject.py). */
+interface PythonFileNames {
+  /** Where the code under check goes: the learner's file (solution mode) or the tests file (tests mode). */
+  file: string;
+  /** Tests mode: the file each mutant replaces. */
+  subject: string;
+}
+
 async function gradePythonTests(
   exec: PythonExec,
   tests: string,
   support: Record<string, string>,
   mutants: Record<string, string>,
+  names: PythonFileNames,
   minTests?: number,
 ): Promise<PythonGrade> {
-  const base = await exec('test', { ...support, 'tests.py': tests }, 'tests.py');
+  const base = await exec('test', { ...support, [names.file]: tests }, names.file);
   const failures = pythonFailures(base);
   const tooFew = minTests !== undefined && base.tests.length < minTests;
   if (failures.length > 0) return { failures, survivors: [], tooFew };
   const survivors = await Object.entries(mutants).reduce<Promise<string[]>>(async (accPromise, [id, code]) => {
     const acc = await accPromise;
-    const run = await exec('test', { ...support, 'subject.py': code, 'tests.py': tests }, 'tests.py');
+    const run = await exec('test', { ...support, [names.subject]: code, [names.file]: tests }, names.file);
     return pythonFailures(run).length > 0 ? acc : [...acc, id];
   }, Promise.resolve([]));
   return { failures, survivors, tooFew };
@@ -458,7 +472,7 @@ async function gradePythonTests(
 
 const checkPythonTask: Checker<'python'> = async (dir, task) => {
   const testsMode = task.mode === 'tests';
-  const required = testsMode ? ['starter.py', 'solution.py', 'subject.py'] : ['starter.py', 'solution.py', 'tests.py'];
+  const required = testsMode ? ['starter.py', 'solution.py', task.subject] : ['starter.py', 'solution.py', 'tests.py'];
   const missing = required.filter((f) => !fs.existsSync(path.join(dir, f)));
   missing.forEach((f) => fail(path.join(dir, f), 'missing'));
   if (missing.length > 0) return;
@@ -467,7 +481,7 @@ const checkPythonTask: Checker<'python'> = async (dir, task) => {
   if (starter.trim() === solution.trim()) fail(dir, 'starter.py is identical to solution.py');
   const badRules = task.codeRules.filter((r) => !isValidPattern(r.pattern, r.flags ?? 'm'));
   badRules.forEach((r) => fail(dir, `invalid code rule regex /${r.pattern}/`));
-  if (badRules.length === 0) evaluatePythonRules(solution, task.codeRules).forEach((m) => fail(dir, `solution.py breaks its own code rule: ${m}`));
+  if (badRules.length === 0) evaluatePythonRules(solution, task.codeRules, task.file).forEach((m) => fail(dir, `solution.py breaks its own code rule: ${m}`));
   const support = readPythonSupport(dir);
   if (task.runtime === 'lab') {
     if (labMissing !== null) labSkipped.push(dir);
@@ -487,26 +501,27 @@ interface PythonSources {
 async function runPythonChecks(dir: string, task: TaskOf<'python'>, exec: PythonExec, { starter, solution, support }: PythonSources): Promise<void> {
   const testsMode = task.mode === 'tests';
   const read = (f: string) => fs.readFileSync(path.join(dir, f), 'utf8');
+  const names: PythonFileNames = { file: task.file ?? (testsMode ? 'tests.py' : 'solution.py'), subject: task.subject };
   if (testsMode) {
     duplicates(task.mutants.map((m) => m.id)).forEach((id) => fail(dir, `duplicate mutant id "${id}"`));
     const mutantFile = (id: string) => path.join(dir, 'mutants', `${id}.py`);
     task.mutants.filter((m) => !fs.existsSync(mutantFile(m.id))).forEach((m) => fail(mutantFile(m.id), 'missing'));
     const mutants = Object.fromEntries(task.mutants.filter((m) => fs.existsSync(mutantFile(m.id))).map((m) => [m.id, fs.readFileSync(mutantFile(m.id), 'utf8')]));
-    const reference = await gradePythonTests(exec, solution, support, mutants, task.minTests);
-    if (reference.failures.length > 0) fail(dir, `reference tests (solution.py) are not green on subject.py: ${reference.failures.join(' | ')}`);
+    const reference = await gradePythonTests(exec, solution, support, mutants, names, task.minTests);
+    if (reference.failures.length > 0) fail(dir, `reference tests (solution.py) are not green on ${task.subject}: ${reference.failures.join(' | ')}`);
     reference.survivors.forEach((id) => fail(dir, `reference tests do not catch mutant "${id}"`));
     if (reference.tooFew) fail(dir, `reference tests have fewer than minTests (${task.minTests})`);
-    const start = await gradePythonTests(exec, starter, support, mutants, task.minTests);
+    const start = await gradePythonTests(exec, starter, support, mutants, names, task.minTests);
     if (start.failures.length === 0 && start.survivors.length === 0 && !start.tooFew) fail(dir, 'starter.py already passes — it must leave work to do');
     return;
   }
 
   const tests = read('tests.py');
-  const sol = await exec('test', { ...support, 'solution.py': solution, 'tests.py': tests }, 'tests.py');
+  const sol = await exec('test', { ...support, [names.file]: solution, 'tests.py': tests }, 'tests.py');
   const solFailures = pythonFailures(sol);
   if (solFailures.length > 0) fail(dir, `solution.py does not pass tests.py: ${solFailures.join(' | ')}`);
-  const start = await exec('test', { ...support, 'solution.py': starter, 'tests.py': tests }, 'tests.py');
-  if (pythonFailures(start).length === 0 && evaluatePythonRules(starter, task.codeRules).length === 0) fail(dir, 'starter.py already passes the tests');
+  const start = await exec('test', { ...support, [names.file]: starter, 'tests.py': tests }, 'tests.py');
+  if (pythonFailures(start).length === 0 && evaluatePythonRules(starter, task.codeRules, task.file).length === 0) fail(dir, 'starter.py already passes the tests');
 }
 
 const CHECKS: { [K in Task['type']]: Checker<K> } = {

@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "Projects, apps, URLs and views",
+  "show": 6,
+  "hints": ["Проєкт — увесь сайт, застосунок — тема. Маршрут → view → HttpResponse. Імена маршрутів → reverse()."],
+  "questions": [
+    {
+      "id": "project-vs-app",
+      "kind": "single",
+      "text": "Чим проєкт Django відрізняється від застосунку?",
+      "options": [
+        { "text": "Проєкт — увесь сайт з налаштуваннями й головними маршрутами; застосунок — модуль однієї теми (моделі, views, шаблони)", "correct": true },
+        { "text": "Це синоніми" },
+        { "text": "Застосунок — це фронтенд, а проєкт — бекенд" }
+      ]
+    },
+    {
+      "id": "installed-apps",
+      "kind": "single",
+      "text": "Ти створив(ла) застосунок `startapp shop`, але Django «не бачить» його моделей. Що найімовірніше забуто?",
+      "options": [
+        { "text": "Додати `\"shop\"` в `INSTALLED_APPS` у `settings.py`", "correct": true },
+        { "text": "Перезавантажити комп'ютер" },
+        { "text": "Перейменувати `models.py` на `shop_models.py`" }
+      ]
+    },
+    {
+      "id": "converter-404",
+      "kind": "single",
+      "text": "Маршрут `path(\"orders/<int:pk>/\", views.order_detail)`. Що отримає `GET /orders/abc/`?",
+      "options": [
+        { "text": "404 — шлях не підходить під конвертер `int`, view не викликається", "correct": true },
+        { "text": "500 — view впаде на `int(\"abc\")`" },
+        { "text": "200 і `pk == \"abc\"`" }
+      ]
+    },
+    {
+      "id": "json-list",
+      "kind": "single",
+      "text": "Що станеться з `return JsonResponse([1, 2, 3])`?",
+      "options": [
+        { "text": "`TypeError`: для не-словника потрібен `safe=False`", "correct": true },
+        { "text": "Повернеться `[1, 2, 3]`" },
+        { "text": "Повернеться `{\"data\": [1, 2, 3]}`" }
+      ]
+    },
+    {
+      "id": "reverse",
+      "kind": "single",
+      "text": "Навіщо маршрутам імена (`name=\"book-detail\"`)?",
+      "options": [
+        { "text": "Щоб будувати адреси через `reverse()` і `{% url %}` — після зміни шляху посилання оновлюються самі", "correct": true },
+        { "text": "Без імені маршрут не працює" },
+        { "text": "Ім'я показується в адресному рядку" }
+      ]
+    },
+    {
+      "id": "require-get",
+      "kind": "single",
+      "text": "View з декоратором `@require_GET` отримує `POST`. Яка відповідь?",
+      "options": [
+        { "text": "405 Method Not Allowed", "correct": true },
+        { "text": "404 Not Found" },
+        { "text": "200 — декоратор лише записує попередження" }
+      ]
+    },
+    {
+      "id": "request-get",
+      "kind": "single",
+      "text": "Запит `/books/?year=1911`. Що в `request.GET.get(\"year\")`?",
+      "options": [
+        { "text": "Рядок `\"1911\"` — параметри запиту завжди рядки", "correct": true },
+        { "text": "Число `1911`" },
+        { "text": "Список `[\"1911\"]`" }
+      ]
+    },
+    {
+      "id": "append-slash",
+      "kind": "single",
+      "text": "Маршрут `books/` існує. Що отримає `GET /books` (без слеша) з налаштуваннями за замовчуванням?",
+      "options": [
+        { "text": "301-перенаправлення на `/books/` (`APPEND_SLASH` у `CommonMiddleware`)", "correct": true },
+        { "text": "Ту саму відповідь, що й `/books/`" },
+        { "text": "500" }
+      ]
+    }
+  ]
+}

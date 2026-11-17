@@ -1,0 +1,41 @@
+{
+  "type": "table",
+  "title": "Which Django tool fits?",
+  "statement": "Ти пишеш views бібліотеки. Для кожної ситуації обери інструмент Django.",
+  "givenColumns": ["Situation"],
+  "answerColumns": [
+    {
+      "id": "tool",
+      "label": "Tool",
+      "options": [
+        "get_object_or_404()",
+        "@require_POST",
+        "JsonResponse(data, safe=False)",
+        "redirect()",
+        "reverse()",
+        "ListView",
+        "DetailView",
+        "@csrf_exempt",
+        "request.GET.get()",
+        "json.loads(request.body)"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["In a function view, load a book by pk or answer with a 404 page"], "answers": { "tool": "get_object_or_404()" } },
+    { "given": ["The view must accept only POST requests"], "answers": { "tool": "@require_POST" } },
+    { "given": ["Return a list of loans as JSON"], "answers": { "tool": "JsonResponse(data, safe=False)" } },
+    { "given": ["After saving a loan, send the browser to the loan page"], "answers": { "tool": "redirect()" } },
+    { "given": ["Build the URL of the book-detail route inside Python code"], "answers": { "tool": "reverse()" } },
+    { "given": ["A page with a paginated list of books, almost without code"], "answers": { "tool": "ListView" } },
+    { "given": ["A page for one book found by its slug, almost without code"], "answers": { "tool": "DetailView" } },
+    { "given": ["A JSON endpoint for a mobile app must accept POST without a CSRF token"], "answers": { "tool": "@csrf_exempt" }, "explain": "Захищай такий ендпоінт іншим способом — токенами (урок 8)." },
+    { "given": ["Read ?author=lesya-ukrainka from the address"], "answers": { "tool": "request.GET.get()" } },
+    { "given": ["Read the JSON body sent by the mobile app"], "answers": { "tool": "json.loads(request.body)" } }
+  ],
+  "hints": [
+    "Відповіді — `JsonResponse`, `redirect`; адреси — `reverse`; дані запиту — `request.GET`, `request.body`.",
+    "Типові сторінки — generic views: список — `ListView`, один об'єкт — `DetailView`."
+  ],
+  "explanation": "Кожен інструмент закриває одну типову потребу: читання запиту (`request.GET`, `request.body`), обмеження методів (`require_POST`), відповіді (`JsonResponse` зі `safe=False` для списку, `redirect` після збереження), побудова адрес за іменем маршруту (`reverse`), пошук «або 404» (`get_object_or_404`) і готові сторінки (`ListView`, `DetailView`). `csrf_exempt` — свідомий виняток для API без форм, а не спосіб «полагодити 403»."
+}

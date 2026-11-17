@@ -1,0 +1,36 @@
+{
+  "title": "Project, URLs and views",
+  "minutes": 60,
+  "summary": "Чим Django відрізняється від FastAPI, проєкт і застосунки (startproject, startapp), settings.py, manage.py і практичний проєкт курсу (npm run lab:py-django), шлях запиту: urls.py → view → HttpResponse, path() з конвертерами <int:pk> і <slug:slug>, імена маршрутів і reverse(), JsonResponse, request.GET і require_GET",
+  "resources": [
+    {
+      "title": "Django docs: Writing your first Django app, part 1",
+      "url": "https://docs.djangoproject.com/en/6.1/intro/tutorial01/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Django docs: URL dispatcher",
+      "url": "https://docs.djangoproject.com/en/6.1/topics/http/urls/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "path(), конвертери, імена, reverse()",
+      "needsVerification": true
+    },
+    {
+      "title": "Django docs: Request and response objects",
+      "url": "https://docs.djangoproject.com/en/6.1/ref/request-response/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Django tutorial for beginners",
+      "url": "https://www.youtube.com/results?search_query=django+tutorial+for+beginners",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "type": "order",
+  "title": "One trip through Post/Redirect/Get",
+  "statement": "Менеджер додає новий товар через сторінку `/products/new/`, і все заповнено правильно. Розстав кроки в тому порядку, в якому вони відбуваються.",
+  "items": [
+    "The browser sends GET /products/new/ and the view returns an empty form",
+    "The manager fills in the form and the browser sends POST with the CSRF token",
+    "The view builds ProductForm(request.POST) and calls is_valid()",
+    "form.save() writes the product to the database",
+    "The view answers 302 with Location /products/7/",
+    "The browser sends GET /products/7/ and shows the product with the success message"
+  ],
+  "hints": [
+    "Спершу порожня форма (GET), потім відправка (POST).",
+    "Збереження — до перенаправлення, а повідомлення бачиш уже на новій сторінці (ще один GET)."
+  ],
+  "explanation": "PRG — це три запити: GET отримує форму, POST надсилає дані (з CSRF-токеном), і після `is_valid()` та `save()` сервер відповідає не сторінкою, а `302`. Браузер сам робить GET на нову адресу — тому F5 на сторінці товару лише перечитає її, а не створить дубль, а повідомлення, збережене до перенаправлення, з'являється вже там."
+}

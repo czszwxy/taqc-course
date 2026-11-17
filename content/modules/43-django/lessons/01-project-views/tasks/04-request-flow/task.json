@@ -1,0 +1,18 @@
+{
+  "type": "order",
+  "title": "The path of a Django request",
+  "statement": "Браузер відкриває `http://127.0.0.1:8000/books/7/` у практичному проєкті (`runserver`). Розстав кроки обробки запиту в правильному порядку.",
+  "items": [
+    "runserver receives the HTTP request",
+    "Middleware runs (sessions, authentication…)",
+    "Django matches /books/ in config/urls.py and goes into library.urls",
+    "library/urls.py matches <int:pk>/ and converts \"7\" to 7",
+    "views.book_detail(request, pk=7) runs and returns an HttpResponse",
+    "The response goes back through the middleware to the browser"
+  ],
+  "hints": [
+    "Спершу мережа, потім middleware, потім маршрути — від головного `urls.py` до маршрутів застосунку.",
+    "View — останній крок перед зворотною дорогою; відповідь теж проходить через middleware."
+  ],
+  "explanation": "Сервер приймає запит і передає його в Django. Middleware обробляють запит першими (сесія, користувач), потім резолвер маршрутів іде від `ROOT_URLCONF` (`config/urls.py`) через `include(...)` до маршрутів застосунку, де конвертер перетворює `\"7\"` на `7`. View повертає `HttpResponse`, і та проходить middleware у зворотному порядку — тому middleware може, наприклад, додати заголовки до будь-якої відповіді."
+}

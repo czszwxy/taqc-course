@@ -27,7 +27,15 @@ const taskCodeFiles = import.meta.glob<string>('/content/modules/*/lessons/*/tas
   query: '?raw',
   import: 'default',
 });
-const pythonFiles = import.meta.glob<string>('/content/modules/*/lessons/*/tasks/*/*.py', { query: '?raw', import: 'default' });
+/** Python task files, also in folders and templates (lab tasks with a project layout: shop/models.py, shop/templates/…). */
+const pythonFiles = import.meta.glob<string>(
+  [
+    '/content/modules/*/lessons/*/tasks/*/**/*.py',
+    '/content/modules/*/lessons/*/tasks/*/**/*.html',
+    '!/content/modules/*/lessons/*/tasks/*/mutants/**',
+  ],
+  { query: '?raw', import: 'default' },
+);
 const pythonMutantFiles = import.meta.glob<string>('/content/modules/*/lessons/*/tasks/*/mutants/*.py', {
   query: '?raw',
   import: 'default',

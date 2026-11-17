@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "file": "shop/urls.py",
+  "title": "URL patterns with converters and names",
+  "statement": "Views уже написані — `shop/views.py` (лише для читання). Опиши в `shop/urls.py` список `urlpatterns`, щоб кожна адреса вела до своєї view з правильним типом аргументів і мала ім'я:\n\n| Шлях | View | Ім'я |\n|---|---|---|\n| `health/` | `health` | `health` |\n| `orders/` | `order_list` | `order-list` |\n| `orders/<ціле pk>/` | `order_detail` | `order-detail` |\n| `orders/number/<рядок number>/` | `order_by_number` | `order-by-number` |\n| `categories/<slug>/products/` | `category_products` | `category-products` |\n| `customers/<ціле customer_id>/orders/<ціле year>/` | `customer_orders` | `customer-orders` |\n\n```python\nreverse(\"order-detail\", args=[7])   # \"/orders/7/\"\nclient.get(\"/orders/abc/\").status_code  # 404 — pk має бути цілим\n```",
+  "hints": [
+    "`from django.urls import path` і `from . import views`; кожен рядок — `path(\"orders/<int:pk>/\", views.order_detail, name=\"order-detail\")`.",
+    "Конвертери: `<int:...>` для цілих, `<str:number>` для номера, `<slug:slug>` для категорії. Назва в дужках = назва аргументу view.",
+    "Шляхи в Django без початкового `/`, але зі слешем у кінці: `\"orders/\"`, не `\"/orders\"`."
+  ],
+  "explanation": "`path()` зіставляє шлях з шаблоном, перетворює частини в кутових дужках конвертерами й передає їх у view іменованими аргументами — тому `pk` приходить як `int`, а `/orders/abc/` просто не знаходить маршрут (404). Ім'я маршруту робить адресу «змінною»: код і шаблони звертаються до `order-detail`, а не до рядка `/orders/7/`. Конвертер `slug` не пропустить пробілів чи кирилиці — так URL лишаються передбачуваними.",
+  "codeRules": [
+    { "kind": "require", "pattern": "<int:pk>", "message": "pk має бути цілим: <int:pk>." }
+  ]
+}

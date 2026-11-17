@@ -1,0 +1,17 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "file": "shop/forms.py",
+  "title": "A ModelForm with its own rules",
+  "statement": "Модель `Product` — у `shop/models.py` (лише для читання). Напиши в `shop/forms.py` форму `ProductForm(forms.ModelForm)` для менеджерів:\n\n- поля — рівно `name`, `sku`, `price`, `compare_at_price`, `stock` (модель має ще `is_featured` — його з цієї форми змінювати не можна);\n- `name` — без пробілів по краях, щонайменше 2 символи (`\"Name is too short.\"`);\n- `sku` — без пробілів по краях і **великими літерами**; лише латиниця, цифри й дефіс, 3–20 символів (`\"Use 3-20 letters, digits or dashes.\"`); унікальність — і для `\"mouse-01\"`, якщо вже є `\"MOUSE-01\"`;\n- `price` — щонайменше 1 (`\"Price must be at least 1.\"`);\n- `compare_at_price` (необов'язкова «стара ціна») — якщо вказана, має бути **більшою** за `price`; помилка — біля поля `compare_at_price`: `\"Must be higher than the price.\"`.\n\n```python\nform = ProductForm(data={\"name\": \" Webcam \", \"sku\": \"cam-01\", \"price\": \"1999\", \"stock\": \"3\"})\nform.is_valid()            # True\nform.cleaned_data[\"sku\"]   # 'CAM-01'\n```",
+  "hints": [
+    "`class Meta: model = Product; fields = [\"name\", \"sku\", \"price\", \"compare_at_price\", \"stock\"]`.",
+    "`clean_sku`: `value = self.cleaned_data[\"sku\"].strip().upper()`, перевір `re.fullmatch(r\"[A-Z0-9-]{3,20}\", value)` і **поверни** `value`. Унікальність ModelForm перевірить сама — по очищеному значенню.",
+    "`clean()`: `cleaned = super().clean()`; якщо `compare_at_price` не `None` і `price` є та `compare_at_price <= price` — `self.add_error(\"compare_at_price\", ...)`."
+  ],
+  "explanation": "Кожне правило — у своєму місці: формат одного поля — в `clean_<поле>` (який обов'язково повертає очищене значення), залежність між полями — в `clean()` з `add_error`, а унікальність ModelForm перевіряє сама вже після твоїх `clean`-методів — тому нормалізований `\"MOUSE-01\"` ловиться як дубль. Явний список `fields` не дає змінити `is_featured` через форму, навіть якщо його дописати в запит.",
+  "codeRules": [
+    { "kind": "require", "pattern": "ModelForm", "message": "Побудуй форму на моделі: forms.ModelForm." },
+    { "kind": "forbid", "pattern": "__all__", "message": "Перелічи поля явно — без \"__all__\"." }
+  ]
+}

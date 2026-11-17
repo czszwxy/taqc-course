@@ -2,12 +2,15 @@ import * as monaco from 'monaco-editor';
 import { loader } from '@monaco-editor/react';
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 import TsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
+import HtmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
 import { TEST_GLOBALS_DTS } from '../runner/harness-dts';
 
 // Use the locally bundled Monaco (no CDN) so the editor works offline.
 (self as unknown as { MonacoEnvironment: monaco.Environment }).MonacoEnvironment = {
   getWorker(_workerId: string, label: string) {
     if (label === 'typescript' || label === 'javascript') return new TsWorker();
+    // Django templates of the module 43 tasks are edited as HTML.
+    if (label === 'html') return new HtmlWorker();
     return new EditorWorker();
   },
 };

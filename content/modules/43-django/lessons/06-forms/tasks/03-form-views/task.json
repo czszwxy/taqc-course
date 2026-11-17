@@ -1,0 +1,17 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "file": "shop/views.py",
+  "title": "Create and edit pages with Post/Redirect/Get",
+  "statement": "Форма `ProductForm` (`shop/forms.py`), моделі, маршрути й шаблони вже є (лише для читання). У `shop/views.py` є `product_detail`. Допиши дві view за шаблоном Post/Redirect/Get, обидві рендерять `shop/product_form.html` зі змінною `form`:\n\n**`product_create`** — `/products/new/`:\n\n- `GET` — порожня форма (`200`);\n- `POST` з помилками — та сама сторінка з помилками (`200`), нічого не збережено;\n- `POST` валідний — зберегти, повідомлення `messages.success`: `\"Product <назва> created.\"`, перенаправити (`302`) на `product-detail` нового товару.\n\n**`product_edit`** — `/products/<pk>/edit/`: те саме для наявного товару (форма заповнена ним; неіснуючий — `404`); після збереження — повідомлення `\"Product <назва> updated.\"` і перенаправлення на його сторінку.",
+  "hints": [
+    "Каркас: `if request.method == \"POST\": form = ProductForm(request.POST) … else: form = ProductForm()`, наприкінці — `render(request, \"shop/product_form.html\", {\"form\": form})`.",
+    "Успіх: `product = form.save()`, `messages.success(request, f\"Product {product.name} created.\")`, `return redirect(\"product-detail\", pk=product.pk)`.",
+    "Редагування: `product = get_object_or_404(Product, pk=pk)` і `ProductForm(request.POST or None, instance=product)`."
+  ],
+  "explanation": "Post/Redirect/Get розділяє три гілки: GET показує форму, невалідний POST повертає ту саму сторінку з помилками й уже введеними даними, а валідний — зберігає і перенаправляє, щоб оновлення сторінки не надіслало форму вдруге. `instance=` перетворює ту саму форму на форму редагування: `save()` оновлює товар, а перевірка унікальності не вважає його власний `sku` дублем. Повідомлення з `messages` переживає перенаправлення й з'являється на сторінці товару.",
+  "codeRules": [
+    { "kind": "require", "pattern": "redirect\\(", "message": "Після успішного збереження — redirect (PRG)." },
+    { "kind": "require", "pattern": "messages\\.success", "message": "Повідом про успіх через messages.success." }
+  ]
+}

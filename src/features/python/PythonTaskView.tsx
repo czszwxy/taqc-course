@@ -9,6 +9,7 @@ import {
   runPythonProgram,
   warmUpPython,
   type PythonCheckResult,
+  type PythonTaskLayout,
   type PythonSuiteResult,
 } from '../../runner/python-client';
 import type { PythonRunResult, PythonTestCase } from '../../runner/python-protocol';
@@ -29,13 +30,14 @@ type NextTarget = TaskViewProps['next'];
 const DRAFT_SAVE_DELAY_MS = 400;
 const ATTEMPTS_BEFORE_SOLUTION = 3;
 const PYTHON_TAB_SIZE = 4;
-const SUBJECT_FILE = 'subject.py';
 const MS_PER_SECOND = 1000;
 const LAB_SETUP_COMMAND = 'npm run lab:python-setup';
 
 /** Where the code runs and how long a run may take — the texts of the results panel follow it. */
 interface RuntimeInfo {
   lab: boolean;
+  /** Run executes a standalone program; a file inside a project (shop/views.py, a template) has nothing to run on its own. */
+  runnable: boolean;
   checkSeconds: number;
   runSeconds: number;
 }
@@ -44,6 +46,7 @@ function runtimeInfo(task: PythonTask): RuntimeInfo {
   const lab = task.runtime === 'lab';
   return {
     lab,
+    runnable: task.mode !== 'tests' && (task.file ?? 'solution.py') === 'solution.py',
     checkSeconds: (lab ? LAB_PYTHON_TEST_TIMEOUT_MS : PYTHON_RUN_TIMEOUT_MS) / MS_PER_SECOND,
     runSeconds: (lab ? LAB_PYTHON_RUN_TIMEOUT_MS : PYTHON_RUN_TIMEOUT_MS) / MS_PER_SECOND,
   };
@@ -68,7 +71,8 @@ export default function PythonTaskView({ ct, header, onSimilar, next }: TaskView
   const [statusKey, setStatusKey] = useState(0);
   const labStatus = useAsync(() => (runtime.lab ? fetchPythonLabStatus() : Promise.resolve(null)), [runtime.lab, statusKey]);
   const blocked = runtime.lab && IS_STATIC_SITE;
-  const fileName = testsMode ? 'tests.py' : 'solution.py';
+  const fileName = task.file ?? (testsMode ? 'tests.py' : 'solution.py');
+  const layout: PythonTaskLayout = { runtime: task.runtime, file: task.file, subject: task.subject };
   const codeRef = useRef('');
   const editorRef = useRef<CodeEditorHandle | null>(null);
   const saveTimer = useRef<number | undefined>(undefined);
@@ -105,12 +109,12 @@ export default function PythonTaskView({ ct, header, onSimilar, next }: TaskView
     setPanel('results');
     saveDraft(ct.id, codeRef.current);
     if (testsMode) {
-      const r = await checkPythonTests(codeRef.current, files.data.support, files.data.mutants, task.mutants, task.minTests, task.codeRules, task.runtime);
+      const r = await checkPythonTests(codeRef.current, files.data.support, files.data.mutants, task.mutants, task.minTests, task.codeRules, layout);
       setSuite(r);
       setConsoleOut({ source: 'check', run: r });
       if (!r.unavailable) recordAttempt(ct.id, r.passed);
     } else {
-      const r = await checkPythonSolution(codeRef.current, files.data.tests, files.data.support, task.codeRules, task.runtime);
+      const r = await checkPythonSolution(codeRef.current, files.data.tests, files.data.support, task.codeRules, layout);
       setResult(r);
       setConsoleOut({ source: 'check', run: r });
       if (!r.unavailable) recordAttempt(ct.id, r.passed);
@@ -122,7 +126,7 @@ export default function PythonTaskView({ ct, header, onSimilar, next }: TaskView
     if (busy) return;
     setBusy('run');
     setPanel('console');
-    const run = await runPythonProgram(codeRef.current, files.data?.support ?? {}, task.runtime);
+    const run = await runPythonProgram(codeRef.current, files.data?.support ?? {}, layout);
     setConsoleOut({ source: 'run', run });
     setBusy(null);
   };
@@ -154,7 +158,7 @@ export default function PythonTaskView({ ct, header, onSimilar, next }: TaskView
       <section className="scroll-thin border-line p-5 lg:min-h-0 lg:overflow-y-auto lg:border-r lg:p-6">
         {header}
         <Markdown compact>{task.statement}</Markdown>
-        {files.data && <SupportFiles files={files.data.support} testsMode={testsMode} />}
+        {files.data && <SupportFiles files={files.data.support} subject={testsMode ? task.subject : null} />}
         <div className="mt-5 space-y-3">
           {labStatus.data && !labStatus.data.ready && (
             <LabSetupCallout status={labStatus.data} labName="Python lab" command={LAB_SETUP_COMMAND} onRecheck={() => setStatusKey((k) => k + 1)} />
@@ -164,7 +168,7 @@ export default function PythonTaskView({ ct, header, onSimilar, next }: TaskView
           {showSolution && files.data ? (
             <div className="card p-4">
               <div className="mb-2 text-sm font-bold">📗 {testsMode ? 'Reference tests' : "Author's solution"}</div>
-              <CodeBlock code={files.data.solution} lang="python" />
+              <CodeBlock code={files.data.solution} lang={editorLanguage(fileName)} />
               <p className="mt-2 text-xs text-muted">Your solution can be different and still correct — what matters is that the checks pass.</p>
             </div>
           ) : (
@@ -178,9 +182,11 @@ export default function PythonTaskView({ ct, header, onSimilar, next }: TaskView
       {/* On a phone the statement comes first and the page scrolls; the editor block below gets most of the screen. */}
       <section className="flex h-[88dvh] min-h-[520px] flex-col border-t-2 border-line lg:h-auto lg:min-h-0 lg:border-t-0">
         <div className="flex items-center gap-2 border-b border-line bg-surface px-3 py-2">
-          <span className="hidden font-mono text-xs text-muted sm:inline">🐍 {fileName}</span>
+          <span className="hidden min-w-0 truncate font-mono text-xs text-muted sm:inline" title={fileName}>
+            🐍 {fileName}
+          </span>
           {runtime.lab && (
-            <span className="hidden text-xs text-faint md:inline" title="Runs with real pytest in lab/.venv on your computer">
+            <span className="hidden shrink-0 whitespace-nowrap text-xs text-faint md:inline" title="Runs with real pytest in lab/.venv on your computer">
               💻 runs on your computer
             </span>
           )}
@@ -189,7 +195,7 @@ export default function PythonTaskView({ ct, header, onSimilar, next }: TaskView
           <button className="btn btn-ghost btn-sm" onClick={reset} disabled={!files.data} title="Reset to the starting code">
             ↺ <span className="hidden sm:inline">Reset</span>
           </button>
-          {!testsMode && (
+          {runtime.runnable && (
             <button className="btn btn-secondary btn-sm" onClick={doRun} disabled={!files.data || busy !== null || blocked} title="Run your file and see print() output">
               ▶ Run
             </button>
@@ -203,7 +209,7 @@ export default function PythonTaskView({ ct, header, onSimilar, next }: TaskView
             <CodeEditor
               key={ct.id}
               path={`file:///${ct.id}/${fileName}`}
-              language={'python'}
+              language={editorLanguage(fileName)}
               initialValue={initialCode}
               tabSize={PYTHON_TAB_SIZE}
               onChange={onChange}
@@ -357,8 +363,13 @@ function ResultsView({ result, busy, runtime, onSimilar, next }: ResultsViewProp
   if (!result) {
     return (
       <div className="text-sm text-muted">
-        Press <b className="text-fg">Check</b> (Ctrl+Enter) to run the hidden tests on your code. Press <b className="text-fg">Run</b> to execute your file and see{' '}
-        <code className="font-mono">print()</code> output.
+        Press <b className="text-fg">Check</b> (Ctrl+Enter) to run the hidden tests on your code.
+        {runtime.runnable && (
+          <>
+            {' '}
+            Press <b className="text-fg">Run</b> to execute your file and see <code className="font-mono">print()</code> output.
+          </>
+        )}
       </div>
     );
   }
@@ -487,13 +498,19 @@ function ConsoleView({ out, busy, runtime }: { out: ConsoleOutput | null; busy: 
   );
 }
 
-function SupportFiles({ files, testsMode }: { files: Record<string, string>; testsMode: boolean }) {
-  const entries = Object.entries(files);
+/** Monaco / highlight language of a task file: templates are HTML, everything else Python. */
+function editorLanguage(file: string): 'python' | 'html' {
+  return file.endsWith('.html') ? 'html' : 'python';
+}
+
+function SupportFiles({ files, subject }: { files: Record<string, string>; subject: string | null }) {
+  // Empty files (a package's __init__.py) only make the list longer.
+  const entries = Object.entries(files).filter(([, code]) => code.trim() !== '');
   if (entries.length === 0) return null;
   return (
     <div className="mt-4 space-y-2">
       {entries.map(([name, code]) => {
-        const isSubject = testsMode && name === SUBJECT_FILE;
+        const isSubject = name === subject;
         return (
           <Collapsible
             key={name}
@@ -505,7 +522,7 @@ function SupportFiles({ files, testsMode }: { files: Record<string, string>; tes
               </span>
             }
           >
-            <CodeBlock code={code} lang="python" />
+            <CodeBlock code={code} lang={editorLanguage(name)} />
           </Collapsible>
         );
       })}

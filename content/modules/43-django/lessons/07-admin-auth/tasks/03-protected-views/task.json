@@ -1,0 +1,17 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "file": "shop/views.py",
+  "title": "Login, ownership and permissions",
+  "statement": "Модель `Order` (`customer` — користувач, `number`, `total`, `status`) і маршрути вже є (лише для читання). Напиши в `shop/views.py` три JSON-view. Замовлення в JSON — `{\"number\", \"total\", \"status\"}`.\n\n| View | Хто | Відповідь | Інакше |\n|---|---|---|---|\n| `my_orders` (`/orders/`) | увійшлий користувач | його замовлення за `number` | гість — `302` на вхід (`/accounts/login/?next=/orders/`) |\n| `order_detail` (`/orders/<pk>/`) | власник замовлення **або** співробітник (`is_staff`) | замовлення | гість — `302` на вхід; чуже чи неіснуюче — `404` |\n| `sales_report` (`/reports/sales/`) | користувач з правом `shop.view_order` | `{\"orders\": <кількість усіх>, \"revenue\": <сума total зі статусом paid або shipped>}` | гість — `302` на вхід; без права — `403` |",
+  "hints": [
+    "`@login_required` над кожною view; список — `Order.objects.filter(customer=request.user).order_by(\"number\")`.",
+    "Деталі: для співробітника — `get_object_or_404(Order, pk=pk)`, для інших — `get_object_or_404(Order, pk=pk, customer=request.user)`.",
+    "Звіт: `@login_required` **над** `@permission_required(\"shop.view_order\", raise_exception=True)` — тоді гість отримує 302, а користувач без права — 403."
+  ],
+  "explanation": "Три рівні захисту — три інструменти: `login_required` питає «хто ти?» (гість — на сторінку входу), фільтр за `request.user` захищає чужі дані (і `404` не підтверджує, що замовлення існує), а `permission_required(..., raise_exception=True)` питає «що тобі можна?» (`403`). Порядок декораторів важливий: без `login_required` зверху гість отримав би `403` замість сторінки входу.",
+  "codeRules": [
+    { "kind": "require", "pattern": "login_required", "message": "Закрий views для гостей: @login_required." },
+    { "kind": "require", "pattern": "permission_required", "message": "Звіт — лише з правом: @permission_required(\"shop.view_order\", raise_exception=True)." }
+  ]
+}

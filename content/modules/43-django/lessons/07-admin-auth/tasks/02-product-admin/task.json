@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "file": "shop/admin.py",
+  "title": "Configure the admin for the catalog",
+  "statement": "Менеджери магазину працюватимуть в адмінці. Моделі `Category` і `Product` — у `shop/models.py`, маршрути з `admin/` — у `shop/urls.py` (лише для читання). Налаштуй `shop/admin.py`.\n\n**`ProductAdmin`** для `Product`:\n\n| Що | Значення |\n|---|---|\n| стовпці списку | `name`, `sku`, `category`, `price`, `stock`, `status` |\n| фільтри | `status`, `category` |\n| пошук | за `name` і `sku` |\n| `slug` | заповнюється з `name` |\n| лише для читання | `created_at` |\n| порядок | за `name` |\n| дія `archive` | «Archive selected products»: ставить вибраним `status = archived` і показує повідомлення `\"<N> products archived.\"` |\n\n**`CategoryAdmin`** для `Category`: стовпці `name`, `slug`; `slug` заповнюється з `name`.",
+  "hints": [
+    "`@admin.register(Product)` над `class ProductAdmin(admin.ModelAdmin)` з атрибутами `list_display`, `list_filter`, `search_fields`, `prepopulated_fields = {\"slug\": [\"name\"]}`, `readonly_fields`, `ordering`.",
+    "Дія: `actions = [\"archive\"]` і метод `@admin.action(description=\"Archive selected products\") def archive(self, request, queryset): ...`.",
+    "У дії — `updated = queryset.update(status=Product.Status.ARCHIVED)` і `self.message_user(request, f\"{updated} products archived.\")`."
+  ],
+  "explanation": "`ModelAdmin` — це конфігурація, а не код сторінок: стовпці, фільтри, пошук, підказки для полів і масові дії описуються атрибутами, а Django будує з них список, форму й пошук. Дія отримує `queryset` вибраних рядків — один `update()` змінює їх усі одним запитом, а `message_user` показує результат на наступній сторінці.",
+  "codeRules": [
+    { "kind": "require", "pattern": "admin\\.register|admin\\.site\\.register", "message": "Зареєструй моделі в адмінці." }
+  ]
+}

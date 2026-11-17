@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "file": "shop/views.py",
+  "title": "First views: health, list and detail",
+  "statement": "Проєкт магазину вже має маршрути — `shop/urls.py` (лише для читання) — і дані каталогу в `shop/catalog.py` (`PRODUCTS`). Напиши в `shop/views.py` три view, які повертають JSON і відповідають **лише на GET** (інші методи — `405`):\n\n| Маршрут | View | Відповідь |\n|---|---|---|\n| `/health/` | `health` | `{\"status\": \"ok\"}` |\n| `/products/` | `product_list` | список `PRODUCTS`; з `?category=cables` — лише товари цієї категорії (невідома категорія — порожній список) |\n| `/products/<int:pk>/` | `product_detail` | товар з таким `id` або `404` з `{\"detail\": \"Product not found\"}` |\n\n```python\nclient.get(\"/products/?category=cables\").json()\n# [{'id': 1, 'name': 'USB-C cable', 'category': 'cables', 'price': 299}, ...]\n```",
+  "hints": [
+    "`from django.http import JsonResponse` і `from django.views.decorators.http import require_GET`; кожну view познач `@require_GET`.",
+    "Список — `JsonResponse(found, safe=False)`; категорія — `request.GET.get(\"category\")` (може бути `None`).",
+    "404 у JSON: `return JsonResponse({\"detail\": \"Product not found\"}, status=404)`."
+  ],
+  "explanation": "View — це функція «запит → відповідь». Django передає їй `request` і аргументи з шляху (`pk` уже `int` завдяки конвертеру), а вона повертає `HttpResponse`. `JsonResponse` серіалізує дані й ставить `Content-Type: application/json`; для списку потрібен `safe=False`. `require_GET` відсікає інші методи кодом `405`, а «немає такого товару» — це `404` зі зрозумілим тілом, а не `200` з `null`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "require_GET|require_http_methods", "message": "Обмеж методи декоратором require_GET (або require_http_methods)." }
+  ]
+}

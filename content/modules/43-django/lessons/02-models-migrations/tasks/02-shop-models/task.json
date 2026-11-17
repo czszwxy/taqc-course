@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "file": "shop/models.py",
+  "title": "Category and Product models",
+  "statement": "Опиши моделі магазину в `shop/models.py`.\n\n**`Category`**: `name` — рядок до 50 символів, унікальний; `slug` — `SlugField`, унікальний. Порядок за замовчуванням — за `name`. `str(category)` — назва.\n\n**`Product`**:\n\n| Поле | Тип і правила |\n|---|---|\n| `category` | `ForeignKey` на `Category`; категорію з товарами видалити не можна (`PROTECT`); зворотний доступ — `category.products` |\n| `name` | рядок до 100 символів |\n| `sku` | рядок до 20 символів, унікальний |\n| `price` | `PositiveIntegerField`, у базі — щонайменше 1 (`CheckConstraint` з назвою `product_price_positive`) |\n| `stock` | `PositiveIntegerField`, за замовчуванням 0 |\n| `status` | `Product.Status` (`TextChoices`): `draft`, `active`, `archived`; за замовчуванням `draft` |\n| `created_at` | заповнюється сам при створенні |\n\nПорядок за замовчуванням — за `name`. `str(product)` — `\"Wireless mouse (MOUSE-01)\"`.",
+  "hints": [
+    "Каркас: `category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name=\"products\")`, `created_at = models.DateTimeField(auto_now_add=True)`.",
+    "Варіанти статусу — вкладений клас `class Status(models.TextChoices): DRAFT = \"draft\", \"Draft\"` …, поле — `models.CharField(max_length=10, choices=Status.choices, default=Status.DRAFT)`.",
+    "`class Meta: ordering = [\"name\"]; constraints = [models.CheckConstraint(condition=Q(price__gte=1), name=\"product_price_positive\")]` (`from django.db.models import Q`)."
+  ],
+  "explanation": "Кожне правило зі статті лягає на свій механізм: довжина й тип — на поле, унікальність — на `unique=True`, «щонайменше 1» — на `CheckConstraint` у базі (бо `PositiveIntegerField` пропускає 0), «не можна видалити категорію з товарами» — на `on_delete=PROTECT`, зворотний доступ — на `related_name`. Тести перевіряють саме поведінку бази: дубль `sku` і ціна 0 мають давати `IntegrityError`, видалення категорії — `ProtectedError`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "CheckConstraint", "message": "Ціну щонайменше 1 перевіряє база: CheckConstraint у Meta.constraints." }
+  ]
+}

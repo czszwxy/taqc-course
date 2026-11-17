@@ -1,0 +1,18 @@
+{
+  "type": "order",
+  "title": "Add a field to a live model",
+  "statement": "Магазин уже працює, у таблиці товарів тисячі рядків. Треба додати поле `weight_grams`. Розстав кроки в безпечному порядку.",
+  "items": [
+    "Add weight_grams to Product with a default value",
+    "Run makemigrations",
+    "Read the generated migration file",
+    "Run the tests on a fresh test database",
+    "Commit the model change and the migration together",
+    "Deploy the code and run migrate on the server"
+  ],
+  "hints": [
+    "Міграцію генерують з моделі, тож спершу змінюють модель.",
+    "До продакшну зміна доходить останньою — і лише разом із міграцією."
+  ],
+  "explanation": "Міграція народжується зі зміни моделі, а `default` потрібен, щоб наявні рядки отримали значення. Згенерований файл читають (раптом Django вирішив перейменування як «видалити й додати»), тести на свіжій базі доводять, що міграції застосовуються з нуля. Модель і міграцію комітять разом — інакше хтось отримає код без схеми, — і лише після деплою виконують `migrate` на сервері."
+}

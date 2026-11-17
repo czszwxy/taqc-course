@@ -1,0 +1,17 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "file": "shop/views.py",
+  "title": "Catalog pages with ListView and DetailView",
+  "statement": "Каталог на сайті показують дві сторінки. Моделі (`Category`, `Product` зі `slug`), маршрути й шаблони вже є (лише для читання). Напиши в `shop/views.py` два класи:\n\n**`ProductListView(ListView)`** — `/products/`, шаблон `shop/product_list.html`:\n\n- лише **активні** товари за назвою, у шаблоні — під іменем `products`;\n- по 5 на сторінку (`?page=2`…);\n- `?category=<slug>` — лише товари цієї категорії; у контексті ще й `category` — об'єкт категорії (або `None` без фільтра); невідомий slug — порожній список.\n\n**`ProductDetailView(DetailView)`** — `/products/<slug>/`, шаблон `shop/product_detail.html`, у шаблоні — `product`; чернетки й архівні — `404`.",
+  "hints": [
+    "`ListView`: `template_name`, `context_object_name = \"products\"`, `paginate_by = 5` і `get_queryset()` з `self.request.GET.get(\"category\")`.",
+    "`get_context_data(self, **kwargs)`: `context = super().get_context_data(**kwargs)`, потім `context[\"category\"] = Category.objects.filter(slug=...).first()` (або `None`).",
+    "`DetailView` знайде товар за `slug` з маршруту сам; обмеж вибірку: `queryset = Product.objects.filter(status=Product.Status.ACTIVE)`."
+  ],
+  "explanation": "Generic views беруть на себе типову роботу: `ListView` виконує `get_queryset()`, ділить результат на сторінки (`page_obj`, `404` для неіснуючої сторінки) і передає в шаблон під твоїм `context_object_name`; `DetailView` знаходить об'єкт за `slug` з маршруту серед `queryset` і відповідає `404`, якщо його там немає — тому обмеження «лише активні» в `queryset` автоматично ховає чернетки. Своє — фільтр і додаткову змінну — додають, перевизначивши `get_queryset` і `get_context_data` (з `super()`).",
+  "codeRules": [
+    { "kind": "require", "pattern": "ListView", "message": "Список — класом ListView." },
+    { "kind": "require", "pattern": "DetailView", "message": "Сторінка товару — класом DetailView." }
+  ]
+}

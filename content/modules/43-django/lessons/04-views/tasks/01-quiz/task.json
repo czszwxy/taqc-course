@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "Views, requests and responses",
+  "show": 6,
+  "hints": ["get_object_or_404 — 404 замість 500. Класи — через .as_view(). paginate_by → page_obj."],
+  "questions": [
+    {
+      "id": "get-or-404",
+      "kind": "single",
+      "text": "Чим `get_object_or_404(Book, pk=pk)` кращий за `Book.objects.get(pk=pk)` у view?",
+      "options": [
+        { "text": "Неіснуючий об'єкт дає 404, а не необроблений `DoesNotExist` і 500", "correct": true },
+        { "text": "Він швидший" },
+        { "text": "Він повертає `None`, якщо об'єкта немає" }
+      ]
+    },
+    {
+      "id": "as-view",
+      "kind": "single",
+      "text": "Як підключити класову view до маршруту?",
+      "options": [
+        { "text": "`path(\"books/\", BookListView.as_view())`", "correct": true },
+        { "text": "`path(\"books/\", BookListView)`" },
+        { "text": "`path(\"books/\", BookListView())`" }
+      ]
+    },
+    {
+      "id": "paginate",
+      "kind": "single",
+      "text": "`ListView` з `paginate_by = 10`. Що отримає `GET /books/?page=99`, якщо сторінок лише 3?",
+      "options": [
+        { "text": "404", "correct": true },
+        { "text": "Порожній список зі статусом 200" },
+        { "text": "Останню, третю сторінку" }
+      ]
+    },
+    {
+      "id": "csrf",
+      "kind": "single",
+      "text": "Навіщо Django вимагає CSRF-токен для POST?",
+      "options": [
+        { "text": "Щоб чужий сайт не міг надіслати форму від імені користувача, який залогінений у твоєму", "correct": true },
+        { "text": "Щоб шифрувати тіло запиту" },
+        { "text": "Щоб обмежити кількість запитів" }
+      ]
+    },
+    {
+      "id": "test-client-csrf",
+      "kind": "single",
+      "text": "Тест POST-ить у view форми без CSRF-токена й отримує 302. Що це означає?",
+      "options": [
+        { "text": "Нічого про CSRF: тестовий `client` за замовчуванням CSRF не перевіряє", "correct": true },
+        { "text": "Захист CSRF у проєкті вимкнено" },
+        { "text": "Токен додається автоматично в продакшні теж" }
+      ]
+    },
+    {
+      "id": "get-queryset",
+      "kind": "single",
+      "text": "Де в `ListView` фільтрувати список за `?author=...`?",
+      "options": [
+        { "text": "У `get_queryset()`, читаючи `self.request.GET`", "correct": true },
+        { "text": "У `template_name`" },
+        { "text": "У `get_context_data()` — замінивши `object_list` після `super()`" }
+      ]
+    },
+    {
+      "id": "context-super",
+      "kind": "single",
+      "text": "`get_context_data` повертає лише `{\"authors\": ...}` без виклику `super()`. Що станеться в шаблоні?",
+      "options": [
+        { "text": "Зникнуть `object_list`, `page_obj` та інші стандартні змінні", "correct": true },
+        { "text": "Нічого, Django додасть їх сам" },
+        { "text": "Шаблон не знайдеться" }
+      ]
+    },
+    {
+      "id": "bad-param",
+      "kind": "single",
+      "text": "View робить `int(request.GET[\"max_price\"])`. Що отримає клієнт на `?max_price=abc`?",
+      "options": [
+        { "text": "500 — `ValueError` ніхто не обробив; правильно перевірити й відповісти 400", "correct": true },
+        { "text": "422 — Django перевіряє типи параметрів сам" },
+        { "text": "400 автоматично" }
+      ]
+    }
+  ]
+}

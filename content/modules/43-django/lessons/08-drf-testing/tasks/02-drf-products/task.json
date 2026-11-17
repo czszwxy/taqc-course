@@ -1,0 +1,18 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "file": "shop/api.py",
+  "title": "A product API with Django REST Framework",
+  "statement": "Зроби той самий каталог, що в уроці 4, але з DRF — у `shop/api.py`. Модель `Product` і маршрути (`api-product-list`, `api-product-detail`) уже є (лише для читання).\n\n**`ProductSerializer(serializers.ModelSerializer)`** — поля `id`, `name`, `sku`, `price`, `stock`, `status`, `created_at`; `id` і `created_at` лише для читання. `sku` — без пробілів по краях і великими літерами, лише латиниця, цифри й дефіс, 3–20 символів (`\"Use 3-20 letters, digits or dashes.\"`); унікальність — по очищеному значенню. `price` — щонайменше 1 (`\"Price must be at least 1.\"`).\n\n**`IsStaffOrReadOnly(BasePermission)`** — читати можуть усі, змінювати — лише співробітники (`is_staff`).\n\n**`ProductListCreateView`** — `GET` список за назвою (`?status=active` — лише з цим статусом), `POST` — створити. **`ProductDetailView`** — `GET`, `PUT`, `PATCH`, `DELETE` одного товару. Обидві — з `IsStaffOrReadOnly`.",
+  "hints": [
+    "Серіалізатор: `class Meta: model = Product; fields = [...]; read_only_fields = [\"id\", \"created_at\"]` і метод `validate_sku(self, value)`, що повертає очищене значення. Перевірка унікальності з моделі бачить значення ще ДО `validate_sku`, тож дубль після очищення шукай сам(а): `Product.objects.filter(sku=sku)`, без `self.instance` при оновленні.",
+    "Дозвіл: `return request.method in SAFE_METHODS or request.user.is_staff`.",
+    "Views: `generics.ListCreateAPIView` з `get_queryset()` для `?status=` і `generics.RetrieveUpdateDestroyAPIView`; в обох — `serializer_class` і `permission_classes = [IsStaffOrReadOnly]`."
+  ],
+  "explanation": "DRF розкладає API на три частини: серіалізатор описує дані й перевірки (перевірку унікальності з моделі він додає сам, але вона працює до `validate_sku` і не бачить очищеного значення — тому дубль `\"mouse-01\"` ловить твій `validate_sku`), дозвіл вирішує, хто що може, а generic views дають GET / POST / PUT / PATCH / DELETE з правильними кодами — `201`, `400` з помилками полів, `204`, `404`. Порівняй з уроком 4: та сама поведінка — у кількох десятках рядків декларацій замість ручних перевірок.",
+  "codeRules": [
+    { "kind": "require", "pattern": "ModelSerializer", "message": "Опиши дані серіалізатором ModelSerializer." },
+    { "kind": "require", "pattern": "BasePermission", "message": "Права «читати всім, змінювати співробітникам» — власний BasePermission." },
+    { "kind": "forbid", "pattern": "__all__", "message": "Перелічи поля серіалізатора явно." }
+  ]
+}

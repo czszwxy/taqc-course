@@ -1,0 +1,36 @@
+{
+  "title": "Forms and validation",
+  "minutes": 65,
+  "summary": "Form і ModelForm, fields як «білий список» полів, is_valid / cleaned_data / errors, порядок перевірок: поле → clean_<поле> → clean() → унікальність моделі, ValidationError і add_error, форма в шаблоні з csrf_token, шаблон Post/Redirect/Get, редагування через instance=, повідомлення messages",
+  "resources": [
+    {
+      "title": "Django docs: Working with forms",
+      "url": "https://docs.djangoproject.com/en/6.1/topics/forms/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Django docs: Creating forms from models",
+      "url": "https://docs.djangoproject.com/en/6.1/topics/forms/modelforms/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Django docs: Form and field validation",
+      "url": "https://docs.djangoproject.com/en/6.1/ref/forms/validation/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "порядок clean-методів",
+      "needsVerification": true
+    },
+    {
+      "title": "Django docs: The messages framework",
+      "url": "https://docs.djangoproject.com/en/6.1/ref/contrib/messages/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

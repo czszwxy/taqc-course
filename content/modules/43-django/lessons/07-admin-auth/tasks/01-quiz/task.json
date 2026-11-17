@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "Admin, login and permissions",
+  "show": 6,
+  "hints": ["Гість + login_required → 302. Немає права + raise_exception → 403. Чужий об'єкт → 404."],
+  "questions": [
+    {
+      "id": "anon-login-required",
+      "kind": "single",
+      "text": "Гість відкриває view з `@login_required`. Що він отримає за замовчуванням?",
+      "options": [
+        { "text": "302 на `/accounts/login/?next=<адреса>`", "correct": true },
+        { "text": "403" },
+        { "text": "401 з WWW-Authenticate" }
+      ]
+    },
+    {
+      "id": "no-perm",
+      "kind": "single",
+      "text": "Увійшлий користувач без права відкриває view з `@login_required` і `@permission_required(\"library.view_loan\", raise_exception=True)`. Відповідь?",
+      "options": [
+        { "text": "403", "correct": true },
+        { "text": "302 на вхід" },
+        { "text": "404" }
+      ]
+    },
+    {
+      "id": "idor",
+      "kind": "single",
+      "text": "Чому в «моїх позиках» пишуть `get_object_or_404(Loan, pk=pk, member=request.user)`?",
+      "options": [
+        { "text": "Щоб користувач не побачив чужу позику, просто змінивши id в адресі; чужа дає 404", "correct": true },
+        { "text": "Так швидше працює запит" },
+        { "text": "Без `member=` Django не знайде позику" }
+      ]
+    },
+    {
+      "id": "password",
+      "kind": "single",
+      "text": "Що зберігає `create_user(\"olha\", password=\"s3cret\")` у полі `password`?",
+      "options": [
+        { "text": "Солоний хеш на кшталт `pbkdf2_sha256$...`", "correct": true },
+        { "text": "Сам пароль" },
+        { "text": "Зашифрований пароль, який можна розшифрувати ключем SECRET_KEY" }
+      ]
+    },
+    {
+      "id": "admin-staff",
+      "kind": "single",
+      "text": "Хто може працювати в адмінці Django?",
+      "options": [
+        { "text": "Користувачі з `is_staff = True` (і лише з тими моделями й діями, на які в них є права)", "correct": true },
+        { "text": "Будь-хто, хто увійшов" },
+        { "text": "Лише той, хто запустив `runserver`" }
+      ]
+    },
+    {
+      "id": "permissions-auto",
+      "kind": "single",
+      "text": "Які права Django створює для моделі `Book` застосунку `library` автоматично?",
+      "options": [
+        { "text": "`library.add_book`, `library.change_book`, `library.delete_book`, `library.view_book`", "correct": true },
+        { "text": "Лише `library.admin_book`" },
+        { "text": "Жодних — права створюють вручну" }
+      ]
+    },
+    {
+      "id": "force-login",
+      "kind": "single",
+      "text": "Навіщо в тестах `client.force_login(user)`?",
+      "options": [
+        { "text": "Увійти одразу, без форми входу й пароля, — тест перевіряє свою view, а не сторінку входу", "correct": true },
+        { "text": "Щоб надати користувачу всі права" },
+        { "text": "Щоб вимкнути CSRF" }
+      ]
+    },
+    {
+      "id": "custom-user",
+      "kind": "single",
+      "text": "Чому радять одразу створювати власну модель користувача (`AUTH_USER_MODEL`)?",
+      "options": [
+        { "text": "Замінити модель користувача пізніше, коли в базі вже є дані, дуже складно", "correct": true },
+        { "text": "Вбудована модель не вміє хешувати паролі" },
+        { "text": "Без неї не працює адмінка" }
+      ]
+    }
+  ]
+}

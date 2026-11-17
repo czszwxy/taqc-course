@@ -1,0 +1,36 @@
+{
+  "title": "Function and class-based views",
+  "minutes": 65,
+  "summary": "Об'єкт request (method, GET, POST, body, user) і відповіді (JsonResponse, redirect, коди статусу), get_object_or_404, обмеження методів, CSRF і JSON-API, ручна перевірка тіла запиту, класові views: View, ListView (get_queryset, paginate_by, page_obj), DetailView за slug і get_context_data",
+  "resources": [
+    {
+      "title": "Django docs: Writing views",
+      "url": "https://docs.djangoproject.com/en/6.1/topics/http/views/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Django docs: Built-in class-based generic views",
+      "url": "https://docs.djangoproject.com/en/6.1/topics/class-based-views/generic-display/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "ListView, DetailView, get_queryset, get_context_data",
+      "needsVerification": true
+    },
+    {
+      "title": "Django docs: Pagination",
+      "url": "https://docs.djangoproject.com/en/6.1/topics/pagination/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Django docs: Cross Site Request Forgery protection",
+      "url": "https://docs.djangoproject.com/en/6.1/ref/csrf/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "DRF and pytest-django",
+  "show": 6,
+  "hints": ["Серіалізатор — як форма для JSON. DRF: валідація — 400. Тестам потрібен django_db."],
+  "questions": [
+    {
+      "id": "serializer-role",
+      "kind": "single",
+      "text": "Що робить серіалізатор DRF?",
+      "options": [
+        { "text": "Перетворює об'єкти на JSON і назад, перевіряючи вхідні дані", "correct": true },
+        { "text": "Зберігає JSON у файл" },
+        { "text": "Описує маршрути API" }
+      ]
+    },
+    {
+      "id": "drf-400",
+      "kind": "single",
+      "text": "Який код повертає DRF, якщо серіалізатор не пройшов перевірку?",
+      "options": [
+        { "text": "400 з `{\"поле\": [\"повідомлення\"]}`", "correct": true },
+        { "text": "422" },
+        { "text": "500" }
+      ]
+    },
+    {
+      "id": "drf-403",
+      "kind": "single",
+      "text": "Гість робить POST до DRF-view з `IsAuthenticatedOrReadOnly`, автентифікація — сесії (за замовчуванням). Яка відповідь?",
+      "options": [
+        { "text": "403 — у сесійної автентифікації немає заголовка WWW-Authenticate, тож DRF не відповідає 401", "correct": true },
+        { "text": "401" },
+        { "text": "302 на сторінку входу" }
+      ]
+    },
+    {
+      "id": "safe-methods",
+      "kind": "single",
+      "text": "Що входить у `SAFE_METHODS`?",
+      "options": [
+        { "text": "`GET`, `HEAD`, `OPTIONS` — методи, що нічого не змінюють", "correct": true },
+        { "text": "`GET` і `POST`" },
+        { "text": "Усі методи, якщо користувач увійшов" }
+      ]
+    },
+    {
+      "id": "generic",
+      "kind": "single",
+      "text": "Які методи обробляє `RetrieveUpdateDestroyAPIView`?",
+      "options": [
+        { "text": "`GET`, `PUT`, `PATCH`, `DELETE` для одного об'єкта", "correct": true },
+        { "text": "`GET` списку і `POST`" },
+        { "text": "Лише `DELETE`" }
+      ]
+    },
+    {
+      "id": "django-db",
+      "kind": "single",
+      "text": "Тест створює `Book.objects.create(...)` без маркера `django_db`. Що буде?",
+      "options": [
+        { "text": "`RuntimeError: Database access not allowed` — pytest-django блокує базу без дозволу", "correct": true },
+        { "text": "Книжка запишеться в справжню базу" },
+        { "text": "Нічого, тест пройде" }
+      ]
+    },
+    {
+      "id": "rollback",
+      "kind": "single",
+      "text": "Тест A створив 3 книжки. Скільки книжок побачить тест B, якщо він їх не створював?",
+      "options": [
+        { "text": "0 — кожен тест з `django_db` працює в транзакції, яку відкочують", "correct": true },
+        { "text": "3" },
+        { "text": "Залежить від порядку запуску" }
+      ]
+    },
+    {
+      "id": "factory-fixture",
+      "kind": "single",
+      "text": "Навіщо фікстура-фабрика `make_book(**fields)` замість однієї фікстури `book`?",
+      "options": [
+        { "text": "Кожен тест створює стільки об'єктів і з такими полями, як йому треба, не дублюючи код", "correct": true },
+        { "text": "Так тести не потребують бази" },
+        { "text": "Фабрики працюють швидше за звичайні фікстури" }
+      ]
+    }
+  ]
+}

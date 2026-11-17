@@ -1,0 +1,39 @@
+{
+  "type": "table",
+  "title": "Which pytest-django tool?",
+  "statement": "Ти пишеш тести для бібліотеки. Для кожної потреби обери інструмент pytest-django, Django чи DRF.",
+  "givenColumns": ["Need"],
+  "answerColumns": [
+    {
+      "id": "tool",
+      "label": "Tool",
+      "options": [
+        "@pytest.mark.django_db",
+        "client",
+        "admin_client",
+        "django_user_model",
+        "client.force_login(user)",
+        "django_assert_max_num_queries",
+        "settings fixture",
+        "assertTemplateUsed",
+        "APIClient + force_authenticate"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["Let the test read and write the test database"], "answers": { "tool": "@pytest.mark.django_db" } },
+    { "given": ["Send GET /books/ as a guest"], "answers": { "tool": "client" } },
+    { "given": ["Open an admin page as a superuser"], "answers": { "tool": "admin_client" } },
+    { "given": ["Create a test member with the project's user model"], "answers": { "tool": "django_user_model" } },
+    { "given": ["Act as a specific member without filling in the login form"], "answers": { "tool": "client.force_login(user)" } },
+    { "given": ["Fail if the book list page needs more than 3 SQL queries"], "answers": { "tool": "django_assert_max_num_queries" } },
+    { "given": ["Use a different LOANS_PER_MEMBER setting in one test"], "answers": { "tool": "settings fixture" }, "explain": "Фікстура `settings` змінює налаштування лише на час тесту." },
+    { "given": ["Check that the page was rendered with library/book_list.html"], "answers": { "tool": "assertTemplateUsed" } },
+    { "given": ["Call a DRF endpoint with JSON as a logged-in member"], "answers": { "tool": "APIClient + force_authenticate" } }
+  ],
+  "hints": [
+    "База — маркер; запити — клієнти (гість, адмін, DRF); користувачі — модель і force_login.",
+    "Продуктивність — підрахунок запитів, налаштування — фікстура settings, шаблони — assertTemplateUsed."
+  ],
+  "explanation": "pytest-django закриває типові потреби тестів Django: доступ до бази (`django_db`, з відкатом після тесту), клієнти для гостя й адміна, модель користувача й вхід без форми, підрахунок SQL-запитів і тимчасові налаштування. Для DRF є власний `APIClient`, який вміє JSON і `force_authenticate`, а Django-перевірки на кшталт `assertTemplateUsed` доступні з `pytest_django.asserts`."
+}

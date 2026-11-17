@@ -70,8 +70,12 @@ def _prepare(files):
         path = os.path.join(WORKDIR, name)
         if os.path.isfile(path):
             os.remove(path)
+        elif os.path.isdir(path) and name != "__pycache__":
+            shutil.rmtree(path, ignore_errors=True)
     for name, code in files.items():
-        with open(os.path.join(WORKDIR, name), "w", encoding="utf-8") as f:
+        path = os.path.join(WORKDIR, name)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8") as f:
             f.write(code)
     shutil.rmtree(TMP_ROOT, ignore_errors=True)
     if WORKDIR not in sys.path:

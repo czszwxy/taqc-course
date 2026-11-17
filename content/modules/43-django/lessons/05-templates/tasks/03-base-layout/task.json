@@ -1,0 +1,17 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "file": "shop/templates/shop/base.html",
+  "title": "A base layout for every page",
+  "statement": "Сторінки магазину (`home.html`, `cart.html` — лише для читання) наслідують `shop/base.html`, якого ще немає. Напиши його:\n\n- повний HTML-документ (`<!doctype html>`, `<html lang=\"en\">`, `<head>` з `<meta charset=\"utf-8\">`);\n- `<title>` — блок `title`, за замовчуванням `Gadget shop`;\n- `<nav>` з посиланнями за іменами маршрутів: `<a href=\"…home…\">Catalog</a>` і `<a href=\"…cart…\">Cart</a>`; далі для **увійшлого** користувача — `<span class=\"user\">Hi, ім'я</span>` і `<a href=\"…logout…\">Log out</a>`, а для гостя — `<a href=\"…login…\">Log in</a>`;\n- `<main>` з блоком `content`;\n- `<footer>© <поточний рік> Gadget shop</footer>`.\n\n`user` доступний у кожному шаблоні (контекстний процесор `auth`).",
+  "hints": [
+    "Адреси — `{% url 'home' %}`, `{% url 'cart' %}`, `{% url 'login' %}`, `{% url 'logout' %}`.",
+    "`{% if user.is_authenticated %}<span class=\"user\">Hi, {{ user.username }}</span> <a …>Log out</a>{% else %}<a …>Log in</a>{% endif %}`.",
+    "Рік — тег `{% now \"Y\" %}`; знак © — `&copy;` або сам символ."
+  ],
+  "explanation": "Базовий шаблон — це каркас з «дірками»-блоками: дочірні сторінки заповнюють `title` і `content`, а все спільне (навігація, підвал) пишеться один раз. Посилання за іменами маршрутів не ламаються після зміни URL, `user` приходить у кожен шаблон через контекстний процесор, а `{% now \"Y\" %}` не дає року в підвалі застаріти.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\{%\\s*block\\s+content", "message": "Потрібен блок content для сторінок." },
+    { "kind": "forbid", "pattern": "href=\"/", "message": "Адреси будуй тегом {% url %}, а не рядками \"/...\"." }
+  ]
+}

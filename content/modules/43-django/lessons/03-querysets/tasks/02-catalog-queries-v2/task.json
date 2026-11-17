@@ -1,0 +1,17 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "file": "shop/queries.py",
+  "variantOf": "02-catalog-queries",
+  "title": "Order queries",
+  "statement": "Моделі — у `shop/models.py` (лише для читання): `Customer` і `Order` (`customer`, `number`, `status`, `total`, `created_at`). Напиши в `shop/queries.py`:\n\n| Функція | Повертає |\n|---|---|\n| `orders_between(start, end)` | QuerySet замовлень, створених між датами `start` і `end` **включно** (`date`), за `created_at` |\n| `paid_revenue()` | ціле: сума `total` замовлень зі статусом `paid` або `shipped`; немає таких — 0 |\n| `top_customers(limit=3)` | список пар `(email, сума)` покупців за сумою їхніх **не скасованих** замовлень, від більшої; при рівній сумі — за email; лише покупці з сумою > 0; не більше `limit`; **одним** запитом |\n| `customers_without_orders()` | QuerySet покупців без жодного замовлення, за email |",
+  "hints": [
+    "Дати: `created_at__date__range=(start, end)` — обидві межі включно.",
+    "`Order.objects.filter(status__in=[...]).aggregate(total=Coalesce(Sum(\"total\"), 0))[\"total\"]`.",
+    "Топ: `Customer.objects.annotate(revenue=Coalesce(Sum(\"orders__total\", filter=~Q(orders__status=...)), 0)).filter(revenue__gt=0).order_by(\"-revenue\", \"email\")[:limit]`; «без замовлень» — `orders__isnull=True`."
+  ],
+  "explanation": "Діапазон дат з `__date__range` включає обидві межі, `aggregate` дає одне число на всю вибірку, а `annotate` — суму на кожного покупця, причому `filter=` у `Sum` відкидає скасовані замовлення ще в SQL. Покупців без замовлень знаходить LEFT JOIN з `orders__isnull=True`. Усе це — по одному запиту, без перебору замовлень у Python.",
+  "codeRules": [
+    { "kind": "require", "pattern": "annotate", "message": "Суму на кожного покупця порахуй через annotate(...)." }
+  ]
+}

@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Library</title></head>
+<body>
+  <h1>Books</h1>
+  <ul>
+    {% for book in books %}
+      <li><a href="{% url 'library:book-detail' book.pk %}">{{ book.title }}</a> — {{ book.author }}, {{ book.year }}</li>
+    {% empty %}
+      <li>No books yet. Add some in the admin: <a href="/admin/">/admin/</a></li>
+    {% endfor %}
+  </ul>
+</body>
+</html>

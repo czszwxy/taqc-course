@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "file": "shop/reports.py",
+  "title": "Fix the N+1 in an order report",
+  "statement": "Звіт «Замовлення» в `shop/reports.py` повертає **правильний** результат, але робить окремі запити на покупця, рядки й товар кожного замовлення — на сотні замовлень сторінка відкривається секундами. Моделі — у `shop/models.py` (лише для читання).\n\nВиправ `order_lines()`: результат той самий — список словників за номером замовлення:\n\n```python\n[{\"number\": \"A-1\", \"customer\": \"Anna\", \"items\": [\"HDMI cable x2\", \"Wireless mouse x1\"]}, ...]\n```\n\n(рядки — `\"<назва товару> x<кількість>\"` за назвою товару), але **не більше 3 SQL-запитів** незалежно від кількості замовлень.",
+  "hints": [
+    "Покупець — зв'язок «вперед» (`Order.customer`): `select_related(\"customer\")`.",
+    "Рядки — «назад» (`order.items`), а в них товар «вперед»: `prefetch_related(Prefetch(\"items\", queryset=OrderItem.objects.select_related(\"product\").order_by(\"product__name\")))`.",
+    "Після prefetch бери `order.items.all()` — `.order_by()` чи `.filter()` на ньому знову піде в базу."
+  ],
+  "explanation": "Кожне звернення до незавантаженого зв'язку в циклі — окремий запит: `order.customer`, `order.items.all()` і `item.product` дають 1 + N + N + N·M запитів. `select_related` приєднує «передні» зв'язки JOIN-ом в основний запит, а `prefetch_related` завантажує «задні» одним додатковим запитом на всі замовлення; `Prefetch` з власним `queryset` дозволяє заодно підтягнути товари рядків і задати порядок. Разом — 2 запити на будь-яку кількість замовлень.",
+  "codeRules": [
+    { "kind": "require", "pattern": "select_related|prefetch_related", "message": "Завантаж зв'язки заздалегідь: select_related / prefetch_related." }
+  ]
+}

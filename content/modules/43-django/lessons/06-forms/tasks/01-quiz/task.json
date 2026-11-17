@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "Forms, validation and PRG",
+  "show": 6,
+  "hints": ["Поле → clean_<поле> → clean() → унікальність. Успішний POST — redirect."],
+  "questions": [
+    {
+      "id": "order",
+      "kind": "single",
+      "text": "У якому порядку ModelForm перевіряє дані?",
+      "options": [
+        { "text": "Поля (тип, межі) → `clean_<поле>()` → `clean()` → перевірки моделі, зокрема унікальність", "correct": true },
+        { "text": "`clean()` → поля → `clean_<поле>()`" },
+        { "text": "Лише унікальність, решту перевіряє база" }
+      ]
+    },
+    {
+      "id": "return-value",
+      "kind": "single",
+      "text": "`clean_sku` переводить значення у верхній регістр, але забуває `return`. Що буде в `cleaned_data[\"sku\"]`?",
+      "options": [
+        { "text": "`None`", "correct": true },
+        { "text": "Значення у верхньому регістрі" },
+        { "text": "Початкове значення, як ввели" }
+      ]
+    },
+    {
+      "id": "all-fields",
+      "kind": "single",
+      "text": "Чому `fields = \"__all__\"` небезпечно для форми реєстрації?",
+      "options": [
+        { "text": "Користувач зможе заповнити будь-яке поле моделі — наприклад, `is_staff` чи знижку, — дописавши його в запит", "correct": true },
+        { "text": "Форма стане повільною" },
+        { "text": "Django заборонить таку форму" }
+      ]
+    },
+    {
+      "id": "prg",
+      "kind": "single",
+      "text": "Навіщо після успішного збереження робити `redirect`, а не `render`?",
+      "options": [
+        { "text": "Щоб оновлення сторінки не надіслало форму вдруге й не створило дубль (Post/Redirect/Get)", "correct": true },
+        { "text": "`render` після POST заборонений" },
+        { "text": "Так швидше" }
+      ]
+    },
+    {
+      "id": "invalid-post",
+      "kind": "single",
+      "text": "Що має повернути view, якщо POST-форма невалідна?",
+      "options": [
+        { "text": "Ту саму сторінку з формою, помилками й уже введеними значеннями — нічого не зберігаючи", "correct": true },
+        { "text": "Перенаправлення на порожню форму" },
+        { "text": "500" }
+      ]
+    },
+    {
+      "id": "add-error",
+      "kind": "single",
+      "text": "У `clean()` порівнюються ціна й «стара ціна». Як показати помилку саме біля поля «стара ціна»?",
+      "options": [
+        { "text": "`self.add_error(\"compare_at_price\", \"...\")`", "correct": true },
+        { "text": "`raise ValidationError(\"...\")` — Django сам визначить поле" },
+        { "text": "Повернути `False` з `clean()`" }
+      ]
+    },
+    {
+      "id": "unique-cleaned",
+      "kind": "single",
+      "text": "У базі є `sku = \"MOUSE-01\"`. Форма з `clean_sku`, що робить `upper()`, отримує `\"mouse-01\"`. Що буде?",
+      "options": [
+        { "text": "Помилка унікальності: перевірка моделі йде вже по очищеному `\"MOUSE-01\"`", "correct": true },
+        { "text": "Форма валідна: `\"mouse-01\"` ≠ `\"MOUSE-01\"`" },
+        { "text": "`IntegrityError` під час `save()`" }
+      ]
+    },
+    {
+      "id": "instance",
+      "kind": "single",
+      "text": "Що робить `ProductForm(request.POST, instance=product)`?",
+      "options": [
+        { "text": "Форму редагування: `save()` оновить цей товар, а не створить новий", "correct": true },
+        { "text": "Копію товару" },
+        { "text": "Перевіряє дані, не дозволяючи зберігати" }
+      ]
+    }
+  ]
+}

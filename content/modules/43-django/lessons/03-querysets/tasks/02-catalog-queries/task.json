@@ -1,0 +1,17 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "file": "shop/queries.py",
+  "title": "Catalog queries",
+  "statement": "Моделі — у `shop/models.py` (лише для читання): `Category` і `Product` (`status`, `price`, `stock`, `reorder_level` …). Напиши в `shop/queries.py` чотири функції. Скрізь ідеться лише про **активні** товари (`status == Product.Status.ACTIVE`).\n\n| Функція | Повертає |\n|---|---|\n| `active_products(max_price=None)` | QuerySet активних товарів; з `max_price` — лише `price <= max_price`; порядок — за ціною, при однаковій ціні — за назвою |\n| `search(text)` | QuerySet активних товарів, у яких назва **містить** `text` без урахування регістру **або** `sku` дорівнює `text` без урахування регістру; за назвою |\n| `needs_restock()` | QuerySet активних товарів, у яких `stock` менше за їхній власний `reorder_level`; за `stock`, потім за назвою |\n| `category_summary()` | список словників `{\"category\": назва, \"products\": кількість активних товарів, \"stock\": сума їхнього stock}` для **всіх** категорій за назвою (без активних товарів — 0 і 0), **одним** запитом |\n\n```python\nsearch(\"mouse\")       # Wireless mouse, Gaming mouse…\nsearch(\"cable-c1\")    # товар з sku \"CABLE-C1\"\n```",
+  "hints": [
+    "`Product.objects.filter(status=Product.Status.ACTIVE)` — спільна основа; далі `.filter(price__lte=max_price)` і `.order_by(\"price\", \"name\")`.",
+    "«Або» — `Q(name__icontains=text) | Q(sku__iexact=text)`; «менше за своє поле» — `stock__lt=F(\"reorder_level\")`.",
+    "Підсумок одним запитом: `Category.objects.annotate(active_count=Count(\"products\", filter=Q(products__status=...)), active_stock=Coalesce(Sum(\"products__stock\", filter=Q(...)), 0)).order_by(\"name\")` — назви анотацій не можуть бути `products` (це related_name)."
+  ],
+  "explanation": "Кожна вимога лягає на свій інструмент QuerySet: межа ціни — `__lte`, «або» — `Q`, порівняння двох полів одного рядка — `F`, підсумок на кожну категорію — `annotate` з `filter=` (рахуємо лише активні товари), а `Coalesce` перетворює `None` порожньої суми на 0. `annotate` на `Category` робить LEFT JOIN, тож категорії без товарів теж потрапляють у звіт — і все це одним SQL-запитом, без циклу по категоріях.",
+  "codeRules": [
+    { "kind": "require", "pattern": "\\bQ\\(", "message": "Умову «або» опиши через Q(...) | Q(...)." },
+    { "kind": "require", "pattern": "\\bF\\(", "message": "Порівняй stock з reorder_level через F(\"reorder_level\")." }
+  ]
+}

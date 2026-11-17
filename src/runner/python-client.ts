@@ -77,8 +77,22 @@ export function warmUpPython(): void {
   void request('run', { 'warmup.py': 'pass\n' }, 'warmup.py');
 }
 
-export function runPythonProgram(code: string, support: Record<string, string>, runtime: PythonRuntime = 'browser'): Promise<PythonRunResult> {
-  return runJob(runtime, { kind: 'run', files: { ...support, 'solution.py': code }, entry: 'solution.py' });
+/** Where a task runs and where its files go (lab tasks may use a project layout such as shop/views.py). */
+export interface PythonTaskLayout {
+  runtime?: PythonRuntime;
+  /** The learner's file: solution.py (solution mode) / tests.py (tests mode) unless the task names another one. */
+  file?: string;
+  /** Tests mode: the file under test that each mutant replaces. */
+  subject?: string;
+}
+
+const SOLUTION_FILE = 'solution.py';
+const TESTS_FILE = 'tests.py';
+const SUBJECT_FILE = 'subject.py';
+
+export function runPythonProgram(code: string, support: Record<string, string>, layout: PythonTaskLayout = {}): Promise<PythonRunResult> {
+  const file = layout.file ?? SOLUTION_FILE;
+  return runJob(layout.runtime ?? 'browser', { kind: 'run', files: { ...support, [file]: code }, entry: file });
 }
 
 export interface PythonCheckResult extends PythonRunResult {
@@ -88,16 +102,17 @@ export interface PythonCheckResult extends PythonRunResult {
 
 const allPassed = (tests: PythonTestCase[]) => tests.length > 0 && tests.every((t) => t.passed);
 
-/** Solution mode: the learner's solution.py against the hidden tests.py. */
+/** Solution mode: the learner's solution.py (or the task's own file) against the hidden tests.py. */
 export async function checkPythonSolution(
   code: string,
   tests: string,
   support: Record<string, string>,
   rules: CodeRule[],
-  runtime: PythonRuntime = 'browser',
+  layout: PythonTaskLayout = {},
 ): Promise<PythonCheckResult> {
-  const run = await runJob(runtime, { kind: 'test', files: { ...support, 'solution.py': code, 'tests.py': tests }, entry: 'tests.py' });
-  const ruleFailures = evaluatePythonRules(code, rules);
+  const files = { ...support, [layout.file ?? SOLUTION_FILE]: code, [TESTS_FILE]: tests };
+  const run = await runJob(layout.runtime ?? 'browser', { kind: 'test', files, entry: TESTS_FILE });
+  const ruleFailures = evaluatePythonRules(code, rules, layout.file);
   const passed = !run.error && !run.timedOut && !run.unavailable && allPassed(run.tests) && ruleFailures.length === 0;
   return { ...run, passed, ruleFailures };
 }
@@ -117,8 +132,8 @@ export interface PythonSuiteResult extends PythonRunResult {
 }
 
 /**
- * Tests mode: the learner's tests.py must pass on subject.py (a support file) and fail on every
- * mutants/<id>.py (a copy of subject.py with one bug).
+ * Tests mode: the learner's tests.py must pass on subject.py (a support file; a lab task may name another one,
+ * e.g. shop/views.py) and fail on every mutants/<id>.py (a copy of that file with one bug).
  */
 export async function checkPythonTests(
   tests: string,
@@ -127,14 +142,17 @@ export async function checkPythonTests(
   specs: MutantSpec[],
   minTests: number | undefined,
   rules: CodeRule[],
-  runtime: PythonRuntime = 'browser',
+  layout: PythonTaskLayout = {},
 ): Promise<PythonSuiteResult> {
-  const testJob = (subject: Record<string, string>): LabPythonJob => ({ kind: 'test', files: { ...support, ...subject, 'tests.py': tests }, entry: 'tests.py' });
+  const runtime = layout.runtime ?? 'browser';
+  const testsFile = layout.file ?? TESTS_FILE;
+  const subjectFile = layout.subject ?? SUBJECT_FILE;
+  const testJob = (subject: Record<string, string>): LabPythonJob => ({ kind: 'test', files: { ...support, ...subject, [testsFile]: tests }, entry: testsFile });
   const base = await runJob(runtime, testJob({}));
   const ruleFailures = evaluatePythonRules(tests, rules);
   const tooFewTests = minTests !== undefined && base.tests.length < minTests;
   const green = !base.error && !base.timedOut && !base.unavailable && allPassed(base.tests);
-  const runs = green ? await runJobs(runtime, specs.map((spec) => testJob({ 'subject.py': mutantCode[spec.id] ?? '' }))) : [];
+  const runs = green ? await runJobs(runtime, specs.map((spec) => testJob({ [subjectFile]: mutantCode[spec.id] ?? '' }))) : [];
   const mutants = runs.map((run, i): PythonMutantResult => {
     const spec = specs[i] as MutantSpec;
     const killed = !run.unavailable && (Boolean(run.error) || Boolean(run.timedOut) || run.tests.some((t) => !t.passed));

@@ -75,6 +75,13 @@ export interface LabStatus {
   message: string;
 }
 
+/*
+ * A file of a lab Python task's project: matches "solution.py", "shop/views.py", "shop/templates/shop/list.html";
+ * rejects "../x.py", "/etc/x.py", "shop\\views.py", "notes.txt".
+ * https://regex101.com/?regex=%5E(%3F%3A%5BA-Za-z_%5D%5Cw*%5C%2F)*%5BA-Za-z_%5D%5B%5Cw-%5D*%5C.(%3F%3Apy%7Chtml)%24
+ */
+export const PROJECT_FILE = /^(?:[A-Za-z_]\w*\/)*[A-Za-z_][\w-]*\.(?:py|html)$/;
+
 /* ---------- Python tasks that run in the lab venv (`"runtime": "lab"`: FastAPI, Django) ---------- */
 
 /** One pytest run ("test": the hidden tests.py on the files) or one program run ("run": python <entry>). */

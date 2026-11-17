@@ -1,0 +1,41 @@
+{
+  "type": "table",
+  "title": "What does this command do?",
+  "statement": "Для кожної команди обери, що вона робить. (У практичному проєкті курсу `python manage.py ...` запускається як `npm run lab:py-django -- ...`.)",
+  "givenColumns": ["Command"],
+  "answerColumns": [
+    {
+      "id": "effect",
+      "label": "What it does",
+      "options": [
+        "Creates a new project",
+        "Creates a new app folder",
+        "Writes migration files from model changes",
+        "Applies migrations to the database",
+        "Lists migrations and which are applied",
+        "Prints the SQL of one migration",
+        "Creates a user for the admin",
+        "Starts the development server",
+        "Opens Python with the project loaded",
+        "Checks the project for common problems"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`django-admin startproject config .`"], "answers": { "effect": "Creates a new project" } },
+    { "given": ["`python manage.py startapp shop`"], "answers": { "effect": "Creates a new app folder" } },
+    { "given": ["`python manage.py makemigrations`"], "answers": { "effect": "Writes migration files from model changes" } },
+    { "given": ["`python manage.py migrate`"], "answers": { "effect": "Applies migrations to the database" } },
+    { "given": ["`python manage.py showmigrations`"], "answers": { "effect": "Lists migrations and which are applied" } },
+    { "given": ["`python manage.py sqlmigrate shop 0002`"], "answers": { "effect": "Prints the SQL of one migration" }, "explain": "Нічого не виконує — лише показує SQL, який виконав би migrate." },
+    { "given": ["`python manage.py createsuperuser`"], "answers": { "effect": "Creates a user for the admin" } },
+    { "given": ["`python manage.py runserver`"], "answers": { "effect": "Starts the development server" } },
+    { "given": ["`python manage.py shell`"], "answers": { "effect": "Opens Python with the project loaded" } },
+    { "given": ["`python manage.py check`"], "answers": { "effect": "Checks the project for common problems" } }
+  ],
+  "hints": [
+    "`django-admin` — до того, як проєкт існує; далі все через `manage.py`.",
+    "`makemigrations` пише файли, `migrate` змінює базу, `showmigrations` і `sqlmigrate` лише показують."
+  ],
+  "explanation": "Команди діляться на групи: створити (`startproject`, `startapp`), змінити схему (`makemigrations` — файл, `migrate` — база), подивитися (`showmigrations`, `sqlmigrate`, `check`) і працювати з проєктом (`createsuperuser`, `runserver`, `shell`). Плутанина `makemigrations` / `migrate` — найчастіша: перша нічого не змінює в базі."
+}

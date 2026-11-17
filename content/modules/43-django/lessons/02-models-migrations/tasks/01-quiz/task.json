@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "Fields, relations and migrations",
+  "show": 6,
+  "hints": ["null — база, blank — форми. PROTECT забороняє видалення, CASCADE видаляє разом. makemigrations пише файл, migrate його виконує."],
+  "questions": [
+    {
+      "id": "null-blank",
+      "kind": "single",
+      "text": "Чим `blank=True` відрізняється від `null=True`?",
+      "options": [
+        { "text": "`blank` дозволяє лишити поле порожнім у формах, `null` дозволяє `NULL` у базі", "correct": true },
+        { "text": "Це синоніми" },
+        { "text": "`blank` — для чисел, `null` — для рядків" }
+      ]
+    },
+    {
+      "id": "protect",
+      "kind": "single",
+      "text": "`Product.category = ForeignKey(Category, on_delete=models.PROTECT)`. Що буде при видаленні категорії, в якій є товари?",
+      "options": [
+        { "text": "`ProtectedError` — видалення заборонене, доки є товари", "correct": true },
+        { "text": "Товари видаляться разом із категорією" },
+        { "text": "У товарів category стане `NULL`" }
+      ]
+    },
+    {
+      "id": "related-name",
+      "kind": "single",
+      "text": "Що дає `related_name=\"products\"` у `ForeignKey(Category, ...)` моделі `Product`?",
+      "options": [
+        { "text": "Зворотний доступ `category.products.all()` замість `category.product_set.all()`", "correct": true },
+        { "text": "Назву стовпця в таблиці товарів" },
+        { "text": "Назву таблиці категорій" }
+      ]
+    },
+    {
+      "id": "makemigrations-migrate",
+      "kind": "single",
+      "text": "Чим `makemigrations` відрізняється від `migrate`?",
+      "options": [
+        { "text": "`makemigrations` пише файл міграції за змінами моделей, `migrate` виконує міграції в базі", "correct": true },
+        { "text": "`migrate` пише файли, `makemigrations` їх виконує" },
+        { "text": "Це одна команда з двома назвами" }
+      ]
+    },
+    {
+      "id": "money",
+      "kind": "single",
+      "text": "Яке поле взяти для ціни з копійками?",
+      "options": [
+        { "text": "`DecimalField(max_digits=10, decimal_places=2)` (або ціле число копійок)", "correct": true },
+        { "text": "`FloatField()`" },
+        { "text": "`CharField(max_length=10)`" }
+      ]
+    },
+    {
+      "id": "choices",
+      "kind": "single",
+      "text": "`class Status(models.TextChoices): ON_LOAN = \"on_loan\", \"On loan\"`. Що зберігається в базі?",
+      "options": [
+        { "text": "`\"on_loan\"`; `\"On loan\"` — підпис для людей у формах і адмінці", "correct": true },
+        { "text": "`\"On loan\"`" },
+        { "text": "Число — порядковий номер варіанта" }
+      ]
+    },
+    {
+      "id": "migration-in-git",
+      "kind": "single",
+      "text": "Що робити з файлами міграцій?",
+      "options": [
+        { "text": "Комітити разом зі зміною моделі й не редагувати вже застосовані", "correct": true },
+        { "text": "Додати в .gitignore — кожен згенерує свої" },
+        { "text": "Видаляти після `migrate`" }
+      ]
+    },
+    {
+      "id": "check-constraint-test",
+      "kind": "single",
+      "text": "Тест з `django_db` перевіряє, що `price=0` порушує `CheckConstraint`, і далі робить ще запити. Як правильно?",
+      "options": [
+        { "text": "`with pytest.raises(IntegrityError), transaction.atomic():` — щоб помилка не зламала транзакцію всього тесту", "correct": true },
+        { "text": "`try / except IntegrityError: pass` — і продовжувати" },
+        { "text": "Перевіряти обмеження в базі неможливо" }
+      ]
+    }
+  ]
+}
