@@ -1,0 +1,28 @@
+{
+  "title": "Hash maps and sets in algorithms",
+  "minutes": 50,
+  "summary": "Чому dict і set знаходять ключ за O(1): хеш, кошики, колізії, вимога незмінних ключів; патерни, що прибирають вкладені цикли — підрахунок частот, «доповнення» (two sum), групування за ключем-підписом, видалення повторів зі збереженням порядку; ціна — пам'ять",
+  "resources": [
+    {
+      "title": "Python docs: Mapping Types — dict",
+      "url": "https://docs.python.org/3/library/stdtypes.html#mapping-types-dict",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: Glossary — hashable",
+      "url": "https://docs.python.org/3/glossary.html#term-hashable",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: hash tables explained",
+      "url": "https://www.youtube.com/results?search_query=hash+tables+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

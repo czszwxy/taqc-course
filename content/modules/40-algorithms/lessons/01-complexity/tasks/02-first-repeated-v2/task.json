@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "title": "Common items of two lists in linear time",
+  "variantOf": "02-first-repeated",
+  "statement": "Схожа задача: є список покупців `customers` і список підписників розсилки `subscribers`. Напиши `common_items(customers, subscribers)` — підписники, які також є покупцями, **у порядку списку `subscribers`**, кожен один раз.\n\n```python\ncommon_items([\"anna\", \"ivan\", \"olha\"], [\"petro\", \"olha\", \"anna\", \"olha\"])\n# ['olha', 'anna']\n```\n\nСписки довгі: тест рахує порівняння `==`, тож потрібне рішення за `O(n + m)`, а не цикл у циклі.",
+  "hints": [
+    "Перетвори `customers` на множину один раз: `buyers = set(customers)`.",
+    "Друга множина `added` пам'ятає, кого вже додано в результат, щоб не було повторів.",
+    "Один прохід по `subscribers` з перевірками `in buyers` і `not in added`."
+  ],
+  "explanation": "Множина з `customers` перетворює кожну перевірку з `O(n)` на `O(1)`, тож увесь алгоритм — `O(n + m)`. Порядок результату задає прохід по `subscribers`, а друга множина прибирає повтори. Рішення `[s for s in subscribers if s in customers]` правильне для маленьких даних, але робить `n · m` порівнянь.",
+  "codeRules": []
+}

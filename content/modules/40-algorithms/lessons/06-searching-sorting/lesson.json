@@ -1,0 +1,35 @@
+{
+  "title": "Searching and sorting",
+  "minutes": 55,
+  "summary": "Лінійний і бінарний пошук: як бінарний пошук ділить діапазон навпіл, межі low / high і пастка «±1», модуль bisect; сортування в Python (Timsort, O(n log n), стабільність, key, reverse), сортування за кількома ключами кількома проходами, ідея merge sort і злиття відсортованих списків, heapq для топ-k",
+  "resources": [
+    {
+      "title": "Python docs: Sorting Techniques (stability, key functions)",
+      "url": "https://docs.python.org/3/howto/sorting.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: bisect — array bisection algorithm",
+      "url": "https://docs.python.org/3/library/bisect.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: heapq — heap queue algorithm",
+      "url": "https://docs.python.org/3/library/heapq.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "VisuAlgo: sorting algorithms",
+      "url": "https://visualgo.net/en/sorting",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

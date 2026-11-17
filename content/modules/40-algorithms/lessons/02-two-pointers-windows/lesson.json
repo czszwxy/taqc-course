@@ -1,0 +1,28 @@
+{
+  "title": "Two pointers and sliding windows",
+  "minutes": 55,
+  "summary": "Дві техніки, що перетворюють O(n²) на O(n) для масивів і рядків: два вказівники (з двох кінців відсортованого списку — пара з потрібною сумою, паліндроми) і ковзне вікно — фіксованого розміру (найзавантаженіші k годин) і змінного (найдовший фрагмент без повторів); покроковий розбір і типові пастки на межах",
+  "resources": [
+    {
+      "title": "YouTube: two pointers technique",
+      "url": "https://www.youtube.com/results?search_query=two+pointers+technique+python",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: sliding window technique",
+      "url": "https://www.youtube.com/results?search_query=sliding+window+technique+python",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "VisuAlgo — visualising data structures and algorithms",
+      "url": "https://visualgo.net/en",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

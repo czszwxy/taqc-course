@@ -237,8 +237,8 @@ function RunProblems({ run, label }: { run: PythonRunResult; label: string }) {
     <>
       {run.timedOut && (
         <Callout tone="bad" title="⏱ Time limit exceeded">
-          The code ran for more than 5 seconds — most likely an infinite loop. Check that every <code className="font-mono">while</code> condition eventually
-          becomes False.
+          The code ran for more than 5 seconds — most likely an infinite loop (check that every <code className="font-mono">while</code> condition eventually
+          becomes False) or an algorithm that is too slow for a large input (for example, a loop inside a loop over thousands of items).
         </Callout>
       )}
       {run.error && (
@@ -406,7 +406,7 @@ function ConsoleView({ out, busy }: { out: ConsoleOutput | null; busy: boolean }
       {empty && <div className="text-muted">(no output{out.source === 'run' ? ' — add print(...) to your file to see something' : ''})</div>}
       {out.run.stdout && <pre className="whitespace-pre-wrap">{out.run.stdout}</pre>}
       {out.run.error && <pre className="whitespace-pre-wrap text-bad">💥 {out.run.error}</pre>}
-      {out.run.timedOut && <div className="text-bad">⏱ Stopped after 5 seconds (infinite loop?)</div>}
+      {out.run.timedOut && <div className="text-bad">⏱ Stopped after 5 seconds (infinite loop or a too slow algorithm?)</div>}
     </div>
   );
 }

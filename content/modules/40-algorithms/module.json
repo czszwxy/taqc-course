@@ -1,0 +1,14 @@
+{
+  "title": "Algorithms & Data Structures",
+  "description": "Алгоритмічна база, яку перевіряють на співбесідах Python-розробника і яка робить код швидким на реальних обсягах даних: складність Big-O, два вказівники й ковзне вікно, хеш-таблиці, стеки й черги, рекурсія, пошук і сортування, дерева й графи (DFS, BFS, топологічний порядок), динамічне програмування й жадібні алгоритми та підхід до задач на співбесіді. Тести рахують операції — квадратичне рішення не пройде, навіть якщо відповідь правильна.",
+  "goals": [
+    "Estimate time and memory complexity with Big-O and know the cost of Python's built-in operations",
+    "Solve array and string problems with two pointers and sliding windows in linear time",
+    "Use dicts and sets for counting, grouping and complement lookups instead of nested loops",
+    "Apply stacks and queues: bracket matching, undo / redo, round-robin processing",
+    "Write recursive functions with a clear base case for nested data",
+    "Implement binary search and merging, and sort records by several keys with stable sorting",
+    "Traverse trees and graphs with DFS and BFS, find shortest paths and dependency order",
+    "Recognise dynamic programming problems, avoid greedy traps and follow a clear interview routine"
+  ]
+}

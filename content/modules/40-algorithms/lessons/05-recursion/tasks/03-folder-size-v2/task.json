@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "Count files with an extension in a folder tree",
+  "variantOf": "03-folder-size",
+  "statement": "Схожа задача з тим самим описом папок (ім'я → розмір файлу або вкладена папка-словник). Напиши `count_files(folder, extension)` — скільки файлів на всіх рівнях мають ім'я, що закінчується на `extension` (без різниці регістру: `\".PY\"` і `\".py\"` однакові).\n\n```python\nproject = {\"main.py\": 3400, \"README.md\": 1200, \"src\": {\"Utils.PY\": 800, \"tests\": {\"test_main.py\": 500}}}\ncount_files(project, \".py\")   # 3\n```\n\nУвага: папки теж мають імена, але рахувати треба лише файли.",
+  "hints": [
+    "Пройди по `folder.items()`, бо тепер потрібне ім'я.",
+    "Словник — підпапка: додай `count_files(value, extension)`; інакше перевір `name.lower().endswith(extension.lower())`."
+  ],
+  "explanation": "Рекурсія повторює форму даних: для підпапки — той самий підрахунок, для файлу — перевірка імені. Ім'я папки перевіряти не можна: папка `backup.py` (буває й таке) — не файл. Регістр зводимо до одного з обох боків, щоб `.PY` і `.py` вважалися однаковими.",
+  "codeRules": []
+}

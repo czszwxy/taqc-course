@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "The first price at least the minimum",
+  "variantOf": "02-binary-search",
+  "statement": "Схожа задача: фільтр «ціна від» у каталозі. Ціни відсортовані за зростанням і можуть повторюватися. Напиши `first_at_least(prices, minimum)` — позицію **першої** ціни, не меншої за `minimum`; якщо таких немає — `len(prices)`. Це «нижня межа» — те, що робить `bisect_left`, але реалізуй її сам.\n\n```python\nfirst_at_least([100, 200, 200, 350, 500], 200)   # 1 — перша з двох 200\nfirst_at_least([100, 200, 200, 350, 500], 300)   # 3\nfirst_at_least([100, 200], 999)                  # 2\n```\n\nТест рахує прочитані елементи на 100 000 цінах: щонайбільше 20.",
+  "hints": [
+    "Півінтервал: `low, high = 0, len(prices)`; цикл `while low < high:`.",
+    "`middle = (low + high) // 2`; якщо `prices[middle] < minimum` — `low = middle + 1`, інакше `high = middle` (сама `middle` ще може бути відповіддю).",
+    "Коли цикл завершився, `low` — шукана позиція."
+  ],
+  "explanation": "Нижня межа шукає не конкретне значення, а **першу позицію**, де умова стає істинною. Тому при `prices[middle] >= minimum` ми не відкидаємо `middle`, а робимо її правою межею. Півінтервал `[low, high)` з `high = len(prices)` природно дає відповідь `len(prices)`, коли всі ціни менші. Повторювані ціни не заважають: лівіша з однакових завжди залишається в діапазоні.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "bisect|\\.index\\(", "message": "Реалізуй пошук сам, без `bisect` і `.index()`." }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Recursion",
+  "show": 6,
+  "hints": ["Базовий випадок зупиняє рекурсію; рекурсивний крок зменшує задачу. Не забувай return."],
+  "questions": [
+    {
+      "id": "base-case",
+      "kind": "single",
+      "text": "Що таке базовий випадок рекурсивної функції?",
+      "options": [
+        { "text": "Ситуація, де відповідь повертається одразу, без нового рекурсивного виклику", "correct": true },
+        { "text": "Перший виклик функції" },
+        { "text": "Виклик з найбільшими даними" }
+      ]
+    },
+    {
+      "id": "recursion-error",
+      "kind": "single",
+      "text": "Найчастіша причина `RecursionError: maximum recursion depth exceeded`?",
+      "options": [
+        { "text": "Базовий випадок відсутній або не досягається — функція викликає себе нескінченно", "correct": true },
+        { "text": "Забагато даних у списку" },
+        { "text": "Функція повертає None" }
+      ]
+    },
+    {
+      "id": "missing-return",
+      "kind": "single",
+      "text": "```python\ndef total(folder):\n    if isinstance(folder, int):\n        return folder\n    sum(total(item) for item in folder.values())\n```\nЩо поверне `total({\"a.txt\": 5})`?",
+      "options": [
+        { "text": "`None` — бракує `return` перед `sum(...)`", "correct": true },
+        { "text": "`5`" },
+        { "text": "`RecursionError`" }
+      ]
+    },
+    {
+      "id": "stack",
+      "kind": "single",
+      "text": "Функція `max_depth` для гілки з трьома рівнями відповідей. Коли завершиться найперший (зовнішній) виклик?",
+      "options": [
+        { "text": "Останнім — після того, як повернуть результати всі вкладені виклики", "correct": true },
+        { "text": "Першим" },
+        { "text": "Одночасно з усіма" }
+      ]
+    },
+    {
+      "id": "limit",
+      "kind": "single",
+      "text": "Дані можуть мати 50 000 рівнів вкладеності. Що краще?",
+      "options": [
+        { "text": "Цикл з власним стеком (списком) — рекурсія впреться в ліміт глибини", "correct": true },
+        { "text": "Рекурсія — Python сам збільшить ліміт" },
+        { "text": "Різниці немає" }
+      ]
+    },
+    {
+      "id": "string-trap",
+      "kind": "single",
+      "text": "«Розплющувач» вкладених списків перевіряє `hasattr(item, \"__iter__\")`, щоб вирішити, чи заходити всередину. Що станеться з `[\"abc\"]`?",
+      "options": [
+        { "text": "Рядок теж ітерований — функція зайде в нього (і може зациклитися на однолітерних рядках)", "correct": true },
+        { "text": "Поверне `['abc']`" },
+        { "text": "Помилка типу" }
+      ]
+    },
+    {
+      "id": "mutable-default",
+      "kind": "single",
+      "text": "`def collect(data, found=[]): ...` накопичує результати в `found`. Що піде не так при другому виклику `collect(...)`?",
+      "options": [
+        { "text": "У `found` уже лежатимуть результати першого виклику — список за замовчуванням спільний", "correct": true },
+        { "text": "Нічого" },
+        { "text": "`SyntaxError`" }
+      ]
+    }
+  ]
+}

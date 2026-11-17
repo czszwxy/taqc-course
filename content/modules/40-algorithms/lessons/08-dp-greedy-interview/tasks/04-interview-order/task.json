@@ -1,0 +1,19 @@
+{
+  "type": "order",
+  "title": "Solving a coding task in an interview",
+  "statement": "Тобі дали алгоритмічну задачу на технічній співбесіді. Розстав кроки в тому порядку, в якому їх варто робити.",
+  "items": [
+    "Restate the problem and ask about inputs, limits and edge cases",
+    "Work through one or two small examples by hand, including an edge case",
+    "Describe a brute-force solution and its complexity",
+    "Find a faster approach (hash map, two pointers, sorting, BFS, DP…) and agree on it",
+    "Write the code, explaining what you are doing",
+    "Walk through the code by hand on the examples and edge cases",
+    "State the final time and space complexity and what could be improved"
+  ],
+  "hints": [
+    "Спершу — зрозуміти задачу й побачити її на прикладах, лише потім — рішення.",
+    "Просте рішення з оцінкою складності — фундамент для оптимізації; перевірка й складність — наприкінці."
+  ],
+  "explanation": "Уточнення й приклади захищають від розв'язання не тієї задачі. Рішення «в лоб» з оцінкою складності показує, що ти маєш робочий варіант, і дає точку відліку для оптимізації. Код пишуть після узгодження підходу, потім перевіряють руками на прикладах і граничних випадках і наостанок називають складність — саме це інтерв'юер і хоче почути."
+}

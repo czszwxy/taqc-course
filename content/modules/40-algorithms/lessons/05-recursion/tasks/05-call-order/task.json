@@ -1,0 +1,18 @@
+{
+  "type": "order",
+  "title": "Follow the call stack",
+  "statement": "```python\ndef countdown(n):\n    if n == 0:\n        return \"liftoff\"\n    return countdown(n - 1)\n\nresult = countdown(2)\n```\n\nРозстав події в порядку, в якому вони відбуваються.",
+  "items": [
+    "countdown(2) is called: n is not 0, so it calls countdown(1) and waits",
+    "countdown(1) is called: n is not 0, so it calls countdown(0) and waits",
+    "countdown(0) is called: this is the base case, it returns 'liftoff'",
+    "countdown(1) gets 'liftoff' back and returns it",
+    "countdown(2) gets 'liftoff' back and returns it",
+    "result becomes 'liftoff'"
+  ],
+  "hints": [
+    "Кожен виклик чекає, доки поверне вкладений.",
+    "Повернення йдуть у зворотному порядку: останній викликаний завершується першим."
+  ],
+  "explanation": "Виклики накопичуються на стеку: `countdown(2)` чекає `countdown(1)`, той чекає `countdown(0)`. Базовий випадок повертає значення, і стек «розмотується» у зворотному порядку: спершу завершується найглибший виклик, останнім — найперший."
+}

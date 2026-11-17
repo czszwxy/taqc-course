@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "Undo and redo with two stacks",
+  "statement": "Напиши клас `Editor` для поля коментаря:\n\n- атрибут `text` — поточний текст (спочатку `\"\"`);\n- `write(chars)` — дописує в кінець;\n- `delete(count)` — видаляє останні `count` символів (якщо їх менше — усі); `count < 1` → `ValueError(\"count must be positive\")`;\n- `undo()` — скасовує останню зміну й повертає `True`; якщо скасовувати нічого — `False`, текст не змінюється;\n- `redo()` — повертає останню скасовану зміну (`True`) або `False`;\n- будь-яка **нова** зміна (`write` / `delete`) очищує історію redo.\n\n```python\neditor = Editor()\neditor.write(\"Great \")\neditor.write(\"product\")\neditor.undo()          # True → 'Great '\neditor.redo()          # True → 'Great product'\neditor.delete(7)       # 'Great '\neditor.undo()          # 'Great product'\n```",
+  "hints": [
+    "Два стеки станів: `self._undo` і `self._redo` (списки рядків).",
+    "Спільний метод зміни: покласти поточний `text` на `_undo`, очистити `_redo`, записати новий текст.",
+    "`undo`: якщо `_undo` порожній — `False`; інакше поточний текст — на `_redo`, `text = self._undo.pop()`. `redo` — дзеркально."
+  ],
+  "explanation": "Undo — це стек попередніх станів: остання зміна скасовується першою. Скасований стан не зникає, а переходить на стек redo, тож його можна повернути. Нова зміна очищує redo, бо «майбутнє», яке ми скасували, більше не випливає з поточного тексту. Зберігати повні стани просто й надійно; великі редактори зберігають різниці, але принцип стеків той самий.",
+  "codeRules": []
+}

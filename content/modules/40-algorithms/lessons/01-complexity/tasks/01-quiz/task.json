@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "Big-O",
+  "show": 6,
+  "hints": ["Відкидай константи й повільніші доданки. Цикл у циклі по тих самих даних — O(n²). in для списку — O(n), для множини — O(1)."],
+  "questions": [
+    {
+      "id": "drop-constants",
+      "kind": "single",
+      "text": "Алгоритм робить `5n + 20` кроків. Яка його складність?",
+      "options": [
+        { "text": "`O(n)`", "correct": true },
+        { "text": "`O(5n)`" },
+        { "text": "`O(n + 20)`" }
+      ]
+    },
+    {
+      "id": "nested",
+      "kind": "single",
+      "text": "```python\nfor a in users:\n    for b in users:\n        if a[\"email\"] == b[\"email\"] and a is not b: ...\n```\nЯка складність?",
+      "options": [
+        { "text": "`O(n²)`", "correct": true },
+        { "text": "`O(n)`" },
+        { "text": "`O(2n)`" }
+      ]
+    },
+    {
+      "id": "hidden-loop",
+      "kind": "single",
+      "text": "```python\nfor order in orders:\n    if order[\"user_id\"] in blocked_ids:   # blocked_ids — список\n        ...\n```\nЯка складність, якщо обидва списки мають розмір близько n?",
+      "options": [
+        { "text": "`O(n²)` — `in` для списку перебирає його; з множиною було б `O(n)`", "correct": true },
+        { "text": "`O(n)` — тут лише один цикл" },
+        { "text": "`O(1)`" }
+      ]
+    },
+    {
+      "id": "log",
+      "kind": "single",
+      "text": "Скільки приблизно кроків робить алгоритм `O(log n)` на мільйоні елементів?",
+      "options": [
+        { "text": "Близько 20", "correct": true },
+        { "text": "Близько 1 000" },
+        { "text": "Близько 1 000 000" }
+      ]
+    },
+    {
+      "id": "pop0",
+      "kind": "single",
+      "text": "Яка складність `items.pop(0)` для списку з n елементів?",
+      "options": [
+        { "text": "`O(n)` — усі інші елементи зсуваються на одну позицію", "correct": true },
+        { "text": "`O(1)` — як і `pop()`" },
+        { "text": "`O(log n)`" }
+      ]
+    },
+    {
+      "id": "sort",
+      "kind": "single",
+      "text": "Яка складність `sorted(orders)`?",
+      "options": [
+        { "text": "`O(n log n)`", "correct": true },
+        { "text": "`O(n)`" },
+        { "text": "`O(n²)`" }
+      ]
+    },
+    {
+      "id": "memory",
+      "kind": "single",
+      "text": "Пошук повтору через множину `seen` працює за `O(n)`. Скільки додаткової пам'яті він використовує в гіршому випадку?",
+      "options": [
+        { "text": "`O(n)` — множина може вмістити всі елементи", "correct": true },
+        { "text": "`O(1)`" },
+        { "text": "`O(n²)`" }
+      ]
+    },
+    {
+      "id": "min",
+      "kind": "single",
+      "text": "Як найшвидше знайти найдешевший товар у несортованому списку з n товарів?",
+      "options": [
+        { "text": "`min(products, key=...)` — один прохід, `O(n)`", "correct": true },
+        { "text": "Відсортувати й узяти перший — `O(n log n)`", "explain": "Працює, але сортування робить зайву роботу." },
+        { "text": "Для кожного товару порівняти з усіма іншими" }
+      ]
+    }
+  ]
+}

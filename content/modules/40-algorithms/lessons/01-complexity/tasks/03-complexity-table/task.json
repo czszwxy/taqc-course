@@ -1,0 +1,30 @@
+{
+  "type": "table",
+  "title": "What is the complexity?",
+  "statement": "Для кожного фрагмента коду обери його складність за часом. `n` — розмір колекції (`prices`, `emails_list`, `orders`…).",
+  "hints": [
+    "Звернення за індексом і за ключем словника — O(1); `in` для списку — O(n), для множини — O(1).",
+    "Сортування — O(n log n); бінарний пошук — O(log n); цикл у циклі — O(n²)."
+  ],
+  "explanation": "Список читається за індексом миттєво, але щоб знайти значення, його треба перебрати. Множина й словник знаходять ключ за хешем — у середньому за O(1). `pop(0)` у списку зсуває всі елементи, а `deque.popleft()` — ні. Сортування коштує O(n log n), а бінарний пошук у вже відсортованому списку — O(log n).",
+  "givenColumns": ["Code"],
+  "answerColumns": [
+    {
+      "id": "big_o",
+      "label": "Complexity",
+      "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)", "O(n²)"]
+    }
+  ],
+  "rows": [
+    { "given": ["`prices[0]`"], "answers": { "big_o": "O(1)" } },
+    { "given": ["`email in emails_list`"], "answers": { "big_o": "O(n)" } },
+    { "given": ["`email in emails_set`"], "answers": { "big_o": "O(1)" } },
+    { "given": ["`user_by_id[42]`"], "answers": { "big_o": "O(1)" } },
+    { "given": ["`sum(prices)`"], "answers": { "big_o": "O(n)" } },
+    { "given": ["`sorted(orders, key=lambda o: o[\"total\"])`"], "answers": { "big_o": "O(n log n)" } },
+    { "given": ["`bisect.bisect_left(sorted_ids, 42)`"], "answers": { "big_o": "O(log n)" } },
+    { "given": ["`[a for a in users for b in users if a[\"id\"] == b[\"referrer_id\"]]`"], "answers": { "big_o": "O(n²)" } },
+    { "given": ["`queue.pop(0)` для списку"], "answers": { "big_o": "O(n)" } },
+    { "given": ["`queue.popleft()` для `collections.deque`"], "answers": { "big_o": "O(1)" } }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "title": "Recursion",
+  "minutes": 50,
+  "summary": "Функція, що викликає сама себе: базовий випадок і рекурсивний крок, стек викликів на прикладі, RecursionError і ліміт глибини, рекурсія для вкладених даних (дерева коментарів, папки, JSON), коли краще цикл з власним стеком",
+  "resources": [
+    {
+      "title": "Python docs: sys.getrecursionlimit",
+      "url": "https://docs.python.org/3/library/sys.html#sys.getrecursionlimit",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: recursion explained",
+      "url": "https://www.youtube.com/results?search_query=recursion+explained+python",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python Tutor — visualise the call stack step by step",
+      "url": "https://pythontutor.com/",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

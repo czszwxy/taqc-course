@@ -1,0 +1,28 @@
+{
+  "title": "Dynamic programming, greedy and the interview routine",
+  "minutes": 60,
+  "summary": "Коли рекурсія рахує те саме тисячі разів: перекривні підзадачі, мемоізація через functools.cache, таблиця знизу вгору; жадібні алгоритми і чому для монет 1, 3, 4 жадібність помиляється; один прохід замість двох циклів (найкраща угода); покроковий підхід до задачі на співбесіді",
+  "resources": [
+    {
+      "title": "Python docs: functools.cache",
+      "url": "https://docs.python.org/3/library/functools.html#functools.cache",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: dynamic programming explained",
+      "url": "https://www.youtube.com/results?search_query=dynamic+programming+explained+python",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: how to solve coding interview problems",
+      "url": "https://www.youtube.com/results?search_query=how+to+approach+coding+interview+problems",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

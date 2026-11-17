@@ -1,0 +1,28 @@
+{
+  "title": "Trees and graphs",
+  "minutes": 60,
+  "summary": "Дерева (корінь, діти, листя, глибина) і графи (вершини, ребра, напрямок) у бекенді: категорії, коментарі, маршрути, залежності пакетів і міграцій; представлення словниками й списками суміжності; обхід у глибину (DFS) рекурсією і в ширину (BFS) з чергою, множина відвіданих, найкоротший шлях у графі без ваг, топологічний порядок і graphlib",
+  "resources": [
+    {
+      "title": "Python docs: graphlib — functionality to operate with graph-like structures",
+      "url": "https://docs.python.org/3/library/graphlib.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "VisuAlgo: graph traversal (DFS / BFS)",
+      "url": "https://visualgo.net/en/dfsbfs",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: BFS and DFS explained",
+      "url": "https://www.youtube.com/results?search_query=bfs+dfs+graph+traversal+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

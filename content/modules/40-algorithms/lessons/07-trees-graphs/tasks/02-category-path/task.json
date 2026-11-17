@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "Breadcrumbs: the path to a category",
+  "statement": "Для «хлібних крихт» на сторінці каталогу потрібен шлях від кореня до категорії. Дерево — вкладені словники `{\"name\": ..., \"children\": [...]}` (у листів ключа `\"children\"` може не бути). Напиши `category_path(tree, name)` — список назв від кореня до категорії з цією назвою або `None`.\n\nЯкщо категорій з такою назвою кілька — поверни шлях до першої при обході в глибину (діти — у порядку списку).\n\n```python\ncatalog = {\"name\": \"All\", \"children\": [\n    {\"name\": \"Audio\", \"children\": [{\"name\": \"Headphones\"}, {\"name\": \"Accessories\"}]},\n    {\"name\": \"Computers\", \"children\": [{\"name\": \"Laptops\", \"children\": [{\"name\": \"Accessories\"}]}]},\n]}\ncategory_path(catalog, \"Laptops\")       # ['All', 'Computers', 'Laptops']\ncategory_path(catalog, \"Accessories\")   # ['All', 'Audio', 'Accessories']\ncategory_path(catalog, \"Phones\")        # None\n```",
+  "hints": [
+    "Базовий випадок: назва поточного вузла збігається — `return [node[\"name\"]]`.",
+    "Інакше для кожної дитини (`node.get(\"children\", [])`): `path = category_path(child, name)`; якщо не `None` — поверни `[node[\"name\"], *path]`.",
+    "Жодна дитина не дала шляху — `return None`."
+  ],
+  "explanation": "DFS повертає шлях «знизу вгору»: знайдений вузол повертає себе, а кожен рівень вище дописує свою назву спереду. Повернення одразу після першого знайденого шляху дає «першу в глибину» категорію і не обходить решту дерева. `node.get(\"children\", [])` захищає від листів без цього ключа.",
+  "codeRules": []
+}

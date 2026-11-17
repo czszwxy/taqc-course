@@ -1,0 +1,28 @@
+{
+  "title": "Big-O: how fast is your code?",
+  "minutes": 55,
+  "summary": "Навіщо оцінювати складність, як рахувати кроки і чому відкидають константи; класи O(1), O(log n), O(n), O(n log n), O(n²) на числах; вкладені цикли; вартість операцій Python (in для list, set і dict, append, insert(0), sort, зрізи, склеювання рядків); пам'ять; розбір «знайти повтор» двома способами",
+  "resources": [
+    {
+      "title": "Python wiki: TimeComplexity",
+      "url": "https://wiki.python.org/moin/TimeComplexity",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Big-O Cheat Sheet",
+      "url": "https://www.bigocheatsheet.com/",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Big O notation explained",
+      "url": "https://www.youtube.com/results?search_query=big+o+notation+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

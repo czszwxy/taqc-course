@@ -1,0 +1,28 @@
+{
+  "title": "Stacks and queues",
+  "minutes": 50,
+  "summary": "Стек (LIFO) на списку і черга (FIFO) на deque: операції та їхня складність, де вони в бекенді (стек викликів, undo / redo, розбір вкладених структур, черги задач, обробка «по колу»); розбір перевірки дужок і типові помилки з порожнім стеком",
+  "resources": [
+    {
+      "title": "Python docs: Using lists as stacks",
+      "url": "https://docs.python.org/3/tutorial/datastructures.html#using-lists-as-stacks",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: collections.deque",
+      "url": "https://docs.python.org/3/library/collections.html#collections.deque",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: stacks and queues explained",
+      "url": "https://www.youtube.com/results?search_query=stacks+and+queues+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}
