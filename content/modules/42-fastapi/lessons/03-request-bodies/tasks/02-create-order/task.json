@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Create an order from a JSON body",
+  "statement": "Зроби створення замовлення. Каталог — у `catalog.py` (`PRODUCTS`, лише для читання). Замовлення зберігай у словнику `ORDERS` у пам'яті (id від 1 по порядку).\n\n**Тіло `POST /orders`** — модель `OrderIn` (зайві поля заборонені):\n\n| Поле | Правило |\n|---|---|\n| `customer_email` | `EmailStr` |\n| `items` | список `OrderItemIn`, від 1 до 10 елементів |\n| `items[].product_id` | ціле |\n| `items[].quantity` | ціле від 1 до 10 |\n| `note` | необов'язковий рядок до 200 символів |\n\n**Відповідь `201`** — модель `OrderOut`:\n\n```json\n{\"id\": 1, \"customer_email\": \"anna@example.com\",\n \"items\": [{\"product_id\": 2, \"quantity\": 3, \"unit_price\": 899, \"line_total\": 2697}],\n \"total\": 2697}\n```\n\n`note` у відповідь не потрапляє. Товару з `product_id` немає в каталозі — `404` з `{\"detail\": \"Product 99 not found\"}` (з його id), і замовлення не зберігається.\n\n**`GET /orders/{order_id}`** — те саме `OrderOut` або `404` з `{\"detail\": \"Order not found\"}`.",
+  "hints": [
+    "Моделі: `OrderItemIn(product_id: int, quantity: int = Field(ge=1, le=10))`; у `OrderIn` — `items: list[OrderItemIn] = Field(min_length=1, max_length=10)` і `model_config = ConfigDict(extra=\"forbid\")`.",
+    "Для відповіді зроби `OrderLineOut` (product_id, quantity, unit_price, line_total) і `OrderOut` (id, customer_email, items: list[OrderLineOut], total) і вкажи `-> OrderOut`.",
+    "Спершу перевір **усі** товари (і підніми 404), лише потім додавай замовлення в `ORDERS` — інакше невдалий запит залишить «напівзамовлення» і зсуне id."
+  ],
+  "explanation": "Модель тіла робить усю перевірку формату: межі кількості, непорожній список, формат email, заборона зайвих полів — і все це видно в Swagger UI. Бізнес-перевірку (чи існує товар) робить уже твій код, і її результат — `404`, а не `422`: запит синтаксично правильний, але посилається на неіснуючий ресурс. Модель відповіді прибирає `note` і будь-які внутрішні поля, навіть якщо ти зберігаєш їх у словнику.",
+  "codeRules": [
+    { "kind": "require", "pattern": "BaseModel", "message": "Опиши тіло і відповідь моделями Pydantic (BaseModel)." },
+    { "kind": "require", "pattern": "Field\\s*\\(", "message": "Межі quantity та items задай через Field(...)." }
+  ]
+}

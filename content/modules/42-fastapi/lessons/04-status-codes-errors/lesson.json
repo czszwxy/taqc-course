@@ -1,0 +1,36 @@
+{
+  "title": "Status codes and errors",
+  "minutes": 55,
+  "summary": "Які коди повертати і коли (200, 201, 204, 400, 401, 403, 404, 409, 422, 500), константи з fastapi.status, HTTPException з detail і headers, 204 без тіла, доменні винятки сервісу й обробники @app.exception_handler з єдиним форматом помилки, чому 500 не повинна показувати деталі і як TestClient поводиться з необробленими винятками",
+  "resources": [
+    {
+      "title": "FastAPI docs: Handling Errors",
+      "url": "https://fastapi.tiangolo.com/tutorial/handling-errors/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "HTTPException і власні обробники",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: Response Status Code",
+      "url": "https://fastapi.tiangolo.com/tutorial/response-status-code/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: HTTP response status codes",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: REST API status codes explained",
+      "url": "https://www.youtube.com/results?search_query=rest+api+http+status+codes+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

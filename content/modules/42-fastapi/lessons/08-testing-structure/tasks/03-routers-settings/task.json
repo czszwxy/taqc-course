@@ -1,0 +1,17 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Routers and settings from the environment",
+  "statement": "Збери API магазину з двох роутерів і налаштувань. Товари — у `catalog.py` (`PRODUCTS`, словник id → товар, лише для читання).\n\n**1. Налаштування.** `Settings(BaseSettings)` з `env_prefix=\"SHOP_\"` і полями `shop_name: str = \"Gadget shop\"`, `admin_key: str = \"dev-admin-key\"`. Функція `get_settings()` з `@lru_cache` повертає `Settings()` — і використовується як залежність (тести її підмінять).\n\n**2. `products_router`** — `APIRouter(prefix=\"/products\", tags=[\"products\"])`:\n\n- `GET /products` — товари за `id`;\n- `GET /products/{product_id}` — товар або `404` `{\"detail\": \"Product not found\"}`.\n\n**3. `admin_router`** — `APIRouter(prefix=\"/admin\", tags=[\"admin\"], dependencies=[Depends(require_admin_key)])`. Залежність `require_admin_key` порівнює заголовок `X-Admin-Key` з `settings.admin_key`; немає або не збігається — `401` `{\"detail\": \"Invalid admin key\"}`.\n\n- `GET /admin/stats` — `{\"products\": <кількість>, \"stock\": <сума stock>}`;\n- `DELETE /admin/products/{product_id}` — `204` (видаляє з `PRODUCTS`) або `404`.\n\n**4. `app`** — `include_router` обох роутерів і `GET /info` → `{\"shop_name\": settings.shop_name}` (через `Depends(get_settings)`).",
+  "hints": [
+    "Налаштування: `from pydantic_settings import BaseSettings, SettingsConfigDict`, `model_config = SettingsConfigDict(env_prefix=\"SHOP_\")`; `@lru_cache` над `def get_settings() -> Settings`.",
+    "Заголовок: `x_admin_key: Annotated[str | None, Header()] = None` — FastAPI читає `X-Admin-Key`; налаштування — `settings: Annotated[Settings, Depends(get_settings)]`.",
+    "Шляхи в роутері — без префікса: `@products_router.get(\"\")` і `@products_router.get(\"/{product_id}\")`. Не забудь `app.include_router(...)` для обох."
+  ],
+  "explanation": "Роутер збирає маршрути однієї теми з одним префіксом і тегом, а `dependencies=[...]` на роутері захищає всі його ендпоінти разом — новий ендпоінт адмінки не можна «забути» закрити. Налаштування з `pydantic-settings` читаються з середовища (`SHOP_ADMIN_KEY`) з перевіркою типів, а `get_settings` як залежність дає тестам підставити свої значення без змінних середовища. `lru_cache` читає середовище один раз — тому тест, що змінює змінні, викликає `get_settings.cache_clear()`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "APIRouter\\s*\\(", "message": "Розбий маршрути на роутери: APIRouter(...)." },
+    { "kind": "require", "pattern": "include_router", "message": "Підключи роутери до застосунку: app.include_router(...)." },
+    { "kind": "require", "pattern": "BaseSettings", "message": "Налаштування опиши класом BaseSettings з pydantic_settings." }
+  ]
+}

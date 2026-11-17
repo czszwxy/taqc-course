@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "Sessions, schemas and test databases",
+  "show": 6,
+  "hints": ["Сесія — на запит. Модель — таблиця, схема — JSON. У тестах SQLite у пам'яті потребує StaticPool."],
+  "questions": [
+    {
+      "id": "model-vs-schema",
+      "kind": "single",
+      "text": "Чим модель SQLAlchemy відрізняється від схеми Pydantic в API?",
+      "options": [
+        { "text": "Модель описує таблицю в базі, схема — JSON, який API приймає й віддає", "correct": true },
+        { "text": "Це одне й те саме, просто різні бібліотеки" },
+        { "text": "Схема потрібна лише для GET, модель — для POST" }
+      ]
+    },
+    {
+      "id": "from-attributes",
+      "kind": "single",
+      "text": "Сервіс викликає `ProductOut.model_validate(product)`, де `product` — ORM-об'єкт, і отримує `ValidationError`. Чого бракує?",
+      "options": [
+        { "text": "`model_config = ConfigDict(from_attributes=True)` у `ProductOut` — щоб читати поля з атрибутів об'єкта, а не зі словника", "correct": true },
+        { "text": "Успадкувати `ProductOut` від моделі SQLAlchemy" },
+        { "text": "Спершу зробити `session.commit()`" }
+      ]
+    },
+    {
+      "id": "session-per-request",
+      "kind": "single",
+      "text": "Чому сесію дають через `yield`-залежність, а не створюють одну глобальну?",
+      "options": [
+        { "text": "Кожен запит отримує свою сесію, яка гарантовано закривається після нього; паралельні запити не заважають один одному", "correct": true },
+        { "text": "Глобальна сесія не підтримує `commit()`" },
+        { "text": "Так SQLAlchemy працює швидше" }
+      ]
+    },
+    {
+      "id": "forgot-commit",
+      "kind": "single",
+      "text": "Ендпоінт робить `session.add(order)` і повертає 201, але без `commit()`. Що буде з замовленням?",
+      "options": [
+        { "text": "Зникне: сесія закриється після запиту й відкотить незафіксоване", "correct": true },
+        { "text": "Збережеться автоматично при закритті сесії" },
+        { "text": "Збережеться, але без id" }
+      ]
+    },
+    {
+      "id": "integrity-rollback",
+      "kind": "single",
+      "text": "Після `IntegrityError` на `commit()` навіщо `session.rollback()`?",
+      "options": [
+        { "text": "Сесія після невдалої транзакції непридатна, доки її не відкотити", "correct": true },
+        { "text": "Щоб видалити таблицю й створити її знову" },
+        { "text": "`rollback()` повторює спробу commit" }
+      ]
+    },
+    {
+      "id": "static-pool",
+      "kind": "single",
+      "text": "Тест з `create_engine(\"sqlite://\")` без `StaticPool` падає з `no such table`, хоча `create_all` викликали. Чому?",
+      "options": [
+        { "text": "TestClient виконує ендпоінт в іншому потоці, і той отримує своє з'єднання — окрему порожню базу в пам'яті", "correct": true },
+        { "text": "`create_all` не працює з SQLite" },
+        { "text": "SQLite у пам'яті не підтримує таблиці" }
+      ]
+    },
+    {
+      "id": "check-saved",
+      "kind": "single",
+      "text": "Як у тесті перевірити, що POST справді **зберіг** товар у базі?",
+      "options": [
+        { "text": "Відкрити нову сесію після запиту й прочитати товар з бази", "correct": true },
+        { "text": "Перевірити, що статус 201" },
+        { "text": "Перевірити `response.json()[\"id\"]`" }
+      ]
+    },
+    {
+      "id": "create-all-prod",
+      "kind": "single",
+      "text": "Чому в продакшні не покладаються на `Base.metadata.create_all(engine)`?",
+      "options": [
+        { "text": "Вона лише створює відсутні таблиці й не змінює наявні — схему в продакшні змінюють міграціями", "correct": true },
+        { "text": "Вона видаляє всі дані" },
+        { "text": "Вона працює лише з SQLite" }
+      ]
+    }
+  ]
+}

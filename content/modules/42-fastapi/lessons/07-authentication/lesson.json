@@ -1,0 +1,44 @@
+{
+  "title": "Authentication with tokens",
+  "minutes": 70,
+  "summary": "Автентифікація й авторизація, 401 і 403 з заголовком WWW-Authenticate, як зберігати паролі (сіль, повільний хеш, compare_digest), токени в заголовку Authorization: Bearer, непрозорі токени і JWT (sub, exp, підпис, PyJWT), OAuth2PasswordBearer і форма входу OAuth2PasswordRequestForm, залежність get_current_user і перевірка ролей",
+  "resources": [
+    {
+      "title": "FastAPI docs: Security — First Steps",
+      "url": "https://fastapi.tiangolo.com/tutorial/security/first-steps/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: OAuth2 with Password (and hashing), Bearer with JWT tokens",
+      "url": "https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "PyJWT docs: Usage Examples",
+      "url": "https://pyjwt.readthedocs.io/en/stable/usage.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "encode / decode, exp, ExpiredSignatureError",
+      "needsVerification": true
+    },
+    {
+      "title": "OWASP Password Storage Cheat Sheet",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "jwt.io — decode a token and see its parts",
+      "url": "https://jwt.io/",
+      "kind": "tool",
+      "lang": "en",
+      "note": "не вставляй туди справжні робочі токени",
+      "needsVerification": true
+    }
+  ]
+}

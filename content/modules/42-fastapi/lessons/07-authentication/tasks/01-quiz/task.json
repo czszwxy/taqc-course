@@ -1,0 +1,89 @@
+{
+  "type": "quiz",
+  "title": "Passwords, tokens and access",
+  "show": 6,
+  "hints": ["401 — немає / невалідні облікові дані, 403 — немає прав. JWT читається без ключа, але не підробляється без нього."],
+  "questions": [
+    {
+      "id": "401-vs-403",
+      "kind": "single",
+      "text": "Запит до `/admin/users` без заголовка `Authorization`. Який код?",
+      "options": [
+        { "text": "401 з `WWW-Authenticate: Bearer` — сервер не знає, хто це", "correct": true },
+        { "text": "403 — доступ заборонено" },
+        { "text": "404 — сторінка прихована" }
+      ]
+    },
+    {
+      "id": "salt",
+      "kind": "single",
+      "text": "Навіщо додавати до кожного пароля перед хешуванням свою випадкову «сіль»?",
+      "options": [
+        { "text": "Однакові паролі дають різні хеші, і готові таблиці хешів не допомагають", "correct": true },
+        { "text": "Щоб пароль можна було розшифрувати назад" },
+        { "text": "Щоб хеш був коротшим" }
+      ]
+    },
+    {
+      "id": "jwt-readable",
+      "kind": "single",
+      "text": "Що правда про payload JWT?",
+      "options": [
+        { "text": "Його може прочитати будь-хто (це base64), але змінити без секретного ключа не можна — підпис не зійдеться", "correct": true },
+        { "text": "Він зашифрований, тож туди можна класти паролі" },
+        { "text": "Його не можна прочитати без ключа" }
+      ]
+    },
+    {
+      "id": "expired",
+      "kind": "single",
+      "text": "Клієнт надіслав прострочений JWT. Що має повернути API?",
+      "options": [
+        { "text": "401: `jwt.decode` піднімає `ExpiredSignatureError` (нащадок `InvalidTokenError`), його ловлять і відповідають 401", "correct": true },
+        { "text": "403" },
+        { "text": "500 — це помилка бібліотеки" },
+        { "text": "200 — токен колись був дійсним" }
+      ]
+    },
+    {
+      "id": "form-data",
+      "kind": "single",
+      "text": "Як тест має надіслати логін на `POST /token`, що приймає `OAuth2PasswordRequestForm`?",
+      "options": [
+        { "text": "Формою: `client.post(\"/token\", data={\"username\": ..., \"password\": ...})`", "correct": true },
+        { "text": "JSON-тілом: `client.post(\"/token\", json={...})`" },
+        { "text": "У рядку запиту: `/token?username=...&password=...`" }
+      ]
+    },
+    {
+      "id": "same-message",
+      "kind": "single",
+      "text": "Чому при вході однакове повідомлення і для неіснуючого логіна, і для неправильного пароля?",
+      "options": [
+        { "text": "Щоб не підказувати атакувальнику, які логіни існують", "correct": true },
+        { "text": "Щоб скоротити код" },
+        { "text": "Так вимагає HTTP" }
+      ]
+    },
+    {
+      "id": "algorithms",
+      "kind": "single",
+      "text": "Навіщо в `jwt.decode(token, key, algorithms=[\"HS256\"])` явно передавати список алгоритмів?",
+      "options": [
+        { "text": "Щоб сервер приймав лише очікуваний алгоритм і не довіряв тому, що написано в самому токені", "correct": true },
+        { "text": "Щоб декодування працювало швидше" },
+        { "text": "Без цього токен не матиме `exp`" }
+      ]
+    },
+    {
+      "id": "roles-chain",
+      "kind": "single",
+      "text": "`require_admin` залежить від `get_current_user`. Звичайний користувач з дійсним токеном відкриває адмінський ендпоінт. Що станеться?",
+      "options": [
+        { "text": "`get_current_user` пройде, а `require_admin` підніме 403", "correct": true },
+        { "text": "`get_current_user` підніме 401" },
+        { "text": "Ендпоінт виконається, бо токен дійсний" }
+      ]
+    }
+  ]
+}

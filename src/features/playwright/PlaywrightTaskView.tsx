@@ -8,8 +8,9 @@ import { Callout } from '../../components/ui';
 import { useAsync } from '../../lib/useAsync';
 import { Collapsible, ExplanationPanel, HintsPanel, NextActions, PlaygroundLink } from '../tasks/shared';
 import type { TaskViewProps } from '../tasks/types';
-import type { LabLanguage, LabRunResult, LabStatus, LabTestResult } from '../../../server/lab-types';
+import type { LabLanguage, LabRunResult, LabTestResult } from '../../../server/lab-types';
 import { fetchLabStatus, runInLab } from './client';
+import { LabSetupCallout } from '../tasks/LabSetupCallout';
 import { IS_STATIC_SITE } from '../../site';
 import { gradeLabRun, type PlaywrightGrade } from './grade';
 
@@ -163,7 +164,7 @@ export default function PlaywrightTaskView({ ct, header, onSimilar, next }: Task
         <PlaygroundLink id={task.playground} />
         <div className="mt-5 space-y-3">
           {labStatus.data && !labStatus.data.ready && (
-            <SetupCallout status={labStatus.data} command={setup.setupCommand} onRecheck={() => setStatusKey((k) => k + 1)} />
+            <LabSetupCallout status={labStatus.data} labName="Playwright lab" command={setup.setupCommand} onRecheck={() => setStatusKey((k) => k + 1)} />
           )}
           <HintsPanel taskId={ct.id} hints={task.hints} />
           {task.explanation && (failed > 0 || solved) && <ExplanationPanel text={task.explanation} />}
@@ -233,29 +234,6 @@ export default function PlaywrightTaskView({ ct, header, onSimilar, next }: Task
         </div>
       </section>
     </div>
-  );
-}
-
-function SetupCallout({ status, command, onRecheck }: { status: LabStatus; command: string; onRecheck: () => void }) {
-  if (IS_STATIC_SITE) {
-    return (
-      <Callout tone="warn" title="💻 This task runs on your computer">
-        <p className="text-sm">{status.message}</p>
-        <p className="mt-2 text-sm">To take the draft with you: Settings → Export progress here, then Import it in the course on your computer.</p>
-      </Callout>
-    );
-  }
-  return (
-    <Callout tone="warn" title="One-time setup of the Playwright lab">
-      <p className="text-sm">{status.message}</p>
-      <p className="mt-2 text-sm">
-        Open a terminal <b>outside</b> this app (Windows Terminal, cmd or the VS Code terminal) in the project folder and run:
-      </p>
-      <CodeBlock code={command} />
-      <button className="btn btn-secondary btn-sm mt-2" onClick={onRecheck}>
-        ↻ Check again
-      </button>
-    </Callout>
   );
 }
 

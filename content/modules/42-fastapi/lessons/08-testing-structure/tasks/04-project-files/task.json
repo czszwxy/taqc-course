@@ -1,0 +1,31 @@
+{
+  "type": "classify",
+  "title": "Which file does it belong in?",
+  "statement": "Проєкт служби підтримки має структуру з уроку: `app/main.py`, `app/routers/`, `app/schemas.py`, `app/models.py`, `app/deps.py` і `tests/conftest.py`. Розклади код по файлах.",
+  "categories": [
+    { "id": "main", "label": "app/main.py", "description": "Збирає застосунок" },
+    { "id": "routers", "label": "app/routers/", "description": "Ендпоінти за темами" },
+    { "id": "schemas", "label": "app/schemas.py", "description": "Схеми Pydantic" },
+    { "id": "models", "label": "app/models.py", "description": "Таблиці SQLAlchemy" },
+    { "id": "deps", "label": "app/deps.py", "description": "Спільні залежності" },
+    { "id": "conftest", "label": "tests/conftest.py", "description": "Фікстури тестів" }
+  ],
+  "items": [
+    { "id": "include", "text": "`app = FastAPI(lifespan=lifespan)` and `app.include_router(tickets.router)`", "category": "main" },
+    { "id": "lifespan", "text": "The `lifespan` function that runs `create_all` at start-up", "category": "main" },
+    { "id": "get-ticket", "text": "`@router.get(\"/{ticket_id}\")` and its function", "category": "routers" },
+    { "id": "post-ticket", "text": "`@router.post(\"\", status_code=201)` for creating tickets", "category": "routers" },
+    { "id": "ticket-out", "text": "`class TicketOut(BaseModel)` with `from_attributes=True`", "category": "schemas" },
+    { "id": "ticket-update", "text": "`class TicketUpdate(BaseModel)` where every field is optional", "category": "schemas" },
+    { "id": "ticket-model", "text": "`class Ticket(Base): __tablename__ = \"tickets\"`", "category": "models" },
+    { "id": "relationship", "text": "`agent: Mapped[\"Agent\"] = relationship(back_populates=\"tickets\")`", "category": "models" },
+    { "id": "current-agent", "text": "`def get_current_agent(token: ...)` used by several routers", "category": "deps", "explain": "Спільна залежність для багатьох роутерів — у `deps.py`, щоб роутери не імпортували один одного." },
+    { "id": "pagination", "text": "`def pagination(page: ..., size: ...)` shared by every list endpoint", "category": "deps" },
+    { "id": "client-fixture", "text": "`@pytest.fixture def client():` with `app.dependency_overrides[get_session] = ...`", "category": "conftest", "explain": "Фікстури в `conftest.py` бачать усі тестові файли без імпорту." },
+    { "id": "test-engine", "text": "A test engine `create_engine(\"sqlite://\", poolclass=StaticPool, ...)`", "category": "conftest" }
+  ],
+  "show": 10,
+  "passScore": 0.8,
+  "hints": ["Спитай: це про таблицю, про JSON, про конкретний ендпоінт, про спільну перевірку, про збирання застосунку чи про тести?"],
+  "explanation": "`main.py` лише збирає: створює `app`, підключає роутери, описує `lifespan`. Ендпоінти живуть у `routers/` за темами. Схеми Pydantic (контракт) і моделі SQLAlchemy (таблиці) — окремо, бо змінюються з різних причин. Те, що потрібно багатьом роутерам (поточний агент, пагінація, сесія), — у `deps.py`. А все тестове — фікстури, тестова база, overrides — у `tests/conftest.py`, який pytest підхоплює автоматично."
+}

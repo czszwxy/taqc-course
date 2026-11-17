@@ -21,9 +21,11 @@ import { executeModules } from '../src/runner/harness';
 import { HARNESS_DTS } from '../src/runner/harness-dts';
 import { isNeededLibFile } from '../src/runner/lib-files';
 import { evaluateCodeRules } from '../src/runner/client';
-import { evaluatePythonRules } from '../src/runner/python-client';
+import { evaluatePythonRules } from '../src/runner/python-rules';
 import type { PythonRunResult } from '../src/runner/python-protocol';
 import { runPythonJob } from './python-node';
+import { missingPythonTaskLab, runPythonTaskJobs } from '../server/lab-python-tasks';
+import { parallelism, runPool } from '../server/lab-python';
 import { courseSchema, formatZodError, lessonSchema, moduleSchema, taskSchema, type Task } from '../src/content/schema';
 import { checkBugReportQuality, checkTestCase, evaluateRules, matchBug, type FormValues } from '../src/features/tasks/forms';
 import { GENERATORS } from '../src/features/tasks/generators';
@@ -407,6 +409,20 @@ function readPythonSupport(dir: string): Record<string, string> {
   );
 }
 
+type PythonExec = (kind: 'test' | 'run', files: Record<string, string>, entry: string) => Promise<PythonRunResult>;
+
+/** "runtime": "lab" tasks run with real pytest in lab/.venv (one job per call; the pool below runs tasks side by side). */
+const runLabJob: PythonExec = async (kind, files, entry) => {
+  const response = await runPythonTaskJobs(root, [{ kind, files, entry }]);
+  if (!response.ok) return { error: response.message, tests: [], stdout: '' };
+  return response.results[0] ?? { error: 'no result', tests: [], stdout: '' };
+};
+
+/** Lab tasks are checked after all other tasks (separate processes, several at a time), or skipped without the venv. */
+const labChecks: (() => Promise<void>)[] = [];
+const labMissing = missingPythonTaskLab(root);
+const labSkipped: string[] = [];
+
 /** Why a python test run is not green (empty when every collected test passed). */
 const pythonFailures = (run: PythonRunResult): string[] => [
   ...(run.error ? [`error: ${run.error}`] : []),
@@ -421,14 +437,20 @@ interface PythonGrade {
 }
 
 /** Tests mode: run a tests file on subject.py, then on every mutant (only when green on subject.py). */
-async function gradePythonTests(tests: string, support: Record<string, string>, mutants: Record<string, string>, minTests?: number): Promise<PythonGrade> {
-  const base = await runPythonJob('test', { ...support, 'tests.py': tests }, 'tests.py');
+async function gradePythonTests(
+  exec: PythonExec,
+  tests: string,
+  support: Record<string, string>,
+  mutants: Record<string, string>,
+  minTests?: number,
+): Promise<PythonGrade> {
+  const base = await exec('test', { ...support, 'tests.py': tests }, 'tests.py');
   const failures = pythonFailures(base);
   const tooFew = minTests !== undefined && base.tests.length < minTests;
   if (failures.length > 0) return { failures, survivors: [], tooFew };
   const survivors = await Object.entries(mutants).reduce<Promise<string[]>>(async (accPromise, [id, code]) => {
     const acc = await accPromise;
-    const run = await runPythonJob('test', { ...support, 'subject.py': code, 'tests.py': tests }, 'tests.py');
+    const run = await exec('test', { ...support, 'subject.py': code, 'tests.py': tests }, 'tests.py');
     return pythonFailures(run).length > 0 ? acc : [...acc, id];
   }, Promise.resolve([]));
   return { failures, survivors, tooFew };
@@ -447,28 +469,45 @@ const checkPythonTask: Checker<'python'> = async (dir, task) => {
   badRules.forEach((r) => fail(dir, `invalid code rule regex /${r.pattern}/`));
   if (badRules.length === 0) evaluatePythonRules(solution, task.codeRules).forEach((m) => fail(dir, `solution.py breaks its own code rule: ${m}`));
   const support = readPythonSupport(dir);
+  if (task.runtime === 'lab') {
+    if (labMissing !== null) labSkipped.push(dir);
+    else labChecks.push(() => runPythonChecks(dir, task, runLabJob, { starter, solution, support }));
+    return;
+  }
+  await runPythonChecks(dir, task, runPythonJob, { starter, solution, support });
+};
 
+interface PythonSources {
+  starter: string;
+  solution: string;
+  support: Record<string, string>;
+}
+
+/** Solution mode: solution.py passes tests.py and starter.py does not. Tests mode: the reference kills every mutant. */
+async function runPythonChecks(dir: string, task: TaskOf<'python'>, exec: PythonExec, { starter, solution, support }: PythonSources): Promise<void> {
+  const testsMode = task.mode === 'tests';
+  const read = (f: string) => fs.readFileSync(path.join(dir, f), 'utf8');
   if (testsMode) {
     duplicates(task.mutants.map((m) => m.id)).forEach((id) => fail(dir, `duplicate mutant id "${id}"`));
     const mutantFile = (id: string) => path.join(dir, 'mutants', `${id}.py`);
     task.mutants.filter((m) => !fs.existsSync(mutantFile(m.id))).forEach((m) => fail(mutantFile(m.id), 'missing'));
     const mutants = Object.fromEntries(task.mutants.filter((m) => fs.existsSync(mutantFile(m.id))).map((m) => [m.id, fs.readFileSync(mutantFile(m.id), 'utf8')]));
-    const reference = await gradePythonTests(solution, support, mutants, task.minTests);
+    const reference = await gradePythonTests(exec, solution, support, mutants, task.minTests);
     if (reference.failures.length > 0) fail(dir, `reference tests (solution.py) are not green on subject.py: ${reference.failures.join(' | ')}`);
     reference.survivors.forEach((id) => fail(dir, `reference tests do not catch mutant "${id}"`));
     if (reference.tooFew) fail(dir, `reference tests have fewer than minTests (${task.minTests})`);
-    const start = await gradePythonTests(starter, support, mutants, task.minTests);
+    const start = await gradePythonTests(exec, starter, support, mutants, task.minTests);
     if (start.failures.length === 0 && start.survivors.length === 0 && !start.tooFew) fail(dir, 'starter.py already passes — it must leave work to do');
     return;
   }
 
   const tests = read('tests.py');
-  const sol = await runPythonJob('test', { ...support, 'solution.py': solution, 'tests.py': tests }, 'tests.py');
+  const sol = await exec('test', { ...support, 'solution.py': solution, 'tests.py': tests }, 'tests.py');
   const solFailures = pythonFailures(sol);
   if (solFailures.length > 0) fail(dir, `solution.py does not pass tests.py: ${solFailures.join(' | ')}`);
-  const start = await runPythonJob('test', { ...support, 'solution.py': starter, 'tests.py': tests }, 'tests.py');
+  const start = await exec('test', { ...support, 'solution.py': starter, 'tests.py': tests }, 'tests.py');
   if (pythonFailures(start).length === 0 && evaluatePythonRules(starter, task.codeRules).length === 0) fail(dir, 'starter.py already passes the tests');
-};
+}
 
 const CHECKS: { [K in Task['type']]: Checker<K> } = {
   python: checkPythonTask,
@@ -586,6 +625,11 @@ async function main(): Promise<void> {
     const check = CHECKS[task.type] as (d: string, t: Task) => void | Promise<void>;
     await check(dir, task);
   }, Promise.resolve());
+  if (labChecks.length > 0) console.log(`Running ${labChecks.length} lab Python task(s) with pytest in lab/.venv…`);
+  await runPool(labChecks, parallelism(), (check) => check());
+  if (labSkipped.length > 0) {
+    warnings.push(`${labSkipped.length} lab Python task(s) (FastAPI…) were not run: ${labMissing ?? ''} — run npm run lab:python-setup`);
+  }
 
   warnings.forEach((w) => console.log(`⚠  ${w}`));
   if (errors.length) {

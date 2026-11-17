@@ -1,7 +1,7 @@
 import type { PlaywrightTask } from '../../content/schema';
 import type { LabProjectResult, LabRunResult, LabTestResult } from '../../../server/lab-types';
 import { evaluateCodeRules } from '../../runner/client';
-import { evaluatePythonRules } from '../../runner/python-client';
+import { evaluatePythonRules } from '../../runner/python-rules';
 
 /** Pure grading of a Playwright lab run. Used by the task view and by scripts/validate-lab.ts. */
 

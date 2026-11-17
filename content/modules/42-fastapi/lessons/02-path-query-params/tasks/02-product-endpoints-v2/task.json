@@ -1,0 +1,17 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "variantOf": "02-product-endpoints",
+  "title": "Order search with an enum status",
+  "statement": "Замовлення — у `orders.py` (`ORDERS`, лише для читання). Статуси вже описані як `OrderStatus` (`StrEnum`). Зроби три ендпоінти для панелі менеджера.\n\n**`GET /orders`** — замовлення за `id` з необов'язковими фільтрами:\n\n| Параметр | Тип і межі | Що робить |\n|---|---|---|\n| `status` | `OrderStatus` | лише цей статус; невідомий статус — `422` |\n| `min_total` | ціле, `>= 0` | лише `total >= min_total` |\n| `limit` | ціле від 1 до 20, за замовчуванням 5 | не більше `limit` замовлень |\n\n**`GET /orders/{order_id}`** — `order_id` ціле `> 0`; замовлення або `404` з `{\"detail\": \"Order not found\"}`.\n\n**`GET /customers/{email}/orders`** — замовлення цього покупця (за `id`); немає жодного — порожній список, а не 404.\n\n```python\nclient.get(\"/orders?status=paid&min_total=1000\").json()\n# [{'id': 1001, 'customer': 'anna@shop.test', 'status': 'paid', 'total': 1198}, ...]\n```",
+  "hints": [
+    "`status: OrderStatus | None = None` — FastAPI сам перевірить, що значення з набору.",
+    "Межі: `Annotated[int | None, Query(ge=0)] = None` і `Annotated[int, Query(ge=1, le=20)] = 5`; для шляху — `Annotated[int, Path(gt=0)]`.",
+    "Список покупця — фільтр за `customer == email`; порожній результат — теж нормальна відповідь `200`."
+  ],
+  "explanation": "Enum у параметрі запиту робить контракт явним: значення поза набором отримують `422` без жодного `if`. Межі `min_total` і `limit` — у `Query`, межа id — у `Path`. Різниця між «немає ресурсу» і «немає результатів» важлива: неіснуюче замовлення — `404`, а покупець без замовлень — це просто порожній список.",
+  "codeRules": [
+    { "kind": "require", "pattern": "Query\\s*\\(", "message": "Межі опиши через Query(...)." },
+    { "kind": "require", "pattern": "OrderStatus\\s*\\|\\s*None|Optional\\[\\s*OrderStatus", "message": "Параметр status має бути типу OrderStatus (необов'язковий)." }
+  ]
+}

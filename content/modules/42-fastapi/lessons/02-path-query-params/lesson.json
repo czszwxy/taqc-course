@@ -1,0 +1,37 @@
+{
+  "title": "Path and query parameters",
+  "minutes": 60,
+  "summary": "Параметри шляху {id} і параметри запиту ?key=value як аргументи функції, автоматичне перетворення типів і відповідь 422, необов'язкові параметри й значення за замовчуванням, перевірки Query / Path з Annotated, Enum, порядок маршрутів і перше знайомство з HTTPException(404)",
+  "resources": [
+    {
+      "title": "FastAPI docs: Path Parameters",
+      "url": "https://fastapi.tiangolo.com/tutorial/path-params/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: Query Parameters",
+      "url": "https://fastapi.tiangolo.com/tutorial/query-params/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: Query Parameters and String Validations",
+      "url": "https://fastapi.tiangolo.com/tutorial/query-params-str-validations/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Annotated + Query(min_length=..., max_length=...)",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: Path Parameters and Numeric Validations",
+      "url": "https://fastapi.tiangolo.com/tutorial/path-params-numeric-validations/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Path(gt=0), Query(ge=1, le=100)",
+      "needsVerification": true
+    }
+  ]
+}

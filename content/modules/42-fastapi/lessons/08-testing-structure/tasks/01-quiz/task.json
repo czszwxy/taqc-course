@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "Tests, routers and settings",
+  "show": 6,
+  "hints": ["Свіжий стан на кожен тест; prefix роутера додається до шляхів; get_settings з lru_cache — залежність, яку підміняють."],
+  "questions": [
+    {
+      "id": "fresh-state",
+      "kind": "single",
+      "text": "Тести проходять поодинці, але падають, коли запускаєш усі разом. Найімовірніша причина?",
+      "options": [
+        { "text": "Тести ділять стан (словник, база, незняті overrides) — кожен має починати з відомого стану", "correct": true },
+        { "text": "pytest запускає тести паралельно за замовчуванням" },
+        { "text": "TestClient не можна створювати двічі" }
+      ]
+    },
+    {
+      "id": "whole-body",
+      "kind": "single",
+      "text": "Чому краще `assert response.json() == {...}` цілком, ніж перевіряти лише одне поле?",
+      "options": [
+        { "text": "Порівняння цілком ловить і зайві поля (наприклад, витік `password_hash`), і відсутні", "correct": true },
+        { "text": "Так тест працює швидше" },
+        { "text": "Інакше pytest не покаже різницю" }
+      ]
+    },
+    {
+      "id": "prefix",
+      "kind": "single",
+      "text": "`router = APIRouter(prefix=\"/orders\")` і `@router.get(\"/{order_id}\")`. Яким буде шлях після `app.include_router(router)`?",
+      "options": [
+        { "text": "`/orders/{order_id}`", "correct": true },
+        { "text": "`/{order_id}`" },
+        { "text": "`/orders/orders/{order_id}`" }
+      ]
+    },
+    {
+      "id": "not-included",
+      "kind": "single",
+      "text": "Роутер створено й описано, але `include_router` забули. Що отримає клієнт на його маршрути?",
+      "options": [
+        { "text": "404 — застосунок нічого не знає про ці маршрути", "correct": true },
+        { "text": "Вони працюють, бо роутер імпортовано" },
+        { "text": "500" }
+      ]
+    },
+    {
+      "id": "router-deps",
+      "kind": "single",
+      "text": "Що дає `APIRouter(prefix=\"/admin\", dependencies=[Depends(require_admin)])`?",
+      "options": [
+        { "text": "`require_admin` виконується для кожного ендпоінта цього роутера — жоден не залишиться незахищеним", "correct": true },
+        { "text": "`require_admin` виконується один раз при старті сервера" },
+        { "text": "Перевірка діє лише на перший ендпоінт" }
+      ]
+    },
+    {
+      "id": "settings-env",
+      "kind": "single",
+      "text": "`Settings(BaseSettings)` з `env_prefix=\"SHOP_\"` і полем `api_key: str`. Звідки воно візьме значення?",
+      "options": [
+        { "text": "Зі змінної середовища `SHOP_API_KEY` (а якщо її немає — зі значення за замовчуванням)", "correct": true },
+        { "text": "З файлу `api_key.txt`" },
+        { "text": "Лише з аргументу `Settings(api_key=...)`" }
+      ]
+    },
+    {
+      "id": "lru-cache",
+      "kind": "single",
+      "text": "Навіщо `@lru_cache` над `get_settings()`?",
+      "options": [
+        { "text": "Щоб налаштування читалися із середовища один раз, а не на кожен запит", "correct": true },
+        { "text": "Щоб налаштування не можна було підмінити в тестах" },
+        { "text": "Без нього `BaseSettings` не працює" }
+      ]
+    },
+    {
+      "id": "lifespan-test",
+      "kind": "single",
+      "text": "Застосунок створює таблиці в `lifespan`. Як зробити, щоб тест його запустив?",
+      "options": [
+        { "text": "Використати клієнт як контекстний менеджер: `with TestClient(app) as client:`", "correct": true },
+        { "text": "Lifespan виконується при імпорті модуля" },
+        { "text": "Викликати `app.lifespan()` вручну" }
+      ]
+    }
+  ]
+}

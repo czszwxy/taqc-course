@@ -1,0 +1,37 @@
+{
+  "title": "FastAPI with a database",
+  "minutes": 65,
+  "summary": "Модель SQLAlchemy (таблиця) і схема Pydantic (контракт API), from_attributes, сесія на кожен запит через yield-залежність, CRUD з add / commit / refresh, IntegrityError → 409 з rollback, створення таблиць, і тести на SQLite у пам'яті: чому TestClient потребує StaticPool і check_same_thread=False",
+  "resources": [
+    {
+      "title": "FastAPI docs: SQL (Relational) Databases",
+      "url": "https://fastapi.tiangolo.com/tutorial/sql-databases/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "офіційний підручник використовує SQLModel; у курсі — SQLAlchemy 2.0 напряму, ідеї ті самі",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLAlchemy docs: Session Basics",
+      "url": "https://docs.sqlalchemy.org/en/20/orm/session_basics.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLAlchemy docs: SQLite — threading and pooling",
+      "url": "https://docs.sqlalchemy.org/en/20/dialects/sqlite.html#threading-pooling-behavior",
+      "kind": "docs",
+      "lang": "en",
+      "note": "StaticPool для SQLite у пам'яті",
+      "needsVerification": true
+    },
+    {
+      "title": "Pydantic docs: Models (from_attributes)",
+      "url": "https://docs.pydantic.dev/latest/concepts/models/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

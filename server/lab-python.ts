@@ -53,7 +53,7 @@ export function labVenvPython(root: string): string {
 }
 
 /** site-packages of the venv: Lib\site-packages on Windows, lib/python3.X/site-packages elsewhere. */
-function sitePackages(root: string): string | null {
+export function sitePackages(root: string): string | null {
   if (IS_WINDOWS) return path.join(labVenvDir(root), 'Lib', 'site-packages');
   const lib = path.join(labVenvDir(root), 'lib');
   const version = fs.existsSync(lib) ? fs.readdirSync(lib).find((name) => name.startsWith('python')) : undefined;
@@ -114,7 +114,7 @@ function writeRun(root: string, runDir: string, code: string): void {
 }
 
 /** Windows does not stop a process's children (the Playwright driver, Chromium) with it: kill the whole tree. */
-function killTree(child: ChildProcess): void {
+export function killTree(child: ChildProcess): void {
   if (IS_WINDOWS && child.pid !== undefined) spawnSync('taskkill', ['/pid', String(child.pid), '/T', '/F'], { windowsHide: true });
   else child.kill();
 }
@@ -159,7 +159,7 @@ function runVariant(root: string, runDir: string, variant: Variant, index: numbe
 }
 
 /** Runs fn over items with at most `limit` running at the same time; results keep the order of items. */
-async function runPool<T, R>(items: readonly T[], limit: number, fn: (item: T, index: number) => Promise<R>): Promise<R[]> {
+export async function runPool<T, R>(items: readonly T[], limit: number, fn: (item: T, index: number) => Promise<R>): Promise<R[]> {
   const results: R[] = [];
   const cursor = { next: 0 };
   const worker = async (): Promise<void> => {
@@ -174,7 +174,7 @@ async function runPool<T, R>(items: readonly T[], limit: number, fn: (item: T, i
   return results;
 }
 
-function parallelism(): number {
+export function parallelism(): number {
   return Math.max(1, Math.floor(os.cpus().length / CORES_PER_PROCESS));
 }
 

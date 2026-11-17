@@ -16,6 +16,11 @@ import { CodeBlock, Markdown } from '../../components/Markdown';
 import { Callout } from '../../components/ui';
 import { useAsync } from '../../lib/useAsync';
 import { Collapsible, ExplanationPanel, HintsPanel, NextActions } from '../tasks/shared';
+import { LabSetupCallout } from '../tasks/LabSetupCallout';
+import { fetchPythonLabStatus } from '../../runner/python-lab-client';
+import { PYTHON_RUN_TIMEOUT_MS } from '../../runner/python-client';
+import { IS_STATIC_SITE } from '../../site';
+import { LAB_PYTHON_RUN_TIMEOUT_MS, LAB_PYTHON_TEST_TIMEOUT_MS } from '../../../server/lab-types';
 import type { TaskViewProps } from '../tasks/types';
 
 type Panel = 'results' | 'console';
@@ -25,6 +30,24 @@ const DRAFT_SAVE_DELAY_MS = 400;
 const ATTEMPTS_BEFORE_SOLUTION = 3;
 const PYTHON_TAB_SIZE = 4;
 const SUBJECT_FILE = 'subject.py';
+const MS_PER_SECOND = 1000;
+const LAB_SETUP_COMMAND = 'npm run lab:python-setup';
+
+/** Where the code runs and how long a run may take — the texts of the results panel follow it. */
+interface RuntimeInfo {
+  lab: boolean;
+  checkSeconds: number;
+  runSeconds: number;
+}
+
+function runtimeInfo(task: PythonTask): RuntimeInfo {
+  const lab = task.runtime === 'lab';
+  return {
+    lab,
+    checkSeconds: (lab ? LAB_PYTHON_TEST_TIMEOUT_MS : PYTHON_RUN_TIMEOUT_MS) / MS_PER_SECOND,
+    runSeconds: (lab ? LAB_PYTHON_RUN_TIMEOUT_MS : PYTHON_RUN_TIMEOUT_MS) / MS_PER_SECOND,
+  };
+}
 
 interface ConsoleOutput {
   source: 'run' | 'check';
@@ -41,6 +64,10 @@ export default function PythonTaskView({ ct, header, onSimilar, next }: TaskView
   const markSolutionViewed = useProgress((s) => s.markSolutionViewed);
 
   const testsMode = task.mode === 'tests';
+  const runtime = runtimeInfo(task);
+  const [statusKey, setStatusKey] = useState(0);
+  const labStatus = useAsync(() => (runtime.lab ? fetchPythonLabStatus() : Promise.resolve(null)), [runtime.lab, statusKey]);
+  const blocked = runtime.lab && IS_STATIC_SITE;
   const fileName = testsMode ? 'tests.py' : 'solution.py';
   const codeRef = useRef('');
   const editorRef = useRef<CodeEditorHandle | null>(null);
@@ -52,7 +79,9 @@ export default function PythonTaskView({ ct, header, onSimilar, next }: TaskView
   const [panel, setPanel] = useState<Panel>('results');
   const [showSolution, setShowSolution] = useState(false);
 
-  useEffect(() => warmUpPython(), []);
+  useEffect(() => {
+    if (!runtime.lab) warmUpPython();
+  }, [runtime.lab]);
 
   const initialCode = useMemo(() => {
     if (!files.data) return '';
@@ -76,15 +105,15 @@ export default function PythonTaskView({ ct, header, onSimilar, next }: TaskView
     setPanel('results');
     saveDraft(ct.id, codeRef.current);
     if (testsMode) {
-      const r = await checkPythonTests(codeRef.current, files.data.support, files.data.mutants, task.mutants, task.minTests, task.codeRules);
+      const r = await checkPythonTests(codeRef.current, files.data.support, files.data.mutants, task.mutants, task.minTests, task.codeRules, task.runtime);
       setSuite(r);
       setConsoleOut({ source: 'check', run: r });
-      recordAttempt(ct.id, r.passed);
+      if (!r.unavailable) recordAttempt(ct.id, r.passed);
     } else {
-      const r = await checkPythonSolution(codeRef.current, files.data.tests, files.data.support, task.codeRules);
+      const r = await checkPythonSolution(codeRef.current, files.data.tests, files.data.support, task.codeRules, task.runtime);
       setResult(r);
       setConsoleOut({ source: 'check', run: r });
-      recordAttempt(ct.id, r.passed);
+      if (!r.unavailable) recordAttempt(ct.id, r.passed);
     }
     setBusy(null);
   };
@@ -93,7 +122,7 @@ export default function PythonTaskView({ ct, header, onSimilar, next }: TaskView
     if (busy) return;
     setBusy('run');
     setPanel('console');
-    const run = await runPythonProgram(codeRef.current, files.data?.support ?? {});
+    const run = await runPythonProgram(codeRef.current, files.data?.support ?? {}, task.runtime);
     setConsoleOut({ source: 'run', run });
     setBusy(null);
   };
@@ -127,6 +156,9 @@ export default function PythonTaskView({ ct, header, onSimilar, next }: TaskView
         <Markdown compact>{task.statement}</Markdown>
         {files.data && <SupportFiles files={files.data.support} testsMode={testsMode} />}
         <div className="mt-5 space-y-3">
+          {labStatus.data && !labStatus.data.ready && (
+            <LabSetupCallout status={labStatus.data} labName="Python lab" command={LAB_SETUP_COMMAND} onRecheck={() => setStatusKey((k) => k + 1)} />
+          )}
           <HintsPanel taskId={ct.id} hints={task.hints} />
           {task.explanation && (failed > 0 || solved) && <ExplanationPanel text={task.explanation} />}
           {showSolution && files.data ? (
@@ -147,17 +179,22 @@ export default function PythonTaskView({ ct, header, onSimilar, next }: TaskView
       <section className="flex h-[88dvh] min-h-[520px] flex-col border-t-2 border-line lg:h-auto lg:min-h-0 lg:border-t-0">
         <div className="flex items-center gap-2 border-b border-line bg-surface px-3 py-2">
           <span className="hidden font-mono text-xs text-muted sm:inline">🐍 {fileName}</span>
+          {runtime.lab && (
+            <span className="hidden text-xs text-faint md:inline" title="Runs with real pytest in lab/.venv on your computer">
+              💻 runs on your computer
+            </span>
+          )}
           <div className="flex-1" />
           <EditorModeToggle />
           <button className="btn btn-ghost btn-sm" onClick={reset} disabled={!files.data} title="Reset to the starting code">
             ↺ <span className="hidden sm:inline">Reset</span>
           </button>
           {!testsMode && (
-            <button className="btn btn-secondary btn-sm" onClick={doRun} disabled={!files.data || busy !== null} title="Run your file and see print() output">
+            <button className="btn btn-secondary btn-sm" onClick={doRun} disabled={!files.data || busy !== null || blocked} title="Run your file and see print() output">
               ▶ Run
             </button>
           )}
-          <button className="btn btn-primary btn-sm" onClick={doCheck} disabled={!files.data || busy !== null} title="Ctrl+Enter">
+          <button className="btn btn-primary btn-sm" onClick={doCheck} disabled={!files.data || busy !== null || blocked} title="Ctrl+Enter">
             {busy === 'check' ? 'Checking…' : '✓ Check'}
           </button>
         </div>
@@ -200,6 +237,7 @@ export default function PythonTaskView({ ct, header, onSimilar, next }: TaskView
               suite={suite}
               consoleOut={consoleOut}
               totalMutants={task.mutants.length}
+              runtime={runtime}
               minTests={task.minTests}
               onSimilar={onSimilar}
               next={next}
@@ -219,26 +257,43 @@ interface PanelProps {
   suite: PythonSuiteResult | null;
   consoleOut: ConsoleOutput | null;
   totalMutants: number;
+  runtime: RuntimeInfo;
   minTests?: number;
   onSimilar?: () => void;
   next: NextTarget;
 }
 
 function PanelContent(props: PanelProps) {
-  if (props.panel === 'console') return <ConsoleView out={props.consoleOut} busy={props.busy === 'run'} />;
+  if (props.panel === 'console') return <ConsoleView out={props.consoleOut} busy={props.busy === 'run'} runtime={props.runtime} />;
   if (props.testsMode) {
-    return <SuiteView result={props.suite} busy={props.busy === 'check'} total={props.totalMutants} minTests={props.minTests} onSimilar={props.onSimilar} next={props.next} />;
+    return (
+      <SuiteView
+        result={props.suite}
+        busy={props.busy === 'check'}
+        total={props.totalMutants}
+        minTests={props.minTests}
+        runtime={props.runtime}
+        onSimilar={props.onSimilar}
+        next={props.next}
+      />
+    );
   }
-  return <ResultsView result={props.result} busy={props.busy === 'check'} onSimilar={props.onSimilar} next={props.next} />;
+  return <ResultsView result={props.result} busy={props.busy === 'check'} runtime={props.runtime} onSimilar={props.onSimilar} next={props.next} />;
 }
 
-function RunProblems({ run, label }: { run: PythonRunResult; label: string }) {
+function RunProblems({ run, label, seconds }: { run: PythonRunResult; label: string; seconds: number }) {
   return (
     <>
+      {run.unavailable && (
+        <Callout tone="warn" title="💻 The check could not run">
+          <p className="text-sm">{run.unavailable}</p>
+        </Callout>
+      )}
       {run.timedOut && (
         <Callout tone="bad" title="⏱ Time limit exceeded">
-          The code ran for more than 5 seconds — most likely an infinite loop (check that every <code className="font-mono">while</code> condition eventually
-          becomes False) or an algorithm that is too slow for a large input (for example, a loop inside a loop over thousands of items).
+          The code ran for more than {seconds} seconds — most likely an infinite loop (check that every <code className="font-mono">while</code> condition
+          eventually becomes False), an algorithm that is too slow for a large input (for example, a loop inside a loop over thousands of items) or a server
+          that is started and never stops.
         </Callout>
       )}
       {run.error && (
@@ -286,8 +341,19 @@ function TestList({ tests, wrongExpectation }: { tests: PythonTestCase[]; wrongE
   );
 }
 
-function ResultsView({ result, busy, onSimilar, next }: { result: PythonCheckResult | null; busy: boolean; onSimilar?: () => void; next: NextTarget }) {
-  if (busy) return <div className="text-sm text-muted">⏳ Running your Python code and the tests… (the very first check loads Python, a few seconds)</div>;
+interface ResultsViewProps {
+  result: PythonCheckResult | null;
+  busy: boolean;
+  runtime: RuntimeInfo;
+  onSimilar?: () => void;
+  next: NextTarget;
+}
+
+function ResultsView({ result, busy, runtime, onSimilar, next }: ResultsViewProps) {
+  if (busy) {
+    const where = runtime.lab ? 'with pytest on your computer… (a few seconds)' : '… (the very first check loads Python, a few seconds)';
+    return <div className="text-sm text-muted">⏳ Running your Python code and the tests {where}</div>;
+  }
   if (!result) {
     return (
       <div className="text-sm text-muted">
@@ -296,6 +362,7 @@ function ResultsView({ result, busy, onSimilar, next }: { result: PythonCheckRes
       </div>
     );
   }
+  if (result.unavailable) return <RunProblems run={result} label="" seconds={runtime.checkSeconds} />;
   const passedCount = result.tests.filter((t) => t.passed).length;
   const summary = result.tests.length > 0 ? `${passedCount} of ${result.tests.length} tests passed. Each failed test shows what was expected.` : 'Fix the problem below and check again.';
   return (
@@ -309,7 +376,7 @@ function ResultsView({ result, busy, onSimilar, next }: { result: PythonCheckRes
           {summary}
         </Callout>
       )}
-      <RunProblems run={result} label="Your code could not be loaded" />
+      <RunProblems run={result} label="Your code could not be loaded" seconds={runtime.checkSeconds} />
       <RuleFailures items={result.ruleFailures} />
       {result.tests.length > 0 && <TestList tests={result.tests} />}
       <NextActions passed={result.passed} onSimilar={onSimilar} next={next} />
@@ -322,6 +389,7 @@ function SuiteView({
   busy,
   total,
   minTests,
+  runtime,
   onSimilar,
   next,
 }: {
@@ -329,6 +397,7 @@ function SuiteView({
   busy: boolean;
   total: number;
   minTests?: number;
+  runtime: RuntimeInfo;
   onSimilar?: () => void;
   next: NextTarget;
 }) {
@@ -341,6 +410,7 @@ function SuiteView({
       </div>
     );
   }
+  if (result.unavailable) return <RunProblems run={result} label="" seconds={runtime.checkSeconds} />;
   const killed = result.mutants.filter((m) => m.killed).length;
   const green = !result.error && !result.timedOut && result.tests.length > 0 && result.tests.every((t) => t.passed);
   const summary = green
@@ -357,7 +427,7 @@ function SuiteView({
           {summary}
         </Callout>
       )}
-      <RunProblems run={result} label="Your test file could not be loaded" />
+      <RunProblems run={result} label="Your test file could not be loaded" seconds={runtime.checkSeconds} />
       <RuleFailures items={result.ruleFailures} />
       {result.tooFewTests && minTests !== undefined && (
         <Callout tone="bad" title={`Write at least ${minTests} tests`}>
@@ -397,16 +467,22 @@ function SuiteView({
   );
 }
 
-function ConsoleView({ out, busy }: { out: ConsoleOutput | null; busy: boolean }) {
-  if (busy) return <div className="text-sm text-muted">⏳ Running… (the first run loads Python, a few seconds)</div>;
+function ConsoleView({ out, busy, runtime }: { out: ConsoleOutput | null; busy: boolean; runtime: RuntimeInfo }) {
+  if (busy) return <div className="text-sm text-muted">⏳ Running… {runtime.lab ? '(python on your computer)' : '(the first run loads Python, a few seconds)'}</div>;
   if (!out) return <div className="text-sm text-muted">Output of print() from Run / Check appears here.</div>;
-  const empty = out.run.stdout === '' && !out.run.error && !out.run.timedOut;
+  const empty = out.run.stdout === '' && !out.run.error && !out.run.timedOut && !out.run.unavailable;
   return (
     <div className="space-y-2 font-mono text-[13px]">
       {empty && <div className="text-muted">(no output{out.source === 'run' ? ' — add print(...) to your file to see something' : ''})</div>}
       {out.run.stdout && <pre className="whitespace-pre-wrap">{out.run.stdout}</pre>}
       {out.run.error && <pre className="whitespace-pre-wrap text-bad">💥 {out.run.error}</pre>}
-      {out.run.timedOut && <div className="text-bad">⏱ Stopped after 5 seconds (infinite loop or a too slow algorithm?)</div>}
+      {out.run.unavailable && <div className="text-bad">💻 {out.run.unavailable}</div>}
+      {out.run.timedOut && (
+        <div className="text-bad">
+          ⏱ Stopped after {out.source === 'run' ? runtime.runSeconds : runtime.checkSeconds} seconds (an infinite loop, a too slow algorithm or a server that never
+          stops?)
+        </div>
+      )}
     </div>
   );
 }

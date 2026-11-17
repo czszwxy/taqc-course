@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Partial product updates with PATCH",
+  "statement": "Менеджер змінює товари по одному полю: тут ціну, там опис. Каталог — у `catalog.py` (`PRODUCTS`, у кожного товару є й службове поле `supplier_cost`, яке клієнтам не показують). У стартовому коді вже є `ProductOut` і `GET /products/{product_id}`.\n\nЗроби **`PATCH /products/{product_id}`** з тілом `ProductUpdate` — усі поля необов'язкові:\n\n| Поле | Правило |\n|---|---|\n| `name` | рядок від 2 символів |\n| `price` | ціле `>= 1` |\n| `stock` | ціле `>= 0` |\n| `description` | рядок або `null` (`null` очищує опис) |\n\n- Змінюються **лише надіслані** поля, решта лишається як була. `{\"description\": null}` — очистити опис.\n- Відповідь — оновлений товар як `ProductOut` (без `supplier_cost`).\n- Невідомий товар — `404` з `{\"detail\": \"Product not found\"}`.\n\n```python\nclient.patch(\"/products/2\", json={\"price\": 849}).json()\n# {'id': 2, 'name': 'Wireless mouse', 'price': 849, 'stock': 12, 'description': 'Silent clicks, 2.4 GHz'}\n```",
+  "hints": [
+    "Поля моделі: `price: int | None = Field(default=None, ge=1)` тощо — `None` за замовчуванням робить кожне поле необов'язковим.",
+    "Лише надіслані поля: `changes.model_dump(exclude_unset=True)` — і `product.update(...)` з цим словником.",
+    "Відповідь через `-> ProductOut` — так `supplier_cost` не потрапить до клієнта."
+  ],
+  "explanation": "PATCH відрізняється від PUT тим, що змінює тільки надіслане. Модель з усіма необов'язковими полями приймає будь-яку підмножину, а `model_dump(exclude_unset=True)` відрізняє «поле не надіслали» від «надіслали `null`»: без нього `{\"price\": 849}` стер би назву, склад і опис (вони стали б `None`). Межі в `Field` діють і для часткових змін — `{\"price\": 0}` отримає `422`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "exclude_unset\\s*=\\s*True", "message": "Візьми лише надіслані поля: model_dump(exclude_unset=True)." }
+  ]
+}

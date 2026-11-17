@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Turn domain errors into JSON errors",
+  "statement": "Логіка магазину вже винесена в сервіс `shop.py` (лише для читання): `get_product(product_id)` і `place_order(product_id, quantity, coupon)`. Сервіс нічого не знає про HTTP — він піднімає винятки, нащадки `ShopError`, у кожного є атрибут `code`.\n\nЕндпоінти в `solution.py` уже викликають сервіс, але зараз кожна помилка стає `500`. Додай **обробники винятків**, щоб клієнт отримував єдиний формат `{\"error\": <exc.code>, \"message\": <str(exc)>}`:\n\n| Виняток | Код |\n|---|---|\n| `ProductNotFound` | `404` |\n| `OutOfStock` | `409` |\n| `CouponExpired` | `400` |\n| будь-який інший `ShopError` | `400` |\n| будь-який інший виняток (баг) | `500` з `{\"error\": \"internal_error\", \"message\": \"Something went wrong\"}` — без деталей |\n\n```python\nclient.post(\"/orders\", json={\"product_id\": 5, \"quantity\": 9}).json()\n# {'error': 'out_of_stock', 'message': 'Only 5 x 27-inch monitor left'}\n```\n\nЕндпоінти не змінюй: жодного `try/except` у них — усе в обробниках.",
+  "hints": [
+    "Обробник: `@app.exception_handler(ShopError)` над `async def shop_error(request: Request, exc: ShopError)`, що повертає `JSONResponse(status_code=..., content={...})`.",
+    "Код за класом: словник `{ProductNotFound: 404, OutOfStock: 409, CouponExpired: 400}` і `.get(type(exc), 400)` — один обробник на всю ієрархію.",
+    "Для багів — окремий `@app.exception_handler(Exception)` з 500 і загальним повідомленням (без `str(exc)`)."
+  ],
+  "explanation": "Обробник, зареєстрований для базового класу, ловить усіх його нащадків — тому вистачить одного для `ShopError` і словника «клас → код». Формат помилки описано один раз, і він однаковий для всіх ендпоінтів. Окремий обробник для `Exception` прибирає деталі з відповіді на баги: клієнт бачить `internal_error`, а не текст `KeyError` з назвами твоїх змінних. Тести перевіряють це з `TestClient(app, raise_server_exceptions=False)`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "exception_handler", "message": "Перетвори винятки на відповіді через @app.exception_handler(...)." },
+    { "kind": "forbid", "pattern": "^\\s*try\\s*:", "message": "Без try/except: перетворення винятків — лише в обробниках." }
+  ]
+}

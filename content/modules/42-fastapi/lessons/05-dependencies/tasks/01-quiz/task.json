@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "How dependencies work",
+  "show": 6,
+  "hints": ["Depends отримує функцію (без дужок). Override працює лише для того, що прийшло через Depends."],
+  "questions": [
+    {
+      "id": "params-of-dependency",
+      "kind": "single",
+      "text": "Залежність `def pagination(page: int = 1, size: int = 10)`. Звідки візьмуться `page` і `size`?",
+      "options": [
+        { "text": "З рядка запиту — у залежності ті самі правила параметрів, що й в ендпоінті", "correct": true },
+        { "text": "Їх треба передати вручну в `Depends(pagination, 1, 10)`" },
+        { "text": "Завжди будуть 1 і 10" }
+      ]
+    },
+    {
+      "id": "brackets",
+      "kind": "single",
+      "text": "Що не так з `now: Annotated[datetime, Depends(get_now())]`?",
+      "options": [
+        { "text": "`Depends` має отримати саму функцію `get_now`, а не результат її виклику", "correct": true },
+        { "text": "Нічого, так і треба" },
+        { "text": "`Annotated` не можна використовувати з `Depends`" }
+      ]
+    },
+    {
+      "id": "override-key",
+      "kind": "single",
+      "text": "Як правильно підмінити `get_repository` у тесті?",
+      "options": [
+        { "text": "`app.dependency_overrides[get_repository] = lambda: FakeRepository()`", "correct": true },
+        { "text": "`app.dependency_overrides[\"get_repository\"] = FakeRepository()`" },
+        { "text": "`get_repository = lambda: FakeRepository()` у тестовому файлі" }
+      ]
+    },
+    {
+      "id": "global-not-overridable",
+      "kind": "single",
+      "text": "Ендпоінт читає глобальний `REPOSITORY` напряму, а тест підміняє `get_repository`. Що побачить тест?",
+      "options": [
+        { "text": "Дані справжнього `REPOSITORY`: ендпоінт не викликає `get_repository`, тож заміна ні на що не впливає", "correct": true },
+        { "text": "Дані фальшивого репозиторію" },
+        { "text": "Помилку 500" }
+      ]
+    },
+    {
+      "id": "cache",
+      "kind": "single",
+      "text": "`get_settings` потрібна і `get_repository`, і `get_current_user` в одному запиті. Скільки разів вона виконається за цей запит?",
+      "options": [
+        { "text": "Один раз — результат перевикористовується в межах запиту", "correct": true },
+        { "text": "Двічі" },
+        { "text": "Один раз за весь час роботи сервера" }
+      ]
+    },
+    {
+      "id": "yield-finally",
+      "kind": "single",
+      "text": "Навіщо `try/finally` навколо `yield` у залежності, що відкриває з'єднання?",
+      "options": [
+        { "text": "Щоб з'єднання закрилося навіть тоді, коли ендпоінт підняв виняток", "correct": true },
+        { "text": "Без `try` не можна написати `yield`" },
+        { "text": "Щоб ендпоінт виконався двічі" }
+      ]
+    },
+    {
+      "id": "clear-overrides",
+      "kind": "single",
+      "text": "Тест A підміняє `get_now` і не робить `app.dependency_overrides.clear()`. Що ризикує статися?",
+      "options": [
+        { "text": "Тести після A отримують його фальшивий час і падають «випадково», залежно від порядку", "correct": true },
+        { "text": "Нічого: заміна діє лише всередині одного тесту" },
+        { "text": "pytest видасть помилку про незакриту залежність" }
+      ]
+    },
+    {
+      "id": "dependencies-list",
+      "kind": "single",
+      "text": "Коли пишуть `@app.post(\"/import\", dependencies=[Depends(require_api_key)])` замість аргументу функції?",
+      "options": [
+        { "text": "Коли значення залежності не потрібне — важливо лише, що перевірка пройшла", "correct": true },
+        { "text": "Коли залежність повертає список" },
+        { "text": "Так залежність виконується швидше" }
+      ]
+    }
+  ]
+}

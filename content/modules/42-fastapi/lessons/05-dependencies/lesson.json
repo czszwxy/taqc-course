@@ -1,0 +1,35 @@
+{
+  "title": "Dependencies with Depends",
+  "minutes": 60,
+  "summary": "Навіщо Depends: спільні параметри (пагінація), ресурси (репозиторій, годинник, налаштування) і перевірки; ланцюжки залежностей, кешування в межах запиту, залежності з yield (відкрити → використати → закрити), dependencies=[...] у декораторі і заміна залежностей у тестах через app.dependency_overrides",
+  "resources": [
+    {
+      "title": "FastAPI docs: Dependencies",
+      "url": "https://fastapi.tiangolo.com/tutorial/dependencies/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: Dependencies with yield",
+      "url": "https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-with-yield/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: Testing Dependencies with Overrides",
+      "url": "https://fastapi.tiangolo.com/advanced/testing-dependencies/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: FastAPI dependency injection explained",
+      "url": "https://www.youtube.com/results?search_query=fastapi+dependency+injection+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

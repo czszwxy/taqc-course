@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Log in and get a JWT",
+  "statement": "Зроби вхід із JWT. У `security.py` (лише для читання): `SECRET_KEY`, `ALGORITHM` (`\"HS256\"`), `ACCESS_TOKEN_MINUTES` (15), `verify_password(password, password_hash)` і `USERS` — користувачі з хешами паролів (пароль Анни — `anna-pass-123`).\n\n**`POST /token`** — форма OAuth2 (`OAuth2PasswordRequestForm`: поля `username`, `password`):\n\n- правильна пара — `200` `{\"access_token\": <JWT>, \"token_type\": \"bearer\"}`; у токені `sub` — username, `exp` — через `ACCESS_TOKEN_MINUTES` хвилин;\n- немає користувача або неправильний пароль — однаково: `401` `{\"detail\": \"Incorrect username or password\"}` з `WWW-Authenticate: Bearer`.\n\n**`GET /me`** — токен із `Authorization: Bearer ...` (`OAuth2PasswordBearer(tokenUrl=\"token\")`), відповідь `{\"username\", \"full_name\"}`. Невалідний токен (прострочений, з чужим підписом, зіпсований, `sub` неіснуючого користувача) — `401` `{\"detail\": \"Could not validate credentials\"}` з `WWW-Authenticate: Bearer`. Без токена — `401`.",
+  "hints": [
+    "Токен: `jwt.encode({\"sub\": user[\"username\"], \"exp\": datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_MINUTES)}, SECRET_KEY, algorithm=ALGORITHM)`.",
+    "Перевірка: `jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])` у `try` / `except jwt.InvalidTokenError` — він ловить і прострочені токени, і чужий підпис.",
+    "Після декодування перевір, що `payload[\"sub\"]` є в `USERS` — токен міг пережити видалення користувача."
+  ],
+  "explanation": "Вхід перевіряє пароль один раз і видає підписаний JWT з `sub` і `exp`; далі сервер довіряє лише підпису. `jwt.decode` з явним списком `algorithms` перевіряє і підпис, і термін — усі проблеми з токеном приходять як нащадки `jwt.InvalidTokenError`, і всі мають стати `401`, а не `500`. Однакова відповідь на «немає логіна» і «неправильний пароль» не підказує, які логіни існують.",
+  "codeRules": [
+    { "kind": "require", "pattern": "algorithms\\s*=", "message": "Передай у jwt.decode явний список algorithms=[ALGORITHM]." },
+    { "kind": "require", "pattern": "OAuth2PasswordRequestForm", "message": "Вхід приймає форму OAuth2PasswordRequestForm." }
+  ]
+}

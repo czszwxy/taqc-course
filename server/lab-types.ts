@@ -74,3 +74,32 @@ export interface LabStatus {
   ready: boolean;
   message: string;
 }
+
+/* ---------- Python tasks that run in the lab venv (`"runtime": "lab"`: FastAPI, Django) ---------- */
+
+/** One pytest run ("test": the hidden tests.py on the files) or one program run ("run": python <entry>). */
+export interface LabPythonJob {
+  kind: 'test' | 'run';
+  /** File name (may contain folders, e.g. "app/main.py") → source. */
+  files: Record<string, string>;
+  entry: string;
+}
+
+export interface LabPythonRequest {
+  jobs: LabPythonJob[];
+}
+
+/** One result per job, in the same shape as the browser (Pyodide) runner. */
+export interface LabPythonResult {
+  error: string | null;
+  tests: { name: string; passed: boolean; error: string; hint: string }[];
+  stdout: string;
+  timedOut?: boolean;
+}
+
+export type LabPythonResponse = { ok: true; results: LabPythonResult[] } | { ok: false; reason: 'setup' | 'busy' | 'error'; message: string };
+
+/** A pytest run of a lab Python task is stopped after this long (an endless loop, a server that never stops). */
+export const LAB_PYTHON_TEST_TIMEOUT_MS = 30_000;
+/** Run (python solution.py) is stopped sooner: a file that starts uvicorn.run(...) would never finish. */
+export const LAB_PYTHON_RUN_TIMEOUT_MS = 10_000;

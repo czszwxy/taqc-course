@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Product list with filters and a product page",
+  "statement": "Каталог — у `catalog.py` (`PRODUCTS`, лише для читання). Зроби два ендпоінти для вітрини.\n\n**`GET /products`** — товари в порядку каталогу з **необов'язковими** фільтрами:\n\n| Параметр | Тип і межі | Що робить |\n|---|---|---|\n| `category` | рядок, за замовчуванням нема | лише товари цієї категорії |\n| `max_price` | ціле, `>= 0` | лише `price <= max_price` |\n| `in_stock` | `bool`, за замовчуванням `false` | `true` — лише `stock > 0` |\n| `limit` | ціле від 1 до 50, за замовчуванням 10 | не більше `limit` товарів |\n\n**`GET /products/{product_id}`** — `product_id` — ціле `> 0`. Повертає товар або `404` з `{\"detail\": \"Product not found\"}`.\n\nНеправильні значення (`?limit=0`, `?max_price=-1`, `/products/0`, `/products/abc`) мають отримувати `422` — від FastAPI, без ручних перевірок.\n\n```python\nclient.get(\"/products?category=cables&max_price=300\").json()\n# [{'id': 1, 'name': 'USB-C cable', ...}]\n```",
+  "hints": [
+    "Необов'язковий фільтр: `category: str | None = None`; межі — `max_price: Annotated[int | None, Query(ge=0)] = None`, `limit: Annotated[int, Query(ge=1, le=50)] = 10`.",
+    "Фільтруй по черзі: почни з `found = PRODUCTS` і звужуй списковими виразами; наприкінці `found[:limit]`.",
+    "Товар за id: `next((p for p in PRODUCTS if p[\"id\"] == product_id), None)`; `None` → `raise HTTPException(status_code=404, detail=\"Product not found\")`."
+  ],
+  "explanation": "Усі чотири фільтри — звичайні аргументи функції: FastAPI бере їх з рядка запиту, перетворює типи й перевіряє межі з `Query(...)` ще до виклику. `None` за замовчуванням означає «не фільтрувати». Неіснуючий товар — це `404` через `HTTPException`, а не `200` з `null`. Типова помилка — `max_price = 0` як «не задано»: тоді `?max_price=0` перестає працювати; правильний маркер відсутності — `None`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "Query\\s*\\(", "message": "Межі limit і max_price опиши через Query(...), а не перевіркою вручну." },
+    { "kind": "require", "pattern": "HTTPException", "message": "Неіснуючий товар — HTTPException зі статусом 404." }
+  ]
+}

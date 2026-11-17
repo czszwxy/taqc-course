@@ -364,10 +364,13 @@ export const playwrightTaskSchema = z.object({
  * *.py in the folder is a read-only support file. Tests are test_* functions (pytest style, a pytest subset is
  * available); a test's docstring is the hint shown when it fails. Tests mode: the learner writes tests.py for
  * subject.py, and they must fail on every mutants/<id>.py.
+ * `runtime: "lab"` (module 42+): the same files run with real pytest in the lab venv on the learner's computer
+ * (FastAPI, Django — packages Pyodide does not have; server/lab-python-tasks.ts). Not available on the website.
  */
 export const pythonTaskSchema = z.object({
   type: z.literal('python'),
   ...baseTask,
+  runtime: z.enum(['browser', 'lab']).default('browser'),
   statement: z.string(),
   codeRules: z.array(codeRuleSchema).default([]),
   mode: z.enum(['solution', 'tests']).default('solution'),

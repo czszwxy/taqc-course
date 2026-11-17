@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Make the catalog testable with dependencies",
+  "statement": "У `repository.py` (лише для читання) є `ProductRepository` з методами `all()`, `get(product_id)` і `add(name, price, added)` та «бойовий» екземпляр `REPOSITORY`. Зроби API так, щоб тести могли підмінити і сховище, і **поточний час**.\n\n**Залежності** (саме з такими назвами — тести підмінять їх через `app.dependency_overrides`):\n\n- `get_repository()` — повертає `REPOSITORY`;\n- `get_now()` — повертає `datetime.now(timezone.utc)`.\n\n**Ендпоінти** отримують сховище і час **лише через `Depends`**:\n\n| Запит | Відповідь |\n|---|---|\n| `GET /products` | `repo.all()` |\n| `GET /products/new` | товари, додані за останні 7 днів: `(now.date() - added).days <= 7` (сьогоднішні теж) |\n| `POST /products`, тіло `{\"name\": str, \"price\": int >= 1}` | `201`, `repo.add(name, price, added=now.date())` |\n\nДата `added` у JSON — рядок `\"2026-05-01\"` (так FastAPI серіалізує `date`).",
+  "hints": [
+    "`def get_now() -> datetime: return datetime.now(timezone.utc)` і `def get_repository() -> ProductRepository: return REPOSITORY`.",
+    "Псевдоніми: `RepoDep = Annotated[ProductRepository, Depends(get_repository)]`, `NowDep = Annotated[datetime, Depends(get_now)]` — і в кожному ендпоінті аргументи `repo: RepoDep`, `now: NowDep`.",
+    "Не звертайся до `REPOSITORY` і `datetime.now()` в ендпоінтах напряму — тоді заміна в тестах ні на що не вплине."
+  ],
+  "explanation": "Override працює лише для того, що ендпоінт отримує через `Depends`. Тести підставляють власний `ProductRepository` з тестовими товарами і фіксований момент часу — і перевіряють межу «7 днів» точно, без очікування й без справжніх даних. Якщо ендпоінт читає глобальний `REPOSITORY` або викликає `datetime.now()` сам, тест бачить бойові дані та поточну дату й падає.",
+  "codeRules": [
+    { "kind": "require", "pattern": "Depends\\s*\\(\\s*get_now\\s*\\)", "message": "Поточний час отримуй через Depends(get_now)." },
+    { "kind": "require", "pattern": "Depends\\s*\\(\\s*get_repository\\s*\\)", "message": "Сховище отримуй через Depends(get_repository)." }
+  ]
+}

@@ -3,6 +3,7 @@
  *   npm run lab:py -- --headed -k sign_in                    → pytest with these arguments
  *   npm run lab:py-codegen -- http://localhost:5173/playground/login   → Codegen recording a pytest test
  *   npm run lab:py-trace -- test-results/<folder>/trace.zip  → the Trace Viewer
+ *   npm run lab:py-api [-- api/other.py]                     → your own FastAPI app (lab/python/api/main.py) with fastapi dev
  * Needs `npm run lab:python-setup` once; pytest and Codegen also need the running app (launcher or npm run dev).
  */
 import { spawnSync } from 'node:child_process';
@@ -10,6 +11,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { LAB_BASE_URL } from '../server/lab-types';
 import { LAB_PYTHON_SETUP_MESSAGE, labPythonDir, labVenvPython, missingPythonLab, pythonLabEnv } from '../server/lab-python';
+import { missingPythonTaskLab, PYTHON_TASK_SETUP_MESSAGE } from '../server/lab-python-tasks';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PING_TIMEOUT_MS = 3_000;
@@ -18,6 +20,20 @@ const FIRST_USER_ARG = 2;
 /** The first argument "playwright" runs the Playwright CLI (codegen, show-trace) instead of pytest. */
 const PLAYWRIGHT_TOOL = 'playwright';
 const TOOLS_WITHOUT_APP = new Set(['show-trace']);
+/** The first argument "api" starts the learner's FastAPI app on http://127.0.0.1:8000 (Swagger UI at /docs). */
+const API_TOOL = 'api';
+const DEFAULT_API_FILE = 'api/main.py';
+
+/** fastapi dev reloads the app on every save; Ctrl+C stops it. Needs no browser and no running course app. */
+function runApi(file: string | undefined): never {
+  const missing = missingPythonTaskLab(root);
+  if (missing !== null) {
+    console.error(`✗ ${PYTHON_TASK_SETUP_MESSAGE} (${missing})`);
+    process.exit(1);
+  }
+  const result = spawnSync(labVenvPython(root), ['-m', 'fastapi', 'dev', file ?? DEFAULT_API_FILE], { cwd: labPythonDir(root), stdio: 'inherit', env: pythonLabEnv(root) });
+  process.exit(result.status ?? 1);
+}
 
 async function appIsRunning(): Promise<boolean> {
   try {
@@ -29,6 +45,7 @@ async function appIsRunning(): Promise<boolean> {
 }
 
 async function main(): Promise<void> {
+  if (process.argv[FIRST_USER_ARG] === API_TOOL) runApi(process.argv[FIRST_USER_ARG + 1]);
   const missing = missingPythonLab(root);
   if (missing !== null) {
     console.error(`✗ ${LAB_PYTHON_SETUP_MESSAGE} (${missing})`);

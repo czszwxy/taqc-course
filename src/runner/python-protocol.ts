@@ -24,6 +24,8 @@ export interface PythonRunResult {
   tests: PythonTestCase[];
   stdout: string;
   timedOut?: boolean;
+  /** Lab tasks only: the run could not start (lab not set up, the app is the website, another run is busy). */
+  unavailable?: string;
 }
 
 export type PythonWorkerMessage = { id: number; type: 'started' } | { id: number; type: 'done'; result: PythonRunResult };

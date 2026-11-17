@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "variantOf": "03-catalog-summary",
+  "title": "Orders summary endpoints",
+  "statement": "У `orders.py` (лише для читання) — список замовлень `ORDERS`: `id`, `customer`, `status` (`\"new\"`, `\"paid\"`, `\"shipped\"`, `\"cancelled\"`) і `total` у гривнях. Зроби API для панелі менеджера. Відповіді **рахуй** з `ORDERS` під час запиту — тести додають ще одне замовлення.\n\n| Запит | Відповідь |\n|---|---|\n| `GET /orders` | увесь список `ORDERS` |\n| `GET /statuses` | різні статуси **за алфавітом** |\n| `GET /revenue` | `{\"orders\": <кількість замовлень без cancelled>, \"revenue\": <сума total замовлень зі статусом paid або shipped>}` |\n| `GET /customers/count` | `{\"count\": <кількість різних покупців>}` |\n\n```python\nclient.get(\"/statuses\").json()   # ['cancelled', 'new', 'paid', 'shipped']\n```",
+  "hints": [
+    "Обчислюй усе всередині функцій-ендпоінтів, а не один раз при імпорті.",
+    "Різні значення — множина: `{o[\"customer\"] for o in ORDERS}`; за алфавітом — `sorted(...)`.",
+    "Виручка — лише `paid` і `shipped`: `o[\"status\"] in (\"paid\", \"shipped\")`."
+  ],
+  "explanation": "Як і в основній задачі, ендпоінт — це функція над даними, і відповідь має рахуватися на кожен запит. Пастки тут у правилах підрахунку: скасовані замовлення не рахуються в `orders`, а виручка — тільки оплачені та відправлені; покупець з кількома замовленнями — один покупець.",
+  "codeRules": []
+}

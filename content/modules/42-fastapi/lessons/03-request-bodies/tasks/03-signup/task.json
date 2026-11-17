@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Sign-up that never returns the password",
+  "statement": "Зроби реєстрацію покупців. Користувачів зберігай у словнику `USERS` (id від 1). Хешування вже є в `security.py`: `hash_password(password)` (лише для читання).\n\n**`POST /users`**, тіло — модель `UserCreate`:\n\n| Поле | Правило |\n|---|---|\n| `email` | `EmailStr`; зберігається в нижньому регістрі (пробіли по краях `EmailStr` прибирає сам) |\n| `password` | рядок від 8 символів |\n| `name` | рядок від 1 до 50 символів |\n\nУ `USERS[id]` зберігай `{\"id\", \"email\", \"name\", \"password_hash\"}` — **без** самого пароля. Відповідь `201` — модель `UserOut` з полями `id`, `email`, `name`: ні `password`, ні `password_hash`.\n\n**`GET /users/{user_id}`** — `UserOut` або `404` з `{\"detail\": \"User not found\"}`.\n\n```python\nclient.post(\"/users\", json={\"email\": \"  Anna@Example.COM \", \"password\": \"s3cret-pass\", \"name\": \"Anna\"}).json()\n# {'id': 1, 'email': 'anna@example.com', 'name': 'Anna'}\n```",
+  "hints": [
+    "Нормалізація: `@field_validator(\"email\")` + `@classmethod`, що повертає `value.lower()` — валідатор отримує вже перевірений email.",
+    "Збережи `{\"id\": new_id, \"email\": user.email, \"name\": user.name, \"password_hash\": hash_password(user.password)}`.",
+    "Анотація `-> UserOut` у обох ендпоінтах прибере `password_hash` з відповіді, навіть коли ти повертаєш збережений словник."
+  ],
+  "explanation": "Три моделі — три ролі: `UserCreate` приймає пароль, словник у `USERS` зберігає лише хеш, а `UserOut` вирішує, що бачить клієнт. Тому витоку немає, навіть якщо функція повертає повний збережений запис. `EmailStr` прибирає пробіли й знижує лише домен, тож валідатор з `lower()` потрібен для частини до `@` — інакше `Anna@...` і `anna@...` стали б «двома» користувачами. Справжні застосунки хешують паролі повільними алгоритмами (argon2, bcrypt) — про це в уроці про автентифікацію.",
+  "codeRules": [
+    { "kind": "require", "pattern": "field_validator", "message": "Переведи email у нижній регістр через field_validator." }
+  ]
+}

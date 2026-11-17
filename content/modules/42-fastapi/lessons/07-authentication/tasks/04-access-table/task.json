@@ -1,0 +1,27 @@
+{
+  "type": "table",
+  "title": "200, 401 or 403?",
+  "statement": "API служби підтримки: `/tickets/mine` доступний будь-якому агенту з дійсним JWT, а `/reports` — лише ролі `supervisor`. Токени перевіряються через `jwt.decode(token, SECRET_KEY, algorithms=[\"HS256\"])`, а `sub` має бути наявним агентом. Визнач відповідь для кожного запиту і чи буде в ній заголовок `WWW-Authenticate: Bearer`.",
+  "givenColumns": ["Request"],
+  "answerColumns": [
+    { "id": "status", "label": "Status", "options": ["200", "401", "403"] },
+    { "id": "header", "label": "WWW-Authenticate?", "options": ["Yes", "No"] }
+  ],
+  "rows": [
+    { "given": ["`GET /tickets/mine` without an Authorization header"], "answers": { "status": "401", "header": "Yes" } },
+    { "given": ["`GET /tickets/mine` with a valid token of agent Olga"], "answers": { "status": "200", "header": "No" } },
+    { "given": ["`GET /tickets/mine` with `Authorization: Basic b2xnYTpwYXNz`"], "answers": { "status": "401", "header": "Yes" }, "explain": "Схема не Bearer — облікових даних, які розуміє сервер, немає." },
+    { "given": ["`GET /tickets/mine` with a token that expired an hour ago"], "answers": { "status": "401", "header": "Yes" } },
+    { "given": ["`GET /tickets/mine` with a token signed by another key"], "answers": { "status": "401", "header": "Yes" }, "explain": "Підпис не сходиться — токен підроблений." },
+    { "given": ["`GET /tickets/mine` with a valid token whose `sub` is a deleted agent"], "answers": { "status": "401", "header": "Yes" }, "explain": "Токен справжній, але такого користувача більше немає — знову «не знаємо, хто ти»." },
+    { "given": ["`GET /reports` with a valid token of a regular agent"], "answers": { "status": "403", "header": "No" }, "explain": "Хто це, відомо, але прав немає — 403 без WWW-Authenticate: новий вхід не допоможе." },
+    { "given": ["`GET /reports` with a valid token of a supervisor"], "answers": { "status": "200", "header": "No" } },
+    { "given": ["`GET /reports` without a token"], "answers": { "status": "401", "header": "Yes" }, "explain": "Перевірка ролі стоїть поверх автентифікації: спершу треба дізнатися, хто це." },
+    { "given": ["`GET /reports` with an expired supervisor token"], "answers": { "status": "401", "header": "Yes" } }
+  ],
+  "hints": [
+    "Спершу питання «хто ти?»: якщо відповіді немає (немає токена, не Bearer, прострочений, підроблений, користувача немає) — 401 з WWW-Authenticate.",
+    "Лише коли користувач відомий, питають «що тобі можна?» — 403 без заголовка або 200."
+  ],
+  "explanation": "Автентифікація завжди йде першою: будь-яка проблема з токеном — від відсутності до чужого підпису чи видаленого користувача — означає «не знаємо, хто ти», тобто `401` з підказкою `WWW-Authenticate: Bearer` (увійди знову). Авторизація працює з уже відомим користувачем: немає ролі — `403`, і заголовка там немає, бо повторний вхід нічого не змінить. Тому навіть прострочений токен супервізора дає `401`, а не `200` чи `403`."
+}

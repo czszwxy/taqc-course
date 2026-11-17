@@ -5,6 +5,7 @@ import path from 'node:path';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { cleanMessage, hasLocalChromium, LAB_DIR, MS_PER_SECOND, RUN_TIMEOUT_MS, RUNS_DIR } from './lab-common';
 import { pythonLabStatus, runPythonLab } from './lab-python';
+import { isTaskFileName, pythonTaskLabStatus, runPythonTaskJobs } from './lab-python-tasks';
 import {
   LAB_BASE_URL,
   LAB_BUG_PREFIX,
@@ -12,6 +13,7 @@ import {
   LAB_LANGUAGES,
   LAB_NO_BUGS,
   type LabLanguage,
+  type LabPythonJob,
   type LabProjectResult,
   type LabRunRequest,
   type LabRunResult,
@@ -36,6 +38,11 @@ const CONFIG_FILE = 'playwright.config.ts';
 
 const MAX_BODY_BYTES = 200_000;
 const MAX_BUGS_PER_RUN = 12;
+/** A lab Python request carries the task files once per job (the real code + every mutant). */
+const MAX_PYTHON_BODY_BYTES = 1_000_000;
+const MAX_PYTHON_JOBS = 16;
+const MAX_PYTHON_FILES = 40;
+const PYTHON_JOB_KINDS: readonly string[] = ['test', 'run'];
 const OUTPUT_TAIL_CHARS = 2_000;
 
 const HTTP_OK = 200;
@@ -248,6 +255,31 @@ function parseRequest(raw: string): LabRunRequest | null {
   }
 }
 
+function isPythonJob(value: unknown): value is LabPythonJob {
+  if (typeof value !== 'object' || value === null) return false;
+  const job = value as Partial<LabPythonJob>;
+  const files = typeof job.files === 'object' && job.files !== null ? Object.entries(job.files) : [];
+  return (
+    typeof job.kind === 'string' &&
+    PYTHON_JOB_KINDS.includes(job.kind) &&
+    files.length > 0 &&
+    files.length <= MAX_PYTHON_FILES &&
+    files.every(([name, code]) => isTaskFileName(name) && typeof code === 'string') &&
+    typeof job.entry === 'string' &&
+    files.some(([name]) => name === job.entry)
+  );
+}
+
+function parsePythonRequest(raw: string): LabPythonJob[] | null {
+  try {
+    const body = JSON.parse(raw) as { jobs?: unknown };
+    const jobs = Array.isArray(body.jobs) ? (body.jobs as unknown[]) : [];
+    return jobs.length > 0 && jobs.length <= MAX_PYTHON_JOBS && jobs.every(isPythonJob) ? jobs : null;
+  } catch {
+    return null;
+  }
+}
+
 function readBody(req: IncomingMessage): Promise<string> {
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
@@ -268,8 +300,27 @@ function isLocalRequest(req: IncomingMessage): boolean {
 
 type Next = (err?: unknown) => void;
 
-/** One run at a time: Playwright already uses several workers per run. */
-const state = { running: false };
+/** One run at a time: Playwright already uses several workers per run. Lab Python tasks have their own queue. */
+const state = { running: false, pythonRunning: false };
+
+async function handlePythonJobs(root: string, req: IncomingMessage, res: ServerResponse): Promise<void> {
+  const raw = await readBody(req);
+  const jobs = Buffer.byteLength(raw) <= MAX_PYTHON_BODY_BYTES ? parsePythonRequest(raw) : null;
+  if (!jobs) {
+    sendJson(res, HTTP_BAD_REQUEST, { ok: false, reason: 'error', message: 'Bad lab request.' });
+    return;
+  }
+  if (state.pythonRunning) {
+    sendJson(res, HTTP_OK, { ok: false, reason: 'busy', message: 'Another Python check is still running. Wait for it to finish.' });
+    return;
+  }
+  state.pythonRunning = true;
+  try {
+    sendJson(res, HTTP_OK, await runPythonTaskJobs(root, jobs));
+  } finally {
+    state.pythonRunning = false;
+  }
+}
 
 async function handleRun(root: string, req: IncomingMessage, res: ServerResponse): Promise<void> {
   const raw = await readBody(req);
@@ -294,6 +345,14 @@ async function handle(root: string, req: IncomingMessage, res: ServerResponse, n
   const url = req.url ?? '';
   if (!isLocalRequest(req)) {
     sendJson(res, HTTP_FORBIDDEN, { ok: false, reason: 'error', message: 'Forbidden' });
+    return;
+  }
+  if (req.method === 'GET' && url.startsWith('/python/status')) {
+    sendJson(res, HTTP_OK, pythonTaskLabStatus(root));
+    return;
+  }
+  if (req.method === 'POST' && url.startsWith('/python/run') && (req.headers['content-type'] ?? '').startsWith('application/json')) {
+    await handlePythonJobs(root, req, res);
     return;
   }
   if (req.method === 'GET' && url.startsWith('/status')) {

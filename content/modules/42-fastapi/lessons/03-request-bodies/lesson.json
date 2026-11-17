@@ -1,0 +1,37 @@
+{
+  "title": "Request bodies and Pydantic models",
+  "minutes": 65,
+  "summary": "Тіло POST-запиту як модель Pydantic, Field з межами, вкладені моделі й списки, 422 з loc [\"body\", ...], extra=\"forbid\", status_code=201, модель відповіді, що ховає внутрішні поля, окремі моделі Create / Out / Update, field_validator для нормалізації і PATCH з model_dump(exclude_unset=True)",
+  "resources": [
+    {
+      "title": "FastAPI docs: Request Body",
+      "url": "https://fastapi.tiangolo.com/tutorial/body/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: Response Model - Return Type",
+      "url": "https://fastapi.tiangolo.com/tutorial/response-model/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "як модель відповіді відфільтровує поля",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: Body - Updates",
+      "url": "https://fastapi.tiangolo.com/tutorial/body-updates/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "PATCH і exclude_unset",
+      "needsVerification": true
+    },
+    {
+      "title": "Pydantic docs: Validators",
+      "url": "https://docs.pydantic.dev/latest/concepts/validators/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

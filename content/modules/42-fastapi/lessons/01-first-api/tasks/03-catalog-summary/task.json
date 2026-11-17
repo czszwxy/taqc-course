@@ -1,0 +1,13 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Catalog summary endpoints",
+  "statement": "У `catalog.py` (лише для читання) лежить список товарів `PRODUCTS`: у кожного `id`, `name`, `category`, `price` (ціла сума в гривнях) і `stock` (скільки на складі). Зроби API для сторінки «Каталог» — **рахуй** відповіді з `PRODUCTS`, а не вписуй готові числа: тести додають у каталог ще один товар.\n\n| Запит | Відповідь |\n|---|---|\n| `GET /products` | увесь список `PRODUCTS` як є |\n| `GET /products/count` | `{\"count\": <кількість товарів>}` |\n| `GET /categories` | список різних категорій **за алфавітом**, без повторів |\n| `GET /stats` | `{\"in_stock\": <товарів зі stock > 0>, \"out_of_stock\": <зі stock == 0>, \"stock_value\": <сума price × stock>}` |\n\n```python\nclient.get(\"/categories\").json()   # ['accessories', 'cables', 'monitors']\n```",
+  "hints": [
+    "Імпортуй список: `from catalog import PRODUCTS` — і обчислюй усе всередині функцій, щоб тест бачив доданий товар.",
+    "Унікальні категорії за алфавітом: `sorted({p[\"category\"] for p in PRODUCTS})`.",
+    "`stock_value` — `sum(p[\"price\"] * p[\"stock\"] for p in PRODUCTS)`."
+  ],
+  "explanation": "Ендпоінт — звичайна функція: усе, що ти вивчив(ла) про списки, множини й `sum`, працює й тут. Головне — рахувати відповідь під час запиту. Якщо обчислити її один раз при імпорті (або вписати число), API показуватиме старі дані після будь-якої зміни каталогу — тест із доданим товаром це й ловить.",
+  "codeRules": []
+}

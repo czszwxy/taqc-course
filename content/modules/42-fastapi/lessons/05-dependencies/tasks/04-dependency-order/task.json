@@ -1,0 +1,18 @@
+{
+  "type": "order",
+  "title": "In what order does it print?",
+  "statement": "Запит `GET /me` до такого застосунку. Розстав рядки, які він надрукує, у правильному порядку.\n\n```python\ndef get_db():\n    print(\"open db\")\n    try:\n        yield \"db\"\n    finally:\n        print(\"close db\")\n\ndef get_user(db: Annotated[str, Depends(get_db)]):\n    print(\"load user\")\n    return \"anna\"\n\ndef audit(db: Annotated[str, Depends(get_db)]):\n    print(\"start audit\")\n    yield\n    print(\"finish audit\")\n\n@app.get(\"/me\")\ndef me(user: Annotated[str, Depends(get_user)], _: Annotated[None, Depends(audit)]):\n    print(\"endpoint\")\n    return {\"user\": user}\n```",
+  "items": [
+    "open db",
+    "load user",
+    "start audit",
+    "endpoint",
+    "finish audit",
+    "close db"
+  ],
+  "hints": [
+    "Спершу обчислюються залежності, і кожна — після своїх власних залежностей. `get_db` потрібна двічі, але в одному запиті виконується один раз.",
+    "Код після `yield` виконується після ендпоінта — у зворотному порядку відкриття, як вкладені `with`."
+  ],
+  "explanation": "FastAPI обчислює дерево залежностей знизу вгору: `get_db` (спільна, виконується один раз — кешування в межах запиту), потім `get_user`, потім `audit` до її `yield` — у тому порядку, в якому вони стоять у параметрах ендпоінта. Далі виконується сам ендпоінт. Прибирання `yield`-залежностей іде у зворотному порядку: першою закривається та, що відкрилась останньою (`audit`), останньою — `get_db`, від якої залежать інші."
+}

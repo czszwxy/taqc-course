@@ -18,3 +18,9 @@ pytest-rerunfailures==16.7
 allure-pytest==2.16.2
 # Accessibility scans with axe-core (module 34): from axe_playwright_python.sync_playwright import Axe.
 axe-playwright-python==0.1.8
+# REST APIs with FastAPI (Python Developer, module 42): the framework with its CLI and server (fastapi dev / uvicorn),
+# httpx for TestClient, SQLAlchemy (the same 2.0 as the browser tasks of module 41) and PyJWT for tokens.
+fastapi[standard]==0.163.1
+httpx==0.28.1
+sqlalchemy==2.0.48
+pyjwt==2.15.1

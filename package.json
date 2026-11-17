@@ -17,7 +17,8 @@
     "lab:python-setup": "tsx scripts/lab-python-setup.ts",
     "lab:py": "tsx scripts/lab-python.ts",
     "lab:py-codegen": "tsx scripts/lab-python.ts playwright codegen --target python-pytest",
-    "lab:py-trace": "tsx scripts/lab-python.ts playwright show-trace"
+    "lab:py-trace": "tsx scripts/lab-python.ts playwright show-trace",
+    "lab:py-api": "tsx scripts/lab-python.ts api"
   },
   "dependencies": {
     "@fontsource-variable/caveat": "^5.3.0",

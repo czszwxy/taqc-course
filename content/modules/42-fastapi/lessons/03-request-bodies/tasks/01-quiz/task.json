@@ -1,0 +1,98 @@
+{
+  "type": "quiz",
+  "title": "Bodies, models and responses",
+  "show": 6,
+  "hints": ["Модель у параметрах — тіло; тип повернення — фільтр відповіді; exclude_unset — лише надіслані поля."],
+  "questions": [
+    {
+      "id": "body-source",
+      "kind": "single",
+      "text": "Функція `def create(order: OrderIn, notify: bool = False)`, де `OrderIn` — модель Pydantic. Звідки FastAPI візьме `order` і `notify`?",
+      "options": [
+        { "text": "`order` — з JSON-тіла, `notify` — з рядка запиту", "correct": true },
+        { "text": "Обидва — з тіла" },
+        { "text": "Обидва — з рядка запиту" }
+      ]
+    },
+    {
+      "id": "loc-body",
+      "kind": "single",
+      "text": "У відповіді 422 є `\"loc\": [\"body\", \"items\", 2, \"quantity\"]`. Що це означає?",
+      "options": [
+        { "text": "Помилка в полі `quantity` третього елемента списку `items` у тілі", "correct": true },
+        { "text": "Помилка в другому параметрі шляху" },
+        { "text": "Сервер упав на рядку 2" }
+      ]
+    },
+    {
+      "id": "extra-forbid",
+      "kind": "single",
+      "text": "Модель має `model_config = ConfigDict(extra=\"forbid\")`. Клієнт надіслав `{\"qty\": 2}` замість `{\"quantity\": 2}`. Що буде?",
+      "options": [
+        { "text": "422: зайве поле `qty` заборонене (і, якщо `quantity` обов'язкове, — ще й «Field required»)", "correct": true },
+        { "text": "`qty` мовчки проігнорується, а `quantity` стане 0" },
+        { "text": "FastAPI здогадається, що `qty` — це `quantity`" }
+      ]
+    },
+    {
+      "id": "response-filter",
+      "kind": "single",
+      "text": "Функція з анотацією `-> UserOut` (поля `id`, `email`) повертає `dict` з `id`, `email` і `password_hash`. Що отримає клієнт?",
+      "options": [
+        { "text": "Лише `id` і `email` — модель відповіді відкидає зайве", "correct": true },
+        { "text": "Усі три поля" },
+        { "text": "Помилку 500 через зайве поле" }
+      ]
+    },
+    {
+      "id": "exclude-unset",
+      "kind": "single",
+      "text": "PATCH з тілом `{\"price\": 500}` у модель `ProductUpdate(name: str | None = None, price: int | None = None)`. Що поверне `changes.model_dump(exclude_unset=True)`?",
+      "options": [
+        { "text": "`{\"price\": 500}`", "correct": true },
+        { "text": "`{\"name\": None, \"price\": 500}`" },
+        { "text": "`{}`" }
+      ]
+    },
+    {
+      "id": "status-201",
+      "kind": "single",
+      "text": "Який статус правильно повертати після успішного `POST`, що створив новий ресурс?",
+      "options": [
+        { "text": "201 Created — його задають через `status_code=201` у декораторі", "correct": true },
+        { "text": "200 OK — FastAPI сам поставить 201" },
+        { "text": "204 No Content" }
+      ]
+    },
+    {
+      "id": "lower-email",
+      "kind": "single",
+      "text": "Поле `email: EmailStr`. Навіщо ще й `field_validator`, що повертає `value.lower()`?",
+      "options": [
+        { "text": "EmailStr прибирає пробіли й знижує лише домен — без lower() `Anna@...` і `anna@...` стануть двома акаунтами", "correct": true },
+        { "text": "Без валідатора EmailStr не перевіряє формат" },
+        { "text": "Щоб email не можна було змінити після реєстрації" }
+      ]
+    },
+    {
+      "id": "before-mode",
+      "kind": "single",
+      "text": "Що отримує `field_validator` з `mode=\"before\"`?",
+      "options": [
+        { "text": "Сирий вхід ще до перевірки типу — тому в ньому перевіряють `isinstance`", "correct": true },
+        { "text": "Уже перевірене значення потрібного типу" },
+        { "text": "Відповідь ендпоінта перед відправкою клієнту" }
+      ]
+    },
+    {
+      "id": "separate-models",
+      "kind": "multiple",
+      "text": "Чому для користувача роблять окремі моделі `UserCreate` і `UserOut`?",
+      "options": [
+        { "text": "`UserCreate` має пароль, а відповідь не повинна його містити", "correct": true },
+        { "text": "`id` призначає сервер — клієнт не повинен надсилати його при створенні", "correct": true },
+        { "text": "Pydantic не дозволяє використати одну модель двічі" }
+      ]
+    }
+  ]
+}

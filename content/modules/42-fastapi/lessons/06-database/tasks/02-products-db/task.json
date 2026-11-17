@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Product CRUD on a real database",
+  "statement": "Переведи каталог на базу. Таблиця вже описана в `models.py` (`Base`, `Product` з унікальним `sku`), рушій `engine` і `ProductCreate` — у стартовому коді.\n\n1. **`get_session()`** — `yield`-залежність: відкриває `Session(engine)` і закриває її після запиту. Тести підмінять її сесією на базі в пам'яті через `app.dependency_overrides[get_session]`, тож ендпоінти отримують сесію **лише** через неї.\n2. **`ProductOut`** — `id`, `sku`, `name`, `price`, `stock`; `ProductOut.model_validate(product)` має працювати з ORM-об'єктом.\n3. Ендпоінти:\n\n| Запит | Успіх | Помилки |\n|---|---|---|\n| `POST /products` (тіло `ProductCreate`) | `201`, `ProductOut` | такий `sku` уже є — `409` `{\"detail\": \"SKU already exists\"}` |\n| `GET /products/{product_id}` | `200`, `ProductOut` | `404` `{\"detail\": \"Product not found\"}` |\n| `GET /products?max_price=` | список за `id`; `max_price` (необов'язковий) — `price <= max_price` | — |\n| `DELETE /products/{product_id}` | `204` | `404` `{\"detail\": \"Product not found\"}` |\n\nЗміни мають **зберігатися** в базі (тести читають її новою сесією після запиту).",
+  "hints": [
+    "`def get_session(): with Session(engine) as session: yield session` і псевдонім `SessionDep = Annotated[Session, Depends(get_session)]`.",
+    "Створення: `product = Product(**data.model_dump())`, `session.add(product)`, `session.commit()`, `session.refresh(product)`; дубль `sku` — `except IntegrityError: session.rollback()` і `HTTPException(409, ...)`.",
+    "`ProductOut` з `model_config = ConfigDict(from_attributes=True)` — інакше `model_validate` не прочитає ORM-об'єкт; список — `session.scalars(select(Product).where(...).order_by(Product.id)).all()`."
+  ],
+  "explanation": "Сесія на запит із `yield`-залежності — це й зручність, і тестованість: тест підставляє сесію на SQLite у пам'яті, і кожен тест починає з чистої бази. Збереження вимагає `commit()`: сесія запиту закривається після відповіді й відкочує все незафіксоване, тому тест, що читає базу новою сесією, ловить забутий `commit`. Унікальність `sku` перевіряє сама база — `IntegrityError` треба відкотити (`rollback`) і перетворити на `409`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "Depends\\s*\\(\\s*get_session\\s*\\)", "message": "Ендпоінти мають отримувати сесію через Depends(get_session)." },
+    { "kind": "require", "pattern": "yield", "message": "get_session — yield-залежність: відкрити сесію, віддати, закрити." }
+  ]
+}

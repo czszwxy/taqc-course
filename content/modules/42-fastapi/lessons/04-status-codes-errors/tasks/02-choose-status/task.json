@@ -1,0 +1,28 @@
+{
+  "type": "table",
+  "title": "Which status code?",
+  "statement": "Ти пишеш API магазину. Для кожної ситуації обери код відповіді. Домовленість курсу: `422` — формат (FastAPI), `409` — конфлікт зі станом даних, `400` — інше «так не можна».",
+  "givenColumns": ["Situation"],
+  "answerColumns": [
+    { "id": "code", "label": "Status", "options": ["200", "201", "204", "400", "401", "403", "404", "409", "422", "500"] }
+  ],
+  "rows": [
+    { "given": ["`GET /products/5` — the product exists"], "answers": { "code": "200" } },
+    { "given": ["`POST /orders` — the order was created"], "answers": { "code": "201" } },
+    { "given": ["`DELETE /cart/items/3` — the item was removed"], "answers": { "code": "204" } },
+    { "given": ["`GET /orders/999` — there is no such order"], "answers": { "code": "404" } },
+    { "given": ["`POST /users` — this email is already registered"], "answers": { "code": "409" }, "explain": "Дубль — конфлікт з даними, що вже є." },
+    { "given": ["`POST /orders` — `\"quantity\": \"two\"`"], "answers": { "code": "422" }, "explain": "Неправильний тип у тілі — перевірка формату, FastAPI відповідає сам." },
+    { "given": ["`GET /me` — no Authorization header"], "answers": { "code": "401" } },
+    { "given": ["`GET /admin/reports` — a valid token of a regular customer"], "answers": { "code": "403" }, "explain": "Користувач відомий, але прав на адмінку немає." },
+    { "given": ["`PUT /cart/items/2` — wants 5, only 2 are in stock"], "answers": { "code": "409" }, "explain": "Запит правильний за форматом, але суперечить поточному стану складу." },
+    { "given": ["`POST /orders/7/cancel` — the order has already been shipped"], "answers": { "code": "409" } },
+    { "given": ["`POST /cart/coupon` — the coupon expired yesterday"], "answers": { "code": "400" }, "explain": "Формат правильний і конфлікту зі станом немає — просто купон уже не діє." },
+    { "given": ["The endpoint crashes with an unexpected KeyError"], "answers": { "code": "500" } }
+  ],
+  "hints": [
+    "Спершу: успіх чи ні? Успіх — 200 / 201 / 204 за тим, що сталося. Помилка — чия: клієнта (4xx) чи сервера (5xx)?",
+    "Для помилок клієнта: формат (422), немає (404), конфлікт зі станом (409), доступ (401 / 403), інше (400)."
+  ],
+  "explanation": "Успіх ділиться за результатом: прочитали чи змінили — `200`, створили — `201`, тіла немає — `204`. Помилка клієнта ділиться за причиною: невалідний формат — `422`, немає ресурсу — `404`, суперечність з поточними даними (дубль, мало товару, вже відправлено) — `409`, немає облікових даних — `401`, немає прав — `403`, інше бізнес-«не можна» — `400`. `500` — завжди помилка твого коду."
+}

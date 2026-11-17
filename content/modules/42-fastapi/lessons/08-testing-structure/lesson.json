@@ -1,0 +1,37 @@
+{
+  "title": "Testing and structuring an API",
+  "minutes": 70,
+  "summary": "Тести API з pytest і TestClient: фікстура client, свіжий стан на кожен тест, перевірка статусу, тіла й заголовків, parametrize для валідації; структура проєкту (main, routers, schemas, models, deps, config, tests/conftest.py), APIRouter з prefix, tags і dependencies, налаштування з середовища через pydantic-settings і lifespan",
+  "resources": [
+    {
+      "title": "FastAPI docs: Testing",
+      "url": "https://fastapi.tiangolo.com/tutorial/testing/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: Bigger Applications - Multiple Files",
+      "url": "https://fastapi.tiangolo.com/tutorial/bigger-applications/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "APIRouter, prefix, tags, dependencies",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: Settings and Environment Variables",
+      "url": "https://fastapi.tiangolo.com/advanced/settings/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "pydantic-settings і lru_cache",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: Lifespan Events",
+      "url": "https://fastapi.tiangolo.com/advanced/events/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

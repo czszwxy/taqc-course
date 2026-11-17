@@ -1,0 +1,18 @@
+{
+  "type": "order",
+  "title": "The life of one request",
+  "statement": "Мобільний застосунок робить запит `GET /products/count` до твого API, запущеного через `fastapi dev`. Розстав кроки в тому порядку, в якому вони відбуваються.",
+  "items": [
+    "The mobile app sends the HTTP request GET /products/count",
+    "Uvicorn receives the request on port 8000",
+    "FastAPI matches the method and path to count_products()",
+    "count_products() runs and returns {\"count\": 6}",
+    "FastAPI turns the dict into a JSON body with status 200",
+    "Uvicorn sends the HTTP response back to the app"
+  ],
+  "hints": [
+    "Спершу мережа (сервер), потім маршрутизація (фреймворк), потім твоя функція.",
+    "JSON з'являється вже після того, як функція повернула `dict`."
+  ],
+  "explanation": "Сервер (Uvicorn) — це мережа: він приймає байти і віддає відповідь. Між ними працює FastAPI: знаходить функцію за методом і шляхом, викликає її, а повернений `dict` перетворює на JSON-відповідь зі статусом 200. Твій код займає лише один крок — і саме тому ендпоінти такі короткі."
+}

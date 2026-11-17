@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "variantOf": "02-products-db",
+  "title": "Customers and their orders on a database",
+  "statement": "Таблиці — у `models.py`: `Customer` (унікальний `email`) і `Order` (`customer_id` → `customers.id`, `total`), зі зв'язком `customer.orders`. Рушій `engine` і схеми входу — у стартовому коді.\n\n1. **`get_session()`** — `yield`-залежність з `Session(engine)`; ендпоінти отримують сесію лише через неї (тести її підмінять).\n2. Ендпоінти:\n\n| Запит | Успіх | Помилки |\n|---|---|---|\n| `POST /customers` (`CustomerCreate`) | `201`, `{\"id\", \"email\", \"name\"}` | email уже є — `409` `{\"detail\": \"Email already registered\"}` |\n| `POST /customers/{customer_id}/orders` (`OrderCreate`) | `201`, `{\"id\", \"customer_id\", \"total\"}` | немає покупця — `404` `{\"detail\": \"Customer not found\"}` |\n| `GET /customers/{customer_id}/orders` | список `{\"id\", \"customer_id\", \"total\"}` за `id` | `404` як вище |\n| `GET /customers/{customer_id}` | `{\"id\", \"email\", \"name\", \"orders_count\", \"orders_total\"}` | `404` як вище |\n\nУсі зміни мають зберігатися в базі.",
+  "hints": [
+    "Схеми відповіді з `ConfigDict(from_attributes=True)`: `CustomerOut`, `OrderOut`. Для `GET /customers/{id}` зручно повернути словник із полями покупця й порахованими `orders_count` і `orders_total`.",
+    "Замовлення покупця — `customer.orders` (зв'язок у моделі) або `select(Order).where(Order.customer_id == customer_id).order_by(Order.id)`.",
+    "Дубль email — `IntegrityError` → `session.rollback()` → `409`. Неіснуючий покупець — перевір `session.get(Customer, customer_id)` до створення замовлення."
+  ],
+  "explanation": "Та сама схема «сесія на запит» працює і для пов'язаних таблиць. Головне — перевіряти батька (покупця) до створення дитини (замовлення) і повертати `404`, а не дозволяти зовнішньому ключу вказувати в нікуди. Агрегати `orders_count` і `orders_total` рахуються з `customer.orders` (або запитом з `func.count` / `func.sum`), і для покупця без замовлень вони дорівнюють 0.",
+  "codeRules": [
+    { "kind": "require", "pattern": "Depends\\s*\\(\\s*get_session\\s*\\)", "message": "Ендпоінти мають отримувати сесію через Depends(get_session)." }
+  ]
+}

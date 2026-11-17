@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Bearer tokens and roles",
+  "statement": "Видані токени зберігаються на сервері — у `tokens.py` (лише для читання): `TOKENS` — словник «токен → користувач» (`username`, `role`: `customer`, `support` або `admin`), а також `ORDERS` і `TICKETS`. Захисти API.\n\n**Залежність `get_current_user`** читає заголовок `Authorization: Bearer <token>`:\n\n- немає заголовка, схема не `Bearer` або невідомий токен — `401` з `{\"detail\": \"Not authenticated\"}` і заголовком `WWW-Authenticate: Bearer`;\n- інакше — користувач із `TOKENS`.\n\n| Запит | Хто може | Відповідь | Інакше |\n|---|---|---|---|\n| `GET /me` | будь-хто з дійсним токеном | `{\"username\", \"role\"}` | — |\n| `GET /support/tickets` | `support`, `admin` | `TICKETS` | `403` `{\"detail\": \"Support staff only\"}` |\n| `GET /admin/orders` | `admin` | `ORDERS` | `403` `{\"detail\": \"Admins only\"}` |\n\nБез токена всі три — `401`, а не `403`.",
+  "hints": [
+    "`bearer = HTTPBearer()` з `fastapi.security` сам відповідає `401 Not authenticated` без заголовка; у залежності: `credentials: Annotated[HTTPAuthorizationCredentials, Depends(bearer)]`, токен — `credentials.credentials`.",
+    "Невідомий токен: `raise HTTPException(status_code=401, detail=\"Not authenticated\", headers={\"WWW-Authenticate\": \"Bearer\"})`.",
+    "Ролі — окремі залежності поверх `get_current_user` (наприклад, `require_admin`), що піднімають `403`."
+  ],
+  "explanation": "Залежності складаються в ланцюжок: `HTTPBearer` дістає токен, `get_current_user` знаходить користувача (або `401`), а перевірки ролей працюють уже з відомим користувачем (або `403`). Так кожен закритий ендпоінт отримує захист одним аргументом чи `dependencies=[...]`, і неможливо «забути» перевірку в одному з них. Головна межа: `401` — коли не знаємо, хто це; `403` — коли знаємо, але прав немає.",
+  "codeRules": [
+    { "kind": "require", "pattern": "Depends\\s*\\(\\s*get_current_user\\s*\\)", "message": "Ендпоінти мають отримувати користувача через Depends(get_current_user)." }
+  ]
+}

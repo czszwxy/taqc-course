@@ -1,0 +1,27 @@
+{
+  "type": "classify",
+  "title": "Pydantic schema or SQLAlchemy model?",
+  "statement": "Ти пишеш API замовлень з базою. Для кожного рядка коду чи вимоги обери, де йому місце: у **схемі Pydantic** (контракт API: що приймаємо й віддаємо) чи в **моделі SQLAlchemy** (таблиця в базі).",
+  "categories": [
+    { "id": "schema", "label": "Pydantic schema", "description": "JSON на вході й виході API" },
+    { "id": "model", "label": "SQLAlchemy model", "description": "Таблиця, стовпці, ключі, зв'язки" }
+  ],
+  "items": [
+    { "id": "tablename", "text": "`__tablename__ = \"orders\"`", "category": "model", "explain": "Назва таблиці — справа бази." },
+    { "id": "field-ge", "text": "`quantity: int = Field(ge=1, le=10)` — reject a bad request", "category": "schema", "explain": "Межі вхідних даних — частина контракту API, їх перевіряє Pydantic до виклику ендпоінта." },
+    { "id": "unique", "text": "`sku: Mapped[str] = mapped_column(String(20), unique=True)`", "category": "model", "explain": "Унікальність гарантує обмеження в базі." },
+    { "id": "from-attributes", "text": "`model_config = ConfigDict(from_attributes=True)`", "category": "schema", "explain": "Дозволяє `model_validate` читати поля з атрибутів ORM-об'єкта — це налаштування схеми." },
+    { "id": "relationship", "text": "`orders: Mapped[list[\"Order\"]] = relationship(back_populates=\"customer\")`", "category": "model" },
+    { "id": "password-hash-column", "text": "A `password_hash` column", "category": "model", "explain": "Хеш зберігається в таблиці, але ніколи не потрапляє в схему відповіді." },
+    { "id": "out-without-hash", "text": "The response class of a user, without `password_hash`", "category": "schema" },
+    { "id": "extra-forbid", "text": "`extra=\"forbid\"` — reject unknown JSON fields", "category": "schema" },
+    { "id": "foreign-key", "text": "`customer_id: Mapped[int] = mapped_column(ForeignKey(\"customers.id\"))`", "category": "model" },
+    { "id": "patch-optional", "text": "A PATCH body where every field is optional", "category": "schema" },
+    { "id": "index", "text": "An index on `orders.created_at` for fast date filters", "category": "model" },
+    { "id": "email-str", "text": "`email: EmailStr` — check the address format in the request", "category": "schema" }
+  ],
+  "show": 10,
+  "passScore": 0.8,
+  "hints": ["Спитай себе: «це про те, як дані лежать у базі», чи «про те, що клієнт надсилає й отримує»?"],
+  "explanation": "Модель SQLAlchemy відповідає за зберігання: назви таблиць, типи стовпців, ключі, унікальність, індекси, зв'язки. Схема Pydantic — за контракт API: межі вхідних значень, формат email, заборона зайвих полів, необов'язкові поля PATCH і те, що (не) показуємо у відповіді. Тому `password_hash` — стовпець моделі, але його ніколи немає в схемі відповіді."
+}

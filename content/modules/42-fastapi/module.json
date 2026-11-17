@@ -1,0 +1,14 @@
+{
+  "title": "REST APIs with FastAPI",
+  "description": "Як написати власний REST API на Python: перший застосунок FastAPI і Swagger UI, параметри шляху й запиту з перевіркою типів, тіло запиту й відповіді як моделі Pydantic, коди статусу й обробники помилок, залежності через Depends, робота з базою через SQLAlchemy, автентифікація токенами (JWT) і тести з TestClient. Задачі запускаються на твоєму комп'ютері справжнім pytest у середовищі курсу (lab/.venv) — FastAPI потребує потоків, яких немає в браузерному Python.",
+  "goals": [
+    "Create a FastAPI app, run it locally and explore it in Swagger UI",
+    "Read path and query parameters with type conversion and validation",
+    "Describe request and response bodies with Pydantic models and hide internal fields",
+    "Return the right status codes and turn domain errors into consistent JSON errors",
+    "Share logic between endpoints with dependencies and replace them in tests",
+    "Connect endpoints to a database with a session-per-request dependency",
+    "Protect endpoints with tokens, tell 401 from 403 and issue JWTs",
+    "Test an API with pytest and TestClient and split it into routers"
+  ]
+}

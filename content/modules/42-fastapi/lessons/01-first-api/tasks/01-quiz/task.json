@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "How FastAPI handles a request",
+  "show": 5,
+  "hints": ["Сервер (Uvicorn) — мережа, фреймворк (FastAPI) — маршрутизація і JSON, твоя функція — логіка."],
+  "questions": [
+    {
+      "id": "server-vs-framework",
+      "kind": "single",
+      "text": "Хто в зв'язці Uvicorn + FastAPI знаходить, яку функцію викликати для `GET /events`?",
+      "options": [
+        { "text": "FastAPI — за методом і шляхом серед зареєстрованих декораторами маршрутів", "correct": true },
+        { "text": "Uvicorn — він читає назви функцій у файлі" },
+        { "text": "Браузер — він знає, яку функцію викликати" }
+      ]
+    },
+    {
+      "id": "return-dict",
+      "kind": "single",
+      "text": "Ендпоінт повертає `{\"count\": 2}`. Що отримає клієнт?",
+      "options": [
+        { "text": "Статус 200 і JSON-тіло `{\"count\": 2}` з `Content-Type: application/json`", "correct": true },
+        { "text": "Текст `{'count': 2}` у лапках Python" },
+        { "text": "Нічого: треба самому викликати `json.dumps`" }
+      ]
+    },
+    {
+      "id": "docs",
+      "kind": "single",
+      "text": "Що відкривається на `/docs` у застосунку FastAPI?",
+      "options": [
+        { "text": "Swagger UI — документація, згенерована з коду, з можливістю надіслати запит", "correct": true },
+        { "text": "Папка з документацією, яку треба написати самому" },
+        { "text": "Сторінка помилки 404" }
+      ]
+    },
+    {
+      "id": "no-decorator",
+      "kind": "single",
+      "text": "Ти **написав(ла)** функцію `def list_orders(): ...`, але забув(ла) декоратор. Що поверне `client.get(\"/orders\")`?",
+      "options": [
+        { "text": "404 — без декоратора маршрут не зареєстровано", "correct": true },
+        { "text": "200 — FastAPI знайде функцію за назвою" },
+        { "text": "500 — помилка сервера" }
+      ]
+    },
+    {
+      "id": "test-client",
+      "kind": "single",
+      "text": "Що робить `TestClient(app).get(\"/health\")`?",
+      "options": [
+        { "text": "Надсилає запит прямо в застосунок без запуску сервера й мережі та повертає відповідь", "correct": true },
+        { "text": "Запускає Uvicorn на порту 8000 і відкриває браузер" },
+        { "text": "Перевіряє лише синтаксис файлу" }
+      ]
+    },
+    {
+      "id": "wrong-method",
+      "kind": "single",
+      "text": "Маршрут оголошено як `@app.get(\"/events\")`. Що отримає `POST /events`?",
+      "options": [
+        { "text": "405 Method Not Allowed — шлях є, але не для цього методу", "correct": true },
+        { "text": "200 — метод не важливий" },
+        { "text": "404 — шляху не існує" }
+      ]
+    },
+    {
+      "id": "openapi",
+      "kind": "single",
+      "text": "Що лежить на `/openapi.json`?",
+      "options": [
+        { "text": "Машинний опис API (ендпоінти, параметри, схеми) — з нього будується Swagger UI", "correct": true },
+        { "text": "Логи сервера" },
+        { "text": "Дані всіх ендпоінтів одним файлом" }
+      ]
+    }
+  ]
+}

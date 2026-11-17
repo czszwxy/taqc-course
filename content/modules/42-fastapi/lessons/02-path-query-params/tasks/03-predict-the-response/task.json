@@ -1,0 +1,29 @@
+{
+  "type": "table",
+  "title": "Predict the response",
+  "statement": "API служби підтримки має три маршрути, оголошені в такому порядку (тікети з id від 1 до 40 існують):\n\n```python\n@app.get(\"/tickets\")\ndef list_tickets(\n    priority: Annotated[int | None, Query(ge=1, le=5)] = None,\n    limit: Annotated[int, Query(ge=1, le=50)] = 20,\n): ...\n\n@app.get(\"/tickets/open\")\ndef open_tickets(): ...\n\n@app.get(\"/tickets/{ticket_id}\")\ndef get_ticket(ticket_id: Annotated[int, Path(gt=0)]):\n    ...  # немає такого тікета — raise HTTPException(status_code=404)\n```\n\nДля кожного запиту визнач статус відповіді і чи взагалі виконається якась із цих функцій.",
+  "givenColumns": ["Request"],
+  "answerColumns": [
+    { "id": "status", "label": "Status", "options": ["200", "404", "405", "422"] },
+    { "id": "runs", "label": "Does a function run?", "options": ["Yes", "No"] }
+  ],
+  "rows": [
+    { "given": ["`GET /tickets`"], "answers": { "status": "200", "runs": "Yes" } },
+    { "given": ["`GET /tickets?priority=2&limit=5`"], "answers": { "status": "200", "runs": "Yes" } },
+    { "given": ["`GET /tickets?limit=100`"], "answers": { "status": "422", "runs": "No" }, "explain": "`le=50` порушено — FastAPI відповідає 422 ще до виклику функції." },
+    { "given": ["`GET /tickets?priority=high`"], "answers": { "status": "422", "runs": "No" }, "explain": "`high` не перетворюється на `int`." },
+    { "given": ["`GET /tickets?sort=newest`"], "answers": { "status": "200", "runs": "Yes" }, "explain": "Невідомі параметри запиту ігноруються: це звичайний `list_tickets()`." },
+    { "given": ["`GET /tickets/open`"], "answers": { "status": "200", "runs": "Yes" }, "explain": "`/tickets/open` оголошено вище за `/tickets/{ticket_id}`, тож спрацює `open_tickets`." },
+    { "given": ["`GET /tickets/7`"], "answers": { "status": "200", "runs": "Yes" } },
+    { "given": ["`GET /tickets/99`"], "answers": { "status": "404", "runs": "Yes" }, "explain": "Валідація пройдена, функція виконується і сама піднімає `HTTPException(404)`." },
+    { "given": ["`GET /tickets/0`"], "answers": { "status": "422", "runs": "No" }, "explain": "`Path(gt=0)`: нуль не проходить перевірку." },
+    { "given": ["`GET /tickets/abc`"], "answers": { "status": "422", "runs": "No" } },
+    { "given": ["`GET /ticket/7`"], "answers": { "status": "404", "runs": "No" }, "explain": "Шлях `/ticket/...` (без s) не збігається з жодним маршрутом — 404 від самого FastAPI." },
+    { "given": ["`POST /tickets`"], "answers": { "status": "405", "runs": "No" }, "explain": "Шлях існує, але лише для GET." }
+  ],
+  "hints": [
+    "422 означає «запит не пройшов перевірку» — функцію не викликали.",
+    "404 буває двох видів: немає маршруту (функція не виконується) і «немає ресурсу» (функція сама піднімає HTTPException)."
+  ],
+  "explanation": "Спершу FastAPI шукає маршрут: немає шляху — `404`, шлях є, але не для цього методу — `405`. Потім перевіряє параметри: тип і межі з `Query` / `Path`; провал — `422`. Лише після цього викликається твоя функція — і вже вона може повернути `200` або сама підняти `404`, коли ресурсу немає. Невідомі параметри запиту на це не впливають: їх просто ігнорують."
+}

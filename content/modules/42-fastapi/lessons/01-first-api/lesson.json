@@ -1,0 +1,36 @@
+{
+  "title": "Your first FastAPI app",
+  "minutes": 50,
+  "summary": "Що робить веб-фреймворк, застосунок FastAPI і сервер Uvicorn, перші ендпоінти з @app.get, автоматичний JSON, Swagger UI на /docs, як запустити свій API (npm run lab:py-api) і як його викликати з коду через TestClient",
+  "resources": [
+    {
+      "title": "FastAPI docs: First Steps",
+      "url": "https://fastapi.tiangolo.com/tutorial/first-steps/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: Testing",
+      "url": "https://fastapi.tiangolo.com/tutorial/testing/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "TestClient — так курс перевіряє твої задачі",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: An overview of HTTP",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: FastAPI tutorial for beginners",
+      "url": "https://www.youtube.com/results?search_query=fastapi+tutorial+for+beginners",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "type": "quiz",
+  "title": "Choosing status codes",
+  "show": 6,
+  "hints": ["422 — формат, 409 — конфлікт зі станом, 404 — немає ресурсу, 401 — хто ти, 403 — що тобі можна."],
+  "questions": [
+    {
+      "id": "duplicate",
+      "kind": "single",
+      "text": "Реєстрація з email, який уже є в базі. Який код?",
+      "options": [
+        { "text": "409 Conflict — запит суперечить поточному стану даних", "correct": true },
+        { "text": "404 Not Found" },
+        { "text": "422 Unprocessable Content" },
+        { "text": "200 OK з полем `error`" }
+      ]
+    },
+    {
+      "id": "delete-204",
+      "kind": "single",
+      "text": "`DELETE /cart/items/3` з `status_code=204`. Що має повернути функція?",
+      "options": [
+        { "text": "Нічого (`None`) — відповідь 204 не має тіла", "correct": true },
+        { "text": "`{\"deleted\": true}`" },
+        { "text": "Порожній список" }
+      ]
+    },
+    {
+      "id": "raise-stops",
+      "kind": "single",
+      "text": "Що відбувається з кодом після `raise HTTPException(status_code=404)` у функції?",
+      "options": [
+        { "text": "Він не виконується: виняток перериває функцію, клієнт отримує 404", "correct": true },
+        { "text": "Виконується, а 404 надсилається наприкінці" },
+        { "text": "Виконується, якщо обгорнути в `finally`, інакше — ні; відповідь буде 500" }
+      ]
+    },
+    {
+      "id": "handler-subclasses",
+      "kind": "single",
+      "text": "Є `@app.exception_handler(ShopError)`. Ендпоінт піднімає `OutOfStock(ShopError)`. Що буде?",
+      "options": [
+        { "text": "Спрацює обробник `ShopError` — він ловить і нащадків класу", "correct": true },
+        { "text": "500: обробник лише для точного класу `ShopError`" },
+        { "text": "Виняток проігнорується, відповідь 200" }
+      ]
+    },
+    {
+      "id": "why-domain-errors",
+      "kind": "multiple",
+      "text": "Чому сервіс піднімає `BookNotFound`, а не `HTTPException(404)`?",
+      "options": [
+        { "text": "Сервіс можна використати там, де немає HTTP (скрипт, фонова задача)", "correct": true },
+        { "text": "Перетворення на HTTP описане в одному місці — формат помилок однаковий", "correct": true },
+        { "text": "`HTTPException` не можна піднімати поза ендпоінтом" }
+      ]
+    },
+    {
+      "id": "test-client-500",
+      "kind": "single",
+      "text": "Ендпоінт випадково падає з `KeyError`. Що побачить тест з `client = TestClient(app)`?",
+      "options": [
+        { "text": "Сам `KeyError` — TestClient за замовчуванням перекидає виняток у тест", "correct": true },
+        { "text": "Відповідь зі статусом 500" },
+        { "text": "Відповідь зі статусом 404" }
+      ]
+    },
+    {
+      "id": "no-traceback",
+      "kind": "single",
+      "text": "Чому відповідь 500 не повинна містити трейсбек?",
+      "options": [
+        { "text": "Він розкриває внутрішні деталі (файли, запити, дані); деталі — в логи, клієнту — коротке повідомлення", "correct": true },
+        { "text": "JSON не підтримує багаторядковий текст" },
+        { "text": "Трейсбек занадто довгий для HTTP" }
+      ]
+    },
+    {
+      "id": "401-403",
+      "kind": "single",
+      "text": "Покупець з дійсним токеном відкриває `/admin/reports`. Який код?",
+      "options": [
+        { "text": "403 Forbidden — хто це, відомо, але доступу немає", "correct": true },
+        { "text": "401 Unauthorized" },
+        { "text": "404 Not Found" }
+      ]
+    }
+  ]
+}

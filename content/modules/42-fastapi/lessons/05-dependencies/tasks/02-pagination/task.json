@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "One pagination dependency for two endpoints",
+  "statement": "У `data.py` (лише для читання) — 23 товари `PRODUCTS` і 12 замовлень `ORDERS`. Обидва списки треба віддавати сторінками, і правила пагінації мають бути **однакові** — тому опиши їх **одною залежністю** `pagination`.\n\n**Параметри запиту** (у залежності): `page` — ціле `>= 1`, за замовчуванням 1; `size` — ціле від 1 до 20, за замовчуванням 5.\n\n**`GET /products`** і **`GET /orders`** повертають:\n\n```json\n{\"items\": [...], \"page\": 2, \"size\": 5, \"total\": 23, \"pages\": 5}\n```\n\n- `items` — елементи цієї сторінки в порядку списку;\n- `total` — усього елементів, `pages` — кількість сторінок (`ceil(total / size)`);\n- сторінка за межами — `200` і порожні `items`;\n- `page=0` чи `size=21` — `422` на **обох** ендпоінтах.\n\n```python\nclient.get(\"/orders?page=3&size=5\").json()[\"items\"]   # останні 2 замовлення\n```",
+  "hints": [
+    "Залежність: `def pagination(page: Annotated[int, Query(ge=1)] = 1, size: Annotated[int, Query(ge=1, le=20)] = 5)` — вона повертає, наприклад, `dataclass Page` з `page`, `size` і властивістю `offset`.",
+    "В ендпоінтах: `def list_products(page: Annotated[Page, Depends(pagination)])` — або зроби псевдонім `PageDep`.",
+    "Спільну частину (зріз, total, pages) зручно винести у звичайну функцію `paginate(items, page)`; `pages` — `math.ceil(total / size)`."
+  ],
+  "explanation": "Залежність читає `page` і `size` з запиту за тими самими правилами, що й ендпоінт, — разом із межами `Query` і відповіддю `422`. Тому правила пагінації описані один раз і не можуть розійтися між `/products` і `/orders`. Зріз `items[offset : offset + size]` безпечно повертає порожній список для сторінки за межами — це нормальний результат `200`, а не помилка.",
+  "codeRules": [
+    { "kind": "require", "pattern": "Depends\\s*\\(\\s*pagination\\s*\\)", "message": "Отримай пагінацію через залежність: Depends(pagination)." }
+  ]
+}

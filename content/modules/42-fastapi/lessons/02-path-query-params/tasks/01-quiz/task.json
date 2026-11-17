@@ -1,0 +1,91 @@
+{
+  "type": "quiz",
+  "title": "Path and query parameters",
+  "show": 6,
+  "hints": ["Немає в шляху — шукається в рядку запиту. Не вдалось перетворити тип або порушено межу — 422, функція не викликається."],
+  "questions": [
+    {
+      "id": "query-or-path",
+      "kind": "single",
+      "text": "Маршрут `@app.get(\"/users/{user_id}\")`, функція `def get_user(user_id: int, verbose: bool = False)`. Звідки береться `verbose`?",
+      "options": [
+        { "text": "З рядка запиту: `/users/5?verbose=true`", "correct": true },
+        { "text": "Зі шляху: `/users/5/verbose`" },
+        { "text": "З тіла запиту" }
+      ]
+    },
+    {
+      "id": "conversion-422",
+      "kind": "single",
+      "text": "Що отримає клієнт на `GET /users/abc`, якщо `user_id: int`?",
+      "options": [
+        { "text": "422 з поясненням, що `abc` — не ціле число; функція не викликається", "correct": true },
+        { "text": "500 — функція впаде на `int(\"abc\")`" },
+        { "text": "404 — такого користувача немає" },
+        { "text": "200 і `user_id == \"abc\"`" }
+      ]
+    },
+    {
+      "id": "required",
+      "kind": "single",
+      "text": "Функція `def search(q: str):`. Що буде з `GET /search` без параметрів?",
+      "options": [
+        { "text": "422 «Field required»: параметр без значення за замовчуванням обов'язковий", "correct": true },
+        { "text": "`q` буде порожнім рядком" },
+        { "text": "`q` буде `None`" }
+      ]
+    },
+    {
+      "id": "unknown-param",
+      "kind": "single",
+      "text": "Що станеться з `GET /books?colour=red`, якщо функція не має аргументу `colour`?",
+      "options": [
+        { "text": "Невідомий параметр ігнорується — відповідь як для `/books`", "correct": true },
+        { "text": "422 — зайвий параметр" },
+        { "text": "400 Bad Request" }
+      ]
+    },
+    {
+      "id": "route-order",
+      "kind": "single",
+      "text": "Спершу оголошено `@app.get(\"/items/{item_id}\")` з `item_id: int`, нижче — `@app.get(\"/items/latest\")`. Що отримає `GET /items/latest`?",
+      "options": [
+        { "text": "422: перший маршрут підходить, і `\"latest\"` не перетворюється на `int`", "correct": true },
+        { "text": "200 від `/items/latest` — FastAPI обирає точніший шлях" },
+        { "text": "404" }
+      ]
+    },
+    {
+      "id": "query-bounds",
+      "kind": "multiple",
+      "text": "Параметр `limit: Annotated[int, Query(ge=1, le=50)] = 10`. Які запити отримають 422?",
+      "options": [
+        { "text": "`?limit=0`", "correct": true },
+        { "text": "`?limit=51`", "correct": true },
+        { "text": "`?limit=ten`", "correct": true },
+        { "text": "`?limit=50`" },
+        { "text": "без `limit` взагалі" }
+      ]
+    },
+    {
+      "id": "not-found",
+      "kind": "single",
+      "text": "Як правильно відповісти, якщо замовлення з таким id немає?",
+      "options": [
+        { "text": "`raise HTTPException(status_code=404, detail=\"Order not found\")`", "correct": true },
+        { "text": "`return None` — клієнт сам зрозуміє" },
+        { "text": "`return {\"error\": \"not found\"}` зі статусом 200" }
+      ]
+    },
+    {
+      "id": "enum",
+      "kind": "single",
+      "text": "Навіщо параметр типу `StrEnum` замість `str`?",
+      "options": [
+        { "text": "Значення поза набором отримують 422 автоматично, а Swagger UI показує список дозволених", "correct": true },
+        { "text": "Щоб параметр став обов'язковим" },
+        { "text": "Enum працює швидше за рядок" }
+      ]
+    }
+  ]
+}
