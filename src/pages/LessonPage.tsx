@@ -161,7 +161,7 @@ function ResourcesTab({ lesson }: { lesson: CourseLesson }) {
                   {r.title} ↗
                 </a>
                 <div className="mt-0.5 truncate text-xs text-faint">{r.url}</div>
-                {r.note && <div className="mt-1 text-sm text-muted">{r.note}</div>}
+                {r.note && <div className="mt-1 text-sm text-muted [overflow-wrap:anywhere]">{r.note}</div>}
                 <div className="mt-2 flex flex-wrap items-center gap-1.5">
                   <span className="chip">{r.kind}</span>
                   <span className="chip">{r.lang === 'uk' ? '🇺🇦 Українська' : '🇬🇧 English'}</span>

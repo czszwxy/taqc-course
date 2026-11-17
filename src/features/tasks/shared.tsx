@@ -42,8 +42,8 @@ export function Collapsible({ title, children, defaultOpen = false }: { title: R
   return (
     <div className="card">
       <button className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm font-semibold" onClick={() => setOpen(!open)}>
-        <span>{title}</span>
-        <span className={`text-xs text-faint transition-transform ${open ? 'rotate-90' : ''}`}>▶</span>
+        <span className="min-w-0 [overflow-wrap:anywhere]">{title}</span>
+        <span className={`shrink-0 text-xs text-faint transition-transform ${open ? 'rotate-90' : ''}`}>▶</span>
       </button>
       {open && <div className="border-t border-line px-4 py-3">{children}</div>}
     </div>
@@ -189,7 +189,7 @@ export function PlaygroundLink({ id }: { id?: string }) {
   const page = id ? PLAYGROUND_PAGES.find((p) => p.id === id) : undefined;
   if (!page) return null;
   return (
-    <Link to={page.path} target="_blank" className="btn btn-secondary mt-3">
+    <Link to={page.path} target="_blank" className="btn btn-secondary mt-3 max-w-full whitespace-normal text-left">
       🐞 Open “{page.title}” in a new tab ↗
     </Link>
   );

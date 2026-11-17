@@ -134,6 +134,11 @@
   #root {
     height: 100%;
   }
+  /* The page itself never scrolls (only <main> does): no rubber-band bounce of the whole app on phones. */
+  html,
+  body {
+    overscroll-behavior: none;
+  }
   /* iPhone Safari zooms the page into any field with text smaller than 16px: keep fields at 16px on touch screens. */
   @media (pointer: coarse) {
     input,
@@ -438,7 +443,10 @@
     color: var(--c-code-fg);
     border-radius: 0.35rem;
     padding: 0.12em 0.4em;
-    white-space: nowrap;
+    /* Long inline code wraps instead of pushing the page wider than a phone screen. */
+    overflow-wrap: anywhere;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
   .prose-lesson pre {
     background: var(--c-code);

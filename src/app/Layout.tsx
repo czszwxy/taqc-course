@@ -82,7 +82,7 @@ export function Layout() {
         </div>
       )}
 
-      <main id="main" className="scroll-thin min-h-0 flex-1 overflow-y-auto">
+      <main id="main" className="scroll-thin min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-none">
         <Outlet />
       </main>
     </div>
