@@ -1,0 +1,35 @@
+{
+  "type": "table",
+  "title": "Read a docker-compose.yml",
+  "statement": "Колега надіслав `docker-compose.yml` для запуску тестів:\n\n```yaml\nservices:\n  db:\n    image: postgres:17\n    environment:\n      POSTGRES_PASSWORD: test\n  app:\n    build: .\n    ports:\n      - \"3000:3000\"\n    depends_on:\n      - db\n  tests:\n    image: mcr.microsoft.com/playwright/python:v1.65.0-noble\n    volumes:\n      - ./:/work\n    environment:\n      API_URL: http://app:3000/api\n    depends_on:\n      - app\n    command: bash -c \"pip install -r requirements.txt && pytest --base-url http://app:3000\"\n```\n\nДля кожного рядка обери, що він означає.",
+  "hints": [
+    "`image` — готовий образ; `build` — зібрати свій з Dockerfile.",
+    "`ports` відкриває порт назовні, на твій комп'ютер; між сервісами він не потрібен — вони бачать один одного за назвою."
+  ],
+  "explanation": "Compose-файл читається як список сервісів: звідки взяти образ (`image` або `build`), що відкрити назовні (`ports`), які папки спільні (`volumes`), які змінні оточення задати (`environment`), у якому порядку стартувати (`depends_on`) і що виконати (`command`). Сервіси знаходять один одного за назвами — тому тести йдуть на `http://app:3000`.",
+  "givenColumns": ["Line"],
+  "answerColumns": [
+    {
+      "id": "meaning",
+      "label": "Meaning",
+      "options": [
+        "Use a ready-made image of this version",
+        "Build the image from the Dockerfile in this folder",
+        "Open the container's port on your computer",
+        "Share the project folder with the container",
+        "Set an environment variable inside the container",
+        "Start this service after the listed one",
+        "The command the container runs"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`image: postgres:17`"], "answers": { "meaning": "Use a ready-made image of this version" } },
+    { "given": ["`build: .`"], "answers": { "meaning": "Build the image from the Dockerfile in this folder" } },
+    { "given": ["`ports: - \"3000:3000\"`"], "answers": { "meaning": "Open the container's port on your computer" } },
+    { "given": ["`volumes: - ./:/work`"], "answers": { "meaning": "Share the project folder with the container" } },
+    { "given": ["`API_URL: http://app:3000/api`"], "answers": { "meaning": "Set an environment variable inside the container" }, "explain": "Адреса — назва сервісу `app`, а не `localhost`: так тести знаходять застосунок усередині мережі compose." },
+    { "given": ["`depends_on: - app`"], "answers": { "meaning": "Start this service after the listed one" } },
+    { "given": ["`command: bash -c \"pip install -r requirements.txt && pytest --base-url http://app:3000\"`"], "answers": { "meaning": "The command the container runs" } }
+  ]
+}

@@ -16,3 +16,5 @@ pydantic==2.14.3
 pytest-html==4.2.0
 pytest-rerunfailures==16.7
 allure-pytest==2.16.2
+# Accessibility scans with axe-core (module 34): from axe_playwright_python.sync_playwright import Axe.
+axe-playwright-python==0.1.8

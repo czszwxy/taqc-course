@@ -1,0 +1,35 @@
+{
+  "title": "Advanced toolkit: assertion helpers, polling, steps",
+  "minutes": 60,
+  "summary": "Інструменти, які роблять тести на pytest + Playwright читабельними й точними: власні функції-перевірки з повідомленнями, очікування значень не з локаторів (page.wait_for_function і власний wait_until), кроки у звіті через allure.step, таймаути окремих перевірок і маркери skip / xfail для тестів, що не мають просто «пройти»",
+  "resources": [
+    {
+      "title": "Playwright for Python: Assertions",
+      "url": "https://playwright.dev/python/docs/test-assertions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Page.wait_for_function",
+      "url": "https://playwright.dev/python/docs/api/class-page#page-wait-for-function",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Allure Report: Getting started with Pytest (steps)",
+      "url": "https://allurereport.org/docs/pytest/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest: How to use skip and xfail",
+      "url": "https://docs.pytest.org/en/stable/how-to/skipping.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "type": "quiz",
+  "title": "Advanced toolkit for pytest + Playwright",
+  "show": 6,
+  "hints": ["Локатор — звичайний expect; значення з браузера — wait_for_function; значення із сервера — polling з дедлайном; повторювана перевірка — функція expect_…"],
+  "questions": [
+    {
+      "id": "one-shot",
+      "kind": "single",
+      "text": "Чому `assert page.evaluate(\"localStorage.getItem('cart')\") == \"[]\"` може бути нестабільним?",
+      "options": [
+        { "text": "Значення читається один раз; якщо сторінка запише його на 100 мс пізніше, перевірка впаде. `page.wait_for_function` чекає, поки умова виконається", "correct": true },
+        { "text": "`page.evaluate` не вміє читати localStorage" },
+        { "text": "`assert` не порівнює рядки" }
+      ]
+    },
+    {
+      "id": "wait-timeout",
+      "kind": "single",
+      "text": "Що станеться, якщо умова в `page.wait_for_function(...)` так і не стане істинною?",
+      "options": [
+        { "text": "Після таймауту буде `TimeoutError`, і тест упаде", "correct": true },
+        { "text": "Метод поверне `False`" },
+        { "text": "Тест чекатиме безкінечно" }
+      ]
+    },
+    {
+      "id": "expect-message",
+      "kind": "single",
+      "text": "Що робить другий аргумент у `expect(locator, \"the price should be 2,749 UAH\")`?",
+      "options": [
+        { "text": "Задає повідомлення, яке з'явиться у звіті, якщо перевірка не пройде", "correct": true },
+        { "text": "Задає очікуваний текст елемента" },
+        { "text": "Задає таймаут" }
+      ]
+    },
+    {
+      "id": "helper-wait",
+      "kind": "single",
+      "text": "Чому всередині функції-перевірки краще `expect(locator).to_have_text(...)`, а не `assert locator.inner_text() == ...`?",
+      "options": [
+        { "text": "`expect` чекає на значення, як усі web-first перевірки; `inner_text()` читає один раз", "correct": true },
+        { "text": "`inner_text()` не працює у функціях" },
+        { "text": "`assert` повільніший" }
+      ]
+    },
+    {
+      "id": "xfail-strict",
+      "kind": "single",
+      "text": "У продукті відомий баг, виправлення заплановане. Який маркер не дасть про нього забути?",
+      "options": [
+        { "text": "`@pytest.mark.xfail(reason=\"BUG-123\", strict=True)` — тест запускається; щойно баг виправлять, прогін стане червоним, і ти приберeш маркер", "correct": true },
+        { "text": "`@pytest.mark.skip` — тест просто не запускається", "explain": "Пропущений тест ніхто не помітить, коли баг виправлять." },
+        { "text": "`@pytest.mark.slow`" }
+      ]
+    },
+    {
+      "id": "sleep-in-poll",
+      "kind": "single",
+      "text": "У помічнику `wait_until` є `time.sleep(0.25)`. Чи це та сама погана практика, що й `time.sleep(5)` перед перевіркою?",
+      "options": [
+        { "text": "Ні: тут пауза між спробами в циклі з умовою і дедлайном — тест продовжує одразу, щойно умова виконалась", "correct": true },
+        { "text": "Так, будь-який `time.sleep` у тестах заборонений" },
+        { "text": "Так, але це дозволено для повільних комп'ютерів" }
+      ]
+    },
+    {
+      "id": "allure-step",
+      "kind": "single",
+      "text": "Тест з `with allure.step(...)` запущено без опції `--alluredir`. Що буде?",
+      "options": [
+        { "text": "Тест працює як звичайно; кроки просто нікуди не записуються", "correct": true },
+        { "text": "Тест упаде з помилкою" },
+        { "text": "Кроки виведуться в термінал" }
+      ]
+    },
+    {
+      "id": "locator-first",
+      "kind": "single",
+      "text": "Текст статусу є на сторінці в елементі `order-status`. Що обрати?",
+      "options": [
+        { "text": "`expect(page.get_by_test_id(\"order-status\")).to_have_text(\"Paid\")` — локатор уже вміє чекати", "correct": true },
+        { "text": "`page.wait_for_function` з `document.querySelector(...)`", "explain": "Працюватиме, але це зайва складність: для елементів сторінки є web-first перевірки." },
+        { "text": "`wait_until` з `inner_text()`" }
+      ]
+    },
+    {
+      "id": "arg",
+      "kind": "single",
+      "text": "Як передати значення з Python у вираз `page.wait_for_function`?",
+      "options": [
+        { "text": "Через параметр `arg`: `page.wait_for_function(\"key => localStorage.getItem(key) !== null\", arg=\"theme\")`", "correct": true },
+        { "text": "Вклеїти у вираз f-рядком — це завжди безпечно", "explain": "Лапки або спецсимволи у значенні зламають JavaScript-вираз." },
+        { "text": "Значення передати неможливо" }
+      ]
+    }
+  ]
+}

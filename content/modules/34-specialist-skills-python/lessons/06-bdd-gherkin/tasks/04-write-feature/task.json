@@ -1,0 +1,30 @@
+{
+  "type": "written",
+  "title": "Write a feature file for the Deal of the day",
+  "playground": "deal",
+  "statement": "Напиши feature-файл мовою Gherkin для сторінки **Deal of the day** (вимоги — у жовтій панелі на сторінці). Опиши **поведінку**, а не кліки:\n\n- щонайменше **3 сценарії** про різні правила (акція активна, акція завершилась, немає мережі, найближчий магазин…);\n- один із них — **`Scenario Outline`** з таблицею `Examples` (наприклад, місто користувача → найближчий магазин);\n- у кожному сценарії `Given`, `When`, `Then`; 3–5 кроків;\n- без локаторів, `data-testid` і слова «click».\n\nДругим полем поясни, які сценарії ти обрав і чому.",
+  "fields": [
+    { "id": "feature", "label": "deal.feature", "kind": "textarea", "placeholder": "Feature: Deal of the day\n  …\n\n  Scenario: …\n    Given …\n    When …\n    Then …" },
+    { "id": "notes", "label": "Why these scenarios?", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "feature", "check": "mentionsAll", "value": ["Feature:", "Given ", "When ", "Then "], "message": "Потрібні `Feature:` і кроки `Given`, `When`, `Then`." },
+    { "field": "feature", "check": "mentionsAll", "value": ["Scenario Outline:|Scenario Template:", "Examples:"], "message": "Додай один `Scenario Outline:` з таблицею `Examples:`." },
+    { "field": "feature", "check": "mentionsAll", "value": ["Scenario( Outline| Template)?:[\\s\\S]*Scenario( Outline| Template)?:[\\s\\S]*Scenario( Outline| Template)?:"], "message": "Потрібно щонайменше 3 сценарії (разом зі `Scenario Outline`)." },
+    { "field": "feature", "check": "mentionsAny", "value": ["\\|[^|\\n]+\\|[^|\\n]+\\|"], "message": "Таблиця `Examples` має рядки у форматі `| value | value |`." },
+    { "field": "feature", "check": "notMentions", "value": ["data-testid|getBy|get_by|locator|#[a-z]|xpath|\\bclicks?\\b"], "message": "Опиши поведінку без локаторів і без «click»: що робить покупець, а не куди натискає." },
+    { "field": "notes", "check": "minLength", "value": 80, "message": "Поясни вибір сценаріїв: які правила й ризики вони покривають." }
+  ],
+  "model": {
+    "feature": "Feature: Deal of the day\n  Shoppers can buy the product at the deal price until the deal ends.\n\n  Background:\n    Given the deal for \"Wireless Headphones H1\" ends at 12:05\n\n  Scenario: Buying during the deal\n    Given the time is 12:01\n    When the shopper buys the product\n    Then the product is added to the cart for 2,399 UAH\n\n  Scenario: The deal has ended\n    Given the time is 12:05\n    When the shopper opens the deal page\n    Then the price is 2,999 UAH\n    And buying is not available\n\n  Scenario: Buying is blocked without a connection\n    Given the shopper is on the deal page\n    When the connection is lost\n    Then the shopper sees \"You are offline. Reconnect to buy.\"\n    And buying is not available\n\n  Scenario Outline: Nearest store by location\n    Given the shopper is in <city>\n    When the shopper looks for the nearest store\n    Then the nearest store is <store>\n\n    Examples:\n      | city     | store |\n      | Lviv     | Lviv  |\n      | Kharkiv  | Kyiv  |\n      | Mykolaiv | Odesa |",
+    "notes": "Сценарії покривають головні правила з грошима й доступністю покупки: ціну під час акції, стан після її завершення і блокування без мережі. Scenario Outline перевіряє вибір найближчого магазину на кількох містах, зокрема Харків, де найближчий магазин не збігається з найближчим за широтою. Кроки описують дії покупця й видимий результат, тож сценарій не зміниться, якщо переробити верстку сторінки."
+  },
+  "checklist": [
+    "Кожен сценарій — одне правило; назва каже яке",
+    "Given — стан (час, місто, мережа), When — одна дія або подія, Then — видимий результат",
+    "3–5 кроків у сценарії",
+    "Scenario Outline з осмисленими прикладами (є «підступний» випадок)",
+    "Жодних локаторів, кліків і технічних деталей",
+    "Конкретні значення: ціни, тексти повідомлень, назви міст"
+  ]
+}

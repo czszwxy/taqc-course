@@ -1,0 +1,28 @@
+{
+  "title": "Docker for testers",
+  "minutes": 55,
+  "summary": "Docker для QA: навіщо контейнери тестувальнику, образ / контейнер / Dockerfile / том / порти, основні команди (pull, run, ps, logs, exec, stop, build), запуск тестів pytest + Playwright в офіційному образі для Python, docker compose для застосунку з базою і тестами, чому всередині контейнера localhost — це не твій комп'ютер",
+  "resources": [
+    {
+      "title": "Docker Docs: Get started",
+      "url": "https://docs.docker.com/get-started/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Docker Docs: Docker Compose",
+      "url": "https://docs.docker.com/compose/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Docker",
+      "url": "https://playwright.dev/python/docs/docker",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

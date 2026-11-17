@@ -1,0 +1,37 @@
+{
+  "type": "table",
+  "title": "Which tool fits the situation?",
+  "statement": "Для кожної ситуації обери прийом, який розв'язує її найчистіше в тестах на pytest + Playwright.",
+  "hints": [
+    "Значення в браузері (storage) — `page.wait_for_function`; значення із сервера — polling з дедлайном.",
+    "Відомий баг продукту — `xfail(strict=True)`; функції немає в середовищі — `skip` з причиною."
+  ],
+  "explanation": "Кожен прийом має своє місце: функція `expect_…` прибирає повтори перевірок, `wait_for_function` чекає на значення в браузері, `wait_until` — на значення із сервера, `allure.step` структурує звіт, `expect.soft` збирає кілька незалежних перевірок, `timeout=` збільшує очікування однієї перевірки, а маркери чесно пояснюють, чому тест пропущено чи очікувано падає.",
+  "givenColumns": ["Situation"],
+  "answerColumns": [
+    {
+      "id": "tool",
+      "label": "Tool",
+      "options": [
+        "expect_… helper function",
+        "page.wait_for_function",
+        "wait_until (polling with a deadline)",
+        "allure.step",
+        "expect.soft",
+        "expect(..., timeout=…)",
+        "pytest.mark.xfail(strict=True)",
+        "pytest.mark.skip(reason=…)"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["У 30 тестах повторюється перевірка суми у форматі `2,749 UAH` з тим самим форматуванням"], "answers": { "tool": "expect_… helper function" } },
+    { "given": ["Після кліку «Dark theme» вибір теми записується в `localStorage` з невеликою затримкою"], "answers": { "tool": "page.wait_for_function" } },
+    { "given": ["Після кліку «Export» статус експорту доступний лише через `GET /api/exports/7` і стає `ready` за кілька секунд"], "answers": { "tool": "wait_until (polling with a deadline)" }, "explain": "Значення живе на сервері, а не в браузері — його перечитують запитами з дедлайном." },
+    { "given": ["Сценарій оформлення замовлення на 40 рядків: у звіті незрозуміло, на якому етапі він упав"], "answers": { "tool": "allure.step" } },
+    { "given": ["На картці товару треба перевірити назву, ціну, рейтинг і наявність — і побачити всі невідповідності за один прогін"], "answers": { "tool": "expect.soft" } },
+    { "given": ["Звіт формується до 10 секунд — лише ця одна перевірка законно довша за інші"], "answers": { "tool": "expect(..., timeout=…)" } },
+    { "given": ["Відомий баг: знижка не застосовується; виправлення через спринт. Хочеш дізнатися, коли його виправлять"], "answers": { "tool": "pytest.mark.xfail(strict=True)" } },
+    { "given": ["На цьому тестовому середовищі немає платіжної пісочниці, тож тест оплати запускати нема сенсу"], "answers": { "tool": "pytest.mark.skip(reason=…)" } }
+  ]
+}

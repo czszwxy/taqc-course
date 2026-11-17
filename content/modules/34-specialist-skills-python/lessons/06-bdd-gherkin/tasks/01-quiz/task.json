@@ -1,0 +1,108 @@
+{
+  "type": "quiz",
+  "title": "BDD and Gherkin",
+  "show": 6,
+  "hints": ["Given — стан, When — дія, Then — спостережуваний результат. Сценарій описує поведінку, а не кліки."],
+  "questions": [
+    {
+      "id": "what-is-bdd",
+      "kind": "single",
+      "text": "Що таке BDD насамперед?",
+      "options": [
+        { "text": "Спосіб співпраці: команда разом формулює поведінку на конкретних прикладах до написання коду", "correct": true },
+        { "text": "Бібліотека для запуску тестів" },
+        { "text": "Формат звіту про тестування" }
+      ]
+    },
+    {
+      "id": "given",
+      "kind": "single",
+      "text": "Який крок найкраще підходить для `Given`?",
+      "options": [
+        { "text": "`Given a member with 300 points` — початковий стан", "correct": true },
+        { "text": "`Given I click \"Log in\"` — дія в інтерфейсі" },
+        { "text": "`Given the total should be 800 UAH` — очікування" }
+      ]
+    },
+    {
+      "id": "then-observable",
+      "kind": "single",
+      "text": "Який `Then` написаний найкраще?",
+      "options": [
+        { "text": "`Then the order status is \"Paid\"`", "correct": true },
+        { "text": "`Then the column status in table orders equals 2`", "explain": "Це внутрішня деталь реалізації; результат має бути тим, що бачить користувач чи зовнішня система." },
+        { "text": "`Then everything works correctly`" }
+      ]
+    },
+    {
+      "id": "outline",
+      "kind": "single",
+      "text": "Коли доречний `Scenario Outline` з `Examples`?",
+      "options": [
+        { "text": "Коли ті самі кроки треба перевірити з різними даними — наприклад, граничні значення", "correct": true },
+        { "text": "Коли сценарій дуже довгий" },
+        { "text": "Коли потрібно пропустити сценарій" }
+      ]
+    },
+    {
+      "id": "background",
+      "kind": "single",
+      "text": "Що робить `Background`?",
+      "options": [
+        { "text": "Задає кроки `Given`, які виконуються перед кожним сценарієм файлу", "correct": true },
+        { "text": "Запускає сценарії у фоновому режимі" },
+        { "text": "Описує колір сторінки" }
+      ]
+    },
+    {
+      "id": "declarative",
+      "kind": "single",
+      "text": "Чому `When I click the element \"#btn-pay\"` — слабкий крок?",
+      "options": [
+        { "text": "Він описує реалізацію (локатор), а не поведінку: ламається від зміни верстки і незрозумілий бізнесу", "correct": true },
+        { "text": "У Gherkin не можна використовувати лапки" },
+        { "text": "Крок занадто короткий" }
+      ]
+    },
+    {
+      "id": "step-definition",
+      "kind": "single",
+      "text": "Що таке step definition?",
+      "options": [
+        { "text": "Функція в коді, прив'язана до тексту кроку, яка його виконує", "correct": true },
+        { "text": "Опис функції у feature-файлі" },
+        { "text": "Таблиця даних сценарію" }
+      ]
+    },
+    {
+      "id": "parse-int",
+      "kind": "single",
+      "text": "Крок pytest-bdd: `@when(parsers.parse(\"the member pays {points:d} points\"))`. Що отримає параметр `points` для рядка `When the member pays 200 points`?",
+      "options": [
+        { "text": "Ціле число `200` — це задає `:d` у шаблоні", "correct": true },
+        { "text": "Рядок `\"200\"`", "explain": "Рядок був би без `:d`: `{points}`." },
+        { "text": "Увесь текст кроку" }
+      ]
+    },
+    {
+      "id": "target-fixture",
+      "kind": "single",
+      "text": "Навіщо `target_fixture=\"member\"` у `@given(...)`?",
+      "options": [
+        { "text": "Значення, яке повертає крок, стає фікстурою `member`, і наступні кроки отримують його параметром", "correct": true },
+        { "text": "Крок виконується лише для фікстури `member`" },
+        { "text": "Це назва тегу для запуску" }
+      ]
+    },
+    {
+      "id": "when-not",
+      "kind": "single",
+      "text": "Коли BDD найімовірніше не окупиться?",
+      "options": [
+        { "text": "Коли feature-файли пише й читає лише автоматизатор — це зайвий шар над звичайними тестами", "correct": true },
+        { "text": "Коли в команді є аналітик, який бере участь у формулюванні сценаріїв" },
+        { "text": "Коли замовник хоче читати сценарії приймання" }
+      ]
+    }
+  ]
+}

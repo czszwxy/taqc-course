@@ -1,0 +1,19 @@
+{
+  "type": "order",
+  "title": "Run pytest + Playwright tests in a container",
+  "statement": "Розстав кроки запуску тестів pytest + Playwright проєкту в офіційному Docker-образі для Python у правильному порядку.",
+  "items": [
+    "Check the playwright version in requirements.txt",
+    "Pull the playwright/python image with the same version tag",
+    "Start a container from it with the project folder mounted (-v) and --ipc=host",
+    "Inside the container install the project's dependencies: pip install -r requirements.txt",
+    "Inside the container run: pytest",
+    "The command finishes and the container is removed (--rm)",
+    "Open the HTML report from the project folder on your computer"
+  ],
+  "hints": [
+    "Версія образу залежить від версії пакета — тож спершу з'ясуй її.",
+    "В образі є браузери, але немає пакетів проєкту; звіт лишається у змонтованій папці й після зникнення контейнера."
+  ],
+  "explanation": "Версію образу обирають за версією пакета `playwright` у `requirements.txt`, інакше браузери не знайдуться. Контейнер стартує зі змонтованою папкою проєкту, залежності ставляться всередині (`pip install -r requirements.txt`), бо в образі їх немає, далі йде прогін. Завдяки `--rm` контейнер зникає, а звіт лишається у твоїй папці — тому відкрити його можна вже після завершення."
+}

@@ -1,0 +1,28 @@
+{
+  "title": "Time, network and device emulation",
+  "minutes": 65,
+  "summary": "Як тестувати те, чого не можна чекати чи зробити руками: фальшивий годинник page.clock (install, pause_at, fast_forward, run_for, set_fixed_time), офлайн-режим, геолокація й дозволи, часовий пояс і локаль, кольорова схема та розмір екрана; де задавати налаштування в pytest-playwright (маркер browser_context_args, фікстура, новий контекст)",
+  "resources": [
+    {
+      "title": "Playwright for Python: Clock",
+      "url": "https://playwright.dev/python/docs/clock",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Emulation (devices, locale, timezone, geolocation, permissions, offline)",
+      "url": "https://playwright.dev/python/docs/emulation",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Geolocation API",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

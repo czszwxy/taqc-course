@@ -1,0 +1,28 @@
+{
+  "title": "AI assistants in a tester's work",
+  "minutes": 55,
+  "summary": "Як користуватися AI-асистентами в тестуванні й не втратити якість: що AI робить добре (ідеї тестів, дані, чернетки коду, пояснення помилок) і де помиляється (вигадані локатори, слабкі перевірки, паузи, неправильні очікування), контекст і структура запиту, чекліст рев'ю згенерованих тестів, приватність даних, інструменти Playwright для AI (Codegen, MCP, Test Agents)",
+  "resources": [
+    {
+      "title": "Playwright: Test Agents (planner, generator, healer)",
+      "url": "https://playwright.dev/docs/test-agents",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright MCP server (GitHub)",
+      "url": "https://github.com/microsoft/playwright-mcp",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Best Practices",
+      "url": "https://playwright.dev/docs/best-practices",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

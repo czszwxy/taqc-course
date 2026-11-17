@@ -1,0 +1,25 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "To-do list: an assertion helper and waiting for saved data",
+  "playground": "todo",
+  "statement": "Сторінка **My tasks** (`/playground/todo`) відкривається з трьома задачами: `Write test cases for the login page` (виконана), `Report the cart bug` і `Buy coffee` (активні); лічильник — `2 items left`. Список зберігається в `localStorage` під ключем `qa-playground:todo` як масив об'єктів `{ id, text, done }`.\n\nУ стартовому файлі є помічник `row(page, text)` і перший тест. Зроби дві речі:\n\n1. **Функція-перевірка** `expect_items_left(page, count)`: перевіряє текст лічильника (`data-testid=\"todo-counter\"`) — `N items left`, а для однієї задачі `1 item left`. Усередині — `expect(...).to_have_text(...)` з повідомленням, щоб перевірка чекала.\n2. Тести:\n   - виконати `Buy coffee` (чекбокс) → `expect_items_left(page, 1)`;\n   - видалити активну `Buy coffee` (кнопка `Delete …`) → лишилось 2 рядки і `expect_items_left(page, 1)`;\n   - після виконання `Buy coffee` запис у `localStorage` має `done: true`. Значення не з локатора — дочекайся його через **`page.wait_for_function`**.\n\nПотрібно щонайменше 4 тести; без `time.sleep`.",
+  "minTests": 4,
+  "mutants": [
+    { "id": "plural", "description": "For one active task the counter said “1 items left”.", "hint": "Leave exactly one active task and check the counter text through your helper." },
+    { "id": "counterAfterDelete", "description": "Deleting an active task did not decrease the counter.", "hint": "Delete an active task and check the counter." },
+    { "id": "doneNotSaved", "description": "The completed state was not saved to localStorage.", "hint": "Complete a task and wait until the saved list in localStorage has done: true for it." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "def expect_items_left\\(", "message": "Створи функцію-перевірку `def expect_items_left(page, count):`." },
+    { "kind": "require", "pattern": "expect_items_left\\([^)]*\\b1\\)", "message": "Використай `expect_items_left(page, 1)` у тестах — саме однина ловить помилку в тексті лічильника." },
+    { "kind": "require", "pattern": "wait_for_function\\(", "message": "Збережений список перевір через `page.wait_for_function(...)`." },
+    { "kind": "forbid", "pattern": "time\\.sleep|wait_for_timeout", "message": "Без пауз: `expect` і `wait_for_function` чекають самі." }
+  ],
+  "hints": [
+    "Функція: `word = \"item\" if count == 1 else \"items\"`, далі `expect(page.get_by_test_id(\"todo-counter\"), f\"{count} active task(s) expected\").to_have_text(f\"{count} {word} left\")`.",
+    "Рядок задачі — `row(page, \"Buy coffee\")`; у ньому `get_by_role(\"checkbox\")` і `get_by_role(\"button\", name=\"Delete\")`.",
+    "Очікування: `page.wait_for_function(\"([key, text]) => JSON.parse(localStorage.getItem(key) || '[]').some((task) => task.text === text && task.done === true)\", arg=[STORAGE_KEY, \"Buy coffee\"])`."
+  ],
+  "explanation": "Функція `expect_items_left` ховає правило однини / множини в одному місці й дає зрозуміле повідомлення у звіті. А `localStorage` — не елемент сторінки: `page.evaluate` прочитав би його один раз, тому потрібне очікування `wait_for_function`, яке перевіряє умову в браузері, доки вона не виконається, і падає з `TimeoutError`, якщо дані так і не збереглися."
+}

@@ -1,0 +1,36 @@
+{
+  "type": "table",
+  "title": "Probe → the secure behaviour you expect",
+  "statement": "Ти складаєш перевірки безпеки для API рахунків і форми входу. Для кожної «проби» обери поведінку, яку має показати **захищена** система.",
+  "hints": [
+    "Немає або зіпсований токен — `401`; токен правильний, але ресурс чужий — `403` (або `404`).",
+    "Проби ін'єкцій не повинні ані виконуватись, ані ламати сервер."
+  ],
+  "explanation": "Security-тест, як і будь-який інший, має очікуваний результат. `401` відповідає на «хто ти?», `403` / `404` — на «тобі сюди не можна». Проби ін'єкцій мають оброблятись як звичайний текст. Підбір пароля зупиняє блокування чи `429`, а повідомлення про скидання пароля й про помилки сервера не повинні розкривати зайвого.",
+  "givenColumns": ["Probe"],
+  "answerColumns": [
+    {
+      "id": "expected",
+      "label": "Secure behaviour",
+      "options": [
+        "401 Unauthorized",
+        "403 Forbidden (or 404)",
+        "Shown as plain text, nothing runs",
+        "The usual “invalid email or password” message",
+        "Temporary lock or 429 Too Many Requests",
+        "The same neutral message as for a known email",
+        "A generic error without technical details"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`GET /api/invoices` без заголовка `Authorization`"], "answers": { "expected": "401 Unauthorized" } },
+    { "given": ["`GET /api/invoices/119` — чужий рахунок, власний правильний токен"], "answers": { "expected": "403 Forbidden (or 404)" } },
+    { "given": ["`GET /api/invoices/118` з токеном, у якому змінено кілька символів"], "answers": { "expected": "401 Unauthorized" } },
+    { "given": ["Ім'я профілю `<script>alert(1)</script>` збережено й відкрито сторінку профілю"], "answers": { "expected": "Shown as plain text, nothing runs" } },
+    { "given": ["Email `' OR '1'='1` і будь-який пароль у формі входу"], "answers": { "expected": "The usual “invalid email or password” message" } },
+    { "given": ["20 неправильних паролів поспіль для одного акаунта"], "answers": { "expected": "Temporary lock or 429 Too Many Requests" } },
+    { "given": ["Скидання пароля для email, якого немає в системі"], "answers": { "expected": "The same neutral message as for a known email" } },
+    { "given": ["Запит, через який на сервері стається внутрішня помилка (`500`)"], "answers": { "expected": "A generic error without technical details" }, "explain": "Stack trace, шляхи й версії у відповіді допомагають зловмиснику; деталі мають лишатися в журналах сервера." }
+  ]
+}

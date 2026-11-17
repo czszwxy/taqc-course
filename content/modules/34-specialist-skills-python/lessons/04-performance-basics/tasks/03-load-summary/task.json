@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Summarize a load test: percentile, error rate, verdict",
+  "statement": "Після навантажувального тесту в тебе є список запитів. Напиши дві функції, що перетворюють його на вердикт.\n\n**`percentile(values, p)`** — перцентиль методом найближчого рангу: візьми відсортовану **копію** списку (вхідний список не змінюй) і поверни елемент з номером `math.ceil(p * len(values) / 100)` (нумерація з 1, тож індекс на одиницю менший). Порожній список → `0`.\n\n**`summarize(samples, sla)`** → словник:\n\n| Ключ | Значення |\n|---|---|\n| `\"requests\"` | кількість запитів |\n| `\"error_rate\"` | частка запитів зі статусом `>= 400` (число від 0 до 1) |\n| `\"avg_ms\"` | середній час, округлений через `round()` |\n| `\"p95_ms\"` | 95-й перцентиль часу |\n| `\"passed\"` | `True`, якщо запити є, `p95_ms <= sla[\"p95_ms\"]` **і** `error_rate <= sla[\"max_error_rate\"]` |\n\nДля порожнього списку: усі числа `0`, `\"passed\": False` — «немає даних» не означає «пройшов».\n\n```python\npercentile([100, 100, 2000, 100], 50)  # 100\npercentile([100, 100, 2000, 100], 95)  # 2000\n\nsummarize(\n    [\n        {\"duration_ms\": 120, \"status\": 200},\n        {\"duration_ms\": 480, \"status\": 200},\n        {\"duration_ms\": 300, \"status\": 500},\n        {\"duration_ms\": 100, \"status\": 200},\n    ],\n    {\"p95_ms\": 500, \"max_error_rate\": 0.3},\n)\n# {'requests': 4, 'error_rate': 0.25, 'avg_ms': 250, 'p95_ms': 480, 'passed': True}\n```",
+  "hints": [
+    "`ordered = sorted(values)` повертає новий список; `values.sort()` змінив би список, який тобі передали.",
+    "Номер елемента: `rank = math.ceil(p * len(ordered) / 100)` → `ordered[rank - 1]`. `int(9.5)` дає `9` — це округлення вниз, а потрібне вгору.",
+    "`error_rate`: `len([s for s in samples if s[\"status\"] >= 400]) / len(samples)`; порожній список оброби на початку, щоб не ділити на нуль."
+  ],
+  "explanation": "```python\ndef percentile(values, p):\n    if not values:\n        return 0\n    ordered = sorted(values)\n    rank = math.ceil(p * len(ordered) / 100)\n    return ordered[max(rank, 1) - 1]\n```\n\nТри пастки: `values.sort()` змінює вхідний список (потрібен `sorted`), `int()` округлює вниз (для p95 з 10 значень вийде дев'ятий елемент замість десятого) і ділення на нуль для порожнього списку (`ZeroDivisionError`). У вердикті важливі **обидві** умови: швидкі відповіді з 30 % помилок — це не успіх.",
+  "codeRules": [
+    { "kind": "require", "pattern": "def percentile\\(", "message": "Створи функцію `def percentile(values, p):`." },
+    { "kind": "require", "pattern": "def summarize\\(", "message": "Створи функцію `def summarize(samples, sla):`." }
+  ]
+}

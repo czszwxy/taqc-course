@@ -1,0 +1,30 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Automate accessibility checks: axe scan and keyboard tests",
+  "playground": "a11y",
+  "statement": "Автоматизуй перевірки доступності сторінки `/playground/a11y`. У стартовому файлі — імпорт `Axe`, фікстура, що відкриває сторінку і чекає на вміст, і перший тест (кнопка списку бажань).\n\nДодай тести:\n\n1. **Скан axe**: `Axe().run(page, options=WCAG_A_AA)` — список ідентифікаторів з `results.response[\"violations\"]` порожній.\n2. **Show details** — справжня кнопка: знайди її через `get_by_role(\"button\", …)`, постав фокус (`focus()`), натисни **Enter** з клавіатури → список характеристик (`data-testid=\"details\"`) видно, а кнопка має `aria-expanded=\"true\"`.\n3. **Помилка email**: Subscribe з порожнім полем → є елемент з роллю `alert` і текстом `Enter a valid email address`, а поле Email має цей текст як опис (`to_have_accessible_description`).\n4. **Діалог**: правильний email → діалог `You're subscribed!`; кнопка **Close** у фокусі; **Escape** закриває діалог; фокус повертається на **Subscribe**.\n\nПотрібно щонайменше 5 тестів. Один скан ловить одразу кілька дефектів розмітки — решту ловлять лише тести клавіатури й ролей.",
+  "minTests": 5,
+  "mutants": [
+    { "id": "imgNoAlt", "description": "The product image had no alt text (axe: image-alt).", "hint": "An automatic axe scan finds markup problems like a missing text alternative." },
+    { "id": "inputNoLabel", "description": "The Email field had no linked label (axe: label).", "hint": "An automatic axe scan finds form fields without a label." },
+    { "id": "iconNoName", "description": "The wishlist icon button had no accessible name (axe: button-name).", "hint": "Find the heart button by its role and name, or let the axe scan report it." },
+    { "id": "lowContrast", "description": "The delivery note had a contrast of about 1.5:1 (axe: color-contrast).", "hint": "An automatic axe scan measures text contrast." },
+    { "id": "divButton", "description": "“Show details” was a div: no button role, not usable from the keyboard.", "hint": "Find “Show details” by its button role and activate it with the keyboard, not the mouse." },
+    { "id": "errorNotAnnounced", "description": "The email error had no role=\"alert\" and was not linked to the field.", "hint": "Submit an empty email and look for an element with the alert role." },
+    { "id": "focusNotMoved", "description": "Focus stayed behind the dialog when it opened.", "hint": "After the dialog opens check which element is focused." },
+    { "id": "escNoClose", "description": "Esc did not close the dialog.", "hint": "Press Escape while the dialog is open and expect it to disappear." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "Axe\\(\\)\\.run\\(", "message": "Додай автоматичний скан: `Axe().run(page, options=WCAG_A_AA)`." },
+    { "kind": "require", "pattern": "keyboard\\.press\\(", "message": "Перевір роботу з клавіатури: `page.keyboard.press(\"Enter\")`, `\"Escape\"`." },
+    { "kind": "require", "pattern": "to_be_focused\\(\\)", "message": "Перевір, де фокус: `expect(...).to_be_focused()`." },
+    { "kind": "forbid", "pattern": "time\\.sleep|wait_for_timeout", "message": "Без пауз: `expect` чекає сам." }
+  ],
+  "hints": [
+    "Скан: `results = Axe().run(page, options=WCAG_A_AA)`, далі `rule_ids = [violation[\"id\"] for violation in results.response[\"violations\"]]` і `assert rule_ids == [], results.generate_report()`.",
+    "Клавіатура: `toggle = page.get_by_role(\"button\", name=\"Show details\")`, `toggle.focus()`, `page.keyboard.press(\"Enter\")` — далі кнопка вже називається `Hide details`.",
+    "Діалог: `dialog = page.get_by_role(\"dialog\", name=\"You're subscribed!\")` → `expect(dialog.get_by_role(\"button\", name=\"Close\")).to_be_focused()` → `page.keyboard.press(\"Escape\")` → `to_have_count(0)` і `to_be_focused()` для Subscribe."
+  ],
+  "explanation": "Скан axe — найдешевша перевірка: один тест ловить відсутній alt, поле без підпису, кнопку без назви і слабкий контраст. Але чотири інші дефекти він пропускає, бо вони в поведінці, а не в розмітці: до «кнопки» не дійти клавіатурою, помилку не оголошено, діалог не керує фокусом. Тому поруч зі сканом потрібні тести, що шукають елементи за ролями, натискають клавіші й перевіряють фокус — тобто користуються сторінкою так, як це робить людина без миші."
+}

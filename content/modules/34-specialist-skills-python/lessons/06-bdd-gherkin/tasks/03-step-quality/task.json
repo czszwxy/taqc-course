@@ -1,0 +1,31 @@
+{
+  "type": "classify",
+  "title": "A good step or a problem?",
+  "statement": "Ти робиш рев'ю feature-файлу. Для кожного кроку визнач: він добрий, занадто прив'язаний до інтерфейсу чи його результат неможливо перевірити.",
+  "show": 8,
+  "passScore": 0.75,
+  "categories": [
+    { "id": "good", "label": "Good step", "description": "Поведінка, зрозуміла без знання інтерфейсу" },
+    { "id": "ui", "label": "Too tied to the UI", "description": "Кліки, локатори, технічні деталі" },
+    { "id": "vague", "label": "Not verifiable", "description": "Розмито: незрозуміло, що саме перевіряти" }
+  ],
+  "items": [
+    { "id": "g1", "text": "`Given a customer with an unpaid order for 500 UAH`", "category": "good" },
+    { "id": "g2", "text": "`When the customer cancels the order`", "category": "good" },
+    { "id": "g3", "text": "`Then the order status is \"Cancelled\"`", "category": "good" },
+    { "id": "g4", "text": "`Then the customer receives a refund of 500 UAH`", "category": "good" },
+    { "id": "u1", "text": "`When I click the element with data-testid \"cancel-btn\"`", "category": "ui" },
+    { "id": "u2", "text": "`Given I type \"qa@example.test\" into the field \"#email\" and press Enter`", "category": "ui" },
+    { "id": "u3", "text": "`Then the div with class \"status-badge red\" is displayed`", "category": "ui" },
+    { "id": "u4", "text": "`When I wait 3 seconds and scroll down to the footer`", "category": "ui" },
+    { "id": "v1", "text": "`Then everything works as expected`", "category": "vague" },
+    { "id": "v2", "text": "`Then the page looks good`", "category": "vague" },
+    { "id": "v3", "text": "`When the customer does something wrong`", "category": "vague" },
+    { "id": "v4", "text": "`Then the system handles the order correctly`", "category": "vague" }
+  ],
+  "hints": [
+    "Добрий крок можна показати аналітику — і він зрозуміє, не бачивши сторінки.",
+    "Слова «click», «field #…», «class», «wait» — ознаки прив'язки до інтерфейсу; «correctly», «as expected», «looks good» — ознаки розмитості."
+  ],
+  "explanation": "Крок-поведінка називає учасника, дію і конкретний результат: статус, суму, повідомлення. Крок, прив'язаний до інтерфейсу, переказує реалізацію — його доведеться переписувати після кожної зміни верстки. Розмитий крок не дає критерію успіху: за ним не написати ні перевірку, ні баг-репорт."
+}

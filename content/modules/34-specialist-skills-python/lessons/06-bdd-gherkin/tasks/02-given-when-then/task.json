@@ -1,0 +1,31 @@
+{
+  "type": "classify",
+  "title": "Given, When or Then?",
+  "statement": "Сценарії для бібліотеки: читач бере й повертає книжки. Для кожного кроку обери ключове слово, з якого він має починатися.",
+  "show": 9,
+  "passScore": 0.75,
+  "categories": [
+    { "id": "given", "label": "Given", "description": "Початковий стан" },
+    { "id": "when", "label": "When", "description": "Дія або подія" },
+    { "id": "then", "label": "Then", "description": "Спостережуваний результат" }
+  ],
+  "items": [
+    { "id": "has-card", "text": "… a reader with an active library card", "category": "given" },
+    { "id": "has-two", "text": "… the reader already has 2 borrowed books", "category": "given" },
+    { "id": "book-available", "text": "… the book \"Clean Code\" is available", "category": "given" },
+    { "id": "overdue", "text": "… one of the reader's books is 3 days overdue", "category": "given" },
+    { "id": "borrows", "text": "… the reader borrows \"Clean Code\"", "category": "when" },
+    { "id": "returns", "text": "… the reader returns the overdue book", "category": "when" },
+    { "id": "limit-try", "text": "… the reader tries to borrow a sixth book", "category": "when" },
+    { "id": "due-date", "text": "… the due date is 14 days from today", "category": "then" },
+    { "id": "rejected", "text": "… the request is rejected with \"Borrowing limit reached\"", "category": "then" },
+    { "id": "fine", "text": "… a fine of 15 UAH is added to the reader's account", "category": "then" },
+    { "id": "listed", "text": "… the book appears in the reader's list of borrowed books", "category": "then" },
+    { "id": "date-passes", "text": "… 15 days pass without returning the book", "category": "when", "explain": "Подія — це теж `When`: щось відбувається (минає час), і ми спостерігаємо результат." }
+  ],
+  "hints": [
+    "Що вже є до початку — `Given`. Що хтось робить або що стається — `When`. Що ми бачимо після — `Then`.",
+    "«Tries to…», «borrows», «returns», «days pass» — дії й події."
+  ],
+  "explanation": "`Given` описує світ до дії: хто користувач і що в нього вже є. `When` — одна дія або подія, заради якої написано сценарій. `Then` — результат, який можна побачити: повідомлення, дата, сума, запис у списку. Якщо крок важко віднести до одного з трьох, він, найімовірніше, змішує стан, дію і перевірку."
+}

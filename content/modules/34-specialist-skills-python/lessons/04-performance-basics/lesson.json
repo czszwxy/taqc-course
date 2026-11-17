@@ -1,0 +1,42 @@
+{
+  "title": "Performance testing basics",
+  "minutes": 55,
+  "summary": "Основи performance-тестування для QA: навіщо і які бувають тести (load, stress, spike, soak), метрики (час відповіді, перцентилі p50 / p95 / p99, throughput, error rate), чому середнє бреше, SLA і пороги, мінімальний сценарій Locust на Python і запуск без вебінтерфейсу в CI, швидкість фронтенду — Core Web Vitals (LCP, INP, CLS) і Lighthouse, лабораторні й польові дані, і правила безпеки навантажувальних тестів",
+  "resources": [
+    {
+      "title": "Locust: Quick start",
+      "url": "https://docs.locust.io/en/stable/quickstart.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Locust: Running without the web UI (and controlling the exit code)",
+      "url": "https://docs.locust.io/en/stable/running-without-web-ui.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Locust: Configuration (command line options)",
+      "url": "https://docs.locust.io/en/stable/configuration.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev: Web Vitals",
+      "url": "https://web.dev/articles/vitals",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Chrome for Developers: Lighthouse overview",
+      "url": "https://developer.chrome.com/docs/lighthouse/overview",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

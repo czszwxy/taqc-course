@@ -61,7 +61,7 @@ function sitePackages(root: string): string | null {
 }
 
 /** The packages a graded run imports. */
-const REQUIRED_PACKAGES = ['playwright', 'pytest_playwright', 'pytest', 'requests', 'pydantic'];
+const REQUIRED_PACKAGES = ['playwright', 'pytest_playwright', 'pytest', 'requests', 'pydantic', 'axe_playwright_python'];
 
 /** null when the venv is ready, otherwise what is missing. */
 export function missingPythonLab(root: string): string | null {

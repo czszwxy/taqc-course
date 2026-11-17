@@ -209,6 +209,12 @@
           ]
         }
       ]
+    },
+    {
+      "id": "specialist",
+      "title": "Specialist Skills",
+      "description": "Beyond the core course: assertion helpers and polling, time and device emulation, accessibility, performance with Locust, security, BDD with pytest-bdd, Docker and working with AI assistants.",
+      "modules": [{ "slug": "34-specialist-skills-python", "title": "Specialist Skills for Python QA" }]
     }
   ]
 }

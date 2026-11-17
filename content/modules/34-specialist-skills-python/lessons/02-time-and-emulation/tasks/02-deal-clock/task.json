@@ -1,0 +1,25 @@
+{
+  "type": "playwright",
+  "language": "python",
+  "title": "Deal of the day: control the clock",
+  "playground": "deal",
+  "statement": "Сторінка **Deal of the day** (`/playground/deal`): акція триває до наступних «круглих» 5 хвилин годинника (12:00 → 12:05). Таймер `Ends in mm:ss` (`data-testid=\"deal-timer\"`), ціна (`deal-price`), кнопка **Buy now**, повідомлення про додавання (`data-testid=\"toast\"`, зникає через 5 секунд). Коли час вийшов: `Deal ended` (`deal-ended`), ціна `2,999 UAH`, **Buy now** неактивна.\n\nЧекати 5 хвилин не можна — керуй годинником. У стартовому файлі фікстура `deal_page` уже ставить годинник на `12:00:00Z` і відкриває сторінку, є перший тест.\n\nНапиши тести:\n\n1. За 9 секунд до кінця (`12:04:51Z`) таймер показує `00:09`.\n2. Коли час вийшов (ще `fast_forward(\"00:09\")`): видно `Deal ended`, ціна `2,999 UAH`, **Buy now** неактивна.\n3. Повідомлення після **Buy now** містить назву товару і зникає через 5 секунд (`fast_forward(5000)`).\n\nПотрібно щонайменше 4 тести; без `time.sleep`.",
+  "minTests": 4,
+  "mutants": [
+    { "id": "timerFormat", "description": "Seconds were not zero-padded: “00:9” instead of “00:09”.", "hint": "Pause the clock when fewer than 10 seconds are left and check the exact timer text." },
+    { "id": "buyAfterEnd", "description": "Buy now stayed enabled after the deal ended.", "hint": "Move the clock to the end of the deal and check the Buy now button." },
+    { "id": "endedPrice", "description": "The deal price was still shown after the deal ended.", "hint": "After the deal ended check the price shown." },
+    { "id": "toastStays", "description": "The “Added to cart” message never disappeared.", "hint": "Press Buy now, move the clock 5 seconds forward and check that the message is gone." }
+  ],
+  "codeRules": [
+    { "kind": "require", "pattern": "clock\\.pause_at\\(", "message": "Зупини час у потрібний момент: `page.clock.pause_at(...)`." },
+    { "kind": "require", "pattern": "clock\\.fast_forward\\(", "message": "Перемотуй час: `page.clock.fast_forward(...)`." },
+    { "kind": "forbid", "pattern": "time\\.sleep|wait_for_timeout", "message": "Жодного справжнього очікування — лише керування годинником." }
+  ],
+  "hints": [
+    "`deal_page.clock.pause_at(\"2026-03-20T12:04:51Z\")` — стрибок і зупинка; далі `expect(deal_page.get_by_test_id(\"deal-timer\")).to_have_text(\"00:09\")`.",
+    "Кінець акції: після паузи на `12:04:51Z` — `deal_page.clock.fast_forward(\"00:09\")`, тоді перевір `deal-ended`, `deal-price` і `to_be_disabled()` для кнопки.",
+    "Повідомлення: зупини час (наприклад, `12:01:00Z`), натисни Buy now, перевір текст, `fast_forward(5000)` і `to_have_count(0)`."
+  ],
+  "explanation": "Усі чотири дефекти живуть «у часі»: формат секунд видно лише в останні 10 секунд, стан після завершення — лише через 5 хвилин, зникнення повідомлення — через 5 секунд. Фальшивий годинник робить такі перевірки миттєвими й точними: `pause_at` фіксує момент, `fast_forward` рухає час рівно на потрібний інтервал, і тест триває секунду замість п'яти хвилин."
+}

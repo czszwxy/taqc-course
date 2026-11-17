@@ -1,0 +1,63 @@
+{
+  "title": "Accessibility testing",
+  "minutes": 70,
+  "summary": "Доступність (a11y) для тестувальника: навіщо і кому, WCAG 2.2 і принципи POUR, що перевіряти руками (клавіатура, фокус, назви й підписи, alt, контраст, помилки, діалоги), інструменти (DevTools, axe, скрінрідер) і автоматизація на pytest + Playwright: скан axe-core через axe-playwright-python, перевірки ролей і назв, клавіатурні тести та aria-снапшоти — і чому автоматика знаходить лише частину проблем",
+  "resources": [
+    {
+      "title": "W3C WAI: WCAG 2 Overview",
+      "url": "https://www.w3.org/WAI/standards-guidelines/wcag/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "W3C WAI: Easy Checks — a first review of web accessibility",
+      "url": "https://www.w3.org/WAI/test-evaluate/preliminary/",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "axe-playwright-python on PyPI",
+      "url": "https://pypi.org/project/axe-playwright-python/",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "axe-playwright-python: source and README",
+      "url": "https://github.com/pamelafox/axe-playwright-python",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright for Python: Aria snapshots",
+      "url": "https://playwright.dev/python/docs/aria-snapshots",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Playwright: Accessibility testing (the idea, shown with the Node.js API)",
+      "url": "https://playwright.dev/docs/accessibility-testing",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "axe-core: the accessibility testing engine",
+      "url": "https://github.com/dequelabs/axe-core",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Accessibility",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

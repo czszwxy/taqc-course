@@ -1,0 +1,39 @@
+{
+  "type": "table",
+  "title": "Which option reproduces the situation?",
+  "statement": "Для кожної ситуації з баг-репорту обери налаштування або метод Playwright для Python, який відтворює її в тесті.",
+  "hints": [
+    "Час і таймери — `page.clock`; де користувач — `geolocation` + `permissions`; як показано час і дати — `timezone_id` і `locale`.",
+    "Мережа зовсім зникла — `context.set_offline`; одна відповідь сервера погана — `page.route`."
+  ],
+  "explanation": "Баг-репорт майже завжди містить умову середовища: «після 15 хвилин», «у темній темі», «з Канади», «в метро без мережі». Кожна така умова має свій інструмент: годинник для часу, `timezone_id` і `locale` для показу дат і чисел, `geolocation` з дозволами для місця, `color_scheme` і `viewport` для вигляду, `set_offline` і `route` для мережі.",
+  "givenColumns": ["Situation from a bug report"],
+  "answerColumns": [
+    {
+      "id": "option",
+      "label": "Playwright option / method",
+      "options": [
+        "page.clock (install + fast_forward)",
+        "page.clock.set_fixed_time",
+        "timezone_id",
+        "locale",
+        "geolocation + permissions",
+        "color_scheme=\"dark\"",
+        "viewport",
+        "context.set_offline(True)",
+        "page.route (mock the response)"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["«Через 30 хвилин бездіяльності мене не розлогінило»"], "answers": { "option": "page.clock (install + fast_forward)" } },
+    { "given": ["«29 лютого сторінка календаря порожня» (таймерів на сторінці немає)"], "answers": { "option": "page.clock.set_fixed_time" } },
+    { "given": ["«У користувачів з Нью-Йорка вебінар показано на день раніше»"], "answers": { "option": "timezone_id" } },
+    { "given": ["«У німецькому інтерфейсі ціна показана як 1,234.50 замість 1.234,50»"], "answers": { "option": "locale" } },
+    { "given": ["«Пошук найближчого відділення показує інше місто»"], "answers": { "option": "geolocation + permissions" } },
+    { "given": ["«У темній темі текст підказки майже не видно»"], "answers": { "option": "color_scheme=\"dark\"" } },
+    { "given": ["«На екрані шириною 375 px кнопка кошика зникає»"], "answers": { "option": "viewport" } },
+    { "given": ["«У метро без зв'язку форма мовчки губить введений текст»"], "answers": { "option": "context.set_offline(True)" } },
+    { "given": ["«Коли сервер рекомендацій відповідає 500, вся сторінка товару біла»"], "answers": { "option": "page.route (mock the response)" }, "explain": "Мережа є, погана лише одна відповідь — її підміняють через `page.route`, а не вимикають усе." }
+  ]
+}
