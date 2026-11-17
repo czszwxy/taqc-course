@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Stock with a timeout",
+  "statement": "Сторінка каталогу показує залишки на складі. Склад-партнер (`fakes.py`, лише для читання) інколи відповідає дуже повільно — сторінка не повинна на нього чекати.\n\n1. **`async def stock_or_none(service, sku, timeout)`** — повертає `await service.stock(sku)`, але якщо відповідь не прийшла за `timeout` секунд — `None`. Повільний виклик при цьому має бути **скасований** (`service.cancelled` це покаже). Інші помилки (наприклад, `UnknownProduct`) **не** приховуй — вони летять далі.\n2. **`async def stock_report(service, skus, timeout)`** — словник «sku → залишок або `None`» у порядку `skus`; усі запити — **одночасно**.\n\n```python\nawait stock_report(service, [\"MOUSE-01\", \"SLOW-01\"], timeout=0.05)\n# {'MOUSE-01': 12, 'SLOW-01': None}\n```",
+  "hints": [
+    "`try:` → `async with asyncio.timeout(timeout): return await service.stock(sku)` → `except TimeoutError: return None`.",
+    "Лови лише `TimeoutError`: `except Exception` приховав би й `UnknownProduct`.",
+    "Звіт: `values = await asyncio.gather(*(stock_or_none(service, s, timeout) for s in skus))` і `dict(zip(skus, values))`."
+  ],
+  "explanation": "`asyncio.timeout` не просто перестає чекати — він скасовує внутрішню операцію, тож повільний виклик не продовжує працювати у фоні. Назовні вилітає `TimeoutError`, і саме його перетворюють на «немає даних». Ширший `except Exception` замаскував би справжні помилки — неіснуючий товар чи збій авторизації — під «склад не відповів». А `gather` запускає всі перевірки разом, тож сторінка чекає не довше за один тайм-аут.",
+  "codeRules": [
+    { "kind": "require", "pattern": "asyncio\\.timeout|wait_for", "message": "Обмеж очікування: asyncio.timeout(...) або asyncio.wait_for(...)." }
+  ]
+}

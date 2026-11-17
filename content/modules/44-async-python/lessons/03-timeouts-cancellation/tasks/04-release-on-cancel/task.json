@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Release the reservation, even when cancelled",
+  "statement": "Оформлення замовлення бронює товар на складі, а потім списує гроші. Якщо оплата не вдалася **або** запит скасували (користувач закрив сторінку, спрацював тайм-аут), бронь треба зняти — інакше товар «зависне» в резерві. Шлюз — у `fakes.py` (лише для читання).\n\nНапиши **`async def checkout(gateway, order_id)`**:\n\n1. `reservation = await gateway.reserve(order_id)`;\n2. `receipt = await gateway.pay(order_id)` — успіх: повернути `receipt`, бронь **не** знімати;\n3. оплата впала з `PaymentDeclined` — `await gateway.release(reservation)` і підняти ту саму помилку;\n4. задачу скасували під час оплати — так само `await gateway.release(reservation)`, і задача має завершитися **як скасована** (`CancelledError` не ковтати).",
+  "hints": [
+    "Огорни оплату: `try: return await gateway.pay(order_id)` і `except BaseException: await gateway.release(reservation); raise`.",
+    "`CancelledError` — нащадок `BaseException`, тому `except Exception` його не зловить.",
+    "Після прибирання обов'язково `raise` — інакше скасування «проковтнеться»."
+  ],
+  "explanation": "Скасування приходить у корутину як `CancelledError` на тому `await`, де вона чекає, — тут на оплаті. Це `BaseException`, тож блок `except Exception` пропустить його, і бронь залишиться висіти. Блок `except BaseException` (або `finally` з прапорцем успіху) виконає прибирання за будь-якого виходу, а `raise` передасть скасування далі, щоб задача справді завершилася як скасована — на це покладаються тайм-аути й `TaskGroup`.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "except\\s+(asyncio\\.)?CancelledError\\s*:\\s*\\n\\s*(pass|return)", "message": "Не ковтай CancelledError: після прибирання — raise." }
+  ]
+}

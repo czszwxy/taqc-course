@@ -1,0 +1,27 @@
+{
+  "type": "table",
+  "title": "Exception or just a response?",
+  "statement": "Сервіс погоди ходить до партнера через `httpx.AsyncClient`. Для кожної ситуації визнач, що отримає твій код.",
+  "givenColumns": ["Situation"],
+  "answerColumns": [
+    {
+      "id": "outcome",
+      "label": "What your code gets",
+      "options": ["A normal response object", "httpx.HTTPStatusError", "httpx.ConnectError", "httpx.ReadTimeout", "json.JSONDecodeError"]
+    }
+  ],
+  "rows": [
+    { "given": ["`await client.get(\"/forecast\")` — the partner answers 404"], "answers": { "outcome": "A normal response object" }, "explain": "Статус 404 — це теж відповідь; виняток буде лише після `raise_for_status()`." },
+    { "given": ["The same 404 response, then `response.raise_for_status()`"], "answers": { "outcome": "httpx.HTTPStatusError" } },
+    { "given": ["The partner answers 503, then `response.raise_for_status()`"], "answers": { "outcome": "httpx.HTTPStatusError" } },
+    { "given": ["The partner's domain name does not exist"], "answers": { "outcome": "httpx.ConnectError" } },
+    { "given": ["The partner accepts the connection but sends nothing for longer than the timeout"], "answers": { "outcome": "httpx.ReadTimeout" } },
+    { "given": ["The partner answers 200 with an HTML error page and you call `response.json()`"], "answers": { "outcome": "json.JSONDecodeError" } },
+    { "given": ["The partner answers 500 and you only read `response.status_code`"], "answers": { "outcome": "A normal response object" } }
+  ],
+  "hints": [
+    "Будь-який статус — це відповідь; винятком він стає лише через `raise_for_status()`.",
+    "Мережа: не з'єдналися — `ConnectError`, з'єдналися, але не дочекалися — `ReadTimeout`. Зламаний JSON — помилка `json`."
+  ],
+  "explanation": "httpx розділяє «мережа не спрацювала» (`RequestError`: `ConnectError`, тайм-аути) і «сервер відповів помилкою» — останнє лише відповідь з `status_code`, доки ти явно не викличеш `raise_for_status()`. Окремо стоїть розбір тіла: `response.json()` на HTML-сторінці падає з `json.JSONDecodeError`. Код партнерських інтеграцій має обробляти кожен із цих випадків свідомо."
+}

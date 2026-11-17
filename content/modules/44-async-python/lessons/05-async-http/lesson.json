@@ -1,0 +1,35 @@
+{
+  "title": "Async HTTP with httpx",
+  "minutes": 60,
+  "summary": "httpx.AsyncClient: один клієнт на багато запитів (пул з'єднань), base_url, заголовки й тайм-аути (5 с за замовчуванням), status_code, json() і raise_for_status(), винятки httpx, конкурентні запити з обмеженням, пагінація через асинхронний генератор і async for, тести без мережі з httpx.MockTransport",
+  "resources": [
+    {
+      "title": "HTTPX docs: Async Support",
+      "url": "https://www.python-httpx.org/async/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "HTTPX docs: Exceptions",
+      "url": "https://www.python-httpx.org/exceptions/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "HTTPX docs: Transports (MockTransport)",
+      "url": "https://www.python-httpx.org/advanced/transports/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "PEP 525 — Asynchronous Generators",
+      "url": "https://peps.python.org/pep-0525/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

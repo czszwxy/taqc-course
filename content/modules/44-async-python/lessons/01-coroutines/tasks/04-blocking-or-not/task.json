@@ -1,0 +1,25 @@
+{
+  "type": "classify",
+  "title": "Does it block the event loop?",
+  "statement": "Ці рядки стоять усередині `async def` у сервісі погоди. Для кожного визнач: він **блокує** цикл подій (інші корутини стоять) чи **віддає керування**, поки чекає.",
+  "categories": [
+    { "id": "blocks", "label": "Blocks the event loop", "description": "Інші корутини чекають" },
+    { "id": "yields", "label": "Lets other tasks run", "description": "Поки чекає — працюють інші" }
+  ],
+  "items": [
+    { "id": "time-sleep", "text": "`time.sleep(1)`", "category": "blocks" },
+    { "id": "asyncio-sleep", "text": "`await asyncio.sleep(1)`", "category": "yields" },
+    { "id": "requests", "text": "`requests.get(\"https://api.weather.test/lviv\")`", "category": "blocks", "explain": "`requests` — синхронна бібліотека: чекає на мережу, тримаючи весь потік." },
+    { "id": "httpx-async", "text": "`await client.get(\"/lviv\")` with `httpx.AsyncClient`", "category": "yields" },
+    { "id": "cpu", "text": "`sum(n * n for n in range(50_000_000))`", "category": "blocks", "explain": "Обчислення без жодного `await` займають потік повністю." },
+    { "id": "to-thread", "text": "`await asyncio.to_thread(requests.get, url)`", "category": "yields", "explain": "Блокувальний виклик іде в окремий потік, а корутина чекає на нього через `await`." },
+    { "id": "sqlite", "text": "`sqlite3.connect(\"weather.db\").execute(heavy_query).fetchall()`", "category": "blocks" },
+    { "id": "gather", "text": "`await asyncio.gather(fetch(\"Lviv\"), fetch(\"Kyiv\"))`", "category": "yields" },
+    { "id": "input", "text": "`input(\"City: \")`", "category": "blocks" },
+    { "id": "queue-get", "text": "`await queue.get()` on an `asyncio.Queue`", "category": "yields" }
+  ],
+  "show": 8,
+  "passScore": 0.8,
+  "hints": ["Шукай `await` перед викликом і чи асинхронна бібліотека. Немає `await` — корутина не віддає керування."],
+  "explanation": "Цикл подій перемикається лише на `await` асинхронної операції. Синхронні бібліотеки (`requests`, `sqlite3`), `time.sleep`, `input` і довгі обчислення тримають потік — і всі інші корутини стоять. Безпечні варіанти: асинхронні аналоги (`asyncio.sleep`, `httpx.AsyncClient`, `asyncio.Queue`) або винесення блокувального виклику в потік через `asyncio.to_thread`."
+}

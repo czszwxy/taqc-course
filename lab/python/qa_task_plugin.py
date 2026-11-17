@@ -22,11 +22,15 @@ PLUGIN_FILE = Path(__file__).name
 DJANGO_SETTINGS = "settings"
 UNITTEST_PREFIXES = ("False is not true : ", "True is not false : ")
 
-# Django tasks ship a read-only settings.py: point Django at it and load pytest-django (its client / django_db
-# fixtures). pytest-django must be registered before the conftests, so it is loaded here, by this -p plugin.
+# Other plugins are not auto-loaded (PYTEST_DISABLE_PLUGIN_AUTOLOAD), so the ones tasks use are loaded here, by this
+# -p plugin — early enough for plugins that must be registered before the conftests (pytest-django).
+# pytest-asyncio: @pytest.mark.asyncio tests and async fixtures (module 44); plain tests are not affected.
+pytest_plugins = ["pytest_asyncio.plugin"]
+
+# Django tasks ship a read-only settings.py: point Django at it and load pytest-django (client / django_db fixtures).
 if (Path.cwd() / f"{DJANGO_SETTINGS}.py").exists():
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", DJANGO_SETTINGS)
-    pytest_plugins = ["pytest_django.plugin"]
+    pytest_plugins.append("pytest_django.plugin")
 ERROR_LINE = "E   "
 NO_TESTS = "No tests found: a test is a function whose name starts with test_, for example def test_health():"
 

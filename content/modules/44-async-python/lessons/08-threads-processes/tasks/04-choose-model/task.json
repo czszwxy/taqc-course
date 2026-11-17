@@ -1,0 +1,24 @@
+{
+  "type": "table",
+  "title": "asyncio, threads, processes or plain code?",
+  "statement": "Фотогалерея й сервіси навколо неї. Для кожної роботи обери модель виконання.",
+  "givenColumns": ["Workload"],
+  "answerColumns": [
+    { "id": "model", "label": "Model", "options": ["asyncio", "threads", "processes", "plain code"] }
+  ],
+  "rows": [
+    { "given": ["Call 500 partner APIs and wait for their answers"], "answers": { "model": "asyncio" } },
+    { "given": ["Keep 10 000 WebSocket connections open for live updates"], "answers": { "model": "asyncio" } },
+    { "given": ["Use an old storage SDK that only has blocking calls, from a FastAPI app"], "answers": { "model": "threads" }, "explain": "Блокувальні виклики — у потоки (`asyncio.to_thread`), щоб не заблокувати цикл подій." },
+    { "given": ["Download 50 files in a script that already uses requests"], "answers": { "model": "threads" } },
+    { "given": ["Resize 20 000 photos"], "answers": { "model": "processes" } },
+    { "given": ["Compute SHA-256 of 2 000 large videos"], "answers": { "model": "processes" } },
+    { "given": ["Rename three files in a deploy script"], "answers": { "model": "plain code" } },
+    { "given": ["Sum the prices in one shopping cart"], "answers": { "model": "plain code" } }
+  ],
+  "hints": [
+    "Спершу: це очікування (I/O) чи обчислення (CPU)? І чи взагалі є що паралелити?",
+    "I/O з асинхронними бібліотеками — asyncio; з блокувальними — потоки; важкі обчислення — процеси."
+  ],
+  "explanation": "Модель визначає тип роботи. Багато одночасних очікувань (запити, з'єднання) — asyncio; блокувальні бібліотеки — потоки, бо під час очікування GIL вільний. Важкі обчислення в звичайному CPython пришвидшують лише процеси — у кожного свій GIL. А дрібна робота найкраще працює звичайним кодом: будь-яка паралельність додає складності й накладних витрат."
+}

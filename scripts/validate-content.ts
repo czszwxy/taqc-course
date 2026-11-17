@@ -431,8 +431,9 @@ const labSkipped: string[] = [];
 
 /** Why a python test run is not green (empty when every collected test passed). */
 const pythonFailures = (run: PythonRunResult): string[] => [
+  ...(run.timedOut ? ['the run hit its time limit and was stopped'] : []),
   ...(run.error ? [`error: ${run.error}`] : []),
-  ...(run.tests.length === 0 && !run.error ? ['no test_* functions were collected'] : []),
+  ...(run.tests.length === 0 && !run.error && !run.timedOut ? ['no test_* functions were collected'] : []),
   ...run.tests.filter((t) => !t.passed).map((t) => `test "${t.name}": ${t.error}`),
 ];
 

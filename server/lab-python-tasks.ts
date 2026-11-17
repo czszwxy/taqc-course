@@ -28,13 +28,16 @@ export const PYTHON_TASK_SETUP_MESSAGE =
 const PLUGIN_FILE = 'qa_task_plugin.py';
 const PLUGIN_NAME = 'qa_task_plugin';
 const INI_FILE = 'pytest.ini';
-/** Only the task's own test file is collected (support files such as test_data.py are not tests). */
-const INI_CONTENT = '[pytest]\npython_files = tests.py\n';
+/**
+ * Only the task's own test file is collected (support files such as test_data.py are not tests). pytest-asyncio runs in
+ * its default strict mode (@pytest.mark.asyncio, @pytest_asyncio.fixture); a fresh event loop per test.
+ */
+const INI_CONTENT = '[pytest]\npython_files = tests.py\nasyncio_default_fixture_loop_scope = function\n';
 const RESULT_FILE = 'result.json';
 const OUTPUT_TAIL_CHARS = 2_000;
 
-/** The packages a lab Python task imports (folder names in site-packages; PyJWT installs as "jwt"; python_multipart reads login forms; pydantic_settings — settings from the environment; django + pytest_django + rest_framework for module 43). */
-const REQUIRED_PACKAGES = ['pytest', 'fastapi', 'httpx', 'sqlalchemy', 'jwt', 'python_multipart', 'pydantic_settings', 'django', 'pytest_django', 'rest_framework'];
+/** The packages a lab Python task imports (folder names in site-packages; PyJWT installs as "jwt"; python_multipart reads login forms; pydantic_settings — settings from the environment; django + pytest_django + rest_framework for module 43; pytest_asyncio for module 44). */
+const REQUIRED_PACKAGES = ['pytest', 'fastapi', 'httpx', 'sqlalchemy', 'jwt', 'python_multipart', 'pydantic_settings', 'django', 'pytest_django', 'rest_framework', 'pytest_asyncio'];
 
 /** null when the venv has everything lab Python tasks need, otherwise what is missing. Chromium is not needed. */
 export function missingPythonTaskLab(root: string): string | null {

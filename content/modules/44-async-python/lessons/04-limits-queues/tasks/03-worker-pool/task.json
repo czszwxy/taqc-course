@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "A worker pool for orders",
+  "statement": "Після розпродажу треба обробити сотні замовлень, але склад витримує лише кілька паралельних обробок. Зроби пул воркерів на **`asyncio.Queue`**.\n\n**`async def process_orders(order_ids, handle, workers)`**:\n\n- `handle` — асинхронна функція `await handle(order_id)`, що повертає результат або піднімає виняток;\n- рівно `workers` воркерів беруть замовлення з черги (тест перевіряє пік одночасних обробок — він має дорівнювати `min(workers, кількість замовлень)`);\n- повертає пару `(results, errors)`: `results` — «id → результат» **у порядку `order_ids`**, `errors` — «id → `str(помилки)`» для тих, де `handle` упав; помилка одного замовлення не зупиняє інші;\n- кожне замовлення обробляється рівно один раз;\n- після повернення не лишається **жодної фонової задачі** (воркерів треба зупинити й дочекатися);\n- `workers < 1` — `ValueError`.",
+  "hints": [
+    "Черга: `queue = asyncio.Queue()`, `put_nowait` для кожного id; воркер — `while True: order_id = await queue.get()` … `finally: queue.task_done()`.",
+    "У воркері: `try: outcomes[order_id] = await handle(order_id)` / `except Exception as error: failures[order_id] = str(error)`.",
+    "`await queue.join()`, потім `task.cancel()` для кожного воркера і `await asyncio.gather(*tasks, return_exceptions=True)`. Порядок результатів: збери їх у словник і перебудуй за `order_ids`."
+  ],
+  "explanation": "Черга розв'язує задачу «багато роботи — мало виконавців»: воркери по одному беруть замовлення, і одночасно обробляється рівно стільки, скільки воркерів. `task_done()` у `finally` гарантує, що `join()` дочекається кожного елемента навіть після помилки. Нескінченні воркери після `join()` треба скасувати **і дочекатися** — інакше вони лишаються «висіти» у фоні. Воркери завершують роботу в довільному порядку, тому результати збирають у словник і впорядковують за вхідним списком.",
+  "codeRules": [
+    { "kind": "require", "pattern": "asyncio\\.Queue|Queue\\(", "message": "Розподіли роботу через asyncio.Queue." }
+  ]
+}

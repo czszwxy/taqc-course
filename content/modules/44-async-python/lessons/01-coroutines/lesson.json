@@ -1,0 +1,36 @@
+{
+  "title": "Coroutines and the event loop",
+  "minutes": 55,
+  "summary": "Навіщо async: програма більшість часу чекає на мережу, цикл подій перемикається між задачами, async def повертає корутину, await призупиняє її, asyncio.run запускає все, asyncio.sleep проти time.sleep, «coroutine was never awaited» і чому блокувальний код зупиняє всіх",
+  "resources": [
+    {
+      "title": "Python docs: Coroutines and Tasks",
+      "url": "https://docs.python.org/3/library/asyncio-task.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: asyncio — Asynchronous I/O",
+      "url": "https://docs.python.org/3/library/asyncio.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: Developing with asyncio (common mistakes)",
+      "url": "https://docs.python.org/3/library/asyncio-dev.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "never-awaited coroutines, блокувальний код",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Python asyncio explained",
+      "url": "https://www.youtube.com/results?search_query=python+asyncio+explained+event+loop",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

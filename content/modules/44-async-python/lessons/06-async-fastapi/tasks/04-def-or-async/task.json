@@ -1,0 +1,23 @@
+{
+  "type": "classify",
+  "title": "async def or def?",
+  "statement": "Сервіс новин на FastAPI. Для кожного ендпоінта за тим, що він робить усередині, обери, як його оголосити.",
+  "categories": [
+    { "id": "async", "label": "async def", "description": "Виконується в циклі подій; усі очікування — через await" },
+    { "id": "sync", "label": "def", "description": "FastAPI виконає його в пулі потоків" }
+  ],
+  "items": [
+    { "id": "httpx", "text": "Awaits `client.get(...)` on a shared `httpx.AsyncClient`", "category": "async" },
+    { "id": "requests", "text": "Calls `requests.get(partner_url)`", "category": "sync", "explain": "Синхронна бібліотека в `async def` заблокувала б увесь сервер." },
+    { "id": "sqlalchemy-sync", "text": "Uses a regular (sync) SQLAlchemy `Session` from module 42", "category": "sync" },
+    { "id": "gather", "text": "Runs `await asyncio.gather(articles.get(id), comments.list(id))`", "category": "async" },
+    { "id": "legacy-sdk", "text": "Calls an old SDK that uses `time.sleep` inside", "category": "sync" },
+    { "id": "async-db", "text": "Awaits queries of an async database driver", "category": "async" },
+    { "id": "queue", "text": "Puts a job on an `asyncio.Queue` with `await queue.put(job)`", "category": "async" },
+    { "id": "file-read", "text": "Reads a large file with `open(path).read()`", "category": "sync" }
+  ],
+  "show": 8,
+  "passScore": 0.8,
+  "hints": ["Є `await` асинхронних бібліотек — `async def`. Синхронні бібліотеки й блокувальні виклики — `def`."],
+  "explanation": "`async def` має сенс, коли все очікування всередині — асинхронне (`await` httpx, асинхронних драйверів, черг, `gather`). Якщо ендпоінт кличе синхронні бібліотеки (`requests`, синхронна сесія SQLAlchemy, старий SDK, читання великого файлу), його оголошують звичайним `def` — FastAPI виконає його в пулі потоків і не заблокує цикл подій (або всередині `async def` такі виклики загортають в `asyncio.to_thread`)."
+}

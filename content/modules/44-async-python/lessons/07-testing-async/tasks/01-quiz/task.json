@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "pytest-asyncio and AsyncMock",
+  "show": 6,
+  "hints": ["mark.asyncio — тест-корутина; pytest_asyncio.fixture — асинхронна фікстура; перевіряй awaited, а не called."],
+  "questions": [
+    {
+      "id": "mark",
+      "kind": "single",
+      "text": "Що робить `@pytest.mark.asyncio` над `async def test_...`?",
+      "options": [
+        { "text": "pytest-asyncio запускає тест-корутину у власному циклі подій", "correct": true },
+        { "text": "Робить тест швидшим" },
+        { "text": "Дозволяє тесту використовувати `time.sleep`" }
+      ]
+    },
+    {
+      "id": "fixture",
+      "kind": "single",
+      "text": "Як оголосити асинхронну фікстуру в суворому режимі pytest-asyncio?",
+      "options": [
+        { "text": "`@pytest_asyncio.fixture` над `async def`", "correct": true },
+        { "text": "`@pytest.fixture` над `async def`" },
+        { "text": "`@pytest.mark.asyncio` над фікстурою" }
+      ]
+    },
+    {
+      "id": "awaited-vs-called",
+      "kind": "single",
+      "text": "Чому для `AsyncMock` краще `assert_awaited_once_with`, ніж `assert_called_once_with`?",
+      "options": [
+        { "text": "`called` пройде й тоді, коли корутину створили, але забули `await`", "correct": true },
+        { "text": "`assert_called_once_with` не існує для AsyncMock" },
+        { "text": "Різниці немає" }
+      ]
+    },
+    {
+      "id": "side-effect-list",
+      "kind": "single",
+      "text": "`fetch = AsyncMock(side_effect=[TimeoutError(), 899])`. Що повернуть два послідовні `await fetch()`?",
+      "options": [
+        { "text": "Перший підніме `TimeoutError`, другий поверне 899", "correct": true },
+        { "text": "Обидва повернуть список" },
+        { "text": "Обидва піднімуть TimeoutError" }
+      ]
+    },
+    {
+      "id": "fake-clock",
+      "kind": "single",
+      "text": "Як перевірити кеш з терміном життя 10 хвилин, не чекаючи 10 хвилин?",
+      "options": [
+        { "text": "Передати в кеш годинник параметром і в тесті «перевести» фейковий годинник уперед", "correct": true },
+        { "text": "`await asyncio.sleep(600)` у тесті" },
+        { "text": "Позначити тест `@pytest.mark.slow`" }
+      ]
+    },
+    {
+      "id": "event",
+      "kind": "single",
+      "text": "Навіщо в тесті `asyncio.Event` у фейковому сервісі?",
+      "options": [
+        { "text": "Притримати виклик, доки тест не дозволить, — щоб детерміновано створити «одночасні» запити", "correct": true },
+        { "text": "Щоб тест міг надсилати події в браузер" },
+        { "text": "Щоб пришвидшити фейк" }
+      ]
+    },
+    {
+      "id": "flaky",
+      "kind": "single",
+      "text": "Тест робить `create_task(job())`, потім `await asyncio.sleep(0.1)` і перевіряє результат. Що з ним не так?",
+      "options": [
+        { "text": "Він нестабільний: на повільній машині 0.1 с може не вистачити; треба `await task`", "correct": true },
+        { "text": "Нічого" },
+        { "text": "`create_task` не можна використовувати в тестах" }
+      ]
+    },
+    {
+      "id": "without-plugin",
+      "kind": "single",
+      "text": "Чи можна тестувати корутину без pytest-asyncio?",
+      "options": [
+        { "text": "Так: звичайний тест, а всередині `asyncio.run(корутина)`", "correct": true },
+        { "text": "Ні, ніяк" },
+        { "text": "Лише через `unittest`" }
+      ]
+    }
+  ]
+}

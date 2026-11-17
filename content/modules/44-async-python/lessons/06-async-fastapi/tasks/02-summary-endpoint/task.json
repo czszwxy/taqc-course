@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "An async endpoint that calls two services at once",
+  "statement": "Картка товару показує ціну й залишок, які дають два різні асинхронні сервіси (`fakes.py`, лише для читання): `await services.price(sku)` і `await services.stock(sku)`; невідомий товар — `NotFound`.\n\nУ `solution.py`:\n\n1. Залежність **`get_services()`** повертає `SERVICES` (модульний екземпляр `CatalogServices()`); тести підмінять її через `app.dependency_overrides`.\n2. Ендпоінт **`async def`** `GET /products/{sku}/summary` → `{\"sku\", \"price\", \"stock\", \"available\"}`, де `available` — `stock > 0`. Ціну й залишок запитуй **одночасно** (тест рахує пік у `services.peak` — має бути 2).\n3. `NotFound` — `404` з `{\"detail\": \"Product not found\"}`.",
+  "hints": [
+    "`SERVICES = CatalogServices()` і `def get_services(): return SERVICES`; в ендпоінті — `services: Annotated[CatalogServices, Depends(get_services)]`.",
+    "`price, stock = await asyncio.gather(services.price(sku), services.stock(sku))` у `try` / `except NotFound: raise HTTPException(status_code=404, ...)`.",
+    "Ендпоінт оголоси як `async def` — тест це перевіряє."
+  ],
+  "explanation": "`async def`-ендпоінт виконується в циклі подій і може сам запускати конкурентні виклики: два незалежні сервіси відповідають разом, і картка товару чекає на повільніший із них, а не на суму. Сервіси приходять через залежність — тому тест підставляє фейки з лічильником і перевіряє і відповідь, і те, що виклики справді йшли одночасно. Доменна помилка `NotFound` перетворюється на `404` на межі HTTP.",
+  "codeRules": [
+    { "kind": "require", "pattern": "Depends\\s*\\(\\s*get_services\\s*\\)", "message": "Отримай сервіси через Depends(get_services)." }
+  ]
+}

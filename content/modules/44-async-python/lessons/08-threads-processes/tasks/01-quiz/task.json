@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "Threads, processes and the GIL",
+  "show": 6,
+  "hints": ["I/O — asyncio або потоки. Обчислення — процеси. GIL — один потік Python-коду за раз."],
+  "questions": [
+    {
+      "id": "gil",
+      "kind": "single",
+      "text": "Що означає GIL у звичайному CPython?",
+      "options": [
+        { "text": "У кожен момент Python-код процесу виконує лише один потік", "correct": true },
+        { "text": "Програма може мати лише один потік" },
+        { "text": "Python не може використовувати кілька процесів" }
+      ]
+    },
+    {
+      "id": "threads-io",
+      "kind": "single",
+      "text": "Чому потоки все одно допомагають для мережевих запитів?",
+      "options": [
+        { "text": "Поки потік чекає на мережу, GIL вільний, і працюють інші потоки", "correct": true },
+        { "text": "Мережеві запити не підкоряються GIL і виконуються на різних ядрах" },
+        { "text": "Не допомагають" }
+      ]
+    },
+    {
+      "id": "cpu",
+      "kind": "single",
+      "text": "Треба створити мініатюри для 10 000 фото (важкі обчислення). Що обрати?",
+      "options": [
+        { "text": "`ProcessPoolExecutor` — кожен процес має свій GIL і своє ядро", "correct": true },
+        { "text": "asyncio.gather" },
+        { "text": "ThreadPoolExecutor" }
+      ]
+    },
+    {
+      "id": "pickle",
+      "kind": "single",
+      "text": "Чому в `ProcessPoolExecutor.map` не можна передати lambda?",
+      "options": [
+        { "text": "Функцію треба передати в інший процес через pickle, а lambda не серіалізується", "correct": true },
+        { "text": "map не приймає функції" },
+        { "text": "lambda повільніша" }
+      ]
+    },
+    {
+      "id": "spawn",
+      "kind": "single",
+      "text": "Навіщо на Windows ховати створення пулу процесів під `if __name__ == \"__main__\":`?",
+      "options": [
+        { "text": "Дочірні процеси заново імпортують модуль (spawn) — без захисту вони теж почали б створювати процеси", "correct": true },
+        { "text": "Інакше програма не запуститься на Linux" },
+        { "text": "Так швидше" }
+      ]
+    },
+    {
+      "id": "to-thread",
+      "kind": "single",
+      "text": "Async-сервіс мусить користуватися старим синхронним SDK. Як не заблокувати цикл подій?",
+      "options": [
+        { "text": "`await asyncio.to_thread(sdk.call, ...)`", "correct": true },
+        { "text": "Викликати `sdk.call` у `async def` як є" },
+        { "text": "`await sdk.call(...)`" }
+      ]
+    },
+    {
+      "id": "small-tasks",
+      "kind": "single",
+      "text": "Чи варто запускати процеси, щоб скласти 100 чисел?",
+      "options": [
+        { "text": "Ні: запуск процесу й pickle коштують більше, ніж сама робота", "correct": true },
+        { "text": "Так, завжди швидше" },
+        { "text": "Так, якщо ядер більше чотирьох" }
+      ]
+    },
+    {
+      "id": "free-threaded",
+      "kind": "single",
+      "text": "Що таке free-threaded збірка Python 3.13?",
+      "options": [
+        { "text": "Експериментальна збірка CPython без GIL; поки не стандарт", "correct": true },
+        { "text": "Безкоштовна версія Python" },
+        { "text": "Збірка, у якій немає потоків" }
+      ]
+    }
+  ]
+}

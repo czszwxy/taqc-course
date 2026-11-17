@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Walk through pages with an async generator",
+  "statement": "API замовлень віддає їх сторінками: `GET /orders?page=N` (N з 1) повертає `{\"items\": [...], \"next_page\": <номер або null>}`. Кожне замовлення — `{\"id\", \"status\", \"total\"}`.\n\n1. **`async def iter_orders(client)`** — **асинхронний генератор**, що віддає замовлення по одному, сторінка за сторінкою, поки `next_page` не стане `None`. Помилковий статус відповіді (4xx / 5xx) — `httpx.HTTPStatusError`.\n2. **`async def paid_order_ids(client, limit=None)`** — список `id` замовлень зі статусом `paid` (через `async for`); з `limit` — не більше `limit` штук, і сторінки після потрібної **не запитуються**.\n\n`client` — `httpx.AsyncClient` з `base_url` магазину (тести підставляють `MockTransport`).",
+  "hints": [
+    "Генератор: `page = 1`, `while page is not None:` → `response = await client.get(\"/orders\", params={\"page\": page})`, `response.raise_for_status()`, `for order in body[\"items\"]: yield order`, `page = body[\"next_page\"]`.",
+    "`paid_order_ids`: `async for order in iter_orders(client):` і `break`, щойно назбиралося `limit` id.",
+    "Не збирай усі сторінки в список у генераторі — тоді `limit` не зекономить жодного запиту."
+  ],
+  "explanation": "Асинхронний генератор ховає пагінацію: зовні — просто потік замовлень через `async for`, усередині — запит наступної сторінки лише тоді, коли попередню перебрали. Тому `break` після `limit` знайдених замовлень економить решту запитів. `raise_for_status()` перетворює 500 на виняток, інакше код намагався б читати `items` зі сторінки помилки.",
+  "codeRules": [
+    { "kind": "require", "pattern": "yield", "message": "iter_orders має бути асинхронним генератором: async def + yield." },
+    { "kind": "require", "pattern": "async\\s+for", "message": "Перебирай замовлення через async for." }
+  ]
+}

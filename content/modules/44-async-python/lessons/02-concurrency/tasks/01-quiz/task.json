@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "gather, tasks and TaskGroup",
+  "show": 6,
+  "hints": ["gather — порядок аргументів. TaskGroup скасовує решту при помилці. as_completed — порядок завершення."],
+  "questions": [
+    {
+      "id": "gather-order",
+      "kind": "single",
+      "text": "`await asyncio.gather(slow(), fast())` — `slow` завершується останньою. У якому порядку результати?",
+      "options": [
+        { "text": "`[результат slow, результат fast]` — у порядку аргументів", "correct": true },
+        { "text": "`[результат fast, результат slow]` — у порядку завершення" },
+        { "text": "У випадковому порядку" }
+      ]
+    },
+    {
+      "id": "gather-fail",
+      "kind": "single",
+      "text": "У `gather(a(), b(), c())` без `return_exceptions` впала `a()`. Що з `b` і `c`?",
+      "options": [
+        { "text": "Виняток `a` летить з `await gather`, а `b` і `c` продовжують працювати — їх не скасовано", "correct": true },
+        { "text": "`b` і `c` автоматично скасовуються" },
+        { "text": "`gather` чекає на всіх, а потім кидає `ExceptionGroup`" }
+      ]
+    },
+    {
+      "id": "return-exceptions",
+      "kind": "single",
+      "text": "Що робить `return_exceptions=True` у `gather`?",
+      "options": [
+        { "text": "Повертає винятки в списку результатів на місці відповідних задач", "correct": true },
+        { "text": "Приховує винятки зовсім" },
+        { "text": "Повторює задачу, що впала" }
+      ]
+    },
+    {
+      "id": "taskgroup",
+      "kind": "single",
+      "text": "Одна задача в `async with asyncio.TaskGroup()` піднімає виняток. Що станеться?",
+      "options": [
+        { "text": "Інші задачі групи скасують, а помилки вилетять разом як `ExceptionGroup`", "correct": true },
+        { "text": "Інші продовжать, помилку проігнорують" },
+        { "text": "Програма завершиться" }
+      ]
+    },
+    {
+      "id": "except-star",
+      "kind": "single",
+      "text": "Як зловити `TimeoutError`, що вилетів з `TaskGroup`?",
+      "options": [
+        { "text": "`except* TimeoutError:`", "correct": true },
+        { "text": "`except TimeoutError:`" },
+        { "text": "`except ExceptionGroup(TimeoutError):`" }
+      ]
+    },
+    {
+      "id": "create-task",
+      "kind": "single",
+      "text": "Коли починає виконуватися `task = asyncio.create_task(fetch())`?",
+      "options": [
+        { "text": "Одразу, як тільки поточна корутина віддасть керування на найближчому `await`", "correct": true },
+        { "text": "Лише коли напишеш `await task`" },
+        { "text": "Після завершення програми" }
+      ]
+    },
+    {
+      "id": "as-completed",
+      "kind": "single",
+      "text": "Що дає `asyncio.as_completed(...)`?",
+      "options": [
+        { "text": "Результати в порядку завершення — можна обробляти найшвидші першими", "correct": true },
+        { "text": "Результати в порядку аргументів" },
+        { "text": "Лише перший результат" }
+      ]
+    },
+    {
+      "id": "test-concurrency",
+      "kind": "single",
+      "text": "Як надійно перевірити в тесті, що `fetch_all` робить запити одночасно?",
+      "options": [
+        { "text": "Фейковий сервіс рахує одночасні виклики (пік), тест перевіряє цей пік", "correct": true },
+        { "text": "Поміряти час і порівняти з точним числом секунд" },
+        { "text": "Перевірити, що результат правильний" }
+      ]
+    }
+  ]
+}

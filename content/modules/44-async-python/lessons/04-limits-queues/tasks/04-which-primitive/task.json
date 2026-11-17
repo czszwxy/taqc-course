@@ -1,0 +1,24 @@
+{
+  "type": "table",
+  "title": "Semaphore, Lock, Queue or Event?",
+  "statement": "Краулер і розсилка листів працюють на asyncio. Для кожної ситуації обери примітив синхронізації.",
+  "givenColumns": ["Situation"],
+  "answerColumns": [
+    { "id": "primitive", "label": "Primitive", "options": ["asyncio.Semaphore", "asyncio.Lock", "asyncio.Queue", "asyncio.Event"] }
+  ],
+  "rows": [
+    { "given": ["The partner API allows at most 5 requests at the same time"], "answers": { "primitive": "asyncio.Semaphore" } },
+    { "given": ["Ten requests notice an expired token at once — refresh it only once"], "answers": { "primitive": "asyncio.Lock" }, "explain": "Між «перевірив» і «оновив» є `await` — лише одна корутина має бути всередині." },
+    { "given": ["A producer reads 10 000 emails from a file and 4 workers send them"], "answers": { "primitive": "asyncio.Queue" } },
+    { "given": ["All workers must wait until the cache is warmed up, then start together"], "answers": { "primitive": "asyncio.Event" } },
+    { "given": ["Keep at most 10 open database connections from the whole app"], "answers": { "primitive": "asyncio.Semaphore" } },
+    { "given": ["Several crawlers append to one shared report file with an awaited write in the middle"], "answers": { "primitive": "asyncio.Lock" } },
+    { "given": ["Crawlers hand finished pages to a single writer coroutine"], "answers": { "primitive": "asyncio.Queue" } },
+    { "given": ["Tell every waiting worker that shutdown has started"], "answers": { "primitive": "asyncio.Event" } }
+  ],
+  "hints": [
+    "«Не більше N одночасно» — Semaphore; «лише один» — Lock.",
+    "«Передати роботу / дані» — Queue; «сигнал для всіх» — Event."
+  ],
+  "explanation": "Semaphore обмежує кількість одночасних операцій (запити до API, з'єднання з базою). Lock — окремий випадок «лише одна корутина», коли між перевіркою і зміною спільного стану є `await`. Queue передає роботу чи дані між виробниками й споживачами. Event — разовий сигнал, на який чекають усі охочі."
+}

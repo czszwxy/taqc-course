@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "A dashboard that fails fast",
+  "statement": "Панель менеджера показує три блоки: `orders`, `stock` і `revenue`. Кожен вантажиться окремим повільним викликом API (`fakes.py`, лише для читання): `await api.load(name)`. Якщо хоч один блок не вантажиться, панель показує помилку — і **немає сенсу** чекати на решту: повільні виклики треба **скасувати**, щоб не тримати з'єднання.\n\nНапиши **`async def load_dashboard(api)`**:\n\n- вантажить три блоки **одночасно** і повертає `{\"orders\": ..., \"stock\": ..., \"revenue\": ...}`;\n- якщо якийсь `api.load` піднімає `ApiError`, решта незавершених викликів скасовується (`api.cancelled` покаже, які), а з функції вилітає `ExceptionGroup` з цим `ApiError`.\n\nПідказка: `gather` тут не підходить — при помилці він не скасовує решту.",
+  "hints": [
+    "`async with asyncio.TaskGroup() as tg:` і всередині `tg.create_task(api.load(\"orders\"))` для кожного блоку.",
+    "Після виходу з `async with` усі задачі завершені: результат — `task.result()`.",
+    "Нічого не лови: `TaskGroup` сам скасує решту і підніме `ExceptionGroup`."
+  ],
+  "explanation": "`TaskGroup` дає структуровану конкурентність: блок `async with` чекає на всі задачі, а при першій помилці скасовує решту і піднімає `ExceptionGroup`. `gather` без `return_exceptions` теж повернув би помилку одразу, але повільні виклики продовжили б працювати у фоні — саме те, що тест перевіряє через `api.cancelled`. Обробник вище ловитиме таку помилку через `except* ApiError`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "TaskGroup", "message": "Скористайся asyncio.TaskGroup — він скасовує решту при помилці." }
+  ]
+}

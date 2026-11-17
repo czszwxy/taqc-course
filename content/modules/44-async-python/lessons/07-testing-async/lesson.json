@@ -1,0 +1,28 @@
+{
+  "title": "Testing async code",
+  "minutes": 60,
+  "summary": "pytest-asyncio: @pytest.mark.asyncio, асинхронні фікстури через @pytest_asyncio.fixture, свій цикл подій на кожен тест; AsyncMock (return_value, side_effect, assert_awaited_once_with), фейки з лічильниками, час як залежність (годинник і sleep), asyncio.Event щоб «притримати» виклик, і чому sleep у тестах робить їх нестабільними",
+  "resources": [
+    {
+      "title": "pytest-asyncio documentation",
+      "url": "https://pytest-asyncio.readthedocs.io/en/latest/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: unittest.mock — AsyncMock",
+      "url": "https://docs.python.org/3/library/unittest.mock.html#unittest.mock.AsyncMock",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: asyncio.Event",
+      "url": "https://docs.python.org/3/library/asyncio-sync.html#asyncio.Event",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

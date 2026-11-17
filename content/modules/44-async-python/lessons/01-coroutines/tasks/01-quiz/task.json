@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "Coroutines and the event loop",
+  "show": 6,
+  "hints": ["async def повертає корутину. await виконує і віддає керування. time.sleep блокує всіх."],
+  "questions": [
+    {
+      "id": "call-returns",
+      "kind": "single",
+      "text": "`async def get_rate(): ...`. Що поверне виклик `get_rate()` без `await`?",
+      "options": [
+        { "text": "Об'єкт-корутину — сама функція ще не почала виконуватися", "correct": true },
+        { "text": "Результат функції" },
+        { "text": "`None`" }
+      ]
+    },
+    {
+      "id": "concurrency",
+      "kind": "single",
+      "text": "Чим asyncio допомагає бекенду?",
+      "options": [
+        { "text": "Поки одна операція чекає на мережу чи базу, той самий потік виконує інші", "correct": true },
+        { "text": "Розподіляє обчислення на всі ядра процесора" },
+        { "text": "Робить кожен запит до бази швидшим" }
+      ]
+    },
+    {
+      "id": "time-sleep",
+      "kind": "single",
+      "text": "Що станеться, якщо в одній з корутин викликати `time.sleep(2)`?",
+      "options": [
+        { "text": "На 2 секунди зупиниться весь цикл подій — інші корутини теж чекатимуть", "correct": true },
+        { "text": "Зачекає лише ця корутина, інші продовжать" },
+        { "text": "Python автоматично замінить його на `asyncio.sleep`" }
+      ]
+    },
+    {
+      "id": "await-where",
+      "kind": "single",
+      "text": "Де можна писати `await`?",
+      "options": [
+        { "text": "Лише всередині `async def`", "correct": true },
+        { "text": "Будь-де у файлі" },
+        { "text": "Лише в `main()`" }
+      ]
+    },
+    {
+      "id": "asyncio-run",
+      "kind": "single",
+      "text": "Для чого `asyncio.run(main())`?",
+      "options": [
+        { "text": "Створити цикл подій, виконати корутину до кінця й закрити цикл — вхід з синхронного коду", "correct": true },
+        { "text": "Запустити корутину в окремому процесі" },
+        { "text": "Викликати корутину з іншої корутини" }
+      ]
+    },
+    {
+      "id": "never-awaited",
+      "kind": "single",
+      "text": "Python пише `RuntimeWarning: coroutine 'save_order' was never awaited`. Що найімовірніше?",
+      "options": [
+        { "text": "Десь викликали `save_order(...)` без `await` — замовлення так і не збереглося", "correct": true },
+        { "text": "Корутина виконувалася надто довго" },
+        { "text": "Забули `asyncio.run` у самій `save_order`" }
+      ]
+    },
+    {
+      "id": "cpu",
+      "kind": "single",
+      "text": "Чи пришвидшить asyncio підрахунок суми мільярда чисел?",
+      "options": [
+        { "text": "Ні: там немає очікування, процесор зайнятий увесь час", "correct": true },
+        { "text": "Так, у кілька разів" },
+        { "text": "Так, якщо розбити на 10 корутин" }
+      ]
+    },
+    {
+      "id": "single-thread",
+      "kind": "single",
+      "text": "Скільки потоків використовує звичайна програма на asyncio?",
+      "options": [
+        { "text": "Один — перемикання відбувається на `await`", "correct": true },
+        { "text": "По одному на кожну корутину" },
+        { "text": "Стільки, скільки ядер у процесора" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "title": "Timeouts, cancellation and retries",
+  "minutes": 65,
+  "summary": "asyncio.timeout і wait_for (вбудований TimeoutError), що відбувається при скасуванні задачі: CancelledError на найближчому await, прибирання у finally, чому CancelledError не ловлять через except Exception і не «ковтають», повтори з затримкою для тимчасових помилок і функція sleep як залежність для тестів",
+  "resources": [
+    {
+      "title": "Python docs: Coroutines and Tasks — timeouts and cancellation",
+      "url": "https://docs.python.org/3/library/asyncio-task.html#timeouts",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: asyncio exceptions (CancelledError)",
+      "url": "https://docs.python.org/3/library/asyncio-exceptions.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "AWS Builders' Library: Timeouts, retries and backoff with jitter",
+      "url": "https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

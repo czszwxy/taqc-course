@@ -1,0 +1,26 @@
+{
+  "type": "table",
+  "title": "Which AsyncMock feature?",
+  "statement": "Ти тестуєш асинхронний клієнт погоди з фейковим `fetch = AsyncMock(...)`. Для кожної потреби обери можливість `AsyncMock`.",
+  "givenColumns": ["Need"],
+  "answerColumns": [
+    {
+      "id": "feature",
+      "label": "AsyncMock feature",
+      "options": ["return_value=…", "side_effect=[…] (a list)", "side_effect=an async function", "assert_awaited_once_with(…)", "await_count", "assert_not_awaited()"]
+    }
+  ],
+  "rows": [
+    { "given": ["Every await of the fake returns the same forecast"], "answers": { "feature": "return_value=…" } },
+    { "given": ["The first call times out, the retry gets a forecast"], "answers": { "feature": "side_effect=[…] (a list)" } },
+    { "given": ["The answer depends on the city passed in"], "answers": { "feature": "side_effect=an async function" } },
+    { "given": ["Check it was awaited exactly once, for \"Lviv\""], "answers": { "feature": "assert_awaited_once_with(…)" } },
+    { "given": ["Check that three retries mean three awaits"], "answers": { "feature": "await_count" } },
+    { "given": ["Check that a cache hit did not call the partner at all"], "answers": { "feature": "assert_not_awaited()" } }
+  ],
+  "hints": [
+    "Що повертати: одне значення — `return_value`, послідовність результатів і помилок — список у `side_effect`, обчислення з аргументів — функція в `side_effect`.",
+    "Що перевіряти: точний виклик — `assert_awaited_once_with`, кількість — `await_count`, «не було» — `assert_not_awaited`."
+  ],
+  "explanation": "`AsyncMock` налаштовують відповіддю (`return_value`, `side_effect` — список для послідовності значень і винятків або функція для відповіді з аргументів) і перевіряють саме очікування: `assert_awaited_once_with`, `await_count`, `assert_not_awaited`. Перевірки `called` пройдуть і для корутини, яку створили, але так і не дочекалися."
+}

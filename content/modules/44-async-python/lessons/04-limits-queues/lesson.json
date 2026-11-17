@@ -1,0 +1,23 @@
+{
+  "title": "Semaphores, locks and queues",
+  "minutes": 60,
+  "summary": "Як не покласти партнерський API: Semaphore обмежує кількість одночасних запитів, Lock захищає спільний стан, коли між читанням і записом є await, Queue і пул воркерів (task_done, join, зупинка воркерів), Event — сигнал «можна починати» для всіх, хто чекає",
+  "resources": [
+    {
+      "title": "Python docs: Synchronization Primitives",
+      "url": "https://docs.python.org/3/library/asyncio-sync.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Lock, Event, Semaphore",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: Queues",
+      "url": "https://docs.python.org/3/library/asyncio-queue.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "приклад пулу воркерів",
+      "needsVerification": true
+    }
+  ]
+}

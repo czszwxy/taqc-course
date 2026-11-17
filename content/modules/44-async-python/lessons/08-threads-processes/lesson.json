@@ -1,0 +1,35 @@
+{
+  "title": "Threads, processes or asyncio?",
+  "minutes": 55,
+  "summary": "I/O-bound і CPU-bound задачі, GIL у звичайному CPython (і експериментальна збірка без GIL у 3.13), потоки для блокувальних бібліотек (ThreadPoolExecutor, asyncio.to_thread), процеси для обчислень (ProcessPoolExecutor, pickle, spawn на Windows і if __name__ == \"__main__\"), як поєднувати їх з asyncio і як обрати модель",
+  "resources": [
+    {
+      "title": "Python docs: concurrent.futures",
+      "url": "https://docs.python.org/3/library/concurrent.futures.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: multiprocessing — contexts and start methods",
+      "url": "https://docs.python.org/3/library/multiprocessing.html#contexts-and-start-methods",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: What's New in Python 3.13 — free-threaded CPython",
+      "url": "https://docs.python.org/3/whatsnew/3.13.html#free-threaded-cpython",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Python threading vs multiprocessing vs asyncio",
+      "url": "https://www.youtube.com/results?search_query=python+threading+vs+multiprocessing+vs+asyncio",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

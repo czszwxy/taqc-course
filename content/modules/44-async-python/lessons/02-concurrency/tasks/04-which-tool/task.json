@@ -1,0 +1,26 @@
+{
+  "type": "table",
+  "title": "gather, TaskGroup, create_task or as_completed?",
+  "statement": "Агрегатор новин збирає стрічки з кількох джерел. Для кожної ситуації обери інструмент asyncio.",
+  "givenColumns": ["Situation"],
+  "answerColumns": [
+    {
+      "id": "tool",
+      "label": "Tool",
+      "options": ["asyncio.gather(...)", "asyncio.gather(..., return_exceptions=True)", "asyncio.TaskGroup", "asyncio.create_task(...)", "asyncio.as_completed(...)", "a plain loop with await"]
+    }
+  ],
+  "rows": [
+    { "given": ["Load 5 feeds at once and get the results in the same order as the feed list"], "answers": { "tool": "asyncio.gather(...)" } },
+    { "given": ["Load 5 feeds at once; if one fails, stop the others and report the error"], "answers": { "tool": "asyncio.TaskGroup" } },
+    { "given": ["Load 50 feeds at once and show the ones that worked plus a list of the broken ones"], "answers": { "tool": "asyncio.gather(..., return_exceptions=True)" } },
+    { "given": ["Start refreshing the weather widget now and use its result later in the function"], "answers": { "tool": "asyncio.create_task(...)" } },
+    { "given": ["Show each feed on the page as soon as it arrives, fastest first"], "answers": { "tool": "asyncio.as_completed(...)" } },
+    { "given": ["Log in first, then use the token for the next call"], "answers": { "tool": "a plain loop with await" }, "explain": "Другий крок залежить від першого — тут нічого виконувати одночасно." }
+  ],
+  "hints": [
+    "Спершу: чи незалежні кроки? Якщо один потребує результату іншого — просто `await` по черзі.",
+    "Незалежні: потрібен порядок аргументів, «зупинити всіх при помилці», «зібрати і помилки», «хто перший» чи «почати зараз»."
+  ],
+  "explanation": "Залежні кроки (вхід → токен → запит) виконуються по черзі звичайними `await`. Для незалежних: `gather` — результати в порядку аргументів, `return_exceptions=True` — зібрати і успіхи, і помилки, `TaskGroup` — при першій помилці скасувати решту, `create_task` — почати зараз, дочекатися пізніше, `as_completed` — обробляти в порядку завершення."
+}

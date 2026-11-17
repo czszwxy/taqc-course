@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "variantOf": "02-fetch-prices",
+  "title": "Load profiles and keep the failures",
+  "statement": "Розсилка новин вантажить профілі покупців з повільного сервісу (`fakes.py`, лише для читання). Деякі профілі вже видалені — сервіс піднімає `ProfileNotFound`, інші можуть впасти з `ServiceError`. Розсилка не має зупинятися через одного покупця.\n\nНапиши **`async def load_profiles(service, user_ids)`**, що повертає пару `(profiles, failed)`:\n\n- `profiles` — словник «id → профіль» для успішних, у порядку `user_ids`;\n- `failed` — список id, для яких сервіс підняв **будь-який** виняток, у порядку `user_ids`;\n- усі запити — **одночасно** (пік у `service.peak`), повторені id — один раз;\n- порожній список — `({}, [])`.",
+  "hints": [
+    "Унікальні id: `list(dict.fromkeys(user_ids))`.",
+    "`results = await asyncio.gather(*(service.get_profile(i) for i in unique), return_exceptions=True)` — винятки повернуться в списку на своїх місцях.",
+    "Пройди `zip(unique, results)`: `isinstance(result, Exception)` → у `failed`, інакше — у `profiles`."
+  ],
+  "explanation": "Без `return_exceptions` перший же видалений профіль обірвав би `gather` і всю розсилку. З `return_exceptions=True` кожен результат — або профіль, або виняток на своєму місці, тож їх легко розділити, зберігши порядок. Запити при цьому йдуть одночасно, і повільні профілі не затримують решту.",
+  "codeRules": [
+    { "kind": "require", "pattern": "return_exceptions\\s*=\\s*True", "message": "Збери і результати, і помилки: gather(..., return_exceptions=True)." }
+  ]
+}

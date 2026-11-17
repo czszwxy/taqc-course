@@ -1,0 +1,28 @@
+{
+  "title": "Async endpoints in FastAPI",
+  "minutes": 60,
+  "summary": "Як FastAPI виконує async def (на циклі подій) і def (у пулі з 40 потоків), чому блокувальний виклик в async-ендпоінті зупиняє весь сервер, asyncio.to_thread, конкурентні виклики всередині ендпоінта, асинхронні залежності, спільний AsyncClient у lifespan, тести через httpx.AsyncClient + ASGITransport",
+  "resources": [
+    {
+      "title": "FastAPI docs: Concurrency and async / await",
+      "url": "https://fastapi.tiangolo.com/async/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: Async Tests",
+      "url": "https://fastapi.tiangolo.com/advanced/async-tests/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: asyncio.to_thread",
+      "url": "https://docs.python.org/3/library/asyncio-task.html#running-in-threads",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

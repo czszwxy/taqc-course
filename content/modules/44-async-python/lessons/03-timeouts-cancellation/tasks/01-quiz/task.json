@@ -1,0 +1,89 @@
+{
+  "type": "quiz",
+  "title": "Timeouts, cancellation and retries",
+  "show": 6,
+  "hints": ["Тайм-аут скасовує внутрішню операцію і кидає TimeoutError. CancelledError — BaseException. Повторюй лише тимчасові помилки."],
+  "questions": [
+    {
+      "id": "timeout-error",
+      "kind": "single",
+      "text": "Що вилітає з `async with asyncio.timeout(1):`, якщо операція не встигла?",
+      "options": [
+        { "text": "Вбудований `TimeoutError`, а внутрішню операцію скасовано", "correct": true },
+        { "text": "`asyncio.CancelledError`" },
+        { "text": "Нічого: операція просто продовжується у фоні" }
+      ]
+    },
+    {
+      "id": "cancel-when",
+      "kind": "single",
+      "text": "Коли задача реально отримує скасування після `task.cancel()`?",
+      "options": [
+        { "text": "На найближчому `await` всередині неї вилітає `CancelledError`", "correct": true },
+        { "text": "Миттєво, навіть посеред обчислень" },
+        { "text": "Лише після того, як завершиться сама" }
+      ]
+    },
+    {
+      "id": "except-exception",
+      "kind": "single",
+      "text": "Чому `except Exception:` не підходить для прибирання при скасуванні?",
+      "options": [
+        { "text": "`CancelledError` — нащадок `BaseException`, а не `Exception`, тож цей блок його не ловить", "correct": true },
+        { "text": "`except Exception` заборонений в асинхронному коді" },
+        { "text": "Він ловить скасування, але не дає зробити `await`" }
+      ]
+    },
+    {
+      "id": "swallow",
+      "kind": "single",
+      "text": "Що поганого в `except asyncio.CancelledError: pass`?",
+      "options": [
+        { "text": "Задача не завершиться як скасована — тайм-аути, TaskGroup і зупинка сервера покладаються на це", "correct": true },
+        { "text": "Нічого — це правильний спосіб обробити скасування" },
+        { "text": "Python не дозволяє ловити CancelledError" }
+      ]
+    },
+    {
+      "id": "what-to-retry",
+      "kind": "multiple",
+      "text": "Які помилки варто повторювати з затримкою?",
+      "options": [
+        { "text": "503 Service Unavailable від перевантаженого партнера", "correct": true },
+        { "text": "Обрив з'єднання посеред запиту", "correct": true },
+        { "text": "401 — неправильний API-ключ" },
+        { "text": "422 — невалідні дані в запиті" }
+      ]
+    },
+    {
+      "id": "backoff",
+      "kind": "single",
+      "text": "Навіщо затримка між повторами зростає (backoff)?",
+      "options": [
+        { "text": "Щоб не добивати перевантажений сервіс шквалом повторів і дати йому відновитися", "correct": true },
+        { "text": "Щоб тести тривали довше" },
+        { "text": "Так вимагає asyncio" }
+      ]
+    },
+    {
+      "id": "fake-sleep",
+      "kind": "single",
+      "text": "Навіщо передавати функцію `sleep` параметром у `with_retries`?",
+      "options": [
+        { "text": "Тест підставить фейк, що записує затримки, і не чекатиме реальні секунди", "correct": true },
+        { "text": "Щоб можна було використати `time.sleep`" },
+        { "text": "Без цього повтори не працюють" }
+      ]
+    },
+    {
+      "id": "cleanup-place",
+      "kind": "single",
+      "text": "Де надійніше звільняти ресурс (з'єднання, бронь), щоб це сталося і при помилці, і при скасуванні?",
+      "options": [
+        { "text": "У `finally` (або `async with`), чи в `except BaseException` з повторним `raise`", "correct": true },
+        { "text": "Після `return`" },
+        { "text": "У `except Exception`" }
+      ]
+    }
+  ]
+}

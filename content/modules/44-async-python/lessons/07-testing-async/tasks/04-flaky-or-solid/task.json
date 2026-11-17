@@ -1,0 +1,25 @@
+{
+  "type": "classify",
+  "title": "Flaky or deterministic?",
+  "statement": "Тести асинхронного агрегатора новин. Для кожного прийому визнач: він робить тест **нестабільним** (іноді падає без змін у коді) чи **детермінованим**.",
+  "categories": [
+    { "id": "flaky", "label": "Flaky", "description": "Залежить від швидкості машини, мережі чи порядку" },
+    { "id": "solid", "label": "Deterministic", "description": "Однаковий результат щоразу" }
+  ],
+  "items": [
+    { "id": "sleep-wait", "text": "`create_task(refresh())`, then `await asyncio.sleep(0.5)` and assert the feed is refreshed", "category": "flaky", "explain": "На повільному CI 0.5 с може не вистачити; треба `await task`." },
+    { "id": "elapsed", "text": "Assert the whole request took less than 0.2 seconds", "category": "flaky" },
+    { "id": "peak", "text": "A fake service counts the peak of simultaneous calls", "category": "solid" },
+    { "id": "clock", "text": "A fake clock passed into the cache as a parameter", "category": "solid" },
+    { "id": "event", "text": "An `asyncio.Event` holds a fake call until the test calls `set()`", "category": "solid" },
+    { "id": "staging", "text": "A unit test calls the real staging API of the news partner", "category": "flaky" },
+    { "id": "fake-sleep", "text": "A fake `sleep` that only records the delays", "category": "solid" },
+    { "id": "await-task", "text": "`await task` instead of waiting a fixed time", "category": "solid" },
+    { "id": "as-completed-order", "text": "Assert the exact order of `as_completed` results for two fakes with the same delay", "category": "flaky" },
+    { "id": "shared-state", "text": "Two tests share one module-level cache object without resetting it", "category": "flaky", "explain": "Результат залежить від порядку запуску тестів." }
+  ],
+  "show": 8,
+  "passScore": 0.8,
+  "hints": ["Справжній час, мережа, однакові затримки й спільний стан — джерела нестабільності. Події, лічильники, фейковий час — ні."],
+  "explanation": "Асинхронні тести стають нестабільними, коли спираються на справжній час (`sleep` «на око», міряння тривалості), справжню мережу, випадковий порядок однаково швидких задач чи стан, що переживає тест. Детерміновані прийоми замінюють усе це керованими речами: `await task`, `asyncio.Event`, лічильник одночасних викликів, фейкові годинник і `sleep`, свіжі об'єкти в кожному тесті."
+}

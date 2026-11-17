@@ -44,5 +44,9 @@ TEMPLATES = [
 
 DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}}
 
+# Лише для тестів: швидкий хешер паролів, інакше кожен create_user займає помітний час.
+# У справжньому проєкті тут лишається повільний безпечний хешер за замовчуванням.
+PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
+
 USE_TZ = True
 TIME_ZONE = "Europe/Kyiv"

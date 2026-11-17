@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Your first coroutines: a cart total",
+  "statement": "Ціни в магазині дає асинхронний сервіс — `prices.py` (лише для читання): `await service.get_price(sku)` повертає ціну в гривнях або піднімає `UnknownProduct`.\n\nНапиши в `solution.py`:\n\n1. **`async def cart_total(service, cart)`** — `cart` — словник «sku → кількість»; повертає суму `ціна × кількість` (ціле). Порожній кошик — `0`. Невідомий товар — `UnknownProduct` летить далі.\n2. **`def checkout_total(cart)`** — звичайна (не async) функція для старого коду: створює `PriceService()` і повертає `cart_total` через `asyncio.run`.\n\n```python\nasyncio.run(cart_total(PriceService(), {\"MOUSE-01\": 2, \"CABLE-C1\": 1}))   # 2097\ncheckout_total({\"MOUSE-01\": 2, \"CABLE-C1\": 1})                           # 2097\n```\n\nЗадача запускається на твоєму комп'ютері. Щоб подивитися результат через **Run**, додай унизу `if __name__ == \"__main__\": print(checkout_total({...}))`.",
+  "hints": [
+    "`async def cart_total(service, cart):` — усередині `price = await service.get_price(sku)` для кожного товару.",
+    "Без `await` ти отримаєш корутину замість ціни, і множення впаде з `TypeError`.",
+    "`def checkout_total(cart): return asyncio.run(cart_total(PriceService(), cart))`."
+  ],
+  "explanation": "Корутина — це функція, що вміє чекати: кожен `await service.get_price(...)` віддає керування циклу подій, поки «мережа» відповідає. Звичайний код у корутину не зайде — для цього `asyncio.run`, один виклик на вході. Головні пастки: забутий `await` (корутина замість числа) і `time.sleep` чи інший блокувальний виклик усередині `async def`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "async\\s+def\\s+cart_total", "message": "cart_total має бути корутиною: async def." },
+    { "kind": "forbid", "pattern": "time\\.sleep", "message": "Без time.sleep: він блокує цикл подій." }
+  ]
+}

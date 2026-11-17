@@ -1,0 +1,14 @@
+{
+  "title": "Async Python",
+  "description": "Як один процес Python обслуговує сотні запитів, що чекають на мережу: корутини й цикл подій, gather і TaskGroup, тайм-аути й скасування, семафори й черги, асинхронний HTTP-клієнт httpx, async-ендпоінти FastAPI, тести з pytest-asyncio і вибір між asyncio, потоками й процесами. Задачі запускаються на твоєму комп'ютері в середовищі курсу (lab/.venv): браузерний Python не вміє чекати на події asyncio з тестів.",
+  "goals": [
+    "Explain the event loop and write coroutines with async / await",
+    "Run independent work concurrently with gather and TaskGroup",
+    "Protect code with timeouts, handle cancellation and retry transient failures",
+    "Limit concurrency with semaphores and process work with queues and workers",
+    "Call HTTP APIs concurrently with httpx.AsyncClient and test them without a network",
+    "Write async FastAPI endpoints without blocking the event loop",
+    "Test async code deterministically with pytest-asyncio and AsyncMock",
+    "Choose between asyncio, threads and processes for a given workload"
+  ]
+}

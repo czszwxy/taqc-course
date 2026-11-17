@@ -1,0 +1,89 @@
+{
+  "type": "quiz",
+  "title": "async def endpoints",
+  "show": 6,
+  "hints": ["async def — цикл подій, def — пул потоків. Блокувальне в async def зупиняє всіх."],
+  "questions": [
+    {
+      "id": "where-async",
+      "kind": "single",
+      "text": "Де FastAPI виконує ендпоінт `async def`?",
+      "options": [
+        { "text": "Прямо в циклі подій", "correct": true },
+        { "text": "В окремому процесі" },
+        { "text": "У пулі потоків" }
+      ]
+    },
+    {
+      "id": "where-def",
+      "kind": "single",
+      "text": "А звичайний `def`-ендпоінт?",
+      "options": [
+        { "text": "У пулі потоків — тому синхронний виклик у ньому не зупиняє цикл подій", "correct": true },
+        { "text": "Теж у циклі подій" },
+        { "text": "Лише по одному запиту за раз на весь сервер" }
+      ]
+    },
+    {
+      "id": "blocking",
+      "kind": "single",
+      "text": "В `async def`-ендпоінті викликається `requests.get(...)` на 2 секунди. Що з іншими запитами до сервера?",
+      "options": [
+        { "text": "Чекають ці 2 секунди — цикл подій заблоковано", "correct": true },
+        { "text": "Обробляються як завжди" },
+        { "text": "Отримують 503" }
+      ]
+    },
+    {
+      "id": "fix",
+      "kind": "multiple",
+      "text": "Як виправити блокувальний виклик у `async def`-ендпоінті?",
+      "options": [
+        { "text": "`await asyncio.to_thread(legacy_call, ...)`", "correct": true },
+        { "text": "Зробити ендпоінт звичайним `def`", "correct": true },
+        { "text": "Замінити на асинхронну бібліотеку (наприклад, httpx.AsyncClient)", "correct": true },
+        { "text": "Додати `await` перед `requests.get`" }
+      ]
+    },
+    {
+      "id": "speed",
+      "kind": "single",
+      "text": "Чи стане ендпоінт швидшим, якщо просто замінити `def` на `async def`, нічого не змінюючи всередині?",
+      "options": [
+        { "text": "Ні; а якщо всередині синхронні виклики — стане гірше для всього сервера", "correct": true },
+        { "text": "Так, завжди" },
+        { "text": "Так, але лише під навантаженням" }
+      ]
+    },
+    {
+      "id": "asgi-lifespan",
+      "kind": "single",
+      "text": "Тест з `httpx.AsyncClient(transport=httpx.ASGITransport(app=app))`. Чи виконається `lifespan` застосунку?",
+      "options": [
+        { "text": "Ні — ASGITransport не запускає lifespan; ресурси підставляють через dependency_overrides", "correct": true },
+        { "text": "Так, як у справжньому сервері" },
+        { "text": "Так, але лише частина до yield" }
+      ]
+    },
+    {
+      "id": "shared-client",
+      "kind": "single",
+      "text": "Де зручно створювати спільний `httpx.AsyncClient` для всього застосунку?",
+      "options": [
+        { "text": "У `lifespan`: створити при старті, закрити (`aclose`) при зупинці", "correct": true },
+        { "text": "Усередині кожного ендпоінта" },
+        { "text": "У кожному тесті" }
+      ]
+    },
+    {
+      "id": "inside",
+      "kind": "single",
+      "text": "Ендпоінт робить три незалежні `await` по 100 мс один за одним. Як прискорити?",
+      "options": [
+        { "text": "Запустити їх разом через `gather` або `TaskGroup` — близько 100 мс замість 300", "correct": true },
+        { "text": "Зробити ендпоінт звичайним `def`" },
+        { "text": "Збільшити пул потоків" }
+      ]
+    }
+  ]
+}

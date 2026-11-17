@@ -1,0 +1,28 @@
+{
+  "title": "Running things concurrently",
+  "minutes": 65,
+  "summary": "asyncio.gather (порядок результатів, return_exceptions), create_task і посилання на задачі, TaskGroup — структурована конкурентність: чекає на всіх і скасовує решту при помилці, ExceptionGroup і except*, as_completed для «хто перший», як у тестах перевірити, що виклики справді йшли одночасно",
+  "resources": [
+    {
+      "title": "Python docs: Coroutines and Tasks — gather, TaskGroup",
+      "url": "https://docs.python.org/3/library/asyncio-task.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: Exception groups and except*",
+      "url": "https://docs.python.org/3/tutorial/errors.html#raising-and-handling-multiple-unrelated-exceptions",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "PEP 654 — Exception Groups and except*",
+      "url": "https://peps.python.org/pep-0654/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

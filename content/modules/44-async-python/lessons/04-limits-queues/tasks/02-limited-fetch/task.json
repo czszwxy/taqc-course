@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Respect the partner's rate limit",
+  "statement": "Склад-партнер дозволяє не більше `limit` одночасних запитів — інакше відповідає помилкою. Сервіс — у `fakes.py` (лише для читання): він сам піднімає `TooManyRequests`, якщо одночасних запитів забагато.\n\nНапиши **`async def fetch_all(service, skus, limit)`**:\n\n- словник «sku → залишок» у порядку `skus`, повторені sku — один запит;\n- одночасно **не більше** `limit` запитів, але й не менше — якщо товарів вистачає, пік має дорівнювати `limit` (тест перевіряє `service.peak`);\n- `limit < 1` — `ValueError`.",
+  "hints": [
+    "Один семафор на весь виклик: `gate = asyncio.Semaphore(limit)`.",
+    "Обгортка: `async def one(sku): async with gate: return await service.stock(sku)` — і `gather` по всіх унікальних sku.",
+    "Порядок і дублікати — як у задачі з цінами: `dict.fromkeys(skus)` і `dict(zip(...))`."
+  ],
+  "explanation": "Семафор — лічильник «вільних місць»: `async with gate` займає місце або чекає, поки воно звільниться. Задачі створюються всі одразу, але одночасно працює рівно `limit` — тому пік дорівнює `limit`, а не 1 (як у циклі з `await`) і не кількості товарів (як у голому `gather`). Семафор має бути один на всі запити — створений усередині обгортки він нічого б не обмежував.",
+  "codeRules": [
+    { "kind": "require", "pattern": "Semaphore", "message": "Обмеж кількість одночасних запитів семафором: asyncio.Semaphore(limit)." }
+  ]
+}

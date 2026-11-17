@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Checksums in a process pool",
+  "statement": "Перед відправленням у сховище фотогалерея рахує контрольні суми файлів — це чисті обчислення (CPU-bound), тож потоки тут не допоможуть.\n\nНапиши в `solution.py`:\n\n1. **`def sha256_hex(data: bytes) -> str`** — шістнадцятковий SHA-256 (`hashlib`), функція **на рівні модуля** (її передаватимуть в інші процеси);\n2. **`def checksums(blobs, workers=2) -> list[str]`** — суми для кожного елемента `blobs` **у тому самому порядку**, пораховані в **`ProcessPoolExecutor`** з `workers` процесами; порожній список — `[]`.\n\n```python\nchecksums([b\"cat\", b\"dog\"])   # ['77af778b51abd4a3c51c5ddd97204a9c3ae614ebccb75a606c3b6865aed6744e', 'cd6357efdd966de8c0cb2f876cc89ec74ce35f0968e11743987084bd42fb8944']\n```",
+  "hints": [
+    "`hashlib.sha256(data).hexdigest()`.",
+    "`with ProcessPoolExecutor(max_workers=workers) as pool: return list(pool.map(sha256_hex, blobs))` — `map` зберігає порядок.",
+    "Не передавай у пул lambda чи вкладену функцію — їх не можна передати в інший процес."
+  ],
+  "explanation": "Обчислення в звичайному CPython не прискорюються потоками (GIL), тому їх розносять по процесах — у кожного свій інтерпретатор. `ProcessPoolExecutor.map` повертає результати в порядку вхідних даних, хоч процеси й закінчують у різний час. Функція має бути на рівні модуля: дочірній процес отримує її «за іменем» через pickle і сам імпортує модуль — lambda чи вкладена функція так не передаються.",
+  "codeRules": [
+    { "kind": "require", "pattern": "ProcessPoolExecutor", "message": "Порахуй суми в пулі процесів: concurrent.futures.ProcessPoolExecutor." },
+    { "kind": "forbid", "pattern": "map\\(\\s*lambda", "message": "lambda не передається в інший процес — передай sha256_hex." }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Fetch prices concurrently",
+  "statement": "Сторінка порівняння товарів показує ціни кількох товарів. Сервіс цін (`fakes.py`, лише для читання) відповідає повільно, тож питати його по черзі — довго.\n\nНапиши **`async def fetch_prices(service, skus)`**:\n\n- повертає словник «sku → ціна» з ключами **в порядку `skus`**;\n- усі запити йдуть **одночасно** (тест рахує пік одночасних викликів у `service.peak`);\n- повторений sku питаємо **один раз**;\n- порожній список — `{}` без жодного виклику;\n- `UnknownProduct` будь-якого товару летить далі.\n\n```python\nawait fetch_prices(service, [\"MOUSE-01\", \"CABLE-C1\", \"MOUSE-01\"])\n# {'MOUSE-01': 899, 'CABLE-C1': 299}   — 2 виклики, обидва одночасно\n```",
+  "hints": [
+    "Унікальні sku в порядку появи: `unique = list(dict.fromkeys(skus))`.",
+    "Разом: `prices = await asyncio.gather(*(service.get_price(sku) for sku in unique))` — результати в порядку `unique`.",
+    "Склей: `dict(zip(unique, prices))`."
+  ],
+  "explanation": "`gather` перетворює корутини на задачі, і цикл подій веде їх одночасно — сервіс бачить усі виклики разом (пік дорівнює кількості товарів), а загальний час — як у найповільнішого. Результати `gather` йдуть у порядку аргументів, тож `zip` з тим самим списком дає правильні пари. `dict.fromkeys` прибирає дублікати, зберігаючи порядок, — без нього той самий товар запитували б двічі.",
+  "codeRules": [
+    { "kind": "require", "pattern": "gather|TaskGroup|create_task", "message": "Запусти запити разом: asyncio.gather (або TaskGroup)." }
+  ]
+}

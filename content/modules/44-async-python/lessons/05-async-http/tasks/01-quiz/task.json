@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "httpx.AsyncClient",
+  "show": 6,
+  "hints": ["4xx/5xx — не виняток без raise_for_status. Один клієнт на багато запитів. Асинхронний генератор — async for."],
+  "questions": [
+    {
+      "id": "status-no-raise",
+      "kind": "single",
+      "text": "`response = await client.get(\"/orders/9\")`, сервер відповів 404. Що станеться?",
+      "options": [
+        { "text": "Нічого особливого: `response.status_code == 404`, винятку немає", "correct": true },
+        { "text": "Вилетить `httpx.HTTPStatusError`" },
+        { "text": "Вилетить `httpx.ConnectError`" }
+      ]
+    },
+    {
+      "id": "raise-for-status",
+      "kind": "single",
+      "text": "Що робить `response.raise_for_status()`?",
+      "options": [
+        { "text": "Піднімає `httpx.HTTPStatusError` для статусів 4xx і 5xx", "correct": true },
+        { "text": "Повторює запит, якщо статус не 200" },
+        { "text": "Перетворює тіло на JSON" }
+      ]
+    },
+    {
+      "id": "one-client",
+      "kind": "single",
+      "text": "Чому краще один `AsyncClient` на багато запитів, ніж новий на кожен?",
+      "options": [
+        { "text": "Він перевикористовує з'єднання з пулу — швидше і менше навантаження", "correct": true },
+        { "text": "Новий клієнт не підтримує `await`" },
+        { "text": "Інакше не працюють заголовки" }
+      ]
+    },
+    {
+      "id": "timeout-default",
+      "kind": "single",
+      "text": "Який тайм-аут у `httpx.AsyncClient()` за замовчуванням?",
+      "options": [
+        { "text": "5 секунд", "correct": true },
+        { "text": "Немає — чекає вічно" },
+        { "text": "60 секунд" }
+      ]
+    },
+    {
+      "id": "async-gen",
+      "kind": "single",
+      "text": "`async def iter_pages(client): ... yield item`. Як перебрати його елементи?",
+      "options": [
+        { "text": "`async for item in iter_pages(client):`", "correct": true },
+        { "text": "`for item in await iter_pages(client):`" },
+        { "text": "`for item in iter_pages(client):`" }
+      ]
+    },
+    {
+      "id": "lazy",
+      "kind": "single",
+      "text": "Генератор сторінок, і цикл `async for` робить `break` на першому ж елементі. Скільки сторінок запитано?",
+      "options": [
+        { "text": "Одну — генератор лінивий, наступні сторінки не запитуються", "correct": true },
+        { "text": "Усі — генератор завантажує все одразу" },
+        { "text": "Жодної" }
+      ]
+    },
+    {
+      "id": "mock-transport",
+      "kind": "single",
+      "text": "Що дає `httpx.MockTransport(handler)` у тестах?",
+      "options": [
+        { "text": "Підміняє мережу функцією, яка бачить кожен запит і повертає потрібну відповідь", "correct": true },
+        { "text": "Записує справжні відповіді сервера на диск" },
+        { "text": "Пришвидшує справжні запити" }
+      ]
+    },
+    {
+      "id": "requests-in-async",
+      "kind": "single",
+      "text": "Чому не варто кликати `requests.get` усередині `async def`?",
+      "options": [
+        { "text": "Це синхронний виклик: поки він чекає на мережу, весь цикл подій стоїть", "correct": true },
+        { "text": "`requests` не працює в Python 3" },
+        { "text": "Він повертає корутину замість відповіді" }
+      ]
+    }
+  ]
+}

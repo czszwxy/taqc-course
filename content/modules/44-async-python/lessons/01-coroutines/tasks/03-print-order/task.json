@@ -1,0 +1,18 @@
+{
+  "type": "order",
+  "title": "In what order does the café print?",
+  "statement": "Що надрукує ця програма? Розстав рядки в правильному порядку.\n\n```python\nimport asyncio\n\nasync def brew(drink, seconds):\n    print(f\"start {drink}\")\n    await asyncio.sleep(seconds)\n    print(f\"done {drink}\")\n\nasync def main():\n    print(\"open cafe\")\n    await asyncio.gather(brew(\"tea\", 2), brew(\"coffee\", 1))\n    print(\"close cafe\")\n\nasyncio.run(main())\n```",
+  "items": [
+    "open cafe",
+    "start tea",
+    "start coffee",
+    "done coffee",
+    "done tea",
+    "close cafe"
+  ],
+  "hints": [
+    "`gather` запускає обидві корутини в порядку аргументів; кожна працює до свого першого `await`.",
+    "Після сну першою прокидається та, що спала менше. `main` продовжується, лише коли завершилися обидві."
+  ],
+  "explanation": "`main` друкує «open cafe» і чекає на `gather`. Той запускає `brew(\"tea\")` — вона друкує «start tea» і засинає на 2 с, — потім `brew(\"coffee\")`: «start coffee» і сон на 1 с. Через секунду прокидається кава («done coffee»), ще через секунду — чай («done tea»). Лише тоді `gather` повертає результат, і `main` друкує «close cafe». Разом — близько 2 секунд, а не 3."
+}
