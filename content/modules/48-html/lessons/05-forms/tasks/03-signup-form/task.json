@@ -1,0 +1,11 @@
+{
+  "type": "web",
+  "title": "A sign-up form that works for everyone",
+  "statement": "Форма реєстрації Gadgetly «працює», але: підписи — лише placeholder, усі поля текстові, немає `name`, перевірок і автозаповнення, а «кнопка» — це `<div>`. Перероби її:\n\n1. Форма відправляє дані на `/signup` методом POST.\n2. Кожне поле має видимий `<label>`: «Ім'я», «Email», «Телефон (необов'язково)», «Пароль».\n3. Поля:\n\n| Поле | type | name | autocomplete | обов'язкове |\n|---|---|---|---|---|\n| Ім'я | text | name | name | так |\n| Email | email | email | email | так |\n| Телефон | tel | phone | tel | ні |\n| Пароль | password | password | new-password | так, мінімум 8 символів |\n\n4. Чекбокс «Погоджуюся з умовами» (`name=\"terms\"`) — обов'язковий, підписаний через `<label>`.\n5. Кнопка «Зареєструватися» — справжня кнопка, що відправляє форму.\n\nПеревір у Preview: натисни кнопку з порожніми полями — браузер має сам показати, що заповнити.",
+  "hints": [
+    "Підпис: `<label for=\"email\">Email</label>` + `<input id=\"email\" …>` — значення `for` збігається з `id` поля.",
+    "Пароль: `<input id=\"password\" name=\"password\" type=\"password\" autocomplete=\"new-password\" minlength=\"8\" required>`.",
+    "Чекбокс найпростіше загорнути в label: `<label><input type=\"checkbox\" name=\"terms\" required> Погоджуюся з умовами</label>`. Кнопка: `<button type=\"submit\">Зареєструватися</button>`."
+  ],
+  "explanation": "Кожен атрибут тут щось дає людині: `label` — назву поля для читача й більшу ціль для пальця, `type` — правильну клавіатуру й перевірку, `autocomplete` — автозаповнення, `required` і `minlength` — підказку ще до відправки. `name` потрібен, щоб значення взагалі дійшло до сервера.\n\nТипові помилки: `for` не збігається з `id` (підпис ні з чим не пов'язаний), телефон позначено `required`, хоча він необов'язковий, кнопка без `type` поза формою або `<div>` замість `<button>`."
+}

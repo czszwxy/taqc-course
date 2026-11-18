@@ -1,0 +1,43 @@
+{
+  "title": "Your first HTML page",
+  "minutes": 50,
+  "summary": "Що таке HTML і чим він відрізняється від CSS і JavaScript; елемент, тег, атрибут, порожні й логічні атрибути; скелет документа з doctype, lang, charset, viewport і title; пробіли й коментарі; як браузер «виправляє» помилки і як їх знайти в DevTools і валідаторі",
+  "resources": [
+    {
+      "title": "MDN: Basic HTML syntax",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Basic_HTML_syntax",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: What's in the head? Web page metadata",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Webpage_metadata",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev Learn HTML: Document structure",
+      "url": "https://web.dev/learn/html/document-structure",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "W3C Markup Validation Service",
+      "url": "https://validator.w3.org/nu/",
+      "kind": "tool",
+      "lang": "en",
+      "note": "вставляєш HTML (Validate by Direct Input) — отримуєш список помилок з номерами рядків",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: HTML for beginners",
+      "url": "https://www.youtube.com/results?search_query=html+tutorial+for+beginners",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

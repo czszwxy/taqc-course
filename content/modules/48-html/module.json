@@ -1,0 +1,14 @@
+{
+  "title": "HTML & Accessibility",
+  "description": "Перший модуль, де ти пишеш код сам(а): HTML-сторінки з правильною структурою — скелет документа, текст і заголовки, посилання й зображення, таблиці, форми, семантичні області сторінки, а потім доступність (a11y) і ARIA, щоб сайтом могли користуватися всі: з клавіатурою, екранним читачем чи збільшенням. У кожній практичній задачі ти пишеш сторінку в редакторі, одразу бачиш її в Preview, а Check перевіряє її, як це зробив би уважний рев'юер.",
+  "goals": [
+    "Write a valid HTML document: doctype, lang, charset, viewport, title",
+    "Mark up text with headings, paragraphs, lists and the right inline elements",
+    "Add links and images with meaningful link text and alt text",
+    "Build data tables with captions and header cells",
+    "Build forms with labels, the right input types, validation and autocomplete",
+    "Structure a page with landmarks: header, nav, main, article, aside, footer",
+    "Check a page for accessibility: names, roles, keyboard access and focus",
+    "Use ARIA only where HTML has no element for the job"
+  ]
+}

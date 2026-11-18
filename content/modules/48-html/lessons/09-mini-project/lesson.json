@@ -1,0 +1,35 @@
+{
+  "title": "Mini project: a product page",
+  "minutes": 90,
+  "summary": "Збери все разом: повна сторінка товару Gadgetly з нуля — скелет документа, skip link, шапка з меню, хлібні крихти, фото з alt і підписом, ціна, форма «Додати в кошик», таблиця характеристик, відгуки, схожі товари й футер; потім самоперевірка: клавіатура, зміст за заголовками, області, валідатор і Lighthouse",
+  "resources": [
+    {
+      "title": "Chrome for Developers: Lighthouse overview",
+      "url": "https://developer.chrome.com/docs/lighthouse/overview",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "W3C Markup Validation Service",
+      "url": "https://validator.w3.org/nu/",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "WAVE Web Accessibility Evaluation Tool",
+      "url": "https://wave.webaim.org/",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "WebAIM: WCAG 2 Checklist",
+      "url": "https://webaim.org/standards/wcag/checklist",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

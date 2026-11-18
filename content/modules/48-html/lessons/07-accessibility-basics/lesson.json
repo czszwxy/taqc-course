@@ -1,0 +1,49 @@
+{
+  "title": "Accessibility basics",
+  "minutes": 65,
+  "summary": "Для кого доступність і чому вона обов'язкова (WCAG 2.2, рівні A / AA, принципи POUR, Європейський акт про доступність); дерево доступності: роль, ім'я, стан; клавіатура: Tab, фокус, порядок, tabindex 0 / -1 і чому не додатний; видимий фокус, контраст 4,5 : 1 і 3 : 1, не лише колір, розмір цілі 24 × 24; як перевіряти: клавіатура, DevTools, Lighthouse, axe, екранний читач",
+  "resources": [
+    {
+      "title": "W3C WAI: Introduction to Web Accessibility",
+      "url": "https://www.w3.org/WAI/fundamentals/accessibility-intro/",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "W3C: How to Meet WCAG 2.2 (Quick Reference)",
+      "url": "https://www.w3.org/WAI/WCAG22/quickref/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev: Learn Accessibility",
+      "url": "https://web.dev/learn/accessibility",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Chrome DevTools: Accessibility features reference",
+      "url": "https://developer.chrome.com/docs/devtools/accessibility/reference",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "NV Access: NVDA screen reader (free, Windows)",
+      "url": "https://www.nvaccess.org/download/",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: screen reader demo for web developers",
+      "url": "https://www.youtube.com/results?search_query=screen+reader+demo+web+developers+nvda",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

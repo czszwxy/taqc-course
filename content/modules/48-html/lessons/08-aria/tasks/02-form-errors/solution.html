@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Контактні дані — Оформлення замовлення — Gadgetly</title>
+  <style>
+    .errors { border: 2px solid #b91c1c; padding: 0.5rem 1rem; }
+    .error { color: #b91c1c; }
+  </style>
+</head>
+<body>
+  <h1>Контактні дані</h1>
+
+  <div class="errors" role="alert">
+    <h2>Перевірте форму: 2 помилки</h2>
+    <ul>
+      <li><a href="#email">Введіть email у форматі name@example.com</a></li>
+      <li><a href="#phone">Введіть номер у форматі +380XXXXXXXXX</a></li>
+    </ul>
+  </div>
+
+  <form action="/checkout/contacts" method="post" novalidate>
+    <p>
+      <label for="name">Ім'я</label>
+      <input id="name" name="name" autocomplete="name" value="Олена Коваль" aria-describedby="name-hint">
+      <small id="name-hint">Як у паспорті — для отримання на пошті</small>
+    </p>
+    <p>
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" value="olena@" aria-invalid="true" aria-describedby="email-error">
+      <span id="email-error" class="error">Введіть email у форматі name@example.com</span>
+    </p>
+    <p>
+      <label for="phone">Телефон</label>
+      <input id="phone" name="phone" type="tel" autocomplete="tel" value="067 12" aria-invalid="true" aria-describedby="phone-error">
+      <span id="phone-error" class="error">Введіть номер у форматі +380XXXXXXXXX</span>
+    </p>
+    <button type="submit">Далі</button>
+  </form>
+</body>
+</html>

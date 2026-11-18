@@ -1,0 +1,24 @@
+{
+  "type": "classify",
+  "title": "Head or body?",
+  "statement": "Куди в HTML-документі належить кожен елемент: у `<head>` (інформація про сторінку) чи в `<body>` (те, що видно)?",
+  "show": 8,
+  "categories": [
+    { "id": "head", "label": "<head>", "description": "дані про сторінку: не видно на самій сторінці" },
+    { "id": "body", "label": "<body>", "description": "вміст, який бачить або чує користувач" }
+  ],
+  "items": [
+    { "id": "title", "text": "`<title>Кошик — Gadgetly</title>`", "category": "head", "explain": "Назва вкладки — інформація про сторінку." },
+    { "id": "charset", "text": "`<meta charset=\"utf-8\">`", "category": "head" },
+    { "id": "viewport", "text": "`<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">`", "category": "head" },
+    { "id": "description", "text": "`<meta name=\"description\" content=\"…\">`", "category": "head", "explain": "Опис для пошукових систем, на сторінці його не видно." },
+    { "id": "stylesheet", "text": "`<link rel=\"stylesheet\" href=\"styles.css\">`", "category": "head", "explain": "Підключення стилів — у head, щоб сторінка одразу малювалася зі стилями." },
+    { "id": "style", "text": "`<style>…</style>` зі стилями сторінки", "category": "head" },
+    { "id": "h1", "text": "`<h1>Кошик</h1>`", "category": "body", "explain": "Видимий заголовок сторінки — у body. Не плутай з `<title>`." },
+    { "id": "p", "text": "`<p>У кошику 3 товари</p>`", "category": "body" },
+    { "id": "img", "text": "`<img src=\"logo.svg\" alt=\"Gadgetly\">`", "category": "body", "explain": "Логотип видно на сторінці. Іконка вкладки (favicon) — інша справа: її підключають через `<link rel=\"icon\">` у head." },
+    { "id": "button", "text": "`<button>Оформити замовлення</button>`", "category": "body" },
+    { "id": "comment-visible", "text": "Текст «Безкоштовна доставка від 3000 грн» угорі сторінки", "category": "body" },
+    { "id": "favicon", "text": "`<link rel=\"icon\" href=\"favicon.svg\">` — іконка вкладки", "category": "head", "explain": "Іконку видно у вкладці, а не на сторінці — це дані про сторінку." }
+  ]
+}

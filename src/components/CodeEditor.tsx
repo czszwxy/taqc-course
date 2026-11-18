@@ -10,7 +10,7 @@ const MonacoCodeEditor = lazy(() => import('./MonacoCodeEditor'));
  * The learner can switch modes (toolbar button or Settings); the text is kept when switching.
  */
 
-export type EditorLanguage = 'typescript' | 'python' | 'html';
+export type EditorLanguage = 'typescript' | 'python' | 'html' | 'css';
 
 /** What a task view can do with its editor, whichever editor is shown. */
 export interface CodeEditorHandle {
@@ -85,6 +85,7 @@ const EXTRA_KEYS: Record<EditorLanguage, string[]> = {
   python: [':', '(', ')', '"', "'", '=', '[', ']', '{', '}', '.', ',', '_', '#'],
   typescript: ['(', ')', '{', '}', '[', ']', ';', "'", '"', '`', '=', '>', '.', ','],
   html: ['<', '>', '/', '{', '}', '%', '|', '"', '=', '.', '-', '_'],
+  css: ['{', '}', ':', ';', '.', '#', '(', ')', '%', '-', '"', ','],
 };
 
 /** A line ending with one of these opens a block: the next line gets one more indent. */
@@ -93,6 +94,7 @@ const BLOCK_OPENERS: Record<EditorLanguage, string[]> = {
   typescript: ['{', '(', '['],
   // Templates keep the indentation of the previous line: a closing tag also ends with ">".
   html: [],
+  css: ['{'],
 };
 
 /*

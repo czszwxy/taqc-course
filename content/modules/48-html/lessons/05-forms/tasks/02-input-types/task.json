@@ -1,0 +1,26 @@
+{
+  "type": "table",
+  "title": "Type and autocomplete for each field",
+  "statement": "Для кожного поля форм Gadgetly обери `type` і значення `autocomplete`.",
+  "givenColumns": ["Поле", "Де"],
+  "answerColumns": [
+    { "id": "type", "label": "type", "options": ["text", "email", "tel", "password", "number", "date"] },
+    {
+      "id": "autocomplete",
+      "label": "autocomplete",
+      "options": ["name", "email", "tel", "new-password", "current-password", "postal-code", "one-time-code", "cc-number", "— не потрібен"]
+    }
+  ],
+  "rows": [
+    { "given": ["Ім'я та прізвище", "реєстрація"], "answers": { "type": "text", "autocomplete": "name" } },
+    { "given": ["Email", "реєстрація"], "answers": { "type": "email", "autocomplete": "email" } },
+    { "given": ["Телефон", "оформлення замовлення"], "answers": { "type": "tel", "autocomplete": "tel" } },
+    { "given": ["Придумайте пароль", "реєстрація"], "answers": { "type": "password", "autocomplete": "new-password" }, "explain": "Новий пароль — `new-password`: менеджер паролів запропонує надійний." },
+    { "given": ["Пароль", "вхід"], "answers": { "type": "password", "autocomplete": "current-password" } },
+    { "given": ["Поштовий індекс", "адреса доставки"], "answers": { "type": "text", "autocomplete": "postal-code" }, "explain": "Індекс — не число для обчислень: `type=\"text\"` + `inputmode=\"numeric\"`, інакше `01001` втратить нуль." },
+    { "given": ["Код із SMS", "підтвердження телефону"], "answers": { "type": "text", "autocomplete": "one-time-code" }, "explain": "З `one-time-code` телефон сам підставить код з повідомлення." },
+    { "given": ["Номер картки", "оплата"], "answers": { "type": "text", "autocomplete": "cc-number" }, "explain": "Номер картки — не кількість: `type=\"text\"` + `inputmode=\"numeric\"`." },
+    { "given": ["Кількість", "кошик"], "answers": { "type": "number", "autocomplete": "— не потрібен" }, "explain": "Кількість — справжнє число: `type=\"number\"` з `min=\"1\"`." },
+    { "given": ["Бажана дата доставки", "оформлення замовлення"], "answers": { "type": "date", "autocomplete": "— не потрібен" } }
+  ]
+}

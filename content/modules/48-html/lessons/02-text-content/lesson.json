@@ -1,0 +1,42 @@
+{
+  "title": "Text: headings, paragraphs and lists",
+  "minutes": 55,
+  "summary": "Заголовки h1–h6 як зміст сторінки (один h1, без пропуску рівнів), абзаци, br і hr; strong / em / mark / small / b / i і code / kbd / abbr / time / del; списки ul, ol і dl, вкладені списки; цитати й код; спецсимволи &lt; &amp; &nbsp;",
+  "resources": [
+    {
+      "title": "MDN: Headings and paragraphs",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Headings_and_paragraphs",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Lists",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Lists",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Emphasis and importance",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Emphasis_and_importance",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev Learn HTML: Headings and sections",
+      "url": "https://web.dev/learn/html/headings-and-sections",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: HTML headings, lists and semantics",
+      "url": "https://www.youtube.com/results?search_query=html+headings+lists+semantic+text+elements",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

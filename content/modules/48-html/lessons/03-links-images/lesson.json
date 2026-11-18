@@ -1,0 +1,43 @@
+{
+  "title": "Links and images",
+  "minutes": 55,
+  "summary": "Посилання: абсолютні й відносні шляхи, якорі #id, mailto: і tel:, target=\"_blank\" і rel, зрозумілий текст посилання, посилання проти кнопки; зображення: src, alt для інформативних, декоративних і функціональних зображень, width / height проти «стрибків» сторінки, loading=\"lazy\", figure і figcaption, формати файлів",
+  "resources": [
+    {
+      "title": "MDN: Creating links",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Creating_links",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: HTML images",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/HTML_images",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "W3C WAI: An alt decision tree",
+      "url": "https://www.w3.org/WAI/tutorials/images/decision-tree/",
+      "kind": "article",
+      "lang": "en",
+      "note": "п'ять питань, які підкажуть, який alt потрібен",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev Learn HTML: Links",
+      "url": "https://web.dev/learn/html/links",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: alt text for images",
+      "url": "https://www.youtube.com/results?search_query=how+to+write+good+alt+text+accessibility",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

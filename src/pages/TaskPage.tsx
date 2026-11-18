@@ -23,6 +23,7 @@ const CodeTaskView = lazy(() => import('../features/tasks/CodeTaskView'));
 const SqlTaskView = lazy(() => import('../features/sql/SqlTaskView'));
 const PlaywrightTaskView = lazy(() => import('../features/playwright/PlaywrightTaskView'));
 const PythonTaskView = lazy(() => import('../features/python/PythonTaskView'));
+const WebTaskView = lazy(() => import('../features/web/WebTaskView'));
 
 const TASK_VIEWS: Record<Task['type'], ComponentType<TaskViewProps>> = {
   code: CodeTaskView,
@@ -38,6 +39,7 @@ const TASK_VIEWS: Record<Task['type'], ComponentType<TaskViewProps>> = {
   sql: SqlTaskView,
   playwright: PlaywrightTaskView,
   python: PythonTaskView,
+  web: WebTaskView,
   'tech-check': TechCheckTaskView,
 };
 

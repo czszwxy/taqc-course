@@ -1,0 +1,11 @@
+{
+  "type": "web",
+  "title": "Structure a blog article page",
+  "statement": "Сторінка статті блогу Gadgetly — знову самі `<div>` і `<p>`. Дай їй структуру:\n\n1. Шапка сайту `.site-header` — `<header>`, футер `.site-footer` — `<footer>`, а email редакції в ньому — посилання `mailto:` усередині `<address>`.\n2. Стаття — `<article>` усередині `<main>`.\n3. Шапка статті — `<header>` усередині `<article>`: `<h1>` і рядок з автором, де дата — `<time datetime=\"2026-11-10\">10 листопада 2026</time>`.\n4. Три розділи статті — `<section>`, кожен зі своїм `<h2>`.\n5. Фото з підписом — `<figure>` з `<img>` (змістовний `alt`) і `<figcaption>`; старий `<p class=\"caption\">` прибери.\n6. Теги внизу статті — `<footer>` статті.\n7. «Читайте також» — `<aside>` поза статтею, посилання — у `<ul>`.",
+  "hints": [
+    "Каркас: `<header>` сайту, `<main><article>…</article><aside>…</aside></main>`, `<footer>` сайту.",
+    "Шапка статті: `<article><header><h1>…</h1><p>Олена Коваль, <time datetime=\"2026-11-10\">10 листопада 2026</time></p></header>…`.",
+    "Фото: `<figure><img src=\"charging.jpg\" alt=\"…\" width=\"640\" height=\"360\"><figcaption>…</figcaption></figure>`."
+  ],
+  "explanation": "Стаття — самостійний вміст, тому `<article>`; її розділи з заголовками — `<section>`. Усередині статті `<header>` і `<footer>` — шапка й «підвал» самої статті, а не сайту, тож роль banner / contentinfo залишається лише в шапки й футера сторінки.\n\n`<time datetime>` робить дату зрозумілою пошуковикам, а `<address>` у футері сайту — це контакти власника сторінки (редакції)."
+}

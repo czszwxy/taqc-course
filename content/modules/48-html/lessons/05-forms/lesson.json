@@ -1,0 +1,43 @@
+{
+  "title": "Forms",
+  "minutes": 65,
+  "summary": "form, action і method (GET чи POST); label для кожного поля (for / id або обгортання), чому placeholder — не підпис; name і value; типи input і клавіатура на телефоні; autocomplete і inputmode; валідація браузера: required, minlength, min / max, pattern; fieldset і legend для груп, select, textarea; button type=\"submit\" / \"button\"; disabled проти readonly",
+  "resources": [
+    {
+      "title": "MDN: Your first form",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Your_first_form",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: HTML attribute autocomplete",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/autocomplete",
+      "kind": "docs",
+      "lang": "en",
+      "note": "повний список значень: name, email, tel, postal-code, new-password, one-time-code…",
+      "needsVerification": true
+    },
+    {
+      "title": "W3C WAI: Forms tutorial",
+      "url": "https://www.w3.org/WAI/tutorials/forms/",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev: Learn Forms",
+      "url": "https://web.dev/learn/forms",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: accessible HTML forms",
+      "url": "https://www.youtube.com/results?search_query=accessible+html+forms+labels+tutorial",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

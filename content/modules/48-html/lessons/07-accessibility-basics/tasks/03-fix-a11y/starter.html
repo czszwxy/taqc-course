@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Центр допомоги — Gadgetly</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 36rem; margin: 0 auto; padding: 1rem; }
+    input, textarea { display: block; width: 100%; margin: 0.5rem 0 1rem; padding: 0.5rem; }
+    .btn { display: inline-block; background: #1d4ed8; color: white; padding: 0.5rem 1.25rem; border-radius: 6px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Центр допомоги</h1>
+
+  <h4>Написати нам</h4>
+  <form action="/support" method="post">
+    <input name="order" placeholder="Номер замовлення" inputmode="numeric">
+    <textarea name="message" placeholder="Опишіть проблему" rows="4" required></textarea>
+    <div class="btn" onclick="send()">Надіслати</div>
+  </form>
+
+  <p>Відповіді на часті питання — <a href="/faq">тут</a>.</p>
+  <p>Або подзвоніть: <a href="tel:+380441234567"><img src="phone.svg" width="24" height="24"></a></p>
+  <p><a href="/chat" tabindex="1">Онлайн-чат</a></p>
+</body>
+</html>

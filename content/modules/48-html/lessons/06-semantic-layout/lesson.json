@@ -1,0 +1,42 @@
+{
+  "title": "Page structure and landmarks",
+  "minutes": 55,
+  "summary": "«Суп з div» проти семантичної розмітки; header, nav, main, article, section, aside, footer і search як області (landmarks), які екранний читач показує списком; один main; посилання «Перейти до основного вмісту»; article проти section; address і time; коли div — правильний вибір",
+  "resources": [
+    {
+      "title": "MDN: Structuring documents",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Structuring_documents",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev Learn HTML: Semantic HTML",
+      "url": "https://web.dev/learn/html/semantic-html",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "W3C WAI: Page structure tutorial",
+      "url": "https://www.w3.org/WAI/tutorials/page-structure/",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: <search> element",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/search",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: semantic HTML landmarks",
+      "url": "https://www.youtube.com/results?search_query=semantic+html+landmarks+header+nav+main",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

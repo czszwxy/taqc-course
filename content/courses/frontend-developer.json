@@ -4,7 +4,7 @@
   "tagline": "Zero → Junior Frontend Developer",
   "description": "HTML and accessibility, CSS layout and responsive design, TypeScript, the DOM, React, working with APIs, frontend testing and deployment. The web, HTTP, Git and TypeScript modules are shared with the other courses.",
   "icon": "🎨",
-  "status": "planned",
+  "status": "in-progress",
   "order": 5,
   "tracks": [
     {

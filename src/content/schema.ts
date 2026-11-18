@@ -387,6 +387,30 @@ export const pythonTaskSchema = z.object({
   minTests: z.number().int().positive().optional(),
 });
 
+/** Files of a web page task, in editor-tab order. */
+export const WEB_FILES = ['index.html', 'styles.css'] as const;
+export type WebFile = (typeof WEB_FILES)[number];
+/** Width of the hidden page the checks of a web task run on (CSS pixels), unless the task sets `viewport`. */
+export const DEFAULT_WEB_VIEWPORT = 1024;
+
+/** A code rule of a web task; `file` limits it to one of the learner's files (default: all of them). */
+export const webRuleSchema = codeRuleSchema.extend({ file: z.enum(WEB_FILES).optional() });
+
+/**
+ * Web page task (Frontend course, module 48+): the learner writes HTML (and CSS) and sees it rendered.
+ * Files: starter.html / solution.html → index.html, starter.css / solution.css → styles.css (the learner's files);
+ * index.html or styles.css without a prefix = a read-only file of the page; tests.js = hidden checks (plain JS,
+ * describe / it / expect) that run in the app against the rendered page in a sandboxed iframe without scripts.
+ * styles.css is applied where index.html links it (<link rel="stylesheet" href="styles.css">).
+ */
+export const webTaskSchema = z.object({
+  type: z.literal('web'),
+  ...baseTask,
+  statement: z.string(),
+  codeRules: z.array(webRuleSchema).default([]),
+  viewport: z.number().int().positive().default(DEFAULT_WEB_VIEWPORT),
+});
+
 /** Questions per tech-check session when the task does not set `show`. */
 export const DEFAULT_TECH_CHECK_SHOW = 12;
 /** Soft time limit per tech-check question (seconds); the timer only warns. */
@@ -435,6 +459,7 @@ export const taskSchema = z.discriminatedUnion('type', [
   sqlTaskSchema,
   playwrightTaskSchema,
   pythonTaskSchema,
+  webTaskSchema,
   techCheckTaskSchema,
 ]);
 
@@ -462,6 +487,8 @@ export type SqlTask = z.infer<typeof sqlTaskSchema>;
 export type SqlChallenge = z.infer<typeof sqlChallengeSchema>;
 export type PlaywrightTask = z.infer<typeof playwrightTaskSchema>;
 export type PythonTask = z.infer<typeof pythonTaskSchema>;
+export type WebTask = z.infer<typeof webTaskSchema>;
+export type WebRule = z.infer<typeof webRuleSchema>;
 export type TechCheckTask = z.infer<typeof techCheckTaskSchema>;
 export type TechCheckQuestion = z.infer<typeof techCheckQuestionSchema>;
 
@@ -479,6 +506,7 @@ export const TASK_TYPE_LABEL: Record<Task['type'], string> = {
   sql: 'SQL',
   playwright: 'Playwright',
   python: 'Python',
+  web: 'Web page',
   'tech-check': 'Tech check',
 };
 

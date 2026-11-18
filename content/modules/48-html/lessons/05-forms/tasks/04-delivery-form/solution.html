@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Доставка — Оформлення замовлення — Gadgetly</title>
+</head>
+<body>
+  <h1>Доставка</h1>
+  <form action="/checkout/delivery" method="post">
+    <fieldset>
+      <legend>Спосіб доставки</legend>
+      <label><input type="radio" name="delivery" value="nova" checked> Нова пошта</label>
+      <label><input type="radio" name="delivery" value="ukr"> Укрпошта</label>
+      <label><input type="radio" name="delivery" value="pickup"> Самовивіз</label>
+    </fieldset>
+
+    <p>
+      <label for="city">Місто</label>
+      <select id="city" name="city" required>
+        <option value="">Оберіть місто</option>
+        <option>Київ</option>
+        <option>Львів</option>
+        <option>Одеса</option>
+        <option>Дніпро</option>
+      </select>
+    </p>
+
+    <p>
+      <label for="date">Бажана дата доставки</label>
+      <input type="date" id="date" name="date" min="2026-12-01">
+    </p>
+
+    <p>
+      <label for="comment">Коментар до замовлення</label>
+      <textarea id="comment" name="comment" rows="3" maxlength="300"></textarea>
+    </p>
+
+    <p>
+      <button type="button">Назад</button>
+      <button type="submit">Далі: оплата</button>
+    </p>
+  </form>
+</body>
+</html>

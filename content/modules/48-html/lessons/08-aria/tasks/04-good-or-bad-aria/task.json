@@ -1,0 +1,25 @@
+{
+  "type": "classify",
+  "title": "Good, redundant or harmful ARIA?",
+  "statement": "Оціни ARIA в кожному фрагменті.",
+  "show": 8,
+  "categories": [
+    { "id": "good", "label": "Доречна", "description": "додає те, чого HTML не може сказати" },
+    { "id": "redundant", "label": "Зайва", "description": "HTML уже це робить" },
+    { "id": "harmful", "label": "Шкідлива або не працює", "description": "бреше читачу чи ламає доступність" }
+  ],
+  "items": [
+    { "id": "icon-label", "text": "`<button aria-label=\"Закрити\"><svg aria-hidden=\"true\">…</svg></button>`", "category": "good" },
+    { "id": "current", "text": "`<a href=\"/catalog\" aria-current=\"page\">Каталог</a>` у головному меню", "category": "good" },
+    { "id": "expanded", "text": "`<button aria-expanded=\"false\" aria-controls=\"filters\">Фільтри</button>`", "category": "good" },
+    { "id": "status", "text": "Порожній `<div role=\"status\">`, куди скрипт пише «Збережено»", "category": "good" },
+    { "id": "nav-role", "text": "`<nav role=\"navigation\">`", "category": "redundant" },
+    { "id": "button-role", "text": "`<button role=\"button\">Купити</button>`", "category": "redundant" },
+    { "id": "heading-role", "text": "`<h2 role=\"heading\" aria-level=\"2\">Відгуки</h2>`", "category": "redundant" },
+    { "id": "alt-label", "text": "`<img src=\"logo.svg\" alt=\"Gadgetly\" aria-label=\"Gadgetly\">`", "category": "redundant", "explain": "alt уже дає зображенню ім'я." },
+    { "id": "div-button", "text": "`<div role=\"button\">Купити</div>` без tabindex і обробки клавіш", "category": "harmful", "explain": "Читач скаже «кнопка», але натиснути її з клавіатури неможливо." },
+    { "id": "hidden-button", "text": "`<button aria-hidden=\"true\">Видалити</button>`", "category": "harmful", "explain": "Фокус є, а читач мовчить." },
+    { "id": "div-label", "text": "`<div aria-label=\"Знижка 20%\">−20%</div>`", "category": "harmful", "explain": "Ім'я на `<div>` без ролі заборонене стандартом, і читачі його ігнорують." },
+    { "id": "label-mismatch", "text": "`<button aria-label=\"Оформити замовлення\">Купити</button>`", "category": "harmful", "explain": "Видимий текст і ім'я різні: голосове керування «натисни Купити» не спрацює." }
+  ]
+}

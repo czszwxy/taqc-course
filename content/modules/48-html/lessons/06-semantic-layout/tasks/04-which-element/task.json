@@ -1,0 +1,30 @@
+{
+  "type": "classify",
+  "title": "Which element for this part of the page?",
+  "statement": "Обери елемент для кожної частини сторінок Gadgetly.",
+  "show": 8,
+  "categories": [
+    { "id": "header", "label": "<header>" },
+    { "id": "nav", "label": "<nav>" },
+    { "id": "main", "label": "<main>" },
+    { "id": "article", "label": "<article>" },
+    { "id": "section", "label": "<section>" },
+    { "id": "aside", "label": "<aside>" },
+    { "id": "footer", "label": "<footer>" },
+    { "id": "div", "label": "<div>" }
+  ],
+  "items": [
+    { "id": "site-header", "text": "Шапка сайту з логотипом і пошуком", "category": "header" },
+    { "id": "menu", "text": "Головне меню з п'яти розділів", "category": "nav" },
+    { "id": "crumbs", "text": "Хлібні крихти «Головна › Аудіо › Навушники»", "category": "nav", "explain": "Хлібні крихти — основна навігація по розділах сайту." },
+    { "id": "main", "text": "Увесь основний вміст сторінки товару, унікальний для неї", "category": "main" },
+    { "id": "card", "text": "Картка товару в каталозі: фото, назва, ціна", "category": "article", "explain": "Картка самостійна: її можна показати будь-де окремо." },
+    { "id": "review", "text": "Відгук покупця з ім'ям і датою", "category": "article" },
+    { "id": "specs", "text": "Розділ «Характеристики» на сторінці товару з власним заголовком", "category": "section" },
+    { "id": "help-part", "text": "Розділ «Доставка» в статті довідки з заголовком h2", "category": "section" },
+    { "id": "related", "text": "Блок «Вам також сподобається» у бічній колонці", "category": "aside" },
+    { "id": "ad", "text": "Рекламний банер у бічній колонці", "category": "aside" },
+    { "id": "site-footer", "text": "Копірайт, контакти й посилання на правила внизу сторінки", "category": "footer" },
+    { "id": "wrapper", "text": "Обгортка, щоб поставити фото й опис товару поруч у CSS", "category": "div", "explain": "Значення немає — лише розташування. Це робота для `<div>`." }
+  ]
+}

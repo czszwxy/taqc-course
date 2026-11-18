@@ -43,7 +43,11 @@ const MAX_LOGS = 300;
 
 type MatcherFn = (...args: unknown[]) => void;
 
-export async function executeModules(req: ExecRequest): Promise<ExecOutput> {
+/**
+ * Runs the entry module (and the modules it requires). `globals` are extra names every module sees, e.g. the
+ * `document` of a web page task (web.ts); they cannot travel to a worker, so only main-thread callers pass them.
+ */
+export async function executeModules(req: ExecRequest, globals: Record<string, unknown> = {}): Promise<ExecOutput> {
   const logs: LogEntry[] = [];
   let sink: string[] | null = null;
 
@@ -158,6 +162,7 @@ export async function executeModules(req: ExecRequest): Promise<ExecOutput> {
       'beforeAll',
       'afterAll',
       'fetch',
+      ...Object.keys(globals),
       code,
     );
     fn(
@@ -176,6 +181,7 @@ export async function executeModules(req: ExecRequest): Promise<ExecOutput> {
       hook('beforeAll'),
       hook('afterAll'),
       fakeFetch,
+      ...Object.values(globals),
     );
     return module.exports;
   };

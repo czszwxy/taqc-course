@@ -26,7 +26,10 @@ import type { PythonRunResult } from '../src/runner/python-protocol';
 import { runPythonJob } from './python-node';
 import { missingPythonTaskLab, runPythonTaskJobs } from '../server/lab-python-tasks';
 import { parallelism, runPool } from '../server/lab-python';
-import { courseSchema, formatZodError, lessonSchema, moduleSchema, taskSchema, type Task } from '../src/content/schema';
+import { courseSchema, formatZodError, lessonSchema, moduleSchema, taskSchema, WEB_FILES, type Task, type WebFile } from '../src/content/schema';
+import { evaluateWebRules, LEARNER_FILE_OF, linksStylesheet } from '../src/runner/web-page';
+import type { WebCheckResult } from '../src/runner/web';
+import { startWebRunner, type WebRunnerStart } from './web-node';
 import { checkBugReportQuality, checkTestCase, evaluateRules, matchBug, type FormValues } from '../src/features/tasks/forms';
 import { GENERATORS } from '../src/features/tasks/generators';
 import { PLAYGROUND_PAGES } from '../src/playground/registry';
@@ -525,8 +528,73 @@ async function runPythonChecks(dir: string, task: TaskOf<'python'>, exec: Python
   if (pythonFailures(start).length === 0 && evaluatePythonRules(starter, task.codeRules, task.file).length === 0) fail(dir, 'starter.py already passes the tests');
 }
 
+/* ---------- web page tasks (the app's checker in headless Chromium, scripts/web-node.ts) ---------- */
+
+type WebFiles = Partial<Record<WebFile, string>>;
+let webRunner: Promise<WebRunnerStart> | null = null;
+const webSkipped: string[] = [];
+/** File names a web task folder may contain besides task.json. */
+const WEB_TASK_FILES = new Set(['task.json', 'tests.js', ...WEB_FILES, ...Object.keys(LEARNER_FILE_OF).flatMap((ext) => [`starter.${ext}`, `solution.${ext}`])]);
+
+function readWebFiles(dir: string, prefix: string): WebFiles {
+  return Object.fromEntries(
+    Object.entries(LEARNER_FILE_OF).flatMap(([ext, file]) => {
+      const full = path.join(dir, `${prefix}${ext}`);
+      return fs.existsSync(full) ? [[file, fs.readFileSync(full, 'utf8')]] : [];
+    }),
+  );
+}
+
+function webFailures(r: WebCheckResult): string[] {
+  return [
+    ...(r.runtimeError ? [`page: ${r.runtimeError}`] : []),
+    ...(r.timedOut ? ['the checks timed out'] : []),
+    ...(r.results.length === 0 && !r.runtimeError ? ['tests.js has no checks'] : []),
+    ...r.results.filter((t) => !t.passed).map((t) => `check "${t.name}" fails: ${t.error ?? ''}`),
+    ...r.ruleFailures.map((m) => `code rule: ${m}`),
+  ];
+}
+
+/** Static checks of the folder, then (in Chromium) the solution passes every check and the starter does not. */
+const checkWebTaskFolder: Checker<'web'> = async (dir, task) => {
+  const errorsBefore = errors.length;
+  fs.readdirSync(dir)
+    .filter((name) => !WEB_TASK_FILES.has(name))
+    .forEach((name) => fail(path.join(dir, name), 'unexpected file in a web task (learner files: starter.html / starter.css + solution.*, read-only: index.html / styles.css, checks: tests.js)'));
+  const starter = readWebFiles(dir, 'starter.');
+  const solution = readWebFiles(dir, 'solution.');
+  const support: WebFiles = Object.fromEntries(WEB_FILES.flatMap((f) => (fs.existsSync(path.join(dir, f)) ? [[f, fs.readFileSync(path.join(dir, f), 'utf8')]] : [])));
+  const testsFile = path.join(dir, 'tests.js');
+  const tests = fs.existsSync(testsFile) ? fs.readFileSync(testsFile, 'utf8') : '';
+  if (tests.trim() === '') fail(testsFile, 'missing or empty');
+  const learnerNames = Object.keys(starter).sort();
+  if (learnerNames.length === 0) fail(dir, 'a web task needs a learner file: starter.html and/or starter.css (+ solution.*)');
+  if (learnerNames.join() !== Object.keys(solution).sort().join()) fail(dir, 'starter.* and solution.* files must come in pairs');
+  WEB_FILES.filter((f) => f in starter && f in support).forEach((f) => fail(dir, `${f} is both a learner file (starter.*) and a read-only file`));
+  const page: WebFiles = { ...support, ...solution };
+  if (page['index.html'] === undefined) fail(dir, 'the page needs index.html (starter.html + solution.html, or a read-only index.html)');
+  if (page['styles.css'] !== undefined && !linksStylesheet(page['index.html'] ?? '')) fail(dir, 'index.html of the solution does not link styles.css');
+  if (learnerNames.every((f) => starter[f as WebFile]?.trim() === solution[f as WebFile]?.trim())) fail(dir, 'starter files are identical to the solution');
+  task.codeRules.filter((r) => !isValidPattern(r.pattern, r.flags ?? 'im')).forEach((r) => fail(dir, `invalid code rule regex /${r.pattern}/`));
+  task.codeRules.filter((r) => r.file && !(r.file in starter)).forEach((r) => fail(dir, `code rule for ${r.file}, which is not a learner file`));
+  if (errors.length > errorsBefore) return;
+  evaluateWebRules(solution, task.codeRules).forEach((m) => fail(dir, `solution breaks its own code rule: ${m}`));
+
+  webRunner ??= startWebRunner(root);
+  const started = await webRunner;
+  if ('unavailable' in started) {
+    webSkipped.push(dir);
+    return;
+  }
+  const sol = await started.runner.check(solution, support, tests, task.viewport, task.codeRules);
+  if (!sol.passed) fail(dir, `the solution does not pass:\n      ${webFailures(sol).join('\n      ')}`);
+  const start = await started.runner.check(starter, support, tests, task.viewport, task.codeRules);
+  if (start.passed) fail(dir, 'the starter already passes every check');
+};
+
 const CHECKS: { [K in Task['type']]: Checker<K> } = {
   python: checkPythonTask,
+  web: checkWebTaskFolder,
   code: checkCode,
   quiz: checkQuiz,
   'value-set': checkValueSet,
@@ -643,6 +711,11 @@ async function main(): Promise<void> {
   }, Promise.resolve());
   if (labChecks.length > 0) console.log(`Running ${labChecks.length} lab Python task(s) with pytest in lab/.venv…`);
   await runPool(labChecks, parallelism(), (check) => check());
+  if (webRunner) {
+    const started = await webRunner;
+    if ('runner' in started) await started.runner.close();
+    else warnings.push(`${webSkipped.length} web page task(s) were not run: ${started.unavailable} — run npm run lab:setup`);
+  }
   if (labSkipped.length > 0) {
     warnings.push(`${labSkipped.length} lab Python task(s) (FastAPI…) were not run: ${labMissing ?? ''} — run npm run lab:python-setup`);
   }

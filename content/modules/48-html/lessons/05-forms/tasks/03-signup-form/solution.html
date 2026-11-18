@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Реєстрація — Gadgetly</title>
+</head>
+<body>
+  <h1>Реєстрація</h1>
+  <form action="/signup" method="post">
+    <p>
+      <label for="name">Ім'я</label>
+      <input id="name" name="name" type="text" autocomplete="name" required>
+    </p>
+    <p>
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" required>
+    </p>
+    <p>
+      <label for="phone">Телефон (необов'язково)</label>
+      <input id="phone" name="phone" type="tel" autocomplete="tel">
+    </p>
+    <p>
+      <label for="password">Пароль</label>
+      <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" required>
+    </p>
+    <p>
+      <label><input type="checkbox" name="terms" required> Погоджуюся з умовами</label>
+    </p>
+    <button type="submit">Зареєструватися</button>
+  </form>
+</body>
+</html>

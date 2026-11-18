@@ -1,0 +1,43 @@
+{
+  "title": "ARIA: when HTML is not enough",
+  "minutes": 60,
+  "summary": "Що таке ARIA (ролі, властивості, стани) і чому вона змінює лише дерево доступності, а не поведінку; п'ять правил використання ARIA; aria-label, aria-labelledby, aria-describedby; aria-hidden; aria-expanded і aria-controls для кнопки-розкривачки; aria-current; aria-invalid і повідомлення про помилки; живі області role=\"status\" і role=\"alert\"; типові помилки",
+  "resources": [
+    {
+      "title": "W3C: Using ARIA (the rules of ARIA use)",
+      "url": "https://www.w3.org/TR/using-aria/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "W3C WAI: ARIA Authoring Practices Guide",
+      "url": "https://www.w3.org/WAI/ARIA/apg/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "готові шаблони компонентів: розкривачка, меню, вкладки, діалог",
+      "needsVerification": true
+    },
+    {
+      "title": "APG: Disclosure (Show/Hide) pattern",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: ARIA",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: ARIA for beginners",
+      "url": "https://www.youtube.com/results?search_query=aria+attributes+accessibility+beginners",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

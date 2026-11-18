@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Навушники — Каталог — Gadgetly</title>
+  <style>
+    .active { font-weight: bold; color: #1d4ed8; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/"><img src="logo.svg" alt="Gadgetly — на головну" width="120" height="32"></a>
+    <nav aria-label="Головне меню">
+      <ul>
+        <li><a href="/">Головна</a></li>
+        <li><a href="/catalog" class="active" aria-current="page">Каталог</a></li>
+        <li><a href="/delivery">Доставка</a></li>
+      </ul>
+    </nav>
+    <button type="button" aria-expanded="false" aria-controls="categories">Категорії</button>
+    <ul id="categories" hidden>
+      <li><a href="/catalog/phones">Смартфони</a></li>
+      <li><a href="/catalog/audio">Аудіо</a></li>
+      <li><a href="/catalog/watches">Годинники</a></li>
+    </ul>
+    <button type="button" aria-label="Пошук">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="2"/><line x1="12.5" y1="12.5" x2="18" y2="18" stroke="currentColor" stroke-width="2"/></svg>
+    </button>
+  </header>
+
+  <main>
+    <nav aria-label="Хлібні крихти">
+      <ol>
+        <li><a href="/">Головна</a></li>
+        <li><a href="/catalog">Каталог</a></li>
+        <li><a href="/catalog/audio" aria-current="page">Навушники</a></li>
+      </ol>
+    </nav>
+    <h1>Навушники</h1>
+  </main>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "title": "Tables",
+  "minutes": 45,
+  "summary": "Коли потрібна таблиця (дані, а не розкладка сторінки); table, caption, thead / tbody / tfoot, tr, th і td; scope=\"col\" і scope=\"row\", щоб екранний читач називав заголовки клітинок; colspan і rowspan; складні таблиці й таблиці на телефоні",
+  "resources": [
+    {
+      "title": "MDN: HTML table basics",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/HTML_table_basics",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: HTML table accessibility",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Table_accessibility",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "W3C WAI: Tables tutorial",
+      "url": "https://www.w3.org/WAI/tutorials/tables/",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev Learn HTML: Tables",
+      "url": "https://web.dev/learn/html/tables",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

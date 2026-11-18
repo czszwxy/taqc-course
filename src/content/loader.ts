@@ -4,11 +4,14 @@ import {
   lessonSchema,
   moduleSchema,
   taskSchema,
+  WEB_FILES,
   type CourseFile,
   type CourseStatus,
   type Resource,
   type Task,
+  type WebFile,
 } from './schema';
+import { LEARNER_FILE_OF } from '../runner/web-page';
 
 /*
  * The loader reads all content from these folders — adding a folder is enough, no registry edits.
@@ -40,6 +43,11 @@ const pythonMutantFiles = import.meta.glob<string>('/content/modules/*/lessons/*
   query: '?raw',
   import: 'default',
 });
+/** Web page task files: starter / solution .html and .css, read-only index.html / styles.css, hidden checks tests.js. */
+const webFiles = import.meta.glob<string>(
+  ['/content/modules/*/lessons/*/tasks/*/*.html', '/content/modules/*/lessons/*/tasks/*/*.css', '/content/modules/*/lessons/*/tasks/*/tests.js'],
+  { query: '?raw', import: 'default' },
+);
 const databaseFiles = import.meta.glob<string>('/content/databases/*.sql', { query: '?raw', import: 'default', eager: true });
 
 /** SQL setup scripts for sql tasks, keyed by file name without .sql (e.g. "gadgetly"). */
@@ -384,6 +392,32 @@ export async function loadPythonTaskCode(taskId: string): Promise<TaskCode> {
   const support = Object.fromEntries(supportNames.map((name, i) => [name, supportCode[i] ?? '']));
   const mutants = Object.fromEntries(mutantPaths.map((p, i) => [p.slice(base.length + 'mutants/'.length, -PY_EXT.length), mutantCode[i] ?? '']));
   return { starter, solution, tests, support, mutants };
+}
+
+export interface WebTaskFiles {
+  /** The learner's files (index.html, styles.css) → starting content, in editor-tab order. */
+  starter: Partial<Record<WebFile, string>>;
+  /** The same files in the author's solution. */
+  solution: Partial<Record<WebFile, string>>;
+  /** Read-only files of the page (e.g. index.html when the learner only writes CSS). */
+  support: Partial<Record<WebFile, string>>;
+  tests: string;
+}
+
+/** Files of a web page task: starter.html / solution.html → index.html, starter.css / solution.css → styles.css. */
+export async function loadWebTaskFiles(taskId: string): Promise<WebTaskFiles> {
+  const [m, l, t] = taskId.split('/');
+  const base = `/content/modules/${m}/lessons/${l}/tasks/${t}/`;
+  const get = async (file: string): Promise<string | undefined> => webFiles[base + file]?.();
+  const pick = async (prefix: string): Promise<Partial<Record<WebFile, string>>> => {
+    const entries = await Promise.all(
+      Object.entries(LEARNER_FILE_OF).map(async ([ext, file]) => [file, await get(`${prefix}${ext}`)] as const),
+    );
+    return Object.fromEntries(entries.filter(([, code]) => code !== undefined));
+  };
+  const supportEntries = await Promise.all(WEB_FILES.map(async (file) => [file, await get(file)] as const));
+  const [starter, solution, tests] = await Promise.all([pick('starter.'), pick('solution.'), get('tests.js')]);
+  return { starter, solution, support: Object.fromEntries(supportEntries.filter(([, code]) => code !== undefined)), tests: tests ?? '' };
 }
 
 /* ---------- Navigation helpers ---------- */
