@@ -1,0 +1,26 @@
+{
+  "type": "table",
+  "title": "Does the media query apply?",
+  "statement": "Чи діятимуть правила всередині медіазапиту на цьому пристрої? Якщо не сказано інше, шрифт браузера за замовчуванням — 16 px.",
+  "givenColumns": ["Медіазапит", "Пристрій"],
+  "answerColumns": [
+    { "id": "applies", "label": "Правила діють?", "options": ["так", "ні"] }
+  ],
+  "rows": [
+    { "given": ["`(min-width: 40em)`", "вікно 640 × 900"], "answers": { "applies": "так" } },
+    { "given": ["`(min-width: 40em)`", "вікно 640 × 900, шрифт браузера збільшено до 20 px"], "answers": { "applies": "ні" }, "explain": "40em × 20 px = 800 px, а вікно — 640." },
+    { "given": ["`(max-width: 768px)`", "вікно рівно 768 px"], "answers": { "applies": "так" }, "explain": "max-width включає межу." },
+    { "given": ["`(width < 768px)`", "вікно рівно 768 px"], "answers": { "applies": "ні" } },
+    { "given": ["`(min-width: 600px) and (orientation: landscape)`", "телефон 390 × 844 вертикально"], "answers": { "applies": "ні" } },
+    { "given": ["`(max-width: 600px), (orientation: portrait)`", "планшет 820 × 1180 вертикально"], "answers": { "applies": "так" }, "explain": "Кома — «хоча б одна умова»: ширина більша за 600, але орієнтація portrait." },
+    { "given": ["`(40em <= width < 64em)`", "ноутбук 1024 × 768"], "answers": { "applies": "ні" }, "explain": "64em = 1024 px, а межа «менше 64em» не включає 1024." },
+    { "given": ["`(hover: hover)`", "телефон, керування лише пальцем"], "answers": { "applies": "ні" } },
+    { "given": ["`print`", "звичайний перегляд на ноутбуці"], "answers": { "applies": "ні" } },
+    { "given": ["`(prefers-color-scheme: dark)`", "у Windows увімкнено темний режим"], "answers": { "applies": "так" } }
+  ],
+  "hints": [
+    "`min-width` і `max-width` включають межу; `<` і `>` у range syntax — ні.",
+    "`and` — потрібні обидві умови, кома — хоча б одна. `em` у медіазапиті рахується від шрифту браузера."
+  ],
+  "explanation": "Медіазапит — логічний вираз про пристрій. Найчастіше помиляються на межах (`max-width` включає межу, `<` — ні), на `em` (залежить від налаштування шрифту, а не від CSS сторінки) і на комі, яка означає «або»."
+}

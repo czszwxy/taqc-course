@@ -1,0 +1,78 @@
+{
+  "type": "quiz",
+  "title": "Testing responsive layouts quiz",
+  "show": 5,
+  "questions": [
+    {
+      "id": "deepest",
+      "kind": "single",
+      "text": "Сніпет вивів п'ять елементів, ширших за екран: `main`, `section`, `ul.thumbs`, `li.thumb`, `img`. Що виправляти?",
+      "options": [
+        { "text": "Найглибший — `img` (або його рядок `li` / `ul`): батьки лише розперті ним", "correct": true },
+        { "text": "`main`: він найбільший" },
+        { "text": "Усі п'ять — поставити кожному `overflow: hidden`", "explain": "Це обріже вміст, а не виправить причину." }
+      ]
+    },
+    {
+      "id": "outline",
+      "kind": "single",
+      "text": "Чому для налагодження пишуть `* { outline: 1px solid red; }`, а не `border`?",
+      "options": [
+        { "text": "outline не займає місця, тож розкладка не змінюється від самої перевірки", "correct": true },
+        { "text": "border не можна задати всім елементам" },
+        { "text": "outline видно лише в DevTools" }
+      ]
+    },
+    {
+      "id": "anywhere",
+      "kind": "single",
+      "text": "Довгий email у колонці сітки `auto 1fr` розпирає сторінку. `overflow-wrap: break-word` не допоміг. Чому?",
+      "options": [
+        { "text": "break-word не зменшує мінімальну ширину колонки, а `anywhere` — зменшує", "correct": true },
+        { "text": "overflow-wrap не працює в grid" },
+        { "text": "Email треба загорнути в <pre>" }
+      ]
+    },
+    {
+      "id": "boundary",
+      "kind": "single",
+      "text": "У сторінки breakpoint `(min-width: 48em)`. Які ширини перевірити найперше?",
+      "options": [
+        { "text": "767, 768 і 769 px — межа з обох боків", "correct": true },
+        { "text": "Лише 768 px" },
+        { "text": "375 і 1920 px" }
+      ],
+      "explanation": "48em = 768 px, якщо шрифт браузера 16 px. Межа — найімовірніше місце для помилки, як у BVA."
+    },
+    {
+      "id": "emulation",
+      "kind": "single",
+      "text": "Що Device toolbar у Chrome **не** покаже?",
+      "options": [
+        { "text": "Як Safari на iPhone ховає адресний рядок і збільшує поле з дрібним шрифтом", "correct": true },
+        { "text": "Розкладку на 375 px" },
+        { "text": "Який файл зі srcset обирається на DPR 3", "explain": "DPR можна задати в Device toolbar." }
+      ]
+    },
+    {
+      "id": "dark-check",
+      "kind": "single",
+      "text": "Як найшвидше перевірити темну тему сторінки?",
+      "options": [
+        { "text": "DevTools → Rendering → Emulate CSS media feature prefers-color-scheme: dark", "correct": true },
+        { "text": "Перемкнути тему Windows і перезапустити браузер", "explain": "Працює, але довго й змінює все в системі." },
+        { "text": "Ніяк: темну тему видно лише на телефоні" }
+      ]
+    },
+    {
+      "id": "between",
+      "kind": "single",
+      "text": "Розкладку перевірили на 375, 768 і 1024 px — усе добре. Навіщо ще плавно тягнути вікно?",
+      "options": [
+        { "text": "Поломки часто живуть між перевіреними ширинами — наприклад, на 900 px картки вже тісні, а breakpoint ще не спрацював", "correct": true },
+        { "text": "Щоб перевірити анімації" },
+        { "text": "Не потрібно: трьох ширин досить" }
+      ]
+    }
+  ]
+}

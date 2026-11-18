@@ -1,0 +1,17 @@
+{
+  "type": "web",
+  "title": "A responsive sale landing page",
+  "statement": "Лендинг «Тиждень гаджетів для навчання»: HTML готовий, у `styles.css` — лише кольори й шрифти. Допиши розкладку **mobile first** (HTML не змінюй):\n\n| Блок | Що зробити |\n|---|---|\n| `.wrap` (є в кожній секції) | `width: min(100% - 2rem, 72rem); margin-inline: auto;` |\n| `.header-inner` | flex, `flex-wrap: wrap`, по центру по вертикалі, логотип ліворуч, меню праворуч (`justify-content: space-between`), `gap: 0.5rem 1.5rem` |\n| `.menu` | flex, `flex-wrap: wrap`, `gap: 0.25rem 1rem`, без маркерів, padding і margin |\n| `.menu a` | ціль від `44px` заввишки: `display: inline-flex; align-items: center; min-height: 2.75rem;` |\n| `.hero-inner` | сітка з `gap: 2rem`: текст над фото, а від `48em` — дві колонки `1fr 1fr`, по центру по вертикалі |\n| `.hero h1` | `font-size: clamp(2rem, 1.5rem + 2.5vw, 3.5rem)` |\n| `.hero-photo` | на всю ширину колонки |\n| `.product-grid` | сітка з `gap: 1rem`: 1 колонка, від `40em` — 2, від `64em` — 4 |\n| `.product img` | на всю ширину картки, квадратне: `aspect-ratio: 1; object-fit: cover;` |\n| `.perk-list` | `repeat(auto-fit, minmax(min(100%, 16rem), 1fr))`, `gap: 1rem` |\n| `.footer-inner` | flex, `flex-wrap: wrap`, `gap: 2rem`; `.footer-col` — `flex: 1 1 12rem` |\n| `:hover` | лише всередині `@media (hover: hover)` |\n\nМедіазапити — з `min-width` (або `width >=`), без `max-width`. Check перевірить сторінку на 320, 375, 639, 640, 767, 768, 1023, 1024 і 1440 px.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "@media[^{]*max-width", "message": "Mobile first: медіазапити з min-width (або width >=), без max-width." },
+    { "kind": "forbid", "pattern": "@media[^{]*width\\s*<", "message": "Mobile first: умова «ширина від …», а не «до …»." },
+    { "kind": "require", "pattern": "clamp\\(", "message": "Заголовок першого екрана — на clamp()." },
+    { "kind": "require", "pattern": "min\\(", "message": "Ширина .wrap і мінімум колонок переваг — через min()." }
+  ],
+  "hints": [
+    "Почни з гнучкого: `.wrap { width: min(100% - 2rem, 72rem); margin-inline: auto; }`, шапка й футер на flex-wrap, переваги на auto-fit. Вони працюють на будь-якій ширині без медіазапитів.",
+    "Медіазапити — у кінці файлу: `@media (min-width: 40em) { .product-grid { grid-template-columns: repeat(2, 1fr); } }`, `@media (min-width: 48em) { .hero-inner { grid-template-columns: 1fr 1fr; align-items: center; } }`, `@media (min-width: 64em) { … repeat(4, 1fr) … }`.",
+    "Правила `.menu a:hover` і `.button:hover` перенеси в `@media (hover: hover) { … }`. Якщо Check каже, що щось вилазить, — він назве елемент і ширину."
+  ],
+  "explanation": "Mobile first робить телефон найпростішим випадком: сітки з одною колонкою й блоки одне під одним — майже без CSS. `min()`, `auto-fit` і `flex-wrap` закривають більшість ширин без жодного медіазапиту, а запити лишаються лише для рішень дизайну: коли фото стає поруч із текстом і скільки колонок товарів. `clamp()` з частиною в rem дає заголовок, що росте і з екраном, і з налаштуванням шрифту.\n\nТипові помилки: сітка товарів у 4 колонки в базових правилах (на телефоні картки по 60 px), медіазапити вище за базові правила, `:hover` поза `(hover: hover)`, меню без `flex-wrap` (на 320 px вилазить)."
+}

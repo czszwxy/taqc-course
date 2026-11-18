@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Кошик — Gadgetly</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="back" href="/catalog">До каталогу</a>
+    <h1>Кошик</h1>
+  </header>
+  <main class="cart">
+    <ul class="cart-lines">
+      <li class="cart-line">
+        <div class="line-info"><h2>Gadgetly Pods 2</h2><p class="line-price">2 499 грн</p></div>
+        <div class="qty-control">
+          <button class="qty-btn" type="button" aria-label="Зменшити кількість Gadgetly Pods 2">−</button>
+          <input class="qty" type="number" inputmode="numeric" min="1" value="1" aria-label="Кількість Gadgetly Pods 2">
+          <button class="qty-btn" type="button" aria-label="Збільшити кількість Gadgetly Pods 2">+</button>
+        </div>
+        <button class="remove" type="button" aria-label="Видалити Gadgetly Pods 2">✕</button>
+      </li>
+      <li class="cart-line">
+        <div class="line-info"><h2>Gadgetly Watch 3</h2><p class="line-price">5 999 грн</p></div>
+        <div class="qty-control">
+          <button class="qty-btn" type="button" aria-label="Зменшити кількість Gadgetly Watch 3">−</button>
+          <input class="qty" type="number" inputmode="numeric" min="1" value="1" aria-label="Кількість Gadgetly Watch 3">
+          <button class="qty-btn" type="button" aria-label="Збільшити кількість Gadgetly Watch 3">+</button>
+        </div>
+        <button class="remove" type="button" aria-label="Видалити Gadgetly Watch 3">✕</button>
+      </li>
+      <li class="cart-line">
+        <div class="line-info"><h2>Павербанк 20 000 мА·год</h2><p class="line-price">1 499 грн</p></div>
+        <div class="qty-control">
+          <button class="qty-btn" type="button" aria-label="Зменшити кількість: павербанк">−</button>
+          <input class="qty" type="number" inputmode="numeric" min="1" value="1" aria-label="Кількість: павербанк">
+          <button class="qty-btn" type="button" aria-label="Збільшити кількість: павербанк">+</button>
+        </div>
+        <button class="remove" type="button" aria-label="Видалити павербанк">✕</button>
+      </li>
+      <li class="cart-line">
+        <div class="line-info"><h2>Кабель USB-C, 2 м</h2><p class="line-price">349 грн</p></div>
+        <div class="qty-control">
+          <button class="qty-btn" type="button" aria-label="Зменшити кількість: кабель">−</button>
+          <input class="qty" type="number" inputmode="numeric" min="1" value="2" aria-label="Кількість: кабель">
+          <button class="qty-btn" type="button" aria-label="Збільшити кількість: кабель">+</button>
+        </div>
+        <button class="remove" type="button" aria-label="Видалити кабель">✕</button>
+      </li>
+    </ul>
+    <div class="promo-code">
+      <label for="promo">Промокод</label>
+      <input class="promo-input" id="promo" type="text" autocomplete="off">
+    </div>
+    <div class="delivery">
+      <p>Доставка: 70 грн <span class="delivery-hint" aria-hidden="true">?</span></p>
+      <p class="delivery-note">Безкоштовно для замовлень від 3 000 грн.</p>
+    </div>
+  </main>
+  <div class="checkout-bar">
+    <p class="total">Разом: <strong>10 695 грн</strong></p>
+    <a class="checkout" href="/checkout">Оформити</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,141 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  color: #1f2937;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.site-header h1 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.back { color: #1d4ed8; }
+
+.cart { padding: 1rem 1rem 6rem; }
+
+.cart-lines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cart-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-block: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.line-info { flex-basis: 100%; }
+
+.line-info h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.line-price {
+  margin: 0;
+  color: #4b5563;
+}
+
+.qty-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.qty-btn,
+.remove {
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0;
+  font: inherit;
+  background-color: #fff;
+  border: 1px solid #9ca3af;
+  border-radius: 6px;
+}
+
+.qty {
+  width: 3.5rem;
+  min-height: 2.75rem;
+  font-size: 1rem;
+  text-align: center;
+  border: 1px solid #9ca3af;
+}
+
+@media (hover: hover) {
+  .qty-btn:hover,
+  .remove:hover { background-color: #f3f4f6; }
+
+  .checkout:hover { background-color: #1e40af; }
+}
+
+.promo-code { margin-block: 1rem; }
+
+.promo-input {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #9ca3af;
+  border-radius: 6px;
+}
+
+.delivery p { margin: 0; }
+
+.delivery-hint {
+  display: inline-block;
+  width: 1.25rem;
+  text-align: center;
+  border: 1px solid #9ca3af;
+  border-radius: 50%;
+}
+
+.delivery-note {
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.checkout-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  background-color: #fff;
+  border-top: 1px solid #d1d5db;
+}
+
+.total { margin: 0; }
+
+.checkout {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 1.25rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #1d4ed8;
+  border-radius: 6px;
+  text-decoration: none;
+}

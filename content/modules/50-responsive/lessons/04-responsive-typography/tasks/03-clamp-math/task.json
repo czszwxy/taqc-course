@@ -1,0 +1,30 @@
+{
+  "type": "table",
+  "title": "Calculate clamp(), min() and max()",
+  "statement": "Порахуй, яке значення вийде. Шрифт браузера — 16 px (1rem = 16 px), `html` у CSS не змінено.",
+  "givenColumns": ["CSS", "Умова"],
+  "answerColumns": [
+    {
+      "id": "value",
+      "label": "Результат",
+      "options": ["16px", "24px", "25.6px", "28px", "32px", "40px", "48px", "500px", "640px"]
+    }
+  ],
+  "rows": [
+    { "given": ["`font-size: clamp(1rem, 2.5vw, 2rem)`", "вікно 320 px"], "answers": { "value": "16px" }, "explain": "2.5vw = 8 px — менше за мінімум 16 px." },
+    { "given": ["`font-size: clamp(1rem, 2.5vw, 2rem)`", "вікно 1024 px"], "answers": { "value": "25.6px" } },
+    { "given": ["`font-size: clamp(1rem, 2.5vw, 2rem)`", "вікно 1600 px"], "answers": { "value": "32px" }, "explain": "2.5vw = 40 px — більше за максимум 2rem = 32 px." },
+    { "given": ["`font-size: clamp(1.5rem, 1rem + 2vw, 3rem)`", "вікно 375 px"], "answers": { "value": "24px" }, "explain": "16 + 7.5 = 23.5 px — менше за мінімум 24 px." },
+    { "given": ["`font-size: clamp(1.5rem, 1rem + 2vw, 3rem)`", "вікно 1200 px"], "answers": { "value": "40px" }, "explain": "16 + 24 = 40 px — між 24 і 48." },
+    { "given": ["`width: min(100%, 40rem)`", "батьківський блок 500 px"], "answers": { "value": "500px" } },
+    { "given": ["`width: min(100%, 40rem)`", "батьківський блок 900 px"], "answers": { "value": "640px" } },
+    { "given": ["`padding: max(1rem, 3vw)`", "вікно 320 px"], "answers": { "value": "16px" }, "explain": "3vw = 9.6 px, а max() бере більше — 16 px." },
+    { "given": ["`padding: max(1rem, 3vw)`", "вікно 1600 px"], "answers": { "value": "48px" } },
+    { "given": ["`font-size: 1.75rem`", "будь-яка ширина"], "answers": { "value": "28px" } }
+  ],
+  "hints": [
+    "Спершу переведи все в px: 1rem = 16 px, 1vw = 1 % ширини вікна.",
+    "`clamp(a, b, c)`: якщо b менше за a — береться a, якщо більше за c — береться c, інакше b."
+  ],
+  "explanation": "`clamp()` — це `max(мінімум, min(бажане, максимум))`: бажане значення, але не за межами. `min()` бере менше, `max()` — більше. Відсотки рахуються від батьківського блоку, `vw` — від ширини вікна."
+}

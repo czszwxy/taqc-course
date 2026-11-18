@@ -1,0 +1,85 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  color: #1f2937;
+}
+
+.site-header {
+  padding: 1rem;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.logo {
+  font-weight: 700;
+  color: #1d4ed8;
+  text-decoration: none;
+}
+
+.page {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.notice {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  background-color: #fef3c7;
+  border-radius: 6px;
+}
+
+.order-meta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem 1rem;
+}
+
+.order-meta dt { font-weight: 700; }
+
+.order-meta dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.thumb { flex: 0 0 160px; }
+
+.thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.coupon label {
+  display: block;
+  font-weight: 600;
+}
+
+.coupon input {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.5rem;
+  font: inherit;
+  border: 1px solid #9ca3af;
+  border-radius: 6px;
+}
+
+.tracking {
+  overflow-x: auto;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  background-color: #f3f4f6;
+  border-radius: 6px;
+}

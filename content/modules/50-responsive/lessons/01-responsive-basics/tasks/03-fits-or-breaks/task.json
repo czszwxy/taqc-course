@@ -1,0 +1,30 @@
+{
+  "type": "classify",
+  "title": "Fits a 320px screen or sticks out?",
+  "statement": "Екран завширшки 320 px, у всіх елементів `box-sizing: border-box`. Що з цього вміститься, а що вилізе за край і дасть горизонтальну прокрутку?",
+  "show": 8,
+  "categories": [
+    { "id": "fits", "label": "Вміщається", "description": "підлаштовується під ширину" },
+    { "id": "breaks", "label": "Вилазить", "description": "ширше за 320 px" }
+  ],
+  "items": [
+    { "id": "max-width", "text": "`.page { max-width: 960px; margin: 0 auto; }`", "category": "fits" },
+    { "id": "width", "text": "`.page { width: 960px; margin: 0 auto; }`", "category": "breaks" },
+    { "id": "img-fluid", "text": "`img { max-width: 100%; height: auto; }` для фото 1200 × 800", "category": "fits" },
+    { "id": "img-fixed", "text": "`.photo { width: 600px; }`", "category": "breaks" },
+    { "id": "vw-padding", "text": "`.banner { width: 100vw; padding: 0 24px; box-sizing: content-box; }`", "category": "breaks", "explain": "Ширина 320 px плюс 48 px полів — 368 px. Звичайний блок і так на всю ширину: width тут не потрібна." },
+    { "id": "input-100", "text": "`.search input { width: 100%; }`", "category": "fits" },
+    { "id": "min-width", "text": "`.sidebar { min-width: 400px; }`", "category": "breaks" },
+    { "id": "flex-wrap", "text": "`.tags { display: flex; flex-wrap: wrap; }` з десятьма тегами", "category": "fits" },
+    { "id": "flex-no-shrink", "text": "`.cards { display: flex; }` і `.card { flex: 0 0 200px; }` для трьох карток", "category": "breaks", "explain": "flex: 0 0 200px забороняє стискатися, а без flex-wrap картки не переносяться: 600 px в один рядок." },
+    { "id": "pre-scroll", "text": "`pre { overflow-x: auto; }` з довгим рядком коду", "category": "fits", "explain": "Блок коду лишається в межах екрана, а прокручується лише його вміст." },
+    { "id": "nowrap-url", "text": "`.link { white-space: nowrap; }` для довгого URL", "category": "breaks" },
+    { "id": "grid-fixed", "text": "`.grid { display: grid; grid-template-columns: repeat(3, 200px); }`", "category": "breaks" },
+    { "id": "grid-fluid", "text": "`.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }`", "category": "fits", "explain": "Колонка від 150 px — у 320 px влізе одна чи дві, і вони розтягнуться на всю ширину." }
+  ],
+  "hints": [
+    "Шукай фіксовані розміри, більші за 320 px, і заборони стискатися чи переноситися.",
+    "`max-width`, `%`, `minmax(…, 1fr)` і `flex-wrap` дають елементу підлаштуватися."
+  ],
+  "explanation": "За край вилазить усе, що має **жорсткий** розмір, більший за екран: `width` у px, `min-width`, колонки сітки в px, flex-елементи без стискання й перенесення, текст з `nowrap`. Вміщається те, що має межу лише зверху (`max-width`) або ділить доступне місце (`%`, `fr`, `flex-wrap`). Прокрутка всередині блоку (`overflow-x: auto`) не робить сторінку ширшою."
+}

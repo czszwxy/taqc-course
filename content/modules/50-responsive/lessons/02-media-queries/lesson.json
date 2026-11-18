@@ -1,0 +1,49 @@
+{
+  "title": "Media queries",
+  "minutes": 65,
+  "summary": "Медіазапити: синтаксис, min-width і max-width, новий range syntax (width >= 40em); mobile first проти desktop first; де ставити breakpoints і чому em; and, кома, not; медіафункції orientation, hover, pointer, prefers-color-scheme, print; темна тема через змінні CSS і color-scheme; стилі для друку",
+  "resources": [
+    {
+      "title": "MDN: Using media queries",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Media_queries/Using",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev Learn Responsive Design: Media queries",
+      "url": "https://web.dev/learn/design/media-queries",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev Learn Responsive Design: Theming",
+      "url": "https://web.dev/learn/design/theming",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: prefers-color-scheme",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-color-scheme",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: color-scheme",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/color-scheme",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: CSS media queries mobile first",
+      "url": "https://www.youtube.com/results?search_query=css+media+queries+mobile+first+tutorial",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

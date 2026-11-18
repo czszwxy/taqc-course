@@ -1,0 +1,36 @@
+{
+  "type": "table",
+  "title": "What makes the page scroll sideways?",
+  "statement": "Тестувальник(ця) відкрив(ла) сторінки Gadgetly на 375 px і описав(ла), що бачить. Обери для кожного випадку правильне виправлення.",
+  "givenColumns": ["Що видно на 375 px", "Код"],
+  "answerColumns": [
+    {
+      "id": "fix",
+      "label": "Виправлення",
+      "options": [
+        "max-width замість width",
+        "max-width: 100%; height: auto",
+        "overflow-wrap: anywhere",
+        "обгортка з overflow-x: auto",
+        "прибрати width: 100vw",
+        "flex-wrap: wrap",
+        "додати meta viewport",
+        "body { overflow-x: hidden }"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["Фото товару ширше за екран", "`.photo img { width: 800px; }`"], "answers": { "fix": "max-width: 100%; height: auto" } },
+    { "given": ["Уся сторінка завширшки 1100 px", "`.container { width: 1100px; margin: 0 auto; }`"], "answers": { "fix": "max-width замість width" } },
+    { "given": ["Кінець посилання на відстеження за краєм", "`<a>https://track.gadgetly.example/parcels?ttn=20450000000000</a>`"], "answers": { "fix": "overflow-wrap: anywhere" }, "explain": "URL без пробілів — одне довге слово, і браузер не переносить його без дозволу." },
+    { "given": ["Через таблицю тарифів прокручується вся сторінка", "`<table>` з шістьма колонками"], "answers": { "fix": "обгортка з overflow-x: auto" } },
+    { "given": ["Банер «Знижки» на 32 px ширший за екран", "`.promo { width: 100vw; padding: 0 16px; box-sizing: content-box; }`"], "answers": { "fix": "прибрати width: 100vw" }, "explain": "Блок і так займає всю ширину батька. 100vw плюс поля — ширше за екран." },
+    { "given": ["Чотири картки в рядок не вміщаються", "`.cards { display: flex; }`, `.card { flex: 0 0 200px; }`"], "answers": { "fix": "flex-wrap: wrap" } },
+    { "given": ["Сторінка — дрібна копія комп'ютерної, текст не прочитати", "`<head>` без `<meta name=\"viewport\">`"], "answers": { "fix": "додати meta viewport" } }
+  ],
+  "hints": [
+    "Для кожного випадку питай: який **один** елемент ширший за екран і чому?",
+    "`body { overflow-x: hidden }` тут не відповідь жодного разу: воно ховає проблему, а не виправляє."
+  ],
+  "explanation": "Кожна горизонтальна прокрутка має конкретного винуватця, і виправляють саме його: фіксовану ширину блоку — `max-width`, фото — `max-width: 100%; height: auto`, довге слово — `overflow-wrap`, таблицю — прокруткою в обгортці, flex-рядок — перенесенням. `overflow-x: hidden` лише обрізає те, що вилазить, — частина вмісту стає недоступною."
+}

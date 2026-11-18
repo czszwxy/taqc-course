@@ -1,0 +1,29 @@
+{
+  "type": "classify",
+  "title": "Helps or hurts readable, zoomable text?",
+  "statement": "Що з цього допомагає людям читати і збільшувати текст, а що заважає?",
+  "show": 8,
+  "categories": [
+    { "id": "helps", "label": "Допомагає" },
+    { "id": "hurts", "label": "Шкодить" }
+  ],
+  "items": [
+    { "id": "pure-vw", "text": "`h1 { font-size: 6vw; }`", "category": "hurts", "explain": "Не збільшується масштабом і налаштуванням шрифту." },
+    { "id": "html-px", "text": "`html { font-size: 14px; }`", "category": "hurts", "explain": "Перекриває налаштування шрифту людини." },
+    { "id": "clamp-rem", "text": "`h1 { font-size: clamp(1.75rem, 1.25rem + 2.5vw, 3rem); }`", "category": "helps" },
+    { "id": "measure", "text": "`article { max-width: 65ch; }`", "category": "helps" },
+    { "id": "fixed-height", "text": "`.card-title { height: 48px; overflow: hidden; }`", "category": "hurts", "explain": "Збільшений шрифт чи інтервали — і частину назви обріже." },
+    { "id": "line-height", "text": "`body { line-height: 1.5; }`", "category": "helps" },
+    { "id": "tiny", "text": "`body { font-size: 12px; }`", "category": "hurts" },
+    { "id": "rem-text", "text": "`p { font-size: 1rem; }`", "category": "helps" },
+    { "id": "max-scale", "text": "`<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\">`", "category": "hurts" },
+    { "id": "balance", "text": "`h1 { text-wrap: balance; }`", "category": "helps" },
+    { "id": "calc-rem", "text": "`.lead { font-size: calc(1rem + 0.5vw); }`", "category": "helps", "explain": "Частина в rem росте разом з налаштуванням шрифту." },
+    { "id": "min-height", "text": "`.banner { min-height: 240px; }`", "category": "helps", "explain": "Блок не менший за 240 px, але росте, коли тексту більше." }
+  ],
+  "hints": [
+    "Чи збільшиться цей текст, коли людина збільшить шрифт у налаштуваннях браузера?",
+    "Чи витримає блок довший текст, ніж планував дизайнер?"
+  ],
+  "explanation": "Шкодить усе, що відбирає в людини контроль: фіксована база в px, шрифт лише у vw, заборона масштабу, фіксована висота блоку з текстом, дрібний шрифт. Допомагає те, що росте разом з налаштуваннями (rem, clamp з rem), обмежує довжину рядка й дає тексту простір."
+}

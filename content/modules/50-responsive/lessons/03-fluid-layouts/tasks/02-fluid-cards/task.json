@@ -1,0 +1,16 @@
+{
+  "type": "web",
+  "title": "A card grid that never overflows",
+  "statement": "Каталог аксесуарів зверстали під один екран: на ноутбуці він ширший за вікно, а на телефоні — і поготів. Зроби його гнучким **без медіазапитів** (HTML не змінюй):\n\n1. `.wrap`: на всю ширину мінус `2rem` полів, але не ширше за `70rem`, по центру: `width: min(100% - 2rem, 70rem); margin-inline: auto;`.\n2. `.cards`: сітка з колонками **від 20rem** — скільки влізе, залишок порівну, — і щоб на екрані, вужчому за 20rem, колонка стискалася до ширини контейнера: `repeat(auto-fit, minmax(min(100%, 20rem), 1fr))`. Відстань `1rem`.\n3. Фото в картках різних пропорцій. Зроби для всіх однакову рамку `4 / 3`: на всю ширину картки, `aspect-ratio: 4 / 3`, `object-fit: cover`.\n\nCheck перевірить 320, 375, 768, 1024 і 1440 px.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "@media", "message": "Тут не потрібні медіазапити: min() і auto-fit зроблять усе самі." },
+    { "kind": "require", "pattern": "auto-(fit|fill)", "message": "Кількість колонок має вирішувати сітка: repeat(auto-fit, …)." },
+    { "kind": "require", "pattern": "min\\(", "message": "Потрібна функція min(): для ширини .wrap і мінімуму колонки." }
+  ],
+  "hints": [
+    "`.wrap { width: min(100% - 2rem, 70rem); margin-inline: auto; }` — рядок з `width: 1120px` прибери.",
+    "`.cards { grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: 1rem; }`.",
+    "Фото: `.card img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }`."
+  ],
+  "explanation": "`min(100% - 2rem, 70rem)` дає поля на телефоні й межу на моніторі одним рядком. Сітка рахує колонки сама: на 1024 px у `.wrap` 992 px влазять три колонки по 20rem, на 768 — дві, на телефоні — одна. А `min(100%, 20rem)` рятує найвужчий екран: у 320 px контейнер має лише 288 px, і без `min()` колонка 320 px вилізла б за край.\n\nТипові помилки: `minmax(20rem, 1fr)` без `min()` (прокрутка на 320 px), `width: 100%` замість `min()` (на моніторі сітка розтягується на весь екран), `aspect-ratio` без `object-fit: cover` (фото спотворюється)."
+}

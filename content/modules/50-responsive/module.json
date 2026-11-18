@@ -1,0 +1,14 @@
+{
+  "title": "Responsive Design",
+  "description": "Одна сторінка — для телефона, планшета й монітора: meta viewport і гнучкі ширини, медіазапити й підхід mobile first, темна тема й друк, розкладки без медіазапитів (min(), clamp(), auto-fit) і container queries, адаптивна типографіка, що поважає збільшення, адаптивні зображення (srcset, sizes, <picture>), сенсорні екрани й мобільний UX, тестування й налагодження адаптивної верстки. У задачах Check змінює ширину сторінки — від 320 до 1440 px — і перевіряє розкладку на кожній. Наприкінці — tech check по всьому блоку Web Basics.",
+  "goals": [
+    "Make a page fluid: viewport meta, max-width, flexible media and no horizontal scroll at 320px",
+    "Write mobile-first layouts with media queries and choose breakpoints by content",
+    "Support a dark theme and print with media features and custom properties",
+    "Build layouts that adapt without breakpoints: min(), clamp(), auto-fit and container queries",
+    "Scale text fluidly while respecting zoom and the user's font size",
+    "Serve the right image with srcset, sizes and <picture>",
+    "Design for touch: target sizes, interactions without hover, mobile keyboards",
+    "Test and debug responsive layouts: find what sticks out, check breakpoints, zoom and real devices"
+  ]
+}

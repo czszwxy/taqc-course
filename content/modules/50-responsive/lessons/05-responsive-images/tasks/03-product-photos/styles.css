@@ -1,0 +1,64 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  color: #1f2937;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  background-color: #e5e7eb;
+}
+
+.site-header {
+  padding: 1rem;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.page {
+  width: min(100% - 2rem, 72rem);
+  margin-inline: auto;
+  padding-block: 1rem 2rem;
+}
+
+.product {
+  display: grid;
+  gap: 1.5rem;
+}
+
+/* <picture> — grid-елемент, який інакше не стискається вужче за справжню ширину фото. */
+.product > * { min-width: 0; }
+
+@media (min-width: 64em) {
+  .product {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+.product-info h1 { margin-top: 0; }
+
+.price {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.promo { margin-block: 2rem; }
+
+.related-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 12rem), 1fr));
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.related-list a {
+  display: block;
+  color: #1d4ed8;
+}

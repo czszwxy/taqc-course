@@ -1,0 +1,77 @@
+{
+  "type": "quiz",
+  "title": "Touch and mobile UX quiz",
+  "show": 5,
+  "questions": [
+    {
+      "id": "target-aa",
+      "kind": "single",
+      "text": "Який мінімальний розмір цілі вимагає WCAG 2.2 на рівні AA (2.5.8)?",
+      "options": [
+        { "text": "24 × 24 CSS px — або менша ціль з вільним місцем навколо", "correct": true },
+        { "text": "44 × 44 CSS px", "explain": "Це рівень AAA (2.5.5) і рекомендація Apple — добра практика, але не мінімум AA." },
+        { "text": "16 × 16 CSS px" }
+      ]
+    },
+    {
+      "id": "hover-media",
+      "kind": "single",
+      "text": "Навіщо загортати `.card:hover { … }` у `@media (hover: hover)`?",
+      "options": [
+        { "text": "На сенсорних екранах наведення немає, і ефект «прилипає» після дотику", "correct": true },
+        { "text": "Без цього :hover не працює в Chrome" },
+        { "text": "Щоб ефект працював лише на телефонах", "explain": "Навпаки: (hover: hover) — пристрої з мишкою." }
+      ]
+    },
+    {
+      "id": "ios-zoom",
+      "kind": "single",
+      "text": "На iPhone сторінка сама збільшується, коли торкаєшся поля пошуку. Найімовірніша причина?",
+      "options": [
+        { "text": "Шрифт поля менший за 16 px", "correct": true },
+        { "text": "У полі немає `inputmode`" },
+        { "text": "У meta viewport немає `maximum-scale=1`", "explain": "Заборона масштабу шкодить доступності. Правильне виправлення — шрифт поля від 16 px." }
+      ]
+    },
+    {
+      "id": "sms-code",
+      "kind": "single",
+      "text": "Поле для 6-значного коду з SMS. Які атрибути?",
+      "options": [
+        { "text": "`inputmode=\"numeric\" autocomplete=\"one-time-code\"`", "correct": true },
+        { "text": "`type=\"number\"`", "explain": "Код — не число: type=number може відкинути нулі на початку й додає стрілки." },
+        { "text": "`type=\"tel\"`" }
+      ]
+    },
+    {
+      "id": "dvh",
+      "kind": "single",
+      "text": "Перший екран має `min-height: 100vh`, а кнопка внизу ховається під панеллю браузера на телефоні. Що допоможе?",
+      "options": [
+        { "text": "`100svh` або `100dvh`: висота з урахуванням панелей браузера", "correct": true },
+        { "text": "`100%`" },
+        { "text": "`height: 100vw`" }
+      ]
+    },
+    {
+      "id": "safe-area",
+      "kind": "single",
+      "text": "Що означає `padding-bottom: max(0.75rem, env(safe-area-inset-bottom))`?",
+      "options": [
+        { "text": "Відступ знизу — щонайменше 0.75rem, а на iPhone зі смужкою жесту — на всю її висоту", "correct": true },
+        { "text": "Відступ дорівнює висоті клавіатури" },
+        { "text": "Відступ лише на Android" }
+      ]
+    },
+    {
+      "id": "hover-only",
+      "kind": "single",
+      "text": "Пояснення до знижки з'являється лише при наведенні на значок «?». Що з цим робити?",
+      "options": [
+        { "text": "Показати пояснення так, щоб воно було доступне без наведення: текстом поруч або кнопкою, що його відкриває", "correct": true },
+        { "text": "Нічого: на телефоні люди торкаються значка" },
+        { "text": "Збільшити значок" }
+      ]
+    }
+  ]
+}

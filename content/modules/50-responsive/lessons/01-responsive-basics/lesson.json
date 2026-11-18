@@ -1,0 +1,42 @@
+{
+  "title": "Responsive basics",
+  "minutes": 55,
+  "summary": "Що таке адаптивний дизайн; meta viewport і чому не можна забороняти масштаб; гнучкі ширини (max-width замість width), медіа, що не ширші за свій блок; звідки береться горизонтальна прокрутка і чому overflow-x: hidden — не виправлення; таблиця з прокруткою в обгортці; WCAG Reflow — 320 CSS px; ідея mobile first",
+  "resources": [
+    {
+      "title": "MDN: Responsive web design",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: <meta name=\"viewport\">",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/viewport",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev Learn Responsive Design: Introduction",
+      "url": "https://web.dev/learn/design/intro",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "WCAG 2.2 Understanding 1.4.10 Reflow",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: responsive web design basics",
+      "url": "https://www.youtube.com/results?search_query=responsive+web+design+basics+viewport+meta+tag",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

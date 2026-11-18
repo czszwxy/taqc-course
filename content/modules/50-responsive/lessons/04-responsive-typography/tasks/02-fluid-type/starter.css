@@ -1,0 +1,57 @@
+html { font-size: 16px; }
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  color: #1f2937;
+}
+
+.site-header { padding: 1rem; }
+
+.logo {
+  font-weight: 700;
+  color: #1d4ed8;
+  text-decoration: none;
+}
+
+.promo {
+  height: 220px;
+  padding: 24px 16px;
+  background-color: #eff6ff;
+  text-align: center;
+}
+
+.promo h1 {
+  margin: 0 0 0.5rem;
+  font-size: 5vw;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+.lead {
+  margin: 0 auto 1rem;
+  max-width: 40rem;
+  font-size: 18px;
+  color: #374151;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #1d4ed8;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.post {
+  max-width: 65ch;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.post h2 { font-size: 1.5rem; }

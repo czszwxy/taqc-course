@@ -1,0 +1,42 @@
+{
+  "title": "Testing and debugging responsive layouts",
+  "minutes": 60,
+  "summary": "Як знайти елемент, що вилазить за екран (сніпет у Console, outline для всіх блоків, найглибший винуватець); DevTools для адаптивної верстки: Device toolbar, смужки медіазапитів, Rendering (темна тема, reduced motion, друк), бейджі grid / flex, Computed, Network для зображень, Lighthouse; що перевіряти — межі й проміжки breakpoints, 320 px, збільшення, Text Spacing, довгий вміст, орієнтація; чого не покаже емуляція і як відкрити телефон у DevTools; ширина у баг-репорті",
+  "resources": [
+    {
+      "title": "Chrome DevTools: Device mode",
+      "url": "https://developer.chrome.com/docs/devtools/device-mode",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Chrome DevTools: Emulate CSS media features",
+      "url": "https://developer.chrome.com/docs/devtools/rendering/emulate-css",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Chrome DevTools: Inspect CSS grid",
+      "url": "https://developer.chrome.com/docs/devtools/css/grid",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Lighthouse overview",
+      "url": "https://developer.chrome.com/docs/lighthouse/overview",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: debug horizontal scroll overflow CSS",
+      "url": "https://www.youtube.com/results?search_query=css+find+element+causing+horizontal+scroll+overflow",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

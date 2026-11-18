@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Магазини — Gadgetly</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="/">Gadgetly</a>
+  </header>
+  <main class="page">
+    <h1>Магазини Gadgetly</h1>
+    <div class="layout">
+      <aside class="filters" aria-labelledby="filters-title">
+        <h2 id="filters-title">Фільтри</h2>
+        <form class="filter-form">
+          <fieldset>
+            <legend>Місто</legend>
+            <label><input type="checkbox" name="city" value="kyiv"> Київ</label>
+            <label><input type="checkbox" name="city" value="lviv"> Львів</label>
+            <label><input type="checkbox" name="city" value="odesa"> Одеса</label>
+          </fieldset>
+          <label><input type="checkbox" name="open-now"> Працює зараз</label>
+        </form>
+      </aside>
+      <section class="stores" aria-labelledby="stores-title">
+        <h2 id="stores-title">6 магазинів</h2>
+        <ul class="store-list">
+          <li class="store"><h3>Київ, Хрещатик</h3><p>вул. Хрещатик, 22</p><p class="hours">Пн–Нд 10:00–21:00</p></li>
+          <li class="store"><h3>Київ, Позняки</h3><p>просп. Петра Григоренка, 18</p><p class="hours">Пн–Нд 10:00–21:00</p></li>
+          <li class="store"><h3>Львів, Центр</h3><p>вул. Городоцька, 7</p><p class="hours">Пн–Сб 10:00–20:00</p></li>
+          <li class="store"><h3>Львів, Сихів</h3><p>просп. Червоної Калини, 60</p><p class="hours">Пн–Нд 10:00–21:00</p></li>
+          <li class="store"><h3>Одеса, Аркадія</h3><p>Французький бульвар, 33</p><p class="hours">Пн–Нд 10:00–22:00</p></li>
+          <li class="store"><h3>Одеса, Центр</h3><p>вул. Дерибасівська, 12</p><p class="hours">Пн–Сб 10:00–20:00</p></li>
+        </ul>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

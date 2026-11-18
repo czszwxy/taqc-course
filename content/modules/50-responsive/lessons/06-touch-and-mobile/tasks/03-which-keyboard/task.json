@@ -1,0 +1,36 @@
+{
+  "type": "table",
+  "title": "Which keyboard should the phone show?",
+  "statement": "Для кожного поля форми Gadgetly обери атрибути, з якими телефон покаже найзручнішу клавіатуру.",
+  "givenColumns": ["Поле"],
+  "answerColumns": [
+    {
+      "id": "attrs",
+      "label": "Атрибути",
+      "options": [
+        "type=\"email\"",
+        "type=\"tel\"",
+        "type=\"url\"",
+        "type=\"search\"",
+        "inputmode=\"numeric\"",
+        "inputmode=\"decimal\"",
+        "inputmode=\"numeric\" autocomplete=\"one-time-code\""
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["Email для електронного чека"], "answers": { "attrs": "type=\"email\"" } },
+    { "given": ["Номер телефону отримувача"], "answers": { "attrs": "type=\"tel\"" } },
+    { "given": ["Код підтвердження з SMS, 6 цифр"], "answers": { "attrs": "inputmode=\"numeric\" autocomplete=\"one-time-code\"" }, "explain": "one-time-code — телефон сам запропонує код з повідомлення." },
+    { "given": ["Номер картки лояльності: 13 цифр, може починатися з нулів"], "answers": { "attrs": "inputmode=\"numeric\"" }, "explain": "type=\"number\" відкинув би нулі на початку: номер — не число, з яким рахують." },
+    { "given": ["Сума поповнення бонусного рахунку з копійками: 249,50"], "answers": { "attrs": "inputmode=\"decimal\"" } },
+    { "given": ["Пошук у каталозі"], "answers": { "attrs": "type=\"search\"" } },
+    { "given": ["Посилання на твій профіль в Instagram для відгуку з фото"], "answers": { "attrs": "type=\"url\"" } },
+    { "given": ["Поштовий індекс: 01001"], "answers": { "attrs": "inputmode=\"numeric\"" } }
+  ],
+  "hints": [
+    "Email, телефон, адреса сайту й пошук мають власні `type`.",
+    "Цифри без арифметики — `inputmode=\"numeric\"`; гроші з копійками — `decimal`."
+  ],
+  "explanation": "`type` змінює і клавіатуру, і перевірку значення, тому він — для справжніх email, телефонів, URL і пошуку. `inputmode` змінює лише клавіатуру: для кодів, індексів і номерів, які складаються з цифр, але не є числами. `autocomplete=\"one-time-code\"` дозволяє телефону підставити код з SMS."
+}

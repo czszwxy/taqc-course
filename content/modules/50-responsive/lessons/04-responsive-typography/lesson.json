@@ -1,0 +1,42 @@
+{
+  "title": "Responsive typography",
+  "minutes": 50,
+  "summary": "Масштаб браузера проти розміру шрифту в налаштуваннях; WCAG Resize Text і чому не можна html { font-size: 16px }; чому заголовок лише у vw — погана ідея; clamp() з частиною в rem для плавного шрифту і відступів; як порахувати бажане значення; довжина рядка, інтерліньяж і text-wrap: balance; WCAG Text Spacing і фіксована висота блоків з текстом",
+  "resources": [
+    {
+      "title": "web.dev Learn Responsive Design: Typography",
+      "url": "https://web.dev/learn/design/typography",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: clamp()",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/clamp",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "WCAG 2.2 Understanding 1.4.4 Resize Text",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "WCAG 2.2 Understanding 1.4.12 Text Spacing",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: fluid typography with clamp",
+      "url": "https://www.youtube.com/results?search_query=css+fluid+typography+clamp",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

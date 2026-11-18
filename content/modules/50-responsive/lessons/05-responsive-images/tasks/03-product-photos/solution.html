@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gadgetly Pods 2 — Gadgetly</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a href="/"><img class="logo" src="logo.png" srcset="logo.png 1x, logo@2x.png 2x" alt="Gadgetly — на головну" width="120" height="32"></a>
+  </header>
+  <main class="page">
+    <div class="product">
+      <picture>
+        <source type="image/avif" srcset="pods-800.avif 800w, pods-1600.avif 1600w" sizes="(min-width: 64em) 50vw, 100vw">
+        <source type="image/webp" srcset="pods-800.webp 800w, pods-1600.webp 1600w" sizes="(min-width: 64em) 50vw, 100vw">
+        <img class="product-photo" src="pods-800.jpg" srcset="pods-800.jpg 800w, pods-1600.jpg 1600w" sizes="(min-width: 64em) 50vw, 100vw" alt="Бездротові навушники Gadgetly Pods 2 у відкритому білому футлярі" width="1600" height="1200" fetchpriority="high">
+      </picture>
+      <div class="product-info">
+        <h1>Навушники Gadgetly Pods 2</h1>
+        <p class="price">2 499 грн</p>
+        <p>Активне шумозаглушення, до 30 годин роботи з футляром, бездротова зарядка.</p>
+      </div>
+    </div>
+    <section class="promo" aria-label="Акція">
+      <picture>
+        <source media="(min-width: 48em)" srcset="sale-wide.jpg" width="1600" height="500">
+        <img src="sale-square.jpg" alt="Знижка 20 % на всі навушники до неділі" width="800" height="800">
+      </picture>
+    </section>
+    <section class="related" aria-labelledby="related-title">
+      <h2 id="related-title">Схожі товари</h2>
+      <ul class="related-list">
+        <li><a href="/product/pods-lite"><img src="pods-lite.jpg" alt="" width="400" height="400" loading="lazy">Gadgetly Pods Lite</a></li>
+        <li><a href="/product/pods-max"><img src="pods-max.jpg" alt="" width="400" height="400" loading="lazy">Gadgetly Pods Max</a></li>
+        <li><a href="/product/pods-case"><img src="pods-case.jpg" alt="" width="400" height="400" loading="lazy">Чохол для Pods 2</a></li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

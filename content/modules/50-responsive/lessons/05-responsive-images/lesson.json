@@ -1,0 +1,56 @@
+{
+  "title": "Responsive images",
+  "minutes": 60,
+  "summary": "Кожному пристрою — найменший файл, якого досить: srcset з дескрипторами w і sizes, як браузер обирає файл за шириною слоту й DPR; srcset з 1x / 2x для фіксованого розміру; <picture> для art direction (media) і нових форматів AVIF / WebP (type); правила <picture>; loading=\"lazy\", fetchpriority, width / height проти зсуву сторінки; aspect-ratio і object-fit",
+  "resources": [
+    {
+      "title": "MDN: Responsive images",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Responsive_images",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: <picture>",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/picture",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev Learn Responsive Design: Responsive images",
+      "url": "https://web.dev/learn/design/responsive-images",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev Learn Responsive Design: The picture element",
+      "url": "https://web.dev/learn/design/picture-element",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev: Browser-level image lazy loading",
+      "url": "https://web.dev/articles/browser-level-image-lazy-loading",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev: Fetch Priority API",
+      "url": "https://web.dev/articles/fetch-priority",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: srcset and sizes explained",
+      "url": "https://www.youtube.com/results?search_query=html+srcset+sizes+picture+element+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

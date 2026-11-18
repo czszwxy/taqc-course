@@ -1,0 +1,25 @@
+{
+  "type": "table",
+  "title": "Which file will the browser download?",
+  "statement": "Фото на сторінці товару:\n\n```html\n<img src=\"desk-800.jpg\"\n     srcset=\"desk-400.jpg 400w, desk-800.jpg 800w, desk-1200.jpg 1200w, desk-1600.jpg 1600w\"\n     sizes=\"(min-width: 64em) 50vw, 100vw\" alt=\"…\" width=\"1600\" height=\"1200\">\n```\n\nВважай, що браузер бере **найменший** файл, ширина якого не менша за «ширина слоту × DPR», а якщо такого немає — найбільший. Шрифт браузера — 16 px.",
+  "givenColumns": ["Пристрій", "Ширина вікна", "DPR"],
+  "answerColumns": [
+    { "id": "file", "label": "Файл", "options": ["desk-400.jpg", "desk-800.jpg", "desk-1200.jpg", "desk-1600.jpg"] }
+  ],
+  "rows": [
+    { "given": ["телефон", "360 px", "2"], "answers": { "file": "desk-800.jpg" }, "explain": "Слот 100vw = 360 px × 2 = 720 → перший файл від 720w — 800w." },
+    { "given": ["телефон", "390 px", "3"], "answers": { "file": "desk-1200.jpg" }, "explain": "390 × 3 = 1170 → 1200w." },
+    { "given": ["старий телефон", "320 px", "1"], "answers": { "file": "desk-400.jpg" } },
+    { "given": ["планшет", "768 px", "2"], "answers": { "file": "desk-1600.jpg" }, "explain": "768 менше за 64em — слот 100vw: 768 × 2 = 1536 → 1600w." },
+    { "given": ["ноутбук", "1024 px", "1"], "answers": { "file": "desk-800.jpg" }, "explain": "Рівно 64em — умова min-width діє: слот 50vw = 512 → 800w." },
+    { "given": ["ноутбук", "1280 px", "1"], "answers": { "file": "desk-800.jpg" }, "explain": "50vw = 640 → 800w." },
+    { "given": ["ноутбук", "1440 px", "2"], "answers": { "file": "desk-1600.jpg" }, "explain": "720 × 2 = 1440 → 1600w." },
+    { "given": ["монітор", "1920 px", "1"], "answers": { "file": "desk-1200.jpg" }, "explain": "50vw = 960 → 1200w." },
+    { "given": ["монітор", "2560 px", "2"], "answers": { "file": "desk-1600.jpg" }, "explain": "1280 × 2 = 2560 — такого великого файлу немає, тож береться найбільший." }
+  ],
+  "hints": [
+    "Крок 1: яка умова в `sizes` діє? Від 64em (1024 px) слот — 50vw, інакше — 100vw.",
+    "Крок 2: ширина слоту × DPR. Крок 3: найменший файл, не вужчий за результат."
+  ],
+  "explanation": "Браузер не знає, яке фото «гарне», — він рахує. `sizes` каже, скільки місця займе фото, DPR — скільки фізичних пікселів у кожному CSS-пікселі, а `w` у `srcset` — справжня ширина кожного файлу. Тому той самий HTML дає телефону з DPR 3 більший файл, ніж широкому монітору з DPR 1."
+}

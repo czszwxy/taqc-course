@@ -1,0 +1,49 @@
+{
+  "title": "Touch and mobile UX",
+  "minutes": 55,
+  "summary": "Палець — не курсор: розмір цілей (WCAG 2.5.8 — 24 × 24, 44 px на практиці) і відстань між ними; ефекти наведення лише в @media (hover: hover) і нічого важливого за :hover; поля вводу — шрифт від 16 px, type та inputmode для правильної клавіатури; висота екрана dvh / svh / lvh; виріз камери й env(safe-area-inset-*); фіксовані панелі, що не закривають вміст і фокус",
+  "resources": [
+    {
+      "title": "web.dev Learn Responsive Design: Interaction",
+      "url": "https://web.dev/learn/design/interaction",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "WCAG 2.2 Understanding 2.5.8 Target Size (Minimum)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: inputmode",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/inputmode",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: env()",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: CSS length units (viewport units)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/length",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: mobile UX touch targets",
+      "url": "https://www.youtube.com/results?search_query=mobile+ux+touch+target+size+accessibility",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "type": "classify",
+  "title": "Media query, container query or neither?",
+  "statement": "Що найкраще підходить для кожного завдання?",
+  "show": 8,
+  "categories": [
+    { "id": "media", "label": "Медіазапит", "description": "сторінка загалом, тема, друк" },
+    { "id": "container", "label": "Container query", "description": "компонент за шириною свого місця" },
+    { "id": "intrinsic", "label": "Без запитів", "description": "min(), clamp(), auto-fit, flex-wrap" }
+  ],
+  "items": [
+    { "id": "catalog", "text": "Каталог: скільки влізе колонок по 15rem, стільки й буде", "category": "intrinsic" },
+    { "id": "card-places", "text": "Картка товару горизонтальна в основному вмісті й вертикальна у вузькій бічній колонці", "category": "container" },
+    { "id": "sidebar", "text": "Від 64em показати бічну колонку з фільтрами ліворуч", "category": "media" },
+    { "id": "padding", "text": "Поля сторінки плавно ростуть від 1rem на телефоні до 3rem на моніторі", "category": "intrinsic", "explain": "padding: clamp(1rem, 4vw, 3rem) — один рядок без меж." },
+    { "id": "dark", "text": "Темна тема, коли вона увімкнена в системі", "category": "media" },
+    { "id": "widget", "text": "Віджет «Відстежити посилку», який вставляють на різні сторінки в блоки різної ширини", "category": "container" },
+    { "id": "tags", "text": "Теги різної довжини переносяться на новий рядок", "category": "intrinsic" },
+    { "id": "print", "text": "Сховати меню й кнопки під час друку", "category": "media" },
+    { "id": "article", "text": "Стаття на всю ширину, але не ширше за 40rem", "category": "intrinsic" },
+    { "id": "card-title", "text": "Заголовок картки більшає разом із шириною самої картки", "category": "container", "explain": "Одиниці cqi — відсоток ширини контейнера: font-size: clamp(1rem, 5cqi, 1.5rem)." },
+    { "id": "menu", "text": "На вузьких екранах замість рядка меню — кнопка «Меню»", "category": "media", "explain": "Це зміна шапки всієї сторінки за шириною вікна." },
+    { "id": "login", "text": "Форма входу на всю ширину, але не ширше за 24rem", "category": "intrinsic" }
+  ],
+  "hints": [
+    "Чи залежить рішення від **місця компонента** на сторінці, а не від екрана? Тоді container query.",
+    "Якщо досить «не більше ніж», «скільки влізе» чи «плавно між» — це min(), auto-fit, flex-wrap або clamp() без жодних запитів."
+  ],
+  "explanation": "Спершу — гнучкі інструменти без запитів: вони працюють на будь-якій ширині й не мають меж, де щось ламається. Container query — для компонентів, що живуть у різних місцях. Медіазапит — для рішень про сторінку загалом: бічна колонка, меню, тема, друк."
+}

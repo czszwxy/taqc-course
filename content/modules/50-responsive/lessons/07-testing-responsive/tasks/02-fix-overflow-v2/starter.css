@@ -1,0 +1,78 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  color: #1f2937;
+}
+
+.site-header {
+  padding: 1rem;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.logo {
+  font-weight: 700;
+  color: #1d4ed8;
+  text-decoration: none;
+}
+
+.page {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.steps {
+  display: flex;
+  gap: 2rem;
+  white-space: nowrap;
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  counter-reset: step;
+}
+
+.steps li {
+  counter-increment: step;
+  color: #4b5563;
+}
+
+.steps li::before { content: counter(step) ". "; }
+
+.steps [aria-current="step"] {
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: 220px 160px;
+  gap: 0.25rem 1rem;
+}
+
+.summary dd {
+  margin: 0;
+  text-align: right;
+}
+
+.bank-logos img { width: 420px; }
+
+.pay-button {
+  display: block;
+  width: 100%;
+  margin-left: 2rem;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  text-align: center;
+  color: #fff;
+  background-color: #1d4ed8;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.iban {
+  font-size: 1.25rem;
+  letter-spacing: 0.05em;
+}

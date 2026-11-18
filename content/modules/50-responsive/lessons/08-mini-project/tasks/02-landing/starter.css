@@ -1,0 +1,118 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  color: #1f2937;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3 { line-height: 1.2; }
+
+a { color: #1d4ed8; }
+
+.site-header {
+  padding-block: 0.5rem;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.menu a {
+  font-weight: 600;
+  color: #1f2937;
+  text-decoration: none;
+}
+
+.menu a[aria-current="page"] {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.menu a:hover { text-decoration: underline; }
+
+.hero {
+  padding-block: 2rem;
+  background-color: #eff6ff;
+}
+
+.hero h1 {
+  margin: 0 0 0.75rem;
+  font-size: 2.5rem;
+}
+
+.lead {
+  font-size: 1.125rem;
+  color: #374151;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #1d4ed8;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.button:hover { background-color: #1e40af; }
+
+.products,
+.perks { padding-block: 2rem; }
+
+.product-grid,
+.perk-list,
+.footer-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.product {
+  padding: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+
+.product h3 {
+  margin: 0.75rem 0 0.25rem;
+  font-size: 1.0625rem;
+}
+
+.price { margin: 0; }
+
+.price del { color: #4b5563; }
+
+.price strong {
+  font-size: 1.125rem;
+  color: #b91c1c;
+}
+
+.perk {
+  padding: 1rem;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+}
+
+.perk h3 { margin-top: 0; }
+
+.site-footer {
+  padding-block: 2rem;
+  color: #f9fafb;
+  background-color: #1f2937;
+}
+
+.site-footer a { color: #bfdbfe; }
+
+.footer-col h2 { font-size: 1.125rem; }
+
+/* Твоя частина: розкладка mobile first — див. таблицю в умові. */

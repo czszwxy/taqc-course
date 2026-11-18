@@ -1,0 +1,87 @@
+{
+  "type": "quiz",
+  "title": "Fluid layouts quiz",
+  "show": 5,
+  "questions": [
+    {
+      "id": "min-width",
+      "kind": "single",
+      "text": "`.article { width: min(100%, 40rem); }` у батьківському блоці завширшки 300 px. Яка ширина статті?",
+      "options": [
+        { "text": "300 px: менше з 100 % (300 px) і 40rem (640 px)", "correct": true },
+        { "text": "640 px" },
+        { "text": "40 % від 300 px", "explain": "min() обирає менше з двох значень." }
+      ]
+    },
+    {
+      "id": "clamp-max",
+      "kind": "single",
+      "text": "`gap: clamp(1rem, 3vw, 2rem)` на екрані 1600 px. Який буде gap?",
+      "options": [
+        { "text": "2rem (32 px): 3vw = 48 px, але максимум — 2rem", "correct": true },
+        { "text": "48 px" },
+        { "text": "1rem" }
+      ]
+    },
+    {
+      "id": "min-in-minmax",
+      "kind": "single",
+      "text": "Навіщо `minmax(min(100%, 20rem), 1fr)` замість `minmax(20rem, 1fr)`?",
+      "options": [
+        { "text": "Коли контейнер вужчий за 20rem, колонка стискається до його ширини і не вилазить за екран", "correct": true },
+        { "text": "Так колонок завжди більше" },
+        { "text": "minmax не працює з rem без min()", "explain": "Працює. Але мінімум 20rem у контейнері 288 px — це колонка ширша за контейнер." }
+      ]
+    },
+    {
+      "id": "auto-fit",
+      "kind": "single",
+      "text": "Сітка `repeat(auto-fit, minmax(12rem, 1fr))` на 1200 px, а карток лише дві. Що буде?",
+      "options": [
+        { "text": "Дві картки розтягнуться на всю ширину: auto-fit стискає порожні колонки", "correct": true },
+        { "text": "Дві картки по 12rem, а праворуч — порожні колонки", "explain": "Так поводиться auto-fill." },
+        { "text": "Одна картка на рядок" }
+      ]
+    },
+    {
+      "id": "container-where",
+      "kind": "single",
+      "text": "Картку `.event-card` треба змінювати за шириною її місця. Де поставити `container-type: inline-size`?",
+      "options": [
+        { "text": "На обгортку навколо картки: container query стилізує нащадків контейнера", "correct": true },
+        { "text": "На саму `.event-card`", "explain": "Контейнер не може стилізувати себе за власною шириною — інакше розміри зациклились би." },
+        { "text": "На `<html>`" }
+      ]
+    },
+    {
+      "id": "container-vs-media",
+      "kind": "single",
+      "text": "Чим container query кращий за медіазапит для картки товару?",
+      "options": [
+        { "text": "Картка змінюється за місцем, де стоїть: у вмісті й у вузькій бічній колонці на тому самому екрані", "correct": true },
+        { "text": "Він швидший" },
+        { "text": "Медіазапити застарілі", "explain": "Медіазапити лишаються інструментом для розкладки всієї сторінки, теми, друку." }
+      ]
+    },
+    {
+      "id": "flex-basis",
+      "kind": "single",
+      "text": "Що означає `flex: 1 1 12rem` для полів фільтра у `flex-wrap: wrap` контейнері?",
+      "options": [
+        { "text": "Бажана ширина 12rem; поля розтягуються на весь рядок і переносяться, коли не влазять", "correct": true },
+        { "text": "Поле завжди рівно 12rem" },
+        { "text": "Поле не менше за 12rem і не переноситься" }
+      ]
+    },
+    {
+      "id": "object-fit",
+      "kind": "single",
+      "text": "У сітці фото різних пропорцій. Треба однакові квадратні рамки без спотворень. Що зробити?",
+      "options": [
+        { "text": "`aspect-ratio: 1; object-fit: cover;`: рамка квадратна, фото заповнює її, а зайве обрізається", "correct": true },
+        { "text": "`width: 200px; height: 200px;`", "explain": "Без object-fit фото розтягнеться і спотвориться." },
+        { "text": "`object-fit: fill;`" }
+      ]
+    }
+  ]
+}

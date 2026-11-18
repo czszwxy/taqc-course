@@ -1,0 +1,15 @@
+{
+  "type": "web",
+  "title": "A cart that works with a thumb",
+  "viewport": 375,
+  "statement": "Мобільний кошик Gadgetly працює мишкою, але не пальцем. Виправ `styles.css` (HTML не змінюй):\n\n1. Кнопки `.qty-btn` («−» і «+») і `.remove` — щонайменше `44 × 44px` (`2.75rem`). Поле `.qty` — теж від `44px` заввишки.\n2. Між «−», полем і «+» — щонайменше `8px` (`gap: 0.5rem` у `.qty-control`).\n3. Шрифт полів `.qty` і `.promo-input` — від `16px` (`1rem`), щоб iPhone не збільшував сторінку.\n4. Усі ефекти `:hover` — лише всередині `@media (hover: hover)`.\n5. Умова безкоштовної доставки `.delivery-note` видна завжди, а не лише при наведенні.\n6. Панель `.checkout-bar` знизу: `padding-bottom: max(0.75rem, env(safe-area-inset-bottom))`. А в `.cart` — відступ знизу (`padding-bottom: 6rem`), щоб панель не закривала останній блок.\n\nЗадача відкривається на ширині 375 px. Check доскролить кошик до кінця на екрані 375 × 600.",
+  "codeRules": [
+    { "kind": "require", "pattern": "env\\(\\s*safe-area-inset-bottom", "message": "Панелі знизу потрібен відступ під смужку жесту iPhone: env(safe-area-inset-bottom)." }
+  ],
+  "hints": [
+    "Цілі: `.qty-btn, .remove { min-width: 2.75rem; min-height: 2.75rem; }` — фіксовані `width: 28px; height: 28px` прибери. Полю `.qty` — `min-height: 2.75rem` замість `height: 28px`.",
+    "`.qty-control { gap: 0.5rem; }`, а полям — `font-size: 1rem`. Наведення: перенеси правила з `:hover` у `@media (hover: hover) { … }`.",
+    "Доставка: прибери `display: none` у `.delivery-note` і правило `.delivery:hover .delivery-note`. Панель: `padding-bottom: max(0.75rem, env(safe-area-inset-bottom));` і `.cart { padding-bottom: 6rem; }`."
+  ],
+  "explanation": "Кнопки 28 px мишкою влучаєш, а пальцем — через раз, і найчастіше натискається сусідня. Ціль 44 px і відстань 8 px це виправляють. Поля з шрифтом 14 px iPhone збільшує при дотику. Наведення на телефоні немає, тож усе, що видно лише при `:hover`, для людини з телефоном не існує. Фіксована панель знизу закриває кінець сторінки, якщо під неї не лишити місця, а на iPhone ще й заходить під смужку жесту.\n\nТипові помилки: збільшити лише значок «−», а не саму кнопку; `max-width` замість `min-width`; лишити `.delivery:hover .delivery-note` у `@media (hover: hover)` — на телефоні умова доставки так і не з'явиться."
+}

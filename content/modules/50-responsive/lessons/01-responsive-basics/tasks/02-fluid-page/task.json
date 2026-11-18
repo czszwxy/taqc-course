@@ -1,0 +1,11 @@
+{
+  "type": "web",
+  "title": "Make a fixed-width page fluid",
+  "statement": "Сторінку «Доставка й оплата» зверстали під монітор: на телефоні вона дрібна, а потім ще й гортається вбік. Тут ти редагуєш **обидва** файли.\n\n1. `index.html`: додай у `<head>` `<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">`. Масштаб не обмежуй.\n2. `.site-header` і `.page`: не ширші за `960px` (`max-width`), по центру, а на вузькому екрані — на всю ширину.\n3. Фото `.hero` ніколи не ширше за свій блок і зберігає пропорції.\n4. Таблиця `.rates`: на всю ширину блоку, але не вужча за `560px` (`min-width`). На вузькому екрані прокручується **лише вона** — всередині `.table-wrap` (`overflow-x: auto`).\n5. Довге посилання на відстеження переноситься (`overflow-wrap: anywhere`).\n6. `overflow-x: hidden` на `html` / `body` не використовуй.\n\nCheck перевірить сторінку на 1024, 375 і 320 px. Кнопки **375** і **Full** над Preview показують, як вона виглядає на телефоні й на комп'ютері.",
+  "hints": [
+    "Ширина: `.page { max-width: 960px; margin: 0 auto; }` — те саме для `.site-header`. Рядок з `width: 960px` прибери.",
+    "Фото: `.hero { display: block; max-width: 100%; height: auto; }`.",
+    "Таблиця: `.table-wrap { overflow-x: auto; }` і `.rates { width: 100%; min-width: 560px; }`. Посилання: `.page a { overflow-wrap: anywhere; }`."
+  ],
+  "explanation": "На телефоні без viewport сторінка — зменшена копія комп'ютерної. З ним стає видно, що вилазить: фіксовані 960 px, фото 900 px, таблиця 640 px і URL без пробілів. Кожне виправляється окремо: `max-width` замість `width`, `max-width: 100%; height: auto` для фото, прокрутка всередині обгортки для таблиці, `overflow-wrap` для довгого слова.\n\nТипові помилки: `width: 100%` замість `max-width` (на моніторі блок розтягується на весь екран), фото без `height: auto` (сплющується), `body { overflow-x: hidden; }` (прокрутка зникла, а таблиця й посилання обрізані)."
+}

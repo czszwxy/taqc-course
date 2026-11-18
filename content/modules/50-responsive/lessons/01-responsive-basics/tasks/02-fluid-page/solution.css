@@ -1,0 +1,55 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  color: #1f2937;
+}
+
+.site-header {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.logo {
+  font-weight: 700;
+  color: #1d4ed8;
+  text-decoration: none;
+}
+
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 16px 32px;
+}
+
+.page a { overflow-wrap: anywhere; }
+
+.hero {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.table-wrap { overflow-x: auto; }
+
+.rates {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+}
+
+.rates caption {
+  text-align: left;
+  font-weight: 700;
+  padding-bottom: 8px;
+}
+
+.rates th,
+.rates td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #d1d5db;
+  text-align: left;
+}

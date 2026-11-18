@@ -1,0 +1,28 @@
+{
+  "title": "Mini project: a responsive landing page",
+  "minutes": 90,
+  "summary": "Збери все разом: лендинг акції Gadgetly mobile first — ширина сторінки через min(), шапка з меню, що переноситься, цілі 44 px, перший екран з плавним заголовком на clamp() і фото, сітка товарів 1 → 2 → 4 колонки за медіазапитами, переваги на auto-fit, футер на flex-wrap, наведення лише для мишки; перевірка на п'яти ширинах і самоаудит",
+  "resources": [
+    {
+      "title": "web.dev Learn Responsive Design",
+      "url": "https://web.dev/learn/design",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev Learn Responsive Design: Accessibility",
+      "url": "https://web.dev/learn/design/accessibility",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "WCAG 2.2 Quick Reference",
+      "url": "https://www.w3.org/WAI/WCAG22/quickref/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

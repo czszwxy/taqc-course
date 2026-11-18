@@ -1,0 +1,49 @@
+{
+  "title": "Fluid layouts and container queries",
+  "minutes": 65,
+  "summary": "Розкладки, що підлаштовуються без медіазапитів: min(), max() і clamp() для ширин і відступів; сітка repeat(auto-fit, minmax(min(100%, …), 1fr)), яка ніколи не вилазить; flex-wrap з flex-basis; aspect-ratio і object-fit; container queries — компонент, що змінюється за шириною свого контейнера, а не екрана; коли медіазапит, а коли container query",
+  "resources": [
+    {
+      "title": "web.dev Learn Responsive Design: Macro layouts",
+      "url": "https://web.dev/learn/design/macro-layouts",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev Learn Responsive Design: Micro layouts",
+      "url": "https://web.dev/learn/design/micro-layouts",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Container queries",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: min()",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/min",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: aspect-ratio",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/aspect-ratio",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: CSS container queries",
+      "url": "https://www.youtube.com/results?search_query=css+container+queries+tutorial",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

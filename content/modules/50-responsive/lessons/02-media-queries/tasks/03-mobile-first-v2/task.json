@@ -1,0 +1,17 @@
+{
+  "type": "web",
+  "title": "Rewrite desktop-first CSS as mobile first",
+  "variantOf": "03-mobile-first",
+  "statement": "Центр допомоги Gadgetly зверстали **desktop first**: базові правила для комп'ютера, а `max-width` скасовує їх на вужчих екранах. Виглядає правильно, але команда пише mobile first. Перепиши `styles.css` так, щоб розкладка лишилася **такою самою** (HTML не змінюй):\n\n| Ширина | `.help-hero` (заголовок і пошук) | `.topics` |\n|---|---|---|\n| до 40em | одне під одним | 1 колонка |\n| від 40em | в один рядок, по центру по вертикалі, між ними `2rem` | 2 колонки |\n| від 64em | в один рядок | 4 колонки |\n\nБазові правила — для телефона, медіазапити — лише `min-width` (або `width >=`). Check перевірить 375, 639, 640, 1023 і 1024 px.",
+  "codeRules": [
+    { "kind": "require", "pattern": "@media", "message": "Колонки для ширших екранів додай медіазапитами." },
+    { "kind": "forbid", "pattern": "@media[^{]*max-width", "message": "Mobile first: медіазапити з min-width (або width >=), без max-width." },
+    { "kind": "forbid", "pattern": "@media[^{]*width\\s*<", "message": "Mobile first: умова «ширина від …», а не «до …»." }
+  ],
+  "hints": [
+    "Почни з базових правил для телефона: у `.help-hero` прибери `display: flex`, у `.topics` — `grid-template-columns` (одна колонка — це сітка за замовчуванням).",
+    "`@media (min-width: 40em)`: `.help-hero { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }` і дві колонки `.topics`.",
+    "`@media (min-width: 64em)`: лише `.topics { grid-template-columns: repeat(4, 1fr); }` — рядок для `.help-hero` уже ввімкнено з 40em."
+  ],
+  "explanation": "Desktop first і mobile first дають ту саму картинку, але mobile first описує її простіше: телефон — без додаткових правил, кожен медіазапит лише **додає** те, що з'являється на ширшому екрані. У desktop first доводиться скасовувати (`display: block`, `grid-template-columns: 1fr`), і про кожне скасування легко забути.\n\nТипова помилка: лишити `display: flex` у базовому `.help-hero` — тоді на телефоні пошук тиснеться в один рядок із заголовком."
+}

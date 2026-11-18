@@ -1,0 +1,41 @@
+{
+  "type": "table",
+  "title": "Which DevTools tool helps?",
+  "statement": "Ти перевіряєш адаптивну сторінку в Chrome DevTools. Що відкрити для кожного завдання?",
+  "givenColumns": ["Завдання"],
+  "answerColumns": [
+    {
+      "id": "tool",
+      "label": "Інструмент",
+      "options": [
+        "Device toolbar",
+        "Show media queries у Device toolbar",
+        "Rendering: prefers-color-scheme",
+        "Rendering: prefers-reduced-motion",
+        "Rendering: CSS media type print",
+        "Бейдж grid в Elements",
+        "Elements → Computed",
+        "Console: сніпет з getBoundingClientRect",
+        "Network, фільтр Img",
+        "Lighthouse (Mobile)"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["Подивитися сторінку на 375 × 667 з DPR 2 і сенсорним вводом"], "answers": { "tool": "Device toolbar" } },
+    { "given": ["Дізнатися, на яких ширинах у сторінки breakpoints, і стати рівно на межу"], "answers": { "tool": "Show media queries у Device toolbar" } },
+    { "given": ["Перевірити темну тему, не змінюючи налаштувань Windows"], "answers": { "tool": "Rendering: prefers-color-scheme" } },
+    { "given": ["Переконатися, що анімації вимикаються, коли в системі «Зменшити рух»"], "answers": { "tool": "Rendering: prefers-reduced-motion" } },
+    { "given": ["Подивитися, як сторінка виглядатиме на папері"], "answers": { "tool": "Rendering: CSS media type print" } },
+    { "given": ["Побачити лінії сітки каталогу та їхні номери"], "answers": { "tool": "Бейдж grid в Elements" } },
+    { "given": ["З'ясувати, яке правило перемогло для font-size заголовка на 375 px"], "answers": { "tool": "Elements → Computed" } },
+    { "given": ["Знайти, який саме елемент ширший за екран"], "answers": { "tool": "Console: сніпет з getBoundingClientRect" } },
+    { "given": ["Перевірити, який файл зі srcset завантажився на DPR 3"], "answers": { "tool": "Network, фільтр Img" } },
+    { "given": ["Оцінити LCP і зсуви сторінки (CLS) на повільному телефоні"], "answers": { "tool": "Lighthouse (Mobile)" } }
+  ],
+  "hints": [
+    "Ширина, DPR, поворот і межі breakpoints — у Device toolbar. Тема, рух і друк — у Rendering.",
+    "Звідки взялося значення — Computed. Що завантажилось — Network. Загальна оцінка швидкості — Lighthouse."
+  ],
+  "explanation": "Для адаптивної верстки в DevTools є окремий інструмент на кожне питання: Device toolbar змінює пристрій, Rendering — медіафункції, бейджі grid / flex показують розкладку, Computed — переможне правило, Network — реальні файли, Lighthouse — метрики. Сніпет у Console знаходить те, що вилазить, коли очима не видно."
+}
