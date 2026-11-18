@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Check a compose file before it runs",
+  "statement": "Перед `docker compose up` команда магазину хоче ловити типові помилки в `compose.yaml`. Файл уже прочитано з YAML у словник (як `yaml.safe_load`). Напиши `check_compose(config)` → **відсортований список унікальних** пар `(сервіс, код)`; нема проблем — `[]`.\n\n| Код | Коли |\n|---|---|\n| `no-image` | у сервісу немає ні `image`, ні `build` |\n| `unknown-dependency` | `depends_on` називає сервіс, якого немає в `services` |\n| `no-healthcheck` | `depends_on` з `condition: service_healthy` на сервіс **без** `healthcheck` |\n| `port-conflict` | порт комп'ютера (`host_port`) з тим самим протоколом уже опублікував **попередній** сервіс — скаржся на кожен наступний, перший лишається чистим. IP-адресу не враховуй; без `host_port` (`\"8000\"`) конфлікту немає |\n| `localhost-url` | значення змінної в `environment` — адреса (містить `://`), а її хост `localhost` чи `127.0.0.1`. У контейнері це сам контейнер, а не база чи інший сервіс |\n\nФорми запису, які треба підтримати:\n\n- `depends_on` — список імен (умова `service_started`) **або** словник `{ім'я: {\"condition\": ...}}` (умови може не бути);\n- `environment` — словник (значення може бути `None` чи числом) **або** список рядків `\"KEY=value\"`;\n- `ports` — список коротких записів, як у задачі про `-p` (рядки або числа). Готовий `parse_publish` лежить у `ports.py` (лише для читання).\n\n```python\ncheck_compose({\"services\": {\n    \"api\": {\"build\": \".\", \"ports\": [\"8000:8000\"], \"depends_on\": {\"db\": {\"condition\": \"service_healthy\"}},\n            \"environment\": {\"DATABASE_URL\": \"postgresql://shop:pw@localhost:5432/shop\"}},\n    \"db\": {\"image\": \"postgres:18\"},\n}})\n# [(\"api\", \"localhost-url\"), (\"api\", \"no-healthcheck\")]\n```",
+  "hints": [
+    "Спершу дві маленькі функції, що зводять різні форми до однієї: `dependencies(service)` → словник `{ім'я: умова}` і `environment(service)` → словник `{змінна: рядок}`. Тоді основний цикл простий.",
+    "Опубліковані порти зберігай у словнику `{(host_port, protocol): перший_сервіс}`. Порт уже є і належить іншому сервісу — `port-conflict`.",
+    "Хост з адреси: `urlsplit(value).hostname` (з `urllib.parse`). Збирай пари в множину, наприкінці `return sorted(problems)`."
+  ],
+  "explanation": "Перевірка конфігурації — це нормалізація плюс прості правила: compose дозволяє писати `depends_on` і `environment` по-різному, тож спершу зводиш їх до одного вигляду, а потім кожне правило — одна умова. Правила взято з найчастіших помилок: `localhost` усередині контейнера, `service_healthy` без `healthcheck` (compose не дочекається «здорового» стану), два сервіси на одному порту комп'ютера і друкарська помилка в імені залежності.",
+  "codeRules": [
+    { "kind": "require", "pattern": "parse_publish", "message": "Розбирай порти готовою `parse_publish` з `ports.py`." }
+  ]
+}

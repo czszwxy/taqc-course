@@ -1,0 +1,19 @@
+{
+  "type": "order",
+  "title": "Order a safe release with a schema change",
+  "statement": "Реліз 1.5.0 API магазину додає колонку `orders.gift_message` і код, що її використовує. Платформа оновлює екземпляри по одному (rolling). Розстав кроки так, щоб користувачі нічого не помітили, а відкат лишався можливим.",
+  "items": [
+    "Make sure a fresh database backup exists and can be restored",
+    "Run the migration that adds gift_message as a nullable column",
+    "Check that version 1.4.2 still works with the new schema",
+    "Start 1.5.0 on one instance and send it a small share of traffic",
+    "Compare errors and p95 of 1.5.0 with 1.4.2",
+    "Roll 1.5.0 out to the remaining instances",
+    "Keep 1.4.2 as the rollback target until the release has been stable for a while"
+  ],
+  "hints": [
+    "Спершу страховка (резервна копія), потім схема, потім код.",
+    "Нова версія спершу отримує малу частку трафіку; рішення про решту — за метриками."
+  ],
+  "explanation": "Безпечний реліз іде від страховки до незворотних дій: резервна копія → сумісна міграція (стара версія її витримує) → canary на частині трафіку → рішення за метриками → решта екземплярів → попередня версія лишається готовою для відкату. Колонка nullable, тож стара версія, що про неї не знає, і далі вставляє замовлення без помилок."
+}

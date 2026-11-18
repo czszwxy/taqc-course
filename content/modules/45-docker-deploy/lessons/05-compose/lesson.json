@@ -1,0 +1,44 @@
+{
+  "title": "Docker Compose: app and database",
+  "minutes": 65,
+  "summary": "compose.yaml для API з PostgreSQL 18: services, build і image, ports у лапках, environment і env_file, підстановка ${VAR:?} з .env, іменований том для даних (/var/lib/postgresql у postgres:18), healthcheck з pg_isready і depends_on з condition: service_healthy, назви сервісів як імена хостів, localhost у контейнері, міграції як окрема команда, compose.override.yaml і команди up / logs / exec / run / down -v",
+  "resources": [
+    {
+      "title": "Docker Docs: Docker Compose overview",
+      "url": "https://docs.docker.com/compose/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Docker Docs: Compose file — services",
+      "url": "https://docs.docker.com/reference/compose-file/services/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "depends_on, healthcheck, ports, environment",
+      "needsVerification": true
+    },
+    {
+      "title": "Docker Docs: Control startup order in Compose",
+      "url": "https://docs.docker.com/compose/how-tos/startup-order/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Docker Docs: Variable interpolation in Compose",
+      "url": "https://docs.docker.com/compose/how-tos/environment-variables/variable-interpolation/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Docker Hub: postgres (official image)",
+      "url": "https://hub.docker.com/_/postgres",
+      "kind": "tool",
+      "lang": "en",
+      "note": "POSTGRES_PASSWORD, томи для 18+",
+      "needsVerification": true
+    }
+  ]
+}

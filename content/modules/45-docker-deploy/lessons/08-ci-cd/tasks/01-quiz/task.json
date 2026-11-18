@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "CI/CD: test, build, publish",
+  "show": 6,
+  "hints": ["Образ збирають один раз. На сервері — незмінний тег."],
+  "questions": [
+    {
+      "id": "build-once",
+      "kind": "single",
+      "text": "Чому образ збирають один раз і той самий розгортають на staging і в production?",
+      "options": [
+        { "text": "Щоб у production потрапило саме те, що перевірили; середовища відрізняються лише змінними", "correct": true },
+        { "text": "Бо реєстр не дозволяє два образи з одного коду" },
+        { "text": "Щоб заощадити місце на диску розробника" }
+      ]
+    },
+    {
+      "id": "service-host",
+      "kind": "single",
+      "text": "Job запускає PostgreSQL як service container з `ports: - 5432:5432`, а кроки виконуються прямо на раннері. Яка адреса бази в `DATABASE_URL`?",
+      "options": [
+        { "text": "`localhost:5432`", "correct": true },
+        { "text": "`postgres:5432`" },
+        { "text": "`db:5432`" }
+      ]
+    },
+    {
+      "id": "permissions",
+      "kind": "single",
+      "text": "`docker/build-push-action` падає з `denied: permission_denied` при публікації в `ghcr.io`. Що додати?",
+      "options": [
+        { "text": "`permissions: packages: write` для job (і вхід через `docker/login-action` з `GITHUB_TOKEN`)", "correct": true },
+        { "text": "Особистий пароль від GitHub у workflow" },
+        { "text": "`runs-on: windows-latest`" }
+      ]
+    },
+    {
+      "id": "pr-push",
+      "kind": "single",
+      "text": "Що має робити конвеєр для pull request?",
+      "options": [
+        { "text": "Запускати тести, але не публікувати образ і не деплоїти", "correct": true },
+        { "text": "Усе те саме, що для main, включно з деплоєм" },
+        { "text": "Нічого — перевірки лише після злиття" }
+      ]
+    },
+    {
+      "id": "immutable-tag",
+      "kind": "single",
+      "text": "Який тег записати в конфіг production-сервера?",
+      "options": [
+        { "text": "Незмінний: `1.4.2` або `sha-9f3c2a1`", "correct": true },
+        { "text": "`latest` — завжди найсвіжіше" },
+        { "text": "`main`" }
+      ]
+    },
+    {
+      "id": "lowercase",
+      "kind": "single",
+      "text": "`docker build -t ghcr.io/Gadget-Shop/API:1.0 .` падає. Чому?",
+      "options": [
+        { "text": "Назва репозиторію образу має бути малими літерами", "correct": true },
+        { "text": "Тег не може починатися з цифри" },
+        { "text": "`ghcr.io` не приймає збирання з Windows" }
+      ]
+    },
+    {
+      "id": "prerelease",
+      "kind": "single",
+      "text": "Чому пре-реліз `v2.0.0-rc.1` не має отримувати теги `2`, `2.0` і `latest`?",
+      "options": [
+        { "text": "Інакше ті, хто бере `latest` чи `2`, отримають незавершену версію", "correct": true },
+        { "text": "Docker не дозволяє дефіс у тегах" },
+        { "text": "Пре-релізи взагалі не можна публікувати" }
+      ]
+    },
+    {
+      "id": "environment",
+      "kind": "single",
+      "text": "Навіщо `environment: production` у deploy-job?",
+      "options": [
+        { "text": "Секрети саме цього середовища і правила захисту, наприклад обов'язкове схвалення перед запуском", "correct": true },
+        { "text": "Щоб job виконувався на production-сервері" },
+        { "text": "Це назва гілки для деплою" }
+      ]
+    }
+  ]
+}

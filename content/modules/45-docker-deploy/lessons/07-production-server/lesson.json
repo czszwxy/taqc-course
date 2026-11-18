@@ -1,0 +1,42 @@
+{
+  "title": "Running in production",
+  "minutes": 60,
+  "summary": "Чим production-запуск відрізняється від розробки: fastapi run і uvicorn, воркери (--workers, WEB_CONCURRENCY) або репліки, reverse proxy з HTTPS і --proxy-headers / --forwarded-allow-ips, Django з gunicorn чи uvicorn, STATIC_ROOT і collectstatic, manage.py check --deploy, міграції як окремий крок релізу, коректна зупинка: SIGTERM, порядок дій uvicorn, lifespan, 10 секунд docker stop",
+  "resources": [
+    {
+      "title": "FastAPI: Deployment concepts",
+      "url": "https://fastapi.tiangolo.com/deployment/concepts/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI: Lifespan Events",
+      "url": "https://fastapi.tiangolo.com/advanced/events/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Django: Deployment checklist",
+      "url": "https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Django: How to deploy static files",
+      "url": "https://docs.djangoproject.com/en/6.1/howto/static-files/deployment/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Docker Docs: docker container stop",
+      "url": "https://docs.docker.com/reference/cli/docker/container/stop/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

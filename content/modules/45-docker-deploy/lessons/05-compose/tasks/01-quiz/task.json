@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "Docker Compose",
+  "show": 6,
+  "hints": ["Контейнери бачать один одного за назвою сервісу. Том живе довше за контейнер, але не довше за down -v."],
+  "questions": [
+    {
+      "id": "service-name",
+      "kind": "single",
+      "text": "У compose є сервіси `api` і `db` (PostgreSQL). Який хост має бути в `DATABASE_URL` для `api`?",
+      "options": [
+        { "text": "`db`", "correct": true },
+        { "text": "`localhost`" },
+        { "text": "IP-адреса твого комп'ютера" }
+      ]
+    },
+    {
+      "id": "depends-on",
+      "kind": "single",
+      "text": "`depends_on: [db]` (без умови). Чи гарантує це, що база вже приймає з'єднання, коли стартує API?",
+      "options": [
+        { "text": "Ні: лише що контейнер `db` запущено раніше; готовність дає `condition: service_healthy` з `healthcheck`", "correct": true },
+        { "text": "Так, compose чекає готовності автоматично" },
+        { "text": "Так, але лише для PostgreSQL" }
+      ]
+    },
+    {
+      "id": "down-v",
+      "kind": "single",
+      "text": "Чим `docker compose down -v` відрізняється від `docker compose down`?",
+      "options": [
+        { "text": "Видаляє ще й томи — дані бази зникнуть", "correct": true },
+        { "text": "Показує докладний вивід (verbose)" },
+        { "text": "Нічим" }
+      ]
+    },
+    {
+      "id": "password-changed",
+      "kind": "single",
+      "text": "Ти змінив(ла) `POSTGRES_PASSWORD` у `.env` і зробив(ла) `up -d`. API не може підключитися новим паролем. Чому?",
+      "options": [
+        { "text": "Змінні `POSTGRES_*` діють лише при першому запуску з порожнім томом; у базі лишився старий пароль", "correct": true },
+        { "text": "Compose кешує `.env` назавжди" },
+        { "text": "PostgreSQL 18 не підтримує зміну пароля" }
+      ]
+    },
+    {
+      "id": "ports-quoted",
+      "kind": "single",
+      "text": "Чому `ports` у compose пишуть у лапках: `- \"8000:8000\"`?",
+      "options": [
+        { "text": "YAML може прочитати деякі пари чисел через двокрапку як число, а не рядок", "correct": true },
+        { "text": "Без лапок порт буде UDP" },
+        { "text": "Лапки обов'язкові для будь-якого значення в YAML" }
+      ]
+    },
+    {
+      "id": "interpolation",
+      "kind": "single",
+      "text": "Що робить `${POSTGRES_PASSWORD:?set it in .env}` у `compose.yaml`?",
+      "options": [
+        { "text": "Підставляє значення зі змінних оточення чи `.env`; якщо його немає або воно порожнє — compose зупиняється з цим повідомленням", "correct": true },
+        { "text": "Генерує випадковий пароль" },
+        { "text": "Питає пароль у терміналі" }
+      ]
+    },
+    {
+      "id": "migrations",
+      "kind": "single",
+      "text": "Як запустити міграції Alembic для сервісу `api`?",
+      "options": [
+        { "text": "`docker compose run --rm api alembic upgrade head`", "correct": true },
+        { "text": "`docker compose build alembic`" },
+        { "text": "Додати `alembic upgrade head` у `healthcheck`" }
+      ]
+    },
+    {
+      "id": "pg18-volume",
+      "kind": "single",
+      "text": "Куди підключати том даних для `postgres:18`?",
+      "options": [
+        { "text": "`/var/lib/postgresql`", "correct": true },
+        { "text": "`/var/lib/postgresql/data` — як і в усіх версіях" },
+        { "text": "Том не потрібен, дані зберігаються в образі" }
+      ]
+    }
+  ]
+}

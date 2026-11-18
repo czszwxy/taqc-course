@@ -1,0 +1,32 @@
+{
+  "type": "classify",
+  "title": "Image, container, registry or volume?",
+  "statement": "Про що кожне твердження: про **образ**, **контейнер**, **реєстр** чи **том**?",
+  "categories": [
+    { "id": "image", "label": "Image", "description": "Незмінний шаблон" },
+    { "id": "container", "label": "Container", "description": "Запущений екземпляр" },
+    { "id": "registry", "label": "Registry", "description": "Сховище образів" },
+    { "id": "volume", "label": "Volume", "description": "Дані поза контейнером" }
+  ],
+  "show": 8,
+  "passScore": 0.8,
+  "items": [
+    { "id": "layers", "text": "Складається з шарів: Debian, Python, бібліотеки, код", "category": "image" },
+    { "id": "tag", "text": "Має тег на кшталт `3.13-slim`", "category": "image" },
+    { "id": "built", "text": "Створюється командою `docker build`", "category": "image" },
+    { "id": "process", "text": "Має власний процес, мережу й робочу файлову систему", "category": "container" },
+    { "id": "logs", "text": "Його вивід показує `docker logs`", "category": "container" },
+    { "id": "stopped", "text": "Може бути зупиненим і все ще займати своє ім'я", "category": "container" },
+    { "id": "many", "text": "Їх може бути десять, запущених з одного шаблону", "category": "container" },
+    { "id": "ghcr", "text": "`ghcr.io` — звідси CI бере образ для сервера", "category": "registry" },
+    { "id": "pull", "text": "Звідси `docker pull` завантажує образи", "category": "registry" },
+    { "id": "pgdata", "text": "Тут живуть файли PostgreSQL, що переживають перестворення контейнера бази", "category": "volume" },
+    { "id": "uploads", "text": "Сюди варто писати фото, завантажені користувачами, якщо їх не віддають у хмарне сховище", "category": "volume" },
+    { "id": "down-v", "text": "Його видаляє `docker compose down -v` — разом з даними", "category": "volume" }
+  ],
+  "hints": [
+    "Шаблон, що не змінюється, — образ; те, що працює і має логи, — контейнер.",
+    "Звідки завантажують — реєстр; де зберігають дані, що мають пережити контейнер, — том."
+  ],
+  "explanation": "Образ збирають і тегують, контейнер запускають з образу (і він має процес, логи, стан), реєстр зберігає образи для `pull` / `push`, а том тримає дані окремо від одноразового контейнера. Ця четвірка — словник для всього модуля."
+}

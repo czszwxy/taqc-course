@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Start up and shut down cleanly",
+  "statement": "API магазину приймає події («замовлення оплачено», «товар переглянуто») і зберігає їх у базу пачками. Коли платформа зупиняє контейнер (`docker stop` → SIGTERM), uvicorn завершує запити й запускає shutdown-частину **lifespan** — і жодна подія не має загубитися.\n\nНапиши `create_app(database, flush_every=5.0)` → `FastAPI`. `database` — об'єкт з асинхронними `connect()`, `save_events(events)`, `close()` і полем `connected` (фейк — у `fakes.py`, лише для читання; `save_events` після `close()` кидає `RuntimeError`).\n\n**Lifespan:**\n\n- **старт:** `await database.connect()`, `app.state.pending = []`, запусти фонову задачу `app.state.flusher`, що кожні `flush_every` секунд зберігає накопичене: якщо `pending` не порожній — забери всі події одним списком, очисти `pending` і `await database.save_events(batch)`;\n- **зупинка** (код після `yield`), саме в такому порядку:\n  1. зупини фонову задачу: `cancel()` **і дочекайся** її завершення;\n  2. збережи те, що лишилось у `pending` (останній flush);\n  3. `await database.close()`.\n\n**Ендпоінти:**\n\n- `POST /events` (тіло — JSON-об'єкт) → додає його в `app.state.pending`, відповідь `202 {\"queued\": кількість подій у черзі}`;\n- `GET /ready` → `200 {\"status\": \"ready\"}`, коли `database.connected`, інакше `503 {\"status\": \"not ready\"}`.",
+  "hints": [
+    "Скелет: `@asynccontextmanager async def lifespan(app): ...; yield; ...` усередині `create_app`, потім `app = FastAPI(lifespan=lifespan)`. Ендпоінти теж оголошуй усередині `create_app`, щоб вони бачили `database`.",
+    "Фонова задача: `while True: await asyncio.sleep(flush_every); await flush(app)`. Зупинка: `task.cancel()`, потім `await asyncio.gather(task, return_exceptions=True)` — `CancelledError` не вилетить назовні.",
+    "Порядок зупинки — зворотний до старту: спершу те, що користується базою (фонова задача, останній flush), і лише потім сама база. Закрив(ла) базу раніше — останній `save_events` упаде."
+  ],
+  "explanation": "Lifespan — одне місце для ресурсів, що живуть весь час роботи процесу: відкрити на старті, акуратно закрити на зупинці. Правило зупинки — у зворотному порядку: фонові задачі, що користуються ресурсом, зупиняють і **чекають**, потім доробляють залишки роботи, і лише тоді закривають ресурс. `cancel()` без очікування лише просить задачу зупинитися — вона може ще працювати, коли база вже закрита. Усе це спрацює в контейнері, лише якщо процес отримає SIGTERM: exec-форма `CMD` і вкладення в ліміт `docker stop` (10 секунд за замовчуванням).",
+  "codeRules": [
+    { "kind": "require", "pattern": "lifespan", "message": "Старт і зупинку опиши через lifespan." },
+    { "kind": "forbid", "pattern": "on_event", "message": "`@app.on_event` застарів — використовуй lifespan." }
+  ]
+}

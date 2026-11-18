@@ -1,0 +1,20 @@
+{
+  "type": "order",
+  "title": "Put the shop API Dockerfile in order",
+  "statement": "Розстав інструкції Dockerfile для API магазину так, щоб образ збирався правильно і **швидко** після правок коду.",
+  "items": [
+    "FROM python:3.13-slim",
+    "ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1",
+    "WORKDIR /app",
+    "COPY requirements.txt .",
+    "RUN pip install --no-cache-dir -r requirements.txt",
+    "COPY shop_api ./shop_api",
+    "EXPOSE 8000",
+    "CMD [\"fastapi\", \"run\", \"shop_api/main.py\", \"--port\", \"8000\"]"
+  ],
+  "hints": [
+    "Першою завжди йде база (`FROM`), останньою — команда запуску.",
+    "Те, що змінюється рідко (залежності), — вище; те, що змінюється часто (код), — нижче."
+  ],
+  "explanation": "База → налаштування середовища → робоча папка → залежності → код → документація порту → команда запуску. Залежності стоять вище за код, щоб правка в `shop_api/` перезбирала лише останні шари, а не `pip install`. `ENV` і `WORKDIR` можна поміняти місцями без шкоди, але звична послідовність — та, що в цій відповіді."
+}

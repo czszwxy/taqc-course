@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Turn DATABASE_URL into Django settings",
+  "statement": "Django-версія магазину отримує базу одним рядком `DATABASE_URL`, а Django чекає словник для `DATABASES[\"default\"]`. Напиши `django_database(url)`.\n\n**PostgreSQL** (`postgresql://` або `postgres://`, будь-який регістр схеми):\n\n```python\ndjango_database(\"postgresql://shop:s3cret@db:5432/shop?sslmode=require\")\n# {\"ENGINE\": \"django.db.backends.postgresql\", \"NAME\": \"shop\", \"USER\": \"shop\",\n#  \"PASSWORD\": \"s3cret\", \"HOST\": \"db\", \"PORT\": \"5432\", \"OPTIONS\": {\"sslmode\": \"require\"}}\n```\n\n- ім'я бази — шлях без першого `/`, обов'язкове (`postgresql://db:5432` — `ValueError`);\n- `USER`, `PASSWORD`, `HOST`, `PORT` — рядки; чого немає в адресі — `\"\"`; `PORT` — рядком (`\"5432\"`);\n- спецсимволи в адресі закодовані через `%`: пароль `p%40ss%2Fword` — це `p@ss/word`, тож **декодуй** ім'я користувача, пароль і назву бази;\n- `OPTIONS` — параметри після `?` (кожен один раз), без них — `{}`.\n\n**SQLite** — лише `ENGINE` і `NAME`: `sqlite:///db.sqlite3` → `NAME` `\"db.sqlite3\"` (відносний шлях), `sqlite:////data/shop.sqlite3` → `\"/data/shop.sqlite3\"` (абсолютний: після `sqlite://` іде шлях `//data/…`, тобто прибираєш **один** `/`). Порожній шлях — `ValueError`.\n\nІнша схема (`mysql://…`, `shop`, `\"\"`) — `ValueError`. Неправильний порт (`db:port`) — теж `ValueError`.",
+  "hints": [
+    "`from urllib.parse import urlsplit, unquote, parse_qsl`: `parts = urlsplit(url)` дає `.scheme`, `.username`, `.password`, `.hostname`, `.port`, `.path`, `.query`.",
+    "`.username` і `.password` повертаються **не** декодованими — загорни їх у `unquote(...)`. `.port` сам кидає `ValueError` для нечислового порту, і це якраз те, що треба.",
+    "`dict(parse_qsl(parts.query))` — параметри. Для SQLite: `name = parts.path[1:]` — прибираєш рівно один `/`."
+  ],
+  "explanation": "Один рядок `DATABASE_URL` зручний для контейнерів і платформ: його задають однією змінною, а код сам розбирає. Стандартна бібліотека вже вміє розкладати URL на частини — головне знати її пастки: `username` / `password` приходять закодованими (`%40` замість `@`), `hostname` уже в нижньому регістрі, `port` перевіряється при зверненні. Ім'я бази — шлях без першого `/`, і для SQLite саме тому `////` означає абсолютний шлях.",
+  "codeRules": [
+    { "kind": "require", "pattern": "urlsplit|urlparse", "message": "Розбери адресу через `urllib.parse.urlsplit`, а не вручну." }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "type": "table",
+  "title": "Review the shop Dockerfile",
+  "statement": "Колега приніс(ла) Dockerfile для API магазину. Для кожного рядка визнач головну проблему (або що проблеми немає).",
+  "givenColumns": ["Dockerfile line"],
+  "answerColumns": [
+    {
+      "id": "problem",
+      "label": "Main problem",
+      "options": [
+        "Secret baked into the image",
+        "Breaks the layer cache",
+        "Runs as root",
+        "Base image can change silently",
+        "App won't receive SIGTERM",
+        "Bigger image than needed",
+        "No problem"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`FROM python:latest`"], "answers": { "problem": "Base image can change silently" }, "explain": "`latest` — рухомий тег; до того ж повний образ замість slim. Головне тут — непередбачувана версія Python." },
+    { "given": ["`FROM python:3.13`  (the app needs no compilers)"], "answers": { "problem": "Bigger image than needed" } },
+    { "given": ["`COPY . .` right before `RUN pip install -r requirements.txt`"], "answers": { "problem": "Breaks the layer cache" } },
+    { "given": ["`ENV PAYMENTS_API_KEY=live_4f9a...`"], "answers": { "problem": "Secret baked into the image" } },
+    { "given": ["`CMD fastapi run shop_api/main.py`"], "answers": { "problem": "App won't receive SIGTERM" } },
+    { "given": ["`CMD [\"fastapi\", \"run\", \"shop_api/main.py\"]` with no `USER` line anywhere"], "answers": { "problem": "Runs as root" } },
+    { "given": ["`COPY --from=build /opt/venv /opt/venv`"], "answers": { "problem": "No problem" }, "explain": "Так і переносять залежності з етапу збирання у фінальний образ." },
+    { "given": ["`RUN pip install -r requirements.txt` (no `--no-cache-dir`)"], "answers": { "problem": "Bigger image than needed" } },
+    { "given": ["`RUN useradd --no-log-init --system --uid 10001 app` followed by `USER app`"], "answers": { "problem": "No problem" } }
+  ],
+  "hints": [
+    "Для кожного рядка запитай: що буде з розміром, кешем, безпекою, сигналами?",
+    "Рядок може бути правильним — не шукай проблему там, де її немає."
+  ],
+  "explanation": "Кожна категорія — окрема звичка: конкретний тег бази, slim замість повного образу, залежності до коду, секрети лише під час запуску, exec-форма `CMD` і `USER`. Рецензуючи чужий Dockerfile, корисно проходити ці шість питань по кожному рядку."
+}

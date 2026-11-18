@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "Tags for a built image",
+  "statement": "CI магазину збирає образ на кожен push і має вирішити, з якими тегами його опублікувати. Напиши `image_tags(registry, repository, ref, sha)` → список повних імен образу. Правила схожі на типові налаштування `docker/metadata-action`, але це наші правила:\n\n- образ — `f\"{registry}/{repository}\"` **малими літерами** (Docker не приймає великих літер у назві репозиторію): `ghcr.io/Gadget-Shop/API` → `ghcr.io/gadget-shop/api`;\n- **завжди** останнім іде незмінний тег коміту: `sha-` + перші 7 символів `sha` малими літерами;\n- `ref` вирішує решту (порядок — як у таблиці):\n\n| `ref` | Теги перед `sha-…` |\n|---|---|\n| `refs/tags/v1.4.2` | `1.4.2`, `1.4`, `1`, `latest` |\n| `refs/tags/v2.0.0-rc.1` (є частина після `-`) | лише `2.0.0-rc.1` — без коротких тегів і без `latest` |\n| `refs/heads/main` | `main` |\n| `refs/heads/feature/Login-Form` | назва гілки, де кожен символ, крім латинських літер, цифр, `_`, `.`, `-`, замінено на `-`: `feature-Login-Form` |\n| `refs/pull/42/merge` | `pr-42` |\n\n- тег-версія — `v` + три числа через крапку (`v1.4.2`), за бажанням `-` і пре-реліз; інший git-тег (`refs/tags/release-5`, `refs/tags/v1.4`) або невідомий `ref` — `ValueError`.\n\n```python\nimage_tags(\"ghcr.io\", \"gadget-shop/api\", \"refs/tags/v1.4.2\", \"9F3C2A1B7E\")\n# [\"ghcr.io/gadget-shop/api:1.4.2\", \"ghcr.io/gadget-shop/api:1.4\",\n#  \"ghcr.io/gadget-shop/api:1\", \"ghcr.io/gadget-shop/api:latest\",\n#  \"ghcr.io/gadget-shop/api:sha-9f3c2a1\"]\n```",
+  "hints": [
+    "Спершу розбери `ref` на вид і назву: `ref.removeprefix(\"refs/tags/\")` тощо (або `startswith`). Збери список тегів без образу, а наприкінці додай `sha-…` і зроби `[f\"{image}:{tag}\" for tag in tags]`.",
+    "Версію перевір регулярним виразом `re.fullmatch(r\"v(\\d+)\\.(\\d+)\\.(\\d+)(-[0-9A-Za-z.-]+)?\", name)`: групи 1–3 — числа, група 4 — пре-реліз або `None`.",
+    "Назва гілки: `re.sub(r\"[^A-Za-z0-9_.-]\", \"-\", branch)`. Номер PR — друга частина `refs/pull/42/merge`."
+  ],
+  "explanation": "Тег образу — це покажчик, і вибір тегів визначає, як ти відкочуєшся. `latest` і `1.4` рухаються з кожним релізом — зручно людям, але небезпечно для деплою; `sha-9f3c2a1` і `1.4.2` не змінюються, тож саме їх записують у конфіг сервера й повертають при відкаті. Пре-реліз не має заміняти `1` чи `latest`, інакше `docker pull …:latest` у когось підтягне `rc`. Назви гілок містять `/`, а тегу він заборонений — тому санітизація.",
+  "codeRules": []
+}

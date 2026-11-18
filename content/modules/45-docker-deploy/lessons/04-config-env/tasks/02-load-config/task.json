@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Load the API settings from the environment",
+  "statement": "API магазину читає налаштування зі змінних середовища. Напиши `load_config(env)` — `env` будь-яке відображення рядків (`os.environ` або `dict` у тестах) — що повертає `Config` (клас уже є в стартовому файлі).\n\n| Змінна | Поле | Правило |\n|---|---|---|\n| `DATABASE_URL` | `database_url` | **обов'язкова**, не порожня (пробіли по краях обрізати) |\n| `PORT` | `port` | ціле від `1` до `65535`; немає або порожня — `8000` |\n| `DEBUG` | `debug` | `1` / `true` / `yes` / `on` → `True`, `0` / `false` / `no` / `off` → `False` (будь-який регістр, пробіли по краях); немає або порожня — `False`; інше — помилка |\n| `ALLOWED_HOSTS` | `allowed_hosts` | кортеж хостів через кому без пробілів і порожніх елементів: `\" shop.example.com, ,api.example.com\"` → `(\"shop.example.com\", \"api.example.com\")`; немає — `()`. Коли `debug` вимкнено, хоча б один хост **обов'язковий** |\n| `LOG_LEVEL` | `log_level` | `DEBUG` / `INFO` / `WARNING` / `ERROR` у будь-якому регістрі, повертай великими; немає або порожня — `\"INFO\"` |\n\nПомилки не зупиняють перевірку: збери **всі** й наприкінці кинь один `ConfigError(problems)`, де `problems` — список повідомлень, кожне **починається з назви змінної** (`\"PORT must be a number from 1 to 65535\"`), у порядку рядків таблиці. Невідомі змінні ігноруються.\n\n```python\nload_config({\"DATABASE_URL\": \"postgresql://shop@db/shop\", \"ALLOWED_HOSTS\": \"shop.example.com\"})\n# Config(database_url='postgresql://shop@db/shop', port=8000, debug=False,\n#        allowed_hosts=('shop.example.com',), log_level='INFO')\n```",
+  "hints": [
+    "Почни з `problems = []` і значень за замовчуванням. Кожну змінну перевіряй окремо: `raw = env.get(\"PORT\", \"\").strip()`; якщо щось не так — `problems.append(\"PORT ...\")` і йди далі.",
+    "`bool(\"false\")` — це `True`: будь-який непорожній рядок істинний. Тому порівнюй з множинами `{\"1\", \"true\", \"yes\", \"on\"}` і `{\"0\", \"false\", \"no\", \"off\"}` після `.lower()`.",
+    "Наприкінці: `if problems: raise ConfigError(problems)`, інакше `return Config(...)`. `isdecimal()` відсіє `\"-1\"`, `\"80a\"` і `\"8.5\"` ще до `int()`."
+  ],
+  "explanation": "Змінні середовища — завжди рядки, тому конфіг — це насамперед **розбір і перевірка**: числа з межами, логічні значення з явного списку (не `bool(text)`!), списки через кому. Перевіряти все одразу на старті й збирати всі помилки — щоб застосунок з поганим конфігом не стартував узагалі, а людина виправила все за одну спробу, а не по одній змінній за деплой. Типові пастки: `bool(\"false\")`, порт `\"0\"` чи `\"70000\"`, порожній елемент у `ALLOWED_HOSTS`.",
+  "codeRules": [
+    { "kind": "require", "pattern": "raise\\s+ConfigError", "message": "Помилки повідомляй через `raise ConfigError(problems)`." }
+  ]
+}

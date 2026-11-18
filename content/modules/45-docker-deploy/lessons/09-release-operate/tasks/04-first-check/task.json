@@ -1,0 +1,33 @@
+{
+  "type": "table",
+  "title": "Where do you look first?",
+  "statement": "Після релізу API магазину щось пішло не так. Для кожного симптому обери, що перевірити **першим**.",
+  "givenColumns": ["Symptom"],
+  "answerColumns": [
+    {
+      "id": "check",
+      "label": "First check",
+      "options": [
+        "Roll back to the previous image tag",
+        "docker ps -a and the container's logs",
+        "/ready response and the database's state",
+        "Environment variables of the new deployment",
+        "Logs filtered by the request_id from the error",
+        "Migrations: was the schema changed for the new code?"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["The 5xx rate jumped from 0.1 % to 9 % right after 1.5.0 went to all instances"], "answers": { "check": "Roll back to the previous image tag" }, "explain": "Збіг з релізом і масштабна шкода — спершу відновити сервіс, потім шукати причину." },
+    { "given": ["New containers restart every few seconds and never become ready"], "answers": { "check": "docker ps -a and the container's logs" } },
+    { "given": ["The app starts, but the log says `DATABASE_URL is required`"], "answers": { "check": "Environment variables of the new deployment" } },
+    { "given": ["All instances are up, but the platform sends them no traffic"], "answers": { "check": "/ready response and the database's state" }, "explain": "Платформа не шле трафік, коли readiness відповідає 503 — подивись, яка перевірка не проходить." },
+    { "given": ["One customer sends a screenshot with \"Error, request id r-7f3a\""], "answers": { "check": "Logs filtered by the request_id from the error" } },
+    { "given": ["Every request that reads orders fails with `column orders.gift_message does not exist`"], "answers": { "check": "Migrations: was the schema changed for the new code?" } }
+  ],
+  "hints": [
+    "Масштабна проблема одразу після релізу — спершу відновлення, потім розслідування.",
+    "Повідомлення в лозі часто вже називає, де шукати: змінна, колонка, request id."
+  ],
+  "explanation": "Перший крок залежить від масштабу й підказок: масова шкода після релізу — відкат; контейнер не живе — `docker ps -a` і логи; конкретне повідомлення — туди, на що воно вказує (змінні середовища, міграції); немає трафіку — readiness; поодинокий випадок — логи за `request_id`. Мета першого кроку — або швидко відновити сервіс, або найкоротшим шляхом дістатися до фактів."
+}

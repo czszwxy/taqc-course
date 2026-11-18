@@ -1,0 +1,43 @@
+{
+  "title": "Containers and images",
+  "minutes": 50,
+  "summary": "Навіщо Docker розробнику: образ і контейнер, шари, реєстр і теги, Docker Desktop на Windows, перший запуск python:3.13-slim, docker run з -d, --name, --rm, -e і -p HOST:CONTAINER, docker ps / logs / exec / stop / rm, томи для даних і чому застосунок у контейнері має слухати 0.0.0.0",
+  "resources": [
+    {
+      "title": "Docker Docs: What is a container?",
+      "url": "https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Docker Docs: Install Docker Desktop on Windows",
+      "url": "https://docs.docker.com/desktop/setup/install/windows-install/",
+      "kind": "docs",
+      "lang": "en",
+      "note": "WSL 2 backend",
+      "needsVerification": true
+    },
+    {
+      "title": "Docker Docs: docker container run",
+      "url": "https://docs.docker.com/reference/cli/docker/container/run/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Docker Docs: Port publishing and mapping",
+      "url": "https://docs.docker.com/engine/network/port-publishing/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Docker for Python developers",
+      "url": "https://www.youtube.com/results?search_query=docker+tutorial+for+python+developers",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

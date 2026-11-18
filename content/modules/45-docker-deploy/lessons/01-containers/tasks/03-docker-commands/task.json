@@ -1,0 +1,37 @@
+{
+  "type": "table",
+  "title": "Which docker command?",
+  "statement": "Ти працюєш з контейнером `shop-api` (API магазину) і базою `shop-db`. Для кожної ситуації обери команду.",
+  "givenColumns": ["Situation"],
+  "answerColumns": [
+    {
+      "id": "command",
+      "label": "Command",
+      "options": [
+        "docker ps -a",
+        "docker logs -f shop-api",
+        "docker exec -it shop-api sh",
+        "docker stop shop-api",
+        "docker rm shop-api",
+        "docker pull postgres:18",
+        "docker images",
+        "docker run -d --name shop-api -p 8000:8000 shop-api:1.4.2"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["Start version 1.4.2 of the API in the background and open it at localhost:8000"], "answers": { "command": "docker run -d --name shop-api -p 8000:8000 shop-api:1.4.2" } },
+    { "given": ["The API container is gone from `docker ps` a second after start — find out its exit code"], "answers": { "command": "docker ps -a" }, "explain": "`docker ps` показує лише запущені контейнери; `-a` — і зупинені, з кодом виходу." },
+    { "given": ["Watch the API's output live while you click through the site"], "answers": { "command": "docker logs -f shop-api" } },
+    { "given": ["Check which environment variables the running API really sees (`env` inside it)"], "answers": { "command": "docker exec -it shop-api sh" }, "explain": "`exec` запускає команду в уже працюючому контейнері — тут shell, у якому можна виконати `env`." },
+    { "given": ["Stop the API so it finishes its requests and exits"], "answers": { "command": "docker stop shop-api" } },
+    { "given": ["Free the name `shop-api` taken by a stopped old container"], "answers": { "command": "docker rm shop-api" } },
+    { "given": ["Download the database image now, before the train with bad Wi-Fi"], "answers": { "command": "docker pull postgres:18" } },
+    { "given": ["See which images and tags are already on your computer"], "answers": { "command": "docker images" } }
+  ],
+  "hints": [
+    "Спершу визнач, з чим дія: з образом (завантажити, переглянути) чи з контейнером (запустити, подивитися, зупинити, видалити).",
+    "Ім'я зайняте навіть зупиненим контейнером — його звільняє лише видалення."
+  ],
+  "explanation": "Образи завантажують і переглядають (`pull`, `images`), контейнери — запускають, оглядають, зупиняють і видаляють (`run`, `ps`, `logs`, `exec`, `stop`, `rm`). Найкорисніша пара для налагодження — `docker ps -a` (чи живий і з яким кодом вийшов) і `docker logs` (чому)."
+}

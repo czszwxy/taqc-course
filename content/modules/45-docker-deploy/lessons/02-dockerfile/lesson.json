@@ -1,0 +1,42 @@
+{
+  "title": "A Dockerfile for a Python app",
+  "minutes": 60,
+  "summary": "Dockerfile рядок за рядком для FastAPI: FROM python:3.13-slim, ENV PYTHONUNBUFFERED / PYTHONDONTWRITEBYTECODE, WORKDIR, спершу requirements.txt і pip install --no-cache-dir, потім код, EXPOSE і CMD в exec-формі з fastapi run; кеш шарів і чому порядок важливий, .dockerignore, docker build -t, shell-форма проти exec-форми і сигнали",
+  "resources": [
+    {
+      "title": "FastAPI: FastAPI in Containers - Docker",
+      "url": "https://fastapi.tiangolo.com/deployment/docker/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Docker Docs: Dockerfile reference",
+      "url": "https://docs.docker.com/reference/dockerfile/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Docker Docs: Docker build cache",
+      "url": "https://docs.docker.com/build/cache/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Docker Docs: Building best practices",
+      "url": "https://docs.docker.com/build/building/best-practices/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Docker Hub: python (official image)",
+      "url": "https://hub.docker.com/_/python",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

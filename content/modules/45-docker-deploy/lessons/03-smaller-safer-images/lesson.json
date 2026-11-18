@@ -1,0 +1,42 @@
+{
+  "title": "Smaller and safer images",
+  "minutes": 60,
+  "summary": "Варіанти базового образу python (повний, slim, alpine і його musl), багатоетапне збирання з віртуальним середовищем у першому етапі, запуск не від root через USER, секрети, що «запікаються» в образ (ENV, ARG, COPY .env і навіть RUN rm), build secrets, .dockerignore в деталях (від кореня, **, винятки з !, останній рядок вирішує), теги проти digest",
+  "resources": [
+    {
+      "title": "Docker Docs: Multi-stage builds",
+      "url": "https://docs.docker.com/build/building/multi-stage/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Docker Docs: Build context and .dockerignore",
+      "url": "https://docs.docker.com/build/concepts/context/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Docker Docs: Build secrets",
+      "url": "https://docs.docker.com/build/building/secrets/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Docker Docs: Building best practices (USER, pinning)",
+      "url": "https://docs.docker.com/build/building/best-practices/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Docker multi-stage builds for Python",
+      "url": "https://www.youtube.com/results?search_query=docker+multi-stage+build+python",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

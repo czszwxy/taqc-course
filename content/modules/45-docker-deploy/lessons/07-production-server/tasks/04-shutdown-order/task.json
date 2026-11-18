@@ -1,0 +1,19 @@
+{
+  "type": "order",
+  "title": "What happens on docker stop",
+  "statement": "Під час релізу платформа зупиняє старий контейнер API магазину (`CMD` в exec-формі, uvicorn, lifespan з чергою подій). Розстав події в порядку, в якому вони відбуваються при коректній зупинці.",
+  "items": [
+    "docker stop sends SIGTERM to the main process (uvicorn)",
+    "uvicorn stops accepting new connections",
+    "Requests that are already running finish and get their responses",
+    "The lifespan code after yield runs: stop the background task and wait for it",
+    "The last queued events are saved to the database",
+    "The database connection pool is closed",
+    "The process exits with code 0 — well before the 10-second SIGKILL"
+  ],
+  "hints": [
+    "Спершу сигнал, потім — не брати нового, потім — доробити почате.",
+    "Shutdown-частина lifespan закриває ресурси у зворотному порядку: спершу те, що користується базою, потім саму базу."
+  ],
+  "explanation": "Коректна зупинка — це «не брати нової роботи → доробити почату → прибрати за собою → вийти». uvicorn робить перші кроки сам; твоя частина — lifespan, де фонові задачі зупиняють і чекають, залишки зберігають, а з'єднання з базою закривають останнім. Усе це має вкластися в ліміт `docker stop`, інакше SIGKILL обірве роботу на півдорозі."
+}

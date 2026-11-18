@@ -1,0 +1,14 @@
+{
+  "title": "Docker & Deployment",
+  "description": "Як перетворити Python-застосунок на образ, що однаково працює на твоєму ноутбуці, у CI і на сервері: контейнери й образи, Dockerfile для FastAPI і Django, кеш шарів, малі й безпечні образи, конфігурація через змінні середовища, Docker Compose з PostgreSQL, health-перевірки, JSON-логи, коректна зупинка, CI/CD з GitHub Actions і реліз з відкатом. Docker для задач не потрібен: код задач перевіряється тут, а приклади з Docker можна спробувати в Docker Desktop.",
+  "goals": [
+    "Explain images, containers, registries, volumes and port publishing",
+    "Write a Dockerfile for a Python web app that builds fast and stops cleanly",
+    "Make images smaller and safer: slim bases, multi-stage builds, non-root users, no baked-in secrets",
+    "Configure an app through environment variables and fail fast on bad settings",
+    "Run an app with PostgreSQL in Docker Compose with health checks and volumes",
+    "Add liveness and readiness endpoints, structured logs and graceful shutdown",
+    "Build, tag and publish images from GitHub Actions",
+    "Release safely: migrations, canary checks, rollbacks and monitoring"
+  ]
+}

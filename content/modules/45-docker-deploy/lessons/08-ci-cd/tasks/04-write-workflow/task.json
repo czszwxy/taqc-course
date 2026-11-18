@@ -1,0 +1,38 @@
+{
+  "type": "written",
+  "title": "Write the shop's CI/CD workflow",
+  "statement": "Напиши `.github/workflows/ci.yml` для API магазину (FastAPI + SQLAlchemy, тести pytest).\n\nВимоги:\n\n- запуск на pull request у `main`, на push у `main` і на push тегів `v*`;\n- job `test`: Ubuntu, PostgreSQL **18** як service container з health-перевіркою, Python 3.13 з кешем pip, `pip install -r requirements.txt`, pytest з `DATABASE_URL` до цієї бази;\n- job `build`: лише після успішних тестів і **лише для push** (не для pull request); публікує образ у `ghcr.io` під назвою репозиторію через вбудований токен; теги — повна версія і `major.minor` для тегів, назва гілки, `sha-…`; кеш шарів між запусками;\n- жодних паролів і токенів, записаних у файлі (тестовий пароль одноразової бази — дозволено).\n\nДругим полем поясни, чому `build` не запускається для pull request і навіщо тег `sha-…`.",
+  "fields": [
+    { "id": "yaml", "label": "ci.yml", "kind": "textarea", "placeholder": "name: CI\non:\n  …" },
+    { "id": "notes", "label": "Notes for the reviewer", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "yaml", "check": "mentionsAll", "value": ["pull_request", "push", "tags", "v\\*"], "message": "Тригери: `pull_request` у main, `push` у main і `tags: [\"v*\"]`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["services:", "postgres:18", "health-cmd", "pg_isready"], "message": "`services: postgres: image: postgres:18` з `--health-cmd pg_isready`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["actions/setup-python@v7", "cache: *[\"']?pip", "requirements\\.txt", "pytest"], "message": "Python: `actions/setup-python@v7` з `cache: pip`, `pip install -r requirements.txt`, `python -m pytest`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["DATABASE_URL", "@localhost:5432"], "message": "`DATABASE_URL` до бази service container: `…@localhost:5432/…`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["needs: *\\[?\\s*test", "github\\.event_name *== *'push'"], "message": "`build`: `needs: test` і `if: github.event_name == 'push'`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["packages: *write", "docker/login-action@v4", "ghcr\\.io", "secrets\\.GITHUB_TOKEN"], "message": "`permissions: packages: write` і `docker/login-action@v4` у `ghcr.io` з `secrets.GITHUB_TOKEN`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["docker/metadata-action@v6", "type=semver", "type=ref,event=branch", "type=sha"], "message": "`docker/metadata-action@v6` з `type=semver`, `type=ref,event=branch`, `type=sha`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["docker/build-push-action@v7", "push: *true", "steps\\.meta\\.outputs\\.tags", "type=gha"], "message": "`docker/build-push-action@v7` з `push: true`, тегами з `steps.meta.outputs.tags` і кешем `type=gha` (плюс `docker/setup-buildx-action@v4`)." },
+    { "field": "notes", "check": "minLength", "value": 60, "message": "Поясни два рішення: build без PR і навіщо sha-тег." }
+  ],
+  "model": {
+    "yaml": "name: CI\n\non:\n  pull_request:\n    branches: [main]\n  push:\n    branches: [main]\n    tags: [\"v*\"]\n\njobs:\n  test:\n    runs-on: ubuntu-latest\n    timeout-minutes: 20\n    services:\n      postgres:\n        image: postgres:18\n        env:\n          POSTGRES_USER: shop\n          POSTGRES_PASSWORD: shop\n          POSTGRES_DB: shop_test\n        ports:\n          - 5432:5432\n        options: >-\n          --health-cmd pg_isready\n          --health-interval 5s\n          --health-timeout 5s\n          --health-retries 10\n    steps:\n      - uses: actions/checkout@v7\n      - uses: actions/setup-python@v7\n        with:\n          python-version: \"3.13\"\n          cache: pip\n      - run: pip install -r requirements.txt\n      - run: python -m pytest\n        env:\n          DATABASE_URL: postgresql://shop:shop@localhost:5432/shop_test\n\n  build:\n    needs: test\n    if: github.event_name == 'push'\n    runs-on: ubuntu-latest\n    permissions:\n      contents: read\n      packages: write\n    steps:\n      - uses: actions/checkout@v7\n      - uses: docker/login-action@v4\n        with:\n          registry: ghcr.io\n          username: ${{ github.actor }}\n          password: ${{ secrets.GITHUB_TOKEN }}\n      - id: meta\n        uses: docker/metadata-action@v6\n        with:\n          images: ghcr.io/${{ github.repository }}\n          tags: |\n            type=semver,pattern={{version}}\n            type=semver,pattern={{major}}.{{minor}}\n            type=ref,event=branch\n            type=sha\n      - uses: docker/setup-buildx-action@v4\n      - uses: docker/build-push-action@v7\n        with:\n          context: .\n          push: true\n          tags: ${{ steps.meta.outputs.tags }}\n          labels: ${{ steps.meta.outputs.labels }}\n          cache-from: type=gha\n          cache-to: type=gha,mode=max",
+    "notes": "Для pull request достатньо тестів: код ще не прийнято, публікувати з нього образ у спільний реєстр не потрібно, а для PR з форків GITHUB_TOKEN і не має права писати пакети. Тег sha-… прив'язаний до конкретного коміту і ніколи не змінюється: за ним видно, що саме працює на сервері, і на нього можна точно відкотитися, навіть якщо гілка чи latest уже пішли далі."
+  },
+  "checklist": [
+    "Тригери: pull_request у main, push у main, теги v*",
+    "PostgreSQL 18 як service container з health-перевіркою; з кроків — localhost:5432",
+    "setup-python@v7 з cache: pip; pytest з DATABASE_URL",
+    "build: needs: test і лише для push",
+    "permissions: packages: write; login-action@v4 з GITHUB_TOKEN, без особистих токенів",
+    "metadata-action@v6: semver, гілка, sha; build-push-action@v7 з push: true і кешем gha",
+    "Жодного справжнього пароля у файлі"
+  ],
+  "hints": [
+    "Візьми два job з уроку: `test` з service container і `build` з чотирма діями Docker.",
+    "Тригер тегів: `on: push: tags: [\"v*\"]` поруч із `branches: [main]`."
+  ],
+  "explanation": "Конвеєр бекенду — два обов'язкові job: тести з тією самою базою, що в production, і збирання образу лише з перевіреного коду. `needs` і `if` захищають від публікації неперевіреного коду і коду з PR, `GITHUB_TOKEN` з `packages: write` прибирає потребу в особистих токенах, а metadata-action дає послідовні теги — версії для людей і `sha-…` для точного відкату."
+}

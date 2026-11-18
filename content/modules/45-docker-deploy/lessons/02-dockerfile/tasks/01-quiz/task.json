@@ -1,0 +1,88 @@
+{
+  "type": "quiz",
+  "title": "A Dockerfile for a Python app",
+  "show": 6,
+  "hints": ["Кеш іде згори вниз: змінився шар — перезбирається він і все нижче. CMD — у формі JSON-масиву."],
+  "questions": [
+    {
+      "id": "cache-order",
+      "kind": "single",
+      "text": "Навіщо копіювати `requirements.txt` і запускати `pip install` **до** копіювання коду?",
+      "options": [
+        { "text": "Щоб правка коду не скидала кеш шару з бібліотеками — збирання займає секунди, а не хвилини", "correct": true },
+        { "text": "Інакше `pip` не знайде файл" },
+        { "text": "Так менший розмір образу" }
+      ]
+    },
+    {
+      "id": "cache-invalidation",
+      "kind": "single",
+      "text": "Ти змінив(ла) лише `requirements.txt`. Які шари перезберуться?",
+      "options": [
+        { "text": "`COPY requirements.txt`, `RUN pip install` і всі інструкції нижче", "correct": true },
+        { "text": "Лише `RUN pip install`" },
+        { "text": "Увесь образ, починаючи з `FROM`" }
+      ]
+    },
+    {
+      "id": "unbuffered",
+      "kind": "single",
+      "text": "Що дає `ENV PYTHONUNBUFFERED=1`?",
+      "options": [
+        { "text": "Вивід Python не буферизується — `docker logs` показує повідомлення одразу", "correct": true },
+        { "text": "Python не створює `.pyc`-файли" },
+        { "text": "Пришвидшує `pip install`" }
+      ]
+    },
+    {
+      "id": "no-cache-dir",
+      "kind": "single",
+      "text": "Навіщо `pip install --no-cache-dir`?",
+      "options": [
+        { "text": "Щоб завантажені пакети не лишались кешем pip в образі — образ менший", "correct": true },
+        { "text": "Щоб Docker не кешував цей шар" },
+        { "text": "Щоб pip завжди брав найновіші версії" }
+      ]
+    },
+    {
+      "id": "shell-form",
+      "kind": "single",
+      "text": "`CMD fastapi run main.py` (без квадратних дужок). Що станеться на `docker stop`?",
+      "options": [
+        { "text": "SIGTERM отримає `/bin/sh`, а не застосунок; через 10 секунд Docker уб'є все через SIGKILL", "correct": true },
+        { "text": "Те саме, що й з exec-формою" },
+        { "text": "Контейнер не запуститься взагалі" }
+      ]
+    },
+    {
+      "id": "fastapi-run",
+      "kind": "single",
+      "text": "Чому в образі `fastapi run`, а не `fastapi dev`?",
+      "options": [
+        { "text": "`run` — production-режим без автоперезавантаження і на `0.0.0.0`; `dev` стежить за файлами і слухає `127.0.0.1`", "correct": true },
+        { "text": "`dev` не працює в Linux" },
+        { "text": "Різниці немає, це синоніми" }
+      ]
+    },
+    {
+      "id": "context",
+      "kind": "single",
+      "text": "Що означає крапка в кінці `docker build -t shop-api:1.0 .`?",
+      "options": [
+        { "text": "Контекст збирання — поточна папка; лише її файли (без виключених `.dockerignore`) можна копіювати в образ", "correct": true },
+        { "text": "Тег за замовчуванням" },
+        { "text": "Збирати без кешу" }
+      ]
+    },
+    {
+      "id": "two-cmd",
+      "kind": "single",
+      "text": "У Dockerfile два рядки `CMD`. Який спрацює?",
+      "options": [
+        { "text": "Лише останній", "correct": true },
+        { "text": "Обидва по черзі" },
+        { "text": "Перший; другий — помилка збирання" }
+      ]
+    }
+  ]
+}

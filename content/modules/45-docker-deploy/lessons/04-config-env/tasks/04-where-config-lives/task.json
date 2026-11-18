@@ -1,0 +1,29 @@
+{
+  "type": "table",
+  "title": "Where does this setting live?",
+  "statement": "Для кожного налаштування магазину обери, де йому місце: **у коді** (однакове в усіх середовищах, змінюється разом з кодом і тестами), у **звичайній змінній середовища** (відрізняється між середовищами, не секрет) чи в **секреті** (змінна середовища, значення якої зберігає менеджер секретів платформи й ніколи не потрапляє в git).",
+  "givenColumns": ["Setting"],
+  "answerColumns": [
+    {
+      "id": "place",
+      "label": "Where",
+      "options": ["In the code", "Plain environment variable", "Secret"]
+    }
+  ],
+  "rows": [
+    { "given": ["The list of order statuses: `new`, `paid`, `shipped`, `cancelled`"], "answers": { "place": "In the code" } },
+    { "given": ["`LOG_LEVEL`: DEBUG on a laptop, INFO in production"], "answers": { "place": "Plain environment variable" } },
+    { "given": ["`DATABASE_URL` for production (contains the password)"], "answers": { "place": "Secret" }, "explain": "Адреса бази містить пароль — тож уся змінна секретна." },
+    { "given": ["The key used to sign JWT access tokens"], "answers": { "place": "Secret" } },
+    { "given": ["`ALLOWED_HOSTS`: `localhost` locally, `shop.example.com` in production"], "answers": { "place": "Plain environment variable" } },
+    { "given": ["The payment provider's API key"], "answers": { "place": "Secret" } },
+    { "given": ["The VAT rate used in price calculations (a business rule covered by tests)"], "answers": { "place": "In the code" }, "explain": "Однакова в усіх середовищах і має тести: зміна — це реліз коду, а не перемикач на сервері." },
+    { "given": ["The number of uvicorn workers (`WEB_CONCURRENCY`) — 1 on staging, 4 in production"], "answers": { "place": "Plain environment variable" } },
+    { "given": ["A flag that turns the new checkout on for staging only"], "answers": { "place": "Plain environment variable" } }
+  ],
+  "hints": [
+    "Запитай: чи відрізняється значення між середовищами? Якщо ні — це код.",
+    "Якщо відрізняється — чи страшно, якщо його побачать у логах CI чи в git? Якщо так — секрет."
+  ],
+  "explanation": "Код — те, що однакове скрізь і перевіряється тестами разом із релізом. Змінні середовища — те, що відрізняється між деплоями. Секрети — підмножина змінних, витік яких дає доступ до чогось: паролі, ключі, токени; їх зберігає менеджер секретів платформи, а не репозиторій."
+}

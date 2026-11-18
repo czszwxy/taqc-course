@@ -1,0 +1,37 @@
+{
+  "type": "table",
+  "title": "Fix what check --deploy reports",
+  "statement": "Django-магазин перед релізом проганяє `python manage.py check --deploy` з production-налаштуваннями (за HTTPS-проксі). Для кожного повідомлення обери виправлення.",
+  "givenColumns": ["Check", "Message (shortened)"],
+  "answerColumns": [
+    {
+      "id": "fix",
+      "label": "Fix",
+      "options": [
+        "DEBUG = False",
+        "ALLOWED_HOSTS from an environment variable",
+        "A long random SECRET_KEY from a secret",
+        "SESSION_COOKIE_SECURE = True",
+        "CSRF_COOKIE_SECURE = True",
+        "SECURE_SSL_REDIRECT = True (or redirect at the proxy)",
+        "SECURE_HSTS_SECONDS after reading the HSTS docs",
+        "A real email backend in MAILERS (e.g. SMTP)"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["security.W018", "You should not have DEBUG set to True in deployment."], "answers": { "fix": "DEBUG = False" } },
+    { "given": ["security.W020", "ALLOWED_HOSTS must not be empty in deployment."], "answers": { "fix": "ALLOWED_HOSTS from an environment variable" } },
+    { "given": ["security.W009", "Your SECRET_KEY has less than 50 characters … or it's prefixed with 'django-insecure-'"], "answers": { "fix": "A long random SECRET_KEY from a secret" } },
+    { "given": ["security.W012", "SESSION_COOKIE_SECURE is not set to True."], "answers": { "fix": "SESSION_COOKIE_SECURE = True" } },
+    { "given": ["security.W016", "… you have not set CSRF_COOKIE_SECURE to True."], "answers": { "fix": "CSRF_COOKIE_SECURE = True" } },
+    { "given": ["security.W008", "Your SECURE_SSL_REDIRECT setting is not set to True."], "answers": { "fix": "SECURE_SSL_REDIRECT = True (or redirect at the proxy)" } },
+    { "given": ["security.W004", "You have not set a value for the SECURE_HSTS_SECONDS setting."], "answers": { "fix": "SECURE_HSTS_SECONDS after reading the HSTS docs" }, "explain": "HSTS змушує браузери роками ходити лише по HTTPS; помилка тут важко відкочується — Django прямо радить спершу прочитати документацію." },
+    { "given": ["mail.E001", "Your MAILERS setting uses a development-only email backend … console.EmailBackend"], "answers": { "fix": "A real email backend in MAILERS (e.g. SMTP)" }, "explain": "У Django 6.1 проєкт зі `startproject` має `MAILERS` з консольним бекендом: листи друкуються в консоль, а не надсилаються." }
+  ],
+  "hints": [
+    "Код попередження зазвичай уже називає налаштування — шукай його в повідомленні.",
+    "Значення, що відрізняються між середовищами чи є секретами, приходять зі змінних середовища."
+  ],
+  "explanation": "`check --deploy` — готовий чекліст безпеки Django: кожне попередження має код і називає налаштування. Частина виправлень — константи для production (`DEBUG = False`, захищені cookie), частина — значення з середовища (`ALLOWED_HOSTS`, `SECRET_KEY`). HSTS вмикають свідомо і поступово: це обіцянка браузерам, яку важко скасувати."
+}

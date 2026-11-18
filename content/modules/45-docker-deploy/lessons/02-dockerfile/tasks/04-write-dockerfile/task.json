@@ -1,0 +1,39 @@
+{
+  "type": "written",
+  "title": "Write a Dockerfile and .dockerignore for the shop API",
+  "statement": "Напиши `Dockerfile` і `.dockerignore` для API магазину.\n\nПроєкт:\n\n```text\nshop/\n├── requirements.txt\n├── shop_api/\n│   ├── __init__.py\n│   └── main.py          ← app = FastAPI()\n├── tests/\n├── .venv/\n├── .git/\n└── .env                 ← паролі для локальної розробки\n```\n\nВимоги:\n\n- Python **3.13** на мінімальному образі;\n- логи без буферизації, без `.pyc`;\n- збирання після правки коду не перевстановлює бібліотеки; кеш pip не лишається в образі;\n- у образі лише код застосунку — без тестів;\n- застосунок слухає порт **8080** і стартує production-командою FastAPI CLI так, щоб отримувати SIGTERM;\n- `.dockerignore` не пускає в контекст віртуальне середовище, git, кеші Python і pytest та `.env`.\n\nТретім полем поясни два рішення.",
+  "fields": [
+    { "id": "dockerfile", "label": "Dockerfile", "kind": "textarea", "placeholder": "FROM …" },
+    { "id": "dockerignore", "label": ".dockerignore", "kind": "textarea", "placeholder": ".venv\n…" },
+    { "id": "notes", "label": "Notes for the reviewer", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "dockerfile", "check": "mentionsAll", "value": ["FROM\\s+python:3\\.13-slim"], "message": "База: `FROM python:3.13-slim` — конкретна версія, мінімальний образ." },
+    { "field": "dockerfile", "check": "mentionsAll", "value": ["PYTHONUNBUFFERED", "PYTHONDONTWRITEBYTECODE"], "message": "`ENV PYTHONUNBUFFERED=1` і `PYTHONDONTWRITEBYTECODE=1`." },
+    { "field": "dockerfile", "check": "mentionsAll", "value": ["COPY\\s+(\\./)?requirements\\.txt", "pip install", "--no-cache-dir"], "message": "Спершу `COPY requirements.txt .`, потім `RUN pip install --no-cache-dir -r requirements.txt`." },
+    { "field": "dockerfile", "check": "mentionsAll", "value": ["COPY\\s+(\\./)?shop_api"], "message": "Копіюй лише `shop_api` (не `COPY . .`) — тести в образ не потрібні." },
+    { "field": "dockerfile", "check": "notMentions", "value": ["COPY\\s+\\.\\s+\\.", "fastapi\\s+dev", "--reload"], "message": "Без `COPY . .`, `fastapi dev` і `--reload` — це для розробки." },
+    { "field": "dockerfile", "check": "mentionsAll", "value": ["CMD\\s*\\[", "\"fastapi\"", "\"run\"", "8080"], "message": "`CMD [\"fastapi\", \"run\", \"shop_api/main.py\", \"--port\", \"8080\"]` — exec-форма, порт 8080." },
+    { "field": "dockerignore", "check": "mentionsAll", "value": ["\\.venv", "\\.git", "__pycache__", "\\.pytest_cache", "\\.env"], "message": "У `.dockerignore`: `.venv`, `.git`, `**/__pycache__`, `.pytest_cache`, `.env`." },
+    { "field": "notes", "check": "minLength", "value": 60, "message": "Поясни два рішення: порядок COPY / RUN і exec-форму CMD." }
+  ],
+  "model": {
+    "dockerfile": "FROM python:3.13-slim\n\nENV PYTHONDONTWRITEBYTECODE=1 \\\n    PYTHONUNBUFFERED=1\n\nWORKDIR /app\n\nCOPY requirements.txt .\nRUN pip install --no-cache-dir -r requirements.txt\n\nCOPY shop_api ./shop_api\n\nEXPOSE 8080\nCMD [\"fastapi\", \"run\", \"shop_api/main.py\", \"--port\", \"8080\"]",
+    "dockerignore": ".venv\n.git\n**/__pycache__\n**/*.pyc\n.pytest_cache\n.env\ntests",
+    "notes": "requirements.txt копіюється і встановлюється до коду: код змінюється часто, залежності рідко, тож після правки в shop_api Docker бере шар з pip install з кешу. CMD у exec-формі, щоб fastapi (uvicorn) був головним процесом і отримав SIGTERM від docker stop — інакше sh не передасть сигнал і контейнер уб'ють через 10 секунд. tests у .dockerignore — додатковий захист, хоча Dockerfile їх і так не копіює."
+  },
+  "checklist": [
+    "Конкретний тег бази (3.13-slim), не latest",
+    "requirements.txt і pip install --no-cache-dir — вище за COPY коду",
+    "Копіюється лише shop_api, без tests і без COPY . .",
+    "fastapi run (не dev, без --reload) з --port 8080",
+    "CMD — JSON-масив (exec-форма)",
+    ".dockerignore: .venv, .git, кеші Python і pytest, .env; **/ для файлів у вкладених папках",
+    "Жодного пароля чи токена в Dockerfile"
+  ],
+  "hints": [
+    "Візьми за основу Dockerfile з уроку й зміни імена та порт.",
+    "`__pycache__` є в кожній папці з кодом — у `.dockerignore` пиши `**/__pycache__`."
+  ],
+  "explanation": "Хороший Dockerfile для Python-API короткий: конкретна база, змінні середовища, залежності перед кодом, лише потрібний код, production-команда в exec-формі. `.dockerignore` захищає і швидкість (без `.venv` контекст у рази менший), і безпеку (без `.env` паролі не потраплять в образ)."
+}

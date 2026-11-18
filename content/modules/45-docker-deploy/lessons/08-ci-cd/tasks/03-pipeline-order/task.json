@@ -1,0 +1,21 @@
+{
+  "type": "order",
+  "title": "Order the release pipeline",
+  "statement": "Розробник(ця) зливає pull request у `main` і ставить git-тег `v1.5.0`. Розстав кроки конвеєра магазину в порядку виконання.",
+  "items": [
+    "Check out the code at the tag",
+    "Start PostgreSQL as a service container and wait until it is healthy",
+    "Install dependencies and run pytest against that database",
+    "Log in to ghcr.io with GITHUB_TOKEN",
+    "Compute the image tags (1.5.0, 1.5, 1, latest, sha-…)",
+    "Build the image once and push it with all the tags",
+    "Wait for a reviewer to approve the production environment",
+    "Run migrations, then start the new image on the server",
+    "Check /ready and the error rate of the new version"
+  ],
+  "hints": [
+    "Нічого не публікують і не деплоять, доки тести не зелені.",
+    "Теги обчислюють до збирання — `build-push-action` отримує їх як вхід. Міграції — до запуску нової версії."
+  ],
+  "explanation": "Конвеєр іде від дешевих перевірок до дорогих і незворотних дій: код → тести з базою → вхід у реєстр → теги → одне збирання й публікація → схвалення → міграції й запуск → перевірка після релізу. Кожен наступний крок має сенс лише якщо попередній успішний, тому в GitHub Actions їх пов'язують через `needs` і умови `if`."
+}

@@ -1,0 +1,89 @@
+{
+  "type": "quiz",
+  "title": "Health checks and logs",
+  "show": 6,
+  "hints": ["Liveness — перезапуск, readiness — без трафіку. Логи — у stdout."],
+  "questions": [
+    {
+      "id": "liveness-db",
+      "kind": "single",
+      "text": "Чому liveness-ендпоінт **не** має перевіряти базу даних?",
+      "options": [
+        { "text": "Невдача liveness перезапускає контейнер; база від цього не підніметься, а перезапуск усіх копій поглибить аварію", "correct": true },
+        { "text": "Бо перевірка бази займає забагато пам'яті" },
+        { "text": "Бо база завжди доступна" }
+      ]
+    },
+    {
+      "id": "readiness-fail",
+      "kind": "single",
+      "text": "Readiness-перевірка контейнера не проходить. Що робить платформа?",
+      "options": [
+        { "text": "Тимчасово не надсилає йому трафік, але не перезапускає", "correct": true },
+        { "text": "Одразу перезапускає контейнер" },
+        { "text": "Видаляє образ" }
+      ]
+    },
+    {
+      "id": "status-code",
+      "kind": "single",
+      "text": "Який код відповіді `/ready`, коли база недоступна?",
+      "options": [
+        { "text": "`503 Service Unavailable`", "correct": true },
+        { "text": "`200` з полем `\"ready\": false`" },
+        { "text": "`404 Not Found`" }
+      ]
+    },
+    {
+      "id": "no-curl",
+      "kind": "single",
+      "text": "`HEALTHCHECK CMD curl -f http://localhost:8000/health` в образі на `python:3.13-slim` завжди `unhealthy`. Чому?",
+      "options": [
+        { "text": "У slim-образі немає `curl`; перевіряй через `python -c` з `urllib.request`", "correct": true },
+        { "text": "HEALTHCHECK не може звертатися до `localhost`" },
+        { "text": "Порт 8000 заборонений для перевірок" }
+      ]
+    },
+    {
+      "id": "timeout",
+      "kind": "single",
+      "text": "Навіщо тайм-аут на кожну перевірку в `/ready`?",
+      "options": [
+        { "text": "Щоб зависла залежність не тримала відповідь довше, ніж платформа чекає перевірку", "correct": true },
+        { "text": "Щоб перевірки виконувались по черзі" },
+        { "text": "Тайм-аут не потрібен: платформа сама скасує перевірку" }
+      ]
+    },
+    {
+      "id": "stdout",
+      "kind": "single",
+      "text": "Куди застосунок у контейнері має писати логи?",
+      "options": [
+        { "text": "У stdout / stderr — їх збирає платформа", "correct": true },
+        { "text": "У файл `/app/logs/app.log`" },
+        { "text": "У базу даних" }
+      ]
+    },
+    {
+      "id": "extra",
+      "kind": "single",
+      "text": "Що відбувається з `extra={\"order_id\": 1001}` у `log.info(..., extra=...)`?",
+      "options": [
+        { "text": "Ключ стає атрибутом `LogRecord`, і форматер може записати його окремим полем", "correct": true },
+        { "text": "Значення дописується в кінець повідомлення автоматично" },
+        { "text": "`extra` ігнорується стандартним logging" }
+      ]
+    },
+    {
+      "id": "leak",
+      "kind": "multiple",
+      "text": "Чого не має бути в логах?",
+      "options": [
+        { "text": "Паролів і токенів", "correct": true },
+        { "text": "Повних номерів карток", "correct": true },
+        { "text": "`request_id` запиту" },
+        { "text": "Ідентифікатора замовлення" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "type": "written",
+  "title": "Write compose.yaml for the shop",
+  "statement": "Напиши `compose.yaml` для локальної розробки магазину:\n\n- `api` — збирається з Dockerfile у цій папці, доступний у браузері на `localhost:8000`, отримує `DATABASE_URL` до бази `shop` (користувач `shop`) і стартує лише коли база **готова**;\n- `db` — PostgreSQL **18**; пароль не записаний у файлі, а береться з `.env` (без нього compose має зупинитися з поясненням); дані переживають `docker compose down`; healthcheck через `pg_isready`;\n- `migrate` — одноразовий сервіс з того самого образу, що виконує `alembic upgrade head` після готовності бази, а `api` стартує лише після **успішного** завершення міграцій.\n\nДругим полем напиши, яку команду виконати, щоб почати з порожньою базою, і чому.",
+  "fields": [
+    { "id": "yaml", "label": "compose.yaml", "kind": "textarea", "placeholder": "services:\n  api:\n    …" },
+    { "id": "notes", "label": "Fresh database: command and why", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "yaml", "check": "mentionsAll", "value": ["services:", "build:", "ports:", "8000:8000"], "message": "`api`: `build: .` і `ports: [\"8000:8000\"]`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["image: *[\"']?postgres:18"], "message": "`db`: `image: postgres:18`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["DATABASE_URL", "@db:5432/shop"], "message": "`DATABASE_URL` указує на `db:5432/shop` — назва сервісу, не localhost." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["\\$\\{POSTGRES_PASSWORD:\\?"], "message": "Пароль — `${POSTGRES_PASSWORD:?...}` з `.env`, не в самому файлі." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["healthcheck:", "pg_isready"], "message": "`healthcheck` бази з `pg_isready`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["service_healthy", "service_completed_successfully"], "message": "`api` і `migrate` чекають `service_healthy` бази; `api` ще й `migrate` з `service_completed_successfully`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["alembic upgrade head"], "message": "`migrate`: `command: alembic upgrade head`." },
+    { "field": "yaml", "check": "mentionsAll", "value": [":/var/lib/postgresql", "(^|\\n)volumes:"], "message": "Іменований том на `/var/lib/postgresql` і секція `volumes:` верхнього рівня." },
+    { "field": "yaml", "check": "notMentions", "value": ["@localhost", "POSTGRES_PASSWORD: *[\"']?[A-Za-z0-9]{4,}[\"']?[ \\t]*(\\n|$)"], "message": "Без `localhost` в адресі бази і без пароля, записаного прямо у файлі." },
+    { "field": "notes", "check": "mentionsAny", "value": ["down -v", "down --volumes"], "message": "Порожня база — `docker compose down -v`, потім `up`." }
+  ],
+  "model": {
+    "yaml": "services:\n  api:\n    build: .\n    ports:\n      - \"8000:8000\"\n    environment:\n      DATABASE_URL: postgresql://shop:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@db:5432/shop\n    depends_on:\n      db:\n        condition: service_healthy\n      migrate:\n        condition: service_completed_successfully\n\n  migrate:\n    build: .\n    command: alembic upgrade head\n    environment:\n      DATABASE_URL: postgresql://shop:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@db:5432/shop\n    depends_on:\n      db:\n        condition: service_healthy\n\n  db:\n    image: postgres:18\n    environment:\n      POSTGRES_USER: shop\n      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}\n      POSTGRES_DB: shop\n    volumes:\n      - pgdata:/var/lib/postgresql\n    healthcheck:\n      test: [\"CMD-SHELL\", \"pg_isready -U shop -d shop\"]\n      interval: 5s\n      timeout: 3s\n      retries: 10\n\nvolumes:\n  pgdata:",
+    "notes": "docker compose down -v, потім docker compose up -d --build. Звичайний down лишає том pgdata, і база з даними (і старим паролем) повернеться; -v видаляє томи, тож PostgreSQL ініціалізує порожню базу з POSTGRES_* змінних, а migrate створить таблиці заново."
+  },
+  "checklist": [
+    "Хост бази в DATABASE_URL — db (назва сервісу), порт 5432",
+    "Пароль лише через ${POSTGRES_PASSWORD:?...}, сам .env — у .gitignore",
+    "healthcheck з pg_isready і depends_on з condition: service_healthy",
+    "migrate з того самого образу; api чекає service_completed_successfully",
+    "Іменований том на /var/lib/postgresql (так для postgres:18) і секція volumes",
+    "ports у лапках",
+    "Розумію, що down -v видаляє дані назавжди"
+  ],
+  "hints": [
+    "Почни з прикладу з уроку: заміни назви і додай третій сервіс `migrate` з `build: .` і `command`.",
+    "`depends_on` у `api` має дві залежності: `db` (`service_healthy`) і `migrate` (`service_completed_successfully`)."
+  ],
+  "explanation": "Робочий compose-файл — це явні залежності: база готова → міграції пройшли → API стартує. Секрет приходить з `.env` через `${VAR:?}`, тож файл можна комітити, а без пароля compose одразу пояснить, чого бракує. Іменований том зберігає дані між перезапусками, а `down -v` — свідомий спосіб почати з нуля."
+}

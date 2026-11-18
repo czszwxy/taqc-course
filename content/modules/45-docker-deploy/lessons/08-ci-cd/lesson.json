@@ -1,0 +1,42 @@
+{
+  "title": "CI/CD: test, build, publish",
+  "minutes": 65,
+  "summary": "Конвеєр для Python-бекенду в GitHub Actions: тести з PostgreSQL як service container, збирання образу один раз і публікація в GitHub Container Registry (ghcr.io) через GITHUB_TOKEN з permissions packages: write, docker/login-action, metadata-action, setup-buildx-action і build-push-action з кешем, теги-версії й незмінні sha-теги, назви образів лише малими літерами, deploy-job з environment і схваленням",
+  "resources": [
+    {
+      "title": "GitHub Docs: Publishing Docker images",
+      "url": "https://docs.github.com/en/actions/tutorials/publish-packages/publish-docker-images",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "GitHub Docs: Working with the Container registry",
+      "url": "https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "GitHub Docs: Creating PostgreSQL service containers",
+      "url": "https://docs.github.com/en/actions/tutorials/use-containerized-services/create-postgresql-service-containers",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "docker/metadata-action",
+      "url": "https://github.com/docker/metadata-action",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "docker/build-push-action",
+      "url": "https://github.com/docker/build-push-action",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

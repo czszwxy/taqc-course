@@ -1,0 +1,31 @@
+{
+  "type": "classify",
+  "title": "Does the secret leak?",
+  "statement": "Команда магазину передає пароль бази `DATABASE_PASSWORD` і токен приватного реєстру пакетів. Для кожного способу визнач: секрет **потрапляє в образ**, **витікає деінде** (репозиторій, логи) чи **лишається секретом**.",
+  "categories": [
+    { "id": "image", "label": "Baked into the image", "description": "Кожен, хто має образ, може його дістати" },
+    { "id": "elsewhere", "label": "Leaks elsewhere", "description": "Git, логи, вивід CI" },
+    { "id": "safe", "label": "Stays secret", "description": "Не потрапляє ні в образ, ні в репозиторій" }
+  ],
+  "items": [
+    { "id": "env", "text": "`ENV DATABASE_PASSWORD=s3cret` у Dockerfile", "category": "image" },
+    { "id": "arg", "text": "`ARG PIP_TOKEN` і `RUN pip install --index-url https://user:${PIP_TOKEN}@pypi.example.com/simple ...`", "category": "image", "explain": "Значення build-аргументів видно в `docker history`." },
+    { "id": "copy-env", "text": "`COPY . .` без `.dockerignore`, а в папці лежить `.env`", "category": "image" },
+    { "id": "rm", "text": "`COPY .env .` і потім `RUN rm .env`", "category": "image", "explain": "Шар з файлом лишається в образі; `rm` лише додає новий шар." },
+    { "id": "secret-mount", "text": "`RUN --mount=type=secret,id=pip_token ...` і `docker build --secret id=pip_token,env=PIP_TOKEN`", "category": "safe" },
+    { "id": "run-e", "text": "`docker run -e DATABASE_PASSWORD=...` на сервері, значення з менеджера секретів", "category": "safe" },
+    { "id": "gh-secret", "text": "Пароль у GitHub Actions secrets, у workflow — `${{ secrets.DATABASE_PASSWORD }}` в `env` кроку", "category": "safe" },
+    { "id": "dockerignore", "text": "`.env` у `.dockerignore` і `.gitignore`, у репозиторії лише `.env.example` без значень", "category": "safe" },
+    { "id": "commit-env", "text": "`.env` з паролем закомічено «тимчасово, потім видалю»", "category": "elsewhere", "explain": "Видалений файл лишається в історії git." },
+    { "id": "log-settings", "text": "На старті застосунок логує всі налаштування: `log.info(\"settings: %s\", settings)`", "category": "elsewhere" },
+    { "id": "echo-ci", "text": "Адресу бази з паролем збережено як звичайну змінну репозиторію `vars.DATABASE_URL` (не secret), і крок CI друкує її: `echo \"Connecting to $DATABASE_URL\"`", "category": "elsewhere", "explain": "GitHub маскує в логах лише значення secrets; змінні `vars` видно як є." },
+    { "id": "compose-literal", "text": "`environment: DATABASE_PASSWORD: s3cret` прямо в `compose.yaml`, який лежить у git", "category": "elsewhere" }
+  ],
+  "show": 9,
+  "passScore": 0.8,
+  "hints": [
+    "Усе, що записане в Dockerfile (`ENV`, `ARG`, `COPY`), або файл, що побував у шарі, — в образі.",
+    "Git пам'ятає все, що колись комітили; логи читають багато людей і систем."
+  ],
+  "explanation": "Образ — архів шарів: секрет з `ENV`, `ARG` чи скопійованого файлу дістане кожен, хто має образ, і `RUN rm` цього не змінює. Безпечні способи передають секрет лише під час запуску (змінні середовища з менеджера секретів) або лише на час однієї команди збирання (build secret). Окремий клас витоків — поза образом: історія git, логи застосунку й CI."
+}

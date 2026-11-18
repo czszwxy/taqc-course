@@ -1,0 +1,43 @@
+{
+  "title": "Health checks and logs",
+  "minutes": 60,
+  "summary": "Як платформа дізнається, що застосунок живий і готовий: liveness, readiness і startup, /health без залежностей і /ready з перевірками бази та 503, тайм-аути перевірок, HEALTHCHECK у Dockerfile і чому в slim немає curl; логи в stdout, PYTHONUNBUFFERED, структуровані JSON-логи з extra, request_id і без секретів",
+  "resources": [
+    {
+      "title": "Kubernetes: Liveness, Readiness, and Startup Probes",
+      "url": "https://kubernetes.io/docs/concepts/configuration/liveness-readiness-startup-probes/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Docker Docs: HEALTHCHECK instruction",
+      "url": "https://docs.docker.com/reference/dockerfile/#healthcheck",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "The Twelve-Factor App: XI. Logs",
+      "url": "https://12factor.net/logs",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: Logging Cookbook",
+      "url": "https://docs.python.org/3/howto/logging-cookbook.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "structured logging, custom formatters",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: liveness vs readiness probes",
+      "url": "https://www.youtube.com/results?search_query=liveness+vs+readiness+probe+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

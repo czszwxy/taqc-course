@@ -1,0 +1,27 @@
+{
+  "type": "table",
+  "title": "Who connects where?",
+  "statement": "Compose-проєкт магазину:\n\n```yaml\nservices:\n  api:\n    build: .\n    ports:\n      - \"8000:8000\"\n  worker:\n    build: .\n    command: python -m shop_worker\n  db:\n    image: postgres:18\n    ports:\n      - \"5433:5432\"\n```\n\nНа твоєму комп'ютері вже працює своя PostgreSQL на `5432`, тому база compose опублікована на `5433`. Для кожного підключення обери адресу.",
+  "givenColumns": ["From", "To"],
+  "answerColumns": [
+    {
+      "id": "address",
+      "label": "Address",
+      "options": ["db:5432", "db:5433", "localhost:5432", "localhost:5433", "api:8000", "localhost:8000"]
+    }
+  ],
+  "rows": [
+    { "given": ["`api` container", "the compose database"], "answers": { "address": "db:5432" }, "explain": "Усередині мережі compose — назва сервісу і порт контейнера; публікація `5433` тут ні до чого." },
+    { "given": ["`worker` container", "the compose database"], "answers": { "address": "db:5432" } },
+    { "given": ["`worker` container", "the API"], "answers": { "address": "api:8000" } },
+    { "given": ["Your browser on Windows", "the API"], "answers": { "address": "localhost:8000" } },
+    { "given": ["pytest running on Windows (not in Docker)", "the compose database"], "answers": { "address": "localhost:5433" } },
+    { "given": ["DBeaver on Windows", "your own PostgreSQL installed on Windows"], "answers": { "address": "localhost:5432" } },
+    { "given": ["The `api` container's own healthcheck", "the API itself"], "answers": { "address": "localhost:8000" }, "explain": "Healthcheck виконується всередині контейнера `api`, тож `localhost` — це сам API." }
+  ],
+  "hints": [
+    "Звідки йде запит? З контейнера — назва сервісу й порт контейнера (правий номер). З твого комп'ютера — `localhost` і опублікований порт (лівий номер).",
+    "`localhost` у контейнері — сам цей контейнер."
+  ],
+  "explanation": "Дві різні мережі: всередині compose сервіси звертаються один до одного за назвою і **внутрішнім** портом (`db:5432`), а твій комп'ютер бачить лише **опубліковані** порти на `localhost` (`5433`, `8000`). Опублікований порт потрібен лише для доступу ззовні — контейнери ним не користуються."
+}

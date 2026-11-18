@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Health and readiness endpoints",
+  "statement": "Платформа, на якій живе API магазину, питає два ендпоінти: чи процес живий і чи готовий він приймати трафік. Залежності вже є в стартовому файлі: `get_checks()` повертає словник `{назва: асинхронна функція-перевірка}` (справжні перевірки бази й платіжного шлюзу — у `checks.py`, лише для читання), `get_check_timeout()` — ліміт на одну перевірку в секундах. Тести підмінять обидві через `app.dependency_overrides`.\n\n1. **`GET /health`** (liveness) → `200 {\"status\": \"ok\"}`. Нічого зовнішнього не перевіряє і **не залежить** від `get_checks` — база впала, а процес живий.\n2. **`GET /ready`** (readiness) — запускає **всі** перевірки **одночасно** (тест рахує пік) і для кожної записує:\n   - `\"ok\"` — завершилась без винятку;\n   - `\"timeout\"` — не вклалась у `get_check_timeout()` секунд (зупини її, не чекай до кінця);\n   - `\"fail\"` — кинула будь-який інший виняток.\n\n   Усі `\"ok\"` → `200 {\"status\": \"ready\", \"checks\": {...}}`, інакше `503 {\"status\": \"not ready\", \"checks\": {...}}`. Порожній словник перевірок — готовий. Текст винятків у відповідь **не** потрапляє: його бачить будь-хто, хто відкрив `/ready`.\n\n```text\nGET /ready → 503\n{\"status\": \"not ready\", \"checks\": {\"database\": \"ok\", \"payments\": \"timeout\"}}\n```",
+  "hints": [
+    "Одну перевірку загорни в `async def run(check)`: `async with asyncio.timeout(timeout): await check()` у `try`, далі `except TimeoutError: return \"timeout\"`, `except Exception: return \"fail\"`, наприкінці `return \"ok\"`.",
+    "Порядок `except` важливий: `TimeoutError` — теж `Exception`, тож якщо `except Exception` стоїть першим, тайм-аут стане `\"fail\"`.",
+    "Усі разом: `names = list(checks)`, `results = await asyncio.gather(*(run(checks[name]) for name in names))`, `statuses = dict(zip(names, results))`. Код 503 — `JSONResponse(status_code=503, content=...)`."
+  ],
+  "explanation": "Liveness відповідає на питання «чи не завис процес» — якщо він залежить від бази, падіння бази змусить платформу перезапускати здорові контейнери. Readiness перевіряє залежності й просить тимчасово не слати трафік (`503`). Перевірки йдуть одночасно, кожна з власним тайм-аутом, щоб одна повільна залежність не тримала відповідь, а платформа не вирішила, що зависла сама перевірка. Деталі помилок лишаються в логах, а не у відкритій відповіді.",
+  "codeRules": [
+    { "kind": "require", "pattern": "Depends\\s*\\(\\s*get_checks\\s*\\)", "message": "Отримай перевірки через Depends(get_checks)." },
+    { "kind": "require", "pattern": "Depends\\s*\\(\\s*get_check_timeout\\s*\\)", "message": "Ліміт часу — через Depends(get_check_timeout)." }
+  ]
+}

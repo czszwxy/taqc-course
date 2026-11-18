@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Load the worker settings from the environment",
+  "variantOf": "02-load-config",
+  "statement": "Схожа задача: фоновий обробник замовлень (worker) запускається з того самого образу, але має свої змінні. Напиши `load_worker_config(env)` → `WorkerConfig`.\n\n| Змінна | Поле | Правило |\n|---|---|---|\n| `QUEUE_URL` | `queue_url` | **обов'язкова**, не порожня (пробіли по краях обрізати) |\n| `CONCURRENCY` | `concurrency` | ціле від `1` до `64`; немає або порожня — `4` |\n| `DRY_RUN` | `dry_run` | `1` / `true` / `yes` / `on` → `True`, `0` / `false` / `no` / `off` → `False` (будь-який регістр); немає або порожня — `False`; інше — помилка |\n| `RETRY_DELAYS` | `retry_delays` | числа секунд через кому, кожне **більше за 0**, дробові дозволені: `\"0.5, 2,10\"` → `(0.5, 2.0, 10.0)`; немає або порожня — `(1.0, 5.0, 30.0)`; будь-яке погане число (`\"1,,2\"`, `\"0\"`, `\"-1\"`, `\"soon\"`) — помилка |\n\nЗбери **всі** помилки й кинь один `WorkerConfigError(problems)`, де кожне повідомлення починається з назви змінної, у порядку рядків таблиці.\n\n```python\nload_worker_config({\"QUEUE_URL\": \"redis://queue:6379/0\", \"RETRY_DELAYS\": \"0.5, 2\"})\n# WorkerConfig(queue_url='redis://queue:6379/0', concurrency=4, dry_run=False, retry_delays=(0.5, 2.0))\n```",
+  "hints": [
+    "Та сама схема: `problems = []`, кожна змінна окремо, наприкінці `raise WorkerConfigError(problems)`.",
+    "Затримки: `parts = [part.strip() for part in raw.split(\",\")]`, кожну — `float(part)` у `try` / `except ValueError`; порожня частина теж дасть `ValueError`. Потім перевір `> 0`.",
+    "`float(\"nan\")` і `float(\"inf\")` теж «числа». Умова `delay > 0` відсіє `nan`, а щоб відкинути й `inf`, додай `math.isfinite(delay)`."
+  ],
+  "explanation": "Робочий процес з того самого образу отримує свій набір змінних — і такі самі пастки: усе приходить рядком. Списки чисел розбирають по частинах, кожну перевіряють окремо, а помилки збирають, щоб одним повідомленням показати все, що не так. Обмеження на кшталт `1…64` захищають від випадкового `CONCURRENCY=1000`, що поклав би базу.",
+  "codeRules": [
+    { "kind": "require", "pattern": "raise\\s+WorkerConfigError", "message": "Помилки повідомляй через `raise WorkerConfigError(problems)`." }
+  ]
+}

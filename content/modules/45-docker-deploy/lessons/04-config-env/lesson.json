@@ -1,0 +1,43 @@
+{
+  "title": "Configuration from the environment",
+  "minutes": 60,
+  "summary": "Один образ — багато середовищ: 12-factor config, os.environ і os.getenv, усе приходить рядком (пастка bool(\"false\")), обов'язкові змінні й перевірка на старті з усіма помилками одразу, .env і .env.example, docker run -e / --env-file, DATABASE_URL і %-кодування пароля, pydantic-settings і налаштування Django зі змінних середовища",
+  "resources": [
+    {
+      "title": "The Twelve-Factor App: III. Config",
+      "url": "https://12factor.net/config",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: os.environ",
+      "url": "https://docs.python.org/3/library/os.html#os.environ",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: urllib.parse",
+      "url": "https://docs.python.org/3/library/urllib.parse.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "urlsplit, unquote, parse_qsl",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI: Settings and Environment Variables",
+      "url": "https://fastapi.tiangolo.com/advanced/settings/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Django: Deployment checklist",
+      "url": "https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

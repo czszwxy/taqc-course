@@ -1,0 +1,43 @@
+{
+  "title": "Releases, rollbacks and monitoring",
+  "minutes": 60,
+  "summary": "Куди деплоять Python-бекенд (сервер з Compose, PaaS, контейнерні платформи, Kubernetes), стратегії релізу (recreate, rolling, blue-green, canary), міграції, сумісні зі старою й новою версією, відкат на попередній незмінний тег і чому міграції не відкочуються самі, резервні копії, метрики RED (rate, errors, duration, p95), алерти, відстеження помилок і перші кроки під час інциденту",
+  "resources": [
+    {
+      "title": "Kubernetes: Deployments (rolling update and rollback)",
+      "url": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Google SRE Book: Monitoring Distributed Systems",
+      "url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+      "kind": "book",
+      "lang": "en",
+      "note": "чотири золоті сигнали",
+      "needsVerification": true
+    },
+    {
+      "title": "Martin Fowler: Canary Release",
+      "url": "https://martinfowler.com/bliki/CanaryRelease.html",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Martin Fowler: Blue Green Deployment",
+      "url": "https://martinfowler.com/bliki/BlueGreenDeployment.html",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: blue-green vs canary deployment",
+      "url": "https://www.youtube.com/results?search_query=blue+green+vs+canary+deployment+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

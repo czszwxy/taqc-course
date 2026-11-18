@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "JSON logs for the shop API",
+  "statement": "Логи контейнерів збирає платформа і шукає в них за полями (`request_id`, `order_id`). Напиши `JsonFormatter` — підклас `logging.Formatter`, чий `format(record)` повертає **один рядок JSON** на запис:\n\n| Ключ | Значення |\n|---|---|\n| `time` | час запису в UTC, ISO 8601 з мілісекундами: `\"2026-11-17T09:30:00.250+00:00\"` (з `record.created`) |\n| `level` | `\"INFO\"`, `\"ERROR\"`… |\n| `logger` | ім'я логера |\n| `message` | готове повідомлення з підставленими аргументами (`\"Order 1001 paid\"` для `log.info(\"Order %s paid\", 1001)`) |\n| поля з `extra={...}` | як є, тими самими ключами |\n| `exception` | лише коли є `exc_info` (`log.exception(...)`): текст traceback |\n\n- поля з `extra`, у назві яких є `password`, `token` або `secret` (будь-який регістр), замінюються на `\"***\"`;\n- значення, які `json` не вміє (`Decimal`, `datetime`…), пишуться рядком через `str`;\n- кирилиця лишається кирилицею (`\"Замовлення\"`, а не `\"\\u0417…\"`);\n- інших ключів немає: службові атрибути запису (`args`, `lineno`, `taskName`…) не потрапляють у JSON.\n\n```python\nlog.info(\"Order %s paid\", 1001, extra={\"order_id\": 1001, \"card_token\": \"tok_42\"})\n# {\"time\": \"2026-11-17T09:30:00.250+00:00\", \"level\": \"INFO\", \"logger\": \"shop.payments\",\n#  \"message\": \"Order 1001 paid\", \"order_id\": 1001, \"card_token\": \"***\"}\n```",
+  "hints": [
+    "Які атрибути службові? Створи порожній запис: `vars(logging.LogRecord(\"\", logging.INFO, \"\", 0, \"\", None, None))` — його ключі плюс `\"message\"` і `\"asctime\"`. Усе інше в `vars(record)` прийшло з `extra`.",
+    "Час: `datetime.fromtimestamp(record.created, tz=UTC).isoformat(timespec=\"milliseconds\")`. Повідомлення — `record.getMessage()`, traceback — `self.formatException(record.exc_info)`.",
+    "Наприкінці `json.dumps(entry, ensure_ascii=False, default=str)`: `default` викликається для всього, що `json` не знає."
+  ],
+  "explanation": "Структуровані логи — це словник замість тексту: платформа шукає за полями, а не регулярними виразами. Форматер відділяє службові атрибути `LogRecord` від того, що прийшло з `extra`, і саме тому їх список краще отримати з порожнього запису, ніж виписувати руками (у Python 3.12 додався `taskName`, і ручний список його пропустить). Секрети маскуються на рівні форматера — одне місце замість дисципліни в кожному виклику. `json.dumps` кодує перенос рядка в traceback як `\\n`, тож запис лишається одним рядком.",
+  "codeRules": [
+    { "kind": "require", "pattern": "class\\s+JsonFormatter\\s*\\(\\s*(logging\\.)?Formatter\\s*\\)", "message": "JsonFormatter має бути підкласом logging.Formatter." }
+  ]
+}
