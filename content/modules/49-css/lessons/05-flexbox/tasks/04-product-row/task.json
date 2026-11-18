@@ -1,0 +1,11 @@
+{
+  "type": "web",
+  "title": "A wrapping row of product cards",
+  "statement": "Шість карток товарів мають стати гнучким рядком, що переноситься (HTML не змінюй):\n\n1. Для всіх елементів — `box-sizing: border-box`.\n2. `.products`: flex-контейнер з перенесенням, відстань `16px`, без маркерів і padding, ширина не більше `960px`, по центру (`margin: 0 auto`).\n3. `.product`: `flex: 1 1 220px` (росте, стискається, початкова ширина 220px), `padding: 16px`, рамка `1px solid #d1d5db`, `border-radius: 8px`.\n\nНа ширині 1024px у першому ряду стане **чотири** картки, у другому — дві, що поділять увесь рядок. Картки в одному ряду — однакової висоти, навіть з різним текстом.",
+  "hints": [
+    "`.products { display: flex; flex-wrap: wrap; gap: 16px; list-style: none; padding: 0; max-width: 960px; margin: 0 auto; }`",
+    "`.product { flex: 1 1 220px; padding: 16px; border: 1px solid #d1d5db; border-radius: 8px; }`.",
+    "Без `border-box` картка стає ширшою за 220px (padding і рамка додаються), і в рядок влазить лише три."
+  ],
+  "explanation": "`flex-basis: 220px` — «бажана» ширина: у 960px влазить чотири картки (4 × 220 + 3 × 16 = 928), а решта 32px ділиться між ними (`flex-grow: 1`) — кожна стає 228px. Дві останні картки самі в рядку, тож кожна забирає половину. Однакова висота — заслуга `align-items: stretch`, значення за замовчуванням.\n\nТипові помилки: без `flex-wrap` усі шість стискаються в один рядок; без `border-box` у рядок влазить лише три."
+}

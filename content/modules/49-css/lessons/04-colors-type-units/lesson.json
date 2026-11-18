@@ -1,0 +1,42 @@
+{
+  "title": "Colors, typography and units",
+  "minutes": 60,
+  "summary": "Формати кольорів (#hex, rgb, hsl, прозорість) і контраст 4,5 : 1; шрифти: стек font-family, розмір у rem, line-height без одиниць, жирність, підкреслення посилань; одиниці px, %, em, rem, ch, vw / dvh — коли яка; змінні CSS (custom properties): --name, var(), значення за замовчуванням і заміна теми в одному місці",
+  "resources": [
+    {
+      "title": "MDN: Values and units",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Values_and_units",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Fundamental text and font styling",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Text_styling/Fundamentals",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Using CSS custom properties (variables)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "WebAIM: Contrast Checker",
+      "url": "https://webaim.org/resources/contrastchecker/",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: CSS units rem em px explained",
+      "url": "https://www.youtube.com/results?search_query=css+units+rem+em+px+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

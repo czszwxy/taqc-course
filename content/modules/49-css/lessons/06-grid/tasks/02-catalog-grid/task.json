@@ -1,0 +1,16 @@
+{
+  "type": "web",
+  "title": "A self-adjusting catalog grid",
+  "statement": "Каталог Gadgetly: вісім карток, перша — «товар тижня» на дві колонки. Зроби сітку, що сама вирішує кількість колонок (HTML не змінюй):\n\n1. Для всіх елементів — `box-sizing: border-box`; `main` не ширше `960px` і по центру.\n2. `.grid`: сітка з колонками **від 200px**, скільки влізе, залишок — порівну (`repeat(auto-fill, minmax(200px, 1fr))`), відстань `16px`, без маркерів, padding і margin.\n3. `.card`: `padding: 16px`, рамка `1px solid #d1d5db`, `border-radius: 8px`.\n4. `.card--featured` займає **дві** колонки.\n\nCheck перевірить сітку на 1024px (4 колонки по 228px) і на 500px (2 колонки) — жодних медіазапитів не треба.",
+  "codeRules": [
+    { "kind": "require", "pattern": "auto-(fill|fit)", "message": "Кількість колонок має вирішувати сітка: repeat(auto-fill, …)." },
+    { "kind": "require", "pattern": "minmax\\(", "message": "Мінімальну ширину колонки задай через minmax(200px, 1fr)." },
+    { "kind": "forbid", "pattern": "@media", "message": "Тут не потрібні медіазапити — auto-fill і minmax зроблять усе самі." }
+  ],
+  "hints": [
+    "`.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; list-style: none; padding: 0; margin: 0; }`",
+    "`main { max-width: 960px; margin: 0 auto; }`",
+    "Дві колонки: `.card--featured { grid-column: span 2; }`."
+  ],
+  "explanation": "`auto-fill` рахує, скільки колонок по 200px (плюс gap) влізе: у 960px — чотири, а вільні 960 − 3·16 = 912px ділиться на 4 → 228px. На 500px вільно 484px — влазить дві колонки. Картка з `span 2` займає дві колонки і ще проміжок між ними: 2·228 + 16 = 472px.\n\nТипові помилки: `minmax(200px, 200px)` — колонки не розтягуються; `width` у карток замість колонок сітки."
+}

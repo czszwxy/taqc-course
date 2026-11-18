@@ -1,0 +1,11 @@
+{
+  "type": "web",
+  "title": "Visually hidden text and a skip link",
+  "statement": "На сторінці каталогу є текст, потрібний екранному читачу, але не на екрані (HTML не змінюй):\n\n1. Клас `.visually-hidden`: текст зникає з екрана (блок 1×1px), але **лишається** в дереві доступності — кнопки-сердечка зберігають назви «Додати … в обране», а поле пошуку — підпис «Пошук товарів». `display: none` і `visibility: hidden` не підходять.\n2. `.skip-link` («Перейти до основного вмісту») схований за межами екрана, але коли отримує фокус клавішею Tab — з'являється у видимій частині сторінки.\n\nПеревір у Preview: клікни в сторінку й натисни Tab.",
+  "hints": [
+    "Класичний набір: `position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;`.",
+    "Skip link: `.skip-link { position: absolute; left: 8px; top: 8px; transform: translateY(-200%); }`.",
+    "Поява при фокусі: `.skip-link:focus { transform: none; }`."
+  ],
+  "explanation": "`display: none` і `visibility: hidden` ховають елемент від усіх — і від екранного читача теж. `.visually-hidden` робить блок крихітним і обрізаним, але текст лишається в дереві доступності, тож кнопка-іконка має назву.\n\nSkip link не можна ховати через `display: none` — тоді на нього не перейти Tab'ом. Його ставлять за край екрана і повертають у `:focus`. Перевірка застосовує до нього твої правила :focus — так, ніби людина перейшла на нього клавішею Tab."
+}

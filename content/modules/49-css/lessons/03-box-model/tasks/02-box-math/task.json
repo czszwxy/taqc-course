@@ -1,0 +1,19 @@
+{
+  "type": "table",
+  "title": "How wide is the box?",
+  "statement": "Порахуй ширину кожного блоку **від рамки до рамки** (без margin). Батьківський блок завширшки 480px.",
+  "givenColumns": ["CSS"],
+  "answerColumns": [
+    { "id": "width", "label": "Ширина, px", "options": ["200", "220", "240", "244", "264", "304"] }
+  ],
+  "rows": [
+    { "given": ["`width: 200px; padding: 20px; border: 2px solid;`"], "answers": { "width": "244" }, "explain": "content-box: 200 + 40 + 4." },
+    { "given": ["`width: 200px; padding: 20px; border: 2px solid; box-sizing: border-box;`"], "answers": { "width": "200" } },
+    { "given": ["`width: 200px; padding: 10px;`"], "answers": { "width": "220" } },
+    { "given": ["`width: 200px; border: 10px solid;`"], "answers": { "width": "220" } },
+    { "given": ["`width: 50%;`"], "answers": { "width": "240" }, "explain": "50% від 480." },
+    { "given": ["`width: 200px; padding: 20px; border: 2px solid; margin: 30px;`"], "answers": { "width": "244" }, "explain": "margin не входить у ширину від рамки до рамки." },
+    { "given": ["`width: 200px; padding: 30px; border: 2px solid;`"], "answers": { "width": "264" } },
+    { "given": ["`width: 240px; padding: 30px; border: 2px solid; box-sizing: border-box;`"], "answers": { "width": "240" } }
+  ]
+}

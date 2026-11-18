@@ -1,0 +1,23 @@
+{
+  "type": "web",
+  "title": "A page layout with grid areas",
+  "statement": "Сторінка довідки Gadgetly: шапка, вміст, бічна навігація, футер. У HTML `main` стоїть **раніше** за навігацію — так людина з клавіатурою і екранним читачем швидше дістається вмісту. HTML не змінюй, а розклади сторінку Grid'ом:\n\n```text\nheader  header\nsidebar main\nfooter  footer\n```\n\n1. `.page`: сітка з колонками `240px` і решта (`1fr`), області як на схемі (`grid-template-areas`), відстань `16px`.\n2. `.page-header`, `.page-sidebar`, `.page-main`, `.page-footer` займають свої області.\n\nШапка й футер — на всю ширину, навігація ліворуч (240px), вміст праворуч.",
+  "codeRules": [
+    {
+      "kind": "require",
+      "pattern": "grid-template-areas",
+      "message": "Опиши розкладку через grid-template-areas."
+    },
+    {
+      "kind": "forbid",
+      "pattern": "\\border\\s*:",
+      "message": "Не міняй порядок через order — розклади області сіткою."
+    }
+  ],
+  "hints": [
+    "`.page { display: grid; grid-template-columns: 240px 1fr; gap: 16px; grid-template-areas: \"header header\" \"sidebar main\" \"footer footer\"; }`",
+    "Кожен блок — у свою область: `.page-sidebar { grid-area: sidebar; }` і так далі.",
+    "Назви областей у `grid-template-areas` і `grid-area` мають збігатися буква в букву."
+  ],
+  "explanation": "`grid-template-areas` описує розкладку «картинкою», а `grid-area` прив'язує блок до назви — незалежно від його місця в HTML. Тому HTML може йти в логічному порядку (вміст раніше за бічну навігацію), а на екрані навігація все одно ліворуч.\n\nБлок без `grid-area` стає в першу вільну клітинку — інколи випадково саме туди, куди треба, а після додавання ще одного блоку вже ні. Тому прив'язуй усі області явно."
+}

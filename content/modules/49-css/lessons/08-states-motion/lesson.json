@@ -1,0 +1,42 @@
+{
+  "title": "States, transitions and motion",
+  "minutes": 55,
+  "summary": "Стилі станів: :hover (його немає на сенсорних екранах), :focus проти :focus-visible, :active, :disabled, :checked, :user-invalid, :has() як «батьківський селектор»; стилі через ARIA-атрибути ([aria-expanded], [aria-current], [aria-invalid]); переходи transition, transform і opacity; prefers-reduced-motion для людей, яким рух шкодить",
+  "resources": [
+    {
+      "title": "MDN: Pseudo-classes",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: :focus-visible",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: :has()",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/:has",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev: prefers-reduced-motion",
+      "url": "https://web.dev/articles/prefers-reduced-motion",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: CSS transitions and focus-visible",
+      "url": "https://www.youtube.com/results?search_query=css+focus-visible+transitions+tutorial",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

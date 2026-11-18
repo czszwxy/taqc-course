@@ -1,0 +1,14 @@
+{
+  "title": "CSS & Layout",
+  "description": "Як зробити HTML-сторінку гарною й зручною: правила CSS і селектори, каскад, специфічність і успадкування, блокова модель, кольори, шрифти й одиниці, змінні CSS, Flexbox і Grid для розкладки, позиціонування, стани елементів і анімації без шкоди доступності. У задачах HTML уже готовий — ти пишеш styles.css і одразу бачиш результат у Preview, а Check вимірює справжні відступи, кольори й розташування блоків.",
+  "goals": [
+    "Connect a stylesheet and write rules with the right selectors",
+    "Explain why a rule wins: cascade, specificity, source order and inheritance",
+    "Size boxes predictably with the box model and box-sizing",
+    "Use colors, fonts and units (rem, em, %, ch) with readable contrast",
+    "Keep a design consistent with CSS custom properties",
+    "Build one-dimensional layouts with Flexbox and page layouts with Grid",
+    "Position badges, sticky headers and visually hidden text",
+    "Style hover, focus, disabled and ARIA states without breaking accessibility"
+  ]
+}

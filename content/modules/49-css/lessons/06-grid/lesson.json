@@ -1,0 +1,35 @@
+{
+  "title": "CSS Grid",
+  "minutes": 65,
+  "summary": "Grid — розкладка у двох вимірах: grid-template-columns, одиниця fr, repeat(), minmax() і auto-fill / auto-fit для сітки, що сама підлаштовує кількість колонок; gap; розтягування елемента на кілька колонок і рядків; іменовані області grid-template-areas для розкладки сторінки; порядок у HTML і доступність; коли Grid, а коли Flexbox",
+  "resources": [
+    {
+      "title": "MDN: Grids",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Grids",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev Learn CSS: Grid",
+      "url": "https://web.dev/learn/css/grid",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "CSS Grid Garden (game)",
+      "url": "https://cssgridgarden.com/",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: CSS Grid tutorial",
+      "url": "https://www.youtube.com/results?search_query=css+grid+tutorial+grid-template-areas",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Оформлення замовлення — Gadgetly</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <h1>Оформлення замовлення</h1>
+    <form action="/checkout" method="post" novalidate>
+      <fieldset class="options">
+        <legend>Спосіб доставки</legend>
+        <label class="option"><input type="radio" name="delivery" value="nova" checked> Нова пошта <span class="hint">1–2 дні</span></label>
+        <label class="option"><input type="radio" name="delivery" value="ukr"> Укрпошта <span class="hint">3–5 днів</span></label>
+        <label class="option"><input type="radio" name="delivery" value="pickup"> Самовивіз <span class="hint">за 2 години</span></label>
+      </fieldset>
+
+      <p>
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" value="olena@" aria-invalid="true" aria-describedby="email-error">
+      </p>
+      <p id="email-error" class="error">Введіть email у форматі name@example.com</p>
+
+      <p>
+        <label for="phone">Телефон</label>
+        <input id="phone" name="phone" type="tel" value="+380671234567">
+      </p>
+
+      <button class="toggle" type="button" aria-expanded="false" aria-controls="comment-box">Додати коментар</button>
+      <div id="comment-box" hidden>
+        <label for="comment">Коментар</label>
+        <textarea id="comment" name="comment"></textarea>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

@@ -1,0 +1,38 @@
+body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+}
+
+.page-header,
+.page-main,
+.page-sidebar,
+.page-footer {
+  padding: 8px 16px;
+  background-color: #f3f4f6;
+}
+
+.page {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  grid-template-areas:
+    "header  header"
+    "sidebar main"
+    "footer  footer";
+  gap: 16px;
+}
+
+.page-header {
+  grid-area: header;
+}
+
+.page-sidebar {
+  grid-area: sidebar;
+}
+
+.page-main {
+  grid-area: main;
+}
+
+.page-footer {
+  grid-area: footer;
+}

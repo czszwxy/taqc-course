@@ -1,0 +1,36 @@
+{
+  "title": "Flexbox",
+  "minutes": 65,
+  "summary": "Flex-контейнер і елементи, головна й поперечна осі; flex-direction, justify-content, align-items, gap, flex-wrap; flex: 1 і flex-basis, чому елемент не стискається (min-width: auto); margin-left: auto, align-self, центрування; order і чому візуальний порядок не має розходитися з порядком у HTML",
+  "resources": [
+    {
+      "title": "MDN: Flexbox",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Flexbox",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev Learn CSS: Flexbox",
+      "url": "https://web.dev/learn/css/flexbox",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Flexbox Froggy (game)",
+      "url": "https://flexboxfroggy.com/",
+      "kind": "tool",
+      "lang": "en",
+      "note": "гра: розставити жаб властивостями flex",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Flexbox tutorial",
+      "url": "https://www.youtube.com/results?search_query=css+flexbox+tutorial",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

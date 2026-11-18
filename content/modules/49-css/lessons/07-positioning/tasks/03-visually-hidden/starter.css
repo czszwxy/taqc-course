@@ -1,0 +1,16 @@
+body {
+  font-family: system-ui, sans-serif;
+}
+
+.skip-link {
+  display: none;
+}
+
+.visually-hidden {
+  display: none;
+}
+
+.icon-button {
+  padding: 6px;
+  line-height: 0;
+}

@@ -1,0 +1,11 @@
+{
+  "type": "web",
+  "title": "Size and center a product card",
+  "statement": "Оформи картку товару в `styles.css` (HTML не змінюй; картинка-заглушка вбудована прямо в `src`):\n\n1. Для всіх елементів і псевдоелементів — `box-sizing: border-box`.\n2. `.card`: ширина `320px` від рамки до рамки, `padding: 16px`, рамка `1px solid #d1d5db`, `border-radius: 12px`, відцентрована по горизонталі з відступом `24px` зверху й знизу.\n3. `.card img`: блокова, на всю ширину вмісту картки, пропорції зберігаються.\n4. `.button` (це посилання `<a>`): `display: inline-block`, `padding: 8px 16px`, фон `#1d4ed8`, білий текст, `border-radius: 8px`, без підкреслення, `margin-top: 12px`.",
+  "hints": [
+    "Універсальне правило: `*, *::before, *::after { box-sizing: border-box; }` — тоді `width: 320px` і буде шириною від рамки до рамки.",
+    "Центрування: `margin: 24px auto;`. Картинка: `display: block; width: 100%; height: auto;`.",
+    "Посиланню з вертикальними відступами потрібне `display: inline-block`, інакше `margin-top` не відштовхне його від ціни."
+  ],
+  "explanation": "З `border-box` числа в CSS збігаються з тим, що видно на екрані: картка рівно 320 px, а картинка займає 320 − 2·16 − 2·1 = 286 px. `margin: 24px auto` ділить вільне місце зліва й справа порівну.\n\nТипові помилки: без `border-box` картка виходить 354 px; посилання без `inline-block` ігнорує вертикальний margin."
+}

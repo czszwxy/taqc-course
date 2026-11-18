@@ -1,0 +1,24 @@
+{
+  "type": "classify",
+  "title": "Inherited or not?",
+  "statement": "Якщо задати властивість елементу `<article>`, чи отримають її абзаци всередині (без власних правил)?",
+  "show": 8,
+  "categories": [
+    { "id": "yes", "label": "Успадковується", "description": "нащадки отримають значення" },
+    { "id": "no", "label": "Не успадковується", "description": "діє лише на сам елемент" }
+  ],
+  "items": [
+    { "id": "color", "text": "`color: #1f2937`", "category": "yes" },
+    { "id": "font-family", "text": "`font-family: Georgia, serif`", "category": "yes" },
+    { "id": "font-size", "text": "`font-size: 1.125rem`", "category": "yes" },
+    { "id": "line-height", "text": "`line-height: 1.6`", "category": "yes" },
+    { "id": "text-align", "text": "`text-align: center`", "category": "yes" },
+    { "id": "visibility", "text": "`visibility: hidden`", "category": "yes", "explain": "visibility успадковується — нащадок може знову стати видимим через `visibility: visible`." },
+    { "id": "margin", "text": "`margin: 24px`", "category": "no" },
+    { "id": "padding", "text": "`padding: 16px`", "category": "no" },
+    { "id": "border", "text": "`border: 1px solid #d1d5db`", "category": "no" },
+    { "id": "background", "text": "`background-color: #fef3c7`", "category": "no", "explain": "Фон не успадковується, але нащадки прозорі за замовчуванням, тому фон батька видно крізь них." },
+    { "id": "width", "text": "`width: 600px`", "category": "no" },
+    { "id": "display", "text": "`display: flex`", "category": "no" }
+  ]
+}

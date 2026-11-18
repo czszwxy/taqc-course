@@ -1,0 +1,86 @@
+{
+  "type": "quiz",
+  "title": "States and motion quiz",
+  "show": 6,
+  "questions": [
+    {
+      "id": "focus-visible",
+      "kind": "single",
+      "text": "Дизайнеру не подобається рамка фокусу на кнопках після кліку мишкою. Що зробити?",
+      "options": [
+        { "text": "Стилізувати `:focus-visible` — рамку бачитимуть лише ті, хто працює з клавіатурою", "correct": true },
+        { "text": "`button:focus { outline: none; }`", "explain": "Тоді людина з клавіатурою не бачитиме, де фокус." },
+        { "text": "Зробити рамку прозорою" }
+      ]
+    },
+    {
+      "id": "hover-touch",
+      "kind": "single",
+      "text": "Кнопка «Видалити» з'являється лише при наведенні на рядок (`:hover`). Що не так?",
+      "options": [
+        { "text": "На сенсорних екранах наведення немає, а з клавіатури її теж не дістати — дія недоступна", "correct": true },
+        { "text": "Нічого, це сучасний підхід" }
+      ]
+    },
+    {
+      "id": "user-invalid",
+      "kind": "single",
+      "text": "Поле `required` червоне одразу після відкриття сторінки, ще до того, як людина щось ввела. Що краще використати замість `:invalid`?",
+      "options": [
+        { "text": "`:user-invalid` — діє лише після того, як людина змінила поле", "correct": true },
+        { "text": "`:disabled`" },
+        { "text": "`:focus`" }
+      ]
+    },
+    {
+      "id": "has",
+      "kind": "single",
+      "text": "Як підсвітити `<label class=\"option\">`, усередині якого вибрана радіокнопка?",
+      "options": [
+        { "text": "`.option:has(input:checked)`", "correct": true },
+        { "text": "`.option:checked`", "explain": "Позначений саме input, а не label." },
+        { "text": "`input:checked .option`", "explain": "Так шукається .option усередині input — такого не буває." }
+      ]
+    },
+    {
+      "id": "aria-style",
+      "kind": "single",
+      "text": "Кнопка «Фільтри» має `aria-expanded`. Як найкраще стилізувати відкритий стан?",
+      "options": [
+        { "text": "`.filters[aria-expanded=\"true\"]` — стиль і доступність завжди збігаються", "correct": true },
+        { "text": "Окремий клас `.is-open`, який скрипт додає поруч", "explain": "Працює, але клас легко «розсинхронізувати» з aria-expanded." }
+      ]
+    },
+    {
+      "id": "cheap",
+      "kind": "multiple",
+      "text": "Які властивості найдешевше анімувати?",
+      "options": [
+        { "text": "`transform`", "correct": true },
+        { "text": "`opacity`", "correct": true },
+        { "text": "`width`", "explain": "Зміна ширини перераховує розкладку на кожному кадрі." },
+        { "text": "`top`" }
+      ]
+    },
+    {
+      "id": "reduced",
+      "kind": "single",
+      "text": "Що означає медіазапит `(prefers-reduced-motion: reduce)`?",
+      "options": [
+        { "text": "Людина ввімкнула в системі «Зменшити рух» — анімації треба вимкнути чи зменшити", "correct": true },
+        { "text": "Пристрій повільний" },
+        { "text": "Екран малий" }
+      ]
+    },
+    {
+      "id": "duration",
+      "kind": "single",
+      "text": "Яка тривалість переходу кольору кнопки при наведенні звучить розумно?",
+      "options": [
+        { "text": "100–300 мс", "correct": true },
+        { "text": "1–2 секунди" },
+        { "text": "5 мс" }
+      ]
+    }
+  ]
+}

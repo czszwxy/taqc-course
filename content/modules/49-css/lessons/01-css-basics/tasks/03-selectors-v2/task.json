@@ -1,0 +1,15 @@
+{
+  "type": "web",
+  "title": "Style a blog post without touching the HTML",
+  "variantOf": "03-selectors",
+  "statement": "Статтю блогу Gadgetly теж треба оформити лише селекторами, не змінюючи HTML:\n\n1. Перший абзац одразу після кожного `<h2>` у статті: курсив (`font-style: italic`).\n2. Парні коментарі в списку `.comments`: фон `#f3f4f6`.\n3. Обов'язкові поля форми (`required`): рамка `2px solid #b91c1c`.\n4. Посилання, що відкриваються в новій вкладці (`target=\"_blank\"`): після тексту — ` ↗` через `::after`.\n5. Абзаци в `<footer>`: розмір шрифту `14px`.\n\nНе використовуй `!important`.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "!important", "message": "Обійдися без !important." }
+  ],
+  "hints": [
+    "Сусідній селектор: `h2 + p` — абзац, що стоїть одразу після `h2`.",
+    "Парні: `.comments li:nth-child(even)`. Обов'язкові поля: `input:required` (або `[required]`).",
+    "Нова вкладка: `a[target=\"_blank\"]::after { content: \" ↗\"; }`; футер: `footer p { font-size: 14px; }`."
+  ],
+  "explanation": "`h2 + p` обирає лише перший абзац після заголовка — другий і далі вже не «сусіди» `h2`. Псевдоклас `:required` (як і `:disabled`, `:checked`) стилізує стан, записаний в HTML, тож стиль ніколи не розійдеться з поведінкою.\n\nТипова помилка — `h2 ~ p`: цей селектор обирає **всі** наступні абзаци, а не лише перший."
+}

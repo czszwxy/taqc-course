@@ -1,0 +1,35 @@
+{
+  "title": "Positioning and stacking",
+  "minutes": 55,
+  "summary": "position: static, relative, absolute, fixed, sticky; блок, відносно якого рахуються top / right / bottom / left; значок у кутку картки; липка шапка і чому sticky іноді «не липне»; z-index і контекст накладання; transform для зсуву без впливу на сусідів; приховати текст лише візуально (.visually-hidden) і показати посилання «Перейти до вмісту» при фокусі",
+  "resources": [
+    {
+      "title": "MDN: Positioning",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Positioning",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Stacking context",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioned_layout/Stacking_context",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev Learn CSS: Z-index and stacking contexts",
+      "url": "https://web.dev/learn/css/z-index",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: CSS position explained",
+      "url": "https://www.youtube.com/results?search_query=css+position+relative+absolute+sticky+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

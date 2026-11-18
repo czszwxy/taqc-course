@@ -1,0 +1,11 @@
+{
+  "type": "web",
+  "title": "A header bar with Flexbox",
+  "statement": "Розклади шапку Gadgetly в один рядок (HTML не змінюй):\n\n1. `.site-header`: flex-контейнер, елементи **по центру по вертикалі**, відстань між ними `32px`, `padding: 12px 24px`, нижня рамка `1px solid #e5e7eb`.\n2. `.menu` (список у `nav`): пункти в рядок з відстанню `24px`, без маркерів, без зовнішніх відступів і без padding.\n3. `.cart` — притиснутий до правого краю шапки.\n\nЛоготип ліворуч, меню одразу за ним, кошик праворуч.",
+  "hints": [
+    "`.site-header { display: flex; align-items: center; gap: 32px; padding: 12px 24px; border-bottom: 1px solid #e5e7eb; }`",
+    "Список у рядок: `.menu { display: flex; gap: 24px; list-style: none; margin: 0; padding: 0; }`.",
+    "Кошик праворуч: `.cart { margin-left: auto; }` — auto забирає все вільне місце зліва від нього."
+  ],
+  "explanation": "Шапка — класичний одномірний рядок: Flexbox ставить елементи поруч, `align-items: center` вирівнює логотип (картинка 32 px) і текстові посилання по одній осі, а `gap` дає рівні проміжки без margin у кожного. `margin-left: auto` у flex-контейнері забирає все вільне місце — так один елемент відштовхується до краю.\n\nТипова помилка — `display: flex` лише на `.site-header`: пункти меню тоді стоять стовпчиком, бо flex діє тільки на прямих дітей, а `<li>` — онуки шапки."
+}

@@ -1,0 +1,24 @@
+{
+  "type": "table",
+  "title": "Which state selector?",
+  "statement": "Обери селектор стану для кожної ситуації.",
+  "givenColumns": ["Що має статися"],
+  "answerColumns": [
+    {
+      "id": "selector",
+      "label": "Селектор",
+      "options": [":hover", ":focus-visible", ":active", ":disabled", ":checked", ":user-invalid", ":has()", "[aria-expanded=\"true\"]", "[aria-current=\"page\"]"]
+    }
+  ],
+  "rows": [
+    { "given": ["рамка фокусу — коли людина переходить до кнопки клавішею Tab"], "answers": { "selector": ":focus-visible" } },
+    { "given": ["картка товару трохи піднімається під курсором мишки"], "answers": { "selector": ":hover" } },
+    { "given": ["кнопка «вдавлюється», поки її натискають"], "answers": { "selector": ":active" } },
+    { "given": ["кнопка «Оплатити» сіра, поки не вибрано доставку"], "answers": { "selector": ":disabled" } },
+    { "given": ["позначений чекбокс «Підписатися» стає зеленим"], "answers": { "selector": ":checked" } },
+    { "given": ["червона рамка поля — лише після того, як людина щось ввела"], "answers": { "selector": ":user-invalid" } },
+    { "given": ["картка доставки виділена, бо всередині вибрана радіокнопка"], "answers": { "selector": ":has()" } },
+    { "given": ["стрілка кнопки «Фільтри» повертається, коли панель відкрита"], "answers": { "selector": "[aria-expanded=\"true\"]" } },
+    { "given": ["пункт меню поточної сторінки — жирний"], "answers": { "selector": "[aria-current=\"page\"]" } }
+  ]
+}

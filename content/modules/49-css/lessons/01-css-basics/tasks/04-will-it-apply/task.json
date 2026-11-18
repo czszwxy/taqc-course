@@ -1,0 +1,29 @@
+{
+  "type": "table",
+  "title": "Will this rule apply?",
+  "statement": "На сторінці є `<p class=\"price\">1 999 грн</p>`, і файл `styles.css` підключено (крім останнього рядка). Що станеться з кожним правилом?",
+  "givenColumns": ["CSS"],
+  "answerColumns": [
+    {
+      "id": "result",
+      "label": "Результат",
+      "options": [
+        "застосується",
+        "декларацію пропущено",
+        "пропадуть дві декларації",
+        "селектор нічого не знайде",
+        "нічого: стилі не підключено"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`.price { colr: green; }`"], "answers": { "result": "декларацію пропущено" }, "explain": "Невідома властивість `colr` — браузер її пропускає." },
+    { "given": ["`.price { width: 100 px; }`"], "answers": { "result": "декларацію пропущено" }, "explain": "Між числом і одиницею не може бути пробілу." },
+    { "given": ["`.price { color: green font-weight: 700; }`"], "answers": { "result": "пропадуть дві декларації" }, "explain": "Без `;` вийшло одне значення `green font-weight: 700` — неправильне." },
+    { "given": ["`.Price { color: green; }`"], "answers": { "result": "селектор нічого не знайде" }, "explain": "Класи чутливі до регістру." },
+    { "given": ["`price { color: green; }`"], "answers": { "result": "селектор нічого не знайде" }, "explain": "Без крапки це тип елемента — шукається тег `<price>`." },
+    { "given": ["`p.price { color: green; }`"], "answers": { "result": "застосується" }, "explain": "`<p>` з класом `price` — саме наш елемент." },
+    { "given": ["`.price { font-weight: bold; padding: 12px; }`"], "answers": { "result": "застосується" } },
+    { "given": ["`.price { color: green; }` у файлі, але в `<head>` немає `<link rel=\"stylesheet\">`"], "answers": { "result": "нічого: стилі не підключено" } }
+  ]
+}

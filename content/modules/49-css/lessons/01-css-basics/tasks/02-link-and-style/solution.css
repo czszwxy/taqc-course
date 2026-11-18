@@ -1,0 +1,18 @@
+body {
+  font-family: system-ui, sans-serif;
+  color: #1f2937;
+}
+
+h1 {
+  color: #1d4ed8;
+}
+
+.price {
+  font-weight: 700;
+  color: #15803d;
+}
+
+.note {
+  background-color: #fef3c7;
+  padding: 12px;
+}

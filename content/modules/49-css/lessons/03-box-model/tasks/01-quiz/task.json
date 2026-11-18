@@ -1,0 +1,77 @@
+{
+  "type": "quiz",
+  "title": "Box model quiz",
+  "show": 6,
+  "questions": [
+    {
+      "id": "content-box-width",
+      "kind": "text",
+      "text": "`width: 300px; padding: 20px; border: 2px solid;` без `box-sizing` (за замовчуванням). Яка ширина від рамки до рамки в пікселях? Напиши число.",
+      "accept": ["344", "344px"],
+      "explanation": "300 + 20·2 + 2·2 = 344."
+    },
+    {
+      "id": "border-box-width",
+      "kind": "text",
+      "text": "Те саме з `box-sizing: border-box`. Яка ширина від рамки до рамки? Напиши число.",
+      "accept": ["300", "300px"],
+      "explanation": "З border-box `width` уже включає padding і border."
+    },
+    {
+      "id": "collapse",
+      "kind": "text",
+      "text": "`h2 { margin-bottom: 32px; }` і наступний `p { margin-top: 20px; }` (звичайні блоки, не flex). Яка відстань між ними в пікселях?",
+      "accept": ["32", "32px"],
+      "explanation": "Вертикальні margin схлопуються — береться більший."
+    },
+    {
+      "id": "margin-in-width",
+      "kind": "single",
+      "text": "Чи входить `margin` у ширину елемента з `box-sizing: border-box`?",
+      "options": [
+        { "text": "Ні, margin завжди зовні", "correct": true },
+        { "text": "Так, border-box включає все" }
+      ]
+    },
+    {
+      "id": "center",
+      "kind": "single",
+      "text": "Як відцентрувати блок завширшки до 960px по горизонталі?",
+      "options": [
+        { "text": "`max-width: 960px; margin: 0 auto;`", "correct": true },
+        { "text": "`text-align: center;`", "explain": "Це вирівнює текст і рядкові елементи всередині, а не сам блок." },
+        { "text": "`width: 960px; padding: auto;`", "explain": "padding не буває auto." }
+      ]
+    },
+    {
+      "id": "inline-width",
+      "kind": "single",
+      "text": "`a.button { width: 200px; padding: 12px 24px; }` — кнопка-посилання не стала ширшою, а верхній відступ накладається на рядок вище. Чому?",
+      "options": [
+        { "text": "`<a>` — рядковий (inline) елемент: width ігнорується, вертикальні відступи не відштовхують сусідів. Потрібне `display: inline-block`", "correct": true },
+        { "text": "У посилань не буває padding" },
+        { "text": "Потрібно `box-sizing: border-box`" }
+      ]
+    },
+    {
+      "id": "img-gap",
+      "kind": "single",
+      "text": "Під картинкою в картці «зайва» щілина в кілька пікселів. Що найпростіше її прибирає?",
+      "options": [
+        { "text": "`img { display: block; }`", "correct": true, "explain": "Рядкова картинка стоїть на лінії тексту, а під лінією лишається місце для «хвостиків» літер." },
+        { "text": "`img { margin-bottom: -4px; }`", "explain": "Працює випадково і ламається з іншим шрифтом." },
+        { "text": "`img { padding: 0; }`" }
+      ]
+    },
+    {
+      "id": "max-width",
+      "kind": "single",
+      "text": "Чим `max-width: 960px` краще за `width: 960px` для контейнера сторінки?",
+      "options": [
+        { "text": "На вузькому екрані блок стиснеться, а не вилізе за край", "correct": true },
+        { "text": "Нічим, це те саме" },
+        { "text": "max-width працює швидше" }
+      ]
+    }
+  ]
+}

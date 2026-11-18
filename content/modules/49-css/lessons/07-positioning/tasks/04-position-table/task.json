@@ -1,0 +1,19 @@
+{
+  "type": "table",
+  "title": "Which position value?",
+  "statement": "Обери значення `position` для кожної ситуації.",
+  "givenColumns": ["Ситуація"],
+  "answerColumns": [
+    { "id": "position", "label": "position", "options": ["static", "relative", "absolute", "fixed", "sticky"] }
+  ],
+  "rows": [
+    { "given": ["значок «−20%» у кутку картки"], "answers": { "position": "absolute" } },
+    { "given": ["картка — точка відліку для свого значка"], "answers": { "position": "relative" } },
+    { "given": ["шапка стоїть на місці, а при прокрутці прилипає до верху вікна"], "answers": { "position": "sticky" } },
+    { "given": ["кнопка чату завжди в правому нижньому куті вікна"], "answers": { "position": "fixed" } },
+    { "given": ["звичайний абзац тексту"], "answers": { "position": "static" } },
+    { "given": ["заголовки стовпців таблиці лишаються видимими, поки таблицю прокручують"], "answers": { "position": "sticky" } },
+    { "given": ["підказка над кнопкою «?» усередині форми"], "answers": { "position": "absolute" }, "explain": "Підказка поверх вмісту, відносно кнопки (у якої `position: relative`)." },
+    { "given": ["зсунути іконку на 2px униз, не зачепивши сусідів"], "answers": { "position": "relative" }, "explain": "Або `transform: translateY(2px)` — теж без впливу на сусідів." }
+  ]
+}

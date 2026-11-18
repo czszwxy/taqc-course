@@ -1,0 +1,15 @@
+{
+  "type": "web",
+  "title": "Style states with :has() and ARIA attributes",
+  "statement": "Форма оформлення замовлення. Стани вже є в HTML (`checked`, `aria-invalid`, `aria-expanded`) — зроби так, щоб їх було **видно** (HTML не змінюй):\n\n1. `.option` — картка: `display: block`, рамка `2px solid #d1d5db`, `border-radius: 8px`, `padding: 12px`, `margin-bottom: 8px`.\n2. Картка з вибраною радіокнопкою — рамка `#1d4ed8` і фон `#eff6ff`. Використай `:has()`.\n3. Поля з `aria-invalid=\"true\"` — рамка `2px solid #b91c1c`; текст помилки `.error` — колір `#b91c1c`.\n4. Кнопка `.toggle`, коли `aria-expanded=\"true\"`, — фон `#1d4ed8` і білий текст (базовий вигляд уже є).\n\nCheck міняє стани (вибирає іншу доставку, «відкриває» кнопку) і дивиться, чи стилі йдуть за ними.",
+  "codeRules": [
+    { "kind": "require", "pattern": ":has\\(", "message": "Підсвіти вибрану картку через :has(input:checked)." },
+    { "kind": "forbid", "pattern": "\\.is-|\\.active|\\.selected", "message": "Не вигадуй класів стану — стилізуй те, що вже є в HTML: :checked, [aria-invalid], [aria-expanded]." }
+  ],
+  "hints": [
+    "`.option:has(input:checked) { border-color: #1d4ed8; background-color: #eff6ff; }`",
+    "`[aria-invalid=\"true\"] { border: 2px solid #b91c1c; }` і `.error { color: #b91c1c; }`.",
+    "`.toggle[aria-expanded=\"true\"] { background-color: #1d4ed8; color: #fff; }`."
+  ],
+  "explanation": "Кожен стан тут уже записаний у HTML — і саме його чує екранний читач: «вибрано», «недійсне значення», «розгорнуто». Стилізуючи ці самі атрибути, ти гарантуєш, що екран і читач завжди кажуть одне.\n\n`:has()` дозволяє стилізувати **батька** за станом дитини — без JavaScript, який би додавав клас картці при кожному кліку."
+}

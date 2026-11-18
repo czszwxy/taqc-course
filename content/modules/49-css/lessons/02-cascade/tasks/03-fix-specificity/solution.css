@@ -1,0 +1,24 @@
+body {
+  font-family: Georgia, serif;
+}
+
+.price {
+  color: #1f2937;
+}
+
+.product--sale .price {
+  color: #b91c1c;
+}
+
+.product-title {
+  color: #1d4ed8;
+}
+
+.product--sale .product-title {
+  color: #b91c1c;
+}
+
+.buy {
+  font: inherit;
+  padding: 8px 16px;
+}

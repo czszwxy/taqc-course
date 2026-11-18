@@ -1,0 +1,20 @@
+{
+  "type": "table",
+  "title": "Which rule wins and why?",
+  "statement": "Для кожної ситуації визнач колір тексту елемента і причину.",
+  "givenColumns": ["HTML", "CSS (у такому порядку)"],
+  "answerColumns": [
+    { "id": "color", "label": "Колір", "options": ["синій", "червоний", "зелений"] },
+    { "id": "why", "label": "Чому", "options": ["специфічність", "пізніше в коді", "!important", "успадкування", "атрибут style"] }
+  ],
+  "rows": [
+    { "given": ["`<p class=\"note\">`", "`.note { color: blue }` `p { color: red }`"], "answers": { "color": "синій", "why": "специфічність" }, "explain": "(0, 1, 0) сильніше за (0, 0, 1), хоч `p` нижче." },
+    { "given": ["`<p class=\"note\">`", "`.note { color: blue }` `.note { color: red }`"], "answers": { "color": "червоний", "why": "пізніше в коді" } },
+    { "given": ["`<p class=\"note\" id=\"n\">`", "`#n { color: blue }` `.note { color: red !important }`"], "answers": { "color": "червоний", "why": "!important" }, "explain": "Важливість перевіряється раніше за специфічність." },
+    { "given": ["`<div class=\"card\"><p>Текст</p></div>`", "`.card { color: green }`"], "answers": { "color": "зелений", "why": "успадкування" }, "explain": "Абзацу колір не задано — він бере колір батька." },
+    { "given": ["`<p class=\"note\" style=\"color: green\">`", "`.note { color: blue }`"], "answers": { "color": "зелений", "why": "атрибут style" } },
+    { "given": ["`<article><p class=\"note\"></p></article>`", "`.note { color: blue }` `article p { color: red }`"], "answers": { "color": "синій", "why": "специфічність" }, "explain": "(0, 1, 0) проти (0, 0, 2)." },
+    { "given": ["`<p class=\"note\">`", "`p { color: blue }` `:where(.note) { color: red }`"], "answers": { "color": "синій", "why": "специфічність" }, "explain": "`:where()` важить 0, тож (0, 0, 0) програє `p` (0, 0, 1)." },
+    { "given": ["`<p class=\"note\">`", "`p.note { color: green }` `.note { color: blue }`"], "answers": { "color": "зелений", "why": "специфічність" }, "explain": "(0, 1, 1) сильніше за (0, 1, 0)." }
+  ]
+}

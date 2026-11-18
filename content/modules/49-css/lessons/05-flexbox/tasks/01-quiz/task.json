@@ -1,0 +1,86 @@
+{
+  "type": "quiz",
+  "title": "Flexbox quiz",
+  "show": 6,
+  "questions": [
+    {
+      "id": "direct-children",
+      "kind": "single",
+      "text": "На `<ul class=\"menu\">` стоїть `display: flex`. На які елементи це діє?",
+      "options": [
+        { "text": "На прямих дітей — `<li>`; посилання всередині них розкладаються як звичайно", "correct": true },
+        { "text": "На всіх нащадків" },
+        { "text": "На сам `<ul>` і його батька" }
+      ]
+    },
+    {
+      "id": "vertical-center",
+      "kind": "single",
+      "text": "Елементи стоять у рядок (`flex-direction: row`). Що вирівнює їх по центру **по вертикалі**?",
+      "options": [
+        { "text": "`align-items: center`", "correct": true },
+        { "text": "`justify-content: center`", "explain": "У рядку justify-content працює по горизонталі." },
+        { "text": "`vertical-align: middle`", "explain": "Це для рядкових елементів і клітинок таблиці, не для flex." }
+      ]
+    },
+    {
+      "id": "column-axis",
+      "kind": "single",
+      "text": "У контейнера `flex-direction: column`. Що тепер робить `justify-content: center`?",
+      "options": [
+        { "text": "Центрує елементи по вертикалі: головна вісь тепер вертикальна", "correct": true },
+        { "text": "Те саме, що й у рядку — по горизонталі" },
+        { "text": "Нічого: у стовпчику justify-content не працює" }
+      ]
+    },
+    {
+      "id": "push-right",
+      "kind": "single",
+      "text": "У шапці логотип і меню зліва, а кнопку «Кошик» треба притиснути до правого краю. Найпростіше:",
+      "options": [
+        { "text": "`.cart { margin-left: auto; }`", "correct": true },
+        { "text": "`.cart { float: right; }`", "explain": "float у flex-контейнері не діє." },
+        { "text": "`.cart { position: absolute; right: 0; }`", "explain": "Вийде, але кнопка випаде з потоку й може накласти на меню." }
+      ]
+    },
+    {
+      "id": "flex-1",
+      "kind": "single",
+      "text": "Що означає `flex: 1`?",
+      "options": [
+        { "text": "`flex-grow: 1; flex-shrink: 1; flex-basis: 0%` — елементи ділять місце порівну", "correct": true },
+        { "text": "Ширина 1px" },
+        { "text": "Елемент стає першим" }
+      ]
+    },
+    {
+      "id": "wrap",
+      "kind": "single",
+      "text": "Картки не влазять у рядок і стискаються до нечитабельних. Що додати контейнеру?",
+      "options": [
+        { "text": "`flex-wrap: wrap` — зайві перенесуться на новий рядок", "correct": true },
+        { "text": "`overflow: hidden`" },
+        { "text": "`align-items: stretch`" }
+      ]
+    },
+    {
+      "id": "min-width",
+      "kind": "single",
+      "text": "Довгий URL у картці розпирає її, і рядок вилазить за екран, хоча в картки `flex: 1`. Чому?",
+      "options": [
+        { "text": "Flex-елемент не стискається вужче за вміст (`min-width: auto`); потрібні `min-width: 0` і перенесення тексту", "correct": true },
+        { "text": "flex: 1 не працює з посиланнями" },
+        { "text": "Потрібно `flex-shrink: 2`" }
+      ]
+    },
+    {
+      "id": "order",
+      "kind": "single",
+      "text": "Кнопку «Купити» поставили першою через `order: -1`, а в HTML вона остання. Що відчує користувач клавіатури?",
+      "options": [
+        { "text": "Tab дійде до неї останньою, хоча на екрані вона перша — фокус «стрибає»", "correct": true },
+        { "text": "Нічого: Tab іде за візуальним порядком" }
+      ]
+    }
+  ]
+}

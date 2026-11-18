@@ -1,0 +1,35 @@
+{
+  "title": "The box model",
+  "minutes": 55,
+  "summary": "Кожен елемент — прямокутник: вміст, padding, border, margin; width і box-sizing: content-box проти border-box (і універсальне правило *, *::before, *::after); центрування margin: auto і max-width; схлопування вертикальних margin; display: block, inline, inline-block; зображення в блоках; overflow; блокова модель у DevTools",
+  "resources": [
+    {
+      "title": "MDN: The box model",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Box_model",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev Learn CSS: Box Model",
+      "url": "https://web.dev/learn/css/box-model",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Mastering margin collapsing",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_box_model/Mastering_margin_collapsing",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: CSS box model explained",
+      "url": "https://www.youtube.com/results?search_query=css+box+model+box-sizing+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "type": "classify",
+  "title": "Block, inline or inline-block by default?",
+  "statement": "Який `display` має кожен елемент за замовчуванням (стилі браузера)?",
+  "show": 8,
+  "categories": [
+    { "id": "block", "label": "block", "description": "з нового рядка на всю ширину" },
+    { "id": "inline", "label": "inline", "description": "тече разом з текстом" },
+    { "id": "inline-block", "label": "inline-block", "description": "у рядку, але з розмірами" }
+  ],
+  "items": [
+    { "id": "div", "text": "`<div>`", "category": "block" },
+    { "id": "p", "text": "`<p>`", "category": "block" },
+    { "id": "h2", "text": "`<h2>`", "category": "block" },
+    { "id": "ul", "text": "`<ul>`", "category": "block" },
+    { "id": "section", "text": "`<section>`", "category": "block" },
+    { "id": "span", "text": "`<span>`", "category": "inline" },
+    { "id": "a", "text": "`<a>`", "category": "inline" },
+    { "id": "strong", "text": "`<strong>`", "category": "inline" },
+    { "id": "img", "text": "`<img>`", "category": "inline", "explain": "Тому під картинкою буває «щілина»: вона стоїть на лінії тексту." },
+    { "id": "label", "text": "`<label>`", "category": "inline" },
+    { "id": "button", "text": "`<button>`", "category": "inline-block" },
+    { "id": "input", "text": "`<input>`", "category": "inline-block" }
+  ]
+}

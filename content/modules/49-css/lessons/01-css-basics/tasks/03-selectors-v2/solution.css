@@ -1,0 +1,19 @@
+article h2 + p {
+  font-style: italic;
+}
+
+.comments li:nth-child(even) {
+  background-color: #f3f4f6;
+}
+
+:required {
+  border: 2px solid #b91c1c;
+}
+
+a[target="_blank"]::after {
+  content: " ↗";
+}
+
+footer p {
+  font-size: 14px;
+}

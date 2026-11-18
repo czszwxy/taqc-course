@@ -1,0 +1,11 @@
+{
+  "type": "web",
+  "title": "Button states and motion",
+  "statement": "Кнопки кошика Gadgetly мають базовий вигляд, але не мають станів, а рамку фокусу хтось «прибрав». Виправ `styles.css` (HTML не змінюй):\n\n1. Прибери правило, що вимикає `outline` у фокусі.\n2. `.btn:hover` — фон `#1e40af`.\n3. `.btn:focus-visible` — `outline: 3px solid #f59e0b`, `outline-offset: 2px`.\n4. `.btn:disabled` — фон `#e5e7eb`, текст `#4b5563`, курсор `not-allowed`.\n5. `.btn` плавно змінює фон: `transition` для `background-color` тривалістю до 300 мс.\n6. Для людей, що ввімкнули «Зменшити рух», переходу немає: `@media (prefers-reduced-motion: reduce)` з `transition: none` для `.btn`.",
+  "hints": [
+    "Видали весь блок `.btn:focus { outline: none; }` — без заміни він ламає доступність.",
+    "`.btn:focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; }` і `.btn:disabled { background-color: #e5e7eb; color: #4b5563; cursor: not-allowed; }`.",
+    "`.btn { transition: background-color 150ms ease; }` і `@media (prefers-reduced-motion: reduce) { .btn { transition: none; } }`."
+  ],
+  "explanation": "Стан наведення — приємність, а видимий фокус — необхідність: без нього людина з клавіатурою не знає, де вона. `:focus-visible` показує рамку при Tab і не показує при кліку, тому «некрасивої рамки» дизайнер не побачить.\n\n`:disabled` стилізує той самий атрибут, через який кнопка справді вимкнена. Перевірка читає правила `styles.css` так само, як DevTools: стан наведення й фокусу не треба «імітувати»."
+}

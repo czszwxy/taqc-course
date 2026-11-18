@@ -1,0 +1,32 @@
+{
+  "type": "table",
+  "title": "Which flex property does it?",
+  "statement": "Елементи стоять у рядок (`display: flex`). Обери властивість для кожної мети.",
+  "givenColumns": ["Мета"],
+  "answerColumns": [
+    {
+      "id": "prop",
+      "label": "Властивість",
+      "options": [
+        "justify-content: space-between",
+        "align-items: center",
+        "flex-wrap: wrap",
+        "gap: 16px",
+        "flex-direction: column",
+        "flex: 1",
+        "margin-left: auto",
+        "flex-shrink: 0"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["перший елемент — біля лівого краю, останній — біля правого, решта рівномірно між ними"], "answers": { "prop": "justify-content: space-between" } },
+    { "given": ["іконка й текст різної висоти — по центру по вертикалі"], "answers": { "prop": "align-items: center" } },
+    { "given": ["картки, що не влазять, переходять на новий рядок"], "answers": { "prop": "flex-wrap: wrap" } },
+    { "given": ["відстань 16px між елементами без margin у кожного"], "answers": { "prop": "gap: 16px" } },
+    { "given": ["поля форми — одне під одним"], "answers": { "prop": "flex-direction: column" } },
+    { "given": ["поле пошуку забирає все вільне місце між логотипом і кнопкою"], "answers": { "prop": "flex: 1" } },
+    { "given": ["кнопку «Вийти» притиснути до правого краю"], "answers": { "prop": "margin-left: auto" } },
+    { "given": ["аватарка 40×40 не повинна стискатися, коли текст поруч довгий"], "answers": { "prop": "flex-shrink: 0" } }
+  ]
+}

@@ -1,0 +1,25 @@
+nav a {
+  color: #1f2937;
+  text-decoration: none;
+}
+
+nav a[aria-current="page"] {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.features li:first-child {
+  font-weight: 700;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #f3f4f6;
+}
+
+th {
+  text-align: left;
+}
+
+a[href^="https://"]::after {
+  content: " ↗";
+}

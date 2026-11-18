@@ -1,0 +1,44 @@
+{
+  "type": "written",
+  "title": "Review a teammate's CSS",
+  "statement": "Колега надіслав(ла) на рев'ю стилі блоку з картками. Знайди проблеми й запропонуй, як виправити:\n\n```css\n#header .nav ul li a { color: #aaa !important; font-size: 12px; }\n.btn:focus { outline: none; }\n.red-text { color: red; }\n.sidebar { margin-left: 737px; width: 223px; }\n.card { width: 300px; padding: 20px; border: 2px solid #1d4ed8; }\n.card-title { color: #1d4ed8; }\n.price { color: #1d4ed8; }\n.banner { animation: shake 0.3s infinite; }\n```",
+  "fields": [
+    { "id": "problems", "label": "Проблеми (по одній у рядку)", "kind": "list" },
+    { "id": "fixes", "label": "Як виправити", "kind": "textarea" },
+    { "id": "first", "label": "Що виправити першим і чому", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "problems", "check": "minItems", "value": 5, "message": "Знайди щонайменше 5 проблем." },
+    { "field": "any", "check": "mentionsAny", "value": ["important", "специфічн", "#header"], "message": "Не пропусти селектор з id і !important у першому рядку." },
+    { "field": "any", "check": "mentionsAny", "value": ["outline", "фокус", "focus"], "message": "Що з рамкою фокусу кнопки?" },
+    { "field": "any", "check": "mentionsAny", "value": ["контраст", "#aaa", "contrast"], "message": "Перевір контраст кольору посилань." },
+    { "field": "any", "check": "mentionsAny", "value": ["анімац", "animation", "reduced-motion", "рух"], "message": "Подумай про нескінченну анімацію банера." },
+    { "field": "any", "check": "mentionsAny", "value": ["змінн", "токен", "var\\(", "--color"], "message": "Колір #1d4ed8 повторюється — що з цим зробити?" }
+  ],
+  "model": {
+    "problems": [
+      "#header .nav ul li a — id і чотири рівні вкладеності: специфічність (1, 1, 3) не переб'єш без нових !important",
+      "!important у тому ж правилі — початок «війни специфічності»",
+      "color: #aaa на білому — контраст ~2,3 : 1, нижче за 4,5 : 1",
+      "font-size: 12px — у px і задрібно; не масштабується з налаштуваннями браузера",
+      ".btn:focus { outline: none; } — людина з клавіатурою не бачить фокус",
+      ".red-text — клас описує вигляд, а не значення; завтра колір зміниться, а назва ні",
+      ".sidebar з margin-left: 737px — «магічні числа» замість Grid / Flexbox, ламається на будь-якій іншій ширині",
+      ".card без box-sizing: border-box — реальна ширина 344px, а не 300",
+      "#1d4ed8 повторюється тричі — має бути токен",
+      ".banner — нескінченна анімація тряски без prefers-reduced-motion"
+    ],
+    "fixes": "Меню: `.menu a { color: var(--color-text); font-size: 0.875rem; }` — один клас, без id і !important, контраст від 4,5 : 1. Фокус: прибрати правило і додати `.btn:focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; }`. `.red-text` перейменувати за змістом (`.price--sale`, `.error`). Бічну колонку розкласти Grid'ом: `grid-template-columns: 1fr 220px`. Додати `*, *::before, *::after { box-sizing: border-box; }`. Винести колір у `--color-brand` і використовувати `var(--color-brand)`. Анімацію банера прибрати або зробити одноразовою, а в `@media (prefers-reduced-motion: reduce)` вимкнути.",
+    "first": "Спершу — доступність, бо вона блокує людей: повернути видимий фокус і виправити контраст меню (без цього частина користувачів просто не може користуватися сайтом), прибрати нескінченну тряску. Далі — id і !important, бо вони ускладнюють кожну наступну зміну. Магічні відступи, токени й назви класів — у тому ж PR, якщо колега має час, інакше окремим завданням."
+  },
+  "checklist": [
+    "Ти назвав(ла) проблему і пояснив(ла), чому це погано, а не лише «так не пишуть»",
+    "Для кожної проблеми є конкретне виправлення",
+    "Доступність (фокус, контраст, рух) — серед перших пунктів",
+    "Тон коментарів поважний: про код, а не про людину"
+  ],
+  "hints": [
+    "Пройдися по кожному рядку окремо: селектор, значення, назва класу.",
+    "Згадай уроки: каскад (2), блокова модель (3), кольори й токени (4), Grid (6), стани й рух (8)."
+  ]
+}

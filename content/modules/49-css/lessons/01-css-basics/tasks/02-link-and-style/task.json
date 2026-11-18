@@ -1,0 +1,15 @@
+{
+  "type": "web",
+  "title": "Link a stylesheet and write the first rules",
+  "statement": "Сторінка акції Gadgetly ще без стилів. Тут ти редагуєш **два** файли:\n\n1. У `index.html` підключи `styles.css` (у `<head>`). Атрибут `style` і `<style>` в HTML не використовуй — усі стилі в `styles.css`.\n2. У `styles.css` напиши правила:\n\n| Що | Властивості |\n|---|---|\n| `body` | `font-family: system-ui, sans-serif`, `color: #1f2937` |\n| `h1` | `color: #1d4ed8` |\n| `.price` | `font-weight: 700`, `color: #15803d` |\n| `.note` | `background-color: #fef3c7`, `padding: 12px` |\n\nПеремикайся між файлами вкладками над редактором. Якщо Preview показує «styles.css is not linked», перевір `<link>`.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "\\sstyle\\s*=", "message": "Не використовуй атрибут style — правила мають бути в styles.css.", "file": "index.html" },
+    { "kind": "forbid", "pattern": "<style", "message": "Не додавай <style> в index.html — стилі мають бути в styles.css.", "file": "index.html" }
+  ],
+  "hints": [
+    "Підключення: `<link rel=\"stylesheet\" href=\"styles.css\">` усередині `<head>`.",
+    "Правило: `h1 { color: #1d4ed8; }`. Декларації в одному правилі розділяй крапкою з комою.",
+    "Клас у CSS пишуть з крапкою: `.price { … }`, `.note { … }`."
+  ],
+  "explanation": "Без `<link rel=\"stylesheet\">` браузер просто не знає про файл стилів — і жодне правило не діє. Далі кожен селектор обирає свої елементи: `body` — увесь документ (колір і шрифт успадкують усі нащадки), `.price` — лише елементи з цим класом.\n\nТипові помилки: `href=\"style.css\"` замість `styles.css`, забута крапка перед класом, декларації без `;`."
+}

@@ -1,5 +1,6 @@
 import { executeModules, type ExecOutput } from './harness';
 import { accessibleDescription, accessibleName, cleanText, headings, isHidden, role } from './web-a11y';
+import { cssRules, formatRgba, simulateFocus, textContrast, toRgba } from './web-css';
 import { buildPage, evaluateWebRules } from './web-page';
 import type { WebFile, WebRule } from '../content/schema';
 
@@ -58,11 +59,18 @@ function checkGlobals(frame: HTMLIFrameElement, doc: Document, win: Window): Rec
     text: (el: Element | null) => cleanText(el?.textContent ?? ''),
     css: (el: Element, property: string) => win.getComputedStyle(el).getPropertyValue(property),
     box: (el: Element) => el.getBoundingClientRect(),
+    /** A color property as "rgb(r, g, b)" whatever syntax the CSS used, e.g. color(btn, 'background-color'). */
+    color: (el: Element, property = 'color') => formatRgba(toRgba(win.getComputedStyle(el).getPropertyValue(property))),
+    /** Any CSS color written in a check ("#1d4ed8") in the same "rgb(…)" format. */
+    rgb: (value: string) => formatRgba(toRgba(value)),
+    contrast: textContrast,
+    cssRules: () => cssRules(doc),
     role,
     accessibleName,
     accessibleDescription,
     isHidden,
     headings: () => headings(doc),
+    simulateFocus: (el: Element) => simulateFocus(doc, el),
     /** Resizes the page (like turning a phone or resizing the window) and waits for the new layout. */
     setViewport: async (width: number, height: number = CHECK_FRAME_HEIGHT) => {
       frame.style.setProperty('width', `${width}px`);
@@ -93,6 +101,9 @@ export async function checkInFrame(page: string, tests: string, width: number): 
     const doc = frame.contentDocument;
     const win = frame.contentWindow;
     if (!ok || !doc || !win) return { results: [], logs: [], runtimeError: 'The page did not open.' };
+    // Classic scrollbars (Windows) take ~15px of the width, overlay ones (phones, macOS, headless) take none:
+    // hide the page's scrollbar so layout checks measure the same width everywhere. Scrolling still works.
+    doc.documentElement.style.setProperty('scrollbar-width', 'none');
     return await withTimeout(executeModules({ modules: { [TESTS_ENTRY]: tests }, entry: TESTS_ENTRY, collectTests: true }, checkGlobals(frame, doc, win)));
   } finally {
     frame.remove();

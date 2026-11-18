@@ -1,0 +1,28 @@
+{
+  "title": "Mini project: style the product page",
+  "minutes": 90,
+  "summary": "Збери все разом: стилі сторінки товару Gadgetly з модуля HTML — скидання box-sizing, токени, читабельна типографіка, шапка на Flexbox, розкладка на Grid з бічною колонкою, фото, ціна, кнопка зі станами, таблиця характеристик, відгуки, прихований skip link; перевірка контрасту, клавіатури й збільшення; рев'ю чужого CSS",
+  "resources": [
+    {
+      "title": "web.dev: Learn CSS (the whole course)",
+      "url": "https://web.dev/learn/css",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Chrome DevTools: CSS features reference",
+      "url": "https://developer.chrome.com/docs/devtools/css/reference",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "WebAIM: Contrast Checker",
+      "url": "https://webaim.org/resources/contrastchecker/",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "title": "How CSS works",
+  "minutes": 55,
+  "summary": "Правило CSS: селектор, властивість, значення; три способи підключити стилі й чому зовнішній файл найкращий; селектори для стилів — тип, клас, атрибут, нащадок, дочірній, сусідній, псевдокласи й псевдоелементи ::before / ::after; що браузер робить з помилками в CSS і як побачити це в DevTools",
+  "resources": [
+    {
+      "title": "MDN: CSS styling basics — Getting started",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Getting_started",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Basic CSS selectors",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Basic_selectors",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev Learn CSS: Selectors",
+      "url": "https://web.dev/learn/css/selectors",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Chrome DevTools: View and change CSS",
+      "url": "https://developer.chrome.com/docs/devtools/css",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: CSS for beginners",
+      "url": "https://www.youtube.com/results?search_query=css+tutorial+for+beginners",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

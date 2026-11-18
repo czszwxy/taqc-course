@@ -1,0 +1,35 @@
+{
+  "title": "Cascade, specificity and inheritance",
+  "minutes": 55,
+  "summary": "Чому одне правило перемагає інше: каскад (походження і !important, специфічність, порядок у коді), як рахувати специфічність (id, класи, теги), :is(), :where() і :not(); успадкування: які властивості передаються нащадкам, inherit / initial / unset, чому кнопки не успадковують шрифт; чому !important і id для стилів — пастка; шари @layer",
+  "resources": [
+    {
+      "title": "MDN: Handling conflicts (cascade, specificity, inheritance)",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Handling_conflicts",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev Learn CSS: Specificity",
+      "url": "https://web.dev/learn/css/specificity",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "web.dev Learn CSS: Inheritance",
+      "url": "https://web.dev/learn/css/inheritance",
+      "kind": "course",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Specificity Calculator (Polypane)",
+      "url": "https://polypane.app/css-specificity-calculator/",
+      "kind": "tool",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

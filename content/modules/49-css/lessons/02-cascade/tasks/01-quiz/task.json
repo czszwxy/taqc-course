@@ -1,0 +1,85 @@
+{
+  "type": "quiz",
+  "title": "Cascade and specificity quiz",
+  "show": 6,
+  "questions": [
+    {
+      "id": "same-specificity",
+      "kind": "single",
+      "text": "Два правила з однаковою специфічністю задають `color` одному елементу. Хто переможе?",
+      "options": [
+        { "text": "Те, що нижче у файлі", "correct": true },
+        { "text": "Те, що вище у файлі" },
+        { "text": "Те, що коротше" }
+      ]
+    },
+    {
+      "id": "class-vs-tags",
+      "kind": "single",
+      "text": "`main article section p { color: red; }` проти `.note { color: blue; }` для `<p class=\"note\">` усередині них. Який колір?",
+      "options": [
+        { "text": "Синій: (0, 1, 0) сильніше за (0, 0, 4)", "correct": true },
+        { "text": "Червоний: селектор довший і точніший" },
+        { "text": "Залежить від порядку у файлі" }
+      ]
+    },
+    {
+      "id": "spec-text",
+      "kind": "text",
+      "text": "Яка специфічність у `.news .headline:hover`? Напиши у форматі `0,3,0` (id, класи, теги).",
+      "accept": ["0,3,0", "0, 3, 0", "(0,3,0)", "(0, 3, 0)"],
+      "explanation": "Два класи й один псевдоклас — три в середньому розряді."
+    },
+    {
+      "id": "where",
+      "kind": "single",
+      "text": "Яку специфічність має `:where(.card) h2`?",
+      "options": [
+        { "text": "(0, 0, 1): усе всередині `:where()` важить 0", "correct": true },
+        { "text": "(0, 1, 1)", "explain": "Так було б з `:is(.card) h2` — `:is()` бере специфічність аргументу." },
+        { "text": "(0, 0, 0)" }
+      ]
+    },
+    {
+      "id": "inherit-props",
+      "kind": "multiple",
+      "text": "Які властивості з `body` успадкують абзаци?",
+      "options": [
+        { "text": "`color`", "correct": true },
+        { "text": "`font-family`", "correct": true },
+        { "text": "`line-height`", "correct": true },
+        { "text": "`padding`", "explain": "Відступи не успадковуються." },
+        { "text": "`border`", "explain": "Рамки не успадковуються." }
+      ]
+    },
+    {
+      "id": "button-font",
+      "kind": "single",
+      "text": "У `body` шрифт Georgia, а текст на кнопках — системний. Чому?",
+      "options": [
+        { "text": "Браузер дає кнопкам і полям власний шрифт; потрібне `font: inherit`", "correct": true },
+        { "text": "Кнопки не можуть мати іншого шрифту" },
+        { "text": "font-family не успадковується" }
+      ]
+    },
+    {
+      "id": "important",
+      "kind": "single",
+      "text": "Чому `!important` для звичайних стилів — погана ідея?",
+      "options": [
+        { "text": "Щоб потім перебити його, доведеться писати ще один `!important` — починається «війна специфічності»", "correct": true },
+        { "text": "Браузери його ігнорують" },
+        { "text": "Він уповільнює сторінку" }
+      ]
+    },
+    {
+      "id": "inline-style",
+      "kind": "single",
+      "text": "`<p class=\"note\" style=\"color: green\">` і в файлі `.note { color: blue; }`. Який колір?",
+      "options": [
+        { "text": "Зелений: атрибут style сильніший за будь-який селектор (без !important)", "correct": true },
+        { "text": "Синій: файл стилів важливіший" }
+      ]
+    }
+  ]
+}

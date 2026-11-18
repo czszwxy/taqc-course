@@ -1,0 +1,83 @@
+{
+  "type": "quiz",
+  "title": "Positioning quiz",
+  "show": 6,
+  "questions": [
+    {
+      "id": "absolute-parent",
+      "kind": "single",
+      "text": "Значок `position: absolute; top: 8px; right: 8px` опинився в правому верхньому куті **сторінки**, а не картки. Чого бракує?",
+      "options": [
+        { "text": "`position: relative` на картці — тоді вона стане точкою відліку", "correct": true },
+        { "text": "`z-index` на значку" },
+        { "text": "`display: block` на картці" }
+      ]
+    },
+    {
+      "id": "absolute-flow",
+      "kind": "single",
+      "text": "Чи займає absolute-елемент місце в потоці (чи відштовхує сусідів)?",
+      "options": [
+        { "text": "Ні: сусіди поводяться так, ніби його немає", "correct": true },
+        { "text": "Так, як звичайний блок" }
+      ]
+    },
+    {
+      "id": "fixed",
+      "kind": "single",
+      "text": "Кнопка «Чат з підтримкою» має завжди бути в правому нижньому куті вікна, навіть під час прокрутки. Яке значення position?",
+      "options": [
+        { "text": "`fixed`", "correct": true },
+        { "text": "`sticky`", "explain": "sticky стоїть у потоці й прилипає лише при доході до межі." },
+        { "text": "`absolute`", "explain": "absolute прокручується разом зі сторінкою." }
+      ]
+    },
+    {
+      "id": "sticky-top",
+      "kind": "single",
+      "text": "Шапка має `position: sticky`, але не прилипає. Що найімовірніше забули?",
+      "options": [
+        { "text": "Межу прилипання: `top: 0`", "correct": true },
+        { "text": "`z-index: 9999`" },
+        { "text": "`width: 100%`" }
+      ]
+    },
+    {
+      "id": "sticky-bg",
+      "kind": "single",
+      "text": "Липка шапка працює, але текст сторінки «просвічує» крізь неї під час прокрутки. Що додати?",
+      "options": [
+        { "text": "Фон шапці (`background-color`) і `z-index`, щоб вона була поверх вмісту", "correct": true },
+        { "text": "`opacity: 1`" },
+        { "text": "`overflow: hidden`" }
+      ]
+    },
+    {
+      "id": "display-none",
+      "kind": "single",
+      "text": "Підпис кнопки-іконки сховали через `display: none`. Що отримає користувач екранного читача?",
+      "options": [
+        { "text": "Кнопку без назви: display: none прибирає текст і з дерева доступності", "correct": true },
+        { "text": "Кнопку з назвою: читач бачить прихований текст" }
+      ]
+    },
+    {
+      "id": "skip-hidden",
+      "kind": "single",
+      "text": "Чому skip link не можна ховати через `display: none`?",
+      "options": [
+        { "text": "На нього тоді не можна перейти клавішею Tab — він ніколи не з'явиться", "correct": true },
+        { "text": "Бо display: none не працює для посилань" }
+      ]
+    },
+    {
+      "id": "z-context",
+      "kind": "single",
+      "text": "Меню з `z-index: 1000` лежить усередині шапки з `z-index: 1`, а банер нижче має `z-index: 2`. Хто зверху?",
+      "options": [
+        { "text": "Банер: меню змагається лише всередині шару шапки, а шапка (1) нижче за банер (2)", "correct": true },
+        { "text": "Меню: 1000 більше за 2" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+body {
+  font-family: Georgia, serif;
+}
+
+#catalog .price {
+  color: #1f2937;
+}
+
+/* не працює: перемагає правило з #catalog */
+.product--sale .price {
+  color: #b91c1c;
+}
+
+.product-title {
+  color: #1d4ed8 !important;
+}
+
+/* не працює через !important */
+.product--sale .product-title {
+  color: #b91c1c;
+}
+
+/* кнопки мають бути шрифтом сторінки, але лишаються системним */
+.buy {
+  padding: 8px 16px;
+}
