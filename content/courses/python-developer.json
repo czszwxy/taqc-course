@@ -4,7 +4,7 @@
   "tagline": "Zero → Junior Python Developer",
   "description": "Python from zero and in depth, algorithms, databases and ORMs, REST APIs with FastAPI, Django, async code, testing with pytest, Docker and deployment. Python basics, pytest, Git, HTTP and SQL modules are shared with the other courses.",
   "icon": "🧩",
-  "status": "in-progress",
+  "status": "available",
   "order": 4,
   "tracks": [
     {

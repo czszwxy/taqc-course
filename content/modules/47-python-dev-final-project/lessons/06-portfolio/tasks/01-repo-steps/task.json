@@ -1,0 +1,20 @@
+{
+  "type": "order",
+  "title": "From task folders to a public repository",
+  "statement": "Ти розв'язав(ла) всі кроки в застосунку. Розстав дії, щоб отримати репозиторій Gadgetly Repairs, який не соромно показати.",
+  "items": [
+    "Create D:\\projects\\gadgetly-repairs, run git init and add a .gitignore with .venv/, __pycache__/, *.db and .env",
+    "Create app/ with __init__.py and copy your step files into it: repairs.py, models.py, repository.py, services.py, outbox.py, auth.py, main.py",
+    "Change the imports to the package form: from app.repairs import …",
+    "Write pyproject.toml with the dependencies and a dev extra (pytest, ruff), then pip install -e \".[dev]\" in a fresh venv",
+    "Move the tests into tests/, shared fixtures into tests/conftest.py, and run pytest until it is green",
+    "Add settings from DATABASE_URL, table creation and the worker entry point python -m app.worker",
+    "Add the Dockerfile, compose.yaml and the CI workflow; push to a new GitHub repository and wait for a green run",
+    "Write the README, run its commands word for word in a clean folder, and pin the repository on your GitHub profile"
+  ],
+  "hints": [
+    "`.gitignore` — до першого коміту: інакше `.venv` і база потраплять в історію.",
+    "Тести можна запустити лише тоді, коли імпорти й встановлення пакета вже працюють."
+  ],
+  "explanation": "Порядок іде від «працює в мене» до «працює в будь-кого»: спершу пакет з правильними імпортами й тестами, потім налаштування й процеси, потім Docker і CI, які перевіряють збірку на чужій машині, і наприкінці README, перевірений запуском у чистій папці. `.gitignore` найперший, бо випадково закомічені `.env` чи `*.db` лишаються в історії назавжди, навіть після видалення."
+}

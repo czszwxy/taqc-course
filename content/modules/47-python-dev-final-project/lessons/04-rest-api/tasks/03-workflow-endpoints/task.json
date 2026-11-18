@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Step 3b: status, estimate and history",
+  "statement": "Друга частина `app.py`. Стартовий файл — еталон кроку 3a (схеми, обробник помилок, `to_out`, `visible_ticket`, три ендпоінти); `services.py` з `move_ticket` — еталон кроку 2c, лише для читання. Додай:\n\n1. Коди помилок у `ERROR_STATUS`: `invalid_transition`, `conflict`, `estimate_required` → `409`.\n2. **`POST /tickets/{ticket_id}/status`**, тіло `{\"status\": <Status>, \"version\": <int>}` → `move_ticket(...)` з роллю того, хто питає, і датою з `get_today` → `200` і `TicketOut`.\n3. **`POST /tickets/{ticket_id}/estimate`**, тіло `{\"parts\": [{\"name\", \"price\", \"accidental\"}], \"labour_minutes\", \"under_warranty\", \"version\"}`:\n   - `parts` за замовчуванням `[]`; `name` 1–60 символів, `price` ≥ 0, `accidental` за замовчуванням `false`;\n   - `labour_minutes` від 0 до 600, `under_warranty` за замовчуванням `false`, `version` обов'язкова;\n   - сума — `estimate(...)` з `repairs.py`, потім `move_ticket(..., Status.WAITING_APPROVAL, ..., estimate_total=<total>)` → `200` і `TicketOut`.\n4. **`GET /tickets/{ticket_id}/history`** → список `{\"from_status\", \"to_status\", \"by_role\", \"changed_on\"}` у порядку змін.\n\nУ всіх трьох ендпоінтах клієнт працює лише зі своєю заявкою: чужа → `404 not_found`, і нічого не змінюється.",
+  "hints": [
+    "Схеми: `StatusIn(status: Status, version: int)`, `PartIn(name: str = Field(min_length=1, max_length=60), price: int = Field(ge=0), accidental: bool = False)`, `EstimateIn(parts: list[PartIn] = [], labour_minutes: int = Field(ge=0, le=600), under_warranty: bool = False, version: int)`.",
+    "Кожен ендпоінт починається з `visible_ticket(session, ticket_id, user)` — до виклику сервісу.",
+    "Кошторис: `parts = [Part(p.name, p.price, p.accidental) for p in body.parts]`, `result = estimate(parts, body.labour_minutes, body.under_warranty)`."
+  ],
+  "explanation": "Ендпоінти робочого процесу майже не мають власної логіки: правило переходу й ролей — у домені, транзакція й версія — у сервісі, гроші — у `estimate`. API додає три речі: перевіряє, що клієнт бачить заявку, валідує тіло і перекладає коди помилок. Тому тести тут — про `403` / `409` / `404` / `422` і про те, що після кожної помилки дані лишилися незмінними. Типові помилки: забути `visible_ticket` в ендпоінтах, що змінюють заявку (клієнт скасовує чужий ремонт), не додати нові коди в `ERROR_STATUS` (`500` замість `409`), рахувати кошторис самостійно замість `estimate` з домену.",
+  "codeRules": [
+    { "kind": "require", "pattern": "move_ticket\\(", "message": "Змінюй статус через `move_ticket` із `services.py` — там транзакція, версія й історія." },
+    { "kind": "require", "pattern": "estimate\\(", "message": "Порахуй кошторис доменною функцією `estimate(...)` з `repairs.py`." }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "type": "written",
+  "title": "The README",
+  "statement": "Напиши `README.md` для репозиторію Gadgetly Repairs — його відкриють першим. Читачів двоє: рекрутер з 30 секундами і розробник, який хоче запустити проєкт за 5 хвилин.\n\nОбов'язково: що це за сервіс, стек, як запустити локально (venv, встановлення, API, worker) і в Docker, як запустити тести, таблиця ендпоінтів з прикладом запиту й відповіді, коди помилок, ключові рішення (шари, оптимістичне блокування, outbox), припущення з огляду вимог, що далі.",
+  "fields": [
+    { "id": "readme", "label": "README.md", "kind": "textarea", "placeholder": "# Gadgetly Repairs API\n…" }
+  ],
+  "rules": [
+    { "field": "readme", "check": "minLength", "value": 1200, "message": "README має бути повним: запуск, тести, API, рішення, припущення, що далі." },
+    { "field": "readme", "check": "mentionsAny", "value": ["pip install"], "message": "Як встановити залежності?" },
+    { "field": "readme", "check": "mentionsAny", "value": ["(fastapi (run|dev)|uvicorn)"], "message": "Як запустити API?" },
+    { "field": "readme", "check": "mentionsAny", "value": ["app\\.worker"], "message": "Як запустити worker (`python -m app.worker`)?" },
+    { "field": "readme", "check": "mentionsAny", "value": ["docker compose up"], "message": "Як запустити все в Docker (`docker compose up`)?" },
+    { "field": "readme", "check": "mentionsAny", "value": ["pytest"], "message": "Як запустити тести?" },
+    { "field": "readme", "check": "mentionsAll", "value": ["/tickets", "/status", "/estimate"], "message": "Таблиця ендпоінтів: `/tickets`, `/status`, `/estimate`…" },
+    { "field": "readme", "check": "mentionsAll", "value": ["401", "403", "404", "409", "422"], "message": "Опиши коди помилок: 401, 403, 404, 409, 422." },
+    { "field": "readme", "check": "mentionsAll", "value": ["version", "(outbox|notification)"], "message": "Поясни рішення: версія для одночасних змін і outbox для повідомлень." },
+    { "field": "readme", "check": "mentionsAny", "value": ["(assum|припущ)"], "message": "Розділ з припущеннями." },
+    { "field": "readme", "check": "mentionsAny", "value": ["(next|далі|roadmap|todo|improve|покращ)"], "message": "Що далі?" },
+    { "field": "readme", "check": "notMentions", "value": ["POSTGRES_PASSWORD=[A-Za-z0-9]{4,}"], "message": "Жодних справжніх паролів у README — лише назва змінної." }
+  ],
+  "model": {
+    "readme": "# Gadgetly Repairs API\n\n![CI](https://github.com/<you>/gadgetly-repairs/actions/workflows/ci.yml/badge.svg)\n\nREST API for a gadget service centre: customers hand in a device and track the repair, staff diagnose it, send a cost estimate, repair it after the customer agrees and hand it back. The customer gets an email when the device is ready.\n\n**Stack:** Python 3.13, FastAPI, SQLAlchemy 2.0, SQLite / PostgreSQL, pytest, ruff, Docker, GitHub Actions.\n\n## Run locally\n\n```bash\npython -m venv .venv\n.venv\\Scripts\\activate            # Linux / macOS: source .venv/bin/activate\npip install -e \".[dev]\"\nfastapi dev app/main.py             # http://127.0.0.1:8000/docs\npython -m app.worker                # in a second terminal: delivers notifications\n```\n\nBy default the service uses `sqlite:///repairs.db`; set `DATABASE_URL` to use another database.\n\n## Run in Docker\n\n```bash\ncp .env.example .env                # then set POSTGRES_PASSWORD in .env\ndocker compose up --build           # db + api + worker, API on http://localhost:8000\n```\n\n## Tests\n\n```bash\npytest\n```\n\nDomain rules (statuses, due dates in working days, estimates) are tested as plain functions; the repository, the service and the worker on an in-memory SQLite; the API with `TestClient` and overridden dependencies.\n\n## API\n\nDemo tokens: `olena-token`, `taras-token` (customers), `staff-token` (staff) — `Authorization: Bearer <token>`.\n\n| Method | Path | Who | Result |\n|---|---|---|---|\n| POST | `/tickets` | customer | 201 + `Location` |\n| GET | `/tickets?status=&overdue=&limit=&offset=` | both (customers see only their own) | `{items, total}` |\n| GET | `/tickets/{id}` | both | ticket with `overdue` and `actions` |\n| POST | `/tickets/{id}/status` | by the transition table | ticket |\n| POST | `/tickets/{id}/estimate` | staff | ticket in `waiting_approval` |\n| GET | `/tickets/{id}/history` | both | status changes |\n\n```bash\ncurl -X POST http://127.0.0.1:8000/tickets \\\n  -H \"Authorization: Bearer olena-token\" -H \"Content-Type: application/json\" \\\n  -d '{\"device\": \"Phone X2\", \"problem\": \"Cracked screen\", \"priority\": \"urgent\"}'\n```\n\n```json\n{\"id\": 1, \"status\": \"received\", \"due_on\": \"2026-11-19\", \"version\": 1, \"overdue\": false, \"actions\": [\"cancelled\"], \"...\": \"...\"}\n```\n\n| Status | Body | When |\n|---|---|---|\n| 401 | `Not authenticated` | no token or an unknown token |\n| 403 | `{\"detail\": {\"error\": \"forbidden\"}}` | the action is not for your role |\n| 404 | `{\"detail\": {\"error\": \"not_found\"}}` | no such ticket — or it belongs to another customer |\n| 409 | `invalid_transition` / `conflict` / `estimate_required` | the status does not allow it, the ticket changed meanwhile, or no estimate |\n| 422 | validation errors | bad body or query parameters |\n\n## Design decisions\n\n- **Layers:** domain rules (`app/repairs.py`) know nothing about HTTP or the database; the repository only flushes; a service function is one transaction; the API translates.\n- **Optimistic locking:** every ticket has a `version`; a change is one `UPDATE … WHERE id = ? AND version = ?`, and 0 updated rows means `409 conflict` instead of silently overwriting someone else's change.\n- **Outbox:** moving to `ready` writes a notification row in the same transaction; `app/worker.py` delivers pending notifications with up to 3 attempts and commits after each one (at-least-once).\n- **Other customers' tickets** answer 404, not 403, so ids cannot be probed.\n\n## Assumptions\n\n- \"Today\" is the Kyiv date; working days are Monday–Friday, holidays are not configured yet.\n- The day a device is received does not count towards the due date; a ticket is overdue only after the due day and only while the SLA clock runs (not in `waiting_approval`).\n- An estimate is sent once; changing an approved estimate is out of scope.\n- Labour costs 150 UAH per started 15 minutes; warranty does not cover accidentally damaged parts.\n\n## Next steps\n\n- JWT login instead of demo tokens.\n- Exponential backoff in the worker (`next_attempt_at`).\n- Alembic migrations in CI and a holidays table.\n- Cursor pagination for long lists."
+  },
+  "checklist": [
+    "Перший абзац пояснює, що робить сервіс, без технічних деталей",
+    "Команди запуску можна скопіювати й виконати дослівно — перевірено в чистій папці",
+    "Є і локальний запуск, і Docker",
+    "Ендпоінти, приклад запиту й відповіді, усі коди помилок",
+    "Рішення пояснюють «чому», а не лише «що»",
+    "Припущення з огляду вимог перенесено в README",
+    "Наступні кроки конкретні",
+    "Немає паролів, токенів і особистих даних"
+  ],
+  "hints": [
+    "Почни з одного речення «що це» і стеку, потім — команди. Рішення й припущення — в кінці: їх читають ті, кому вже цікаво.",
+    "Коди помилок — таблицею: статус, тіло, коли."
+  ],
+  "explanation": "README — перший і часто єдиний файл, який читає рекрутер, і перша інструкція для того, хто запускатиме проєкт. Тому спершу «що це», потім команди, які працюють дослівно, а вже потім рішення з поясненням «чому» — саме вони відрізняють портфоліо від туторіалу. Припущення показують, що неоднозначності в брифі помічено, а «що далі» — що ти бачиш межі своєї версії."
+}

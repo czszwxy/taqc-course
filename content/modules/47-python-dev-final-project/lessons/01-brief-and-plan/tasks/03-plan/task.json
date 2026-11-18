@@ -1,0 +1,70 @@
+{
+  "type": "written",
+  "title": "Plan the service",
+  "statement": "Перш ніж писати код, склади план Gadgetly Repairs на одну сторінку.\n\n1. **Ендпоінти**: метод, шлях і одним рядком — що робить і хто може викликати.\n2. **Таблиці**: назва й головні стовпці.\n3. **Етапи** — у якому порядку будуватимеш і що буде готово після кожного.\n4. **Тести**, які обов'язково напишеш (назви сценаріїв; межі — окремо).",
+  "fields": [
+    { "id": "endpoints", "label": "Endpoints", "kind": "list", "placeholder": "POST /tickets — customer creates a ticket" },
+    { "id": "tables", "label": "Tables", "kind": "list" },
+    { "id": "milestones", "label": "Milestones", "kind": "list" },
+    { "id": "tests", "label": "Tests", "kind": "list" }
+  ],
+  "rules": [
+    { "field": "endpoints", "check": "minItems", "value": 5, "message": "Щонайменше 5 ендпоінтів." },
+    { "field": "endpoints", "check": "mentionsAll", "value": ["POST /tickets", "GET /tickets"], "message": "Потрібні створення й список заявок: `POST /tickets`, `GET /tickets`." },
+    { "field": "endpoints", "check": "mentionsAny", "value": ["/status"], "message": "Як змінюється статус?" },
+    { "field": "endpoints", "check": "mentionsAny", "value": ["/estimate"], "message": "Як майстер надсилає кошторис?" },
+    { "field": "tables", "check": "minItems", "value": 3, "message": "Заявки, історія змін і повідомлення — щонайменше 3 таблиці." },
+    { "field": "tables", "check": "mentionsAny", "value": ["version"], "message": "Де зберігається версія для оптимістичного блокування?" },
+    { "field": "milestones", "check": "minItems", "value": 5, "message": "Розбий роботу щонайменше на 5 етапів." },
+    { "field": "milestones", "check": "mentionsAny", "value": ["README"], "message": "README — окремий етап." },
+    { "field": "tests", "check": "minItems", "value": 6, "message": "Щонайменше 6 сценаріїв." },
+    { "field": "tests", "check": "mentionsAny", "value": ["(меж|boundary|рівно|exactly|16 хв|15 хв|день дедлайну|due day)"], "message": "Додай тести на межі (день дедлайну, 15 / 16 хвилин…)." },
+    { "field": "tests", "check": "mentionsAny", "value": ["(чуж|other customer|another customer|404)"], "message": "Тест, що клієнт не бачить чужих заявок." }
+  ],
+  "model": {
+    "endpoints": [
+      "POST /tickets — customer creates a ticket (201 + Location); due_on is calculated by the server",
+      "GET /tickets?status=&overdue=&limit=&offset= — customer: own tickets, staff: all; {items, total}",
+      "GET /tickets/{id} — one ticket with overdue and actions (buttons for this role); someone else's → 404",
+      "POST /tickets/{id}/status {status, version} — change the status by the rules; 403 / 409",
+      "POST /tickets/{id}/estimate {parts, labour_minutes, under_warranty, version} — staff sends the estimate, the ticket moves to waiting_approval",
+      "GET /tickets/{id}/history — status changes in order"
+    ],
+    "tables": [
+      "tickets: id, customer_email (index), device, problem, priority, status, received_on, due_on, estimate_total (NULL until the estimate), version",
+      "status_changes: id, ticket_id → tickets, from_status, to_status, by_role, changed_on",
+      "notifications: id, ticket_id → tickets, recipient, text, status (pending / sent / failed), attempts, last_error"
+    ],
+    "milestones": [
+      "Domain rules in repairs.py with tests: transitions and roles, due dates in working days, estimate",
+      "Models with constraints and a repository: filters, pages, total",
+      "Service move_ticket: status + history + notification in one transaction, version check",
+      "API: tickets CRUD with tokens and roles, then status / estimate / history endpoints",
+      "Outbox delivery with retries, API tests that cover roles, codes and filters",
+      "Repository: pyproject, Dockerfile, compose, CI with ruff and pytest",
+      "README with run commands, API examples, assumptions and next steps"
+    ],
+    "tests": [
+      "Every allowed transition, a wrong role → forbidden, a missing transition → invalid_transition",
+      "Due date: Monday + 3, Wednesday over the weekend, received on Saturday, a holiday in the middle",
+      "Overdue boundary: on the due day still on time, the next day overdue; waiting_approval never overdue",
+      "Estimate boundaries: 15 and 16 minutes, warranty with an accidental part, a free estimate",
+      "Repository: filters combine, pages and total, overdue filter",
+      "Stale version → 409 conflict and nothing changed",
+      "Customer gets 404 for another customer's ticket and sees only own tickets in the list",
+      "ready → one pending notification; delivery retries and gives up after 3 attempts"
+    ]
+  },
+  "checklist": [
+    "У кожного ендпоінта зрозуміло, хто його викликає і що він повертає",
+    "Таблиці покривають історію змін і повідомлення, а не лише заявки",
+    "Етапи йдуть знизу вгору: домен → база → сервіс → API → тести → репозиторій",
+    "Після кожного етапу є щось робоче й перевірене",
+    "Тести перевіряють межі й доступ до чужих даних, а не лише «щасливий» шлях"
+  ],
+  "hints": [
+    "Ендпоінти — з таблиці ролей у брифі: що робить клієнт, що робить майстер.",
+    "Етапи — знизу вгору за шарами: те, що нижче, можна перевірити без того, що вище."
+  ],
+  "explanation": "План на сторінку економить години: видно, які таблиці потрібні ендпоінтам, у якому порядку будувати, що перевіряти. Будують знизу вгору: правила й база тестуються без HTTP, тому, коли дійде черга до API, лишиться перевірити лише переклад у коди статусів. Тести планують одразу з межами й доступом до чужих даних — саме там ховаються баги, які рев'юер шукає першими."
+}

@@ -1,0 +1,16 @@
+{
+  "type": "python",
+  "title": "Step 2b: the ticket repository",
+  "statement": "`repository.py`. Моделі — у `models.py` (еталон кроку 2a), правила — у `repairs.py` (еталон кроку 1); обидва лише для читання. Напиши клас **`TicketRepository(session)`**:\n\n- **`add(ticket)`** — додає заявку, робить `flush` (щоб з'явився `id`) і повертає ту саму заявку;\n- **`get(ticket_id)`** — заявка або `None`;\n- **`search(*, customer=None, status=None, overdue_on=None, limit=20, offset=0)`** → `(items, total)`:\n  - кожен переданий фільтр звужує результат: `customer` — `customer_email`, `status` — статус, `overdue_on` — заявки з `due_on` **раніше** за цей день і статусом із `CLOCK_RUNNING`;\n  - `items` — список, відсортований за `due_on`, потім за `id`, з `limit` і `offset`;\n  - `total` — скільки заявок підходить під фільтри **всього** (не на сторінці); рахує база, без завантаження всіх рядків.\n\nРепозиторій **не робить commit**.\n\n```python\nrepo = TicketRepository(session)\nitems, total = repo.search(customer=\"olena@example.com\", limit=10)\nitems, total = repo.search(overdue_on=date(2026, 11, 18))\n```",
+  "hints": [
+    "Почни з `query = select(Ticket)` і додавай `query = query.where(...)` лише для переданих фільтрів (`is not None`).",
+    "Прострочені: `query.where(Ticket.due_on < overdue_on, Ticket.status.in_(CLOCK_RUNNING))`.",
+    "`total = self.session.scalar(select(func.count()).select_from(query.subquery()))`; сторінка — `query.order_by(Ticket.due_on, Ticket.id).limit(limit).offset(offset)`."
+  ],
+  "explanation": "Пошук з необов'язковими фільтрами — це запит, що будується крок за кроком: кожен `where` додає умову через AND. `total` рахує той самий запит, обгорнутий у підзапит, — тоді фільтри для сторінки й для лічильника ніколи не розійдуться, а в пам'ять потрапляє лише `limit` рядків. Повне сортування (`due_on`, потім `id`) робить сторінки стабільними. Типові помилки: `len(...all())` для `total`, `<=` замість `<` для прострочення (у день дедлайну ще вчасно), забутий `CLOCK_RUNNING`, сортування лише за `due_on`.",
+  "codeRules": [
+    { "kind": "forbid", "pattern": "\\.commit\\(", "message": "Репозиторій не робить commit — це вирішує той, хто його викликає." },
+    { "kind": "require", "pattern": "\\.flush\\(", "message": "Отримай id без commit: `self.session.flush()`." },
+    { "kind": "require", "pattern": "func\\.count\\(", "message": "Порахуй total у базі: `func.count()`." }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "title": "The REST API with FastAPI",
+  "minutes": 90,
+  "summary": "Крок 3 проєкту — HTTP-шар: тонкі ендпоінти над доменом, репозиторієм і сервісом; залежності для сесії, дати й користувача з токена; схеми запиту й відповіді (str_strip_whitespace, extra=\"forbid\", Literal, межі Query), поля, що залежать від того, хто питає (overdue, actions); 401 / 403 / 404 для чужих даних; один обробник RepairError і словник «код → статус»; 201 + Location, версія в тілі для оптимістичного блокування; практика в лабораторії: заявки, статуси, кошторис, історія",
+  "resources": [
+    {
+      "title": "FastAPI docs: Handling Errors",
+      "url": "https://fastapi.tiangolo.com/tutorial/handling-errors/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: Dependencies",
+      "url": "https://fastapi.tiangolo.com/tutorial/dependencies/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: Response Model",
+      "url": "https://fastapi.tiangolo.com/tutorial/response-model/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Pydantic docs: Configuration",
+      "url": "https://docs.pydantic.dev/latest/api/config/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: 409 Conflict",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/409",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

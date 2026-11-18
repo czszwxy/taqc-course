@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "title": "Step 2c: change the status in one transaction",
+  "statement": "`services.py` — головний сценарій проєкту. `models.py` і `repairs.py` — еталони попередніх кроків (лише для читання). Напиши **`move_ticket(session, ticket_id, new_status, *, role, version, today, estimate_total=None)`**:\n\n1. Заявки немає → `RepairError(\"not_found\")`.\n2. Перехід перевіряє `change_status(ticket.status, new_status, role)` з `repairs.py` (його помилки летять далі як є).\n3. У `waiting_approval` — лише з кошторисом: `estimate_total is None` → `RepairError(\"estimate_required\")`. Передано `estimate_total` → збережи його.\n4. **Оптимістичне блокування:** один умовний `update(Ticket)` з `WHERE id = ? AND version = ?`, що ставить новий статус і `version + 1`. Оновлено 0 рядків → `session.rollback()` і `RepairError(\"conflict\")`.\n5. Додай `StatusChange(from_status, to_status, by_role=role, changed_on=today)`.\n6. Новий статус `ready` → додай `Notification` для `customer_email` з текстом `Your <device> is ready for pickup (ticket #<id>).`\n7. Один `session.commit()` наприкінці; поверни заявку.\n\nПри будь-якій помилці в базі не має лишитися нічого: ні нового статусу, ні історії, ні повідомлення.",
+  "hints": [
+    "Запам'ятай старий статус до `update`: `old_status = Status(ticket.status)` — він потрібен для `StatusChange`.",
+    "`values = {\"status\": new_status.value, \"version\": Ticket.version + 1}`, а якщо є кошторис — `values[\"estimate_total\"] = estimate_total`. Потім `result = session.execute(update(Ticket).where(Ticket.id == ticket_id, Ticket.version == version).values(**values))`.",
+    "Перевір `result.rowcount == 0` **до** того, як додавати історію й повідомлення."
+  ],
+  "explanation": "Сервіс збирає сценарій з частин: правило переходу — з домену, а запис — одна транзакція, у якій статус, історія й повідомлення фіксуються разом. Оптимістичне блокування вбудовано в сам `UPDATE`: умова `version = ?` перевіряється базою атомарно, тож двоє одночасних запитів не можуть обидва пройти. `rowcount == 0` означає, що хтось устиг раніше. Типові помилки: порівняти версію в Python і змінити атрибут (між читанням і записом заявку можуть змінити), додати історію до перевірки `rowcount` і не відкотити сесію, `if not estimate_total` замість `is None` (гарантійний кошторис 0 вважається відсутнім).",
+  "codeRules": [
+    { "kind": "require", "pattern": "update\\(\\s*Ticket\\s*\\)", "message": "Зміни заявку одним умовним `update(Ticket).where(...)` — це і є оптимістичне блокування." },
+    { "kind": "require", "pattern": "rowcount", "message": "Перевір, скільки рядків оновив UPDATE: `result.rowcount`." }
+  ]
+}

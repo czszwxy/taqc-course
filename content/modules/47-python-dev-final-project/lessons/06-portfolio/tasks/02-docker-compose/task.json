@@ -1,0 +1,195 @@
+{
+  "type": "written",
+  "title": "Dockerfile and compose for the service",
+  "statement": "Запакуй Gadgetly Repairs у Docker. Репозиторій: пакет `app/` (`app/main.py` — FastAPI, `app/worker.py` — процес доставки, запуск `python -m app.worker`), `pyproject.toml` для розробки, `requirements.txt` із закріпленими версіями для образу (`pip freeze --exclude-editable > requirements.txt`; серед них `psycopg[binary]` для Postgres), `tests/`.\n\n1. **Dockerfile** для API: `python:3.13-slim`, спершу залежності (кеш шарів), потім лише код застосунку, користувач не root, запуск `fastapi run` в exec-формі.\n2. **compose.yaml** із трьома сервісами:\n   - `db` — `postgres:18` з іменованим томом, паролем з `.env` і healthcheck;\n   - `api` — образ з Dockerfile, порт `8000`, `DATABASE_URL` до `db`, старт після того, як база здорова;\n   - `worker` — **той самий образ**, команда `python -m app.worker`, без портів.\n3. **Нотатки**: чому `worker` не публікує портів і чому пароль не в `compose.yaml`.",
+  "fields": [
+    {
+      "id": "dockerfile",
+      "label": "Dockerfile",
+      "kind": "textarea",
+      "placeholder": "FROM …"
+    },
+    {
+      "id": "compose",
+      "label": "compose.yaml",
+      "kind": "textarea",
+      "placeholder": "services:\n  db:\n    …"
+    },
+    {
+      "id": "notes",
+      "label": "Notes for the reviewer",
+      "kind": "textarea"
+    }
+  ],
+  "rules": [
+    {
+      "field": "dockerfile",
+      "check": "mentionsAll",
+      "value": [
+        "FROM\\s+python:3\\.13-slim"
+      ],
+      "message": "База: `FROM python:3.13-slim`."
+    },
+    {
+      "field": "dockerfile",
+      "check": "mentionsAll",
+      "value": [
+        "COPY\\s+(\\./)?requirements\\.txt",
+        "pip install",
+        "--no-cache-dir"
+      ],
+      "message": "Спершу `COPY requirements.txt .` і `RUN pip install --no-cache-dir -r requirements.txt`, потім код — так шар залежностей кешується."
+    },
+    {
+      "field": "dockerfile",
+      "check": "mentionsAll",
+      "value": [
+        "COPY\\s+(\\./)?app"
+      ],
+      "message": "Копіюй пакет `app` (тести в образ не потрібні)."
+    },
+    {
+      "field": "dockerfile",
+      "check": "mentionsAll",
+      "value": [
+        "(^|\\n)USER\\s+\\S+"
+      ],
+      "message": "Запускай не від root: створи користувача і `USER …`."
+    },
+    {
+      "field": "dockerfile",
+      "check": "mentionsAll",
+      "value": [
+        "CMD\\s*\\[",
+        "\"fastapi\"",
+        "\"run\""
+      ],
+      "message": "`CMD [\"fastapi\", \"run\", \"app/main.py\"]` — exec-форма, щоб SIGTERM дійшов до сервера."
+    },
+    {
+      "field": "dockerfile",
+      "check": "notMentions",
+      "value": [
+        "COPY\\s+\\.\\s+\\.",
+        "fastapi\\s+dev",
+        "--reload"
+      ],
+      "message": "Без `COPY . .`, `fastapi dev` і `--reload` — це для розробки."
+    },
+    {
+      "field": "compose",
+      "check": "mentionsAll",
+      "value": [
+        "services:",
+        "(^|\\n)\\s+db:",
+        "(^|\\n)\\s+api:",
+        "(^|\\n)\\s+worker:"
+      ],
+      "message": "Три сервіси: `db`, `api`, `worker`."
+    },
+    {
+      "field": "compose",
+      "check": "mentionsAll",
+      "value": [
+        "image: *[\"']?postgres:18"
+      ],
+      "message": "`db`: `image: postgres:18`."
+    },
+    {
+      "field": "compose",
+      "check": "mentionsAll",
+      "value": [
+        ":/var/lib/postgresql",
+        "(^|\\n)volumes:"
+      ],
+      "message": "Іменований том на `/var/lib/postgresql` (для `postgres:18`) і секція `volumes:` верхнього рівня."
+    },
+    {
+      "field": "compose",
+      "check": "notMentions",
+      "value": [
+        ":/var/lib/postgresql/data"
+      ],
+      "message": "`postgres:18` тримає дані в `/var/lib/postgresql` — монтуй том туди, а не в `/data` (так було до версії 17)."
+    },
+    {
+      "field": "compose",
+      "check": "mentionsAll",
+      "value": [
+        "\\$\\{POSTGRES_PASSWORD:\\?"
+      ],
+      "message": "Пароль — `${POSTGRES_PASSWORD:?...}` з `.env`."
+    },
+    {
+      "field": "compose",
+      "check": "mentionsAll",
+      "value": [
+        "healthcheck:",
+        "pg_isready",
+        "service_healthy"
+      ],
+      "message": "`healthcheck` бази з `pg_isready`, а `api` і `worker` чекають `condition: service_healthy`."
+    },
+    {
+      "field": "compose",
+      "check": "mentionsAll",
+      "value": [
+        "DATABASE_URL",
+        "postgresql\\+psycopg://",
+        "@db:5432/"
+      ],
+      "message": "`DATABASE_URL: postgresql+psycopg://…@db:5432/…` — схема з драйвером і назва сервісу, а не localhost."
+    },
+    {
+      "field": "compose",
+      "check": "mentionsAll",
+      "value": [
+        "8000:8000"
+      ],
+      "message": "`api` публікує `8000:8000`."
+    },
+    {
+      "field": "compose",
+      "check": "mentionsAll",
+      "value": [
+        "python -m app\\.worker|\\[\\s*[\"']python[\"']\\s*,\\s*[\"']-m[\"']\\s*,\\s*[\"']app\\.worker[\"']"
+      ],
+      "message": "`worker`: `command: python -m app.worker`."
+    },
+    {
+      "field": "compose",
+      "check": "notMentions",
+      "value": [
+        "@localhost",
+        "POSTGRES_PASSWORD: *[\"']?[A-Za-z0-9]{4,}[\"']?[ \\t]*(\\n|$)"
+      ],
+      "message": "Без `localhost` в адресі бази і без пароля прямо у файлі."
+    },
+    {
+      "field": "notes",
+      "check": "minLength",
+      "value": 80,
+      "message": "Поясни обидва рішення: порти worker і пароль."
+    }
+  ],
+  "model": {
+    "dockerfile": "FROM python:3.13-slim\n\nENV PYTHONUNBUFFERED=1 \\\n    PYTHONDONTWRITEBYTECODE=1\n\nWORKDIR /srv\n\n# Dependencies first: this layer is rebuilt only when requirements.txt changes.\nCOPY requirements.txt .\nRUN pip install --no-cache-dir -r requirements.txt\n\nCOPY app ./app\n\nRUN useradd --create-home repairs\nUSER repairs\n\nEXPOSE 8000\nCMD [\"fastapi\", \"run\", \"app/main.py\"]",
+    "compose": "services:\n  db:\n    image: postgres:18\n    environment:\n      POSTGRES_USER: repairs\n      POSTGRES_DB: repairs\n      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}\n    volumes:\n      - db-data:/var/lib/postgresql\n    healthcheck:\n      test: [\"CMD-SHELL\", \"pg_isready -U repairs -d repairs\"]\n      interval: 5s\n      timeout: 3s\n      retries: 10\n\n  api:\n    build: .\n    ports:\n      - \"8000:8000\"\n    environment:\n      DATABASE_URL: postgresql+psycopg://repairs:${POSTGRES_PASSWORD}@db:5432/repairs\n    depends_on:\n      db:\n        condition: service_healthy\n\n  worker:\n    build: .\n    command: python -m app.worker\n    environment:\n      DATABASE_URL: postgresql+psycopg://repairs:${POSTGRES_PASSWORD}@db:5432/repairs\n    depends_on:\n      db:\n        condition: service_healthy\n\nvolumes:\n  db-data:",
+    "notes": "worker нічого не слухає: він сам ходить у базу й у поштовий сервіс, тому публікувати порти немає сенсу, а кожен відкритий порт — зайва поверхня атаки. Він використовує той самий образ, що й API, — одна збірка, однакові версії коду й залежностей, різниться лише команда. Пароль бази читається з .env (він у .gitignore і .dockerignore) через ${POSTGRES_PASSWORD:?…}: compose.yaml лежить у публічному репозиторії, а якщо змінну забули задати, compose зупиниться з повідомленням замість того, щоб підняти базу з порожнім паролем."
+  },
+  "checklist": [
+    "Шар із залежностями йде до копіювання коду",
+    "В образі немає тестів, .venv, .git і .env",
+    "Процес у контейнері працює не від root",
+    "CMD в exec-формі",
+    "api і worker збираються з одного Dockerfile",
+    "Адреса бази — назва сервісу db, не localhost",
+    "Пароль не записаний у жодному файлі репозиторію"
+  ],
+  "hints": [
+    "Залежності для образу — із закріпленого `requirements.txt`: `COPY requirements.txt .`, `RUN pip install --no-cache-dir -r requirements.txt`, і лише потім `COPY app ./app`. Пакет встановлювати не треба: `fastapi run app/main.py` і `python -m app.worker` запускаються з `WORKDIR`.",
+    "`worker` — це `build: .` (той самий образ) і `command: python -m app.worker`, без `ports`.",
+    "Не забудь `.dockerignore` у репозиторії: `.venv`, `.git`, `__pycache__`, `.pytest_cache`, `.env`, `*.db`."
+  ],
+  "explanation": "Docker для портфоліо — це показ, що ти знаєш, як сервіс живе поза твоїм ноутбуком: залежності кешуються окремим шаром, образ не тягне тести й секрети, процес не root, `SIGTERM` доходить до сервера. Compose описує всю систему одним файлом: база з томом і healthcheck, API і worker з одного образу, які стартують лише після здорової бази. Типові помилки: `localhost` в адресі бази (у контейнері це сам контейнер), пароль у `compose.yaml`, окремий Dockerfile для worker (дві збірки, що можуть розійтися), том на `/var/lib/postgresql/data` для `postgres:18`."
+}

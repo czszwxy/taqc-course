@@ -1,0 +1,42 @@
+{
+  "title": "Notifications and tests",
+  "minutes": 80,
+  "summary": "Крок 4 проєкту — надійні повідомлення й тести: процес доставки читає outbox, надсилає кожне pending-повідомлення, рахує спроби, після N невдач позначає failed, робить commit після кожного повідомлення (at-least-once і чому одержувачу потрібна ідемпотентність), як його запускати поруч з API; стратегія тестів проєкту — домен, база, API, що тестувати де; тести API з підміною залежностей, що ловлять зламані версії",
+  "resources": [
+    {
+      "title": "SQLAlchemy 2.0: Session Basics",
+      "url": "https://docs.sqlalchemy.org/en/20/orm/session_basics.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: Testing",
+      "url": "https://fastapi.tiangolo.com/tutorial/testing/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: Testing Dependencies with Overrides",
+      "url": "https://fastapi.tiangolo.com/advanced/testing-dependencies/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "pytest docs: How to parametrize fixtures and test functions",
+      "url": "https://docs.pytest.org/en/stable/how-to/parametrize.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: at-least-once delivery and idempotent consumers",
+      "url": "https://www.youtube.com/results?search_query=at+least+once+delivery+idempotent+consumer",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

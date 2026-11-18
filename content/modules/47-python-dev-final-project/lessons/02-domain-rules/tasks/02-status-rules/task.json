@@ -1,0 +1,11 @@
+{
+  "type": "python",
+  "title": "Step 1a: status transitions and roles",
+  "statement": "Перша частина `repairs.py` — правила статусів. `Status` і ролі `CUSTOMER` / `STAFF` уже є в стартовому файлі.\n\n1. Заповни **`TRANSITIONS`** за таблицею з брифу: ключ — `(звідки, куди)`, значення — множина ролей.\n2. **`RepairError(code)`** — виняток з атрибутом `code`; `str(error)` — сам код.\n3. **`change_status(current, new, role)`** повертає `Status(new)`, якщо перехід дозволено. Переходу немає → `RepairError(\"invalid_transition\")`; перехід є, але не для цієї ролі → `RepairError(\"forbidden\")`. Статуси можуть прийти рядками (з бази): `\"repairing\"`, а не `Status.REPAIRING`.\n4. **`next_statuses(current, role)`** — список статусів, куди ця роль може перевести заявку, **у порядку оголошення `Status`** (для кнопок в інтерфейсі).\n\n```python\nchange_status(\"repairing\", \"ready\", STAFF)       # Status.READY\nchange_status(\"received\", \"diagnosing\", CUSTOMER) # RepairError: forbidden\nchange_status(\"received\", \"ready\", STAFF)        # RepairError: invalid_transition\nnext_statuses(\"received\", STAFF)                 # [Status.DIAGNOSING, Status.CANCELLED]\n```",
+  "hints": [
+    "Вісім рядків таблиці — вісім ключів; у `received → cancelled` множина з двох ролей: `{CUSTOMER, STAFF}`.",
+    "`roles = TRANSITIONS.get((Status(current), Status(new)))`: `None` → переходу немає; `role not in roles` → не та роль.",
+    "`next_statuses`: `[new for new in Status if role in TRANSITIONS.get((current, new), set())]` — цикл по `Status` дає потрібний порядок."
+  ],
+  "explanation": "Таблиця переходів — це дані, тому одна функція перевіряє будь-який перехід, а `next_statuses` будує кнопки з того самого словника: правило живе в одному місці. Дві помилки розрізняються, бо клієнт API реагує по-різному: `forbidden` — «це може зробити інша людина», `invalid_transition` — «так не буває». Типові помилки: перевірити роль раніше за існування переходу (і відповісти `forbidden` на неіснуючий перехід), забути `Status(...)` для рядків з бази або повернути кнопки у випадковому порядку множини."
+}

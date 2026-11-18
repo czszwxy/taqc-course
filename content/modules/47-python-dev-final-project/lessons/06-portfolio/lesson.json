@@ -1,0 +1,49 @@
+{
+  "title": "Ship it: repository, Docker, CI and the story",
+  "minutes": 120,
+  "summary": "Крок 5 — проєкт стає репозиторієм у портфоліо: пакет app/ і тести в tests/ (імпорти, conftest.py, pyproject з dev-залежностями), налаштування з DATABASE_URL, таблиці через міграцію, worker як окремий процес; Dockerfile і compose з базою, API і worker; CI з ruff і pytest; README, з якого проєкт запускається дослівно; історія комітів без секретів; розповідь про проєкт на співбесіді — рішення, компроміси й що далі",
+  "resources": [
+    {
+      "title": "Python Packaging User Guide: Writing your pyproject.toml",
+      "url": "https://packaging.python.org/en/latest/guides/writing-pyproject-toml/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: FastAPI in Containers — Docker",
+      "url": "https://fastapi.tiangolo.com/deployment/docker/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Docker docs: Compose file reference",
+      "url": "https://docs.docker.com/reference/compose-file/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "GitHub Docs: Building and testing Python",
+      "url": "https://docs.github.com/en/actions/tutorials/build-and-test-code/python",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "GitHub Docs: About READMEs",
+      "url": "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: how to present a portfolio project in a developer interview",
+      "url": "https://www.youtube.com/results?search_query=how+to+present+portfolio+project+developer+interview",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

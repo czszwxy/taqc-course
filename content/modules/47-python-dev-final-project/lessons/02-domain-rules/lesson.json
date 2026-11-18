@@ -1,0 +1,42 @@
+{
+  "title": "Domain rules in plain Python",
+  "minutes": 75,
+  "summary": "Крок 1 проєкту — правила без бази й HTTP: машина станів як словник «(звідки, куди) → ролі», дві різні доменні помилки (forbidden і invalid_transition), кнопки для інтерфейсу з next_statuses; дати в робочих днях (weekday, свята, «день прийому не рахується»), прострочення лише поки годинник іде; гроші цілими гривнями, округлення вгору за розпочаті блоки, незмінні dataclass; тести на межі парою значень і мутанти",
+  "resources": [
+    {
+      "title": "Python docs: enum — StrEnum",
+      "url": "https://docs.python.org/3/library/enum.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: datetime — date.weekday()",
+      "url": "https://docs.python.org/3/library/datetime.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: dataclasses",
+      "url": "https://docs.python.org/3/library/dataclasses.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: math.ceil",
+      "url": "https://docs.python.org/3/library/math.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: finite state machine in Python",
+      "url": "https://www.youtube.com/results?search_query=finite+state+machine+python+tutorial",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

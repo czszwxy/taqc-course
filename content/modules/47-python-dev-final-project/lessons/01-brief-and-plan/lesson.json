@@ -1,0 +1,35 @@
+{
+  "title": "Project brief and plan",
+  "minutes": 60,
+  "summary": "Бриф фінального проєкту — бекенд сервісного центру Gadgetly Repairs: хто ним користується, статуси заявки й ролі, строки в робочих днях, кошторис і гарантія, повідомлення клієнту; шари проєкту (домен → база → сервіс → API) і кроки модуля; практика: правила брифу на числах, огляд вимог з питаннями й припущеннями, план з ендпоінтами, таблицями й етапами",
+  "resources": [
+    {
+      "title": "FastAPI docs: Bigger Applications — Multiple Files",
+      "url": "https://fastapi.tiangolo.com/tutorial/bigger-applications/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: enum — StrEnum",
+      "url": "https://docs.python.org/3/library/enum.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: HTTP response status codes",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: planning a backend portfolio project",
+      "url": "https://www.youtube.com/results?search_query=python+backend+portfolio+project+planning",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

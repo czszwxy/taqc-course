@@ -1,0 +1,11 @@
+{
+  "type": "python",
+  "title": "Step 1c: the repair estimate",
+  "statement": "Третя частина `repairs.py` — кошторис. `Part(name, price, accidental=False)` і ціни роботи вже є в стартовому файлі.\n\n1. **`Estimate`** — `@dataclass(frozen=True)` з полями `parts_total`, `labour_total`, `total` (цілі гривні).\n2. **`estimate(parts, labour_minutes, under_warranty)`** повертає `Estimate`:\n   - деталі — сума цін; **за гарантією** платні лише деталі з `accidental=True`;\n   - робота — `LABOUR_BLOCK_PRICE` за **кожен розпочатий** блок у `LABOUR_BLOCK_MINUTES` хвилин; за гарантією робота безкоштовна;\n   - `total` = деталі + робота;\n   - `labour_minutes < 0` або від'ємна ціна деталі → `ValueError` (для деталі — з її назвою в повідомленні), навіть якщо деталь безкоштовна за гарантією.\n\n```python\nscreen = Part(\"screen\", 2400)\nglass = Part(\"back glass\", 300, accidental=True)\nestimate([screen, glass], 50, False)   # Estimate(parts_total=2700, labour_total=600, total=3300)\nestimate([screen, glass], 50, True)    # Estimate(parts_total=300, labour_total=0, total=300)\n```",
+  "hints": [
+    "Блоки: `math.ceil(labour_minutes / LABOUR_BLOCK_MINUTES)` — 15 хв дає 1, 16 хв дає 2.",
+    "Деталь платна, якщо `not under_warranty or part.accidental`.",
+    "Перевіряй `part.price < 0` для кожної деталі до рішення, чи вона платна."
+  ],
+  "explanation": "Кошторис — чиста функція над цілими числами, тому межі перевіряються легко: 15 і 16 хвилин, гарантія з `accidental` деталлю, деталь за 0 грн. Незмінний `Estimate` можна порівняти одним `==` і не можна випадково змінити в API. Типові помилки: `//` замість `ceil` (робота дешевшає на блок), гарантія, що покриває й `accidental` деталі, перевірка ціни лише для платних деталей — тоді від'ємна ціна проходить за гарантією й ламає дані."
+}

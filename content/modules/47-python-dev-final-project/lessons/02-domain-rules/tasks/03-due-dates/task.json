@@ -1,0 +1,11 @@
+{
+  "type": "python",
+  "title": "Step 1b: due dates in working days",
+  "statement": "Друга частина `repairs.py` — строки. `Status` — у `status.py` (з кроку 1a, лише для читання); `SLA_DAYS` уже є в стартовому файлі.\n\n1. **`is_working_day(day, holidays=frozenset())`** — пн–пт і не свято.\n2. **`due_date(received_on, priority, holidays=frozenset())`** — дата через `SLA_DAYS[priority]` робочих днів після дня прийому. **День прийому не рахується**, вихідні й свята пропускаються. Невідомий пріоритет → `ValueError` з назвою пріоритету в повідомленні.\n3. **`CLOCK_RUNNING`** — кортеж статусів, у яких іде годинник SLA: `received`, `diagnosing`, `repairing`.\n4. **`is_overdue(due_on, today, status)`** — `True`, лише якщо статус у `CLOCK_RUNNING` **і** сьогодні пізніше за `due_on`.\n\n```python\ndue_date(date(2026, 11, 18), \"normal\")          # ср → пн, date(2026, 11, 23)\ndue_date(date(2026, 11, 21), \"urgent\")          # сб → пн, date(2026, 11, 23)\nis_overdue(date(2026, 11, 23), date(2026, 11, 23), \"repairing\")         # False — день дедлайну\nis_overdue(date(2026, 11, 20), date(2026, 11, 24), \"waiting_approval\")  # False — годинник стоїть\n```",
+  "hints": [
+    "`is_working_day`: `day.weekday() < 5 and day not in holidays` (5 — субота; заведи константу).",
+    "`due_date`: `day = received_on`, `left = SLA_DAYS[priority]`; поки `left > 0`: `day += timedelta(days=1)`, і якщо день робочий — `left -= 1`.",
+    "Перевір пріоритет до циклу: `if priority not in SLA_DAYS: raise ValueError(f\"unknown priority: {priority}\")`."
+  ],
+  "explanation": "Крок по одному дню з лічильником сам пропускає вихідні, свята й межі місяців — без календарної арифметики. Головні рішення брифу записано кодом явно: перший день не рахується (спершу `+1`, потім перевірка), прострочення — строго `today > due_on`, а годинник іде лише в трьох статусах. Типові помилки: рахувати день прийому, перевіряти вихідні, але забути свята, `>=` замість `>`, вважати простроченою заявку, на яку клієнт ще не відповів."
+}

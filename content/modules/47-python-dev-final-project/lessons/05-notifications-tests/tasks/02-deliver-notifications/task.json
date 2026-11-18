@@ -1,0 +1,14 @@
+{
+  "type": "python",
+  "title": "Step 4a: deliver notifications with retries",
+  "statement": "`outbox.py` — процес доставки. `models.py` — еталон кроку 2 (лише для читання): `Notification` має `recipient`, `text`, `status` (`pending` / `sent` / `failed`), `attempts`, `last_error`.\n\nНапиши **`deliver_pending(session, send, *, max_attempts=3)`**:\n\n1. Візьми всі повідомлення зі статусом `pending` у порядку `id`.\n2. Для кожного: `attempts += 1`, потім `send(recipient, text)`.\n   - Успіх → `status = \"sent\"`, `last_error = None`.\n   - Будь-який `Exception` → `last_error = str(error)`; якщо `attempts >= max_attempts` — `status = \"failed\"`, інакше лишається `pending` (наступний запуск спробує знову). Наступні повідомлення однаково обробляються.\n3. **`commit` після кожного повідомлення.**\n4. Поверни звіт `{\"sent\": n, \"retry\": n, \"failed\": n}` — скільки повідомлень цього запуску куди потрапило.\n\n```python\nreport = deliver_pending(session, mailer.send)\n# {\"sent\": 12, \"retry\": 1, \"failed\": 0}\n```",
+  "hints": [
+    "`pending = session.scalars(select(Notification).where(Notification.status == \"pending\").order_by(Notification.id)).all()`.",
+    "`try: send(...)` / `except Exception as error: ...` / `else: ...` — `else` виконується лише без винятку; `session.commit()` — після цього блоку, всередині циклу.",
+    "Звіт: почни з `{\"sent\": 0, \"retry\": 0, \"failed\": 0}` і додавай 1 у відповідний ключ."
+  ],
+  "explanation": "Worker має пережити дві біди: падіння `send` на одному повідомленні й падіння самого процесу. Від першої рятує `except` на кожне повідомлення, від другої — `commit` після кожного: уже надіслані позначені, і повтор торкнеться щонайбільше одного листа (at-least-once). `attempts` і `failed` не дають безнадійним повідомленням крутитися вічно, а `last_error` пояснює, що сталося. Типові помилки: один `commit` у кінці, `attempts` лише при невдачі (не видно, скільки було спроб), `failed` на одну спробу раніше, `last_error` лишається після успіху.",
+  "codeRules": [
+    { "kind": "require", "pattern": "except\\s+Exception", "message": "Лови `Exception` на кожне повідомлення — одна невдача не зупиняє чергу." }
+  ]
+}

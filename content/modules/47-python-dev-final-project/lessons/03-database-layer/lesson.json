@@ -1,0 +1,42 @@
+{
+  "title": "The database layer",
+  "minutes": 80,
+  "summary": "Крок 2 проєкту — дані: моделі SQLAlchemy з CheckConstraint, індексом і історією змін (relationship з order_by і cascade delete-orphan); репозиторій, що лише робить flush, фільтри, які складаються, сторінка й total одним count-запитом; сервіс як межа транзакції; оптимістичне блокування умовним UPDATE … WHERE version = ? і rowcount; outbox — повідомлення пишеться в тій самій транзакції, що й статус",
+  "resources": [
+    {
+      "title": "SQLAlchemy 2.0: ORM Quick Start",
+      "url": "https://docs.sqlalchemy.org/en/20/orm/quickstart.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLAlchemy 2.0: ORM-Enabled INSERT, UPDATE, and DELETE statements",
+      "url": "https://docs.sqlalchemy.org/en/20/orm/queryguide/dml.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLAlchemy 2.0: Configuring Version Counters",
+      "url": "https://docs.sqlalchemy.org/en/20/orm/versioning.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLAlchemy 2.0: Cascades",
+      "url": "https://docs.sqlalchemy.org/en/20/orm/cascades.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: transactional outbox pattern",
+      "url": "https://www.youtube.com/results?search_query=transactional+outbox+pattern+explained",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "type": "written",
+  "title": "The CI workflow",
+  "statement": "Напиши `.github/workflows/ci.yml` для Gadgetly Repairs.\n\n- Запуск на `push` і `pull_request` у гілку `main`.\n- Job **`test`**: checkout, Python 3.13 з кешем pip, `pip install -e \".[dev]\"`, `ruff check .`, `pytest`. Тести працюють на SQLite в пам'яті — жодних сервісів не потрібно.\n- Job **`image`**: лише після успішного `test` (`needs`), збирає образ з Dockerfile **без публікації** — так CI доводить, що Dockerfile робочий, навіть якщо в тебе немає Docker.\n- Мінімальні права токена: `permissions: contents: read`.\n\nУ нотатках поясни, навіщо `needs` і чому образ збирається в CI, а не лише в тебе.",
+  "fields": [
+    { "id": "yaml", "label": "ci.yml", "kind": "textarea", "placeholder": "name: CI\non:\n  …" },
+    { "id": "notes", "label": "Notes for the reviewer", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "yaml", "check": "mentionsAll", "value": ["(^|\\n)on:", "push", "pull_request", "main"], "message": "Тригери: `push` і `pull_request` у `main`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["contents: *read"], "message": "`permissions: contents: read` — лише читання коду." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["actions/checkout@v7", "actions/setup-python@v7", "python-version: *[\"']?3\\.13", "cache: *[\"']?pip"], "message": "`actions/checkout@v7`, `actions/setup-python@v7` з `python-version: \"3.13\"` і `cache: pip`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["pip install -e *[\"']?\\.\\[dev\\]"], "message": "Встановлення: `pip install -e \".[dev]\"`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["ruff check", "pytest"], "message": "Кроки `ruff check .` і `pytest`." },
+    { "field": "yaml", "check": "mentionsAll", "value": ["needs: *\\[?\\s*test"], "message": "`image` чекає на `test`: `needs: test`." },
+    { "field": "yaml", "check": "mentionsAny", "value": ["docker build", "docker/build-push-action@v7"], "message": "Збери образ: `docker build .` або `docker/build-push-action@v7`." },
+    { "field": "yaml", "check": "notMentions", "value": ["push: *true", "docker push", "docker/login-action"], "message": "Образ лише збирається — без входу в реєстр і публікації." },
+    { "field": "notes", "check": "minLength", "value": 80, "message": "Поясни обидва рішення: `needs` і збірку образу в CI." }
+  ],
+  "model": {
+    "yaml": "name: CI\n\non:\n  push:\n    branches: [main]\n  pull_request:\n    branches: [main]\n\npermissions:\n  contents: read\n\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v7\n      - uses: actions/setup-python@v7\n        with:\n          python-version: \"3.13\"\n          cache: pip\n      - run: pip install -e \".[dev]\"\n      - run: ruff check .\n      - run: pytest\n\n  image:\n    needs: test\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v7\n      - run: docker build --tag gadgetly-repairs:ci .",
+    "notes": "needs: test — образ збирається лише тоді, коли тести й лінтер зелені: немає сенсу витрачати хвилини CI на збірку коду, який уже зламано, а червоний test одразу показує, де проблема. Образ збирається в CI, бо в мене Docker може бути не встановлено, а без перевірки Dockerfile ламається тихо (забутий файл у COPY, нова залежність без запису в requirements.txt). Збірка на чистій машині GitHub доводить, що проєкт збирається не лише на моєму ноутбуці. Публікації немає, тому достатньо contents: read."
+  },
+  "checklist": [
+    "Workflow запускається і на PR, і на push у main",
+    "Права токена мінімальні",
+    "Встановлення через pyproject з dev-залежностями",
+    "Лінтер і тести — окремі кроки, щоб було видно, що саме впало",
+    "Збірка образу чекає на тести і нічого не публікує"
+  ],
+  "hints": [
+    "Структура: `on:` → `permissions:` → `jobs:` з двома jobs `test` і `image`; у кожного свій `runs-on` і `steps`.",
+    "У `image` теж потрібен `actions/checkout@v7` — кожен job стартує на чистій машині."
+  ],
+  "explanation": "CI — це рев'юер, що не втомлюється: на кожен PR він перевіряє лінтер, тести й те, що Dockerfile збирається на чужій машині. `needs` вибудовує порядок і економить хвилини, `permissions: contents: read` не дає workflow більше прав, ніж треба. Типові помилки: забути `checkout` у другому job, ставити залежності не з `.[dev]` (тоді `ruff` і `pytest` відсутні), публікувати образ з кожного PR."
+}

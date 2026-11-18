@@ -1,0 +1,13 @@
+{
+  "title": "Final Project: Python Backend",
+  "description": "Фінальний проєкт курсу Python-розробника: бекенд сервісного центру Gadgetly Repairs, від брифу до репозиторію в портфоліо. Бриф, огляд вимог і план; доменні правила (статуси заявки й ролі, строки в робочих днях, кошторис з гарантією) і тести на них; шар бази даних на SQLAlchemy (моделі з обмеженнями, репозиторій з фільтрами й сторінками, сервіс зміни статусу з історією, оптимістичним блокуванням і outbox); REST API на FastAPI з токенами й ролями; доставка повідомлень з повторами, тести API, що ловлять зламані версії; і портфоліо: Dockerfile, compose, CI, README і розповідь про проєкт на співбесіді.",
+  "goals": [
+    "Turn a product brief into questions, assumptions, endpoints, tables and milestones",
+    "Implement domain rules as plain Python and cover their boundaries with tests",
+    "Build the database layer: models with constraints, a repository with filters and pages, a transactional service with an optimistic lock",
+    "Expose the service as a REST API with FastAPI: validation, roles, status codes and error bodies",
+    "Deliver notifications reliably with an outbox and retries",
+    "Write API tests that catch real regressions",
+    "Publish the project with Docker, CI and a README, and tell its story at an interview"
+  ]
+}

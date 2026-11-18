@@ -1,0 +1,29 @@
+{
+  "type": "classify",
+  "title": "Where does this test belong?",
+  "statement": "Ти плануєш тести Gadgetly Repairs. Для кожної перевірки обери **найдешевший** рівень, на якому вона ловить свій баг.",
+  "categories": [
+    { "id": "domain", "label": "Domain unit test", "description": "Чиста функція з `repairs.py`, без бази й HTTP" },
+    { "id": "database", "label": "Database test", "description": "Репозиторій, сервіс або worker на SQLite з новою `Session`" },
+    { "id": "api", "label": "API test", "description": "`TestClient` з підміненими залежностями" }
+  ],
+  "items": [
+    { "id": "due-holiday", "text": "A holiday in the middle moves the due date by one day", "category": "domain" },
+    { "id": "minutes-16", "text": "16 minutes of labour cost 300 UAH", "category": "domain" },
+    { "id": "customer-approves", "text": "Only the customer may move `waiting_approval → repairing`", "category": "domain", "explain": "Це правило таблиці переходів — `change_status` перевіряє його без HTTP." },
+    { "id": "overdue-waiting", "text": "A ticket in `waiting_approval` is never overdue", "category": "domain" },
+    { "id": "total-count", "text": "`total` counts all matching tickets, not only the page", "category": "database" },
+    { "id": "stale-version", "text": "A stale version leaves no history row behind, even if the caller commits", "category": "database", "explain": "Про транзакцію й `rollback` — потрібна справжня база, але не HTTP." },
+    { "id": "ready-notification", "text": "Moving to `ready` adds exactly one pending notification", "category": "database" },
+    { "id": "worker-commit", "text": "The worker commits after every message", "category": "database" },
+    { "id": "other-404", "text": "A customer gets 404 for another customer's ticket", "category": "api", "explain": "Перевірку власника робить API-шар (`visible_ticket`)." },
+    { "id": "location", "text": "`POST /tickets` answers 201 with a `Location` header", "category": "api" },
+    { "id": "extra-field", "text": "An extra `customer_email` field in the body is rejected with 422", "category": "api" },
+    { "id": "conflict-409", "text": "The `conflict` error comes back as `409 {\"detail\": {\"error\": \"conflict\"}}`", "category": "api", "explain": "Сам конфлікт перевіряє тест сервісу; тут — лише переклад коду в HTTP." }
+  ],
+  "hints": [
+    "Якщо для перевірки не потрібні ні база, ні HTTP — це тест домену.",
+    "Транзакції, `commit`, лічильники в базі — тест на SQLite. Коди статусів, заголовки, токени й чужі дані — тест API."
+  ],
+  "explanation": "Кожен рівень вище дорожчий: тест домену виконується за мікросекунди й не має налаштувань, тест бази потребує рушія й таблиць, тест API — ще й клієнта, токенів і підміни залежностей. Тому перевірку ставлять на найнижчий рівень, де живе код, що може зламатися. Переклад у HTTP і доступ до чужих даних живуть лише в API — їх більше ніде не перевірити."
+}

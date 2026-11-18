@@ -1,0 +1,11 @@
+{
+  "type": "python",
+  "title": "Step 2a: models with constraints",
+  "statement": "`models.py` проєкту. `Base` і готовий `Notification` (приклад стилю) уже є в стартовому файлі — допиши **`Ticket`** і **`StatusChange`**.\n\n**`Ticket`**, таблиця `tickets`:\n\n| Стовпець | Тип | Деталі |\n|---|---|---|\n| `id` | `int` | первинний ключ |\n| `customer_email` | `String(254)` | з індексом |\n| `device` | `String(60)` | |\n| `problem` | `String(500)` | |\n| `priority` | `String(10)` | `CheckConstraint`: лише `urgent`, `normal`, `low` |\n| `status` | `String(20)` | за замовчуванням `\"received\"`; `CheckConstraint`: лише сім статусів з брифу |\n| `received_on`, `due_on` | `date` | |\n| `estimate_total` | `int` або `NULL` | `CheckConstraint`: `NULL` або `>= 0` |\n| `version` | `int` | за замовчуванням `1` |\n\nУсі стовпці, крім `estimate_total`, — `NOT NULL`. Зв'язок **`history`** — список `StatusChange` **за `id`**, `back_populates=\"ticket\"`, `cascade=\"all, delete-orphan\"`.\n\n**`StatusChange`**, таблиця `status_changes`: `id`, `ticket_id` (`ForeignKey(\"tickets.id\")`, з індексом), `from_status` і `to_status` (`String(20)`), `by_role` (`String(10)`), `changed_on` (`date`), зв'язок `ticket` з `back_populates=\"history\"`.",
+  "hints": [
+    "Обмеження — у `__table_args__` кортежем: `CheckConstraint(\"priority IN ('urgent', 'normal', 'low')\", name=\"ticket_priority\")`. Кожному дай унікальне `name`.",
+    "`estimate_total: Mapped[int | None]` — `NULL` дозволено; `received_on: Mapped[date]` — дата, `NOT NULL`.",
+    "`history: Mapped[list[\"StatusChange\"]] = relationship(back_populates=\"ticket\", cascade=\"all, delete-orphan\", order_by=\"StatusChange.id\")`."
+  ],
+  "explanation": "Модель — це контракт з базою: обмеження ловлять зламані дані, навіть якщо їх записав не твій код (міграція, ручний `UPDATE`). Тип `Mapped[...]` вирішує `NULL` / `NOT NULL`, тому `int | None` — лише там, де «немає значення» справді має сенс. `order_by` в історії гарантує порядок подій, а `delete-orphan` — що прибрана зі списку подія не лишиться в базі сиротою. Типові помилки: забути один зі статусів у `CheckConstraint` (і впасти на ньому через місяць), `NOT NULL` для `estimate_total`, історія без порядку."
+}

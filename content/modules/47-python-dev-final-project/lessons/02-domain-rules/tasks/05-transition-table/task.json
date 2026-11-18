@@ -1,0 +1,32 @@
+{
+  "type": "table",
+  "title": "What does change_status answer?",
+  "statement": "Для кожного запиту визнач, що поверне `change_status` за таблицею переходів з брифу і який код статусу пізніше віддасть API.",
+  "givenColumns": ["Current status", "Requested status", "Role"],
+  "answerColumns": [
+    {
+      "id": "result",
+      "label": "Result",
+      "options": ["allowed (200)", "forbidden (403)", "invalid_transition (409)"]
+    }
+  ],
+  "rows": [
+    { "given": ["`received`", "`diagnosing`", "staff"], "answers": { "result": "allowed (200)" } },
+    { "given": ["`received`", "`diagnosing`", "customer"], "answers": { "result": "forbidden (403)" }, "explain": "Перехід є, але брати заявку в роботу може лише майстер." },
+    { "given": ["`received`", "`cancelled`", "customer"], "answers": { "result": "allowed (200)" }, "explain": "Поки заявку не взяли в роботу, клієнт може її скасувати." },
+    { "given": ["`diagnosing`", "`cancelled`", "customer"], "answers": { "result": "forbidden (403)" }, "explain": "Під час діагностики скасовує лише staff." },
+    { "given": ["`diagnosing`", "`repairing`", "staff"], "answers": { "result": "invalid_transition (409)" }, "explain": "Ремонт без погодженого кошторису неможливий: з `diagnosing` — лише в `waiting_approval` або `cancelled`." },
+    { "given": ["`waiting_approval`", "`repairing`", "staff"], "answers": { "result": "forbidden (403)" }, "explain": "Погоджує кошторис клієнт, а не майстер за нього." },
+    { "given": ["`waiting_approval`", "`cancelled`", "customer"], "answers": { "result": "allowed (200)" }, "explain": "Клієнт відмовився від ремонту." },
+    { "given": ["`repairing`", "`cancelled`", "customer"], "answers": { "result": "invalid_transition (409)" }, "explain": "Розпочатий ремонт не скасовують — переходу немає для жодної ролі." },
+    { "given": ["`ready`", "`closed`", "staff"], "answers": { "result": "allowed (200)" } },
+    { "given": ["`ready`", "`repairing`", "staff"], "answers": { "result": "invalid_transition (409)" }, "explain": "Назад у ремонт заявка не повертається — у брифі такого переходу немає." },
+    { "given": ["`closed`", "`received`", "staff"], "answers": { "result": "invalid_transition (409)" }, "explain": "`closed` — кінцевий статус." },
+    { "given": ["`ready`", "`ready`", "staff"], "answers": { "result": "invalid_transition (409)" }, "explain": "Перехід «у той самий статус» теж відсутній у таблиці." }
+  ],
+  "hints": [
+    "Спершу знайди рядок «звідки → куди» в таблиці брифу. Немає рядка — `invalid_transition` для будь-кого.",
+    "Рядок є — подивись, хто може. Твоєї ролі там немає — `forbidden`."
+  ],
+  "explanation": "Перевірка завжди йде у два кроки: чи існує перехід, і лише потім — чи дозволений він цій ролі. Тому `repairing → cancelled` дає `invalid_transition` навіть клієнту, хоча здається, що «клієнту просто не можна». Різні коди потрібні інтерфейсу: на `403` він скаже «це робить майстер», на `409` — «стан заявки вже не дозволяє цієї дії»."
+}

@@ -1,0 +1,97 @@
+{
+  "type": "quiz",
+  "title": "Domain rules check",
+  "show": 6,
+  "hints": [
+    "Спершу «чи існує перехід», потім «чи можна цій ролі». Межі перевіряють парою значень.",
+    "`math.ceil` округлює вгору, `//` — вниз. Гроші — цілі числа."
+  ],
+  "questions": [
+    {
+      "id": "strenum",
+      "kind": "single",
+      "text": "Що надрукує код?",
+      "code": "from enum import StrEnum\n\nclass Loan(StrEnum):\n    ON_LOAN = \"on_loan\"\n\nprint(Loan.ON_LOAN == \"on_loan\", Loan(\"on_loan\") is Loan.ON_LOAN)",
+      "options": [
+        { "text": "`True True`", "correct": true },
+        { "text": "`False True`" },
+        { "text": "`True False`" }
+      ],
+      "explanation": "`StrEnum` — підклас `str`, тому порівнюється з рядком. `Loan(\"on_loan\")` знаходить той самий член enum — один об'єкт."
+    },
+    {
+      "id": "check-order",
+      "kind": "single",
+      "text": "Клієнт просить перевести заявку `received → ready`. Якого коду помилки чекати від `change_status`?",
+      "options": [
+        { "text": "`invalid_transition`: такого переходу немає для жодної ролі", "correct": true },
+        { "text": "`forbidden`: клієнт не може ставити `ready`" },
+        { "text": "Залежить від того, яку перевірку написати першою — обидва варіанти правильні" }
+      ],
+      "explanation": "Відповідь не має залежати від того, хто питає: переходу `received → ready` немає взагалі. Тому спершу шукають перехід, і лише потім перевіряють роль."
+    },
+    {
+      "id": "get-vs-index",
+      "kind": "single",
+      "text": "Чим `TRANSITIONS.get((current, new))` кращий за `TRANSITIONS[(current, new)]` у `change_status`?",
+      "options": [
+        { "text": "Для відсутнього переходу він повертає `None` замість `KeyError`, і ми кидаємо власну доменну помилку з кодом", "correct": true },
+        { "text": "Він швидший" },
+        { "text": "`[...]` не працює з кортежами як ключами" }
+      ],
+      "explanation": "`KeyError` нічого не скаже клієнту API. `RepairError(\"invalid_transition\")` перетвориться на зрозумілий `409`."
+    },
+    {
+      "id": "holidays-param",
+      "kind": "single",
+      "text": "Чому свята передаються в `due_date` параметром, а не зчитуються всередині з файлу чи бази?",
+      "options": [
+        { "text": "Функція лишається чистою: тест сам передає свята й перевіряє будь-який випадок без файлів і бази", "correct": true },
+        { "text": "Так менше коду" },
+        { "text": "Свята ніколи не змінюються" }
+      ],
+      "explanation": "Залежність, яку передають ззовні, легко підмінити. Звідки брати свята в продакшні, вирішить шар вище."
+    },
+    {
+      "id": "blocks-31",
+      "kind": "text",
+      "text": "Робота оплачується за кожні розпочаті 15 хвилин. Скільки блоків за **31** хвилину?",
+      "accept": ["3"],
+      "placeholder": "число",
+      "explanation": "31 / 15 ≈ 2,07 → `math.ceil` дає 3: третій блок уже розпочато. `31 // 15` дав би 2 — це помилка на 150 грн на користь клієнта."
+    },
+    {
+      "id": "money-int",
+      "kind": "single",
+      "text": "Чому суми кошторису — `int` (гривні), а не `float`?",
+      "options": [
+        { "text": "`float` не точний для десяткових дробів (`0.1 + 0.2 != 0.3`), а гроші мають сходитися до копійки", "correct": true },
+        { "text": "SQLite не вміє зберігати `float`" },
+        { "text": "`int` займає менше пам'яті" }
+      ],
+      "explanation": "Якщо потрібні копійки, гроші рахують у копійках (`int`) або `decimal.Decimal`, але ніколи у `float`."
+    },
+    {
+      "id": "frozen",
+      "kind": "multiple",
+      "text": "Що дає `@dataclass(frozen=True)` для результату кошторису?",
+      "options": [
+        { "text": "Поля не можна змінити після створення — `FrozenInstanceError`", "correct": true },
+        { "text": "`==` порівнює всі поля, тож тест пише `assert result == Estimate(3300, 600, 3900)`", "correct": true },
+        { "text": "Об'єкт можна використовувати як ключ словника (є `__hash__`)", "correct": true },
+        { "text": "Типи полів перевіряються під час виконання", "explain": "Ні: dataclass не перевіряє типи. `Estimate(\"a\", 1, 2)` створиться без помилки." }
+      ]
+    },
+    {
+      "id": "boundary-pair",
+      "kind": "single",
+      "text": "Розробник написав `today >= due_on` замість `today > due_on`. Яка пара тестів це впіймає?",
+      "options": [
+        { "text": "`today == due_on` → не прострочено; `today` = наступний день → прострочено", "correct": true },
+        { "text": "`today` за тиждень до дедлайну і за тиждень після" },
+        { "text": "Будь-який тест з `due_on` у минулому" }
+      ],
+      "explanation": "Помилка живе рівно на межі: лише `today == due_on` дає різну відповідь на правильному і зламаному коді."
+    }
+  ]
+}

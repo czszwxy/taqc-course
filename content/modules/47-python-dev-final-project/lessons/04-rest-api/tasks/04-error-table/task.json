@@ -1,0 +1,29 @@
+{
+  "type": "table",
+  "title": "Who answers and with what?",
+  "statement": "Запити до готового API Gadgetly Repairs. Для кожного визнач **код статусу** і **шар**, який вирішує, що відповісти: Pydantic (валідація тіла / параметрів), `auth.py` (токен), API (`visible_ticket` і ендпоінт), домен (`change_status`) чи сервіс (`move_ticket`).",
+  "givenColumns": ["Request", "Situation"],
+  "answerColumns": [
+    { "id": "code", "label": "Status", "options": ["200", "201", "401", "403", "404", "409", "422"] },
+    { "id": "layer", "label": "Decided by", "options": ["Pydantic", "auth.py", "API", "domain", "service"] }
+  ],
+  "rows": [
+    { "given": ["`POST /tickets` with `olena-token`", "valid body"], "answers": { "code": "201", "layer": "API" } },
+    { "given": ["`POST /tickets` with `olena-token`", "`\"priority\": \"asap\"`"], "answers": { "code": "422", "layer": "Pydantic" }, "explain": "`Literal[\"urgent\", \"normal\", \"low\"]` відхиляє значення ще до коду ендпоінта." },
+    { "given": ["`GET /tickets`", "no `Authorization` header"], "answers": { "code": "401", "layer": "auth.py" } },
+    { "given": ["`POST /tickets` with `staff-token`", "valid body"], "answers": { "code": "403", "layer": "API" }, "explain": "Правило «створюють лише клієнти» перевіряє сам ендпоінт." },
+    { "given": ["`GET /tickets/3` with `taras-token`", "ticket 3 belongs to Olena"], "answers": { "code": "404", "layer": "API" }, "explain": "`visible_ticket`: чужа заявка виглядає як неіснуюча." },
+    { "given": ["`POST /tickets/3/status` with `olena-token`", "`received → diagnosing`, right version"], "answers": { "code": "403", "layer": "domain" }, "explain": "Заявку Олена бачить, але перехід дозволено лише staff — `change_status` кидає `forbidden`." },
+    { "given": ["`POST /tickets/3/status` with `staff-token`", "`received → ready`"], "answers": { "code": "409", "layer": "domain" }, "explain": "Переходу немає — `invalid_transition`." },
+    { "given": ["`POST /tickets/3/status` with `staff-token`", "`diagnosing → cancelled`, but the ticket is already version 4 and the body says 3"], "answers": { "code": "409", "layer": "service" }, "explain": "Перехід дозволено, але `UPDATE … WHERE version = 3` не оновив жодного рядка — `conflict`." },
+    { "given": ["`POST /tickets/3/status` with `staff-token`", "`diagnosing → waiting_approval`"], "answers": { "code": "409", "layer": "service" }, "explain": "У `waiting_approval` — лише через `/estimate`: сервіс кидає `estimate_required`." },
+    { "given": ["`POST /tickets/3/estimate` with `staff-token`", "`\"labour_minutes\": 900`"], "answers": { "code": "422", "layer": "Pydantic" } },
+    { "given": ["`POST /tickets/3/estimate` with `staff-token`", "ticket in `diagnosing`, right version, valid body"], "answers": { "code": "200", "layer": "service" }, "explain": "Кошторис рахує домен, а статус, суму й версію записує `move_ticket` однією транзакцією." },
+    { "given": ["`GET /tickets/99/history` with `staff-token`", "there is no ticket 99"], "answers": { "code": "404", "layer": "API" } }
+  ],
+  "hints": [
+    "Порядок перевірок у запиті: Pydantic (тіло) і токен → API (чи бачить заявку, хто створює) → домен (перехід і роль) → сервіс (версія, кошторис, запис).",
+    "`403` буває у двох шарах: «створюють лише клієнти» — API, «перехід не для твоєї ролі» — домен."
+  ],
+  "explanation": "Коли знаєш, який шар відповідає, знаєш, де шукати баг і де писати тест. Валідацію робить Pydantic ще до коду, токен — `auth.py`, видимість чужих заявок — API, правила переходів — домен, а все, що залежить від стану в базі (версія, «є кошторис»), — сервіс. Однаковий код `409` може прийти з домену (`invalid_transition`) і з сервісу (`conflict`, `estimate_required`) — тому тіло помилки містить машинно-читаний код."
+}
