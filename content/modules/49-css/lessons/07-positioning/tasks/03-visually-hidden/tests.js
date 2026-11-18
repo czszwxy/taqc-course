@@ -3,7 +3,6 @@ const onScreen = (el) => {
   const b = box(el);
   return b.width > 1 && b.height > 1 && b.bottom > 0 && b.right > 0 && b.top < window.innerHeight && b.left < window.innerWidth;
 };
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 describe('visually hidden', () => {
   it('hidden texts are 1×1px but stay in the accessibility tree', () => {
@@ -37,7 +36,6 @@ describe('skip link', () => {
 
   it('the skip link appears on focus', async () => {
     const release = simulateFocus(skip());
-    await wait(400);
     try {
       expect(onScreen(skip()), 'Після фокусу skip link має з\'явитися у видимій частині сторінки.').toBe(true);
     } finally {

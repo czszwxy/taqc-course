@@ -23,9 +23,15 @@ const CHECK_TIMEOUT_MS = 10_000;
 /** Off-screen: the page lays out at its real size, but the learner never sees it. */
 const HIDDEN_FRAME_STYLE = 'position:fixed;left:-20000px;top:0;border:0;pointer-events:none;';
 
-/** Waits until the browser has applied a change (two animation frames). */
-function nextPaint(): Promise<void> {
-  return new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+/**
+ * Applies a size change of the frame right away: reading layout makes the browser lay out the parent (new frame
+ * size) and the page in it, media queries included. No requestAnimationFrame — browsers pause it in background
+ * tabs, and a Check must not hang because the learner switched tabs.
+ */
+function applyLayout(frame: HTMLIFrameElement, doc: Document): Promise<void> {
+  void frame.getBoundingClientRect();
+  void doc.documentElement.getBoundingClientRect();
+  return Promise.resolve();
 }
 
 function waitForLoad(frame: HTMLIFrameElement): Promise<boolean> {
@@ -75,7 +81,7 @@ function checkGlobals(frame: HTMLIFrameElement, doc: Document, win: Window): Rec
     setViewport: async (width: number, height: number = CHECK_FRAME_HEIGHT) => {
       frame.style.setProperty('width', `${width}px`);
       frame.style.setProperty('height', `${height}px`);
-      await nextPaint();
+      await applyLayout(frame, doc);
     },
   };
 }

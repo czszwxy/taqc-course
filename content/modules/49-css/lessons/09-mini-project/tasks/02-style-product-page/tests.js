@@ -2,7 +2,6 @@ const near = (a, b, delta = 1) => Math.abs(a - b) <= delta;
 const px = (value) => parseFloat(value);
 const el = (selector) => must($(selector), `Немає ${selector}.`);
 const middle = (node) => box(node).top + box(node).height / 2;
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 describe('base', () => {
   it('border-box everywhere, body without margin, readable text', () => {
@@ -40,7 +39,6 @@ describe('header and skip link', () => {
     expect(isHidden(skip), 'Не ховай skip link через display: none.').toBe(false);
     expect(visible(), 'Skip link видно до фокусу.').toBe(false);
     const release = simulateFocus(skip);
-    await wait(400);
     try {
       expect(visible(), 'Skip link не з\'являється при фокусі.').toBe(true);
     } finally {

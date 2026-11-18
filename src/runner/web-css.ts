@@ -151,9 +151,14 @@ export function simulateFocus(doc: Document, el: Element): () => void {
   const style = doc.createElement('style');
   style.textContent = copies.join('\n');
   doc.head.append(style);
+  // The focused look applies at once: a transition would still be running when the check measures it.
+  const savedStyle = el.getAttribute('style');
+  el.setAttribute('style', `${savedStyle ? `${savedStyle};` : ''}transition: none !important`);
   el.setAttribute(FOCUS_MARK, '');
   return () => {
     el.removeAttribute(FOCUS_MARK);
+    if (savedStyle === null) el.removeAttribute('style');
+    else el.setAttribute('style', savedStyle);
     style.remove();
   };
 }
