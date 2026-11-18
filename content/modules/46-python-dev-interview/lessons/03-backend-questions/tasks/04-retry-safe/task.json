@@ -1,0 +1,28 @@
+{
+  "type": "classify",
+  "title": "Can the client retry this?",
+  "statement": "Мобільний застосунок магазину не отримав відповіді або отримав помилку. Для кожного випадку визнач, що робити з повтором.",
+  "categories": [
+    { "id": "retry", "label": "Retry as is", "description": "Повтор нічого не зламає" },
+    { "id": "key", "label": "Retry only with the same Idempotency-Key", "description": "Без ключа повтор може зробити дію двічі" },
+    { "id": "fix", "label": "Don't retry — change the request first", "description": "Той самий запит дасть ту саму помилку" }
+  ],
+  "items": [
+    { "id": "get-timeout", "text": "`GET /products/42` timed out", "category": "retry" },
+    { "id": "put-timeout", "text": "`PUT /users/42/address` with the full address timed out", "category": "retry", "explain": "`PUT` замінює ресурс тим самим тілом — повтор дає той самий стан." },
+    { "id": "delete-timeout", "text": "`DELETE /cart/items/7` timed out", "category": "retry", "explain": "Повторне видалення вже видаленого лишає той самий стан (можливо, з `404`)." },
+    { "id": "pay-timeout", "text": "`POST /payments` for order 1002 timed out", "category": "key", "explain": "Перший запит міг уже списати гроші. Повтор — лише з тим самим ключем, щоб сервер повернув збережений результат." },
+    { "id": "order-502", "text": "`POST /orders` returned `502 Bad Gateway`", "category": "key", "explain": "`502` не каже, чи дійшов запит до сервісу: замовлення могло створитися." },
+    { "id": "patch-delta", "text": "`PATCH /stock/MOUSE-01` with `{\"delta\": -1}` timed out", "category": "key", "explain": "Відносна зміна не ідемпотентна: два повтори — мінус два." },
+    { "id": "patch-set", "text": "`PATCH /orders/1002` with `{\"status\": \"cancelled\"}` timed out", "category": "retry", "explain": "Встановлення абсолютного значення дає той самий результат при повторі." },
+    { "id": "422", "text": "`POST /orders` returned `422` because `quantity` is missing", "category": "fix" },
+    { "id": "401", "text": "`GET /orders` returned `401` — the access token expired", "category": "fix", "explain": "Спершу оновити токен (refresh), потім робити новий запит з новим токеном." },
+    { "id": "409", "text": "`POST /orders/1002/pay` returned `409` — the order is already paid", "category": "fix" }
+  ],
+  "hints": [
+    "Ідемпотентні методи (`GET`, `PUT`, `DELETE`) можна повторювати. `POST` — лише з ключем.",
+    "`PATCH` залежить від тіла: «встанови значення» — ідемпотентно, «зміни на дельту» — ні.",
+    "4xx означає, що проблема в самому запиті: повтор без змін дасть ту саму відповідь."
+  ],
+  "explanation": "Питання не «чи була помилка», а «чи міг перший запит уже змінити стан». Тайм-аут і `502` не кажуть, чи дійшов запит, тому неідемпотентні операції повторюють лише з тим самим ключем ідемпотентності. Помилки 4xx — сигнал змінити запит (додати поле, оновити токен), а не повторювати його."
+}

@@ -1,0 +1,36 @@
+{
+  "title": "System design basics for juniors",
+  "minutes": 60,
+  "summary": "Що питають з system design у джуна і як відповідати структурно: вимоги (функціональні й нефункціональні) → оцінка навантаження «на серветці» → API → модель даних → загальна схема → вузькі місця й компроміси; будівельні блоки (балансувальник і кілька екземплярів застосунку, кеш, черга з воркерами, об'єктне сховище і CDN, репліки для читання, пошуковий рушій, обмеження частоти, планувальник), масштабування без стану, затримка реплікації, кінцева узгодженість і типові помилки",
+  "resources": [
+    {
+      "title": "The System Design Primer (GitHub)",
+      "url": "https://github.com/donnemartin/system-design-primer",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "The Twelve-Factor App",
+      "url": "https://12factor.net/",
+      "kind": "article",
+      "lang": "en",
+      "note": "процеси без стану, конфігурація, фонові процеси",
+      "needsVerification": true
+    },
+    {
+      "title": "PostgreSQL docs: High Availability, Load Balancing, and Replication",
+      "url": "https://www.postgresql.org/docs/current/high-availability.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: system design interview for beginners",
+      "url": "https://www.youtube.com/results?search_query=system+design+interview+for+beginners",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

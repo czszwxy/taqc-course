@@ -1,0 +1,55 @@
+{
+  "type": "sql",
+  "title": "Classic interview queries",
+  "statement": "П'ять задач, які дають на співбесідах найчастіше, — на базі магазину. Перед кожною подумай уголос: який крок логічного порядку тут головний (`WHERE`, `HAVING`, підзапит?).",
+  "database": "gadgetly",
+  "challenges": [
+    {
+      "id": "second-price",
+      "prompt": "Друга за величиною ціна товару (одне число). Не пиши число в запиті.",
+      "model": "SELECT MAX(price) FROM products WHERE price < (SELECT MAX(price) FROM products);",
+      "rules": [
+        { "kind": "forbid", "pattern": "41999", "message": "Ціну має знайти запит, а не ти." }
+      ],
+      "explain": "Два способи: `MAX` серед менших за максимум або `SELECT DISTINCT price ... ORDER BY price DESC LIMIT 1 OFFSET 1`. `DISTINCT` важливий: без нього два однакові максимуми дадуть неправильну «другу» ціну."
+    },
+    {
+      "id": "shared-cities",
+      "prompt": "Міста, де живе більше одного клієнта (роль `customer`, місто відоме): `city`, кількість клієнтів.",
+      "model": "SELECT city, COUNT(*) FROM users WHERE role = 'customer' AND city IS NOT NULL GROUP BY city HAVING COUNT(*) > 1;",
+      "rules": [
+        { "kind": "require", "pattern": "having", "message": "Умова на кількість у групі — `HAVING COUNT(*) > 1`." }
+      ]
+    },
+    {
+      "id": "happy-customers",
+      "prompt": "`email` клієнтів, у яких є хоча б одне доставлене (`delivered`) замовлення і **жодного** скасованого (`cancelled`).",
+      "model": "SELECT u.email FROM users u JOIN orders o ON o.user_id = u.id GROUP BY u.id, u.email HAVING SUM(o.status = 'delivered') > 0 AND SUM(o.status = 'cancelled') = 0;",
+      "rules": [
+        { "kind": "require", "pattern": "having|not\\s+exists|not\\s+in|except", "message": "«Жодного скасованого» — через `HAVING` з підрахунком або `NOT EXISTS`." }
+      ],
+      "explain": "`WHERE status <> 'cancelled'` тут не підходить: він прибере скасовані рядки, але залишить клієнта, у якого вони були. Умова стосується всієї групи замовлень клієнта — тому `HAVING` (`SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) = 0`) або `NOT EXISTS`."
+    },
+    {
+      "id": "monthly-revenue",
+      "prompt": "Виторг по місяцях: місяць у форматі `YYYY-MM` і сума `total` замовлень зі статусами `paid`, `shipped`, `delivered`. Порядок — за місяцем.",
+      "model": "SELECT substr(created_at, 1, 7) AS month, SUM(total) FROM orders WHERE status IN ('paid', 'shipped', 'delivered') GROUP BY month ORDER BY month;",
+      "orderMatters": true,
+      "explain": "Дати — текст `YYYY-MM-DD`, тож місяць — перші 7 символів (`substr` або `strftime('%Y-%m', created_at)`)."
+    },
+    {
+      "id": "never-sold",
+      "prompt": "Назви товарів, яких не було в **жодному не скасованому** замовленні.",
+      "model": "SELECT p.name FROM products p WHERE NOT EXISTS (SELECT 1 FROM order_items i JOIN orders o ON o.id = i.order_id WHERE i.product_id = p.id AND o.status <> 'cancelled');",
+      "rules": [
+        { "kind": "require", "pattern": "not\\s+exists|not\\s+in|left\\s+join|except", "message": "«Немає жодного» — через `NOT EXISTS`, `LEFT JOIN ... IS NULL` або `NOT IN`." }
+      ],
+      "explain": "Товари, що траплялися лише в скасованих замовленнях, теж «не продані». Тому умова на статус — **усередині** підзапиту: шукаємо хоч одну нескасовану позицію з цим товаром."
+    }
+  ],
+  "hints": [
+    "Умови на групу (кількість, «жодного») — у `HAVING`. У SQLite `status = 'cancelled'` дає 1 або 0, тож `SUM(status = 'cancelled')` рахує скасовані.",
+    "«Не було жодного X» — `NOT EXISTS (SELECT 1 FROM ... WHERE ...)`, де всі умови про X — усередині підзапиту."
+  ],
+  "explanation": "Ці задачі перевіряють, чи розумієш ти, на якому рівні працює умова: рядок (`WHERE`), група (`HAVING`) чи «існує / не існує» (підзапит). Найчастіша помилка — фільтрувати рядки там, де умова стосується всієї групи: `WHERE status <> 'cancelled'` не скаже, чи були в клієнта скасовані замовлення."
+}

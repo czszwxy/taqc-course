@@ -1,0 +1,118 @@
+{
+  "type": "quiz",
+  "title": "SQL interview questions",
+  "show": 6,
+  "hints": ["WHERE — рядки, HAVING — групи. Вікна не можна у WHERE. NOT IN боїться NULL. Індекс — швидке читання, повільніший запис."],
+  "questions": [
+    {
+      "id": "where-having",
+      "kind": "single",
+      "text": "Треба міста, де більше двох клієнтів. Де умова `COUNT(*) > 2`?",
+      "options": [
+        { "text": "У `HAVING` — вона стосується груп після `GROUP BY`", "correct": true },
+        { "text": "У `WHERE` — так швидше" },
+        { "text": "У `ORDER BY`" }
+      ],
+      "explanation": "`WHERE` фільтрує рядки до групування, коли агрегатів ще немає."
+    },
+    {
+      "id": "count-null",
+      "kind": "single",
+      "text": "Після `users LEFT JOIN orders` для кожного користувача рахують замовлення. Чому `COUNT(orders.id)`, а не `COUNT(*)`?",
+      "options": [
+        { "text": "`COUNT(*)` порахує і рядок користувача без замовлень (з `NULL`) як 1, а `COUNT(orders.id)` — 0", "correct": true },
+        { "text": "`COUNT(*)` не працює з `JOIN`" },
+        { "text": "Різниці немає" }
+      ],
+      "explanation": "`COUNT(column)` пропускає `NULL`, `COUNT(*)` рахує рядки."
+    },
+    {
+      "id": "not-in-null",
+      "kind": "single",
+      "text": "`SELECT name FROM users WHERE id NOT IN (SELECT referrer_id FROM users)` повертає нуль рядків, хоча «нерефереї» точно є. Чому?",
+      "options": [
+        { "text": "Серед `referrer_id` є `NULL`, а порівняння з `NULL` дає «невідомо» — жоден рядок не проходить", "correct": true },
+        { "text": "`NOT IN` не працює з підзапитами" },
+        { "text": "Підзапит виконався після основного запиту" }
+      ],
+      "explanation": "`x NOT IN (1, NULL)` не буває правдою. `NOT EXISTS` чи `LEFT JOIN ... IS NULL` такої пастки не мають."
+    },
+    {
+      "id": "rank-ties",
+      "kind": "single",
+      "text": "Ціни: 900, 700, 700, 500. Яке місце отримає 500 від `RANK()` і від `DENSE_RANK()` (за спаданням)?",
+      "options": [
+        { "text": "`RANK()` — 4, `DENSE_RANK()` — 3", "correct": true },
+        { "text": "Обидві — 3" },
+        { "text": "`RANK()` — 3, `DENSE_RANK()` — 4" }
+      ],
+      "explanation": "`RANK` пропускає місця після нічиєї, `DENSE_RANK` — ні, `ROW_NUMBER` дає різні номери навіть рівним."
+    },
+    {
+      "id": "window-in-where",
+      "kind": "single",
+      "text": "Чому `WHERE ROW_NUMBER() OVER (...) = 1` — помилка?",
+      "options": [
+        { "text": "Віконні функції обчислюються на кроці `SELECT`, уже після `WHERE`; фільтрують їх через підзапит або CTE", "correct": true },
+        { "text": "`ROW_NUMBER` не можна порівнювати з числом" },
+        { "text": "Це не помилка, так і пишуть" }
+      ],
+      "explanation": "Шаблон: `WITH ranked AS (SELECT ..., ROW_NUMBER() OVER (...) AS place ...) SELECT ... WHERE place = 1`."
+    },
+    {
+      "id": "index-cost",
+      "kind": "single",
+      "text": "Чому не варто створювати індекс на кожен стовпець?",
+      "options": [
+        { "text": "Кожен індекс сповільнює `INSERT` / `UPDATE` / `DELETE` і займає місце, а запити, що його не використовують, нічого не виграють", "correct": true },
+        { "text": "База дозволяє лише один індекс на таблицю" },
+        { "text": "Індекси сповільнюють `SELECT`" }
+      ],
+      "explanation": "Індекс — компроміс: швидше читання певних запитів ціною запису. Додають під конкретні повільні запити, перевіривши план."
+    },
+    {
+      "id": "leftmost",
+      "kind": "single",
+      "text": "Є індекс `(customer_id, created_at)`. Який запит використає його найкраще?",
+      "options": [
+        { "text": "`WHERE customer_id = 5 ORDER BY created_at DESC`", "correct": true },
+        { "text": "`WHERE created_at >= '2024-09-01'`" },
+        { "text": "`WHERE lower(status) = 'paid'`" }
+      ],
+      "explanation": "Перший стовпець — у рівності, другий — у сортуванні: база читає індекс одним відрізком у потрібному порядку."
+    },
+    {
+      "id": "slow-query",
+      "kind": "single",
+      "text": "Запит у продакшені став повільним. Що зробити першим?",
+      "options": [
+        { "text": "Подивитися план виконання (`EXPLAIN` / `EXPLAIN ANALYZE`): чи є повне сканування, який індекс обрано", "correct": true },
+        { "text": "Додати індекси на всі стовпці з `WHERE`" },
+        { "text": "Переписати запит на ORM" }
+      ],
+      "explanation": "План показує, де справді витрачається час. Індекс додають, коли план підтверджує, що він потрібен."
+    },
+    {
+      "id": "isolation-default",
+      "kind": "single",
+      "text": "Який рівень ізоляції за замовчуванням у PostgreSQL і яка аномалія на ньому можлива?",
+      "options": [
+        { "text": "Read Committed — неповторюване читання: той самий рядок у транзакції може прочитатися з різними значеннями", "correct": true },
+        { "text": "Serializable — жодних аномалій" },
+        { "text": "Read Uncommitted — брудне читання" }
+      ],
+      "explanation": "Кожен запит у Read Committed бачить усе, що закомічено до його початку, тож між двома читаннями дані можуть змінитися."
+    },
+    {
+      "id": "lost-update",
+      "kind": "single",
+      "text": "Два запити одночасно продають останній товар: обидва читають `stock = 1` і пишуть `0`. Як виправити найпростіше?",
+      "options": [
+        { "text": "Одним атомарним запитом: `UPDATE products SET stock = stock - 1 WHERE id = ? AND stock > 0` і перевірити кількість змінених рядків", "correct": true },
+        { "text": "Читати `stock` двічі перед записом" },
+        { "text": "Додати індекс на `stock`" }
+      ],
+      "explanation": "Умова в `UPDATE` перевіряється і змінюється атомарно: другий запит змінить 0 рядків. Альтернатива — `SELECT ... FOR UPDATE`."
+    }
+  ]
+}

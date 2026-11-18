@@ -1,0 +1,28 @@
+{
+  "type": "table",
+  "title": "Name the concept in the code",
+  "statement": "На співбесіді часто показують шматок коду і питають: «Що тут відбувається? Як це називається?». Для кожного фрагмента обери поняття, яке він демонструє.",
+  "givenColumns": ["Code"],
+  "answerColumns": [
+    {
+      "id": "concept",
+      "label": "Concept",
+      "options": ["Closure", "Generator", "Context manager", "Decorator", "Unpacking", "Dunder method", "Mutable default argument", "Shallow copy"]
+    }
+  ],
+  "rows": [
+    { "given": ["`def counter():` with `count = 0` and an inner `def step(): nonlocal count; count += 1; return count`, returning `step`"], "answers": { "concept": "Closure" }, "explain": "Внутрішня функція пам'ятає змінну охопної функції навіть після її завершення." },
+    { "given": ["`def read_rows(path):` that opens a file and does `for line in file: yield line.split(\",\")`"], "answers": { "concept": "Generator" } },
+    { "given": ["`with db.transaction():` around two `UPDATE` calls"], "answers": { "concept": "Context manager" }, "explain": "`with` гарантує `commit` або `rollback` при виході — навіть після винятку." },
+    { "given": ["`@require_role(\"admin\")` above `def delete_order(order_id):`"], "answers": { "concept": "Decorator" } },
+    { "given": ["`first, *rest = sorted(prices)`"], "answers": { "concept": "Unpacking" } },
+    { "given": ["`def __len__(self): return len(self._items)` in `class Cart`"], "answers": { "concept": "Dunder method" }, "explain": "Після цього `len(cart)` працює, як для вбудованих колекцій." },
+    { "given": ["`def add_tag(tag, tags=[]): tags.append(tag); return tags`"], "answers": { "concept": "Mutable default argument" } },
+    { "given": ["`snapshot = list(carts)` where every cart is a list, then `snapshot[0].append(\"cable\")` also changes `carts[0]`"], "answers": { "concept": "Shallow copy" } }
+  ],
+  "hints": [
+    "Шукай ключове слово: `yield`, `with`, `@`, `nonlocal`, `*`, `__…__`.",
+    "Дві останні — пастки: значення за замовчуванням обчислюється один раз, а `list(...)` копіює лише зовнішній рівень."
+  ],
+  "explanation": "Уміння назвати поняття за кодом — половина відповіді: далі говориш, навіщо воно й яка пастка. Для замикання — «пам'ятає змінну, а не значення»; для генератора — «лінивий і одноразовий»; для контекстного менеджера — «прибирання гарантоване»; для декоратора — «не забути `functools.wraps`»."
+}

@@ -1,0 +1,49 @@
+{
+  "title": "SQL at the interview",
+  "minutes": 75,
+  "summary": "SQL на співбесіді розробника: логічний порядок виконання запиту, WHERE проти HAVING, пастки з NULL (NOT IN, COUNT), CTE, віконні функції (ROW_NUMBER, RANK, DENSE_RANK, SUM OVER, LAG / LEAD) і задачі «топ-N у групі», «наростаючий підсумок», «друга за величиною»; індекси (B-tree, складений індекс і крайній лівий стовпець, коли індекс не допоможе, EXPLAIN), транзакції, рівні ізоляції й аномалії, втрачене оновлення",
+  "resources": [
+    {
+      "title": "PostgreSQL docs: Window Functions (tutorial)",
+      "url": "https://www.postgresql.org/docs/current/tutorial-window.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "SQLite docs: Window Functions",
+      "url": "https://www.sqlite.org/windowfunctions.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "PostgreSQL docs: Indexes",
+      "url": "https://www.postgresql.org/docs/current/indexes.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "PostgreSQL docs: Transaction Isolation",
+      "url": "https://www.postgresql.org/docs/current/transaction-iso.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Use The Index, Luke — SQL indexing explained",
+      "url": "https://use-the-index-luke.com/",
+      "kind": "book",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: SQL window functions explained",
+      "url": "https://www.youtube.com/results?search_query=sql+window+functions+explained+row_number+rank",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

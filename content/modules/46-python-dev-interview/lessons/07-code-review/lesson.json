@@ -1,0 +1,36 @@
+{
+  "title": "Code review at the interview",
+  "minutes": 60,
+  "summary": "Етап «код-рев'ю» на співбесіді і в роботі: порядок перевірки (коректність → безпека → цілісність даних → продуктивність → надійність → тести → читабельність), рівні важливості коментарів (blocker / should fix / nit), як формулювати коментар (про код, з причиною і пропозицією), «червоні прапорці» в Python-бекенді (SQL через f-рядок, N+1, блокувальні виклики в async def, запит без тайм-ауту, проковтнутий виняток, float для грошей, відсутня перевірка прав), практика: виправити PR з чотирма помилками і написати рев'ю ендпоінта повернення коштів",
+  "resources": [
+    {
+      "title": "Google Engineering Practices: How to do a code review",
+      "url": "https://google.github.io/eng-practices/review/reviewer/",
+      "kind": "article",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Conventional Comments",
+      "url": "https://conventionalcomments.org/",
+      "kind": "article",
+      "lang": "en",
+      "note": "мітки коментарів: issue, suggestion, nitpick, question",
+      "needsVerification": true
+    },
+    {
+      "title": "OWASP SQL Injection Prevention Cheat Sheet",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: how to do a code review",
+      "url": "https://www.youtube.com/results?search_query=how+to+do+a+code+review+python",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

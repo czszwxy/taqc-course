@@ -1,0 +1,44 @@
+{
+  "title": "Live coding: algorithms and small classes",
+  "minutes": 75,
+  "summary": "Як проходить live coding на Junior Python Developer і що в ньому оцінюють: уточнення умови, приклади, простий робочий розв'язок, складність, перевірка крайніх випадків уголос; родини типових задач (рядки й підрахунки, інтервали, хеш-таблиці, стеки, черги, графи, «спроєктуй клас»), стандартна бібліотека, яку варто знати (collections, heapq, bisect, itertools), фрази англійською для розмови з інтерв'юером; практика: злиття інтервалів, вільні слоти, LRU-кеш і підказки пошуку на префіксному дереві",
+  "resources": [
+    {
+      "title": "Python docs: collections — Container datatypes",
+      "url": "https://docs.python.org/3/library/collections.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "Counter, defaultdict, deque, OrderedDict (move_to_end, popitem)",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: heapq — Heap queue algorithm",
+      "url": "https://docs.python.org/3/library/heapq.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: bisect — Array bisection algorithm",
+      "url": "https://docs.python.org/3/library/bisect.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python Wiki: TimeComplexity",
+      "url": "https://wiki.python.org/moin/TimeComplexity",
+      "kind": "article",
+      "lang": "en",
+      "note": "складність операцій list, dict, set, deque",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: mock coding interview Python",
+      "url": "https://www.youtube.com/results?search_query=mock+coding+interview+python+junior",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

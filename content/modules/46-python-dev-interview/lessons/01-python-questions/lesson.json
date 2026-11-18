@@ -1,0 +1,51 @@
+{
+  "title": "Python interview questions",
+  "minutes": 60,
+  "summary": "Як проходить технічна співбесіда на Junior Python Developer і як відповідати (визначення → приклад → де важливо → пастка): змінювані типи й хешованість, посилання і копії, is і ==, змінюваний аргумент за замовчуванням, області видимості й замикання, генератори, декоратори, dunder-методи й __hash__, як CPython керує пам'яттю, GIL і free-threaded збірка, що нового в 3.12–3.15, і «що надрукує цей код?»",
+  "resources": [
+    {
+      "title": "Python docs: Programming FAQ",
+      "url": "https://docs.python.org/3/faq/programming.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "змінювані аргументи за замовчуванням, замикання в циклі, копії",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: Data model",
+      "url": "https://docs.python.org/3/reference/datamodel.html",
+      "kind": "docs",
+      "lang": "en",
+      "note": "dunder-методи, __eq__ і __hash__",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: Glossary (GIL, hashable, iterator, generator)",
+      "url": "https://docs.python.org/3/glossary.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: What's New in Python 3.14",
+      "url": "https://docs.python.org/3/whatsnew/3.14.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python docs: What's New in Python 3.15",
+      "url": "https://docs.python.org/3/whatsnew/3.15.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: Python interview questions for junior developers",
+      "url": "https://www.youtube.com/results?search_query=python+interview+questions+junior+developer",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

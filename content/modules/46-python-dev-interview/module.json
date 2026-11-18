@@ -1,0 +1,15 @@
+{
+  "title": "Python Developer Interview",
+  "description": "Технічна співбесіда на Junior Python Developer: питання про Python і як він працює всередині, live coding (інтервали, LRU-кеш, префіксне дерево), бекенд-питання (HTTP, ідемпотентність, автентифікація, кешування, черги), SQL на співбесіді з віконними функціями та індексами, основи system design для джуна, тестове завдання на FastAPI з тестами й README, код-рев'ю і tech check по всьому блоку розробки. Загальні теми співбесід (резюме, STAR, англійська, пошук роботи) — у модулі «Getting Hired».",
+  "goals": [
+    "Answer Python interview questions with a definition, a short example and the trap behind it",
+    "Predict the output of tricky Python snippets and explain why",
+    "Solve classic live coding tasks while thinking aloud: intervals, an LRU cache, a prefix tree",
+    "Answer backend questions about HTTP, idempotency, auth, caching and background jobs",
+    "Write interview SQL with joins, HAVING, CTEs and window functions, and explain indexes",
+    "Design a small service step by step: requirements, API, data, building blocks, trade-offs",
+    "Complete a FastAPI take-home: domain rules, endpoint, tests and README",
+    "Review a pull request: find bugs, rank them and phrase comments well",
+    "Pass a tech check over the Python developer modules"
+  ]
+}

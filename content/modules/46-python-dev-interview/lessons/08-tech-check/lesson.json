@@ -1,0 +1,6 @@
+{
+  "title": "Tech check: Python backend",
+  "minutes": 50,
+  "summary": "Tech check по всьому блоку розробки на Python: pytest, Python поглиблено, алгоритми, бази даних і SQLAlchemy, FastAPI, Django, async, Docker і розгортання — відкриті питання вголос з таймером і самооцінкою, як на технічній співбесіді Junior Python Developer",
+  "resources": []
+}

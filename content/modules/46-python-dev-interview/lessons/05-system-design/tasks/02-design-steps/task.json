@@ -1,0 +1,19 @@
+{
+  "type": "order",
+  "title": "Order the steps of a design answer",
+  "statement": "Інтерв'юер просить спроєктувати сервіс коротких посилань для маркетингових розсилок магазину. Розстав кроки відповіді в правильному порядку.",
+  "items": [
+    "Ask about requirements: create and open links, custom aliases, how many links, how long they live",
+    "Estimate: links created per day, redirects per second at peak, storage for a year",
+    "Define the API: POST /links → short code, GET /{code} → 301 or 302 redirect",
+    "Define the data: links table with code (unique index), target URL, owner, created_at",
+    "Draw the request path: load balancer → app instances → database, with a cache for hot codes",
+    "Find bottlenecks and trade-offs: redirects are 100× more frequent than creates, so cache them; how codes are generated without collisions",
+    "Wrap up: what you deliberately left out and what you would add at 10× the traffic"
+  ],
+  "hints": [
+    "Від «що будуємо» до «як будуємо»: вимоги й числа — завжди спершу.",
+    "API йде перед даними: таблиці обслуговують операції, а не навпаки."
+  ],
+  "explanation": "Порядок не догма, але логіка така: без вимог не знаєш, що оцінювати; без чисел не знаєш, чи потрібен кеш; без API не знаєш, які запити обслуговуватиме модель даних; схема й вузькі місця спираються на все попереднє. Підсумок з тим, чого ти свідомо не робиш, показує, що ти бачиш межі рішення."
+}

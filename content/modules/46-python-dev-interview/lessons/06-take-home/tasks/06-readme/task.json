@@ -1,0 +1,30 @@
+{
+  "type": "written",
+  "title": "Take-home, step 4: the README",
+  "statement": "Останній крок тестового — README, з якого рев'юер почне. Напиши його для сервісу промокодів з кроків 1–3 (структура: `app/promos.py`, `app/main.py`, `tests/`, залежності в `pyproject.toml`).\n\nОбов'язково: що це за сервіс, як встановити і запустити (команди для Windows або Linux, на вибір), як запустити тести, приклад запиту й відповіді, коди помилок, припущення, що зробив(ла) б далі.",
+  "fields": [
+    { "id": "readme", "label": "README.md", "kind": "textarea", "placeholder": "# Promo quotes service\n…" }
+  ],
+  "rules": [
+    { "field": "readme", "check": "minLength", "value": 600, "message": "README має бути повним: запуск, тести, приклад, помилки, припущення." },
+    { "field": "readme", "check": "mentionsAny", "value": ["(pip install|uv sync|poetry install)"], "message": "Як встановити залежності?" },
+    { "field": "readme", "check": "mentionsAny", "value": ["(fastapi (run|dev)|uvicorn)"], "message": "Як запустити сервіс?" },
+    { "field": "readme", "check": "mentionsAny", "value": ["pytest"], "message": "Як запустити тести?" },
+    { "field": "readme", "check": "mentionsAll", "value": ["/quotes", "400", "422"], "message": "Приклад запиту до `/quotes` і коди помилок `400` та `422`." },
+    { "field": "readme", "check": "mentionsAny", "value": ["(assum|припущ)"], "message": "Розділ з припущеннями." },
+    { "field": "readme", "check": "mentionsAny", "value": ["(next|далі|todo|improve|покращ|більше часу|more time)"], "message": "Що зробив(ла) б далі, маючи більше часу?" }
+  ],
+  "model": {
+    "readme": "# Promo quotes service\n\nREST API that calculates a cart quote with an optional promo code: subtotal, discount and total. Built with FastAPI; the discount rules live in `app/promos.py` without any web framework, so they are tested directly.\n\n## Run\n\n```bash\npython -m venv .venv\n.venv\\Scripts\\activate          # Linux / macOS: source .venv/bin/activate\npip install -e \".[dev]\"\nfastapi dev app/main.py           # http://127.0.0.1:8000/docs\n```\n\n## Tests\n\n```bash\npytest\n```\n\n## API\n\n`POST /quotes`\n\n```json\n{\"items\": [{\"sku\": \"KB-02\", \"quantity\": 1}], \"code\": \"spring10\"}\n```\n\n→ `200 {\"subtotal\": 1599, \"discount\": 159, \"total\": 1440}`\n\n| Status | Body | When |\n|---|---|---|\n| 400 | `{\"detail\": {\"error\": \"unknown_product\", \"sku\": \"…\"}}` | a SKU is not in the catalog |\n| 400 | `{\"detail\": {\"error\": \"unknown\"}}` | no such promo code |\n| 400 | `{\"detail\": {\"error\": \"expired\" / \"used_up\" / \"below_minimum\"}}` | the code exists but cannot be applied |\n| 422 | validation errors | empty `items`, `quantity` outside 1–99 |\n\n## Assumptions\n\n- Prices are whole hryvnias; a percent discount is rounded down and capped at 50 %.\n- A code is valid until `expires_at`; at that exact moment it is already expired.\n- A fixed discount never exceeds the subtotal.\n- One promo code per cart; codes ignore case and surrounding spaces.\n- A quote changes nothing: the usage counter grows only when an order is placed, which is out of scope.\n- Catalog and promo codes are in memory (`app/catalog.py`).\n\n## Design decisions\n\n- Rules are pure functions, the HTTP layer only translates requests and errors.\n- Current time, prices and promo codes come from dependencies, so tests replace them with `app.dependency_overrides` and never depend on the real clock.\n- Errors carry a machine-readable `error` code for the frontend.\n\n## With more time\n\n- Store promo codes in PostgreSQL and count usages atomically when an order is placed (`UPDATE … WHERE used < max_uses`).\n- Rate-limit `POST /quotes` to stop brute-forcing codes.\n- Dockerfile + compose, CI with ruff and pytest."
+  },
+  "checklist": [
+    "Перший абзац пояснює, що робить сервіс",
+    "Команди запуску можна скопіювати й виконати дослівно",
+    "Є команда для тестів",
+    "Є приклад запиту й відповіді",
+    "Усі коди помилок описані з прикладом тіла",
+    "Припущення з плану перенесені в README",
+    "Є розділ «що далі» з конкретними кроками",
+    "Немає секретів, паролів і особистих даних"
+  ]
+}

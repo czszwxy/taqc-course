@@ -1,0 +1,47 @@
+{
+  "type": "sql",
+  "title": "More window functions: ties and neighbours",
+  "variantOf": "02-window-functions",
+  "statement": "Схожа задача: ще кілька звітів з віконними функціями. Зверни увагу на **однакові значення** — саме на них `ROW_NUMBER`, `RANK` і `DENSE_RANK` розходяться.",
+  "database": "gadgetly",
+  "challenges": [
+    {
+      "id": "dense-rank-customers",
+      "prompt": "Рейтинг клієнтів за кількістю замовлень: `user_id`, кількість замовлень і місце через `DENSE_RANK()` (найбільше замовлень — 1; однакова кількість — однакове місце, без пропусків).",
+      "model": "SELECT user_id, COUNT(*), DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) FROM orders GROUP BY user_id;",
+      "rules": [
+        { "kind": "require", "pattern": "dense_rank\\s*\\(\\s*\\)\\s*over", "message": "Місце без пропусків — `DENSE_RANK() OVER (...)`." }
+      ],
+      "explain": "Віконна функція може стояти над агрегатом: спершу `GROUP BY` рахує замовлення, потім вікно впорядковує групи."
+    },
+    {
+      "id": "second-in-category",
+      "prompt": "Другий за ціною товар кожної категорії: `category`, `name`, `price`.",
+      "model": "WITH ranked AS (SELECT category, name, price, ROW_NUMBER() OVER (PARTITION BY category ORDER BY price DESC) AS place FROM products) SELECT category, name, price FROM ranked WHERE place = 2;",
+      "rules": [
+        { "kind": "require", "pattern": "(row_number|rank|dense_rank)\\s*\\(\\s*\\)\\s*over", "message": "Пронумеруй товари в категорії віконною функцією." }
+      ]
+    },
+    {
+      "id": "next-cheaper",
+      "prompt": "Для кожного товару: `category`, `name`, `price` і назва **наступного дешевшого** товару тієї ж категорії (для найдешевшого — `NULL`).",
+      "model": "SELECT category, name, price, LEAD(name) OVER (PARTITION BY category ORDER BY price DESC) FROM products;",
+      "rules": [
+        { "kind": "require", "pattern": "(lead|lag)\\s*\\(", "message": "Сусідній рядок групи дає `LEAD(...)` (або `LAG` з іншим порядком)." }
+      ]
+    },
+    {
+      "id": "first-order",
+      "prompt": "Перше замовлення кожного клієнта: `user_id`, `id`, `created_at`.",
+      "model": "WITH ranked AS (SELECT user_id, id, created_at, ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_at) AS place FROM orders) SELECT user_id, id, created_at FROM ranked WHERE place = 1;",
+      "rules": [
+        { "kind": "require", "pattern": "row_number\\s*\\(\\s*\\)\\s*over", "message": "Розв'яжи через `ROW_NUMBER() OVER (PARTITION BY user_id ...)`." }
+      ]
+    }
+  ],
+  "hints": [
+    "Для рейтингу клієнтів: `GROUP BY user_id`, а в `SELECT` — `DENSE_RANK() OVER (ORDER BY COUNT(*) DESC)`.",
+    "«Наступний дешевший» при сортуванні за спаданням ціни — це наступний рядок: `LEAD(name) OVER (PARTITION BY category ORDER BY price DESC)`."
+  ],
+  "explanation": "Нумерація на однакових значеннях — улюблене питання: п'ять клієнтів з двома замовленнями всі отримують місце 1, а клієнти з одним — місце 2 (у `RANK()` було б 6). `LEAD` / `LAG` дивляться на сусідні рядки групи — так порівнюють товар з наступним, замовлення з попереднім. «Перше в групі» — той самий шаблон «топ-N» з `ROW_NUMBER()` і `place = 1`."
+}

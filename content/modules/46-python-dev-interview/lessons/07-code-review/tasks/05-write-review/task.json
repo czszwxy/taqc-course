@@ -1,0 +1,46 @@
+{
+  "type": "written",
+  "title": "Review a refund endpoint",
+  "statement": "На співбесіді показують PR. Напиши рев'ю: коментарі з рівнем (`blocker` / `should fix` / `nit` / `question`), причиною і пропозицією, а потім підсумок — зливати чи ні.\n\n```python\n@app.post(\"/orders/{order_id}/refund\")\nasync def refund(order_id: int, amount: float,\n                 user=Depends(get_current_user), db=Depends(get_db)):\n    order = db.execute(f\"SELECT * FROM orders WHERE id = {order_id}\").fetchone()\n    if order.status == \"refunded\":\n        return {\"ok\": False}\n    requests.post(PAYMENTS_URL + \"/refunds\",\n                  json={\"order\": order_id, \"amount\": amount})\n    db.execute(\"UPDATE orders SET status = 'refunded' WHERE id = ?\", (order_id,))\n    return {\"ok\": True}\n```",
+  "fields": [
+    { "id": "comments", "label": "Review comments (one per line)", "kind": "list", "placeholder": "blocker: …" },
+    { "id": "summary", "label": "Summary and verdict", "kind": "textarea" }
+  ],
+  "rules": [
+    { "field": "comments", "check": "minItems", "value": 5, "message": "Знайди щонайменше 5 проблем." },
+    { "field": "comments", "check": "mentionsAny", "value": ["(owner|власн|permission|прав|role|роль|staff|співробітн|403|авториз|authoriz)"], "message": "Хто може повертати кошти? Перевірки прав немає." },
+    { "field": "comments", "check": "mentionsAny", "value": ["(None|404|не існу|doesn't exist|does not exist|not found)"], "message": "Що буде, якщо замовлення не існує?" },
+    { "field": "comments", "check": "mentionsAny", "value": ["(float|Decimal|від'ємн|negative|amount|сум)"], "message": "Подивись на `amount`: тип і перевірки." },
+    { "field": "comments", "check": "mentionsAny", "value": ["(block|блок|event loop|цикл подій|httpx|to_thread)"], "message": "`requests` у `async def` — що з циклом подій?" },
+    { "field": "comments", "check": "mentionsAny", "value": ["(status_code|raise_for_status|відмов|failed|fails|не вдал|перевір.*відповід|response)"], "message": "Що, якщо платіжний сервіс відмовив, а статус уже «refunded»?" },
+    { "field": "comments", "check": "mentionsAny", "value": ["(idempot|twice|двічі|race|гонк|повтор|rowcount|одночасн|concurren)"], "message": "Два одночасні запити — два повернення?" },
+    { "field": "summary", "check": "minLength", "value": 80, "message": "Підсумуй: що головне і чи можна зливати." }
+  ],
+  "model": {
+    "comments": [
+      "blocker: no permission check — any logged-in user can refund any order. Allow only staff with the refund role (403 otherwise), or at least check the order belongs to the user's shop.",
+      "blocker: `order` is None for an unknown id → AttributeError → 500. Return 404 when the order does not exist.",
+      "blocker: `amount: float` is unvalidated money — negative values and amounts above the order total are accepted, and floats are imprecise. Use `Decimal` (or integer kopiykas) with `gt=0` and check `amount <= order.total`.",
+      "blocker: the payment call's result is ignored — if the provider rejects the refund, we still mark the order as refunded. Check the response (`raise_for_status()`), update the status only on success.",
+      "blocker: two concurrent requests both pass the status check and both call the provider → double refund. Make it atomic: `UPDATE orders SET status = 'refunding' WHERE id = ? AND status = 'paid'` and check rowcount, and send an Idempotency-Key (e.g. `refund-{order_id}`) to the provider.",
+      "should fix: `requests.post` inside `async def` blocks the event loop and has no timeout — use `httpx.AsyncClient` with `timeout=` (or make the endpoint a plain `def`).",
+      "should fix: the f-string SQL is safe today only because FastAPI validates `order_id` as int, but the pattern is dangerous — pass it as a parameter like the UPDATE below.",
+      "should fix: no commit / transaction around the status change; with this session the update may never be saved.",
+      "should fix: `{\"ok\": False}` with 200 for an already refunded order — return 409 with an error code so clients can react.",
+      "question: should a partial refund be possible? If yes, we need a refunds table instead of a single status."
+    ],
+    "summary": "Request changes. The main risks are money-related: anyone can trigger a refund, the amount is not validated, a failed provider call still marks the order refunded, and concurrent requests can refund twice. I'd fix permissions, validation, the provider response check and atomic status change with an idempotency key in this PR; the async client, parameters, commit and 409 are small follow-ups in the same PR. Good part: the dependencies for the user and the DB make this endpoint easy to test once fixed."
+  },
+  "checklist": [
+    "Кожен коментар має рівень, причину і пропозицію",
+    "Знайдено перевірку прав (хто може повертати кошти)",
+    "Знайдено None → 500 замість 404",
+    "Знайдено валідацію і тип суми",
+    "Знайдено ігнорування відповіді платіжного сервісу",
+    "Знайдено подвійне повернення при одночасних запитах (атомарна зміна статусу, ключ ідемпотентності)",
+    "Знайдено блокувальний `requests` в `async def` і відсутній тайм-аут",
+    "f-рядок у SQL названо точно: зараз безпечно через int, але шаблон небезпечний",
+    "Підсумок: зливати чи ні і що головне",
+    "Тон — про код, а не про автора"
+  ]
+}

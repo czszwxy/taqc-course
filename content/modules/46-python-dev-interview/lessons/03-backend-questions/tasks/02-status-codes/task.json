@@ -1,0 +1,32 @@
+{
+  "type": "table",
+  "title": "Pick the status code",
+  "statement": "API магазину. Для кожної ситуації обери найточніший код статусу відповіді.",
+  "givenColumns": ["Situation"],
+  "answerColumns": [
+    {
+      "id": "code",
+      "label": "Status code",
+      "options": ["200", "201", "202", "204", "304", "401", "403", "404", "409", "422", "429", "500", "503"]
+    }
+  ],
+  "rows": [
+    { "given": ["`POST /orders` saved a new order"], "answers": { "code": "201" } },
+    { "given": ["`POST /exports/orders` queued a CSV export that will be ready in a few minutes"], "answers": { "code": "202" }, "explain": "Роботу прийнято, але не виконано — `202` і посилання на статус." },
+    { "given": ["`DELETE /cart/items/7` removed the item; nothing to return"], "answers": { "code": "204" } },
+    { "given": ["`GET /products/42` with `If-None-Match` equal to the product's current ETag"], "answers": { "code": "304" }, "explain": "Копія клієнта актуальна — тіло не надсилаємо." },
+    { "given": ["`GET /orders/1002` without an `Authorization` header"], "answers": { "code": "401" } },
+    { "given": ["A support agent's valid token calls `POST /refunds`, but refunds are allowed only for managers"], "answers": { "code": "403" } },
+    { "given": ["`GET /orders/999999` — no such order"], "answers": { "code": "404" } },
+    { "given": ["`POST /orders/1002/pay` for an order that is already paid"], "answers": { "code": "409" }, "explain": "Запит коректний, але конфліктує з поточним станом замовлення." },
+    { "given": ["FastAPI: the body of `POST /orders` has `quantity: \"two\"`"], "answers": { "code": "422" }, "explain": "FastAPI відповідає `422` на тіло, що не пройшло валідацію Pydantic." },
+    { "given": ["A client sends 40 requests per second while the limit is 10"], "answers": { "code": "429" }, "explain": "Додай `Retry-After`, щоб клієнт знав, коли повторити." },
+    { "given": ["`GET /ready` while the database is unreachable"], "answers": { "code": "503" }, "explain": "Тимчасова недоступність — балансувальник перестане надсилати сюди трафік." },
+    { "given": ["An unexpected `KeyError` in the price calculation"], "answers": { "code": "500" } }
+  ],
+  "hints": [
+    "Спершу — успіх чи помилка, потім — чия помилка: клієнта (4xx) чи сервера (5xx).",
+    "Для 4xx: хто ти (401) → що можна (403) → чи є ресурс (404) → чи коректні дані (422) → чи не конфліктує стан (409) → чи не забагато запитів (429)."
+  ],
+  "explanation": "Точний код — це частина контракту: клієнт вирішує, що робити далі, саме за ним. `202` і `304` економлять час і трафік, `409` і `422` розділяють «дані погані» і «дані добрі, але стан не дозволяє», `429` і `503` кажуть клієнту «повтори пізніше», а `500` — лише для справжніх помилок у коді, ніколи не для поганого запиту."
+}

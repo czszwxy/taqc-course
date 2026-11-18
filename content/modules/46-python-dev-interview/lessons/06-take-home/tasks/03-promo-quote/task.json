@@ -1,0 +1,12 @@
+{
+  "type": "python",
+  "title": "Take-home, step 1: promo code rules",
+  "statement": "Бриф тестового завдання: «Сервіс промокодів для магазину: клієнт вводить код у кошику, сервіс рахує знижку». Почни з **доменної логіки без фреймворку** — її найлегше тестувати. Класи `Promo`, `Quote` і виняток `PromoError(code)` уже є в стартовому файлі.\n\n**`find_promo(promos, code)`** — промокод зі списку за кодом без урахування регістру і пробілів по краях (`\" spring10 \"` знайде `SPRING10`); немає — `PromoError(\"unknown\")`.\n\n**`quote(subtotal, promo, now)`** → `Quote(subtotal, discount, total)`:\n\n- `promo is None` — знижки немає;\n- перевірки **в такому порядку**, перша невдала дає `PromoError` з кодом:\n  1. `\"expired\"` — є `expires_at` і `now >= expires_at`;\n  2. `\"used_up\"` — є `max_uses` і `used >= max_uses`;\n  3. `\"below_minimum\"` — `subtotal < min_subtotal`;\n- `kind == \"percent\"`: `value` відсотків від `subtotal`, **не більше 50 %**, округлення **вниз** до гривні;\n- `kind == \"fixed\"`: `value` гривень, але не більше за `subtotal` (сума не може стати від'ємною);\n- `total = subtotal - discount`.\n\n```python\nspring = Promo(\"SPRING10\", \"percent\", 10, min_subtotal=500)\nquote(1299, spring, now)    # Quote(subtotal=1299, discount=129, total=1170)\nquote(499, spring, now)     # PromoError(\"below_minimum\")\n```",
+  "hints": [
+    "`find_promo`: нормалізуй обидва боки — `code.strip().upper()` і `promo.code.upper()`.",
+    "Перевірки пиши як три окремі `if ... raise PromoError(\"...\")` у вказаному порядку — тести перевіряють, яка помилка перша.",
+    "Відсоток: `subtotal * min(promo.value, MAX_PERCENT) // 100` — цілочисельне ділення округлює вниз. Фіксована сума: `min(promo.value, subtotal)`."
+  ],
+  "explanation": "Тестове завдання оцінюють не за кількістю ендпоінтів, а за тим, як ти відокремлюєш правила від транспорту. Функції без FastAPI і бази легко покрити тестами на межі: рівно мінімальна сума, момент закінчення дії, використання «впритул» до ліміту. Межі тут обрані свідомо: код діє **до** `expires_at` (у сам момент уже ні), мінімум включно, ліміт використань — `used >= max_uses` вже вичерпаний. Типові помилки: `>` замість `>=` на межах, округлення `round()` (банківське округлення дає зайву гривню знижки), фіксована знижка більша за суму кошика.",
+  "codeRules": []
+}

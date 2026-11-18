@@ -1,0 +1,81 @@
+{
+  "type": "quiz",
+  "title": "What does it print?",
+  "show": 5,
+  "intro": "Впиши точний вивід `print`. Розв'язуй кроками, як таблицю змінних, а не «на око».",
+  "hints": ["Посилання, а не копії. Замикання читають змінну пізніше. Генератор одноразовий. `//` округлює вниз."],
+  "questions": [
+    {
+      "id": "late-binding",
+      "kind": "text",
+      "text": "```python\nfuncs = [lambda: n for n in range(3)]\nprint([f() for f in funcs])\n```",
+      "accept": ["[2, 2, 2]", "[2,2,2]"],
+      "placeholder": "вивід",
+      "explanation": "Кожна лямбда читає змінну `n` у момент **виклику**, а тоді `n` уже 2. Виправлення: `lambda n=n: n`."
+    },
+    {
+      "id": "list-multiply",
+      "kind": "text",
+      "text": "```python\ngrid = [[0] * 2] * 2\ngrid[0][0] = 1\nprint(grid)\n```",
+      "accept": ["[[1, 0], [1, 0]]", "[[1,0],[1,0]]", "[[1, 0],[1, 0]]"],
+      "placeholder": "вивід",
+      "explanation": "`* 2` повторює **посилання** на той самий внутрішній список. Окремі рядки — `[[0] * 2 for _ in range(2)]`."
+    },
+    {
+      "id": "floor-division",
+      "kind": "text",
+      "text": "```python\nprint(-9 // 4, round(2.5))\n```",
+      "accept": ["-3 2"],
+      "placeholder": "вивід",
+      "explanation": "`//` округлює вниз (до мінус нескінченності): `-2.25` → `-3`. `round` округлює `.5` до найближчого парного: `2.5` → `2`."
+    },
+    {
+      "id": "or-chain",
+      "kind": "text",
+      "text": "```python\nname = \"\"\nprint(name or [] or \"guest\")\n```",
+      "accept": ["guest"],
+      "placeholder": "вивід",
+      "explanation": "`or` повертає перший «правдивий» операнд, а якщо такого немає — останній. Порожні рядок і список — «хибні»."
+    },
+    {
+      "id": "tuple-plus-equal",
+      "kind": "text",
+      "text": "```python\nt = ([1],)\ntry:\n    t[0] += [2]\nexcept TypeError:\n    print(\"error\", t)\n```",
+      "accept": ["error ([1, 2],)", "error ([1,2],)"],
+      "placeholder": "вивід",
+      "explanation": "`+=` спершу розширює список **на місці** (він змінюваний), а потім намагається записати результат назад у кортеж — і падає. Список уже змінено."
+    },
+    {
+      "id": "exhausted-generator",
+      "kind": "text",
+      "text": "```python\nsquares = (n * n for n in range(3))\nprint(sum(squares), sum(squares))\n```",
+      "accept": ["5 0"],
+      "placeholder": "вивід",
+      "explanation": "Перший `sum` вичерпав генератор (0 + 1 + 4 = 5), другий не отримав жодного значення."
+    },
+    {
+      "id": "dict-update-order",
+      "kind": "text",
+      "text": "```python\nstock = {\"mouse\": 3, \"cable\": 7}\nstock[\"mouse\"] = 0\nstock[\"camera\"] = 1\nprint(list(stock))\n```",
+      "accept": ["['mouse', 'cable', 'camera']", "[\"mouse\", \"cable\", \"camera\"]", "['mouse','cable','camera']"],
+      "placeholder": "вивід",
+      "explanation": "Словник зберігає порядок **вставки**; оновлення наявного ключа його не змінює."
+    },
+    {
+      "id": "class-attribute",
+      "kind": "text",
+      "text": "```python\nclass Cart:\n    items = []\n\n    def add(self, item):\n        self.items.append(item)\n\na, b = Cart(), Cart()\na.add(\"mouse\")\nprint(b.items)\n```",
+      "accept": ["['mouse']", "[\"mouse\"]"],
+      "placeholder": "вивід",
+      "explanation": "`items` — атрибут **класу**: один список для всіх кошиків. Список для кожного екземпляра створюють у `__init__`."
+    },
+    {
+      "id": "str-immutable",
+      "kind": "text",
+      "text": "```python\nsku = \"mouse-01\"\nsku.upper()\nsku.replace(\"-\", \"_\")\nprint(sku)\n```",
+      "accept": ["mouse-01"],
+      "placeholder": "вивід",
+      "explanation": "Рядки незмінні: `upper()` і `replace()` повертають **нові** рядки, а результат тут нікуди не записано. Треба `sku = sku.upper()`."
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "type": "classify",
+  "title": "Blocker, should fix or nit?",
+  "statement": "Ти рев'юїш PR у бекенд магазину. Для кожного зауваження визнач рівень.",
+  "categories": [
+    { "id": "blocker", "label": "Blocker", "description": "Не зливати: баг, безпека, втрата даних" },
+    { "id": "should", "label": "Should fix", "description": "Важливо, але не ламає продукт негайно" },
+    { "id": "nit", "label": "Nit", "description": "Дрібниця на розсуд автора" }
+  ],
+  "items": [
+    { "id": "injection", "text": "The search query string goes into SQL through an f-string", "category": "blocker" },
+    { "id": "owner", "text": "`GET /orders/{id}` never checks that the order belongs to the current user", "category": "blocker" },
+    { "id": "migration", "text": "The migration drops column `phone` that the running old version still reads during the deploy", "category": "blocker", "explain": "Під час розгортання старі екземпляри впадуть. Спершу код, що не читає стовпець, потім видалення (expand / contract)." },
+    { "id": "float-money", "text": "Cart totals are floats; the receipt shows 1798.0000000000002", "category": "blocker", "explain": "Неправильні суми в чеку — це баг, який бачить клієнт." },
+    { "id": "timeout", "text": "A nightly sync job calls the supplier API with `requests.get(url)` and no timeout", "category": "should", "explain": "Нічна задача може зависнути, але покупці цього не помітять одразу. Виправити варто в цьому PR." },
+    { "id": "n-plus-one", "text": "The admin page with 20 orders runs one query per order to count items", "category": "should" },
+    { "id": "boundary-test", "text": "The new free-shipping rule has no test for exactly 1500 UAH", "category": "should" },
+    { "id": "silent", "text": "`except Exception: pass` around sending the order confirmation email", "category": "should", "explain": "Лист не критичний для оплати, але помилки мають бути видні в логах." },
+    { "id": "name", "text": "`d` could be named `discount`", "category": "nit" },
+    { "id": "fstring", "text": "An f-string would read a little easier than `\"%s items\" % count` in this log message", "category": "nit", "explain": "Для логера, до речі, найкращий варіант — ліниві аргументи `logger.info(\"%s items\", count)`: рядок збирається лише тоді, коли запис справді потрібен." },
+    { "id": "imports", "text": "Imports are not sorted", "category": "nit", "explain": "Краще — один коментар «увімкнімо ruff з правилом сортування імпортів»." }
+  ],
+  "hints": [
+    "Blocker — якщо після злиття постраждають користувачі, гроші чи дані.",
+    "Nit — якщо код працює однаково і питання лише в смаку або стилі."
+  ],
+  "explanation": "Рівень залежить від наслідків: витік чужих даних, неправильні гроші, падіння під час розгортання — блокують злиття. Пропущений тест, N+1 на маленькій сторінці, тиха помилка в неважливому місці — треба виправити, але не обов'язково ціною зупинки релізу. Імена й стиль — на розсуд автора, а стиль узагалі краще віддати лінтеру."
+}

@@ -1,0 +1,37 @@
+{
+  "type": "table",
+  "title": "Pick the building block",
+  "statement": "Магазин росте. Для кожної проблеми обери будівельний блок, що розв'язує її найпряміше.",
+  "givenColumns": ["Problem"],
+  "answerColumns": [
+    {
+      "id": "block",
+      "label": "Building block",
+      "options": [
+        "Cache (Redis)",
+        "Queue + background workers",
+        "Object storage + CDN",
+        "Load balancer + more app instances",
+        "Read replica",
+        "Search engine",
+        "Rate limiter",
+        "Scheduler (cron)"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["Product pages are read 50 times more often than they change; the database CPU is at 90 %"], "answers": { "block": "Cache (Redis)" } },
+    { "given": ["Sending 50 000 \"sale started\" emails must not slow down the API"], "answers": { "block": "Queue + background workers" } },
+    { "given": ["Product photos of 5 MB each load slowly for customers abroad"], "answers": { "block": "Object storage + CDN" } },
+    { "given": ["The only app server is at 100 % CPU at peak; the database is fine"], "answers": { "block": "Load balancer + more app instances" } },
+    { "given": ["Heavy analytics SELECTs for the marketing dashboard slow down checkout writes"], "answers": { "block": "Read replica" }, "explain": "Звіти можуть бачити дані з невеликою затримкою — ідеальний кандидат на репліку." },
+    { "given": ["Customers search \"wireles headphons\" and expect relevant results despite typos"], "answers": { "block": "Search engine" }, "explain": "`LIKE` не вміє в помилки й релевантність — для цього пошукові рушії." },
+    { "given": ["A partner's script calls `GET /products` 200 times per second and slows the site for everyone"], "answers": { "block": "Rate limiter" } },
+    { "given": ["Recommendations must be recalculated every night at 03:00"], "answers": { "block": "Scheduler (cron)" } }
+  ],
+  "hints": [
+    "Спитай себе: проблема в читанні, у записі, у довгій роботі, у файлах, у процесорі застосунку чи в «поганому» клієнті?",
+    "Кеш — для частих однакових читань; репліка — для важких читань, яким не потрібні найсвіжіші дані."
+  ],
+  "explanation": "Кожен блок розв'язує свій клас проблем і має ціну: кеш — застарілі дані, черга — повторну доставку, CDN — інвалідацію, репліка — затримку реплікації, пошуковий рушій — ще одну систему для синхронізації. На співбесіді назви і блок, і його ціну."
+}

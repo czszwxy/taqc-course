@@ -1,0 +1,42 @@
+{
+  "title": "A take-home assignment: FastAPI service",
+  "minutes": 90,
+  "summary": "Тестове завдання для Python-розробника: як читати бриф і ставити питання, план на обмежений час, структура репозиторію (доменна логіка окремо від FastAPI, tests/, pyproject, README), що перевіряє рев'юер (запускається за README, коректність, тести меж, помилки, історія комітів, жодних секретів), розмова після тестового; практика в чотири кроки на сервісі промокодів: план, правила знижок, ендпоінт POST /quotes, тести на межі з мутантами і README",
+  "resources": [
+    {
+      "title": "FastAPI docs: Bigger Applications — Multiple Files",
+      "url": "https://fastapi.tiangolo.com/tutorial/bigger-applications/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: Testing",
+      "url": "https://fastapi.tiangolo.com/tutorial/testing/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "FastAPI docs: Testing Dependencies with Overrides",
+      "url": "https://fastapi.tiangolo.com/advanced/testing-dependencies/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "Python Packaging User Guide: Writing your pyproject.toml",
+      "url": "https://packaging.python.org/en/latest/guides/writing-pyproject-toml/",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: take-home assignment tips for developers",
+      "url": "https://www.youtube.com/results?search_query=take+home+coding+assignment+tips+backend",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}

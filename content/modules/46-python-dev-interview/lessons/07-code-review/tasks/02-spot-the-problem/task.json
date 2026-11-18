@@ -1,0 +1,37 @@
+{
+  "type": "table",
+  "title": "Spot the problem in each snippet",
+  "statement": "Фрагменти з PR у бекенд магазину. Для кожного обери головну проблему.",
+  "givenColumns": ["Snippet"],
+  "answerColumns": [
+    {
+      "id": "problem",
+      "label": "Problem",
+      "options": [
+        "SQL injection",
+        "N+1 queries",
+        "Blocks the event loop",
+        "No timeout on an outgoing call",
+        "Swallowed exception",
+        "Float for money",
+        "Missing permission check",
+        "Naive vs aware datetime"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`db.execute(\"SELECT * FROM products WHERE name LIKE '%\" + q + \"%'\")`"], "answers": { "problem": "SQL injection" } },
+    { "given": ["`for order in orders: order.items_count = session.scalar(select(func.count()).where(Item.order_id == order.id))`"], "answers": { "problem": "N+1 queries" } },
+    { "given": ["`async def report(): time.sleep(2); return build_report()`"], "answers": { "problem": "Blocks the event loop" } },
+    { "given": ["`response = requests.post(WEBHOOK_URL, json=payload)` in a Celery task"], "answers": { "problem": "No timeout on an outgoing call" }, "explain": "Без `timeout` воркер може чекати вічно, і черга зупиниться." },
+    { "given": ["`try: cache.delete(key)` / `except Exception: pass`"], "answers": { "problem": "Swallowed exception" }, "explain": "Принаймні залогуй: застарілий кеш без жодного сліду дуже важко шукати." },
+    { "given": ["`total = sum(item.price * item.qty for item in cart)` where `price` is `9.99` (a float)"], "answers": { "problem": "Float for money" } },
+    { "given": ["`@router.get(\"/orders/{order_id}\")` returns `session.get(Order, order_id)` for any logged-in user"], "answers": { "problem": "Missing permission check" }, "explain": "Треба перевірити, що замовлення належить поточному користувачу (або він співробітник), інакше — `404`." },
+    { "given": ["`if datetime.now() > promo.expires_at:` where `expires_at` has `tzinfo=UTC`"], "answers": { "problem": "Naive vs aware datetime" }, "explain": "Порівняння «наївного» й «обізнаного» `datetime` кидає `TypeError`. Потрібно `datetime.now(UTC)`." }
+  ],
+  "hints": [
+    "Шукай, звідки беруться дані (вхід користувача в SQL?), що робиться в циклі (запит?) і де код чекає (у `async def`? без тайм-ауту?).",
+    "Два фрагменти — про типи: гроші й дати з часовим поясом."
+  ],
+  "explanation": "Кожен рядок — класичний «червоний прапорець», який рев'юер має помітити за секунди. Корисна звичка: для кожного виклику бази, мережі чи часу питати себе «скільки разів?», «скільки чекаємо?» і «звідки дані?»."
+}

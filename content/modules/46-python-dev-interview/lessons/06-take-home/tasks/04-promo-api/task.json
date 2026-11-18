@@ -1,0 +1,15 @@
+{
+  "type": "python",
+  "runtime": "lab",
+  "title": "Take-home, step 2: the quote endpoint",
+  "statement": "Тепер HTTP-шар над правилами з кроку 1 (`promos.py` — еталон кроку 1, лише для читання; `catalog.py` — ціни й промокоди, теж для читання).\n\nУ `solution.py`:\n\n1. Залежності **`get_prices()`** → `PRICES`, **`get_promos()`** → `PROMOS`, **`get_now()`** → поточний час **з часовим поясом UTC** (`datetime.now(UTC)`) — тести підмінять їх через `app.dependency_overrides`.\n2. `POST /quotes` з тілом `{\"items\": [{\"sku\": \"MOUSE-01\", \"quantity\": 2}], \"code\": \"spring10\"}` → `200 {\"subtotal\", \"discount\", \"total\"}`:\n   - `items` — щонайменше один рядок, `quantity` від 1 до 99 (інакше `422` від Pydantic); той самий `sku` може повторюватися — рахуй усі рядки;\n   - `code` необов'язковий; `null`, `\"\"` чи пробіли — без промокоду;\n   - невідомий `sku` → `400 {\"detail\": {\"error\": \"unknown_product\", \"sku\": \"...\"}}`;\n   - `PromoError` з кроку 1 → `400 {\"detail\": {\"error\": \"<код помилки>\"}}` (наприклад, `\"expired\"`, `\"unknown\"`).\n\nЗапит ціни нічого не змінює: лічильник використань промокоду зростає лише при оформленні замовлення, а це вже не частина цього кроку.",
+  "hints": [
+    "Моделі: `Line(sku: str, quantity: int = Field(ge=1, le=99))` і `QuoteRequest(items: list[Line] = Field(min_length=1), code: str | None = None)`.",
+    "Сума: цикл по `body.items`; немає ціни — `raise HTTPException(status_code=400, detail={\"error\": \"unknown_product\", \"sku\": line.sku})`.",
+    "Промокод: `promo = find_promo(promos, body.code) if body.code and body.code.strip() else None`, потім `quote(...)` — обидва в одному `try` / `except PromoError as error`."
+  ],
+  "explanation": "HTTP-шар лише перекладає: тіло запиту → доменні виклики → відповідь, а доменні помилки → коди статусу. Правила знижок уже протестовані на кроці 1, тому тут тести перевіряють саме переклад: валідацію (`422` робить Pydantic), `400` з машинно-читаним кодом помилки, щоб фронтенд міг показати зрозуміле повідомлення, і залежності, які тест підмінює. `get_now()` повертає час з поясом UTC: дати закінчення промокодів теж з поясом, а порівняння «наївного» й «обізнаного» `datetime` кидає `TypeError` → `500`. Типові помилки: `404` на невідомий код у тілі (ресурс `/quotes` існує — це помилка даних), загублений рядок з повтором `sku`, порожній рядок коду як «невідомий промокод».",
+  "codeRules": [
+    { "kind": "require", "pattern": "Depends\\s*\\(\\s*get_now\\s*\\)", "message": "Отримай поточний час через Depends(get_now)." }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "type": "sql",
+  "title": "Window functions on the shop data",
+  "statement": "Інтерв'юер відкриває базу магазину й просить кілька звітів. У всіх — **віконні функції**. Нагадування синтаксису:\n\n```sql\nSELECT name, RANK() OVER (PARTITION BY category ORDER BY price DESC) FROM products;\n```\n\nВиторг у цих задачах — замовлення зі статусами `paid`, `shipped`, `delivered`.",
+  "database": "gadgetly",
+  "challenges": [
+    {
+      "id": "rank-in-category",
+      "prompt": "Для кожного товару: `category`, `name`, `price` і місце за ціною в межах своєї категорії (найдорожчий — 1). Використай `RANK()`.",
+      "model": "SELECT category, name, price, RANK() OVER (PARTITION BY category ORDER BY price DESC) FROM products;",
+      "rules": [
+        { "kind": "require", "pattern": "rank\\s*\\(\\s*\\)\\s*over", "message": "Порахуй місце через `RANK() OVER (...)`." },
+        { "kind": "require", "pattern": "partition\\s+by", "message": "Місце — в межах категорії: `PARTITION BY category`." }
+      ]
+    },
+    {
+      "id": "top-per-category",
+      "prompt": "Найдорожчий товар кожної категорії: `category`, `name`, `price`. Розв'яжи через `ROW_NUMBER()` у CTE.",
+      "model": "WITH ranked AS (SELECT category, name, price, ROW_NUMBER() OVER (PARTITION BY category ORDER BY price DESC) AS place FROM products) SELECT category, name, price FROM ranked WHERE place = 1;",
+      "rules": [
+        { "kind": "require", "pattern": "row_number\\s*\\(\\s*\\)\\s*over", "message": "Пронумеруй товари в категорії через `ROW_NUMBER() OVER (...)`." }
+      ],
+      "explain": "Віконну функцію не можна поставити у `WHERE` — тому спершу CTE з номером, потім фільтр `place = 1`."
+    },
+    {
+      "id": "running-revenue",
+      "prompt": "Наростаючий виторг: для кожного оплаченого / відправленого / доставленого замовлення — `id`, `created_at`, `total` і сума `total` усіх таких замовлень від першого до поточного включно. Порядок — за `created_at`.",
+      "model": "SELECT id, created_at, total, SUM(total) OVER (ORDER BY created_at) FROM orders WHERE status IN ('paid', 'shipped', 'delivered') ORDER BY created_at;",
+      "orderMatters": true,
+      "rules": [
+        { "kind": "require", "pattern": "sum\\s*\\([^)]*\\)\\s*over", "message": "Наростаючий підсумок — `SUM(total) OVER (ORDER BY created_at)`." }
+      ]
+    },
+    {
+      "id": "previous-order",
+      "prompt": "Для кожного замовлення: `user_id`, `id`, `created_at`, `total` і `total` **попереднього** замовлення того самого користувача (за датою; для першого — `NULL`).",
+      "model": "SELECT user_id, id, created_at, total, LAG(total) OVER (PARTITION BY user_id ORDER BY created_at) FROM orders;",
+      "rules": [
+        { "kind": "require", "pattern": "lag\\s*\\(", "message": "Значення з попереднього рядка групи дає `LAG(...)`." }
+      ],
+      "explain": "`PARTITION BY user_id` — щоб попереднє замовлення шукалося лише серед замовлень цього ж клієнта."
+    }
+  ],
+  "hints": [
+    "`PARTITION BY` ділить на групи без згортання рядків, `ORDER BY` в `OVER` задає порядок усередині групи.",
+    "Для «найдорожчого в категорії»: `WITH ranked AS (SELECT ..., ROW_NUMBER() OVER (...) AS place FROM products) SELECT ... FROM ranked WHERE place = 1`."
+  ],
+  "explanation": "Віконні функції відповідають на питання «яке місце / яка сума / яке попереднє значення» для кожного рядка, не згортаючи таблицю. Типові помилки: забути `PARTITION BY` (рахується по всій таблиці), фільтрувати віконну функцію у `WHERE` (треба CTE) і сортувати фінальний результат не так, як вікно, — у наростаючому підсумку порядок рядків і порядок у `OVER` мають збігатися."
+}

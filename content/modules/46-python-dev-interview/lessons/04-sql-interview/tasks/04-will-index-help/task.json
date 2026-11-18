@@ -1,0 +1,35 @@
+{
+  "type": "table",
+  "title": "Will the index help?",
+  "statement": "Таблиці магазину великі — мільйони рядків. Для кожного запиту визнач, чи зможе база ефективно використати вказаний B-tree індекс.",
+  "givenColumns": ["Index", "Query condition"],
+  "answerColumns": [
+    {
+      "id": "verdict",
+      "label": "Verdict",
+      "options": [
+        "Yes",
+        "No: function or math on the column",
+        "No: leading % in LIKE",
+        "Not efficiently: not the leftmost column",
+        "Probably not: most rows match"
+      ]
+    }
+  ],
+  "rows": [
+    { "given": ["`users(email)`", "`WHERE email = 'olena@example.com'`"], "answers": { "verdict": "Yes" } },
+    { "given": ["`users(email)`", "`WHERE lower(email) = 'olena@example.com'`"], "answers": { "verdict": "No: function or math on the column" }, "explain": "Індекс зберігає `email`, а не `lower(email)`. Рішення — індекс за виразом `lower(email)` або зберігати email уже в нижньому регістрі." },
+    { "given": ["`users(email)`", "`WHERE email LIKE '%@example.com'`"], "answers": { "verdict": "No: leading % in LIKE" }, "explain": "Відсортований індекс допомагає знайти початок рядка, а не кінець." },
+    { "given": ["`orders(user_id, created_at)`", "`WHERE user_id = 5 ORDER BY created_at DESC`"], "answers": { "verdict": "Yes" }, "explain": "Рівність за першим стовпцем, сортування за другим — ідеальний випадок для складеного індексу." },
+    { "given": ["`orders(user_id, created_at)`", "`WHERE user_id = 5 AND created_at >= '2024-09-01'`"], "answers": { "verdict": "Yes" } },
+    { "given": ["`orders(user_id, created_at)`", "`WHERE created_at >= '2024-09-01'`"], "answers": { "verdict": "Not efficiently: not the leftmost column" }, "explain": "Індекс відсортований спершу за `user_id`. Деякі бази вміють «skip scan», але для такого запиту потрібен індекс, що починається з `created_at`." },
+    { "given": ["`products(price)`", "`WHERE price * 1.2 > 1000`"], "answers": { "verdict": "No: function or math on the column" }, "explain": "Перепиши умову без обчислень над стовпцем: `price > 1000 / 1.2`." },
+    { "given": ["`orders(status)`, where 98 % of orders are `delivered`", "`WHERE status = 'delivered'`"], "answers": { "verdict": "Probably not: most rows match" }, "explain": "Прочитати майже всю таблицю через індекс дорожче, ніж підряд. Планувальник обере повне сканування." },
+    { "given": ["`orders(status)`, where 0.1 % of orders are `refund_requested`", "`WHERE status = 'refund_requested'`"], "answers": { "verdict": "Yes" }, "explain": "Рідкісне значення — індекс знайде кілька рядків серед мільйонів." }
+  ],
+  "hints": [
+    "Індекс зберігає значення стовпця як є. Якщо в умові стовпець «обгорнутий» функцією чи арифметикою — це вже інше значення.",
+    "Складений індекс `(a, b)` відсортований за `a`, а всередині — за `b`: як довідник «прізвище, ім'я»."
+  ],
+  "explanation": "Індекс допомагає, коли база може знайти потрібні рядки в його відсортованому порядку і їх небагато. Функція над стовпцем, `%` на початку шаблону і умова без першого стовпця складеного індексу ламають «відсортований пошук», а умова, під яку підпадає більшість рядків, робить індекс невигідним. На співбесіді додай: перевіряю план через `EXPLAIN`, а не вгадую."
+}

@@ -1,0 +1,50 @@
+{
+  "title": "Backend interview questions",
+  "minutes": 70,
+  "summary": "Бекенд-частина співбесіди: безпечні й ідемпотентні методи HTTP, коди статусу на межі (202, 304, 409, 422, 429, 503), дизайн REST-ресурсів і пагінація (offset чи курсор), повтори запитів і ключ ідемпотентності, автентифікація й авторизація (сесії чи JWT, зберігання паролів, OAuth 2.0 / OpenID Connect, CORS і CSRF), кешування (cache-aside, TTL, інвалідація), фонові задачі й черги (at-least-once, повтори, dead letter queue), тайм-аути й ліміти запитів",
+  "resources": [
+    {
+      "title": "RFC 9110: HTTP Semantics — Method properties",
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.html#name-common-method-properties",
+      "kind": "docs",
+      "lang": "en",
+      "note": "safe та idempotent методи",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: HTTP response status codes",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "OWASP Password Storage Cheat Sheet",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: Cross-Origin Resource Sharing (CORS)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "MDN: HTTP caching",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching",
+      "kind": "docs",
+      "lang": "en",
+      "needsVerification": true
+    },
+    {
+      "title": "YouTube: backend developer interview questions",
+      "url": "https://www.youtube.com/results?search_query=backend+developer+interview+questions+junior",
+      "kind": "video",
+      "lang": "en",
+      "needsVerification": true
+    }
+  ]
+}
