@@ -15,25 +15,9 @@ export function ProgressBar({ percent, className, tone = 'accent' }: { percent: 
   );
 }
 
-export type IconStatus = Status | 'complete' | 'started' | 'new';
-
-/** Icon status for a lesson from its stats. */
-export function lessonIconStatus(s: { complete: boolean; started: boolean }): IconStatus {
-  if (s.complete) return 'complete';
-  if (s.started) return 'started';
-  return 'new';
-}
-
-function iconKind(status: IconStatus): 'done' | 'started' | 'new' {
-  if (status === 'solved' || status === 'complete') return 'done';
-  if (status === 'attempted' || status === 'started') return 'started';
-  return 'new';
-}
-
-/** Notebook checkbox: empty (new), half-filled (in progress), ticked (done). */
-export function StatusIcon({ status, size = DEFAULT_ICON_SIZE }: { status: IconStatus; size?: number }) {
-  const kind = iconKind(status);
-  if (kind === 'done') {
+/** Notebook checkbox of a task: empty (new), half-filled (attempted), ticked (solved). */
+export function StatusIcon({ status, size = DEFAULT_ICON_SIZE }: { status: Status; size?: number }) {
+  if (status === 'solved') {
     return (
       <svg width={size} height={size} viewBox="0 0 16 16" className="shrink-0 text-ok" aria-label="done">
         <rect x="1" y="1" width="14" height="14" rx="3" fill="currentColor" />
@@ -41,7 +25,7 @@ export function StatusIcon({ status, size = DEFAULT_ICON_SIZE }: { status: IconS
       </svg>
     );
   }
-  const started = kind === 'started';
+  const started = status === 'attempted';
   return (
     <svg width={size} height={size} viewBox="0 0 16 16" className={`shrink-0 ${started ? 'text-accent' : 'text-faint'}`} aria-label={started ? 'in progress' : 'not started'}>
       <rect x="1.8" y="1.8" width="12.4" height="12.4" rx="2.6" fill="none" stroke="currentColor" strokeWidth="1.6" />

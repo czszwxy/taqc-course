@@ -30,6 +30,8 @@ export function LessonMenu({ course, module: m }: { course: Course; module: Cour
         <ol className={`mt-2 ${trackClass(trackIndex)}`}>
           {m.planned.map((p, i) => {
             const state = lessonState(p, data, here);
+            // Spoken from progress alone: the current lesson is announced as the current page by NavLink.
+            const spoken = STATE_LABEL[lessonState(p, data, undefined)];
             return (
               <li key={p.number} className="flex">
                 <Rail size="compact" line={`${linePosition(i, m.planned.length, 'compact')} ${p.lesson ? LINE : LINE_UNBUILT}`}>
@@ -38,7 +40,7 @@ export function LessonMenu({ course, module: m }: { course: Course; module: Cour
                 {p.lesson ? (
                   <NavLink to={lessonPath(p.lesson)} className={lessonLinkClass}>
                     <span className="min-w-0 flex-1 truncate">{p.lesson.title}</span>
-                    {STATE_LABEL[state] && <span className="sr-only">, {STATE_LABEL[state]}</span>}
+                    {spoken && <span className="sr-only">, {spoken}</span>}
                   </NavLink>
                 ) : (
                   <span className="min-w-0 flex-1 truncate px-2 py-1.5 text-faint" title="Coming soon">

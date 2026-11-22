@@ -86,6 +86,8 @@ export function ModulePage() {
       <ol className={`page mt-3 px-2 py-2 sm:px-4 ${trackClass(trackIndex)}`} aria-label="Lessons in this module">
         {m.planned.map((p, i) => {
           const state = lessonState(p, data, here);
+          // Spoken from progress alone: "you are here" is visible text, the lesson's own state still needs saying.
+          const spoken = STATE_LABEL[lessonState(p, data, undefined)];
           return (
             <li key={p.number} className="flex">
               <Rail line={`${linePosition(i, m.planned.length)} ${p.lesson ? LINE : LINE_UNBUILT}`}>
@@ -97,7 +99,7 @@ export function ModulePage() {
                   <div className="min-w-0 flex-1 pt-1">
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-1 leading-snug">
                       <span className="font-bold group-hover:text-accent-fg">{p.lesson.title}</span>
-                      {STATE_LABEL[state] && <span className="sr-only">, {STATE_LABEL[state]}</span>}
+                      {spoken && <span className="sr-only">, {spoken}</span>}
                       {state === 'here' && <HereLabel />}
                     </div>
                     <div className="mt-0.5 text-sm text-muted">{p.lesson.summary}</div>
