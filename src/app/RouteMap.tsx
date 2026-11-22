@@ -40,14 +40,30 @@ export function stationState(m: CourseModule, ms: ModuleProgress, here: string |
   return 'ahead';
 }
 
-/** One stop per lesson next to the station. */
-function stopClass(p: PlannedLesson, data: ProgressInput): string {
-  const base = 'h-2.5 w-2.5 rounded-full border-2';
-  if (!p.lesson) return `${base} border-dashed border-line`;
+/** What a screen reader says about a lesson whose marker it cannot see ("you are here" and "coming soon" are visible text). */
+export const STATE_LABEL: Partial<Record<StationState, string>> = { done: 'done', started: 'in progress', ahead: 'not started' };
+
+/** A lesson's state on the line: one rule for the stops on the course map and the stations on the module page. */
+export function lessonState(p: PlannedLesson, data: ProgressInput, here: string | undefined): StationState {
+  if (!p.lesson) return 'soon';
+  if (p.lesson.id === here) return 'here';
   const s = lessonStats(p.lesson, data);
-  if (s.complete) return `${base} border-track bg-track`;
-  if (s.started) return `${base} border-track bg-track/35`;
-  return `${base} border-line`;
+  if (s.complete) return 'done';
+  if (s.started) return 'started';
+  return 'ahead';
+}
+
+/** A lesson stop next to a station on the course map ("you are here" belongs to the station, so it never reaches a stop). */
+const STOP: Record<StationState, string> = {
+  done: 'border-track bg-track',
+  here: 'border-line',
+  started: 'border-track bg-track/35',
+  ahead: 'border-line',
+  soon: 'border-dashed border-line',
+};
+
+function stopClass(p: PlannedLesson, data: ProgressInput): string {
+  return `h-2.5 w-2.5 rounded-full border-2 ${STOP[lessonState(p, data, undefined)]}`;
 }
 
 /** The count next to the stops: the stops show which lessons are done, the count says how many. */

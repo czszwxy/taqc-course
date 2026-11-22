@@ -6,11 +6,10 @@ import { courseStats, moduleStats } from '../features/progress/selectors';
 import { Callout } from '../components/ui';
 import { Icon } from '../components/icons';
 import { RouteMap } from '../app/RouteMap';
+import { learnPathParts } from '../app/currentCourse';
 import { NotFound } from './NotFound';
 
 type ProgressInput = Parameters<typeof moduleStats>[1];
-
-const LEARN_PREFIX = '/learn/';
 
 function heroNote(done: number, total: number): string {
   if (total === 0) return 'this course is being written';
@@ -21,14 +20,13 @@ function heroNote(done: number, total: number): string {
 
 /** The last visited page, if it is a lesson or task of this course. */
 function lastInCourse(course: Course, last: { path: string; title: string } | undefined): { path: string; title: string } | undefined {
-  if (!last?.path.startsWith(LEARN_PREFIX)) return undefined;
-  const moduleSlug = last.path.slice(LEARN_PREFIX.length).split('/')[0] ?? '';
-  return course.modulesBySlug.has(moduleSlug) ? last : undefined;
+  const { moduleSlug } = learnPathParts(last?.path);
+  return moduleSlug && course.modulesBySlug.has(moduleSlug) ? last : undefined;
 }
 
 /** The module the learner is in: the last visited one in this course, otherwise the first unfinished one. */
 function hereSlug(course: Course, data: ProgressInput, resume: { path: string } | undefined): string | undefined {
-  const fromLast = resume?.path.slice(LEARN_PREFIX.length).split('/')[0];
+  const fromLast = learnPathParts(resume?.path).moduleSlug;
   if (fromLast) return fromLast;
   return course.modules.find((m) => m.available && moduleStats(m, data).completed < m.lessons.length)?.slug;
 }

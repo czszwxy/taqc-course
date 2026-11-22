@@ -5,31 +5,19 @@ import { lessonStats, moduleStats } from '../features/progress/selectors';
 import { ProgressBar, TrackTab, trackClass } from '../components/ui';
 import { formatModuleNumber } from '../lib/format';
 import { trackIndexOf } from '../app/tracks';
-import { useCourseForModule } from '../app/currentCourse';
-import { HereLabel, LINE, LINE_UNBUILT, Rail, StationMarker, type StationState } from '../app/RouteMap';
+import { learnPathParts, useCourseForModule } from '../app/currentCourse';
+import { HereLabel, LINE, LINE_UNBUILT, Rail, STATE_LABEL, StationMarker, lessonState } from '../app/RouteMap';
 import { NotFound } from './NotFound';
 
 type ProgressInput = Parameters<typeof moduleStats>[1];
-type PlannedLesson = CourseModule['planned'][number];
 
 const FULL_PERCENT = 100;
-const LEARN_PREFIX = '/learn/';
 
 /** The lesson the learner is in: the last visited one in this module, otherwise the first unfinished one. */
 function hereLessonId(m: CourseModule, data: ProgressInput, lastPath: string | undefined): string | undefined {
-  const path = (lastPath ?? '').split('?')[0] ?? '';
-  const [moduleSlug, lessonSlug] = path.startsWith(LEARN_PREFIX) ? path.slice(LEARN_PREFIX.length).split('/') : [];
+  const { moduleSlug, lessonSlug } = learnPathParts(lastPath);
   if (moduleSlug === m.slug && lessonSlug) return `${moduleSlug}/${lessonSlug}`;
   return m.lessons.find((l) => !lessonStats(l, data).complete)?.id;
-}
-
-function lessonState(p: PlannedLesson, data: ProgressInput, here: string | undefined): StationState {
-  if (!p.lesson) return 'soon';
-  if (p.lesson.id === here) return 'here';
-  const s = lessonStats(p.lesson, data);
-  if (s.complete) return 'done';
-  if (s.started) return 'started';
-  return 'ahead';
 }
 
 /** Where the piece of line sits in a row: the line starts at the first stop and ends at the last one. */
@@ -117,6 +105,7 @@ export function ModulePage() {
                   <div className="min-w-0 flex-1 pt-1">
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-1 leading-snug">
                       <span className="font-bold group-hover:text-accent-fg">{p.lesson.title}</span>
+                      {STATE_LABEL[state] && <span className="sr-only">, {STATE_LABEL[state]}</span>}
                       {state === 'here' && <HereLabel />}
                     </div>
                     <div className="mt-0.5 text-sm text-muted">{p.lesson.summary}</div>

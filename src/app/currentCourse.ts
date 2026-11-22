@@ -2,6 +2,16 @@ import { useEffect } from 'react';
 import { catalog, courseForModule, getCourse, DEFAULT_COURSE_ID, type Course } from '../content/loader';
 import { useSettings } from '../features/progress/store';
 
+const LEARN_PREFIX = '/learn/';
+
+/** Module and lesson slugs of a remembered `/learn/:module/:lesson[/:task][?…]` path (progress `last.path`); empty for any other page. */
+export function learnPathParts(path: string | undefined): { moduleSlug?: string; lessonSlug?: string } {
+  const clean = (path ?? '').split('?')[0] ?? '';
+  if (!clean.startsWith(LEARN_PREFIX)) return {};
+  const [moduleSlug, lessonSlug] = clean.slice(LEARN_PREFIX.length).split('/');
+  return { moduleSlug: moduleSlug || undefined, lessonSlug: lessonSlug || undefined };
+}
+
 /** The course the learner is studying (last opened course map), falling back to the default course. */
 export function useCurrentCourse(): Course | undefined {
   const id = useSettings((s) => s.currentCourseId);
