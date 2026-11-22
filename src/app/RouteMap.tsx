@@ -1,0 +1,129 @@
+import type { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
+import type { Course, CourseModule } from '../content/loader';
+import { lessonStats, moduleStats } from '../features/progress/selectors';
+import { trackClass } from '../components/ui';
+import { formatModuleNumber } from '../lib/format';
+
+type ProgressInput = Parameters<typeof moduleStats>[1];
+type ModuleProgress = ReturnType<typeof moduleStats>;
+type PlannedLesson = CourseModule['planned'][number];
+type StationState = 'done' | 'here' | 'started' | 'ahead' | 'soon';
+
+/** Station marker per state: filled = done, big ring = you are here, tinted = started, ring = ahead, dashed = not built yet. */
+const STATION: Record<StationState, string> = {
+  done: 'h-4 w-4 border-[3px] border-track bg-track',
+  here: 'h-6 w-6 border-[5px] border-track bg-surface',
+  started: 'h-4 w-4 border-[3px] border-track bg-track/35',
+  ahead: 'h-4 w-4 border-[3px] border-track bg-surface',
+  soon: 'h-4 w-4 border-2 border-dashed border-faint bg-surface',
+};
+const LINE = 'w-1.5 bg-track';
+const LINE_UNBUILT = 'w-0 border-l-[6px] border-dotted border-line';
+
+function stationState(m: CourseModule, ms: ModuleProgress, here: string | undefined): StationState {
+  if (!m.available) return 'soon';
+  if (m.slug === here) return 'here';
+  if (ms.total > 0 && ms.completed === ms.total) return 'done';
+  if (ms.started) return 'started';
+  return 'ahead';
+}
+
+/** One stop per lesson next to the station. */
+function stopClass(p: PlannedLesson, data: ProgressInput): string {
+  const base = 'h-2.5 w-2.5 rounded-full border-2';
+  if (!p.lesson) return `${base} border-dashed border-line`;
+  const s = lessonStats(p.lesson, data);
+  if (s.complete) return `${base} border-track bg-track`;
+  if (s.started) return `${base} border-track bg-track/35`;
+  return `${base} border-line`;
+}
+
+/** The count next to the stops: the stops show which lessons are done, the count says how many. */
+function moduleCount(m: CourseModule, ms: ModuleProgress): string {
+  if (!m.available) return 'coming soon';
+  if (ms.started) return `${ms.completed} of ${ms.total} done`;
+  return `${ms.total} lessons`;
+}
+
+/** The left column of a row: a piece of the line (`line` = its position and look) with an optional marker on it. */
+function Rail({ line, children }: { line: string; children?: ReactNode }) {
+  return (
+    <div className="relative w-10 shrink-0 sm:w-14" aria-hidden="true">
+      <span className={`absolute left-1/2 -translate-x-1/2 ${line}`} />
+      {children}
+    </div>
+  );
+}
+
+function Station({ module: m, data, here }: { module: CourseModule; data: ProgressInput; here: string | undefined }) {
+  const ms = moduleStats(m, data);
+  const state = stationState(m, ms, here);
+  return (
+    <li className="flex">
+      <Rail line={`inset-y-0 ${m.available ? LINE : LINE_UNBUILT}`}>
+        <span className={`absolute left-1/2 top-7 -translate-x-1/2 -translate-y-1/2 rounded-full ${STATION[state]}`} />
+      </Rail>
+      <Link
+        to={`/module/${m.slug}`}
+        className={`group my-0.5 flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-1.5 rounded-lg px-3 py-3 transition-colors hover:bg-hover ${m.available ? '' : 'text-faint'}`}
+      >
+        <span className={`w-7 shrink-0 font-display text-lg font-bold tabular-nums ${m.available ? 'text-track' : ''}`}>{formatModuleNumber(m.number)}</span>
+        <span className="min-w-0 flex-1 font-bold leading-snug group-hover:text-accent-fg">{m.title}</span>
+        {state === 'here' && <span className="shrink-0 rounded bg-highlight px-1.5 py-0.5 text-xs font-bold text-highlight-fg">you are here</span>}
+        <span className="flex w-full items-center gap-3 pl-10 sm:w-auto sm:pl-0">
+          {m.planned.length > 0 && (
+            <span className="flex flex-wrap gap-1" aria-hidden="true">
+              {m.planned.map((p) => (
+                <span key={p.number} className={stopClass(p, data)} />
+              ))}
+            </span>
+          )}
+          <span className="shrink-0 text-xs tabular-nums text-muted">{moduleCount(m, ms)}</span>
+        </span>
+      </Link>
+    </li>
+  );
+}
+
+/**
+ * The course map as a transit line from the first module to "First job": each track is a line in its own colour,
+ * modules are stations, lessons are stops, and a track change is an interchange.
+ */
+export function RouteMap({ course, data, here }: { course: Course; data: ProgressInput; here: string | undefined }) {
+  const lastTrack = course.tracks.length - 1;
+  return (
+    <ol className="page mt-6 max-w-4xl px-2 py-2 sm:px-4" aria-label="Course route">
+      {course.tracks.map((track, i) => (
+        <li key={track.id} className={trackClass(i)}>
+          <div className="flex">
+            <Rail line={`${i === 0 ? 'top-1/2 bottom-0' : 'inset-y-0'} ${LINE}`}>
+              <span className="absolute left-1/2 top-1/2 h-5 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-fg bg-surface" />
+            </Rail>
+            <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-1 px-3 py-4">
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-track font-bold text-surface">{i + 1}</span>
+              <h3 className="min-w-0 font-display text-xl font-bold leading-tight">{track.title}</h3>
+              {track.description && <p className="w-full text-sm text-muted">{track.description}</p>}
+            </div>
+          </div>
+          <ol>
+            {track.modules.map((m) => (
+              <Station key={m.slug} module={m} data={data} here={here} />
+            ))}
+          </ol>
+          {i === lastTrack && (
+            <div className="flex">
+              <Rail line={`top-0 bottom-1/2 ${LINE}`}>
+                <span className="absolute left-1/2 top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 rounded-md border-[5px] border-fg bg-surface" />
+              </Rail>
+              <div className="px-3 py-5">
+                <div className="font-display text-2xl font-bold">First job</div>
+                <div className="text-sm text-muted">End of the line: you are ready to apply.</div>
+              </div>
+            </div>
+          )}
+        </li>
+      ))}
+    </ol>
+  );
+}

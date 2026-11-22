@@ -1,16 +1,14 @@
 import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { getCourse, lessonPath, type Course, type CourseModule } from '../content/loader';
+import { getCourse, lessonPath, type Course } from '../content/loader';
 import { useProgress, useSettings } from '../features/progress/store';
-import { courseStats, lessonStats, moduleStats } from '../features/progress/selectors';
-import { Callout, trackClass } from '../components/ui';
+import { courseStats, moduleStats } from '../features/progress/selectors';
+import { Callout } from '../components/ui';
 import { Icon } from '../components/icons';
-import { formatModuleNumber } from '../lib/format';
+import { RouteMap } from '../app/RouteMap';
 import { NotFound } from './NotFound';
 
 type ProgressInput = Parameters<typeof moduleStats>[1];
-type ModuleProgress = ReturnType<typeof moduleStats>;
-type PlannedLesson = CourseModule['planned'][number];
 
 const LEARN_PREFIX = '/learn/';
 
@@ -28,32 +26,14 @@ function lastInCourse(course: Course, last: { path: string; title: string } | un
   return course.modulesBySlug.has(moduleSlug) ? last : undefined;
 }
 
-/** Handwritten stamp on a module card. */
-function moduleStamp(m: CourseModule, ms: ModuleProgress): { text: string; className: string } | null {
-  if (!m.available) return { text: 'coming soon', className: 'text-faint' };
-  if (ms.total > 0 && ms.completed === ms.total) return { text: 'done ✓', className: 'text-ok' };
-  if (ms.started) return { text: 'in progress', className: 'text-accent-fg' };
-  return null;
+/** The module the learner is in: the last visited one in this course, otherwise the first unfinished one. */
+function hereSlug(course: Course, data: ProgressInput, resume: { path: string } | undefined): string | undefined {
+  const fromLast = resume?.path.slice(LEARN_PREFIX.length).split('/')[0];
+  if (fromLast) return fromLast;
+  return course.modules.find((m) => m.available && moduleStats(m, data).completed < m.lessons.length)?.slug;
 }
 
-/** The count next to the ticks: the ticks show which lessons are done, the count says how many. */
-function moduleCount(m: CourseModule, ms: ModuleProgress): string {
-  if (!m.available) return `${m.planned.length} planned`;
-  if (ms.started) return `${ms.completed} of ${ms.total} done`;
-  return `${ms.total} lessons`;
-}
-
-/** One small checkbox per planned lesson on a module card. */
-function tickClass(p: PlannedLesson, data: ProgressInput): string {
-  const base = 'h-3 w-3 rounded-[3px] border';
-  if (!p.lesson) return `${base} border-dashed border-line`;
-  const s = lessonStats(p.lesson, data);
-  if (s.complete) return `${base} border-ok bg-ok`;
-  if (s.started) return `${base} border-accent bg-accent-soft`;
-  return `${base} border-line bg-surface`;
-}
-
-/** Course map of one profession: tracks → module cards with a checkbox per lesson. */
+/** Course map of one profession: a route from the first module to "First job" (see RouteMap). */
 export function CoursePage() {
   const { courseId } = useParams();
   const course = getCourse(courseId);
@@ -106,7 +86,8 @@ export function CoursePage() {
         {course.status !== 'available' && (
           <div className="mt-6 max-w-2xl">
             <Callout tone="warn" title="This course is still being written">
-              Modules marked <b>coming soon</b> are in the plan. Ready modules can be studied right away — many are shared with other professions.
+              Stations marked <b>coming soon</b> (on a dotted line) are in the plan. Ready modules can be studied right away — many are shared with other
+              professions.
             </Callout>
           </div>
         )}
@@ -115,47 +96,8 @@ export function CoursePage() {
       <h2 className="mt-12 font-display text-2xl font-bold">
         Course <span className="marker">map</span>
       </h2>
-      {course.tracks.map((track, i) => (
-        <section key={track.id} className={`mt-7 ${trackClass(i)}`}>
-          <div className="flex flex-wrap items-end gap-x-4 border-b-2 border-track">
-            <span className="track-tab">
-              {formatModuleNumber(i + 1)} · {track.title}
-            </span>
-            {track.description && <p className="hidden pb-1 text-sm text-muted md:block">{track.description}</p>}
-          </div>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-            {track.modules.map((m) => (
-              <ModuleCard key={m.slug} module={m} data={data} />
-            ))}
-          </div>
-        </section>
-      ))}
+      <RouteMap course={course} data={data} here={hereSlug(course, data, resume)} />
     </div>
-  );
-}
-
-function ModuleCard({ module: m, data }: { module: CourseModule; data: ProgressInput }) {
-  const ms = moduleStats(m, data);
-  const stamp = moduleStamp(m, ms);
-  return (
-    <Link
-      to={`/module/${m.slug}`}
-      className={`card group flex flex-col border-t-4 border-t-track p-4 transition-colors hover:bg-hover ${m.available ? '' : 'opacity-60'}`}
-    >
-      <div className="flex items-start justify-between gap-2">
-        <span className="font-display text-[1.7rem] font-bold leading-none text-track">{formatModuleNumber(m.number)}</span>
-        {stamp && <span className={`font-hand text-[1.25rem] font-bold leading-none ${stamp.className}`}>{stamp.text}</span>}
-      </div>
-      <div className="mt-2 font-bold leading-snug group-hover:text-accent-fg">{m.title}</div>
-      <div className="mt-auto flex items-center justify-between gap-3 pt-4">
-        <div className="flex flex-wrap gap-1" aria-hidden="true">
-          {m.planned.map((p) => (
-            <span key={p.number} className={tickClass(p, data)} />
-          ))}
-        </div>
-        <span className="shrink-0 text-xs tabular-nums text-muted">{moduleCount(m, ms)}</span>
-      </div>
-    </Link>
   );
 }
 
