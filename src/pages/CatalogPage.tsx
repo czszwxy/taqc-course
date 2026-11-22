@@ -2,17 +2,40 @@ import { Link } from 'react-router-dom';
 import { catalog, coursePath, type Course } from '../content/loader';
 import type { CourseStatus } from '../content/schema';
 import { useProgress } from '../features/progress/store';
-import { courseStats } from '../features/progress/selectors';
-import { ProgressBar, trackClass } from '../components/ui';
+import { courseStats, moduleStats } from '../features/progress/selectors';
+import { trackClass } from '../components/ui';
 import { useCurrentCourse } from '../app/currentCourse';
+import { stationState, type StationState } from '../app/RouteMap';
 
 type ProgressInput = Parameters<typeof courseStats>[1];
 
-const STATUS: Record<CourseStatus, { stamp: string; className: string; cta: string }> = {
-  available: { stamp: 'ready', className: 'text-ok', cta: 'Open course →' },
-  'in-progress': { stamp: 'growing', className: 'text-accent-fg', cta: 'Open course →' },
-  planned: { stamp: 'coming soon', className: 'text-faint', cta: 'See the plan →' },
+const STATUS: Record<CourseStatus, { stamp: string; className: string }> = {
+  available: { stamp: 'ready', className: 'text-ok' },
+  'in-progress': { stamp: 'growing', className: 'text-accent-fg' },
+  planned: { stamp: 'coming soon', className: 'text-faint' },
 };
+
+/** A module on the mini route: the same states as the stations of the course map ("you are here" is not shown). */
+const ROUTE_DOT: Record<StationState, string> = {
+  done: 'border-track bg-track',
+  here: 'border-track bg-surface',
+  started: 'border-track bg-track/35',
+  ahead: 'border-track bg-surface',
+  soon: 'border-dashed border-faint bg-surface',
+};
+
+/** The whole course as a short line: one dot per module and the "First job" terminal at the end. */
+function MiniRoute({ course, data }: { course: Course; data: ProgressInput }) {
+  return (
+    <div className="relative mt-4 flex items-center justify-between gap-0.5" aria-hidden="true">
+      <span className="absolute inset-x-0 top-1/2 h-1 -translate-y-1/2 rounded-full bg-track/30" />
+      {course.modules.map((m) => (
+        <span key={m.slug} className={`relative h-2.5 w-2.5 shrink-0 rounded-full border-2 ${ROUTE_DOT[stationState(m, moduleStats(m, data), undefined)]}`} />
+      ))}
+      <span className="relative h-3.5 w-3.5 shrink-0 rounded-[3px] border-[3px] border-fg bg-surface" />
+    </div>
+  );
+}
 
 /** Main menu: the catalog of professions. */
 export function CatalogPage() {
@@ -68,16 +91,11 @@ function CourseCard({ course, index, data }: { course: Course; index: number; da
       <h3 className="mt-3 font-display text-xl font-bold leading-snug group-hover:text-accent-fg">{course.title}</h3>
       <div className="text-sm font-bold text-track">{course.subtitle}</div>
       <p className="mt-2 line-clamp-4 flex-1 text-sm text-muted">{course.description}</p>
-      <div className="mt-4 text-xs text-muted">
+      <MiniRoute course={course} data={data} />
+      <div className="mt-2 text-xs tabular-nums text-muted">
         {modulesReady}/{course.modules.length} modules ready · {course.lessons.length} lessons
+        {stats.percent > 0 && ` · ${stats.percent}% done`}
       </div>
-      {stats.percent > 0 && (
-        <div className="mt-2 flex items-center gap-2 text-xs text-muted">
-          <ProgressBar percent={stats.percent} />
-          <span className="shrink-0 tabular-nums">{stats.percent}%</span>
-        </div>
-      )}
-      <span className="btn btn-secondary btn-sm mt-4 self-start">{status.cta}</span>
     </Link>
   );
 }

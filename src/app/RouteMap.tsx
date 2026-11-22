@@ -8,7 +8,7 @@ import { formatModuleNumber } from '../lib/format';
 type ProgressInput = Parameters<typeof moduleStats>[1];
 type ModuleProgress = ReturnType<typeof moduleStats>;
 type PlannedLesson = CourseModule['planned'][number];
-type StationState = 'done' | 'here' | 'started' | 'ahead' | 'soon';
+export type StationState = 'done' | 'here' | 'started' | 'ahead' | 'soon';
 
 /** Station marker per state: filled = done, big ring = you are here, tinted = started, ring = ahead, dashed = not built yet. */
 const STATION: Record<StationState, string> = {
@@ -18,10 +18,21 @@ const STATION: Record<StationState, string> = {
   ahead: 'h-4 w-4 border-[3px] border-track bg-surface',
   soon: 'h-4 w-4 border-2 border-dashed border-faint bg-surface',
 };
-const LINE = 'w-1.5 bg-track';
-const LINE_UNBUILT = 'w-0 border-l-[6px] border-dotted border-line';
+/** A piece of the line: solid in the track colour, dotted where the module or lesson is not built yet. */
+export const LINE = 'w-1.5 bg-track';
+export const LINE_UNBUILT = 'w-0 border-l-[6px] border-dotted border-line';
 
-function stationState(m: CourseModule, ms: ModuleProgress, here: string | undefined): StationState {
+/** A station marker on the rail, centred on the first text line of its row (rows have `my-0.5 py-3`). */
+export function StationMarker({ state }: { state: StationState }) {
+  return <span className={`absolute left-1/2 top-7 -translate-x-1/2 -translate-y-1/2 rounded-full ${STATION[state]}`} />;
+}
+
+/** The "you are here" label next to the current station. */
+export function HereLabel() {
+  return <span className="shrink-0 rounded bg-highlight px-1.5 py-0.5 text-xs font-bold text-highlight-fg">you are here</span>;
+}
+
+export function stationState(m: CourseModule, ms: ModuleProgress, here: string | undefined): StationState {
   if (!m.available) return 'soon';
   if (m.slug === here) return 'here';
   if (ms.total > 0 && ms.completed === ms.total) return 'done';
@@ -47,7 +58,7 @@ function moduleCount(m: CourseModule, ms: ModuleProgress): string {
 }
 
 /** The left column of a row: a piece of the line (`line` = its position and look) with an optional marker on it. */
-function Rail({ line, children }: { line: string; children?: ReactNode }) {
+export function Rail({ line, children }: { line: string; children?: ReactNode }) {
   return (
     <div className="relative w-10 shrink-0 sm:w-14" aria-hidden="true">
       <span className={`absolute left-1/2 -translate-x-1/2 ${line}`} />
@@ -62,7 +73,7 @@ function Station({ module: m, data, here }: { module: CourseModule; data: Progre
   return (
     <li className="flex">
       <Rail line={`inset-y-0 ${m.available ? LINE : LINE_UNBUILT}`}>
-        <span className={`absolute left-1/2 top-7 -translate-x-1/2 -translate-y-1/2 rounded-full ${STATION[state]}`} />
+        <StationMarker state={state} />
       </Rail>
       <Link
         to={`/module/${m.slug}`}
@@ -70,7 +81,7 @@ function Station({ module: m, data, here }: { module: CourseModule; data: Progre
       >
         <span className={`w-7 shrink-0 font-display text-lg font-bold tabular-nums ${m.available ? 'text-track' : ''}`}>{formatModuleNumber(m.number)}</span>
         <span className="min-w-0 flex-1 font-bold leading-snug group-hover:text-accent-fg">{m.title}</span>
-        {state === 'here' && <span className="shrink-0 rounded bg-highlight px-1.5 py-0.5 text-xs font-bold text-highlight-fg">you are here</span>}
+        {state === 'here' && <HereLabel />}
         <span className="flex w-full items-center gap-3 pl-10 sm:w-auto sm:pl-0">
           {m.planned.length > 0 && (
             <span className="flex flex-wrap gap-1" aria-hidden="true">
