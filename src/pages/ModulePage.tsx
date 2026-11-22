@@ -6,7 +6,7 @@ import { ProgressBar, TrackTab, trackClass } from '../components/ui';
 import { formatModuleNumber } from '../lib/format';
 import { trackIndexOf } from '../app/tracks';
 import { learnPathParts, useCourseForModule } from '../app/currentCourse';
-import { HereLabel, LINE, LINE_UNBUILT, Rail, STATE_LABEL, StationMarker, lessonState } from '../app/RouteMap';
+import { HereLabel, LINE, LINE_UNBUILT, Rail, STATE_LABEL, StationMarker, lessonState, linePosition } from '../app/RouteMap';
 import { NotFound } from './NotFound';
 
 type ProgressInput = Parameters<typeof moduleStats>[1];
@@ -18,14 +18,6 @@ function hereLessonId(m: CourseModule, data: ProgressInput, lastPath: string | u
   const { moduleSlug, lessonSlug } = learnPathParts(lastPath);
   if (moduleSlug === m.slug && lessonSlug) return `${moduleSlug}/${lessonSlug}`;
   return m.lessons.find((l) => !lessonStats(l, data).complete)?.id;
-}
-
-/** Where the piece of line sits in a row: the line starts at the first stop and ends at the last one. */
-function linePosition(index: number, count: number): string {
-  if (count === 1) return 'hidden';
-  if (index === 0) return 'top-7 bottom-0';
-  if (index === count - 1) return 'top-0 h-7';
-  return 'inset-y-0';
 }
 
 function TaskCount({ stats }: { stats: { solved: number; required: number } }) {

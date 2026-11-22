@@ -253,8 +253,14 @@
     box-shadow: 0 1px 0 var(--c-line);
   }
 
+  /* Single-column task pages: TaskPage wraps the task view, whose own centred column becomes a .page sheet. */
+  .task-sheet {
+    padding: 1.25rem 0.75rem 2.5rem;
+  }
+
   /* A notebook page: solid paper on top of the grid, for long reading. */
-  .page {
+  .page,
+  .task-sheet > * {
     background: var(--c-surface);
     border: 1px solid var(--c-line);
     border-radius: 0.9rem;

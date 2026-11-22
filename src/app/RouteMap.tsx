@@ -22,9 +22,27 @@ const STATION: Record<StationState, string> = {
 export const LINE = 'w-1.5 bg-track';
 export const LINE_UNBUILT = 'w-0 border-l-[6px] border-dotted border-line';
 
-/** A station marker on the rail, centred on the first text line of its row (rows have `my-0.5 py-3`). */
-export function StationMarker({ state }: { state: StationState }) {
-  return <span className={`absolute left-1/2 top-7 -translate-x-1/2 -translate-y-1/2 rounded-full ${STATION[state]}`} />;
+/**
+ * Row sizes of the line: `large` rows (`my-0.5 py-3` + a text-lg number) on the course map and the module page,
+ * `compact` rows (`py-1.5`, 14px text) in the lesson menu. Full class names, so Tailwind sees them.
+ */
+const ROW = {
+  large: { rail: 'w-10 sm:w-14', marker: 'top-7', first: 'top-7 bottom-0', last: 'top-0 h-7' },
+  compact: { rail: 'w-6', marker: 'top-4', first: 'top-4 bottom-0', last: 'top-0 h-4' },
+} as const;
+export type RowSize = keyof typeof ROW;
+
+/** A station marker on the rail, centred on the first text line of its row. */
+export function StationMarker({ state, size = 'large' }: { state: StationState; size?: RowSize }) {
+  return <span className={`absolute left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full ${ROW[size].marker} ${STATION[state]}`} />;
+}
+
+/** Where the piece of line sits in a row of a list: the line starts at the first stop and ends at the last one. */
+export function linePosition(index: number, count: number, size: RowSize = 'large'): string {
+  if (count === 1) return 'hidden';
+  if (index === 0) return ROW[size].first;
+  if (index === count - 1) return ROW[size].last;
+  return 'inset-y-0';
 }
 
 /** The "you are here" label next to the current station. */
@@ -74,9 +92,9 @@ function moduleCount(m: CourseModule, ms: ModuleProgress): string {
 }
 
 /** The left column of a row: a piece of the line (`line` = its position and look) with an optional marker on it. */
-export function Rail({ line, children }: { line: string; children?: ReactNode }) {
+export function Rail({ line, size = 'large', children }: { line: string; size?: RowSize; children?: ReactNode }) {
   return (
-    <div className="relative w-10 shrink-0 sm:w-14" aria-hidden="true">
+    <div className={`relative shrink-0 ${ROW[size].rail}`} aria-hidden="true">
       <span className={`absolute left-1/2 -translate-x-1/2 ${line}`} />
       {children}
     </div>

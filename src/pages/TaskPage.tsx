@@ -4,8 +4,9 @@ import { lessonPath, lessonsById, neighbourLessons, taskPath, tasksById, type Co
 import { useCourseForModule } from '../app/currentCourse';
 import { TASK_TYPE_LABEL, type Task } from '../content/schema';
 import { useProgress } from '../features/progress/store';
-import { taskStatus } from '../features/progress/selectors';
-import { StatusIcon } from '../components/ui';
+import { taskStatus, type Status } from '../features/progress/selectors';
+import { StatusIcon, trackClass } from '../components/ui';
+import { trackIndexOf } from '../app/tracks';
 import { QuizTaskView } from '../features/tasks/QuizTaskView';
 import { ValueSetTaskView } from '../features/tasks/ValueSetTaskView';
 import { TestCaseTaskView } from '../features/tasks/TestCaseTaskView';
@@ -42,6 +43,43 @@ const TASK_VIEWS: Record<Task['type'], ComponentType<TaskViewProps>> = {
   web: WebTaskView,
   'tech-check': TechCheckTaskView,
 };
+
+/** Task types shown as statement + editor side by side; the others are one column, laid on a paper sheet. */
+const SPLIT_TYPES: ReadonlySet<Task['type']> = new Set<Task['type']>(['code', 'playwright', 'python', 'web']);
+
+/** A task stop on the lesson's line: filled = solved, tinted = tried, empty = not started. */
+const TASK_STOP: Record<Status, string> = {
+  solved: 'border-track bg-track text-surface',
+  attempted: 'border-track bg-track/35 text-fg',
+  new: 'border-line bg-surface text-muted',
+};
+const TASK_STOP_LABEL: Record<Status, string> = { solved: 'solved', attempted: 'tried', new: 'not started' };
+
+/** The lesson's tasks as numbered stops on a short line; the current one is circled. */
+function TaskStops({ lesson, current, course }: { lesson: CourseLesson; current: CourseTask; course: Course | undefined }) {
+  const tasks = useProgress((s) => s.tasks);
+  return (
+    <nav aria-label="Tasks in this lesson" className={`relative flex items-center gap-3 ${trackClass(trackIndexOf(course, lesson.moduleSlug))}`}>
+      <span className="absolute inset-x-1 top-1/2 h-1 -translate-y-1/2 rounded-full bg-track/30" aria-hidden="true" />
+      {lesson.tasks.map((t, i) => {
+        const status = taskStatus(t, tasks);
+        const isCurrent = t === current;
+        return (
+          <Link
+            key={t.id}
+            to={taskPath(t)}
+            aria-current={isCurrent ? 'page' : undefined}
+            aria-label={`Task ${i + 1} of ${lesson.tasks.length}: ${t.task.title}, ${TASK_STOP_LABEL[status]}`}
+            title={t.task.title}
+            className={`relative grid h-6 w-6 place-items-center rounded-full border-2 text-xs font-bold tabular-nums ${TASK_STOP[status]} ${isCurrent ? 'outline-2 outline-offset-2 outline-fg' : ''}`}
+          >
+            {i + 1}
+          </Link>
+        );
+      })}
+    </nav>
+  );
+}
 
 /** Task types whose "similar task" is generated from a new seed (re-sampled / re-shuffled) instead of a variant folder. */
 const SEEDED_TYPES: ReadonlySet<Task['type']> = new Set<Task['type']>(['quiz', 'value-set', 'classify', 'order', 'tech-check']);
@@ -90,7 +128,6 @@ export function TaskPage() {
     };
   }
 
-  const idx = lesson.tasks.indexOf(main);
   const next = nextTarget(lesson, main, course);
 
   const status = taskStatus(main, tasks);
@@ -98,14 +135,11 @@ export function TaskPage() {
 
   const header = (
     <div className="mb-5">
-      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted">
         <Link to={lessonPath(lesson, 'practice')} className="hover:text-accent-fg">
           ← {lesson.title}
         </Link>
-        <span className="text-faint">·</span>
-        <span>
-          Task {idx + 1} of {lesson.tasks.length}
-        </span>
+        <TaskStops lesson={lesson} current={main} course={course} />
       </div>
       <div className="mt-2 flex items-start gap-2.5">
         <StatusIcon status={status} size={20} />
@@ -133,7 +167,13 @@ export function TaskPage() {
 
   return (
     <Suspense fallback={<div className="p-8 text-sm text-muted">Loading task…</div>}>
-      <View key={`${active.id}:${seed}`} {...props} />
+      {SPLIT_TYPES.has(active.task.type) ? (
+        <View key={`${active.id}:${seed}`} {...props} />
+      ) : (
+        <div className="task-sheet">
+          <View key={`${active.id}:${seed}`} {...props} />
+        </div>
+      )}
     </Suspense>
   );
 }

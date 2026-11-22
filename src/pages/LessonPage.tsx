@@ -85,9 +85,10 @@ function LessonTabs({ lesson, tab, onChange }: { lesson: CourseLesson; tab: Tab;
   const tasks = useProgress((s) => s.tasks);
   const theoryRead = useProgress((s) => s.theoryRead);
   const s = lessonStats(lesson, { tasks, theoryRead });
-  const items: { id: Tab; label: string; badge?: string }[] = [
+  // The resources count is hidden on phones: three tabs with badges are wider than a 375px screen.
+  const items: { id: Tab; label: string; badge?: string; wideOnly?: boolean }[] = [
     { id: 'theory', label: 'Theory', badge: s.theory ? '✓' : undefined },
-    { id: 'resources', label: 'Resources', badge: String(lesson.resources.length) },
+    { id: 'resources', label: 'Resources', badge: String(lesson.resources.length), wideOnly: true },
     { id: 'practice', label: 'Practice', badge: `${s.solved}/${s.required}` },
   ];
   return (
@@ -96,12 +97,12 @@ function LessonTabs({ lesson, tab, onChange }: { lesson: CourseLesson; tab: Tab;
         <button
           key={it.id}
           onClick={() => onChange(it.id)}
-          className={`-mb-0.5 flex items-center gap-1.5 rounded-t-lg border-2 px-2.5 py-2 sm:gap-2 sm:px-3.5 text-sm font-bold transition-colors ${
+          className={`-mb-0.5 flex items-center gap-1 rounded-t-lg border-2 px-2 py-2 sm:gap-2 sm:px-3.5 text-sm font-bold transition-colors ${
             tab === it.id ? 'border-line border-b-surface bg-surface text-fg' : 'border-transparent text-muted hover:text-fg'
           }`}
         >
           {it.label}
-          {it.badge && <span className={`chip ${tab === it.id ? 'chip-accent' : ''}`}>{it.badge}</span>}
+          {it.badge && <span className={`chip ${tab === it.id ? 'chip-accent' : ''} ${it.wideOnly ? 'hidden sm:inline-flex' : ''}`}>{it.badge}</span>}
         </button>
       ))}
     </div>
