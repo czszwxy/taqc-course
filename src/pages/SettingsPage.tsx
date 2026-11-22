@@ -4,6 +4,7 @@ import { useCurrentCourse } from '../app/currentCourse';
 import { snapshotProgress, useProgress, useSettings, type EditorMode, type ProgressData } from '../features/progress/store';
 import { courseStats } from '../features/progress/selectors';
 import { Callout } from '../components/ui';
+import { Icon, type IconName } from '../components/icons';
 import { SyncSection } from '../features/sync/SyncSection';
 import { isSyncConnected, syncNow } from '../features/sync/sync';
 
@@ -14,10 +15,10 @@ const JSON_INDENT = 2;
 /** Length of the date part of an ISO timestamp: "2026-11-12". */
 const ISO_DATE_LENGTH = 10;
 
-const EDITOR_MODES: { mode: EditorMode; label: string }[] = [
-  { mode: 'auto', label: '✨ Auto (simple on phones)' },
-  { mode: 'full', label: '🖥️ Always full' },
-  { mode: 'simple', label: '📱 Always simple' },
+const EDITOR_MODES: { mode: EditorMode; icon: IconName; label: string }[] = [
+  { mode: 'auto', icon: 'auto', label: 'Auto (simple on phones)' },
+  { mode: 'full', icon: 'desktop', label: 'Always full' },
+  { mode: 'simple', icon: 'phone', label: 'Always simple' },
 ];
 
 export function SettingsPage() {
@@ -70,7 +71,7 @@ export function SettingsPage() {
         <div className="mt-3 flex gap-2">
           {(['dark', 'light'] as const).map((t) => (
             <button key={t} className={`btn ${theme === t ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setTheme(t)}>
-              {t === 'dark' ? '🌙 Blueprint (dark)' : '☀️ Paper (light)'}
+              <Icon name={t === 'dark' ? 'moon' : 'sun'} /> {t === 'dark' ? 'Blueprint (dark)' : 'Paper (light)'}
             </button>
           ))}
         </div>
@@ -83,9 +84,9 @@ export function SettingsPage() {
           phones: no autocorrect, auto-indent and a row of keys for brackets and quotes.
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
-          {EDITOR_MODES.map(({ mode, label }) => (
+          {EDITOR_MODES.map(({ mode, icon, label }) => (
             <button key={mode} className={`btn ${editorMode === mode ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setEditorMode(mode)}>
-              {label}
+              <Icon name={icon} /> {label}
             </button>
           ))}
         </div>
@@ -107,10 +108,10 @@ export function SettingsPage() {
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
           <button className="btn btn-primary" onClick={exportProgress}>
-            ⬇ Export progress (JSON)
+            <Icon name="download" /> Export progress (JSON)
           </button>
           <button className="btn btn-secondary" onClick={() => fileRef.current?.click()}>
-            ⬆ Import progress
+            <Icon name="upload" /> Import progress
           </button>
           <input
             ref={fileRef}

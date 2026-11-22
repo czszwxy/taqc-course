@@ -4,7 +4,9 @@ import { PLAYGROUND_PAGES } from '../playground/registry';
 export function PlaygroundIndex() {
   return (
     <div className="mx-auto max-w-4xl px-5 py-8 lg:px-8">
-      <h1 className="font-display text-[1.9rem] font-bold">🐞 Bug <span className="marker">Playground</span></h1>
+      <h1 className="font-display text-[1.9rem] font-bold">
+        Bug <span className="marker">Playground</span>
+      </h1>
       <p className="mt-2 max-w-2xl text-muted">
         Small demo pages with <b>intentional bugs</b>. Practice tasks (mostly in the QA Practice Lab module) send you here to explore, write test cases and file bug reports. Later, in
         the automation modules, you will write Playwright tests that catch these same bugs.

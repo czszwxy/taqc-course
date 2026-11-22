@@ -48,7 +48,7 @@
   --c-line: #dcd2bd;
   --c-fg: #1c2840;
   --c-muted: #48546d;
-  --c-faint: #646d84;
+  --c-faint: #5d667c;
   --c-accent: #2449c9;
   --c-accent-hover: #1d3ba6;
   --c-accent-soft: #e5ebfb;
@@ -86,7 +86,7 @@
 .dark {
   color-scheme: dark;
   --c-canvas: #0e1b30;
-  --c-grid: #172b4b;
+  --c-grid: #142641;
   --c-surface: #13243f;
   --c-hover: #1b3254;
   --c-sunken: #0b1628;
@@ -178,6 +178,12 @@
 }
 
 @layer components {
+  /* App chrome only (the Layout root): small print is 13px instead of 12px. Playground pages stay outside and keep their own sizes. */
+  .app {
+    --text-xs: 0.8125rem;
+    --text-xs--line-height: calc(1.125 / 0.8125);
+  }
+
   .btn {
     display: inline-flex;
     align-items: center;
@@ -212,6 +218,7 @@
     background: var(--c-surface);
     border-color: var(--c-line);
     color: var(--c-fg);
+    box-shadow: 0 1px 0 var(--c-line);
   }
   .btn-secondary:hover:not(:disabled) {
     border-color: var(--c-accent);
@@ -346,7 +353,7 @@
     gap: 0.25rem;
     border-radius: 999px;
     padding: 0.12rem 0.6rem;
-    font-size: 0.76rem;
+    font-size: 0.8rem;
     font-weight: 700;
     background: var(--c-hover);
     color: var(--c-muted);
@@ -447,6 +454,10 @@
     overflow-wrap: anywhere;
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
+  }
+  /* Tables scroll sideways on their own, so code in a cell keeps whole words ("string", not "stri / ng"). */
+  .prose-lesson :is(td, th) code {
+    overflow-wrap: normal;
   }
   .prose-lesson pre {
     background: var(--c-code);
@@ -554,7 +565,7 @@
     color: inherit !important;
   }
   .callout-tip::before {
-    content: "💡 Tip";
+    content: "Tip";
     color: #8a4b0a;
   }
   .callout-tip::after {
@@ -574,7 +585,7 @@
     border-top: 3px solid var(--c-accent) !important;
   }
   .callout-note::before {
-    content: "📝 Note";
+    content: "Note";
     color: var(--c-accent-fg);
   }
   .callout-warning {
@@ -582,7 +593,7 @@
     border: 2px dashed color-mix(in srgb, var(--c-warn) 60%, transparent) !important;
   }
   .callout-warning::before {
-    content: "⚠️ Watch out";
+    content: "Watch out!";
     color: var(--c-warn);
   }
   .callout-important {
@@ -590,7 +601,7 @@
     border: 2px solid var(--c-pen) !important;
   }
   .callout-important::before {
-    content: "❗ Important";
+    content: "Important!";
     color: var(--c-pen);
   }
   .callout-qa {
@@ -598,7 +609,7 @@
     border: 2px solid var(--c-accent) !important;
   }
   .callout-qa::before {
-    content: "🧪 QA angle";
+    content: "QA angle";
     color: var(--c-accent-fg);
   }
 

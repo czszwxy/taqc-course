@@ -4,10 +4,14 @@ import { useProgress, useSettings } from '../features/progress/store';
 import { courseStats } from '../features/progress/selectors';
 import { useAutoSync, useSync } from '../features/sync/sync';
 import { useCurrentCourse } from './currentCourse';
+import { Icon } from '../components/icons';
 
 const MAX_SHOWN_ERRORS = 8;
 /** Routes that belong to one course: only there the top bar shows that course's lesson counter. */
 const COURSE_ROUTE_PREFIXES = ['/course/', '/module/', '/learn/'];
+/** Path parts of a task page: learn / module / lesson / task. */
+const TASK_PATH_PARTS = 4;
+const ICON_SIZE = 18;
 
 function navClass({ isActive }: { isActive: boolean }): string {
   const state = isActive ? 'bg-highlight text-highlight-fg' : 'text-muted hover:bg-hover hover:text-fg';
@@ -25,21 +29,23 @@ export function Layout() {
   const stats = current && inCourse ? courseStats(current, { tasks, theoryRead }) : undefined;
   useAutoSync();
   const syncFailed = useSync((s) => s.status === 'error' && Boolean(s.token));
+  // Task pages fill the window: the bar spans it too, and the grid stays out from under the task text.
+  const onTask = pathname.startsWith('/learn/') && pathname.split('/').filter(Boolean).length === TASK_PATH_PARTS;
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="app flex h-full flex-col">
       <header className="shrink-0 border-b-2 border-line bg-surface">
-        <div className="mx-auto flex h-14 max-w-6xl items-center gap-1 px-4 lg:px-8">
+        <div className={`mx-auto flex h-14 items-center gap-1 ${onTask ? 'px-5 lg:px-6' : 'max-w-6xl px-4 lg:px-8'}`}>
           <Link to="/" className="mr-2 shrink-0 font-display text-[1.25rem] font-bold leading-none sm:mr-4" title="All professions">
             my-<span className="marker">university</span>
           </Link>
           <nav className="flex min-w-0 items-center gap-1" aria-label="Main">
             <NavLink to="/" end className={navClass} title="All professions">
-              <span aria-hidden="true">🎓</span>
+              <Icon name="courses" size={ICON_SIZE} />
               <span className="hidden md:inline">Courses</span>
             </NavLink>
             <NavLink to="/playground" className={navClass} title="Bug Playground">
-              <span aria-hidden="true">🐞</span>
+              <Icon name="bug" size={ICON_SIZE} />
               <span className="hidden md:inline">Bug Playground</span>
             </NavLink>
           </nav>
@@ -58,11 +64,11 @@ export function Layout() {
             aria-label="Toggle theme"
             title={theme === 'dark' ? 'Switch to paper (light) theme' : 'Switch to blueprint (dark) theme'}
           >
-            {theme === 'dark' ? '☀️' : '🌙'}
+            <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={ICON_SIZE} />
           </button>
           <NavLink to="/settings" className={navClass} aria-label="Settings" title={syncFailed ? 'Sync problem — open Settings' : 'Settings & progress'}>
-            <span className="relative">
-              ⚙️
+            <span className="relative block">
+              <Icon name="settings" size={ICON_SIZE} />
               {syncFailed && <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-bad" aria-hidden="true" />}
             </span>
           </NavLink>
@@ -82,7 +88,7 @@ export function Layout() {
         </div>
       )}
 
-      <main id="main" className="scroll-thin min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-none">
+      <main id="main" className={`scroll-thin min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-none ${onTask ? 'bg-canvas' : ''}`}>
         <Outlet />
       </main>
     </div>

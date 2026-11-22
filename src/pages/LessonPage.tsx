@@ -5,7 +5,8 @@ import { TASK_TYPE_LABEL } from '../content/schema';
 import { useProgress } from '../features/progress/store';
 import { lessonStats, taskStatus } from '../features/progress/selectors';
 import { Markdown } from '../components/Markdown';
-import { Empty, ProgressBar, StatusIcon } from '../components/ui';
+import { Empty, StatusIcon } from '../components/ui';
+import { Icon, type IconName } from '../components/icons';
 import { useAsync } from '../lib/useAsync';
 import { formatModuleNumber } from '../lib/format';
 import { LessonMenu } from '../app/LessonMenu';
@@ -13,6 +14,9 @@ import { useCourseForModule } from '../app/currentCourse';
 import { NotFound } from './NotFound';
 
 type Tab = 'theory' | 'resources' | 'practice';
+
+const MENU_ICON_SIZE = 16;
+const RESOURCE_ICON_SIZE = 22;
 
 export function LessonPage() {
   const { moduleSlug, lessonSlug } = useParams();
@@ -45,7 +49,9 @@ export function LessonPage() {
 
       <div className="min-w-0 max-w-[50rem] flex-1">
         <details className="mb-5 lg:hidden">
-          <summary className="btn btn-secondary btn-sm cursor-pointer list-none">☰ Lessons in this module</summary>
+          <summary className="btn btn-secondary btn-sm cursor-pointer list-none">
+            <Icon name="menu" size={MENU_ICON_SIZE} /> Lessons in this module
+          </summary>
           <div className="mt-3">
             <LessonMenu course={course} module={m} />
           </div>
@@ -98,11 +104,6 @@ function LessonTabs({ lesson, tab, onChange }: { lesson: CourseLesson; tab: Tab;
           {it.badge && <span className={`chip ${tab === it.id ? 'chip-accent' : ''}`}>{it.badge}</span>}
         </button>
       ))}
-      <div className="flex-1" />
-      <div className="mb-2 hidden w-40 items-center gap-2 text-xs text-muted sm:flex">
-        <ProgressBar percent={s.percent} tone={s.complete ? 'ok' : 'accent'} />
-        <span className="tabular-nums">{s.percent}%</span>
-      </div>
     </div>
   );
 }
@@ -138,7 +139,7 @@ function TheoryTab({ lesson, onPractice }: { lesson: CourseLesson; onPractice: (
   );
 }
 
-const KIND_ICON: Record<string, string> = { docs: '📘', article: '📄', video: '🎬', course: '🎓', tool: '🛠️', book: '📚' };
+const KIND_ICON: Record<string, IconName> = { docs: 'docs', article: 'article', video: 'video', course: 'courses', tool: 'tool', book: 'book' };
 
 function ResourcesTab({ lesson }: { lesson: CourseLesson }) {
   const verified = useProgress((s) => s.verifiedLinks);
@@ -155,7 +156,9 @@ function ResourcesTab({ lesson }: { lesson: CourseLesson }) {
           const isVerified = !r.needsVerification || verified[r.url];
           return (
             <div key={r.url} className="card flex items-start gap-3 p-4">
-              <span className="text-xl">{KIND_ICON[r.kind] ?? '🔗'}</span>
+              <span className="mt-0.5 text-accent-fg">
+                <Icon name={KIND_ICON[r.kind] ?? 'link'} size={RESOURCE_ICON_SIZE} />
+              </span>
               <div className="min-w-0 flex-1">
                 <a href={r.url} target="_blank" rel="noreferrer" className="font-medium text-accent-fg hover:underline">
                   {r.title} ↗
@@ -164,7 +167,7 @@ function ResourcesTab({ lesson }: { lesson: CourseLesson }) {
                 {r.note && <div className="mt-1 text-sm text-muted [overflow-wrap:anywhere]">{r.note}</div>}
                 <div className="mt-2 flex flex-wrap items-center gap-1.5">
                   <span className="chip">{r.kind}</span>
-                  <span className="chip">{r.lang === 'uk' ? '🇺🇦 Українська' : '🇬🇧 English'}</span>
+                  <span className="chip">{r.lang === 'uk' ? 'Українська' : 'English'}</span>
                   {isVerified ? <span className="chip chip-ok">checked</span> : <span className="chip chip-warn">needs verification</span>}
                 </div>
               </div>

@@ -3,7 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import { getCourse, lessonPath, type Course, type CourseModule } from '../content/loader';
 import { useProgress, useSettings } from '../features/progress/store';
 import { courseStats, lessonStats, moduleStats } from '../features/progress/selectors';
-import { Callout, ProgressBar, trackClass } from '../components/ui';
+import { Callout, trackClass } from '../components/ui';
+import { Icon } from '../components/icons';
 import { formatModuleNumber } from '../lib/format';
 import { NotFound } from './NotFound';
 
@@ -11,7 +12,6 @@ type ProgressInput = Parameters<typeof moduleStats>[1];
 type ModuleProgress = ReturnType<typeof moduleStats>;
 type PlannedLesson = CourseModule['planned'][number];
 
-const FULL_PERCENT = 100;
 const LEARN_PREFIX = '/learn/';
 
 function heroNote(done: number, total: number): string {
@@ -36,9 +36,16 @@ function moduleStamp(m: CourseModule, ms: ModuleProgress): { text: string; class
   return null;
 }
 
+/** The count next to the ticks: the ticks show which lessons are done, the count says how many. */
+function moduleCount(m: CourseModule, ms: ModuleProgress): string {
+  if (!m.available) return `${m.planned.length} planned`;
+  if (ms.started) return `${ms.completed} of ${ms.total} done`;
+  return `${ms.total} lessons`;
+}
+
 /** One small checkbox per planned lesson on a module card. */
 function tickClass(p: PlannedLesson, data: ProgressInput): string {
-  const base = 'h-2.5 w-2.5 rounded-[3px] border';
+  const base = 'h-3 w-3 rounded-[3px] border';
   if (!p.lesson) return `${base} border-dashed border-line`;
   const s = lessonStats(p.lesson, data);
   if (s.complete) return `${base} border-ok bg-ok`;
@@ -87,7 +94,7 @@ export function CoursePage() {
             </Link>
           )}
           <Link to="/playground" className="btn btn-secondary">
-            🐞 Bug Playground
+            <Icon name="bug" /> Bug Playground
           </Link>
           <span className="hand text-[1.4rem]">{heroNote(stats.lessonsCompleted, stats.lessonsTotal)}</span>
         </div>
@@ -130,7 +137,6 @@ export function CoursePage() {
 function ModuleCard({ module: m, data }: { module: CourseModule; data: ProgressInput }) {
   const ms = moduleStats(m, data);
   const stamp = moduleStamp(m, ms);
-  const done = ms.percent === FULL_PERCENT;
   return (
     <Link
       to={`/module/${m.slug}`}
@@ -141,19 +147,14 @@ function ModuleCard({ module: m, data }: { module: CourseModule; data: ProgressI
         {stamp && <span className={`font-hand text-[1.25rem] font-bold leading-none ${stamp.className}`}>{stamp.text}</span>}
       </div>
       <div className="mt-2 font-bold leading-snug group-hover:text-accent-fg">{m.title}</div>
-      <div className="mt-3 flex flex-wrap gap-1" aria-hidden="true">
-        {m.planned.map((p) => (
-          <span key={p.number} className={tickClass(p, data)} />
-        ))}
-      </div>
-      {m.available && (
-        <div className="mt-3 flex items-center gap-2 text-xs text-muted">
-          <ProgressBar percent={ms.percent} tone={done ? 'ok' : 'accent'} />
-          <span className="shrink-0 tabular-nums">
-            {ms.completed}/{ms.total}
-          </span>
+      <div className="mt-auto flex items-center justify-between gap-3 pt-4">
+        <div className="flex flex-wrap gap-1" aria-hidden="true">
+          {m.planned.map((p) => (
+            <span key={p.number} className={tickClass(p, data)} />
+          ))}
         </div>
-      )}
+        <span className="shrink-0 text-xs tabular-nums text-muted">{moduleCount(m, ms)}</span>
+      </div>
     </Link>
   );
 }

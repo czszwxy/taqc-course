@@ -3,6 +3,19 @@ import { Link } from 'react-router-dom';
 import { useProgress } from '../progress/store';
 import { Markdown } from '../../components/Markdown';
 import { PLAYGROUND_PAGES } from '../../playground/registry';
+import { Icon, type IconName } from '../../components/icons';
+
+const TITLE_ICON_SIZE = 16;
+
+/** A panel title with its icon: the icon sits on the text line. */
+function IconTitle({ icon, children }: { icon: IconName; children: ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-2">
+      <Icon name={icon} size={TITLE_ICON_SIZE} className="text-accent-fg" />
+      <span>{children}</span>
+    </span>
+  );
+}
 
 export function HintsPanel({ taskId, hints }: { taskId: string; hints: string[] }) {
   const used = useProgress((s) => s.tasks[taskId]?.hintsUsed ?? 0);
@@ -13,7 +26,9 @@ export function HintsPanel({ taskId, hints }: { taskId: string; hints: string[] 
     <div className="card p-4">
       <div className="flex items-center justify-between gap-3">
         <div className="text-sm font-semibold">
-          💡 Hints <span className="font-normal text-muted">({shown}/{hints.length})</span>
+          <IconTitle icon="hint">
+            Hints <span className="font-normal text-muted">({shown}/{hints.length})</span>
+          </IconTitle>
         </div>
         {shown < hints.length && (
           <button className="btn btn-secondary btn-sm" onClick={() => reveal(taskId, shown + 1)}>
@@ -52,7 +67,7 @@ export function Collapsible({ title, children, defaultOpen = false }: { title: R
 
 export function ExplanationPanel({ text, defaultOpen }: { text: string; defaultOpen?: boolean }) {
   return (
-    <Collapsible title="🧭 How to approach it" defaultOpen={defaultOpen}>
+    <Collapsible title={<IconTitle icon="compass">How to approach it</IconTitle>} defaultOpen={defaultOpen}>
       <Markdown compact>{text}</Markdown>
     </Collapsible>
   );
@@ -80,7 +95,7 @@ export function NextActions({
       )}
       {onSimilar && (
         <button className={`btn ${passed ? 'btn-secondary' : 'btn-primary'}`} onClick={onSimilar}>
-          🔁 {similarLabel}
+          <Icon name="repeat" size={TITLE_ICON_SIZE} /> {similarLabel}
         </button>
       )}
       {next && (
@@ -117,10 +132,9 @@ export function SelfReviewChecklist({ items }: { items: string[] }) {
   return (
     <div className="card p-4">
       <div className="text-sm font-semibold">
-        ✅ Self-review checklist{' '}
-        <span className="font-normal text-muted">
-          ({checked.size}/{items.length})
-        </span>
+        <IconTitle icon="checklist">
+          Self-review checklist <span className="font-normal text-muted">({checked.size}/{items.length})</span>
+        </IconTitle>
       </div>
       <p className="mt-1 text-xs text-muted">Compare your answer with the model answer and honestly tick what you did.</p>
       <ul className="mt-3 space-y-1.5">
@@ -152,7 +166,7 @@ export function SelfReviewChecklist({ items }: { items: string[] }) {
 const COPIED_FEEDBACK_MS = 2000;
 
 /** Copies text built on click to the clipboard and briefly confirms it. */
-export function CopyButton({ label, build, title, className = 'btn btn-ghost btn-sm' }: { label: string; build: () => string; title?: string; className?: string }) {
+export function CopyButton({ label, build, title, className = 'btn btn-ghost btn-sm' }: { label: ReactNode; build: () => string; title?: string; className?: string }) {
   const [copied, setCopied] = useState(false);
   return (
     <button
@@ -177,7 +191,11 @@ export function CopyButton({ label, build, title, className = 'btn btn-ghost btn
 export function CopyForReview({ build }: { build: () => string }) {
   return (
     <CopyButton
-      label="📋 Copy for review"
+      label={
+        <>
+          <Icon name="copy" size={TITLE_ICON_SIZE} /> Copy for review
+        </>
+      }
       build={build}
       title="Copies the task, your answer, the model answer and the criteria — paste it into a chat with Claude for detailed feedback"
     />
@@ -190,7 +208,7 @@ export function PlaygroundLink({ id }: { id?: string }) {
   if (!page) return null;
   return (
     <Link to={page.path} target="_blank" className="btn btn-secondary mt-3 max-w-full whitespace-normal text-left">
-      🐞 Open “{page.title}” in a new tab ↗
+      <Icon name="bug" /> Open “{page.title}” in a new tab ↗
     </Link>
   );
 }

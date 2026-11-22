@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState, type KeyboardEvent, type MouseEvent, type ReactElement } from 'react';
 import { useSettings } from '../features/progress/store';
+import { Icon } from './icons';
 
 const MonacoCodeEditor = lazy(() => import('./MonacoCodeEditor'));
 
@@ -56,7 +57,7 @@ export function EditorModeToggle(): ReactElement {
   const title = simple ? 'Switch to the full editor (VS Code style, best with a keyboard)' : 'Switch to the simple editor (best on a phone)';
   return (
     <button className="btn btn-ghost btn-sm" onClick={() => setEditorMode(simple ? 'full' : 'simple')} title={title} aria-label={title}>
-      <span aria-hidden="true">{simple ? '🖥️' : '📱'}</span>
+      <Icon name={simple ? 'desktop' : 'phone'} />
     </button>
   );
 }
