@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { UNDONE_LINK, UNDONE_THEORY } from '../sync/merge';
 
 /** localStorage keys. The app was called "QA Academy" before it became my-university. */
 export const STORAGE_KEYS = { progress: 'my-university:progress', settings: 'my-university:settings' } as const;
@@ -41,7 +42,10 @@ export interface ProgressData {
   draftTimes?: Record<string, string>;
   /** lessonId -> ISO date when the theory was marked as read. */
   theoryRead: Record<string, string>;
-  verifiedLinks: Record<string, boolean>;
+  /** url -> ISO date when the learner ticked "I checked it" (files from older versions hold `true`). */
+  verifiedLinks: Record<string, string | boolean>;
+  /** Undo tombstones (`theory:<lessonId>`, `link:<url>`) -> ISO date of the undo, so sync does not bring the item back. */
+  undone?: Record<string, string>;
   last?: { path: string; title: string; at: string };
 }
 
@@ -57,7 +61,21 @@ interface ProgressActions {
   reset: () => void;
 }
 
-export const emptyProgress = (): ProgressData => ({ tasks: {}, drafts: {}, draftTimes: {}, theoryRead: {}, verifiedLinks: {} });
+export const emptyProgress = (): ProgressData => ({ tasks: {}, drafts: {}, draftTimes: {}, theoryRead: {}, verifiedLinks: {}, undone: {} });
+
+/** Switches a record entry on (value = `on`) or off (removed + an undo tombstone), keeping the tombstones in step. */
+function toggled<T>(record: Record<string, T>, undone: Record<string, string> | undefined, key: string, tombstone: string, on: T | null) {
+  const nextRecord = { ...record };
+  const nextUndone = { ...undone };
+  if (on === null) {
+    delete nextRecord[key];
+    nextUndone[tombstone] = now();
+  } else {
+    nextRecord[key] = on;
+    delete nextUndone[tombstone];
+  }
+  return { record: nextRecord, undone: nextUndone };
+}
 
 const now = () => new Date().toISOString();
 const blankTask = (): TaskProgress => ({
@@ -105,15 +123,17 @@ export const useProgress = create<ProgressData & ProgressActions>()(
 
       setTheoryRead: (lessonId, read) =>
         set((s) => {
-          const theoryRead = { ...s.theoryRead };
-          if (read) theoryRead[lessonId] = now();
-          else delete theoryRead[lessonId];
-          return { theoryRead };
+          const { record, undone } = toggled(s.theoryRead, s.undone, lessonId, `${UNDONE_THEORY}${lessonId}`, read ? now() : null);
+          return { theoryRead: record, undone };
         }),
 
       setLast: (path, title) => set({ last: { path, title, at: now() } }),
 
-      toggleVerified: (url) => set((s) => ({ verifiedLinks: { ...s.verifiedLinks, [url]: !s.verifiedLinks[url] } })),
+      toggleVerified: (url) =>
+        set((s) => {
+          const { record, undone } = toggled(s.verifiedLinks, s.undone, url, `${UNDONE_LINK}${url}`, s.verifiedLinks[url] ? null : now());
+          return { verifiedLinks: record, undone };
+        }),
 
       importData: (data) => set({ ...emptyProgress(), ...data }),
 
@@ -125,7 +145,7 @@ export const useProgress = create<ProgressData & ProgressActions>()(
 
 export function snapshotProgress(): ProgressData {
   const s = useProgress.getState();
-  return { tasks: s.tasks, drafts: s.drafts, draftTimes: s.draftTimes, theoryRead: s.theoryRead, verifiedLinks: s.verifiedLinks, last: s.last };
+  return { tasks: s.tasks, drafts: s.drafts, draftTimes: s.draftTimes, theoryRead: s.theoryRead, verifiedLinks: s.verifiedLinks, undone: s.undone, last: s.last };
 }
 
 /* ---------- Settings ---------- */

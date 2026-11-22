@@ -3,7 +3,13 @@ import type { ProgressData, TaskProgress } from '../progress/store';
 /**
  * Merges the progress of two devices so that nothing is lost: a task solved anywhere stays solved, counters take the
  * larger value, read lessons and checked links are united, and of two different drafts the newer one wins. Pure.
+ * Read lessons and checked links can be undone: an undo leaves a tombstone (`undone`, key → time), and on each key
+ * the newer of "done" and "undone" wins — otherwise the other device's copy would bring the undone item back.
  */
+
+/** Tombstone keys in `ProgressData.undone`: `theory:<lessonId>` and `link:<url>`. */
+export const UNDONE_THEORY = 'theory:';
+export const UNDONE_LINK = 'link:';
 
 function earliest(a: string | undefined, b: string | undefined): string | undefined {
   if (a === undefined) return b;
@@ -36,6 +42,22 @@ function unite<T>(a: Record<string, T>, b: Record<string, T>, both: (x: T, y: T)
     const value = x !== undefined && y !== undefined ? both(x, y) : (x ?? y);
     return value === undefined ? acc : { ...acc, [key]: value };
   }, {});
+}
+
+/** When a switch was turned on: read lessons and new link checks hold a time; links checked by older versions hold `true` (oldest). */
+function onTime(value: string | boolean): string {
+  return typeof value === 'string' ? value : '';
+}
+
+/** Read lessons / checked links of both sides, minus those undone later than they were done (newer of the two times wins). */
+function mergeSwitches<T extends string | boolean>(prefix: string, a: Record<string, T>, b: Record<string, T>, undone: Record<string, string>): Record<string, T> {
+  const united = unite(a, b, (x, y) => (onTime(y) > onTime(x) ? y : x));
+  return Object.fromEntries(
+    Object.entries(united).filter(([key, value]) => {
+      const undoneAt = undone[`${prefix}${key}`];
+      return value !== false && (undoneAt === undefined || onTime(value) > undoneAt);
+    }),
+  );
 }
 
 /** JSON with object keys sorted, so equal data always gives the same text. */
@@ -102,7 +124,8 @@ export function changesSince(data: ProgressData, since: string): ProgressData {
     drafts: newerThan(data.drafts, since, (key) => draftTimes[key]),
     draftTimes,
     theoryRead: newerThan(data.theoryRead, since, (_key, time) => time),
-    verifiedLinks: {},
+    verifiedLinks: newerThan(data.verifiedLinks, since, (_key, value) => onTime(value)),
+    undone: newerThan(data.undone ?? {}, since, (_key, time) => time),
     ...(last === undefined ? {} : { last }),
   };
 }
@@ -110,12 +133,14 @@ export function changesSince(data: ProgressData, since: string): ProgressData {
 export function mergeProgress(local: ProgressData, remote: ProgressData): ProgressData {
   const { drafts, draftTimes } = mergeDrafts(local, remote);
   const last = laterLast(local.last, remote.last);
+  const undone = unite(local.undone ?? {}, remote.undone ?? {}, latest);
   return {
     tasks: unite(local.tasks, remote.tasks, mergeTask),
     drafts,
     draftTimes,
-    theoryRead: unite(local.theoryRead, remote.theoryRead, (x, y) => earliest(x, y) ?? x),
-    verifiedLinks: unite(local.verifiedLinks, remote.verifiedLinks, (x, y) => x || y),
+    theoryRead: mergeSwitches(UNDONE_THEORY, local.theoryRead, remote.theoryRead, undone),
+    verifiedLinks: mergeSwitches(UNDONE_LINK, local.verifiedLinks, remote.verifiedLinks, undone),
+    undone,
     ...(last === undefined ? {} : { last }),
   };
 }

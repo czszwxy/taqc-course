@@ -86,9 +86,18 @@ export async function readGist(token: string, gistId: string): Promise<string | 
   const gist = await json<Gist>(res);
   const file = gist.files[GIST_FILE];
   if (!file) return null;
-  // Big files are cut in the API answer; the full text is at raw_url.
-  if (file.truncated && file.raw_url) return (await fetch(file.raw_url, { cache: 'no-store' })).text();
+  // Big files (over 1 MB) are cut in the API answer; the full text is at raw_url.
+  if (file.truncated && file.raw_url) return readRaw(file.raw_url);
   return file.content ?? null;
+}
+
+async function readRaw(url: string): Promise<string> {
+  const res = await fetch(url, { cache: 'no-store' }).catch(() => {
+    throw new SyncError('No connection to GitHub. Progress will sync when you are online again.', 'network');
+  });
+  // An error page is not the progress file: reading it as one would make the sync overwrite the gist.
+  if (!res.ok) throw new SyncError(`GitHub answered ${res.status}. Try again a bit later.`, 'other');
+  return res.text();
 }
 
 export async function writeGist(token: string, gistId: string, content: string): Promise<void> {

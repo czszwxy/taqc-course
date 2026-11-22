@@ -110,6 +110,10 @@ async function runSync(): Promise<void> {
     const activeGist = savedText === null ? await findOrCreateGist(token, toFile(snapshotProgress(), epoch)) : gistId;
     const remoteText = savedText === null ? await readGist(token, activeGist) : savedText;
     const remote = fromFile(remoteText);
+    // There is a file, but it is not readable progress: stop rather than overwrite the only other copy with this device's.
+    if (remoteText !== null && remote === null) {
+      throw new SyncError('The progress file on GitHub could not be read, so nothing was changed. Try again later.', 'other');
+    }
     const localEpoch = epoch ?? '';
     const nextEpoch = remote && remote.epoch > localEpoch ? remote.epoch : localEpoch;
     const local = snapshotProgress();
