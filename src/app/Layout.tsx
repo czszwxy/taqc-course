@@ -3,7 +3,8 @@ import { catalog } from '../content/loader';
 import { useProgress, useSettings } from '../features/progress/store';
 import { courseStats } from '../features/progress/selectors';
 import { useAutoSync, useSync } from '../features/sync/sync';
-import { useAccountSync } from '../features/account/accountSync';
+import { useAccount, useAccountSync } from '../features/account/accountSync';
+import { ACCOUNTS_ENABLED } from '../features/account/client';
 import { useCurrentCourse } from './currentCourse';
 import { Icon } from '../components/icons';
 import { switchTheme } from './theme';
@@ -31,6 +32,8 @@ export function Layout() {
   const stats = current && inCourse ? courseStats(current, { tasks, theoryRead }) : undefined;
   useAutoSync();
   useAccountSync();
+  const login = useAccount((s) => s.user?.login);
+  const accountFailed = useAccount((s) => s.status === 'error' && Boolean(s.user));
   const syncFailed = useSync((s) => s.status === 'error' && Boolean(s.token));
   // Task pages fill the window: the bar spans it too, and the grid stays out from under the task text.
   const onTask = pathname.startsWith('/learn/') && pathname.split('/').filter(Boolean).length === TASK_PATH_PARTS;
@@ -69,6 +72,20 @@ export function Layout() {
           >
             <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={ICON_SIZE} />
           </button>
+          {ACCOUNTS_ENABLED && (
+            <NavLink
+              to="/account"
+              className={navClass}
+              aria-label={login ? `Your account: ${login}` : 'Sign in'}
+              title={accountFailed ? 'Account sync problem — open your account' : 'Your account'}
+            >
+              <span className="relative block">
+                <Icon name="user" size={ICON_SIZE} />
+                {accountFailed && <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-bad" aria-hidden="true" />}
+              </span>
+              <span className="hidden max-w-[10rem] truncate sm:inline">{login ?? 'Sign in'}</span>
+            </NavLink>
+          )}
           <NavLink to="/settings" className={navClass} aria-label="Settings" title={syncFailed ? 'Sync problem — open Settings' : 'Settings & progress'}>
             <span className="relative block">
               <Icon name="settings" size={ICON_SIZE} />

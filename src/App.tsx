@@ -7,6 +7,7 @@ import { ModulePage } from './pages/ModulePage';
 import { LessonPage } from './pages/LessonPage';
 import { TaskPage } from './pages/TaskPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { AccountPage as YourAccountPage } from './pages/AccountPage';
 import { PlaygroundIndex } from './pages/PlaygroundIndex';
 import { NotFound } from './pages/NotFound';
 import { SignupPage } from './playground/SignupPage';
@@ -63,6 +64,7 @@ export default function App() {
         <Route path="learn/:moduleSlug/:lessonSlug/:taskSlug" element={<TaskPage />} />
         <Route path="playground" element={<PlaygroundIndex />} />
         <Route path="settings" element={<SettingsPage />} />
+        <Route path="account" element={<YourAccountPage />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

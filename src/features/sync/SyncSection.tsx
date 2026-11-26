@@ -9,7 +9,7 @@ const NEW_TOKEN_URL = 'https://github.com/settings/tokens/new?scopes=gist&descri
 const MS_PER_MINUTE = 60_000;
 const MINUTES_PER_HOUR = 60;
 
-function ago(iso: string | undefined): string {
+export function ago(iso: string | undefined): string {
   if (!iso) return 'not yet';
   const minutes = Math.floor((Date.now() - new Date(iso).getTime()) / MS_PER_MINUTE);
   if (minutes < 1) return 'just now';
