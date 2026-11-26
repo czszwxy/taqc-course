@@ -105,8 +105,10 @@ export function TaskPage() {
   const vSlug = params.get('v');
   const seed = Number(params.get('seed') ?? '0') || 0;
   const active = main && vSlug ? (main.variants.find((v) => v.slug === vSlug) ?? main) : main;
-  // Remembered once per visit (Layout remounts the page per task): the tick celebrates only a solve that happens here.
+  // Remembered once per visit (Layout remounts the page per task): the tick celebrates only a solve that happens here,
+  // and only on the attempt (task + seed) it happened on — a similar task rebuilds the view and must not replay it.
   const [solvedOnArrival] = useState(() => (main ? taskStatus(main, tasks) === 'solved' : false));
+  const [celebratedAttempt, setCelebratedAttempt] = useState<string | null>(null);
 
   useEffect(() => {
     if (main && !main.isVariant) setLast(location.pathname + location.search, main.task.title);
@@ -133,6 +135,9 @@ export function TaskPage() {
   const next = nextTarget(lesson, main, course);
 
   const status = taskStatus(main, tasks);
+  const attempt = `${active.id}:${seed}`;
+  // Stored during render (React re-renders at once), so the solved checkbox mounts already celebrating.
+  if (status === 'solved' && !solvedOnArrival && celebratedAttempt === null) setCelebratedAttempt(attempt);
   const variantIndex = group.indexOf(active);
 
   const header = (
@@ -144,7 +149,7 @@ export function TaskPage() {
         <TaskStops lesson={lesson} current={main} course={course} />
       </div>
       <div className="mt-2 flex items-start gap-2.5">
-        <StatusIcon status={status} size={20} celebrate={!solvedOnArrival} />
+        <StatusIcon status={status} size={20} celebrate={celebratedAttempt === attempt} />
         <h1 className="font-display text-[1.5rem] font-bold leading-tight">{active.task.title}</h1>
       </div>
       <div className="mt-2 flex flex-wrap gap-1.5">
