@@ -71,7 +71,7 @@ function TaskStops({ lesson, current, course }: { lesson: CourseLesson; current:
             aria-current={isCurrent ? 'page' : undefined}
             aria-label={`Task ${i + 1} of ${lesson.tasks.length}: ${t.task.title}, ${TASK_STOP_LABEL[status]}`}
             title={t.task.title}
-            className={`relative grid h-6 w-6 place-items-center rounded-full border-2 text-xs font-bold tabular-nums ${TASK_STOP[status]} ${isCurrent ? 'outline-2 outline-offset-2 outline-fg' : ''}`}
+            className={`relative grid h-6 w-6 place-items-center rounded-full border-2 text-xs font-bold tabular-nums transition-colors duration-200 ${TASK_STOP[status]} ${isCurrent ? 'outline-2 outline-offset-2 outline-fg' : ''}`}
           >
             {i + 1}
           </Link>

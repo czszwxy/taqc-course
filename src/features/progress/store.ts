@@ -161,7 +161,6 @@ interface SettingsState {
   currentCourseId?: string;
   editorMode: EditorMode;
   setTheme: (t: Theme) => void;
-  toggleTheme: () => void;
   setCurrentCourse: (id: string) => void;
   setEditorMode: (mode: EditorMode) => void;
 }
@@ -172,7 +171,6 @@ export const useSettings = create<SettingsState>()(
       theme: 'dark',
       editorMode: 'auto',
       setTheme: (theme) => set({ theme }),
-      toggleTheme: () => set((s) => ({ theme: s.theme === 'dark' ? 'light' : 'dark' })),
       setCurrentCourse: (currentCourseId) => set({ currentCourseId }),
       setEditorMode: (editorMode) => set({ editorMode }),
     }),

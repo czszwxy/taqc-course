@@ -52,7 +52,7 @@ export function LessonPage() {
           <summary className="btn btn-secondary btn-sm cursor-pointer list-none">
             <Icon name="menu" size={MENU_ICON_SIZE} /> Lessons in this module
           </summary>
-          <div className="mt-3">
+          <div className="enter mt-3">
             <LessonMenu course={course} module={m} />
           </div>
         </details>

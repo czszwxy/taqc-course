@@ -34,7 +34,13 @@ export type RowSize = keyof typeof ROW;
 
 /** A station marker on the rail, centred on the first text line of its row. */
 export function StationMarker({ state, size = 'large' }: { state: StationState; size?: RowSize }) {
-  return <span className={`absolute left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full ${ROW[size].marker} ${STATION[state]}`} />;
+  // The ping only on the big maps: the lesson menu is seen on every lesson page, where it would just be noise.
+  const ping = state === 'here' && size === 'large' ? 'station-here' : '';
+  return (
+    <span
+      className={`absolute left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-200 ${ROW[size].marker} ${STATION[state]} ${ping}`}
+    />
+  );
 }
 
 /** Where the piece of line sits in a row of a list: the line starts at the first stop and ends at the last one. */

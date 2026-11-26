@@ -40,6 +40,8 @@
  */
 :root {
   color-scheme: light;
+  /* Motion: a strong ease-out for things that appear (replaces Tailwind's weak default of the same name). */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --c-canvas: #f7f3e9;
   --c-grid: #ebe4d3;
   --c-surface: #fffdf7;
@@ -663,6 +665,52 @@
   }
   .hljs-deletion {
     color: var(--c-bad);
+  }
+}
+
+/*
+ * Content that appears on request — a revealed hint, an opened panel, a check result — eases in from its trigger
+ * instead of popping in. 180 ms, transform + opacity only; with reduced motion it only fades.
+ */
+.enter {
+  transition:
+    opacity 180ms var(--ease-out),
+    transform 180ms var(--ease-out);
+}
+@starting-style {
+  .enter {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* "You are here" on the course map and the module page: a ring pings twice on arrival to show where you are, then stops. */
+.station-here::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 999px;
+  border: 2px solid var(--track, var(--c-accent));
+  opacity: 0;
+  animation: here-ping 1.2s var(--ease-out) 0.3s 2;
+}
+@keyframes here-ping {
+  from {
+    opacity: 0.7;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.9);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enter {
+    transition-property: opacity;
+  }
+  .station-here::after {
+    animation: none;
   }
 }
 

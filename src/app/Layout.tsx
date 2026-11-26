@@ -5,6 +5,7 @@ import { courseStats } from '../features/progress/selectors';
 import { useAutoSync, useSync } from '../features/sync/sync';
 import { useCurrentCourse } from './currentCourse';
 import { Icon } from '../components/icons';
+import { switchTheme } from './theme';
 
 const MAX_SHOWN_ERRORS = 8;
 /** Routes that belong to one course: only there the top bar shows that course's lesson counter. */
@@ -20,7 +21,7 @@ function navClass({ isActive }: { isActive: boolean }): string {
 
 /** App chrome: a notebook-style top bar (no sidebar). Lesson pages add their own module menu. */
 export function Layout() {
-  const { theme, toggleTheme } = useSettings();
+  const theme = useSettings((s) => s.theme);
   const tasks = useProgress((s) => s.tasks);
   const theoryRead = useProgress((s) => s.theoryRead);
   const current = useCurrentCourse();
@@ -60,7 +61,7 @@ export function Layout() {
           )}
           <button
             className="btn btn-ghost btn-sm"
-            onClick={toggleTheme}
+            onClick={() => switchTheme(theme === 'dark' ? 'light' : 'dark')}
             aria-label="Toggle theme"
             title={theme === 'dark' ? 'Switch to paper (light) theme' : 'Switch to blueprint (dark) theme'}
           >

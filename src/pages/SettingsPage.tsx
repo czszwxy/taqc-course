@@ -5,6 +5,7 @@ import { snapshotProgress, useProgress, useSettings, type EditorMode, type Progr
 import { courseStats } from '../features/progress/selectors';
 import { Callout } from '../components/ui';
 import { Icon, type IconName } from '../components/icons';
+import { switchTheme } from '../app/theme';
 import { SyncSection } from '../features/sync/SyncSection';
 import { isSyncConnected, syncNow } from '../features/sync/sync';
 
@@ -22,7 +23,7 @@ const EDITOR_MODES: { mode: EditorMode; icon: IconName; label: string }[] = [
 ];
 
 export function SettingsPage() {
-  const { theme, setTheme, editorMode, setEditorMode } = useSettings();
+  const { theme, editorMode, setEditorMode } = useSettings();
   const tasks = useProgress((s) => s.tasks);
   const theoryRead = useProgress((s) => s.theoryRead);
   const importData = useProgress((s) => s.importData);
@@ -70,7 +71,7 @@ export function SettingsPage() {
         <h2 className="font-display text-lg font-bold">Appearance</h2>
         <div className="mt-3 flex gap-2">
           {(['dark', 'light'] as const).map((t) => (
-            <button key={t} className={`btn ${theme === t ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setTheme(t)}>
+            <button key={t} className={`btn ${theme === t ? 'btn-primary' : 'btn-secondary'}`} onClick={() => switchTheme(t)}>
               <Icon name={t === 'dark' ? 'moon' : 'sun'} /> {t === 'dark' ? 'Blueprint (dark)' : 'Paper (light)'}
             </button>
           ))}

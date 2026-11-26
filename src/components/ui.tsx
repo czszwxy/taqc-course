@@ -8,7 +8,7 @@ export function ProgressBar({ percent, className, tone = 'accent' }: { percent: 
   return (
     <div className={`h-1.5 w-full overflow-hidden rounded-full border border-line bg-sunken ${className ?? ''}`}>
       <div
-        className={`h-full rounded-full transition-all ${tone === 'ok' ? 'bg-ok' : 'bg-accent'}`}
+        className={`h-full rounded-full ${tone === 'ok' ? 'bg-ok' : 'bg-accent'}`}
         style={{ width: `${Math.max(0, Math.min(FULL_PERCENT, percent))}%` }}
       />
     </div>
@@ -43,7 +43,7 @@ export function Callout({ tone, title, children }: { tone: 'ok' | 'bad' | 'warn'
   } as const;
   const titleTone = { ok: 'text-ok', bad: 'text-bad', warn: 'text-warn', accent: 'text-accent-fg' } as const;
   return (
-    <div className={`rounded-xl border px-4 py-3 text-sm ${tones[tone]}`}>
+    <div className={`enter rounded-xl border px-4 py-3 text-sm ${tones[tone]}`}>
       {title && <div className={`mb-1 font-bold ${titleTone[tone]}`}>{title}</div>}
       {children && <div className="text-fg">{children}</div>}
     </div>

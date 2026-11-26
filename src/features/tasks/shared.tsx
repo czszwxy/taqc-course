@@ -39,7 +39,7 @@ export function HintsPanel({ taskId, hints }: { taskId: string; hints: string[] 
       {shown > 0 && (
         <ol className="mt-3 space-y-2">
           {hints.slice(0, shown).map((h, i) => (
-            <li key={i} className="flex gap-2 rounded-lg bg-warn-soft px-3 py-2">
+            <li key={i} className="enter flex gap-2 rounded-lg bg-warn-soft px-3 py-2">
               <span className="text-xs font-bold text-warn">{i + 1}</span>
               <Markdown compact className="min-w-0 flex-1">
                 {h}
@@ -55,12 +55,12 @@ export function HintsPanel({ taskId, hints }: { taskId: string; hints: string[] 
 export function Collapsible({ title, children, defaultOpen = false }: { title: ReactNode; children: ReactNode; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="card">
+    <div className="enter card">
       <button className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm font-semibold" onClick={() => setOpen(!open)}>
         <span className="min-w-0 [overflow-wrap:anywhere]">{title}</span>
         <span className={`shrink-0 text-xs text-faint transition-transform ${open ? 'rotate-90' : ''}`}>▶</span>
       </button>
-      {open && <div className="border-t border-line px-4 py-3">{children}</div>}
+      {open && <div className="enter border-t border-line px-4 py-3">{children}</div>}
     </div>
   );
 }
@@ -110,7 +110,7 @@ export function NextActions({
 export function FailureList({ title, items }: { title: string; items: string[] }) {
   if (items.length === 0) return null;
   return (
-    <div className="rounded-xl border border-bad/30 bg-bad-soft px-4 py-3">
+    <div className="enter rounded-xl border border-bad/30 bg-bad-soft px-4 py-3">
       <div className="text-sm font-semibold text-bad">{title}</div>
       <ul className="mt-2 space-y-1.5">
         {items.map((m, i) => (
@@ -130,7 +130,7 @@ export function SelfReviewChecklist({ items }: { items: string[] }) {
   const [checked, setChecked] = useState<Set<number>>(new Set());
   if (items.length === 0) return null;
   return (
-    <div className="card p-4">
+    <div className="enter card p-4">
       <div className="text-sm font-semibold">
         <IconTitle icon="checklist">
           Self-review checklist <span className="font-normal text-muted">({checked.size}/{items.length})</span>
