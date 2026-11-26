@@ -2,12 +2,13 @@ import { defineConfig } from '@playwright/test';
 import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 /**
  * `npm run test:accounts`: end-to-end tests of user accounts against the LOCAL Supabase (`npm run db:start`, Docker).
  * The app runs on a spare port with the local keys, so the owner's dev server on 5173 and its progress stay untouched.
  */
-const ROOT = path.resolve(__dirname, '..');
+const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const APP_PORT = 5175;
 const TEST_TIMEOUT_MS = 60_000;
 const SERVER_TIMEOUT_MS = 120_000;
@@ -42,7 +43,8 @@ export default defineConfig({
   workers: 1,
   reporter: [['list']],
   use: { baseURL: `http://localhost:${APP_PORT}`, trace: 'retain-on-failure' },
-  outputDir: path.join(ROOT, 'e2e', '.results'),
+  // Vite's watcher skips "test-results" folders; anywhere else a trace's .html file reloads the page mid-test.
+  outputDir: path.join(ROOT, 'e2e', 'test-results'),
   webServer: {
     command: `node node_modules/vite/bin/vite.js --port ${APP_PORT} --strictPort`,
     cwd: ROOT,

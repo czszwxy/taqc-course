@@ -40,7 +40,7 @@ async function signUp(page: Page, { login, email, addDevice }: SignUpOptions): P
   await page.getByLabel('First name').fill('Test');
   await page.getByLabel('Last name').fill('Learner');
   await page.getByLabel('Login', { exact: true }).fill(login);
-  if (email) await page.getByLabel('Email').fill(email);
+  if (email) await page.getByRole('textbox', { name: 'Email' }).fill(email);
   await page.getByLabel('Password', { exact: true }).fill(PASSWORD);
   await page.getByLabel('Repeat password').fill(PASSWORD);
   const box = page.getByLabel("Add this browser's progress to my account");
@@ -90,7 +90,18 @@ async function newPage(browser: Browser): Promise<Page> {
   return context.newPage();
 }
 
-const syncNow = (page: Page): Promise<void> => page.getByRole('button', { name: 'Sync now' }).click();
+const lastSyncedAt = (page: Page): Promise<string | null> =>
+  page.evaluate(() => {
+    const saved = JSON.parse(localStorage.getItem('my-university:account') ?? '{}') as { state?: { lastSyncedAt?: string } };
+    return saved.state?.lastSyncedAt ?? null;
+  });
+
+/** Clicks "Sync now" and waits until that sync has finished (the counters may already match before it starts). */
+async function syncNow(page: Page): Promise<void> {
+  const before = await lastSyncedAt(page);
+  await page.getByRole('button', { name: 'Sync now' }).click();
+  await expect.poll(() => lastSyncedAt(page), { timeout: SYNC_TIMEOUT_MS }).not.toBe(before);
+}
 
 test('sign up with email, then sign in with the email in a new browser sees the same progress', async ({ page, browser }) => {
   const login = uniqueLogin();
@@ -106,7 +117,7 @@ test('sign up with email, then sign in with the email in a new browser sees the 
   await signedIn(phone);
   await synced(phone);
   expect(await theoryRead(phone)).toContain(LESSON_A.id);
-  await expect(phone.getByText(login, { exact: true })).toBeVisible();
+  await expect(phone.locator('#main').getByText(login, { exact: true })).toBeVisible();
 });
 
 test('sign up with a login only, then sign in with the login typed in capitals and spaces', async ({ page, browser }) => {
@@ -205,7 +216,7 @@ test('a deleted account keeps the progress in the browser and asks to sign in ag
   expect(user, 'the test account exists').toBeTruthy();
   await admin.auth.admin.deleteUser(user?.id ?? '');
 
-  await syncNow(page);
+  await page.getByRole('button', { name: 'Sync now' }).click();
   await expect(page.getByRole('alert')).toContainText(ACCOUNT_GONE);
   expect(await theoryRead(page)).toContain(LESSON_A.id);
 });

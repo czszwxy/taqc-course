@@ -16,4 +16,4 @@ lab/python/reports
 lab/python/allure-results
 lab/python/allure-report
 lab/python/django_site/db.sqlite3
-e2e/.results
+e2e/test-results
