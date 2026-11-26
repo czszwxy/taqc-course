@@ -9,7 +9,7 @@
     "build": "npm run typecheck && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "tsx scripts/check-sync-merge.ts && tsx scripts/check-workdesk.ts",
+    "test": "tsx scripts/check-sync-merge.ts && tsx scripts/check-workdesk.ts && tsx scripts/check-accounts.ts",
     "validate": "tsx scripts/validate-content.ts",
     "validate:lab": "tsx scripts/validate-lab.ts",
     "lab": "playwright test -c lab",

@@ -130,6 +130,19 @@ export function changesSince(data: ProgressData, since: string): ProgressData {
   };
 }
 
+/**
+ * This device's progress combined with a stored copy (gist or account), honouring a reset / import on either side:
+ * the newer epoch wins. Used by both syncs.
+ */
+export function combineProgress(local: ProgressData, localEpoch: string, remote: { data: ProgressData; epoch: string } | null): ProgressData {
+  if (remote === null) return local;
+  // Another device reset / imported after this one last synced: follow it, keep only the work done here since then.
+  if (remote.epoch > localEpoch) return mergeProgress(remote.data, changesSince(local, remote.epoch));
+  // This device reset / imported: the stored copy keeps only what the other devices did after that moment.
+  if (localEpoch > remote.epoch) return mergeProgress(local, changesSince(remote.data, localEpoch));
+  return mergeProgress(local, remote.data);
+}
+
 export function mergeProgress(local: ProgressData, remote: ProgressData): ProgressData {
   const { drafts, draftTimes } = mergeDrafts(local, remote);
   const last = laterLast(local.last, remote.last);

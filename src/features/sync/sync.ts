@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { snapshotProgress, useProgress, type ProgressData } from '../progress/store';
 import { fetchLogin, findOrCreateGist, readGist, SyncError, writeGist } from './gist';
-import { changesSince, mergeProgress, sameProgress } from './merge';
+import { combineProgress, sameProgress } from './merge';
 
 /**
  * Progress sync between devices (the course on the computer, the website on the phone) through one secret GitHub gist.
@@ -89,16 +89,6 @@ function applyLocally(data: ProgressData): void {
   queue.applying = false;
 }
 
-/** Combines this device's progress with the gist's, honouring a reset / import on either side (the newer epoch wins). */
-function combine(local: ProgressData, localEpoch: string, remote: RemoteProgress | null): ProgressData {
-  if (remote === null) return local;
-  // Another device reset / imported after this one last synced: follow it, keep only the work done here since then.
-  if (remote.epoch > localEpoch) return mergeProgress(remote.data, changesSince(local, remote.epoch));
-  // This device reset / imported: the cloud copy keeps only what the other devices did after that moment.
-  if (localEpoch > remote.epoch) return mergeProgress(local, changesSince(remote.data, localEpoch));
-  return mergeProgress(local, remote.data);
-}
-
 async function runSync(): Promise<void> {
   const { token, gistId, epoch } = useSync.getState();
   if (!token || !gistId) return;
@@ -117,7 +107,7 @@ async function runSync(): Promise<void> {
     const localEpoch = epoch ?? '';
     const nextEpoch = remote && remote.epoch > localEpoch ? remote.epoch : localEpoch;
     const local = snapshotProgress();
-    const merged = combine(local, localEpoch, remote);
+    const merged = combineProgress(local, localEpoch, remote);
     if (!sameProgress(merged, local)) applyLocally(merged);
     const unchanged = remote !== null && remote.epoch === nextEpoch && sameProgress(merged, remote.data);
     if (!unchanged) await writeGist(token, activeGist, toFile(merged, nextEpoch || undefined));
