@@ -31,6 +31,9 @@ export default function App() {
   const theme = useSettings((s) => s.theme);
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
+    // Phones colour the browser bar (and an installed app's status bar) with theme-color: match the top bar's paper.
+    const paper = getComputedStyle(document.documentElement).getPropertyValue('--c-surface').trim();
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', paper);
   }, [theme]);
 
   return (

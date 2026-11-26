@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Self-study app: from zero to Trainee QA Automation Engineer (TypeScript + Playwright).",
+  "description": "my-university: self-study courses for IT professions, from zero to your first job.",
   "scripts": {
     "dev": "vite",
     "build": "npm run typecheck && vite build",

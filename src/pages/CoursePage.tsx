@@ -13,7 +13,8 @@ type ProgressInput = Parameters<typeof moduleStats>[1];
 
 function heroNote(done: number, total: number): string {
   if (total === 0) return 'this course is being written';
-  if (done === 0) return '← start here!';
+  // A no-break space keeps the arrow with its words when the note wraps next to the button on a phone.
+  if (done === 0) return '← start here!';
   if (done === total) return 'all done — you are ready! 🎉';
   return `${done} of ${total} lessons done — keep going!`;
 }
@@ -66,15 +67,18 @@ export function CoursePage() {
         </div>
         <p className="mt-3 max-w-2xl text-muted">{course.description}</p>
         <div className="mt-6 flex flex-wrap items-center gap-3">
-          {continueTo && (
-            <Link to={continueTo.path} className="btn btn-primary max-w-full whitespace-normal text-left">
-              {continueTo.title ? `Continue: ${continueTo.title}` : 'Start learning'} →
-            </Link>
-          )}
+          {/* The note stays on the main button's line, so "← start here!" points at it, not at the next button. */}
+          <div className="flex min-w-0 items-center gap-3">
+            {continueTo && (
+              <Link to={continueTo.path} className="btn btn-primary min-w-0 whitespace-normal text-left">
+                {continueTo.title ? `Continue: ${continueTo.title}` : 'Start learning'} →
+              </Link>
+            )}
+            <span className="hand min-w-0 text-[1.4rem]">{heroNote(stats.lessonsCompleted, stats.lessonsTotal)}</span>
+          </div>
           <Link to="/playground" className="btn btn-secondary">
             <Icon name="bug" /> Bug Playground
           </Link>
-          <span className="hand text-[1.4rem]">{heroNote(stats.lessonsCompleted, stats.lessonsTotal)}</span>
         </div>
         <div className="mt-7 grid max-w-2xl grid-cols-3 gap-3">
           <Stat label="Lessons completed" value={`${stats.lessonsCompleted}/${stats.lessonsTotal}`} />

@@ -12,7 +12,7 @@ export function NotFound() {
         Expected result: the page exists. Actual result: it doesn&apos;t. Severity: minor 🙂
       </p>
       <Link to="/" className="btn btn-primary mt-6">
-        Back to all courses
+        Back to all professions
       </Link>
     </div>
   );

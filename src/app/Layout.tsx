@@ -42,7 +42,7 @@ export function Layout() {
           <nav className="flex min-w-0 items-center gap-1" aria-label="Main">
             <NavLink to="/" end className={navClass} title="All professions">
               <Icon name="courses" size={ICON_SIZE} />
-              <span className="hidden md:inline">Courses</span>
+              <span className="hidden md:inline">Professions</span>
             </NavLink>
             <NavLink to="/playground" className={navClass} title="Bug Playground">
               <Icon name="bug" size={ICON_SIZE} />

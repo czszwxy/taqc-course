@@ -1,6 +1,6 @@
 @echo off
-rem QA Academy launcher: starts the local server (if needed) and opens the course in your browser.
-title QA Academy - keep this window open while studying
+rem my-university launcher: starts the local server (if needed) and opens the course in your browser.
+title my-university - keep this window open while studying
 cd /d "%~dp0"
 set "PATH=C:\Program Files\nodejs;%PATH%"
 
@@ -34,7 +34,7 @@ call npm run lab:setup --silent
 if errorlevel 1 echo Could not install the Playwright browser now. The course still works; Playwright tasks will show how to install it.
 
 echo.
-echo   QA Academy is starting: http://localhost:5173
+echo   my-university is starting: http://localhost:5173
 echo   Keep this window open while you study. Close it to stop the app.
 echo.
 call npm run dev -- --open
