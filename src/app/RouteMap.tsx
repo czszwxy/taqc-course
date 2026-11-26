@@ -27,8 +27,9 @@ export const LINE_UNBUILT = 'w-0 border-l-[6px] border-dotted border-line';
  * `compact` rows (`py-1.5`, 14px text) in the lesson menu. Full class names, so Tailwind sees them.
  */
 const ROW = {
-  large: { rail: 'w-10 sm:w-14', marker: 'top-7', first: 'top-7 bottom-0', last: 'top-0 h-7' },
-  compact: { rail: 'w-6', marker: 'top-4', first: 'top-4 bottom-0', last: 'top-0 h-4' },
+  // Big maps draw their line as you scroll (index.css .rail-line / .rail-mark); the lesson menu stays still.
+  large: { rail: 'w-10 sm:w-14', marker: 'top-7', first: 'top-7 bottom-0', last: 'top-0 h-7', draw: { line: 'rail-line', mark: 'rail-mark' } },
+  compact: { rail: 'w-6', marker: 'top-4', first: 'top-4 bottom-0', last: 'top-0 h-4', draw: { line: '', mark: '' } },
 } as const;
 export type RowSize = keyof typeof ROW;
 
@@ -38,7 +39,7 @@ export function StationMarker({ state, size = 'large' }: { state: StationState; 
   const ping = state === 'here' && size === 'large' ? 'station-here' : '';
   return (
     <span
-      className={`absolute left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-200 ${ROW[size].marker} ${STATION[state]} ${ping}`}
+      className={`absolute left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-200 ${ROW[size].marker} ${ROW[size].draw.mark} ${STATION[state]} ${ping}`}
     />
   );
 }
@@ -101,7 +102,7 @@ function moduleCount(m: CourseModule, ms: ModuleProgress): string {
 export function Rail({ line, size = 'large', children }: { line: string; size?: RowSize; children?: ReactNode }) {
   return (
     <div className={`relative shrink-0 ${ROW[size].rail}`} aria-hidden="true">
-      <span className={`absolute left-1/2 -translate-x-1/2 ${line}`} />
+      <span className={`absolute left-1/2 -translate-x-1/2 ${ROW[size].draw.line} ${line}`} />
       {children}
     </div>
   );

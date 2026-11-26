@@ -69,7 +69,7 @@ export function LessonPage() {
 
         <LessonTabs lesson={lesson} tab={tab} onChange={(t) => setParams(t === 'theory' ? {} : { tab: t })} />
 
-        <div className="mt-6">
+        <div key={tab} className="enter mt-6">
           {tab === 'theory' && <TheoryTab lesson={lesson} onPractice={() => setParams({ tab: 'practice' })} />}
           {tab === 'resources' && <ResourcesTab lesson={lesson} />}
           {tab === 'practice' && <PracticeTab lesson={lesson} />}

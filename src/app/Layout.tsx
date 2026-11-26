@@ -90,7 +90,10 @@ export function Layout() {
       )}
 
       <main id="main" className={`scroll-thin min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-none ${onTask ? 'bg-canvas' : ''}`}>
-        <Outlet />
+        {/* A new page fades up into place (.route-enter); keyed by path, so changing tabs or ?v= does not replay it. */}
+        <div key={pathname} className="route-enter h-full">
+          <Outlet />
+        </div>
       </main>
     </div>
   );

@@ -15,13 +15,25 @@ export function ProgressBar({ percent, className, tone = 'accent' }: { percent: 
   );
 }
 
-/** Notebook checkbox of a task: empty (new), half-filled (attempted), ticked (solved). */
-export function StatusIcon({ status, size = DEFAULT_ICON_SIZE }: { status: Status; size?: number }) {
+/**
+ * Notebook checkbox of a task: empty (new), half-filled (attempted), ticked (solved).
+ * `celebrate`: the task was solved just now — the box pops and the tick draws itself (index.css .status-pop / .tick-draw).
+ */
+export function StatusIcon({ status, size = DEFAULT_ICON_SIZE, celebrate = false }: { status: Status; size?: number; celebrate?: boolean }) {
   if (status === 'solved') {
     return (
-      <svg width={size} height={size} viewBox="0 0 16 16" className="shrink-0 text-ok" aria-label="done">
+      <svg width={size} height={size} viewBox="0 0 16 16" className={`shrink-0 text-ok ${celebrate ? 'status-pop' : ''}`} aria-label="done">
         <rect x="1" y="1" width="14" height="14" rx="3" fill="currentColor" />
-        <path d="M4.3 8.4l2.4 2.4 5-5.4" fill="none" stroke="var(--c-surface)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <path
+          d="M4.3 8.4l2.4 2.4 5-5.4"
+          pathLength={1}
+          className={celebrate ? 'tick-draw' : ''}
+          fill="none"
+          stroke="var(--c-surface)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </svg>
     );
   }

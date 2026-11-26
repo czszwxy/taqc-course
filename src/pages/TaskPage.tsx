@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, type ComponentType } from 'react';
+import { lazy, Suspense, useEffect, useState, type ComponentType } from 'react';
 import { Link, Navigate, useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { lessonPath, lessonsById, neighbourLessons, taskPath, tasksById, type Course, type CourseLesson, type CourseTask } from '../content/loader';
 import { useCourseForModule } from '../app/currentCourse';
@@ -105,6 +105,8 @@ export function TaskPage() {
   const vSlug = params.get('v');
   const seed = Number(params.get('seed') ?? '0') || 0;
   const active = main && vSlug ? (main.variants.find((v) => v.slug === vSlug) ?? main) : main;
+  // Remembered once per visit (Layout remounts the page per task): the tick celebrates only a solve that happens here.
+  const [solvedOnArrival] = useState(() => (main ? taskStatus(main, tasks) === 'solved' : false));
 
   useEffect(() => {
     if (main && !main.isVariant) setLast(location.pathname + location.search, main.task.title);
@@ -142,7 +144,7 @@ export function TaskPage() {
         <TaskStops lesson={lesson} current={main} course={course} />
       </div>
       <div className="mt-2 flex items-start gap-2.5">
-        <StatusIcon status={status} size={20} />
+        <StatusIcon status={status} size={20} celebrate={!solvedOnArrival} />
         <h1 className="font-display text-[1.5rem] font-bold leading-tight">{active.task.title}</h1>
       </div>
       <div className="mt-2 flex flex-wrap gap-1.5">

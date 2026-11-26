@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import { catalog, coursePath, type Course } from '../content/loader';
 import type { CourseStatus } from '../content/schema';
@@ -81,7 +82,11 @@ function CourseCard({ course, index, data }: { course: Course; index: number; da
   const modulesReady = course.modules.filter((m) => m.available).length;
   const status = STATUS[course.status];
   return (
-    <Link to={coursePath(course)} className={`card group flex flex-col border-t-4 border-t-track p-5 transition-colors hover:bg-hover ${trackClass(index)}`}>
+    <Link
+      to={coursePath(course)}
+      style={{ '--i': index } as CSSProperties}
+      className={`card rise lift group flex flex-col border-t-4 border-t-track p-5 transition-colors hover:bg-hover ${trackClass(index)}`}
+    >
       <div className="flex items-start justify-between gap-3">
         <span className="text-[2.2rem] leading-none" aria-hidden="true">
           {course.icon}

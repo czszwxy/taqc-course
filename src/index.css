@@ -684,6 +684,95 @@
   }
 }
 
+/* A new page (Layout keys it by path) fades up into place: 200 ms, 6 px. Frequent, so short and small. */
+.route-enter {
+  transition:
+    opacity 200ms var(--ease-out),
+    transform 200ms var(--ease-out);
+}
+@starting-style {
+  .route-enter {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* A task solved during this visit: its checkbox pops and the tick draws itself (StatusIcon `celebrate`). */
+.status-pop {
+  animation: status-pop 280ms var(--ease-out);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@keyframes status-pop {
+  from {
+    opacity: 0.4;
+    transform: scale(0.8);
+  }
+}
+.tick-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: tick-draw 320ms var(--ease-out) 140ms forwards;
+}
+@keyframes tick-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Main menu: profession cards rise in one after another (50 ms apart, `--i` = position), then lift a little on hover. */
+.rise {
+  animation: rise 320ms var(--ease-out) backwards;
+  animation-delay: calc(var(--i, 0) * 50ms);
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .lift {
+    transition:
+      transform 200ms var(--ease-out),
+      box-shadow 200ms var(--ease-out),
+      background-color 150ms ease;
+  }
+  .lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 0 var(--c-line);
+  }
+}
+
+/*
+ * The route draws itself as you scroll: each piece of line grows down from the top and its station pops in while the
+ * row enters the screen. Rows already on screen are simply drawn. Only where scroll-driven animations exist.
+ */
+@supports (animation-timeline: view()) {
+  .rail-line {
+    transform-origin: top;
+    animation: rail-draw linear both;
+    animation-timeline: view();
+    animation-range: entry 10% entry 90%;
+  }
+  .rail-mark {
+    animation: rail-mark linear both;
+    animation-timeline: view();
+    animation-range: entry 40% entry 100%;
+  }
+}
+@keyframes rail-draw {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes rail-mark {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
 /* "You are here" on the course map and the module page: a ring pings twice on arrival to show where you are, then stops. */
 .station-here::after {
   content: "";
@@ -706,11 +795,30 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .enter {
+  .enter,
+  .route-enter {
     transition-property: opacity;
   }
-  .station-here::after {
+  .station-here::after,
+  .status-pop,
+  .rail-line,
+  .rail-mark {
     animation: none;
+  }
+  .tick-draw {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .rise {
+    animation-name: fade-in;
+  }
+  .lift:hover {
+    transform: none;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
   }
 }
 
