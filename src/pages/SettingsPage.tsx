@@ -8,6 +8,9 @@ import { Icon, type IconName } from '../components/icons';
 import { switchTheme } from '../app/theme';
 import { SyncSection } from '../features/sync/SyncSection';
 import { isSyncConnected, syncNow } from '../features/sync/sync';
+import { accountSyncNow, isSignedIn, useAccount } from '../features/account/accountSync';
+import { ACCOUNTS_ENABLED } from '../features/account/client';
+import { Link } from 'react-router-dom';
 
 /** Progress files carry the app id; files exported before the rename say qa-academy. */
 const APP_ID = 'my-university';
@@ -22,6 +25,13 @@ const EDITOR_MODES: { mode: EditorMode; icon: IconName; label: string }[] = [
   { mode: 'simple', icon: 'phone', label: 'Always simple' },
 ];
 
+/** Where progress lives, in the words of the "Your progress" section. */
+function progressStorageNote(signedIn: boolean): string {
+  if (signedIn) return 'Progress of all courses is saved in your account and in this browser. Export still makes a file backup.';
+  const accounts = ACCOUNTS_ENABLED ? ' Or create an account: it keeps your progress on every device.' : '';
+  return `Progress of all courses is stored only in this browser (localStorage). Export it regularly as a backup or to move it to another device: the course on your computer and the website on your phone each keep their own progress — export on one, import on the other.${accounts}`;
+}
+
 export function SettingsPage() {
   const { theme, editorMode, setEditorMode } = useSettings();
   const tasks = useProgress((s) => s.tasks);
@@ -31,6 +41,8 @@ export function SettingsPage() {
   const fileRef = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState<{ tone: 'ok' | 'bad'; text: string } | null>(null);
   const current = useCurrentCourse();
+  const signedInAs = useAccount((s) => s.user?.login);
+  const progressNote = progressStorageNote(Boolean(signedInAs));
   const stats = current ? courseStats(current, { tasks, theoryRead }) : undefined;
   const availableModules = new Set(catalog.courses.flatMap((c) => c.modules.filter((m) => m.available).map((m) => m.slug))).size;
 
@@ -50,13 +62,16 @@ export function SettingsPage() {
     try {
       const parsed = JSON.parse(await file.text()) as { app?: string; data?: ProgressData };
       if (!IMPORTABLE_APPS.has(parsed.app ?? '') || !parsed.data || typeof parsed.data.tasks !== 'object') throw new Error('This is not a my-university progress file.');
-      const synced = isSyncConnected();
+      const synced = isSyncConnected() || isSignedIn();
       const question = synced
-        ? 'Replace your current progress with the imported file? Sync is on, so the copy on GitHub (and your other devices) will be replaced too.'
+        ? 'Replace your current progress with the imported file? Sync is on, so your saved copy (and your other devices) will be replaced too.'
         : 'Replace your current progress with the imported file?';
       if (!confirm(question)) return;
       importData(parsed.data);
-      if (synced) void syncNow('replace');
+      if (synced) {
+        void syncNow('replace');
+        void accountSyncNow('replace');
+      }
       setMessage({ tone: 'ok', text: 'Progress imported.' });
     } catch (e) {
       setMessage({ tone: 'bad', text: e instanceof Error ? e.message : String(e) });
@@ -93,7 +108,19 @@ export function SettingsPage() {
         </div>
       </section>
 
-      <SyncSection />
+      {signedInAs ? (
+        <section className="card mt-4 p-5">
+          <h2 className="font-display text-lg font-bold">Sync between devices</h2>
+          <p className="mt-1 text-sm text-muted">
+            You are signed in as <b className="text-fg">{signedInAs}</b>: your account keeps your progress and settings in sync on every device.{' '}
+            <Link to="/account" className="text-accent-fg underline">
+              Open your account
+            </Link>
+          </p>
+        </section>
+      ) : (
+        <SyncSection />
+      )}
 
       <section className="card mt-4 p-5">
         <h2 className="font-display text-lg font-bold">Your progress</h2>
@@ -104,8 +131,7 @@ export function SettingsPage() {
               {stats.tasksSolved}/{stats.tasksTotal} tasks solved.{' '}
             </>
           )}
-          Progress of all courses is stored only in this browser (localStorage). Export it regularly as a backup or to move it to another device: the
-          course on your computer and the website on your phone each keep their own progress — export on one, import on the other.
+          {progressNote}
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
           <button className="btn btn-primary" onClick={exportProgress}>
@@ -129,11 +155,14 @@ export function SettingsPage() {
           <button
             className="btn btn-ghost text-bad"
             onClick={() => {
-              const synced = isSyncConnected();
-              const warning = synced ? ' Sync is on, so it will be deleted on GitHub and your other devices too.' : '';
+              const synced = isSyncConnected() || isSignedIn();
+              const warning = synced ? ' Sync is on, so it will be deleted from your saved copy and your other devices too.' : '';
               if (confirm(`Delete ALL progress, drafts and hints? This cannot be undone (export first if unsure).${warning}`)) {
                 reset();
-                if (synced) void syncNow('replace');
+                if (synced) {
+                  void syncNow('replace');
+                  void accountSyncNow('replace');
+                }
                 setMessage({ tone: 'ok', text: 'Progress reset.' });
               }
             }}

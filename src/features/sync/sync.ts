@@ -4,6 +4,7 @@ import { persist } from 'zustand/middleware';
 import { snapshotProgress, useProgress, type ProgressData } from '../progress/store';
 import { fetchLogin, findOrCreateGist, readGist, SyncError, writeGist } from './gist';
 import { combineProgress, sameProgress } from './merge';
+import { isSignedIn, useAccount } from '../account/accountSync';
 
 /**
  * Progress sync between devices (the course on the computer, the website on the phone) through one secret GitHub gist.
@@ -45,9 +46,10 @@ export const useSync = create<SyncState>()(
   }),
 );
 
+/** Connected and in use: while an account is signed in, the account syncs instead (the gist keeps the signed-out progress). */
 export function isSyncConnected(): boolean {
   const { token, gistId } = useSync.getState();
-  return Boolean(token && gistId);
+  return Boolean(token && gistId) && !isSignedIn();
 }
 
 interface SyncFile {
@@ -158,7 +160,8 @@ export function disconnectSync(): void {
 
 /** Mounted once in the app layout: syncs on start, after changes and when the app is hidden or shown again. */
 export function useAutoSync(): void {
-  const connected = useSync((s) => Boolean(s.token && s.gistId));
+  const signedIn = useAccount((s) => Boolean(s.user));
+  const connected = useSync((s) => Boolean(s.token && s.gistId)) && !signedIn;
   useEffect(() => {
     if (!connected) return undefined;
     void syncNow();

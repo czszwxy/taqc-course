@@ -3,6 +3,7 @@ import { catalog } from '../content/loader';
 import { useProgress, useSettings } from '../features/progress/store';
 import { courseStats } from '../features/progress/selectors';
 import { useAutoSync, useSync } from '../features/sync/sync';
+import { useAccountSync } from '../features/account/accountSync';
 import { useCurrentCourse } from './currentCourse';
 import { Icon } from '../components/icons';
 import { switchTheme } from './theme';
@@ -29,6 +30,7 @@ export function Layout() {
   const inCourse = COURSE_ROUTE_PREFIXES.some((prefix) => pathname.startsWith(prefix));
   const stats = current && inCourse ? courseStats(current, { tasks, theoryRead }) : undefined;
   useAutoSync();
+  useAccountSync();
   const syncFailed = useSync((s) => s.status === 'error' && Boolean(s.token));
   // Task pages fill the window: the bar spans it too, and the grid stays out from under the task text.
   const onTask = pathname.startsWith('/learn/') && pathname.split('/').filter(Boolean).length === TASK_PATH_PARTS;
