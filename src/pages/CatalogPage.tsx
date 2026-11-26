@@ -7,6 +7,7 @@ import { courseStats, moduleStats } from '../features/progress/selectors';
 import { trackClass } from '../components/ui';
 import { useCurrentCourse } from '../app/currentCourse';
 import { stationState, type StationState } from '../app/RouteMap';
+import { Workdesk } from '../features/workdesk/Workdesk';
 
 type ProgressInput = Parameters<typeof courseStats>[1];
 
@@ -44,26 +45,12 @@ export function CatalogPage() {
   const theoryRead = useProgress((s) => s.theoryRead);
   const data = { tasks, theoryRead };
   const current = useCurrentCourse();
-  const currentStarted = current ? courseStats(current, data).percent > 0 : false;
+  // Once anything is done, the home screen is the learner's desk; before that, the welcome.
+  const hasProgress = Object.keys(tasks).length > 0 || Object.keys(theoryRead).length > 0;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 lg:px-8">
-      <section className="page px-6 py-7 lg:px-10 lg:py-9">
-        <div className="hand text-[1.6rem]">your own university — pick a profession</div>
-        <h1 className="mt-1 max-w-3xl font-display text-[2rem] font-bold leading-tight lg:text-[2.6rem]">
-          From zero to your <span className="marker">first job in IT</span>
-        </h1>
-        <p className="mt-3 max-w-2xl text-muted">
-          Self-study courses with theory, practice that is checked automatically, real tools and a portfolio project. Modules that several
-          professions share — testing basics, Git, SQL, HTTP, getting hired — are written once and your progress in them counts in every course that
-          uses them.
-        </p>
-        {current && currentStarted && (
-          <Link to={coursePath(current)} className="btn btn-primary mt-6 max-w-full whitespace-normal text-left">
-            Continue: {current.title} ({current.subtitle}) →
-          </Link>
-        )}
-      </section>
+      {current && hasProgress ? <Workdesk course={current} /> : <Welcome />}
 
       <h2 className="mt-12 font-display text-2xl font-bold">
         <span className="marker">Professions</span>
@@ -74,6 +61,22 @@ export function CatalogPage() {
         ))}
       </div>
     </div>
+  );
+}
+
+/** Shown before the learner has done anything; afterwards the Workdesk takes its place. */
+function Welcome() {
+  return (
+    <section className="page px-6 py-7 lg:px-10 lg:py-9">
+      <div className="hand text-[1.6rem]">your own university — pick a profession</div>
+      <h1 className="mt-1 max-w-3xl font-display text-[2rem] font-bold leading-tight lg:text-[2.6rem]">
+        From zero to your <span className="marker">first job in IT</span>
+      </h1>
+      <p className="mt-3 max-w-2xl text-muted">
+        Self-study courses with theory, practice that is checked automatically, real tools and a portfolio project. Modules that several professions
+        share — testing basics, Git, SQL, HTTP, getting hired — are written once and your progress in them counts in every course that uses them.
+      </p>
+    </section>
   );
 }
 
