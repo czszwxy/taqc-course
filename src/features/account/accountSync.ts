@@ -4,7 +4,7 @@ import { persist } from 'zustand/middleware';
 import { emptyProgress, snapshotProgress, useProgress, useSettings, type ProgressData } from '../progress/store';
 import { combineProgress, sameProgress, stableStringify } from '../sync/merge';
 import { useDailyGoal } from '../workdesk/goal';
-import { getSupabase } from './client';
+import { ACCOUNTS_ENABLED, getSupabase } from './client';
 import { newerSettings, type SyncedSettings } from './rules';
 
 /**
@@ -68,7 +68,8 @@ export const useAccount = create<AccountState>()(
   }),
 );
 
-export const isSignedIn = (): boolean => Boolean(useAccount.getState().user);
+/** A remembered account counts only while accounts are configured (keys removed from .env = everyone signed out). */
+export const isSignedIn = (): boolean => ACCOUNTS_ENABLED && Boolean(useAccount.getState().user);
 export const hasUnsyncedChanges = (): boolean => {
   const { changes, syncedChanges } = useAccount.getState();
   return changes !== syncedChanges;
@@ -256,7 +257,7 @@ export async function accountSyncNow(mode: AccountSyncMode = 'merge'): Promise<v
 
 /** Mounted once in the app layout: syncs on start, a few seconds after changes and when the app is hidden or shown. */
 export function useAccountSync(): void {
-  const signedIn = useAccount((s) => Boolean(s.user));
+  const signedIn = useAccount((s) => Boolean(s.user)) && ACCOUNTS_ENABLED;
   useEffect(() => {
     if (!signedIn) return undefined;
     void accountSyncNow();

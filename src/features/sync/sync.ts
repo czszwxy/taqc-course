@@ -5,6 +5,7 @@ import { snapshotProgress, useProgress, type ProgressData } from '../progress/st
 import { fetchLogin, findOrCreateGist, readGist, SyncError, writeGist } from './gist';
 import { combineProgress, sameProgress } from './merge';
 import { isSignedIn, useAccount } from '../account/accountSync';
+import { ACCOUNTS_ENABLED } from '../account/client';
 
 /**
  * Progress sync between devices (the course on the computer, the website on the phone) through one secret GitHub gist.
@@ -160,7 +161,7 @@ export function disconnectSync(): void {
 
 /** Mounted once in the app layout: syncs on start, after changes and when the app is hidden or shown again. */
 export function useAutoSync(): void {
-  const signedIn = useAccount((s) => Boolean(s.user));
+  const signedIn = useAccount((s) => Boolean(s.user)) && ACCOUNTS_ENABLED;
   const connected = useSync((s) => Boolean(s.token && s.gistId)) && !signedIn;
   useEffect(() => {
     if (!connected) return undefined;

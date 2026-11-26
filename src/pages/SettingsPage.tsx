@@ -41,7 +41,7 @@ export function SettingsPage() {
   const fileRef = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState<{ tone: 'ok' | 'bad'; text: string } | null>(null);
   const current = useCurrentCourse();
-  const signedInAs = useAccount((s) => s.user?.login);
+  const signedInAs = useAccount((s) => (ACCOUNTS_ENABLED ? s.user?.login : undefined));
   const progressNote = progressStorageNote(Boolean(signedInAs));
   const stats = current ? courseStats(current, { tasks, theoryRead }) : undefined;
   const availableModules = new Set(catalog.courses.flatMap((c) => c.modules.filter((m) => m.available).map((m) => m.slug))).size;
