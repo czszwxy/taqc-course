@@ -720,10 +720,13 @@
   }
 }
 
-/* Main menu: profession cards rise in one after another (50 ms apart, `--i` = position), then lift a little on hover. */
+/*
+ * Card grids rise in one after another (50 ms apart, `--i` = position), then lift a little on hover.
+ * The stagger stops growing after 8 cards, so long lists (Bug Playground) do not keep the last cards waiting.
+ */
 .rise {
   animation: rise 320ms var(--ease-out) backwards;
-  animation-delay: calc(var(--i, 0) * 50ms);
+  animation-delay: calc(min(var(--i, 0), 8) * 50ms);
 }
 @keyframes rise {
   from {
@@ -741,6 +744,19 @@
   .lift:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 0 var(--c-line);
+  }
+}
+/* Bug Playground cards: the ink bugs stir (tilt left / right, one after another) when the card is pointed at. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .bug-row > * {
+    transition: transform 200ms var(--ease-out);
+    transition-delay: calc(var(--j, 0) * 25ms);
+  }
+  .bug-card:hover .bug-row > :nth-child(odd) {
+    transform: translateY(-1px) rotate(-14deg);
+  }
+  .bug-card:hover .bug-row > :nth-child(even) {
+    transform: translateY(-1px) rotate(14deg);
   }
 }
 
