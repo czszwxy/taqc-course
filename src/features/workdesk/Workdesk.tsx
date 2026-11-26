@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { lessonPath, lessonsById, neighbourLessons, tasksById, type Course, type CourseLesson, type CourseModule } from '../../content/loader';
+import { catalog, lessonPath, lessonsById, neighbourLessons, tasksById, type Course, type CourseLesson, type CourseModule } from '../../content/loader';
 import { useProgress } from '../progress/store';
 import { courseStats, lessonStats, moduleStats } from '../progress/selectors';
 import { learnPathParts } from '../../app/currentCourse';
@@ -53,6 +53,10 @@ const STICKER_TONE: Record<StickerTone, string> = {
   accent: 'border-accent bg-accent-soft text-accent-fg',
   bad: 'border-bad bg-bad-soft text-bad',
 };
+
+/** Stickers count work in every profession (modules are shared), so opening another course never takes one away. */
+const ALL_LESSONS = [...lessonsById.values()];
+const ALL_MODULES = [...new Map(catalog.courses.flatMap((c) => c.modules).map((m) => [m.slug, m])).values()];
 
 /** Stops of the module on the "Continue" card. */
 const MINI_STOP: Record<StationState, string> = {
@@ -154,9 +158,8 @@ export function Workdesk({ course }: { course: Course }) {
     solvedTypes: new Set(solvedEntries.map(([id]) => tasksById.get(id)?.task.type ?? '')),
     bestStreak: bestStreak(days),
     bestDay: Math.max(0, ...perDay.values()),
-    goal,
-    lessonsDone: stats.lessonsCompleted,
-    modulesDone: course.modules.filter((m) => m.available && m.lessons.length > 0 && moduleStats(m, data).completed === m.lessons.length).length,
+    lessonsDone: ALL_LESSONS.filter((l) => lessonStats(l, data).complete).length,
+    modulesDone: ALL_MODULES.filter((m) => m.available && m.lessons.length > 0 && moduleStats(m, data).completed === m.lessons.length).length,
   };
   const earned = STICKERS.filter((s) => s.earned(facts)).map((s) => s.id);
   const nextSticker = STICKERS.find((s) => !s.earned(facts));
@@ -197,7 +200,7 @@ export function Workdesk({ course }: { course: Course }) {
   const done = Math.min(solvedToday, goal);
 
   return (
-    <div aria-label="Your desk">
+    <div>
       <div className="rise mb-4 flex flex-wrap items-baseline gap-x-4 gap-y-1" style={{ '--i': 0 } as CSSProperties}>
         <h1 className="font-display text-[1.9rem] font-bold leading-tight">{greeting(now.getHours())}</h1>
         <span className="hand text-[1.5rem]">{streakNote(streak, solvedToday)}</span>
@@ -290,12 +293,11 @@ export function Workdesk({ course }: { course: Course }) {
               return (
                 <li
                   key={s.id}
-                  role="img"
-                  aria-label={`${s.title}${has ? '' : ' (not yet)'}`}
                   title={s.title}
                   style={{ '--rot': has ? (TILTS[i] ?? '0deg') : '0deg' } as CSSProperties}
                   className={`sticker grid h-10 w-10 place-items-center rounded-full border-[1.5px] ${has ? STICKER_TONE[s.tone] : 'border-dashed border-line text-faint opacity-60'} ${landed.has(s.id) ? 'sticker-land' : ''}`}
                 >
+                  <span className="sr-only">{`${s.title}${has ? '' : ' (not yet)'}`}</span>
                   <Icon name={s.icon} size={STICKER_ICON_SIZE} />
                 </li>
               );

@@ -66,7 +66,6 @@ export interface DeskFacts {
   solvedTypes: ReadonlySet<string>;
   bestStreak: number;
   bestDay: number;
-  goal: number;
   lessonsDone: number;
   modulesDone: number;
 }
@@ -85,12 +84,14 @@ const TEN = 10;
 const FIFTY = 50;
 const SHORT_STREAK = 3;
 const WEEK_STREAK = 7;
+/** A fixed bar, not the learner's goal setting: a sticker must never go away when the goal is raised. */
+const BUSY_DAY = 3;
 
-/** In the order they are usually earned: the first one not earned yet is shown as "Next". */
+/** In the order they are usually earned: the first one not earned yet is shown as "Next". Every rule only ever turns true. */
 export const STICKERS: Sticker[] = [
   { id: 'first-task', title: 'First task solved', icon: 'checklist', tone: 'ok', earned: (f) => f.solvedCount >= 1 },
   { id: 'first-lesson', title: 'First lesson complete', icon: 'docs', tone: 'accent', earned: (f) => f.lessonsDone >= 1 },
-  { id: 'first-goal', title: 'First daily goal', icon: 'compass', tone: 'bad', earned: (f) => f.bestDay >= f.goal },
+  { id: 'first-goal', title: '3 tasks in one day', icon: 'compass', tone: 'bad', earned: (f) => f.bestDay >= BUSY_DAY },
   { id: 'streak-3', title: '3 days in a row', icon: 'sun', tone: 'warn', earned: (f) => f.bestStreak >= SHORT_STREAK },
   { id: 'first-bug', title: 'First bug report', icon: 'bug', tone: 'warn', earned: (f) => f.solvedTypes.has('bug-report') },
   { id: 'first-code', title: 'First code check green', icon: 'tool', tone: 'ok', earned: (f) => f.solvedTypes.has('code') || f.solvedTypes.has('python') },
